@@ -1,5 +1,8 @@
 # guillaumegilles.github.io
 
+1. https://github.com/simonpcouch/website/blob/main/index.qmd
+2. https://quarto.org/docs/output-formats/html-themes.html#dark-mode
+
 Personal website with GitHub Pages and Quarto
 
 - [ ] series: Explain Like I'm Five
@@ -39,6 +42,9 @@ There’s more information about myself and what I work on on my main website.
   - [ ] cotation
   - [ ] swot
 - [ ] ratio de cock 8% : bâle I
+- [ ] Préparer des quiz pour les fins de séances. À vois sur papier ou [Wooclap](https://www.wooclap.com/fr/)
+
+## Présentation
 
 ## valeur d'entreprise et valeur de l'entreprise
 
