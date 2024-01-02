@@ -1,20 +1,24 @@
 # guillaumegilles.github.io
 
-## Blog
-
-1. https://github.com/simonpcouch/website/blob/main/index.qmd
-2. https://quarto.org/docs/output-formats/html-themes.html#dark-mode
-
 Personal website with GitHub Pages and Quarto
 
-- [ ] series: Explain Like I'm Five
-  - [ ] LLM
-- [ ] https://github.com/juliasilge/juliasilge.com/blob/master/content/blog/childcare-costs/index.qmd
-- [ ] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2465539/
-- [ ] https://mitchellh.com/ghostty
-- [ ] Boo! 👻
+## Blog
+
+1. https://quarto.org/docs/output-formats/html-themes.html#dark-mode
+2. https://quarto.org/docs/websites/website-blog.html
+3. https://github.com/linogaliana/python-datascientist/blob/master/_quarto.yml ::: https://pythonds.linogaliana.fr/
+   1. citation bibtex
+   2. zone de commentaires
+4. [ ] series: Explain Like I'm Five
+   1. [ ] LLM
+5. [ ] https://github.com/juliasilge/juliasilge.com/blob/master/content/blog/childcare-costs/index.qmd
+6. [ ] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2465539/
+7. [ ] https://mitchellh.com/ghostty
+8. [ ] Boo! 👻
 
 ### [Simon P. Couh](https://www.simonpcouch.com/)
+
+https://github.com/simonpcouch/website/blob/main/index.qmd
 
 The Blog Thing! We’re Doing It!
 
