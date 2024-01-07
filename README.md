@@ -4,6 +4,10 @@ Personal website with GitHub Pages and Quarto
 
 ## Blog
 
+- [Silvia Canelón](https://silviacanelon.com/)
+- [Julia Silge](https://juliasilge.com/)
+- https://jmbuhr.de/
+
 1. https://quarto.org/docs/output-formats/html-themes.html#dark-mode
 2. https://quarto.org/docs/websites/website-blog.html
 3. https://github.com/linogaliana/python-datascientist/blob/master/_quarto.yml ::: https://pythonds.linogaliana.fr/
@@ -32,10 +36,6 @@ Hi yall!
 For a while now, I’ve wished I had a place to share some short posts on what I’m up to related to R, data science, and statistics. I decided I’d take a Sunday to get this subdomain up and running! This setup uses blogdown and is based on a fork of Julia Silge’s website!
 
 There’s more information about myself and what I work on on my main website.
-
-### [Silvia Canelón](https://silviacanelon.com/)
-
-### [Julia Silge](https://juliasilge.com/)
 
 ## Teaching
 
