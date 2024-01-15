@@ -41,6 +41,12 @@ There’s more information about myself and what I work on on my main website.
 
 ### To Do
 
+- [ ] create a book for each teaching materials
+
+  - https://quarto.org/docs/books/
+  - https://github.com/quarto-dev/quarto-cli/discussions/3505?sort=top
+  - https://github.com/rstudio/r-manuals/tree/main
+
 - [ ] Ajouter dans le syllabus : bloc-note de l'éco de la BdF + ABC de l'économie
 - [ ] Faire une slide sur le taux d'usure
 - [ ] QCM :
