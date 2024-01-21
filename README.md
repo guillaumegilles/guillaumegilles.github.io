@@ -1,51 +1,10 @@
-# guillaumegilles.github.io
+# Paranormal Distribution
 
 Personal website with GitHub Pages and Quarto
-
-## Blog
-
-- [Silvia Canelón](https://silviacanelon.com/)
-- [Julia Silge](https://juliasilge.com/)
-- https://jmbuhr.de/
-
-1. https://quarto.org/docs/output-formats/html-themes.html#dark-mode
-2. https://quarto.org/docs/websites/website-blog.html
-3. https://github.com/linogaliana/python-datascientist/blob/master/_quarto.yml ::: https://pythonds.linogaliana.fr/
-   1. citation bibtex
-   2. zone de commentaires
-4. [ ] series: Explain Like I'm Five
-   1. [ ] LLM
-5. [ ] https://github.com/juliasilge/juliasilge.com/blob/master/content/blog/childcare-costs/index.qmd
-6. [ ] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2465539/
-7. [ ] https://mitchellh.com/ghostty
-8. [ ] Boo! 👻
-
-### [Simon P. Couh](https://www.simonpcouch.com/)
-
-https://github.com/simonpcouch/website/blob/main/index.qmd
-
-The Blog Thing! We’re Doing It!
-
-For a while now, I’ve wished I had a place to share some short posts on what I’m up to related to R, data science, and statistics. I decided I’d take a Sunday to get this subdomain up and running!
-Published
-
-October 11, 2020
-
-Hi yall!
-
-For a while now, I’ve wished I had a place to share some short posts on what I’m up to related to R, data science, and statistics. I decided I’d take a Sunday to get this subdomain up and running! This setup uses blogdown and is based on a fork of Julia Silge’s website!
-
-There’s more information about myself and what I work on on my main website.
 
 ## Teaching
 
 ### To Do
-
-- [ ] create a book for each teaching materials
-
-  - https://quarto.org/docs/books/
-  - https://github.com/quarto-dev/quarto-cli/discussions/3505?sort=top
-  - https://github.com/rstudio/r-manuals/tree/main
 
 - [ ] Ajouter dans le syllabus : bloc-note de l'éco de la BdF + ABC de l'économie
 - [ ] Faire une slide sur le taux d'usure
