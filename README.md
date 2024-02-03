@@ -1,10 +1,6 @@
-# Paranormal Distribution
-
 Personal website with GitHub Pages and Quarto
 
-## Teaching
-
-### To Do
+## TO DOs
 
 - [ ] Ajouter dans le syllabus : bloc-note de l'éco de la BdF + ABC de l'économie
 - [ ] Faire une slide sur le taux d'usure
@@ -14,6 +10,38 @@ Personal website with GitHub Pages and Quarto
   - [ ] swot
 - [ ] ratio de cock 8% : bâle I
 - [ ] Préparer des quiz pour les fins de séances. À vois sur papier ou [Wooclap](https://www.wooclap.com/fr/)
+
+Website design
+Demander à [Magie Appleton](https://maggieappleton.com/) - difital garden - pour des designs des blog posts à l’instar de [Timeful Texts](https://numinous.productions/timeful/)
+
+Voronoi stippling
+https://observablehq.com/@mbostock/voronoi-stippling
+
+### Blog
+
+### IBS
+
+This is a Quarto book.
+
+To learn more about Quarto books visit <https://quarto.org/docs/books>.
+
+https://quarto.org/docs/books/book-structure.html: This page should include the preface, acknowledgements, etc. and headings in the index.qmd file are unnumbered by default. The HTML version of the book will use the index.qmd as the home page and if provided, will place the cover-image on that page.
+
+The references.qmd file will include the generated bibliography (see References below for details).
+
+- [Introductory Statistics](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
+- https://www.openint.kjro.org/
+- https://www.khanacademy.org/profile/me/courses
+- https://www.statisticshowto.com/
+- [ ] Embedding khan academy video at the end of each section
+- [ ] folded table of content on first level
+- [ ] insert link (cross reference) between figure. par dans les random variable quand on parle des combination cf! calculation of probabilities
+- [ ] processus stochastic miage
+- [ ] openclassroom proba / stat
+- [ ] kassie kozolov: medium, youtube, etc.
+- github action: "edit this page" + "report an issue"
+- creating an index
+- add GPLv3 copyleft on the website (à voir avec le rendu final du site)
 
 ### Designing course as video game
 
