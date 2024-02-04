@@ -10,6 +10,7 @@ Personal website with GitHub Pages and Quarto
   - [ ] swot
 - [ ] ratio de cock 8% : bâle I
 - [ ] Préparer des quiz pour les fins de séances. À vois sur papier ou [Wooclap](https://www.wooclap.com/fr/)
+- finance : avoir 6 bloc avec quizz à la fin de chaque bloc
 
 Website design
 Demander à [Magie Appleton](https://maggieappleton.com/) - difital garden - pour des designs des blog posts à l’instar de [Timeful Texts](https://numinous.productions/timeful/)
@@ -23,12 +24,6 @@ https://observablehq.com/@mbostock/voronoi-stippling
 
 This is a Quarto book.
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
-
-https://quarto.org/docs/books/book-structure.html: This page should include the preface, acknowledgements, etc. and headings in the index.qmd file are unnumbered by default. The HTML version of the book will use the index.qmd as the home page and if provided, will place the cover-image on that page.
-
-The references.qmd file will include the generated bibliography (see References below for details).
-
 - [Introductory Statistics](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
 - https://www.openint.kjro.org/
 - https://www.khanacademy.org/profile/me/courses
@@ -39,9 +34,7 @@ The references.qmd file will include the generated bibliography (see References 
 - [ ] processus stochastic miage
 - [ ] openclassroom proba / stat
 - [ ] kassie kozolov: medium, youtube, etc.
-- github action: "edit this page" + "report an issue"
 - creating an index
-- add GPLv3 copyleft on the website (à voir avec le rendu final du site)
 
 ### Designing course as video game
 
