@@ -2,6 +2,23 @@ Personal website with GitHub Pages and Quarto
 
 ## TO DOs
 
+### IBS
+
+1. terminer 1.1 et 1.2
+
+- [Introductory Statistics](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
+- https://www.openint.kjro.org/
+- https://www.khanacademy.org/profile/me/courses
+- https://www.statisticshowto.com/
+- Embedding khan academy video at the end of each section
+- folded table of content on first level
+- insert link (cross reference) between figure. par dans les random variable quand on parle des combination cf! calculation of probabilities
+- processus stochastic miage
+- openclassroom proba / stat
+- kassie kozolov: medium, youtube, etc.
+- creating an index
+- RSS feed
+
 ### Website design
 
 - Demander à [Magie Appleton](https://maggieappleton.com/) - difital garden - pour des designs des blog posts à l’instar de [Timeful Texts](https://numinous.productions/timeful/)
@@ -48,22 +65,6 @@ peu à peu les ficelles d’une incroyable enquête. Au nom de son grand-père.
 - IFRS 16 - Orpéa
 - Lettre Vernimmen.net N° 205 - février 2023
 - https://www.orpea-group.com/actionnaires-investisseurs/documentation/document-denregistrement-universel/
-
-### IBS
-
-- [Introductory Statistics](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
-- https://www.openint.kjro.org/
-- https://www.khanacademy.org/profile/me/courses
-- https://www.statisticshowto.com/
-- Embedding khan academy video at the end of each section
-- folded table of content on first level
-- insert link (cross reference) between figure. par dans les random variable quand on parle des combination cf! calculation of probabilities
-- processus stochastic miage
-- openclassroom proba / stat
-- kassie kozolov: medium, youtube, etc.
-- creating an index
-- collided callout block pour les solution
-- RSS feed
 
 ### Designing course as video game
 
