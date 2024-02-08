@@ -2,27 +2,35 @@ Personal website with GitHub Pages and Quarto
 
 ## TO DOs
 
+- RSS feed
+
 ### IBS
 
 1. terminer 1.1 et 1.2
+2. https://gt.rstudio.com/
+3. creating an index
 
-- [Introductory Statistics](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
-- https://www.openint.kjro.org/
-- https://www.khanacademy.org/profile/me/courses
-- https://www.statisticshowto.com/
+Embedded shiny app into a webpage
+1/ create a shiny app
+2/
+
 - Embedding khan academy video at the end of each section
 - folded table of content on first level
 - insert link (cross reference) between figure. par dans les random variable quand on parle des combination cf! calculation of probabilities
-- processus stochastic miage
-- openclassroom proba / stat
-- kassie kozolov: medium, youtube, etc.
-- creating an index
-- RSS feed
+
+- Materials:
+  - R pour la stat et la science des données
+  - kassie kozolov: medium, youtube, etc.
+  - processus stochastic miage
+  - openclassroom proba / stat
+  - [Introductory Statistics](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
+  - https://www.openintro.org/book/os/
+  - https://www.khanacademy.org/profile/me/courses
+  - https://www.statisticshowto.com/
 
 ### Website design
 
-- Demander à [Magie Appleton](https://maggieappleton.com/) - difital garden - pour des designs des blog posts à l’instar de [Timeful Texts](https://numinous.productions/timeful/)
-- Voronoi stippling: https://observablehq.com/@mbostock/voronoi-stippling
+Voronoi stippling: https://observablehq.com/@mbostock/voronoi-stippling
 
 ### Analyse financière
 
