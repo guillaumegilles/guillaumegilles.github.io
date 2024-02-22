@@ -1,9 +1,8 @@
 ---
 title: "GNU GENERAL PUBLIC LICENSE"
 description: "Version 3, 29 June 2007"
+comment: false
 ---
-
-My [blog posts](index.qmd) are released under a [GNU General Public Licence](https://www.gnu.org/licenses/gpl-3.0.html).
 
 Copyright (C) 2007 Free Software Foundation, Inc.
 <https://fsf.org/>
