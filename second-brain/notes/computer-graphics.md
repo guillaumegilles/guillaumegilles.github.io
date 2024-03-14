@@ -89,3 +89,28 @@ You can write your answers in English or French, as you prefer.
 
 - What would be your approach to compress the data of a video game as much as
   possible? For instance, the height maps used for representing a terrain.
+
+  - [UCSanDiegoX: Computer Graphics](https://www.edx.org/learn/computer-graphics/the-university-of-california-san-diego-computer-graphics)
+- [Keenan Crane](https://www.cs.cmu.edu/~kmcrane/index.html#teaching)
+    - https://www.youtube.com/playlist?list=PL9_jI1bdZmz2emSh0UQ5iOdT2xRHFHL7E
+    - http://15462.courses.cs.cmu.edu/spring2024/home
+- [The Cherno / YouTube](https://www.youtube.com/@TheCherno)
+
+## Beginner materials
+
+- [Pixar in a Box](https://www.khanacademy.org/computing/pixar?source=post_page-----c0da724381bc--------------------------------)
+- [Computer Graphics with Open GL](https://www.amazon.com/gp/product/0136053580/ref=as_li_tl?ie=UTF8&tag=theanimator-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=0136053580&linkId=117bdd90817b3a7d5909a3532b1f1301&source=post_page-----c0da724381bc--------------------------------)
+- [Computer Graphics: Principles and Practice](https://www.amazon.com/gp/product/0321399528/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0321399528&linkCode=as2&tag=theanimator-20&linkId=4b27afc82143b067fb769d8a741390c7&source=post_page-----c0da724381bc--------------------------------)
+- [Fundamentals of Computer Graphics](https://www.amazon.com/gp/product/1482229390/ref=as_li_tl?ie=UTF8&tag=theanimator-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=1482229390&linkId=0f950c498878790fc2398bcbe6d435ad&source=post_page-----c0da724381bc--------------------------------)
+- [ssential Mathematics for Games and Interactive Applications](https://www.amazon.com/gp/product/1482250926/ref=as_li_tl?ie=UTF8&tag=theanimator-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=1482250926&linkId=c34ae18e54c7d96ffcd7bf721cd044ed&source=post_page-----c0da724381bc--------------------------------)
+
+## Intermediate materials
+
+- [Real-Time Rendering, Fourth Edition](https://www.amazon.com/Real-Time-Rendering-Fourth-Tomas-Akenine-M%C3%B6ller/dp/1138627003/ref=m_crc_dp_lf_d_t1_d_sccl_2_1/130-3872276-2585558?pd_rd_w=DGVqn&content-id=amzn1.sym.76a0b561-a7b4-41dc-9467-a85a2fa27c1c&pf_rd_p=76a0b561-a7b4-41dc-9467-a85a2fa27c1c&pf_rd_r=BV6EE1A00FB7PQYX67B0&pd_rd_wg=FsUQR&pd_rd_r=652022c5-c6f9-4dc5-ab9b-f2a2071a2777&pd_rd_i=1138627003&psc=1)
+- [OpenGL Insights](https://www.amazon.com/gp/product/1439893764/ref=as_li_tl?ie=UTF8&tag=theanimator-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=1439893764&linkId=16c8393d0bfd4f8b0266a077c1af1417&source=post_page-----c0da724381bc--------------------------------)
+- [Learning Modern 3D Graphics Programming](https://paroj.github.io/gltut/index.html)
+
+### "the red books"
+
+- [OpenGL Programming Guide: The Official Guide to Learning OpenGL, Version 4.5 with SPIR-V](https://www.amazon.com/gp/product/0134495497/ref=as_li_tl?ie=UTF8&tag=theanimator-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=0134495497&linkId=d63fa48d6f83b85da8459486168b9cd8&source=post_page-----c0da724381bc--------------------------------)
+- [Vulkan Programming Guide: The Official Guide to Learning Vulkan (OpenGL)](https://www.amazon.com/gp/product/0134464540/ref=as_li_tl?ie=UTF8&tag=theanimator-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=0134464540&linkId=ddc2dd84e60cb8c4b4208209cccbf442&source=post_page-----c0da724381bc--------------------------------)
