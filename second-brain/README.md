@@ -9,6 +9,9 @@ created: 1704752820323
 ## What I am working ON...
 
 1. [ ] Email BdF
+
+- [ ] README
+
 2. [ ] [[scratch.print-hello-world]]
 3. [ ] VSCode : Getting Starter
 4. [ ] dev dendron
