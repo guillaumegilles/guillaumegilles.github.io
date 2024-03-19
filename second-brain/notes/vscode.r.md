@@ -36,7 +36,7 @@ install.packages("languageserver")
    pip install -U radian
    ```
 
-  Or if you don't have root privilege, you may want to install it only for yourself:
+   Or if you don't have root privilege, you may want to install it only for yourself:
 
    ```bash
    pip install --user radian
