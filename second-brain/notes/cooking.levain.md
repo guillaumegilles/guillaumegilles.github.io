@@ -1,8 +1,8 @@
 ---
 id: i4gjbry87mqte894pbhd13z
 title: Levain
-desc: ''
-updated: 1699788159992
+desc: "Confectionner son levain maison"
+updated: 1710700174255
 created: 1680278367614
 ---
 
@@ -10,26 +10,26 @@ created: 1680278367614
 
 1. Jour 1
    1. mélanger :
-      1. 20 g de farine de seigle (farine plus complète avec plus de levure naturelle)
-      2. 20 g d’eau
-      3. 5 g de miel
+      - 20 g de farine de seigle (farine plus complète avec plus de levure naturelle)
+      - 20 g d’eau
+      - 5 g de miel
    2. Couvrir avec un tissu et laisser reposer la pâte pendant 24 heures.
 2. Jour 2
    1. Ajouter :
-      1. 40 g de farine de seigle
-      2. 40 g d’eau
-      3. 5 g de miel
+      - 40 g de farine de seigle
+      - 40 g d’eau
+      - 5 g de miel
    2. Couvrir avec un tissu et laisser reposer la pâte pendant 24 heures.
 3. Jour 3
    1. Ajouter :
-      1. 80 g de farine de seigle
-      2. 80 g d’eau
+      - 80 g de farine de seigle
+      - 80 g d’eau
    2. Mélanger l’ensemble à la main.
    3. Couvrir avec un tissu et laisser reposer la pâte pendant 24 heures.
 4. Jour 4
    1. Ajouter :
-      1. 100 g de farine T65
-      2. 100 g d’eau
+      - 100 g de farine T65
+      - 100 g d’eau
    2. Mélanger l’ensemble à la main.
 5. Après le 4ème jour
 

@@ -111,6 +111,8 @@ weekly contest :
 4. [Régression avec R](https://regression-avec-r.github.io/)
 5. [Tidy Modeling with R](https://www.tmwr.org/)
 6. [The Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)
+7. [Mastering Shiny](https://mastering-shiny.org/)
+8. [Fundamentals of data visualization](https://clauswilke.com/dataviz/index.html)
 
 ## Daily challenge
 
