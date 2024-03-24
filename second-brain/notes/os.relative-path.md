@@ -10,7 +10,7 @@ Le chemin relatif est l'arborescence permettant d'accéder à un élément *depu
 
 ![](assets/images/relative-path-windows.png)
 
-Pour facilement identifier le répertoire dans lequel on se trouve, on peut utiliser la commande ![[shell.pwd]]
+Pour facilement identifier le répertoire dans lequel on se trouve, on peut utiliser la commande ![[bash.pwd]]
 
 ### références 
 

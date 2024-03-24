@@ -19,7 +19,7 @@ A [workspace](https://wiki.dendron.so/notes/c4cf5519-f7c2-4a23-b93b-1c9a02880f6b
 
 ## CLI
 
-1. Vérifier que [Node.js](https://nodejs.org/en) est bien installé avec la commande [[shell]] : `node -v`.
+1. Vérifier que [Node.js](https://nodejs.org/en) est bien installé avec la commande [[bash]] : `node -v`.
 2. Installer Dendron CLI :
 
 ```shell

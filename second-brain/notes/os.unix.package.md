@@ -6,11 +6,11 @@ updated: 1686168399830
 created: 1670196601786
 ---
 
-Le gestionnaire de packages dans Ubuntu est [[aptitude|shell.apt]]
+Le gestionnaire de packages dans Ubuntu est [[aptitude|bash.apt]]
 
 1. l’inconvénient d’`aptitude` est les versions des package disponibles, souvent 
 anciennes, mais plus ruboste. Pour contourner ce problème, il faut priviligier la 
-commande [[shell.dpkg]].
+commande [[bash.dpkg]].
 
 ## Références
 

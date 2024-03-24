@@ -11,7 +11,7 @@ Pour implémenter de nouveaux mods, voici les étapes à suivre :
 ## Prérequis
 
 ### S'assurer que [Java](https://www.oracle.com/java/) est installé en local
-Grâce à la commande [[shell]]
+Grâce à la commande [[bash]]
 ```shell
 $ java -version
 ```
@@ -22,7 +22,7 @@ $ brew install java
 ```
 
 ### S'asurer que [Maven](https://maven.apache.org/)
-Grâce à la commande [[shell]]
+Grâce à la commande [[bash]]
 ```shell
 $ mvn -v
 ```

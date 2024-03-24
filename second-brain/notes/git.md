@@ -12,7 +12,7 @@ created: 1645474431427
 
 1. **Déclarer son identité:**
 
-   La première chose à faire est configurer son identité, grâce à la [[shell]]
+   La première chose à faire est configurer son identité, grâce à la [[bash]]
    [[git.config]].
 
 2. **Initialiser un répertoire locale:**
@@ -22,7 +22,7 @@ created: 1645474431427
 
 ### comment annuler l’initialisation d'un répertoire
 
-Pour annuler un répertoire initialiser avec Git, on supprime le fichier `.git` à la racine du répertoire, grâce à la commande [[shell#rm-remove]].
+Pour annuler un répertoire initialiser avec Git, on supprime le fichier `.git` à la racine du répertoire, grâce à la commande [[bash#rm-remove]].
 
 ```shell
 $ rm -rf .git

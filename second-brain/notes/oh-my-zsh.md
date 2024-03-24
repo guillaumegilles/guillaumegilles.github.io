@@ -1,14 +1,14 @@
 ---
 id: xyo5yvxvrqr5tbo7z6o556d
 title: Oh My Zsh
-desc: ""
+desc: ''
 updated: 1698095203029
 created: 1698095200701
 ---
 
 - [Oh My Zsh](https://ohmyz.sh/) est un outil open source pour faciliter la personalisation d'un terminal `zsh`
 - ## Installation
-  - Pour l'installer, on copie, dans le terminal, le script [[Shell]] suivant :
+  - Pour l'installer, on copie, dans le terminal, le script [[bash]] suivant :
   - ```shell
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     ```

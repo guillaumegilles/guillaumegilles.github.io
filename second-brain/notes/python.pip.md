@@ -10,7 +10,7 @@ created: 1649014678134
 
 ## installer `pip` sur sa machine
 
-Pour utiliser pip et ajouter des packages supplémentaires, on doit télécharger `get-pip.py` sur https://pip.pypa.io/en/stable/installation/ et utiliser la [[commade shell|shell.python]] :
+Pour utiliser pip et ajouter des packages supplémentaires, on doit télécharger `get-pip.py` sur https://pip.pypa.io/en/stable/installation/ et utiliser la [[commade shell|bash.python]] :
 
 ```shell
 $ python get-pip.py
@@ -18,7 +18,7 @@ $ python get-pip.py
 
 ## installer des pacquets avec `pip`
 
-Pour installer un nouveau paquet, on utilise la [[commande shell|shell]] :
+Pour installer un nouveau paquet, on utilise la [[commande shell|bash]] :
 
 ```shell
 $ pip install <nom_package>

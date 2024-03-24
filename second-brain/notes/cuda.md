@@ -14,7 +14,7 @@ CUDA is a parallel computing platform and application programming interface (API
 
 1. **Déterminer les GPU de la machine**:
 
-    [[cli.nvidia-smi]]
+    [[bash.nvidia-smi]]
 
     [Your GPU Compute Capability](https://developer.nvidia.com/cuda-gpus)
 

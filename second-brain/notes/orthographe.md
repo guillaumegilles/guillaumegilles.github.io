@@ -1,17 +1,14 @@
 ---
 id: hg5n7chupmq4mgn7bslp4a9
-title: "📇 Orthographe"
-desc: ""
-tags: anki
+title: "\U0001F4C7 Orthographe"
+desc: ''
 updated: 1706731310320
 created: 1680248596144
+tags: anki
 ---
 
-## Le féminin du mot « auteur » est « auteure » ou « autrice » ?
 
-<!-- notecardId: 1702240225556 -->
 
-[Auteure](https://www.lalanguefrancaise.com/orthographe/auteure-ou-autrice)
 
 ## Doit-on écrire « sur-le-champs » ou « sur le champs » ?
 

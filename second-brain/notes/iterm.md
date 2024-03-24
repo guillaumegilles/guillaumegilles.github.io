@@ -2,15 +2,17 @@
 id: 8ck45wt6xc4te0xwscn3gi4
 title: iTerm
 desc: ""
-updated: 1699045850078
+updated: 1710923341492
 created: 1698095227570
 ---
 
 ## Installation
 
-[iTerm2](https://iterm2.com/) est une émulation du terminal, c'est-à-dire qu'il remplace le terminal, par défaut, de macOS. Pour l'installer, on utilise Homebrew avec la commande suivante :
+[iTerm2](https://iterm2.com/) est une émulation du terminal, c'est-à-dire qu'il
+remplace le terminal, par défaut, de macOS. Pour l'installer, on utilise
+Homebrew avec la commande suivante :
 
-```shell
+```bash
 brew install --cask iterm2
 ```
 
@@ -18,6 +20,6 @@ brew install --cask iterm2
 
 When you select the iTerm2>Install Shell Integration menu item, it types this for you:
 
-```shell
+```bash
 curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
 ```

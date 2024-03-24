@@ -10,4 +10,4 @@ created: 1649866435629
 `/` = root
 `/opt` =
 
-La maîtrise de l’[[interface en ligne de commande|cs.cli]] comme [[shell]] est indispensable pour naviguer dans la hiérarchie des systèmes Unix. 
+La maîtrise de l’[[interface en ligne de commande|cs.cli]] comme [[bash]] est indispensable pour naviguer dans la hiérarchie des systèmes Unix. 

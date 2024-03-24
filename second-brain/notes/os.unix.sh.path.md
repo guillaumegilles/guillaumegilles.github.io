@@ -6,7 +6,7 @@ updated: 1668437512007
 created: 1668434073545
 ---
 
-`$PATH` est une variable [[shell]] déféni par [[os.unix.sh.bash]] contenant les répertoires dans lesquels se trouvent les programmes exécutable d’un sytème Unix. Elle permet d’indiquer au système où chercher ces fichiers exécutable lorsqu’on entre une commande dans un terminal. 
+`$PATH` est une variable [[bash]] déféni par [[os.unix.sh.bash]] contenant les répertoires dans lesquels se trouvent les programmes exécutable d’un sytème Unix. Elle permet d’indiquer au système où chercher ces fichiers exécutable lorsqu’on entre une commande dans un terminal. 
 
 ### Lire la variable $PATH
 

@@ -14,7 +14,7 @@ Une **erreur d’estimation** est une erreur lors de la phase d’entraînement 
 
 ## statistiques descriptives univariées
 
-- [[stat.descri.univariate]]
+- [[statistics.univariate]]
 - distribution empiriques
 - tendance centrale, dispersion et forme
 

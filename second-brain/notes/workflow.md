@@ -40,7 +40,7 @@ graph TD
 
 ## Workflow
 
-- rédaction de [[notes permanentes|learning.zettelkasten.note]] avec [[vscode.dendron]] tout àe ouvrant un fichier `qmd` du répertoire ~/website
+- rédaction de [[notes permanentes|zettelkasten.note]] avec [[vscode.dendron]] tout àe ouvrant un fichier `qmd` du répertoire ~/website
 
 - git `~/.config`
   - zsh
@@ -143,3 +143,8 @@ sudo apt install r-base r-base-dev
    dendron
    quarto
    prettier
+
+
+prompt
+
+prompt

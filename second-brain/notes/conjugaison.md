@@ -1,10 +1,10 @@
 ---
 id: zoorn8csi08rqfjtj4th4ds
-title: "📇 Conjugaison"
+title: Conjugaison
 desc: ""
-tags: anki
-updated: 1706730798385
+updated: 1711106156720
 created: 1680249735682
+tags: anki
 ---
 
 ## Le conditionnel présent
@@ -85,24 +85,6 @@ ne prend pas de « s » : Mange en silence ! Mange en fermant la bouche !
 - que nous ayons
 - que vous ayez
 - qu’ils/elles aient
-
-## faire - indicatif présent
-
-- je fais
-- tu fais
-- il/elle fait
-- nous faisons
-- vous faites
-- ils/elles font
-
-## promouvoir - indicatif présent
-
-- je promeus
-- tu promeus
-- il/elle promeut
-- nous promouvons
-- vous promouvez
-- ils/elles promeuvent
 
 ## quand utilise-t-on le participe passé
 

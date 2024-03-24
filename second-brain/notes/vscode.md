@@ -2,9 +2,15 @@
 id: 8etnr0vomotgmro2p0119cb
 title: VSCode / VSCodium
 desc: Microsoft open source IDE
-updated: 1708462416876
+updated: 1711313440099
 created: 1684330226265
 ---
+
+- [ ] [VS Code Tutorial – Become More Productive](https://www.youtube.com/watch?v=heXQnM99oAI)
+- [ ] [VSCode, Faster](https://blog.zsa.io/vscode-tips/?mc_cid=f7de3b31dd)
+- [ ] [Terminal Basics](https://code.visualstudio.com/docs/terminal/basics)
+- [ ] [Data Science in Visual Studio Code](https://code.visualstudio.com/docs/datascience/overview)
+- [ ] [Integrate with External Tools via Tasks](https://code.visualstudio.com/docs/editor/tasks#vscode)
 
 ## `setting.json`
 
@@ -91,25 +97,3 @@ le fichier de configuration de `VSCode` se trouve dans `~/.config/Code/User/sett
 | `Cmd`+`Enter`         |     Execute the **current line(s)**      |
 | `Cmd`+`Shift`+`Enter` |       Execute the **current cell**       |
 | `Cmd`+`Alt`+`P`       |      Execute the **previous cells**      |
-
-## Tasks
-
-[Integrate with External Tools via Tasks](https://code.visualstudio.com/docs/editor/tasks#vscode)
-
-## [Remote Repositories](https://code.visualstudio.com/blogs/2021/06/10/remote-repositories)
-
-## [Snippets in Visual Studio Code](https://code.visualstudio.com/docs/editor/userdefinedsnippets)
-
-## [Terminal Basics](https://code.visualstudio.com/docs/terminal/basics)
-
-Hi everyone!
-
-I’ve been thinking to create a website, and more pricesly a blog, for a while now. I’ve never crossed the line of hypothesis until now, by fear of being judged. Expressing one’s thoughts on the web is intimidating and daunting. But I supposed the desire to have a place of my own to talk about thing that resonnate to me and pet projects I am working on is a stronger driving force than lack of self confidence.
-
-As an aspirying machine learning engineer, blog posts are great opportunities to showcase your work. According to Chip Huyen, it is a great place to demonstrate “examples that convinced me of a candidate’s expertise in certain technology [...] a blog post that covers in-depth detail about X that made our team go: Whoa, they really know about X.” [@huyenWhatWeLook2023]
-
-For David Robinson, a blog is the best advice for someone wanted to start a data science career. It helps to:
-
-1. **Practice analyzing data and communicating about it**: it can be easily resumed to "practice makes perfect" or in French: "C'est en forgeant qu'on devient forgeron".
-2. **Create a portfolio of your work and skills**: after spending hours and nights practicing your data science craft, a blog is a valuable medium to share your work. This piece of advice works well for established data scientists as well.
-3. **Get feedback and evaluation**: creating a community and interacting with an audience helps individuals to reach for better. [@robinsonAdviceAspiringData2017]

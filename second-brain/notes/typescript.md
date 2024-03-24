@@ -1,8 +1,8 @@
 ---
 id: 6ct5f7spru3r5rkajrw8xrl
-title: "ypeScript"
+title: "TypeScript"
 desc: ""
-updated: 1706175370059
+updated: 1711106227655
 created: 1706175243292
 ---
 
