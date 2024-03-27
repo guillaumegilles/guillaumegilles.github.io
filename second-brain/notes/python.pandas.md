@@ -1,11 +1,29 @@
 ---
 id: bam7pb731rxqgj1syflrg7r
-title: "🗂 Pandas"
-desc: "Présentation et cheat sheet pour le package Pandas"
+title: "Pandas"
+desc: "Pandas is a package for simultaneously working with different types of labeled data."
 tags: anki
 updated: 1703074564856
 created: 1654705589479
 ---
+
+What is it: Pandas is a package for simultaneously working with different types of labeled data. You’d use it, for example, if you need to analyze a CSV file containing numerical, alphabetical, and string data. 
+
+Background: [Wes McKinney](https://github.com/wesm) released Pandas in 2008. It builds on [[python.numpy]] (and, in fact, you must have NumPy installed to use Pandas) and extends that package to work with heterogeneous data. 
+
+Features: The core feature of Pandas is its variety of data structures, which let users perform an assortment of analysis operations. 
+
+Pandas has a variety of modules for data manipulation, including reshape, join, merge, and pivot. 
+Pandas has data visualization capabilities.
+Users can perform mathematical operations including calculus and statistics without calling on outside libraries. 
+It has modules that help you work around missing data.
+Best for: Data analysis. 
+
+Downsides: Switching between vanilla Python and Pandas can be confusing, as the latter has a slightly more complex syntax. Pandas also has a steep learning curve. These factors, combined with poor documentation, can make it difficult to pick up. 
+Best place to learn: Introduction to Pandas from DeepLearning.AI.
+
+
+
 
 `pandas` is an fast, powerful, flexible, open source, BSD-licensed library providing high-performance, easy-to-use data structures and data analysis tools built on top of the [Python](https://www.python.org/) programming language.
 
