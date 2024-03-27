@@ -1,10 +1,34 @@
 ---
 id: dlw9y7kopo10ebmm8azhyct
-title: numpy
-desc: Python NumPy
+title: NumPy
+desc: "Python package for working with arrays, or large collections of homogenous data"
 updated: 1697400534466
 created: 1649016213406
 ---
+
+You can think of an array like a spreadsheet, where numbers are stored in columns and rows.
+
+Background: Python wasn’t originally intended for numerical computation when it was launched in 1991. Still, its ease of use caught the scientific community’s attention early on. Over the years, the open source community developed a succession of packages for numerical computing. In 2005, developer Travis Oliphant combined over a decade’s worth of open source developments into a single library for numerical computation, which he called NumPy. 
+
+Features: The core feature of NumPy is support for arrays, which allows you to quickly process and manipulate large collections of data.
+
+Arrays in NumPy can be n-dimensional. This means the data can be a single column of numbers, or many columns and rows of numbers.
+
+NumPy has modules for performing some linear algebra functions. 
+It also has modules for graphing and plotting numerical arrays. 
+Data in NumPy arrays is homogenous, which means it must all be defined as the same type (numbers, strings, Boolean values, etc.). This means data gets processed efficiently.
+
+Best for: Manipulating and processing data for more advanced data science or machine learning operations. If you are crunching numbers, you need NumPy. 
+
+Downsides: Because NumPy arrays are homogeneous, they are a bad fit for mixed data. You are better off using Python lists. Also, NumPy’s performance tends to drop off when working with more than 500,000 columns.
+Best place to learn: [Linear Regression with NumPy and Python](https://www.coursera.org/projects/linear-regression-numpy-python) from Coursera.
+
+
+
+
+
+
+
 
 Il n’est pas possible de réaliser des calculs sur des [[listes|py.dt.list]] 
 python.
