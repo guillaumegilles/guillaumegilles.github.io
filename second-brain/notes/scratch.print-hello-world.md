@@ -33,9 +33,9 @@ why a website : 4ème point de la technique de feynman : transmettre
 
 [[digital-garden]]
 
-[[internet.digital-garden.goals]]
+[[digital-garden.goals]]
 
-[[internet.digital-garden.7-lessons]]
+[[digital-garden.7-lessons]]
 
 - [learning by doing](https://duckduckgo.com/?q=lex+fridman+andrej&t=newext&atb=v411-1&iax=videos&ia=videos&iai=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DI2ZK3ngNvvI) @ 5 minutes
 

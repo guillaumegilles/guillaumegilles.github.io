@@ -1,10 +1,16 @@
 ---
 id: dqhs5pjx245a44k5nweepis
-title: moyenne
-desc: null
-updated: 1682455213386
+title: Statistical Mean
+desc: "Moyenne"
+updated: 1711442506750
 created: 1670271439145
 ---
+
+La moyenne, notée m ou x- (x barre), est le centre de gravité
+
+## Arithmetic Mean
+
+## Weighted Mean
 
 La moyenne arithmétique est la somme des valeurs divisée par le nombre d'individus :
 

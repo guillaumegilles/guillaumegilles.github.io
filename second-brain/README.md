@@ -6,20 +6,24 @@ updated: 1704752820323
 created: 1704752820323
 ---
 
-1. Apprenez à apprendre, openclassroom mooc
-2. space repition blogpost - [ ] augmenting long term memory
-3. cornwell note
-4. Feynam technique
-5. digital vs manuscrite notes
-6. Lee Sheldon : multiplayer classroom
+1. [ ] Email BdF
+2. [ ] clean les readme des projets
+3. [ ] [[scratch.print-hello-world]]
+
+4. Apprenez à apprendre, openclassroom mooc
+5. space repition blogpost - [ ] augmenting long term memory
+6. cornwell note
+7. Feynam technique
+8. digital vs manuscrite notes
+9. Lee Sheldon : multiplayer classroom
    1. https://mlhommet.wordpress.com/teaching/2015fai/
-7. how to become a strait A student : Cal Newport : treat it like a day job 8h-18h
-8. [A Survival Guide to a PhD](https://karpathy.github.io/2016/09/07/phd/)
-9. zettelkasten
-   - dendron: nlp.tokens : structure hiérarchique de dendron permet de mettre en place automatiquement un index
-10. tiago forte: build a second brain
-11. David Allen - Getting Things Done. GTD
-12. How to take note: pen & paper (increase brain activity to remember)
+10. how to become a strait A student : Cal Newport : treat it like a day job 8h-18h
+11. [A Survival Guide to a PhD](https://karpathy.github.io/2016/09/07/phd/)
+12. zettelkasten
+    - dendron: nlp.tokens : structure hiérarchique de dendron permet de mettre en place automatiquement un index
+13. tiago forte: build a second brain
+14. David Allen - Getting Things Done. GTD
+15. How to take note: pen & paper (increase brain activity to remember)
 
 ## To Do
 
@@ -38,8 +42,6 @@ created: 1704752820323
 
 ## What I am working ON...
 
-1. [ ] Email BdF
-2. [ ] [[scratch.print-hello-world]]
 3. HarvardX • CS50T / [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
 4. MITx • 6.00.1x
    1. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
@@ -532,12 +534,6 @@ Dans 3x² - 7x + 12
 </ul>"	algèbre mathématiques
 
 ---
-
-id: GOwHspL1lQhSFCU87YdRv
-title: INBOX
-desc: Une parcelle de jardin sauvage
-updated: 1673274031089
-created: 1645630730427
 
 # MITx-6.00.1x-
 

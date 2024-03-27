@@ -1,12 +1,12 @@
 ---
 id: g3qqiwn2en54s4bpd0t4uxw
 title: 7 Lessons
-desc: "Seven Lessons for digital gardening"
-updated: 1711132177807
+desc: Seven Lessons for digital gardening
+updated: 1711525217946
 created: 1706821119819
 ---
 
-There are 7 lessons to cultivate a digital garden:
+There are 7 lessons to cultivate a digital garden[@bernsteinSevenLessons1998]:
 
 1. Hypertext disorientation most often arises from muddled writing, or from the
    complexity of the subject. Many hypertexts do not require elaborate navigational
@@ -28,5 +28,3 @@ There are 7 lessons to cultivate a digital garden:
 7. Rigid structure makes a large hypertext seem smaller. Complex and intricate
    structure makes a small hypertext seem larger, inviting deeper and more
    thoughtful exploration.
-
-[@bernsteinSevenLessons1998]
