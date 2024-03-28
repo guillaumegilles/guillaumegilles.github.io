@@ -17,7 +17,7 @@ On peut facilement retrouver le type d’une donnée grâce à la fonction [[typ
 
 Il existe d’autre type de données :
 
-- [[Listes|py.dt.list]] ;
+- [[Listes|python.list]] ;
 
 L’exécution du code python se comporte différement selon le type de données avec lesquelles on travaille.
 

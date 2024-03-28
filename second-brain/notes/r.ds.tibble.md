@@ -6,7 +6,7 @@ updated: 1683577599464
 created: 1683575578145
 ---
 
-Le [[r.package]] [[r.tidy.dplyr]] offre une nouvelle structure de données, le `tibble`. Un `tibble` se comporte presque comme un [[r.ds.data-frame]] à quelques exceptions :
+Le [[r.package]] [[r.tidyverse.dplyr]] offre une nouvelle structure de données, le `tibble`. Un `tibble` se comporte presque comme un [[r.ds.data-frame]] à quelques exceptions :
 
 - les lignes d’un `tibble` n’ont pas de nom ;
 - la structure de données du `tibble` conservé lorsqu’on extrait une unique colonne.

@@ -1,8 +1,8 @@
 ---
 id: nwpc15xz5gidvpuzhoekpo4
 title: 6 Patterns
-desc: ''
-updated: 1711042400476
+desc: ""
+updated: 1711642877652
 created: 1709566092406
 ---
 
@@ -84,7 +84,8 @@ much effort you've invested in them.
 
 ## more than organizing publications
 
-it is a way to consume information in time of [[infobésite]] and constant **notification** : a place to relax, leisure, enjoy!
+it is a way to consume information in time of [[infobésite]] and constant
+**notification** : a place to relax, leisure, enjoy!
 
 ## extra links
 

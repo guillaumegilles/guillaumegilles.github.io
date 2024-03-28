@@ -6,7 +6,7 @@ updated: 1655758255610
 created: 1648133268824
 ---
 
-On peut créer une nouvelle [[liste|py.dt.list]] à partir d’une liste déjà existante. C’est ce qu’on appelle découper *slicing* une liste.
+On peut créer une nouvelle [[liste|python.list]] à partir d’une liste déjà existante. C’est ce qu’on appelle découper *slicing* une liste.
 
 on utilise les [[indices|py.dt.list.index]] et la syntaxe est la suivante :
 

@@ -1,7 +1,7 @@
 ---
 id: asq67uklr25x5b94lveu32s
 title: dplyr
-desc: ""
+desc: ''
 updated: 1684693001408
 created: 1683488957979
 ---
@@ -9,20 +9,20 @@ Le package `dplyr` offre une *grammaire* simple et lisible pour la manipulation 
 
 #### lignes
 
-- [[r.tidy.dplyr.filter]]
-- [[r.tidy.dplyr.slice]]
-- [[r.tidy.dplyr.arrange]]
+- [[r.tidyverse.dplyr.filter]]
+- [[r.tidyverse.dplyr.slice]]
+- [[r.tidyverse.dplyr.arrange]]
 
 #### colonnes
 
-- [[r.tidy.dplyr.select]]
-- [[r.tidy.dplyr.rename]]
-- [[r.tidy.dplyr.mutate]]
-- [[r.tidy.dplyr.relocate]]
+- [[r.tidyverse.dplyr.select]]
+- [[r.tidyverse.dplyr.rename]]
+- [[r.tidyverse.dplyr.mutate]]
+- [[r.tidyverse.dplyr.relocate]]
 
 #### groupe de lignes
 
-- [[r.tidy.dplyr.summarise]]
+- [[r.tidyverse.dplyr.summarise]]
 
 ## références
 

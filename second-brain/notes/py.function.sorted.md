@@ -6,7 +6,7 @@ updated: 1648332082605
 created: 1648332082605
 ---
 
-On peut ranger en ordre croissant ou décroissant les éléments d’une [[liste|py.dt.list]] grâce à la fonction `psorted()`. Cette fonction possède plusieurs arguments :
+On peut ranger en ordre croissant ou décroissant les éléments d’une [[liste|python.list]] grâce à la fonction `psorted()`. Cette fonction possède plusieurs arguments :
 
 - `iterable` est la variable contenant la liste ;
 - `key=None`

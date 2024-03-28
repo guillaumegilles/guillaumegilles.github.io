@@ -1,19 +1,26 @@
 ---
 id: zr8ulct6orohue6usk926r2
-title: "📇 R"
+title: "R"
 desc: langage de programmation R
-updated: 1708981706385
+updated: 1711636760102
 created: 1669667999458
 tags: anki
 ---
 
-`R` est un langage de programmation interprété et un logiciel libre destiné aux statistiques et à la science des données. Il fait partie de la liste des paquets GNU3 et est écrit en `C`, `Fortran` et `R`.
+`R` est un langage de programmation interprété et un logiciel libre destiné aux
+statistiques et à la science des données. Il fait partie de la liste des paquets
+GNU3 et est écrit en `C`, `Fortran` et `R`.
 
-Le langage R est largement utilisé par les statisticiens, les data miners, data scientists pour le développement de logiciels statistiques et l'analyse des données.
+Le langage R est largement utilisé par les statisticiens, les data miners, data
+scientists pour le développement de logiciels statistiques et l'analyse des
+données.
 
-`R` fournit un langage de commande très souple et ouvert : il est possible de connecter R avec d’autres langages comme C, Fortran, Java, JavaScript, Python… il est aussi possible d’appeler des fonctions R depuis Matlab, Excel, etc. De plus, des connectiques pour tous les types de bases de données existent : RMySQL ou ROracle, pour ne citer que les plus connus.
+`R` fournit un langage de commande très souple et ouvert : il est possible de
+connecter R avec d’autres langages comme C, Fortran, Java, JavaScript, Python…
+il est aussi possible d’appeler des fonctions R depuis Matlab, Excel, etc. De
+plus, des connectiques pour tous les types de bases de données existent : RMySQL
+ou ROracle, pour ne citer que les plus connus.
 
-- [1]: https://r-stat-sc-donnees.github.io/
 - [The tidyverse style guide](https://style.tidyverse.org/syntax.html?q=comment#comments)
 
 ## `R` est un langage compilé ou interprété ?
@@ -24,114 +31,7 @@ Le langage R est largement utilisé par les statisticiens, les data miners, data
 
 Il est écrit en `C`, `Fortran` et `R`.
 
-## Retourne le répertoire dans lequel la session `R` est exécutée
-
-```r
-> getwd()
-```
-
-[1]
-
-## Modifier le répertoire de travail avec `R`
-
-```r
-> setwd("/home/skekcoon/r_projects")
-```
-
-[1]
-
-## Sauvegarder une image contenant les objets d’une session `R`
-
-```r
-> save.image()
-```
-
-[1]
-
-## Charger une image de session `R` précédemment sauvegarder
-
-```r
-> load()
-```
-
-[1]
-
-## Qu’elle est la fonction de `R` pour afficher l’aide ?
-
-```r
-> help(mean)
-> ?mean
-```
-
-`?` est un alias de la fonction `help()`. Le résultat de ces deux lignes de R est identique.[1]
-
-## Quel est l’opérateur en `R` pour créer un objet
-
-```r
-> data <- 3
-```
-
-On peut également utilisé `->` ou `=`, mais `<-` est l’opérateur à privilégier.[1]
-
-## Insérer Un commentaires dans un script `R`
-
-```r
-# this is a comment in R
-```
-
-Tout ce qui se trouve après le symbole `#` n’est pas interprété par `R`.[1]
-
-## Afficher la valeur d’un objet `R`
-
-```r
-> print(x)
-[1] 5
-```
-
-Ou plus simplement :
-
-```r
-> x
-[1] 5
-```
-
-[1]
-
-## Lister les objects d’une session `R`
-
-```r
-> objects()
-```
-
-Ou simplement, avec la fonction `ls()` :[1]
-
-```r
-> ls()
-```
-
-La syntaxe de la fonction `ls()` est similaire à la commande `ls` du Shell.
-
-## Supprimer un objet d’une session `R`
-
-```r
-> rm(x)
-```
-
-Comme avec la fonction `ls()`, On retrouve la même similitude entre la fonction `rm()` et la commande Shell `rm`.
-
-Pour supprimer plusieurs objets, ils sont passés en arguments les uns à la suite des autres et séparés par des virgules.[1]
-
-```r
-rm(x, y, data)
-```
-
----
-
----
-
-[R cheat sheet](https://geomoer.github.io/moer-base-r/cheatsheet.html'
-
-## Comment appelle-t-on le _data lroortype_ en R ?
+## Comment appelle-t-on les différents _type_ d’objet en R ?
 
 **mode**
 

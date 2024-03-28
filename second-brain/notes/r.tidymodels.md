@@ -1,8 +1,9 @@
 ---
 id: f30gd81m83dibawpsj7a3nu
 title: tidymodels
-desc: "collection of packages for modeling and machine learning using tidyverse 
-principles."
+desc: >-
+  collection of packages for modeling and machine learning using tidyverse 
+  principles.
 updated: 1684586241651
 created: 1684523531211
 ---

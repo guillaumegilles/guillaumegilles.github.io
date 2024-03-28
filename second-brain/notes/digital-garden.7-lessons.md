@@ -1,8 +1,8 @@
 ---
 id: g3qqiwn2en54s4bpd0t4uxw
-title: 7 Lessons
-desc: Seven Lessons for digital gardening
-updated: 1711525217946
+title: "7 Lessons"
+desc: "Seven Lessons for digital gardening from Mark Bernstein"
+updated: 1711642777762
 created: 1706821119819
 ---
 

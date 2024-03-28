@@ -6,7 +6,7 @@ updated: 1648155862450
 created: 1648155862450
 ---
 
-Une [[liste|py.dt.list]] python n’est pas immuable, on peut la manipuler :
+Une [[liste|python.list]] python n’est pas immuable, on peut la manipuler :
 
 1. Modifier un élément 
 

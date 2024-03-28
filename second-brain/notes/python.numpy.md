@@ -1,7 +1,9 @@
 ---
 id: dlw9y7kopo10ebmm8azhyct
 title: NumPy
-desc: "Python package for working with arrays, or large collections of homogenous data"
+desc: >-
+  Python package for working with arrays, or large collections of homogenous
+  data
 updated: 1697400534466
 created: 1649016213406
 ---
@@ -30,7 +32,7 @@ Best place to learn: [Linear Regression with NumPy and Python](https://www.cours
 
 
 
-Il n’est pas possible de réaliser des calculs sur des [[listes|py.dt.list]] 
+Il n’est pas possible de réaliser des calculs sur des [[listes|python.list]] 
 python.
 
 ```python

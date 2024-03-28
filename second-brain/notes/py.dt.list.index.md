@@ -6,7 +6,7 @@ updated: 1655758351917
 created: 1648132322984
 ---
 
-Les [[listes|py.dt.list]] python peuvent devenir rapidement longues pour accéder aux éléments, on utilise l’indice.
+Les [[listes|python.list]] python peuvent devenir rapidement longues pour accéder aux éléments, on utilise l’indice.
 
 ![python index list](/assets/images/python-list.png)
 

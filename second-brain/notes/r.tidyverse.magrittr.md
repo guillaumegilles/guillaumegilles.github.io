@@ -1,7 +1,7 @@
 ---
 id: yzbloqw6fsff0yxunlcz6aw
 title: magrittr
-desc: "le package du pipe %>%"
+desc: le package du pipe %>%
 updated: 1683749490172
 created: 1683749043165
 ---

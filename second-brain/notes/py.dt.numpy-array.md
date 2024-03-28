@@ -7,7 +7,7 @@ created: 1649254628389
 ---
 
 Une array est un type de données spécifique au package [[NumPy|python.numpy]] 
-créer à partir de sous-listes de [[liste|py.dt.list]].
+créer à partir de sous-listes de [[liste|python.list]].
 
 ```python
 np_2d = np.array([[1.73, 1.68, 1.71, 1.89, 1.79],

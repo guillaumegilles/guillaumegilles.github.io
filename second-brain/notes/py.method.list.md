@@ -6,7 +6,7 @@ updated: 1655826472917
 created: 1648499164348
 ---
 
-Les méthodes utilisable sur les [[list()|py.dt.list]] en Python sont :
+Les méthodes utilisable sur les [[list()|python.list]] en Python sont :
 
 - [[max()|py.function.max]] permet de trouver la valeur maximale d’une liste ;
 - [[min()|py.function.min]] permet de trouver la valeur minimale d’une liste ;
