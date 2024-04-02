@@ -1,53 +1,72 @@
 ---
-id: q7apujijgsmb7arfql5ulwo
-title: README
-desc: ""
-updated: 1704752820323
-created: 1704752820323
+title: "To Do"
 ---
 
-1. [Introductory Statistics 2e](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
-2. [Statistical Computing](https://www.stephaniehicks.com/jhustatcomputing2021/)
-3. [Qu’est-ce que la Variance ?](https://kobia.fr/quest-ce-que-la-variance/)
-4. [Openclassroom](https://openclassrooms.com/fr/partners/ensae-ensai-formation-continue-cepe)
-5. [Khan Academy](https://www.khanacademy.org/math/ap-statistics)
-6. [OpenIntro](https://www.openintro.org/)
-7. Cassie Kozyrkov:
+## 2024: What I am working ON…
 
-- https://www.youtube.com/@kozyrkov
-- https://kozyrkov.medium.com/
-- https://github.com/kozyrkov/
+1. [ ] Email @BdF
+2. [ ] [Introductory Statistics 2e](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
+3. [Kaggle](https://www.kaggle.com/competitions)
+4. [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
+5. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
+   - https://pythontutor.com/
+6. MITx • 6.00.2x
+7. [Machine learning in Python with scikit-learn](https://lms.fun-mooc.fr/courses/course-v1:inria+41026+session04/info)
 
-8. [ ] [Introductory Statistics](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
-9. [ ] https://www.openintro.org/book/os/
-10. [ ] R pour la stat et la science des données
-11. [ ] kassie kozolov: medium, youtube, etc.
-12. [ ] processus stochastic miage
-13. [ ] openclassroom proba / stat
-14. [ ] https://www.khanacademy.org/profile/me/courses
-15. [ ] https://www.statisticshowto.com/
-16. https://gt.rstudio.com/
-17. creating an index
-18. Manim animation:
+## Statisitcs
 
-- https://github.com/ManimCommunity/manim/
+- [ ] [Maîtrisez les bases des probabilités](https://openclassrooms.com/fr/courses/4525296-maitrisez-les-bases-des-probabilites)
+- [ ] [Khan Academy](https://www.khanacademy.org/math/ap-statistics)
+- [ ] [OpenIntro](https://www.openintro.org/)
+- [ ] [Statistical Computing](https://www.stephaniehicks.com/jhustatcomputing2021/)
+- [ ] processus stochastic miage
+- [ ] [Qu’est-ce que la Variance ?](https://kobia.fr/quest-ce-que-la-variance/)
+- [ ] [Openclassroom](https://openclassrooms.com/fr/partners/ensae-ensai-formation-continue-cepe)
+- [ ] [ Statistics How To](https://www.statisticshowto.com/)
+- [ ] [R pour la statistique et la science des données](https://r-stat-sc-donnees.github.io/)
+- [ ] Cassie Kozyrkov:
+  - https://www.youtube.com/@kozyrkov
+  - https://kozyrkov.medium.com/
+  - https://github.com/kozyrkov/
+
+## Python
+
+- [ ] [DLAI : pandas](https://learn.deeplearning.ai/pandas/lesson/2/exploring-data)
+- [ ] [Kaggle Learn](https://www.kaggle.com/learn)
+- [ ] [Machine Learning Specialization](https://www.coursera.org/specializations/machine-learning-introduction?action=enroll)
+- [ ] [Manim animation](https://github.com/ManimCommunity/manim/)
+
+## Deep Learning
+
+- [ ] [L'apprentissage profon - Yann LeCun](https://www.youtube.com/watch?v=TdLa5h-x2nA&list=PLtimy8tnozIAUxCZZusJbu4xjjNxHYd0Y)
+
+## Life Goals
+
+1. [ ] invitate to Lex Fridman podcast
+2. [ ] write a book
+3. [ ] run Paris Marathon
+4. [ ] get a PhD
+
+## Done! 🎆
+
+
+
+
+
+---
+
 - https://docs.manim.community/en/stable/faq/installation.html#different-versions
 
 Embedded shiny app into a webpage
 1/ create a shiny app
 2/
 
-- Embedding khan academy video at the end of each section
-- folded table of content on first level
 - insert link (cross reference) between figure. par dans les random variable quand on parle des combination cf! calculation of probabilities
 
 ## Data description
 
 - Points bonus pour le PW Excel #3 entre 0 et 1. Marion et Laëtita ont le même travail
 
-1. [ ] Email BdF
-2. [ ] clean les readme des projets
-3. [ ] [[scratch.print-hello-world]]
 
 4. Apprenez à apprendre, openclassroom mooc
 5. space repition blogpost - [ ] augmenting long term memory
@@ -79,22 +98,12 @@ Embedded shiny app into a webpage
 8. how to cite this blog posts
 9. is orcid ID interesting???
 
-## What I am working ON...
-
-3. HarvardX • CS50T / [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
-4. MITx • 6.00.1x
-   1. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
-   2. https://pythontutor.com/
-5. MITx • 6.00.2x
-6. [Machine Learning Specialization](https://www.coursera.org/specializations/machine-learning-introduction?action=enroll)
-7. [Machine learning in Python with scikit-learn](https://lms.fun-mooc.fr/courses/course-v1:inria+41026+session04/info)
 
 ### OFF
 
 - GitHub readme page : .qmd est ce que ça marche?
 
 2. [ ] [[scratch.quarto-website]]
-1. Ajwouter Quarto (.qmd) dans Prettier
 1. jarvis-llama : [[nlp]] build a local text assistant with llama and shiny for frontend
 1. codecarbon
 1. dofile.github : .ssh / .neovim / .tmux + shell script pour initialiser une nouvelle machine
@@ -108,12 +117,6 @@ weekly contest :
 - [Tabular Playground Series](https://www.kaggle.com/competitions?hostSegmentIdFilter=8)
 - [Fiddler on the Proof](https://thefiddler.substack.com/)
 
-## Life Goals
-
-1. invitate to Lex Fridman podcast
-2. write a book
-3. run Paris Marathon
-4. get a PhD
 
 ## clean the mess!
 
@@ -155,14 +158,11 @@ weekly contest :
    1. [Youtube](https://www.youtube.com/watch?v=LvySJGj-88U&list=PLoROMvodv4rOzrYsAxzQyHb8n_RWNuS1e
 8. [Mathematics for Machine Learning and Data Science Specialization](https://www.deeplearning.ai/courses/mathematics-for-machine-learning-and-data-science-specialization/)
 9. Machine learning in Python with scikit-learn
-10. [DLAI : pandas](https://learn.deeplearning.ai/pandas/lesson/2/exploring-data)
-11. [Kaggle Learn](https://www.kaggle.com/learn)
 12. [vidéos youtube andrej kaparthy](https://www.youtube.com/@AndrejKarpathy)
 13. [Automate the Boring Stuff with Python Programming](https://www.udemy.com/course/automate/) - https://automatetheboringstuff.com/
 14. Renforcer ses compétences orthographiques - session 3
 15. [Les orthos-tutos du Projet Voltaire](https://www.lelivrescolaire.fr/projet-voltaire)
 16. [Grammaire élémentaire de la langue française](https://moodle.luniversitenumerique.fr/course/view.php?id=44)
-17. [Maîtrisez les bases des probabilités](https://openclassrooms.com/fr/courses/4525296-maitrisez-les-bases-des-probabilites)
 18. [Découvrez la méthodologie DevOps](https://openclassrooms.com/fr/courses/6093671-decouvrez-la-methodologie-devops)
 19. [Initiez-vous au langage R pour analyser vos données](https://openclassrooms.com/fr/courses/4525256-initiez-vous-au-langage-r-pour-analyser-vos-donnees)
 20. [Atelier RGPD](https://www.cnil.fr/fr/le-mooc-de-la-cnil-est-de-retour-dans-une-nouvelle-version-enrichie)
@@ -170,7 +170,6 @@ weekly contest :
 
 ### books
 
-1. [R pour la statistique et la science des données](https://r-stat-sc-donnees.github.io/)
    1. [Principal Component Analysis in R Tutorial](https://www.datacamp.com/tutorial/pca-analysis-r)
 2. Applied statistic and multivariate data analysis
 3. [R for data science](https://r4ds.had.co.nz/index.html)
@@ -210,7 +209,6 @@ weekly contest :
 1. [ ] [Setting Up / Information Security Foundations](https://academy.hackthebox.com/module/details/87)
 2. [ ] [Getting Started](https://academy.hackthebox.com/module/details/77)
 3. [ ] [starting point](https://app.hackthebox.com/starting-point)
-4. Root Me
 
 ## scratch…
 
@@ -1659,3 +1657,4 @@ spam
 Référence :
 
 -
+

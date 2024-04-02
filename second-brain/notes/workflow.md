@@ -1,7 +1,7 @@
 ---
 id: 609rshzxrxhd2n5gx29lzm2
 title: Workflow
-desc: ''
+desc: ""
 updated: 1705564456056
 created: 1700905865856
 ---
@@ -143,7 +143,6 @@ sudo apt install r-base r-base-dev
    dendron
    quarto
    prettier
-
 
 prompt
 
