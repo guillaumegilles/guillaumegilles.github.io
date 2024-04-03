@@ -1,0 +1,4 @@
+# Statistical Vocabulary
+
+[[satistical-population]]
+
