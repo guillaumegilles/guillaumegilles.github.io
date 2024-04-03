@@ -36,6 +36,12 @@
 
 - [[statistical-population]]
 
+## S
+
+### Statistics
+
+- [[statistics]]
+
 ## Z
 
 ### Zettelkasten
