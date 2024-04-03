@@ -1,10 +1,4 @@
----
-id: 2znurccgtnmf3wb5u3r0jvm
-title: Bash
-desc: null
-updated: 1710925667970
-created: 1645822464176
----
+# Bash
 
 Pour exécuter un programme dans le terminal, on peut utiliser plusieurs méthodes :
 

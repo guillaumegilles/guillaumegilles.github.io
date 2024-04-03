@@ -1,7 +1,7 @@
 ---
 id: abo2oa08c6nmlxksqdpfdjj
 title: Zettelkasten
-desc: ''
+desc: ""
 updated: 1700747078113
 created: 1700746629750
 ---

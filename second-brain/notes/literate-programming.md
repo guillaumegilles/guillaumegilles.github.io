@@ -13,7 +13,7 @@ created: 1689967941437
 | 1988  | Mathematica Notebooks    | Stephem Wolfram    |
 | 2001  | IPython                  | Fernando Perez     |
 | 2003  | Emacs org-mode Notebooks | Carsten Dominik    |
-| 2004  | [[Markdown]]             | John Gruber        |
+| 2004  | [[markdown]]             | John Gruber        |
 | 2005  | Sage Notebook            | Willian Stein      |
 | 2006  | Pandoc                   | John MacFarlane    |
 | 2009  | GitHub Flavored Markdown | Tom Preston-Werner |

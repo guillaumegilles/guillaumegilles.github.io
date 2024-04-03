@@ -50,4 +50,3 @@ https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
 
 - https://r-stat-sc-donnees.github.io/
 - https://rmarkdown.rstudio.com/
-
