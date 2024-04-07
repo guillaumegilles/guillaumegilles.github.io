@@ -5,13 +5,15 @@ title: "To Do"
 ## 2024: What I am working ON…
 
 1. [ ] Email @BdF
-2. [ ] [Introductory Statistics 2e](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
-3. [Kaggle](https://www.kaggle.com/competitions)
-4. [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
-5. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
+1. [ ] [Introductory Statistics 2e](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
+1. [Kaggle](https://www.kaggle.com/competitions)
+1. [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
+1. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
    - https://pythontutor.com/
-6. MITx • 6.00.2x
-7. [Machine learning in Python with scikit-learn](https://lms.fun-mooc.fr/courses/course-v1:inria+41026+session04/info)
+1. MITx • 6.00.2x
+   [ ] [DLAI : pandas](https://learn.deeplearning.ai/pandas/lesson/2/exploring-data)
+   [ ] [Kaggle Learn](https://www.kaggle.com/learn)
+1. [Machine learning in Python with scikit-learn](https://lms.fun-mooc.fr/courses/course-v1:inria+41026+session04/info)
 
 ## Statisitcs
 
@@ -31,8 +33,6 @@ title: "To Do"
 
 ## Python
 
-- [ ] [DLAI : pandas](https://learn.deeplearning.ai/pandas/lesson/2/exploring-data)
-- [ ] [Kaggle Learn](https://www.kaggle.com/learn)
 - [ ] [Machine Learning Specialization](https://www.coursera.org/specializations/machine-learning-introduction?action=enroll)
 - [ ] [Manim animation](https://github.com/ManimCommunity/manim/)
 
@@ -49,10 +49,6 @@ title: "To Do"
 
 ## Done! 🎆
 
-
-
-
-
 ---
 
 - https://docs.manim.community/en/stable/faq/installation.html#different-versions
@@ -66,7 +62,6 @@ Embedded shiny app into a webpage
 ## Data description
 
 - Points bonus pour le PW Excel #3 entre 0 et 1. Marion et Laëtita ont le même travail
-
 
 4. Apprenez à apprendre, openclassroom mooc
 5. space repition blogpost - [ ] augmenting long term memory
@@ -87,36 +82,26 @@ Embedded shiny app into a webpage
 
 1. [ ] RSS feed
 2. [ ] Voronoi stippling: https://observablehq.com/@mbostock/voronoi-stippling
-3. [ ] rubrique dans la navbar: "My thoughts on books I’ve been reading" ???
-4. [ ] [2015-Northeastern CS4100/5100](https://mlhommet.wordpress.com/teaching/2015fai/)
-5. [ ] annotate beside: https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
+3. [ ] [2015-Northeastern CS4100/5100](https://mlhommet.wordpress.com/teaching/2015fai/)
+4. [ ] annotate beside: https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
    - peut-on trouver la solution, ici : https://quarto.org/docs/authoring/code-annotation.html
-6. website section : Blog / Digital Garden / Misc
-   - digital garden => `list` `grid` with no date
-   - misc => `list` `grid` with no date: link vers github repo des projets
-7. open external link in a new tab by default
-8. how to cite this blog posts
-9. is orcid ID interesting???
-
+5. open external link in a new tab by default
+6. how to cite this blog posts
+7. is orcid ID interesting???
 
 ### OFF
 
 - GitHub readme page : .qmd est ce que ça marche?
 
-2. [ ] [[scratch.quarto-website]]
 1. jarvis-llama : [[nlp]] build a local text assistant with llama and shiny for frontend
-1. codecarbon
-1. dofile.github : .ssh / .neovim / .tmux + shell script pour initialiser une nouvelle machine
-1. create quarto project :
-   1. zettelkasten system / second brain / personal knowledge management
-   2. ani-connect integration with the second brain system
+2. codecarbon
+3. dofile.github : .ssh / .neovim / .tmux + shell script pour initialiser une nouvelle machine
 
 weekly contest :
 
 - [tidytuesday](https://github.com/rfordatascience/tidytuesday?tab=readme-ov-file)
 - [Tabular Playground Series](https://www.kaggle.com/competitions?hostSegmentIdFilter=8)
 - [Fiddler on the Proof](https://thefiddler.substack.com/)
-
 
 ## clean the mess!
 
@@ -158,19 +143,19 @@ weekly contest :
    1. [Youtube](https://www.youtube.com/watch?v=LvySJGj-88U&list=PLoROMvodv4rOzrYsAxzQyHb8n_RWNuS1e
 8. [Mathematics for Machine Learning and Data Science Specialization](https://www.deeplearning.ai/courses/mathematics-for-machine-learning-and-data-science-specialization/)
 9. Machine learning in Python with scikit-learn
-12. [vidéos youtube andrej kaparthy](https://www.youtube.com/@AndrejKarpathy)
-13. [Automate the Boring Stuff with Python Programming](https://www.udemy.com/course/automate/) - https://automatetheboringstuff.com/
-14. Renforcer ses compétences orthographiques - session 3
-15. [Les orthos-tutos du Projet Voltaire](https://www.lelivrescolaire.fr/projet-voltaire)
-16. [Grammaire élémentaire de la langue française](https://moodle.luniversitenumerique.fr/course/view.php?id=44)
-18. [Découvrez la méthodologie DevOps](https://openclassrooms.com/fr/courses/6093671-decouvrez-la-methodologie-devops)
-19. [Initiez-vous au langage R pour analyser vos données](https://openclassrooms.com/fr/courses/4525256-initiez-vous-au-langage-r-pour-analyser-vos-donnees)
-20. [Atelier RGPD](https://www.cnil.fr/fr/le-mooc-de-la-cnil-est-de-retour-dans-une-nouvelle-version-enrichie)
-21. [MOOC ANSSI](https://secnumacademie.gouv.fr/)
+10. [vidéos youtube andrej kaparthy](https://www.youtube.com/@AndrejKarpathy)
+11. [Automate the Boring Stuff with Python Programming](https://www.udemy.com/course/automate/) - https://automatetheboringstuff.com/
+12. Renforcer ses compétences orthographiques - session 3
+13. [Les orthos-tutos du Projet Voltaire](https://www.lelivrescolaire.fr/projet-voltaire)
+14. [Grammaire élémentaire de la langue française](https://moodle.luniversitenumerique.fr/course/view.php?id=44)
+15. [Découvrez la méthodologie DevOps](https://openclassrooms.com/fr/courses/6093671-decouvrez-la-methodologie-devops)
+16. [Initiez-vous au langage R pour analyser vos données](https://openclassrooms.com/fr/courses/4525256-initiez-vous-au-langage-r-pour-analyser-vos-donnees)
+17. [Atelier RGPD](https://www.cnil.fr/fr/le-mooc-de-la-cnil-est-de-retour-dans-une-nouvelle-version-enrichie)
+18. [MOOC ANSSI](https://secnumacademie.gouv.fr/)
 
 ### books
 
-   1. [Principal Component Analysis in R Tutorial](https://www.datacamp.com/tutorial/pca-analysis-r)
+1. [Principal Component Analysis in R Tutorial](https://www.datacamp.com/tutorial/pca-analysis-r)
 2. Applied statistic and multivariate data analysis
 3. [R for data science](https://r4ds.had.co.nz/index.html)
 4. [Régression avec R](https://regression-avec-r.github.io/)
@@ -1658,3 +1643,7 @@ Référence :
 
 -
 
+[//begin]: # "Autogenerated link references for markdown compatibility"
+[nlp]: notes/nlp.md "NLP"
+[index]: INDEX.md "Index"
+[//end]: # "Autogenerated link references"
