@@ -1,0 +1,9 @@
+---
+title: "Fundamental Papers in Artificial Intelligence"
+description: >-
+  hype around foundation models, like GPT and Llama, comes with a deluge of
+  papers. Let’s focus on the fundamental ones that cross time.
+---
+
+1. Perceptron
+2. CNN Le Cun
