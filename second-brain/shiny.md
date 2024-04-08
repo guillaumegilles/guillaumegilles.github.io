@@ -1,15 +1,12 @@
----
-id: 4ia1bvc0cq3tpm16sacv2eg
-title: shiny
-desc: les bases d’une application shiny
-updated: 1704147347919
-created: 1680277162438
----
+# Shiny
 
-- [Mastering Shiny](https://mastering-shiny.org/index.html)
+[Shiny](https://shiny.posit.co/) is a framework to build web app in [[r]] and
+[[python]]. It possible to add [[css]] and [javascript]] elements to further
+customize the layout.
+
+
 - [Shiny for Python](https://shiny.rstudio.com/py/docs/overview.html)
-
-Shiny est un package de R pour construire des applications interactives. Il est tout à fait possible des éléments intéractif dans un document `html`. Les briques web, tels que `CSS`et  `JavaScript` peuvent être incorporé dans les app shiny pour encore plus de dynamisme.
+- [Shinylive](https://shiny.posit.co/py/docs/shinylive.html)
 
 Pour utiliser le package, [[il suffit de le charger|r.package]].
 

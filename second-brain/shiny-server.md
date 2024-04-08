@@ -1,10 +1,4 @@
----
-id: i6dxokh7y4by7t4zmrqgwv2
-title: server
-desc: le bloc backend d’une appli shiny
-updated: 1682365000724
-created: 1682364544963
----
+# Shiny server
 
 La partie back-end est initialiser grâce la syntaxe suivante :
 
@@ -29,7 +23,3 @@ server <- function(input, output, session) {
     })   
 }
 ```
-
-## références
-
-  @wickhamMasteringShinyBuild2021

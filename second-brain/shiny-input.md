@@ -1,10 +1,4 @@
----
-id: 0fohpe7797ye0g2qzbk2llm
-title: shiny UI
-desc: fonction pour initialiser une page web responsive
-updated: 1682365430963
-created: 1682363748418
----
+# shiny UI
 
 le premier bloc dêune app shiny est d’initialiser la page web avec la fonction `fluidPage()`.
 
