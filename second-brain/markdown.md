@@ -1,12 +1,7 @@
----
-id: 5n0kj5o5b98259y27vgc40j
-title: Markdown
-desc: "markdown is intended to be as easy-to-read and easy-to-write as is feasible"
-updated: 1709762544023
-created: 1654706529008
----
+# Markdown
 
-It was developed in 2004 by John Gruber[^1] in collaboration with Aaron Swartz.
+Markdown is intended to be as easy-to-read and easy-to-write as is feasible. It
+was developed in 2004 by John Gruber[^1] in collaboration with Aaron Swartz.
 Gruber wrote the first markdown-to-html converter in Perl, and it soon became
 widely used in websites. By 2014 there were dozens of implementations in many
 languages.
@@ -15,10 +10,11 @@ languages.
 
 ## Markdown Flavors
 
-1. [CommonMark](https://commonmark.org/)
-2. [GitHub Flavored Markdown](https://github.github.com/gfm/)
+https://github.com/dcurtis/markdown-mark
 3. [Markua](http://markua.com/)
 4. [[Pandoc’s Markdown|markdown.pandoc]]
+5. Rmd
+5. Qmd
 
 ## Tools
 
@@ -125,3 +121,10 @@ You can link to a specific section of a different note and have the content in-l
     <img alt="Plex" src="https://i.imgur.com/yB9xz60.jpg" />
   </a>
 </p>
+
+## [Alertes](https://docs.github.com/fr/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts)
+
+```markdown
+> [!TIP]
+> See the [installation guide](https://ibis-project.org/install) for more installation options.
+```

@@ -58,3 +58,11 @@ output is converted to plain markdown. Then, this markdown is processed by
 - [[quarto.embedding-jupyter-notebook]]
 
 [Code Cells: Jupyter](https://quarto.org/docs/reference/cells/cells-jupyter.html)
+
+
+[Bibliography Generation](https://quarto.org/docs/authoring/footnotes-and-citations.html#bibliography-generation)
+
+### References
+
+::: {#refs}
+:::
