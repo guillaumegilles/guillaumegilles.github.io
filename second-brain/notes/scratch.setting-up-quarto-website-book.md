@@ -9,7 +9,7 @@ created: 1705786420353
 > Setting and running a website or a book with quarto is a rather easy endeavor. But sometimes you would like to set and run a book inside a website, and thing get bit trickier. In this blog post I'll share with you how I have created several book projects, as materials for my courses in business school, and integrated them in my own website.
 
 creatin a website with book inside it in github
-[[quarto.website]]
+[[quarto-website]]
 
 1. github pages are taken from `doc` : https://quarto.org/docs/publishing/github-pages.html
 2. prevent render in the \_quarto.yml of the subdirectoey of the book:https://quarto.org/docs/websites/#render-targets

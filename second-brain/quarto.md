@@ -1,10 +1,4 @@
----
-id: w9utb1fpfkyl0921xvena9q
-title: Quarto
-desc: An open-source scientific and technical publishing system
-updated: 1709820289869
-created: 1685827919729
----
+# Quarto
 
 An open-source scientific and technical publishing system
 
@@ -12,8 +6,8 @@ An open-source scientific and technical publishing system
   favorite editor.
 - Create dynamic content with [[python]], [[r]], Julia, and Observable.
 - Publish reproducible, production quality articles,
-  [[presentations|quarto.reveal-js]], dashboards, [[websites|quarto.website]],
-  blogs, and books in HTML, PDF, MS Word, ePub, and more.
+  [[quarto-revealjs]], dashboards, [[quarto-website]], blogs, and books in HTML,
+  PDF, MS Word, ePub, and more.
 - Share knowledge and insights organization-wide by publishing to Posit Connect,
   Confluence, or other publishing systems.
 - Write using [Pandoc](https://pandoc.org/) markdown, including equations,
@@ -26,7 +20,12 @@ processed by [[jupyter]], and the resulting combination of code, markdown, and
 output is converted to plain markdown. Then, this markdown is processed by
 [[pandoc]], which creates the finished format.
 
-![Quarto How It Works](assets/qmd-how-it-works.png)
+![Quarto How It Works](../assets/images/qmd-how-it-works.png)
+
+## [Markdown Basics in Quarto](https://quarto.org/docs/authoring/markdown-basics.html)
+
+Quarto is based on [[markdown-pandoc]] and uses its variation of markdown as its
+underlying document syntax.
 
 ## Building Blocks of a Quarto Document
 
@@ -48,17 +47,7 @@ output is converted to plain markdown. Then, this markdown is processed by
 | execute (run) cells **above**     |                 | `Ctrl+Alt+Shift+P` |
 | execute (run) cells **below**     |                 | `Ctrl+Alt+Shift+N` |
 
-### Tips
-
-- [[quarto.citation-location-margin]]
-- [[quarto.reveal-js.slide-number]]
-- [[quarto.column-page]]
-- [[quarto.layout-ncol-nrow]]
-- [[quarto.reveal-js.code-line-numbers]]
-- [[quarto.embedding-jupyter-notebook]]
-
 [Code Cells: Jupyter](https://quarto.org/docs/reference/cells/cells-jupyter.html)
-
 
 [Bibliography Generation](https://quarto.org/docs/authoring/footnotes-and-citations.html#bibliography-generation)
 

@@ -1,10 +1,6 @@
----
-id: 5r594xvveo34agxay8hp9my
-title: Embedding Jupyter Notebook
-desc: ""
-updated: 1704128355133
-created: 1704128209176
----
+# Jupyter notebook in [[quarto]]
+
+## Embedding Jupyter Notebook
 
 You can include the output of an external Jupyter notebook in a Quarto
 document with the `embed` shortcode. To embed a notebook cell, provide

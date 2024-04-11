@@ -62,7 +62,7 @@ graph TD
 
 ## website
 
-- [[quarto.website]]
+- [[quarto-website]]
 - [[github]]
 - [[posse]]
 

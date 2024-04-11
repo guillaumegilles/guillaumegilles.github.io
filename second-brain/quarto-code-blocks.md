@@ -1,10 +1,4 @@
----
-id: 9dlbxr1wirlvfop1wpp6wxx
-title: Code Cell in Quarto
-desc: ""
-updated: 1709826814248
-created: 1709761700356
----
+# Code blocks in [[quarto]]
 
 Code cells contain executable code to be run during render, with the output (and
 optionally the code) included in the rendered document. Like in [[markdown]] a
@@ -30,7 +24,7 @@ plt.show()
 
 ## [Cells options](https://quarto.org/docs/reference/cells/cells-jupyter.html)
 
-Cell options are written in [[YAML|quarto.yaml]] using a specially prefixed
+Cell options are written in [[quarto-yaml]] using a specially prefixed
 comment `#|`.
 
 ### [Attributes](https://quarto.org/docs/reference/cells/cells-jupyter.html#attributes)

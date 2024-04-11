@@ -40,6 +40,12 @@
 
 - [[statistical-population]]
 
+## Q
+
+### Quarto
+
+- [[quarto]]
+
 ## S
 
 ### Statistics

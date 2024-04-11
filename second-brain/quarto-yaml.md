@@ -9,7 +9,7 @@ created: 1709761268006
 At the top of Quarto documents there is a `YAML` block with document level
 options.
 
-```code
+```yaml
 ---
 title: "Quarto Basics"
 format:
@@ -57,7 +57,9 @@ formats) within document options.
 
 ## [Code Folding](https://quarto.org/docs/get-started/computations/vscode.html#code-folding)
 
-Rather than hiding code entirely, you might want to fold it and allow readers to view it at their discretion. You can do this via the code-fold option. Remove the echo option we previously added and add the code-fold HTML format option.
+Rather than hiding code entirely, you might want to fold it and allow readers to
+view it at their discretion. You can do this via the code-fold option. Remove
+the echo option we previously added and add the code-fold HTML format option.
 
 - `format:`
   - `html:`
