@@ -10,11 +10,7 @@ languages.
 
 ## Markdown Flavors
 
-https://github.com/dcurtis/markdown-mark
-3. [Markua](http://markua.com/)
-4. [[Pandoc’s Markdown|markdown.pandoc]]
-5. Rmd
-5. Qmd
+https://github.com/dcurtis/markdown-mark 3. [Markua](http://markua.com/) 4. [[Pandoc’s Markdown|markdown.pandoc]] 5. Rmd 5. Qmd
 
 ## Tools
 
@@ -127,4 +123,61 @@ You can link to a specific section of a different note and have the content in-l
 ```markdown
 > [!TIP]
 > See the [installation guide](https://ibis-project.org/install) for more installation options.
+```
+
+## Markdown Syntax
+
+With Markdown, we can style our notes in a simple way, while keeping the document a simple text file (the best way to future-proof your writings!).
+
+You can see the formatted output by running the `Markdown: Open Preview to the Side` command.
+
+Here is a high level overview of Markdown, for more information on the Markdown syntax [see here](https://commonmark.org/help/).
+
+# Heading 1
+
+## Heading 2
+
+### Heading 3
+
+#### Heading 4
+
+##### Heading 5
+
+###### Heading 6
+
+This is a [link to google](https://www.google.com).
+
+This is a wikilink (aka internal link) to [[foam-note-properties]].
+
+Here is an image:
+![image](../../attachments/foam-icon.png)
+
+> this is a blockquote
+> it can span multiple lines
+
+- list item
+- list item
+- list item
+
+1. One
+2. Two
+3. Three
+
+This text is **in bold** and this is _italic_.
+
+The following is a horizontal rule
+
+---
+
+This is a table:
+| Column 1 | Column 2 |
+| -------- | -------- |
+| R1C1 | R1C2 |
+| R2C1 | R2C2 |
+
+You can `inline code` or
+
+```text
+you can create
+code blocks
 ```
