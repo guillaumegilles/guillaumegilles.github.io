@@ -10,14 +10,14 @@ created: 1682627572632
 
 ## Doit-on dire « pallier à » ou « pallier » ?
 
-Après le verbe *pallier* il ne faut ajouter *à*. On **pallie** une situation mais on **remédie à** un problème.
+Après le verbe _pallier_ il ne faut ajouter _à_. On **pallie** une situation mais on **remédie à** un problème.
 
 [#grammaire]() [#doit-on dire]()
 
 ## Doit-on dire « se souvenir » ou « se rappeler » ?
 
 - On dit **se rappeler** quelque chose, par exemple, « Rappelle-toi l’été dernier. »
-- Alors qu’on dit *se souvenir* **de** quelque chose. Exemple : *De* quoi vous souvenez-vous ?
+- Alors qu’on dit _se souvenir_ **de** quelque chose. Exemple : _De_ quoi vous souvenez-vous ?
 
 [#grammaire]() [#doit-on dire]()
 
@@ -27,25 +27,4 @@ Si l’on peut remplacer le mot par « lorsque », il s’agit de « **quand** �
 
 [#grammaire]() [#doit-on dire]()
 
-## 
-
-
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
-[#grammaire]() [#doit-on dire]()
+##
