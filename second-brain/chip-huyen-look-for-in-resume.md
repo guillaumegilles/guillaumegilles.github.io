@@ -1,9 +1,6 @@
 ---
-id: 064qufag20o2bhml4ry7v68
-title: What We Look for in a Resume
+title: What Chip huyen Look for in a Resume
 desc: "https://huyenchip.com/2023/01/24/what-we-look-for-in-a-candidate.html"
-updated: 1711313326481
-created: 1706085144497
 ---
 
 For Chip Huyen, demonstrated experience is a key element in the hiring process.

@@ -1,9 +1,5 @@
 ---
-id: ox01scnonjlvk9rbtz6y763
 title: "Advice to aspiring data scientists: start a blog"
-desc: "http://varianceexplained.org/r/start-blog/"
-updated: 1711313282751
-created: 1706085357812
 ---
 
 A blog is the best advice for someone wanted to start a data science career. It
@@ -19,4 +15,6 @@ helps to:
 3. **Get feedback and evaluation**: creating a community and interacting with an
    audience helps individuals to reach for better.
 
-[@robinsonAdviceAspiringData2017]
+### References
+
+- [@robinsonAdviceAspiringData2017]

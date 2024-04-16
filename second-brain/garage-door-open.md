@@ -1,9 +1,5 @@
 ---
-id: ycuql2jd7egqfrc6mejnb6y
 title: Garage Door Open
-desc: ''
-updated: 1711315516953
-created: 1708076276805
 ---
 
 These days, one of the consequences of [[social media]] is a curated posts
