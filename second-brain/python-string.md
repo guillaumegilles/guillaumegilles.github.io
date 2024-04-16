@@ -2,10 +2,20 @@
 title: String in python
 ---
 
-Pour saisir une chaîne de charactère, _string_, avec python, on utilise des guillemets doubles `"` ou simples `'`. Les guillemets doubles sont utiles lorsque la chaîne de charactère comporte une guillemet simple, comme par exemple :
+Strings in [[python]] are surrounded by either single quotation marks, `'`, or
+double quotation marks `"`.
+
+`'hello'` is the same as `"hello"`.
+
+You can display a string literal with the [[python-print]] function:
 
 ```python
 print("Let's go!")
 ```
 
-On peut imprimer une nouvelle ligne grâce au caractère spécial : `\n`
+## Escape characters
+
+- `\n`: to print a new lign
+- `\’`: `'Pluto\'s a planet'`
+- `\"`
+- `\\`
