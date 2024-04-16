@@ -191,7 +191,7 @@ m = x_train.shape[0]
 print(f"Number of training examples is: {m}"
 ```
 
-One can also use the Python [[python.function.len]] `len()` function as shown below
+One can also use the Python [[python-len]] `len()` function as shown below
 
 ```python
 # m is the number of training examples

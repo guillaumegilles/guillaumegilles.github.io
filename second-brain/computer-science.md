@@ -1,7 +1,7 @@
 ---
 id: ctgrzvgak9wiaadgqfx4glj
 title: "\U0001F4C7 Computer Science"
-desc: ''
+desc: ""
 updated: 1704751196802
 created: 1689801045974
 tags: anki
@@ -13,7 +13,7 @@ tags: anki
 
 En informatique, une `array` est une structure de données, comprenant une
 collection d’éléments (valeurs, variables, objets) pouvant être identifié par
-un indices (_index_), comme [[python.list]] python.
+un indices (_index_), comme [[python-list]] python.
 
 ![](assets/numpy-array.png)
 

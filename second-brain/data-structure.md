@@ -1,14 +1,10 @@
 ---
-id: xim5ugrbr7gtnhtbh4l2ce4
 title: Data Structure
-desc: ''
-updated: 1709545863661
-created: 1709545620244
 ---
 
 > A data structure is a particular way of organising data in a computer so that
-it can be used effectively. The idea is to reduce the space and time
-complexities of different tasks. 
+> it can be used effectively. The idea is to reduce the space and time
+> complexities of different tasks.
 
 Data structures are essential components that help organize and store data
 efficiently in computer memory. They provide a way to manage and manipulate data
