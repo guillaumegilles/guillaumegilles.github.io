@@ -6,14 +6,14 @@ title: "To Do"
 
 1. [ ] Email @BdF
 2. [ ] [Kaggle Learn](https://www.kaggle.com/learn)
-3. [ ] [Introductory Statistics 2e](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
-4. [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
-5. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
+3. [ ] [DLAI : pandas](https://learn.deeplearning.ai/pandas/lesson/2/exploring-data)
+4. Certification data scienc6
+5. [ ] [Introductory Statistics 2e](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
+6. [Machine learning in Python with scikit-learn](https://lms.fun-mooc.fr/courses/course-v1:inria+41026+session04/info)
+7. [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
+8. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
    https://pythontutor.com/
-6. MITx • 6.00.2x
-7. [ ] [DLAI : pandas](https://learn.deeplearning.ai/pandas/lesson/2/exploring-data)
-8. [Machine learning in Python with scikit-learn](https://lms.fun-mooc.fr/courses/course-v1:inria+41026+session04/info)
-9. [NYU DEEP LEARNING COURSE](https://atcold.github.io/NYU-DLFL22/)
+9. MITx • 6.00.2x
 
 ## Statisitcs
 
@@ -110,21 +110,18 @@ weekly contest :
 
 2. Fiches ITC
 3. Formation stat paris
-4. Certification data scienc6
-5. MIAGE
-6. Master 2 finance CIB 3.0
+4. MIAGE
+5. Master 2 finance CIB 3.0
    1. https://www.labri.fr/perso/zemmari/iae/python/
    2. https://www.labri.fr/perso/zemmari/iae/ia/
-7. certification ESSEC
-8. big data escp
-9. Voltaire
-10. Franstastique
-11. zettelkasten
+6. certification ESSEC
+7. big data escp
+8. Voltaire
+9. Franstastique
+10. zettelkasten
 
 - [ ] `~/Desktop/zettelkasten-main.nosync`
 - [ ] `~/Desktop/Logsidian`
-- [ ] `root.md`
-- [ ] kaggle/notebook.com
 - [ ] carnets de notes
 - [ ] tas de feuilles !!!
 - [ ] photo iphone/ipad
