@@ -6,15 +6,15 @@ updated: 1700123484324
 created: 1651780122186
 ---
 
-A developer named [David Cournapeau](https://github.com/cournape) originally released scikit-learn as a student in 2007. The open source community quickly adopted it and has updated it numerous times over the years. The packages in Scikit-learn focus on modeling data. 
+A developer named [David Cournapeau](https://github.com/cournape) originally released scikit-learn as a student in 2007. The open source community quickly adopted it and has updated it numerous times over the years. The packages in Scikit-learn focus on modeling data.
 
-Scikit-learn includes every core machine learning algorithm, among them vector machines, random forests, gradient boosting, k-means clustering, and DBSCAN. 
-It was designed to work seamlessly with [[python.numpy]] and [[python.scipy]] for data cleaning, preparation, and calculation.
+Scikit-learn includes every core machine learning algorithm, among them vector machines, random forests, gradient boosting, k-means clustering, and DBSCAN.
+It was designed to work seamlessly with [[numpy]] and [[python.scipy]] for data cleaning, preparation, and calculation.
 
 It has modules for loading data as well as splitting it into training and test sets.
 It supports feature extraction for text and image data.
 
-Scikit-learn is a must-have for anybody working in machine learning. It is considered one of the best libraries available if you need to implement algorithms for classification, regression, clustering, model selection, and more. 
+Scikit-learn is a must-have for anybody working in machine learning. It is considered one of the best libraries available if you need to implement algorithms for classification, regression, clustering, model selection, and more.
 
 Downsides: Scikit-learn was built before deep learning took off. While it works great for core machine learning and data science jobs, if you are building neural nets you’ll need either [[python.tensorflow]] or [[python.pytorch]].
 

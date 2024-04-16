@@ -1,38 +1,33 @@
 ---
-id: dlw9y7kopo10ebmm8azhyct
 title: NumPy
-desc: >-
-  Python package for working with arrays, or large collections of homogenous
-  data
-updated: 1697400534466
-created: 1649016213406
 ---
 
-You can think of an array like a spreadsheet, where numbers are stored in columns and rows.
+You can think of an array like a spreadsheet, where numbers are stored in columns
+and rows.
 
-Background: Python wasn’t originally intended for numerical computation when it was launched in 1991. Still, its ease of use caught the scientific community’s attention early on. Over the years, the open source community developed a succession of packages for numerical computing. In 2005, developer Travis Oliphant combined over a decade’s worth of open source developments into a single library for numerical computation, which he called NumPy. 
+- **Background**: Python wasn’t originally intended for numerical computation
+  when it was launched in 1991. Still, its ease of use caught the scientific
+  community’s attention early on. Over the years, the open source community
+  developed a succession of packages for numerical computing. In 2005, developer
+  Travis Oliphant combined over a decade’s worth of open source developments into
+  a single library for numerical computation, which he called NumPy.
 
-Features: The core feature of NumPy is support for arrays, which allows you to quickly process and manipulate large collections of data.
+- **Features**: The core feature of NumPy is support for arrays, which allows
+  you to quickly process and manipulate large collections of data.
 
-Arrays in NumPy can be n-dimensional. This means the data can be a single column of numbers, or many columns and rows of numbers.
+[[numpy-array]] in NumPy can be n-dimensional. This means the data can be a
+single column of numbers, or many columns and rows of numbers.
 
-NumPy has modules for performing some linear algebra functions. 
-It also has modules for graphing and plotting numerical arrays. 
+NumPy has modules for performing some linear algebra functions.
+It also has modules for graphing and plotting numerical arrays.
 Data in NumPy arrays is homogenous, which means it must all be defined as the same type (numbers, strings, Boolean values, etc.). This means data gets processed efficiently.
 
-Best for: Manipulating and processing data for more advanced data science or machine learning operations. If you are crunching numbers, you need NumPy. 
+Best for: Manipulating and processing data for more advanced data science or machine learning operations. If you are crunching numbers, you need NumPy.
 
 Downsides: Because NumPy arrays are homogeneous, they are a bad fit for mixed data. You are better off using Python lists. Also, NumPy’s performance tends to drop off when working with more than 500,000 columns.
 Best place to learn: [Linear Regression with NumPy and Python](https://www.coursera.org/projects/linear-regression-numpy-python) from Coursera.
 
-
-
-
-
-
-
-
-Il n’est pas possible de réaliser des calculs sur des [[listes|python.list]] 
+Il n’est pas possible de réaliser des calculs sur des [[listes|python.list]]
 python.
 
 ```python
@@ -42,8 +37,8 @@ weight / height ** 2
 >   TypeError: unsupported operand type(s) for ** or pow(): 'list' and 'int'
 ```
 
-La solution se trouve dans le package **NumPy**, *Numeric Python* grâce au 
-[[py.dt.numpy-array]]. Les calculs sur les arrays sont simples et rapides.
+La solution se trouve dans le package **NumPy**, _Numeric Python_ grâce au
+[[numpy-array]]. Les calculs sur les arrays sont simples et rapides.
 
 ```python
 import numpy as np
@@ -62,12 +57,13 @@ bmi
 
 ### Remarques
 
-1. Pour réaliser des opérations sur des arrays, il faut qu’elles ne contiennent 
+1. Pour réaliser des opérations sur des arrays, il faut qu’elles ne contiennent
    qu’un type de données.
-2. Les arrays constituent un [[type de données|py.dt]], elles possèdent donc des 
+2. Les arrays constituent un [[type de données|py.dt]], elles possèdent donc des
    comportents propres.
 
 ## Fichiers NumPy
+
 - `.npy` : NumPy array
 - `.npz` : plusieurs NumPy array non compressé
 
@@ -93,6 +89,7 @@ print("Array names:", array_names)
 In this code, replace `'your_data.npz'` with the path to your `.npz` file. The `np.load()` function loads the data from the file, and `data.files` gives you a list of the array names. The length of this list (`num_arrays`) will give you the number of arrays stored in the `.npz` file.
 
 ## ChatGPT
+
 To find the number of clusters in a dataset stored in a NumPy `.npz` file, you typically need to perform clustering analysis on the data. NumPy `.npz` files store one or more arrays or data structures, so you first need to load the data from the file and then apply a clustering algorithm to it.
 
 Here's a general outline of the steps to find the number of clusters:

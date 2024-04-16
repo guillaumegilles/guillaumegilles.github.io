@@ -147,7 +147,7 @@ https://www.coursera.org/learn/machine-learning/lecture/nucNi/linear-regression-
 
 ## Importer les librairies et paquets essentiels
 
-- [[python.numpy]]
+- [[numpy]]
 - [[py.matplotlib]]
 
 ```python
@@ -164,7 +164,7 @@ Pour cette exemple, on utilise un `training set` simplifié, avec deux données,
 | 1.0              | 300                      |
 | 2.0              | 500                      |
 
-Dans ce cas, on utilise des [[py.dt.numpy-array]] pour le jeu de données.
+Dans ce cas, on utilise des [[numpy-array]] pour le jeu de données.
 
 ```python
 # x_train is the input variable (size in 1000 square feet)
