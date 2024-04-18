@@ -1,12 +1,12 @@
 ---
 id: 65botrjbpn16g0pnz362mkn
 title: Function
-desc: ''
+desc: ""
 updated: 1708961345340
 created: 1708961272140
 ---
 
-A [[swift]] [[programming.function]]:
+A [[swift]] [[function]]:
 
 ```swift
 func tieMyShoe() {
