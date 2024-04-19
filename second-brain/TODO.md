@@ -42,13 +42,6 @@ title: "To Do"
 - [ ] https://atcold.github.io/NYU-DLFL22/
 - [ ] https://course.fast.ai/
 
-## Life Goals
-
-1. [ ] invitate to Lex Fridman podcast
-2. [ ] write a book
-3. [ ] run Paris Marathon
-4. [ ] get a PhD
-
 ## Done! 🎆
 
 ---
