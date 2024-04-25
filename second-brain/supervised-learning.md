@@ -1,17 +1,21 @@
 ---
-id: 9cxhwxzvwd8y5lgfs007c5m
-title: "Supervised Learning"
-desc: "Apprentissage supervisé"
+title: "Supervised Learning: apprentissage supervisé"
 updated: 1702851047850
 created: 1680261152504
 ---
 
-Dans l'apprentissage automatique supervisé, les données sont annotées, _classées_ ou _labellisées_. L'objectif est d’inférer (_prédire_) une fonction ou une relation à partir de **données d’apprentissage labellisées**. En termes mathématiques, nous disposons d'un [[ds.data.dataset]] que nous appellerons $X$, avec $n$ observations. Et une cible $Y$, qui donne une caractéristique pour chaque observation. L'objectif de l'apprentissage automatique supervisé est de prédire $Y$ à partir de $X$.
+Dans l'apprentissage automatique supervisé, les données sont annotées,
+_classées_ ou _labellisées_. L'objectif est d’inférer (_prédire_) une fonction
+ou une relation à partir de **données d’apprentissage labellisées**. En termes
+mathématiques, nous disposons d'un [[ds.data.dataset]] que nous appellerons
+$X$, avec $n$ observations. Et une cible $Y$, qui donne une caractéristique
+pour chaque observation. L'objectif de l'apprentissage automatique supervisé
+est de prédire $Y$ à partir de $X$.
 
 On distingue :
 
-- la [[ds.ml.sl.reg]] pour un label **quantitatif** ;
-- la [[ds.ml.sl.class]] pour un label **qualitatif**.
+- la [[regression]] pour un label **quantitatif** ;
+- la [[classification]] pour un label **qualitatif**.
 
 ## algorithmes
 

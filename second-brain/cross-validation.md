@@ -1,9 +1,5 @@
 ---
-id: annx59meucxfr3qrp63tpat
-title: validation croisée
-desc: ''
-updated: 1697486263132
-created: 1684262458960
+title: "Cross Validation: validation croisée"
 ---
 ## Pouvez-vous expliquer le principe de la validation croisée ?
 
