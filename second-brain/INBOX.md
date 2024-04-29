@@ -9,3 +9,4 @@
 - [What is Boosting?](https://aws.amazon.com/what-is/boosting/?nc1=h_ls)
 - https://publications.banque-france.fr/sites/default/files/medias/documents/bdf248-1_programmes-achats_bcn_web.pdf
 - https://yaowei.dev/posts/usb-to-usb-converter/
+- [R read.parquet](https://arrow.apache.org/docs/r/reference/read_parquet.html)
