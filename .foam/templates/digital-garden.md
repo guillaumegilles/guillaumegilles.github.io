@@ -1,10 +1,14 @@
 ---
-title: ${1:$TM_FILENAME_BASE}
+title: ${FOAM_TITLE}
 subtitle:
 Abstract:
 bibliography: ../../assets/references.bib
 citation-location: margin
-categories:
+categories: []
+foam_template:
+  name: "Digital Garden note"
+  description: "Creates a new Digital Garden notes"
+  filepath: digital-garden/index.qmd
 ---
 
 ##

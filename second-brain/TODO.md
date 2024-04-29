@@ -2,18 +2,23 @@
 title: "To Do"
 ---
 
-## 2024: What I am working ON…
+- gettinfg started with code-workspace
 
 1. [ ] Email @BdF
-2. [ ] [Kaggle Learn](https://www.kaggle.com/learn)
-3. [ ] [DLAI : pandas](https://learn.deeplearning.ai/pandas/lesson/2/exploring-data)
-4. Certification data scienc6
-5. [ ] [Introductory Statistics 2e](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
-6. [Machine learning in Python with scikit-learn](https://lms.fun-mooc.fr/courses/course-v1:inria+41026+session04/info)
-7. [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
-8. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
-   https://pythontutor.com/
-9. MITx • 6.00.2x
+2. [ ] Setting-up Anki cards
+   1. [ ] Anki deck dans l'application
+   2. [ ] VSCode plugin
+   3. [ ] template note with tag, etc.
+3. [ ] [ENSAE certification data science](~/Documents/data-science-cepe.nosync)
+4. [ ] [R pour la statistique et la science des données](https://r-stat-sc-donnees.github.io/)
+5. [ ] [Kaggle Learn](https://www.kaggle.com/learn)
+6. [ ] [DLAI : pandas](https://learn.deeplearning.ai/pandas/lesson/2/exploring-data)
+7. [ ] [Introductory Statistics 2e](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
+8. [Machine learning in Python with scikit-learn](https://lms.fun-mooc.fr/courses/course-v1:inria+41026+session04/info)
+9. [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
+10. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
+    https://pythontutor.com/
+11. MITx • 6.00.2x
 
 ## Statisitcs
 
@@ -24,8 +29,7 @@ title: "To Do"
 - [ ] processus stochastic miage
 - [ ] [Qu’est-ce que la Variance ?](https://kobia.fr/quest-ce-que-la-variance/)
 - [ ] [Openclassroom](https://openclassrooms.com/fr/partners/ensae-ensai-formation-continue-cepe)
-- [ ] [ Statistics How To](https://www.statisticshowto.com/)
-- [ ] [R pour la statistique et la science des données](https://r-stat-sc-donnees.github.io/)
+- [ ] [Statistics How To](https://www.statisticshowto.com/)
 - [ ] Cassie Kozyrkov:
   - https://www.youtube.com/@kozyrkov
   - https://kozyrkov.medium.com/

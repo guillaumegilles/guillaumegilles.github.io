@@ -1,12 +1,12 @@
 ---
 id: o0sabecpb39h76qs4n5gq66
 title: seaborn
-desc: ''
+desc: ""
 updated: 1691300635277
 created: 1670196870981
 ---
 
-Seaborn is a Python data visualization library based on matplotlib. It provides 
+Seaborn is a Python data visualization library based on matplotlib. It provides
 a high-level interface for drawing attractive and informative statistical graphics.
 
 ## Références

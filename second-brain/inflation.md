@@ -2,9 +2,45 @@
 title: Inflation
 ---
 
+L'inflation est un mesure quantitative, exprimée en %, de l'écolution moyenne
+des prix à la consommation sur une année.
+
+L'inflation se calcul sur la base de l'Indice des Prix à la consommation (IPC),
+calculé mensuellement par l'INSEE. L'IPC est mesuré à partir de milliers de
+relevés de prix chaque mois chez les détaillants (supermarchés, magasins
+spécialisés, service). Il couvre l'ensemble de la consommation des ménage
+(alimentaire, tabac, habillement, loyer, énergie, etc.) et chaque produit est
+**ponodéré** par son importance dans la consommation totale.
+
+- https://www.banque-france.fr/sites/default/files/medias/documents/821192_bdf236-6_inflation_entreprises_vf.pdf
+- https://www.banque-france.fr/sites/default/files/medias/documents/bdf234-7_inflation-zone-euro.pdf
+- https://www.insee.fr/fr/statistiques/4268033
+- https://www.insee.fr/fr/metadonnees/definition/c1473
+- https://www.insee.fr/fr/metadonnees/definition/c1557
+- https://www.ecb.europa.eu/explainers/tell-me-more/html/stableprices.fr.html
+
+> Comme discuté au téléphone, vous trouverez ci-joint un fichier avec 4 séries de PIB cvs-cjo :
+
+- En fréquence annuelle et trimestrielle
+- En volume (c’est-à-dire en euro constants de 2014, « base 2014 » dans notre jargon) et en valeur (c’est-à-dire en euros courants)
+
+1. Qu'est-ce que cvs-cjo ?
+2. PIB en fréquence annuelle et trimestrielle
+3. PIB en volume et en valeur
+
+cvs : correction des variations saisonnières
+
+cjo : corrections des jours ouvrés
+
+PIB en volume : en euro constant = retraité de l'inflation ?
+
+PIB en valeur : euro courant ??
+
 - [IPCH - contribution au taux d'inflation annuel de la zone euro(en point de pourcentage)](https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_ctrb/default/table?lang=fr)
 
-C'est une mesure quantitative de l'évolution **moyenne** des prix à la consommation sur une année. C'est-à-dire, aujourd'hui par rapport à la même époque l'annéee dernière. Elle s'exprime en pourcentage (%).
+C'est une mesure quantitative de l'évolution **moyenne** des prix à la
+consommation sur une année. C'est-à-dire, aujourd'hui par rapport à la même
+époque l'annéee dernière. Elle s'exprime en pourcentage (%).
 
 ## IPC - Indice des Prix à la Consommation (index of consumer prices: _ICP_)
 
@@ -12,9 +48,13 @@ Instrument statistique à partir duquel on calcule l'inflation.
 
 ### Comment ?
 
-Depuis sa création en 1946, l'INSEE relève mensuellement le prix de 160.000 références dans 30.000 points de vente en France. Il y a presque un siécle, l'indice était composé de « 34 articles », principalement alimentaire.
+Depuis sa création en 1946, l'INSEE relève mensuellement le prix de 160.000
+références dans 30.000 points de vente en France. Il y a presque un siécle,
+l'indice était composé de « 34 articles », principalement alimentaire.
 
-Aujourd'hui, les techniques de _webscrapping_ et la remonté des données de caisse de la distribution permettent d'avoir une vision complète des modes de consommation des ménages.
+Aujourd'hui, les techniques de _webscrapping_ et la remonté des données de
+caisse de la distribution permettent d'avoir une vision complète des modes de
+consommation des ménages.
 
 ### Quoi ?
 
@@ -32,13 +72,15 @@ Les postes de consommation retenues dans l'IPC sont :
 - restaurants et hôtels
 - biens et services divers
 
-chaque poste de consommation est **pondéré** selon son importance dans le panier total :
-
-$$\frac{\sum alcool et tabac}{\sum consommation totale}$$ = poids du poste alcool et tabac.
+chaque poste de consommation est **pondéré** selon son importance dans le panier
+total : $\frac{\sum alcool et tabac}{\sum consommation totale}$ = poids du poste
+alcool et tabac.
 
 ## ICPH - Indice harmonisé des prix (Harmonised index of consumer prices: _HICP_)
 
-L'IPCH est l'équivalent, pour la zone euro, de l'IPC en France. Il est construit sur le même relevé des prix, mais Il est **harmonisé** au travers des recommandations d'[[https://ec.europa.eu/eurostat/web/main/home][Eurostat]].
+L'IPCH est l'équivalent, pour la zone euro, de l'IPC en France. Il est construit
+sur le même relevé des prix, mais Il est **harmonisé** au travers des
+recommandations d'[[https://ec.europa.eu/eurostat/web/main/home][Eurostat]].
 
 #### Quelle différence entre IPC et IPCH ?
 

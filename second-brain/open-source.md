@@ -1,10 +1,10 @@
 ---
-id: a8bhfh7cehaefi9q5sq5t5k
 title: Open Source
-desc: ""
-updated: 1711314513870
-created: 1711312096595
 ---
+
+I always felt lost when i decided to contribute to open source projects: where
+to start, how things works. I realized, reading Mitch Ashimoto post, i wasn’t
+the only one in that situation.
 
 - [ ] [SECURITY.md](https://github.com/dmlc/xgboost/blob/master/SECURITY.md)
 - [ ] [NEW.md](https://github.com/dmlc/xgboost/blob/master/NEWS.md)

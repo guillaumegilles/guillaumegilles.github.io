@@ -1,8 +1,6 @@
 ---
-tags: my-tag1 my-tag2 my-tag3/notes
+title: Tags within Foam
 ---
-
-# Tags
 
 You can add tags to your notes to categorize or link notes together.
 

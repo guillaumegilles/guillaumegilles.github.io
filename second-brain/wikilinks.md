@@ -42,6 +42,4 @@ The [Foam for VSCode](https://marketplace.visualstudio.com/items?itemName=foam.f
 
 ## Read more
 
-- [[foam-file-format]]
-- [[foam-note-templates]]
 - See [[link-reference-definition-improvements]] for further discussion on current problems and potential solutions.

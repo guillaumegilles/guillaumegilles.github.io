@@ -1,0 +1,92 @@
+---
+title: Graph Visualization
+type:
+tags: []
+---
+
+Foam comes with a graph visualization of your notes. To see the graph execute
+the `Foam: Show Graph` command. Your files, such as notes and documents, are
+shown as the nodes of the graph along with the tags defined in your notes. The
+edges of the graph represent either a link between two files or a file that
+contains a certain tag. A node in the graph will grow in size with the number of
+connections it has, representing stronger or more defined concepts and topics.
+
+## Graph Navigation
+
+With the Foam graph visualization you can:
+
+- Highlight a node by hovering on it, to quickly see how it's connected to the
+  rest of your notes.
+- Select one or more (by keeping `shift` pressed while selecting) nodes by
+  clicking on them, to better understand the structure of your notes.
+- navigate to a note by clicking on it's node while pressing `ctrl` or `cmd`.
+- automatically center the graph on the currently edited note, to immediately
+  see its connections
+
+## Filter View
+
+If you only wish to view certain types of notes or tags, or want to hide linked
+attachment nodes then you can apply filters to the graph.
+
+- Open the graph view using the `Foam: Show Graph` command.
+- Click the button in the top right corner of the graph view that says "Open
+  Controls".
+- Expand the "Filter By Type" dropdown to view the selection of types that you
+  can filter by.
+- Uncheck the checkbox for any type you want to hide.
+- The types displayed in this dropdown are defined by [YAML properties](foam-yaml.qmd)
+  which includes Foam-standard types as well as custom types defined by you!
+
+## Custom Graph Styles
+
+The Foam graph will use the current VS Code theme by default, but it's possible
+to customize it with the `foam.graph.style` setting. A sample configuration:
+
+```{json}
+"foam.graph.style": {
+  "background": "#202020",
+  "fontSize": 12,
+  "lineColor": "#277da1",
+  "lineWidth": 0.2,
+  "particleWidth": 1.0,
+  "highlightedForeground": "#f9c74f",
+  "node": {
+    "note": "#277da1"
+  }
+},
+```
+
+- `background`: Background color of the graph, adjust to increase contrast.
+- `fontSize`: Size of the title font for each node.
+- `lineColor`: Color of the edges between nodes in the graph.
+- `lineWidth`: Thickness of the edges between nodes.
+- `particleWidth`: Size of the particle animation showing link direction when
+  highlighting a node.
+- `highlightedForeground`: Color of highlighted nodes and edges when hovering
+  over a node.
+
+### Style Nodes by Type
+
+There are a few _default_ node types defined by [Foam](foam.qmd) that are
+displayed in the graph:
+
+- `note`: Defines the color for regular nodes whose documents have not
+  overridden the `type` property.
+- `placeholder`: Defines the color for links that don't match any existing note.
+  This is a _placeholder_ because no file with such name exists.
+- `tag`: Defines the color for nodes representing tags, allowing tags to be used
+  as graph nodes similar to backlinks.
+
+To customize the style of a node, based on the `type` [property](foam-yaml.qmd),
+in [VSCode settings](vscode-settings):
+
+```{json}
+"foam.graph.style": {
+    "background": "#202020",
+    "node": {
+        "note": "#277da1",
+        "placeholder": "#545454",
+        "tag": "#f9c74f"
+    }
+}
+```
