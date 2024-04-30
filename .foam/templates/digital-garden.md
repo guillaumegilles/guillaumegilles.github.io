@@ -12,6 +12,18 @@ foam_template:
   filepath: digital-garden/index.qmd
 ---
 
+::: {.callout-tip}
+
+## TL;DR
+
+:::
+
 ##
 
 ## References
+
+## Changelog
+
+:::{.callout-note}
+
+:::
