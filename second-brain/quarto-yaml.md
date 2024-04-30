@@ -15,32 +15,7 @@ jupyter: python3
 ---
 ```
 
-## [HTML Output Format](https://quarto.org/docs/reference/formats/html.html#title-author)
 
-Quarto supports rendering notebooks to dozens of different
-[output formats](https://quarto.org/docs/output-formats/all-formats.html). By
-default, the `html` format is used, but you can specify an alternate format (or
-formats) within document options.
-
-### [Title and Author](https://quarto.org/docs/reference/formats/html.html#title-author)
-
-| YAML             | Description                                                          |
-| ---------------- | -------------------------------------------------------------------- |
-| `title:`         | Document title                                                       |
-| `subtitle`       | Identifies the subtitle of the document                              |
-| `date`           | Document date                                                        |
-| `date-modified`  | Document date modified                                               |
-| `author`         | Author or authors of the document                                    |
-| `abstract`       | Summary of document                                                  |
-| `abstract-title` | Title used to label document abstract                                |
-| `doi`            | Displays the document Digital Object Identifier in the header        |
-| `order`          | Order for document when included in a website automatic sidebar menu |
-
-### [Format Options](https://quarto.org/docs/reference/formats/html.html#format-options)
-
-| YAML      | Description                 |
-| --------- | --------------------------- |
-| `format:` | Specify an alternate format |
 
 ### [Code](https://quarto.org/docs/get-started/computations/vscode.html#code-folding)
 
@@ -53,13 +28,7 @@ the echo option we previously added and add the code-fold HTML format option.
 | `code-fold:`  | Let readers toggle the display of code block (`true`, `false`, or `show`) |
 | `code-tools:` | Add menu for hiding, showing, and downloading code (`true` or `false`)    |
 
-### [execute](https://quarto.org/docs/reference/formats/html.html#execution)
 
-| YAML          | Description                                                                                                  |
-| ------------- | ------------------------------------------------------------------------------------------------------------ |
-| `echo:`       | Include cell source code in rendered output                                                                  |
-| `echo: true`  | Include source code in output (default in most formats)                                                      |
-| `echo: false` | Do not include source code in output (default in presentation formats like `beamer`, `revealjs`, and `pptx`) |
 
 ## [Figures](https://quarto.org/docs/get-started/computations/vscode.html#figures)
 
