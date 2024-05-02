@@ -2,27 +2,25 @@
 title: "To Do"
 ---
 
-- gettinfg started with code-workspace
-
-1. [ ] Email @BdF
-2. [ ] Setting-up Anki cards
+1. [ ] Setting-up Anki cards
    1. [ ] Anki deck dans l'application
    2. [ ] VSCode plugin
    3. [ ] template note with tag, etc.
-4. [ ] [R pour la statistique et la science des données](https://r-stat-sc-donnees.github.io/)
-3. [ ] [ENSAE certification data science](~/Documents/data-science-cepe.nosync)
-4. [ ] [Régression avec R](https://regression-avec-r.github.io/)
-7. [ ] [Introductory Statistics 2e](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
-3. [ ] [R for data science](https://r4ds.had.co.nz/index.html)
-5. [ ] [Kaggle Learn :: Python](https://www.kaggle.com/learn/python)
-   [ ] [Kaggle Learn :: Intro to Machine Learning](https://www.kaggle.com/learn/intro-to-machine-learning)
-   [ ] [Kaggle Learn :: Pandas](https://www.kaggle.com/learn/pandas)
-6. [ ] [DLAI : pandas](https://learn.deeplearning.ai/pandas/lesson/2/exploring-data)
-8. [Machine learning in Python with scikit-learn](https://lms.fun-mooc.fr/courses/course-v1:inria+41026+session04/info)
-9. [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
-10. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
+2. [ ] Email @BdF
+3. [ ] [R pour la statistique et la science des données](https://r-stat-sc-donnees.github.io/)
+4. [ ] [ENSAE certification data science](~/Documents/data-science-cepe.nosync)
+5. [ ] [Régression avec R](https://regression-avec-r.github.io/)
+6. [ ] [Introductory Statistics 2e](https://openstax.org/details/books/introductory-statistics-2e?Book%20details)
+7. [ ] [R for data science](https://r4ds.had.co.nz/index.html)
+8. [ ] [Kaggle Learn :: Python](https://www.kaggle.com/learn/python)
+       [ ] [Kaggle Learn :: Intro to Machine Learning](https://www.kaggle.com/learn/intro-to-machine-learning)
+       [ ] [Kaggle Learn :: Pandas](https://www.kaggle.com/learn/pandas)
+9. [ ] [DLAI : pandas](https://learn.deeplearning.ai/pandas/lesson/2/exploring-data)
+10. [Machine learning in Python with scikit-learn](https://lms.fun-mooc.fr/courses/course-v1:inria+41026+session04/info)
+11. [HarvardX • CS50x](https://cs50.harvard.edu/x/2023/)
+12. [MITx 6.00.1x: How to succeed (2020)](https://www.youtube.com/watch?v=YpmQ7DMGnU0&list=PL4e66Kzl1JCFPVBa7gBzWJF_FDF3KBf-2&index=2)
     https://pythontutor.com/
-11. MITx • 6.00.2x
+13. MITx • 6.00.2x
 
 ## Statisitcs
 
@@ -154,10 +152,10 @@ weekly contest :
 
 1. [Principal Component Analysis in R Tutorial](https://www.datacamp.com/tutorial/pca-analysis-r)
 2. Applied statistic and multivariate data analysis
-5. [Tidy Modeling with R](https://www.tmwr.org/)
-6. [The Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)
-7. [Mastering Shiny](https://mastering-shiny.org/)
-8. [Fundamentals of data visualization](https://clauswilke.com/dataviz/index.html)
+3. [Tidy Modeling with R](https://www.tmwr.org/)
+4. [The Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)
+5. [Mastering Shiny](https://mastering-shiny.org/)
+6. [Fundamentals of data visualization](https://clauswilke.com/dataviz/index.html)
 
 ## Daily challenge
 
@@ -221,29 +219,13 @@ weekly contest :
 
 ## Anki cards
 
-#separator:tab
-#html:true
-#guid column:1
-#notetype column:2
-#deck column:3
-#tags column:6
-Q^Jxb]KvRN Basic big-fat-deck Qu’est-ce qu’une syllabe ? Une syllabe est un son ou groupe de son (séquence sonore) que l'on prononce en seule fois. voltaire
 kj3Q1(N;Hr Basic big-fat-deck Quelle est la différence entre les sons des accents aigu et grave ? "<b>L’accent aigu</b> marque le son [e] fermé.<br><b>L’accent grave</b> marque le son [ε]&nbsp;ouvert.<br><div style=""text-align: center;""><b>′&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;`</b><br><div style=""text-align: center;""><b>[e]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[</b>ε<b>]</b></div></div><div style=""text-align: center;"">été&nbsp; &nbsp; &nbsp;crème</div>" voltaire
-M>0AC67*+* Basic big-fat-deck Sur une syllabe, où se place l'accent sur la lettre « e » ? "L’accent ne frappe que la lettre <b>« e »</b> qui <b>termine</b> une syllabe.
 
-<ul>
-  <li><b>é</b>·tudier</li>
-  <li><b>es</b>·tudiantin</li>
-  <li><b>mè</b>·che</li>
-  <li><b>mes</b>·quin</li>
-  <li><b>é</b>·nerver</li>
-  <li><b>en</b>·nui</li>
-</ul>"	voltaire
-Icsg0zz}pJ	Basic (type in the answer)	big-fat-deck	Quelle balise utilise-t-on pour définir une page HTML 5 ?	&lt;!DOCTYPE html&gt;	
-893F[t;@{	Basic	big-fat-deck	En langage HTML, quel est le rôle de la balise &lt;!DOCTYPE html&gt; ?	Elle permet au navigateur internet de reconnaitre le <b>type</b> de <b>doc</b>ument, parmis ceux de la famille SGML, qui va suivre. Ainsi il peut l’interpréter correctement.	
-skjb)`y{r@	Basic	big-fat-deck	Quels sont les deux objectifs d'un <b>audit d'évaluation</b> (ou <b>audit système</b>) ?	<ol><li>Fournir à une entreprise la visibilité sur ses processus de système d'information.<br></li><li>Déterminer si ces processus fonctionnent correctement ?<br></li></ol>	
-qUBgk04;me	Basic	big-fat-deck	Comment une entreprise peut avoir de la visibilité sur ses processus informatique et ces fonctionnement ?	Grâce à un <b>audit d'évaluation</b>, ou <b>audit système</b>.	
-"n:/9Ms[.#L"	Basic	big-fat-deck	Comment peut-on donner une vue impartiale sur <b>un</b> processus du système d'information, ou sur <b>un</b> produit susceptible d'amélioration ?	Grâce à un <b>audit d'investigation</b>.	
+Icsg0zz}pJ Basic (type in the answer) big-fat-deck Quelle balise utilise-t-on pour définir une page HTML 5 ? &lt;!DOCTYPE html&gt;
+893F[t;@{ Basic big-fat-deck En langage HTML, quel est le rôle de la balise &lt;!DOCTYPE html&gt; ? Elle permet au navigateur internet de reconnaitre le <b>type</b> de <b>doc</b>ument, parmis ceux de la famille SGML, qui va suivre. Ainsi il peut l’interpréter correctement.
+skjb)`y{r@ Basic big-fat-deck Quels sont les deux objectifs d'un <b>audit d'évaluation</b> (ou <b>audit système</b>) ? <ol><li>Fournir à une entreprise la visibilité sur ses processus de système d'information.<br></li><li>Déterminer si ces processus fonctionnent correctement ?<br></li></ol>
+qUBgk04;me Basic big-fat-deck Comment une entreprise peut avoir de la visibilité sur ses processus informatique et ces fonctionnement ? Grâce à un <b>audit d'évaluation</b>, ou <b>audit système</b>.
+"n:/9Ms[.#L" Basic big-fat-deck Comment peut-on donner une vue impartiale sur <b>un</b> processus du système d'information, ou sur <b>un</b> produit susceptible d'amélioration ? Grâce à un <b>audit d'investigation</b>.
 u((I&7tl$W	Basic	big-fat-deck	Quels sont les deux objectifs d'un <b>audit d'investigation</b> ?	<ol><li>Donner une vue impartiale sur un processus des système d'information,</li><li>Ou sur un produit susceptible d'amélioration et/ou de correction.</li></ol>	
 bO(R3,y|An	Basic	big-fat-deck	Comment sépare-t-on deux consonnes grâce aux syllabes ?	"<div style=""text-align: justify;"">Dans le cas où deux consonnes se suivent, la coupure syllabique les sépare</div><div><div style=""text-align: center;"">u·ni·ver·si ·té</div><div style=""text-align: justify;"">La coupure des syllabes 3 et 4 sépare les deux consonnes R et S.<br></div></div>"	voltaire
 q:vN_!/By+	Basic	big-fat-deck	Qui a développé le Domain Authority, et pourquoi ?	Le Domain Authority est une solution dévloppée par l'entreprise Moz pour remplacer la disparation de la publication de PageRank de Google.	
@@ -251,8 +233,9 @@ pM1C=VtjkY	Basic	big-fat-deck	Qu’est-ce que le système décimal&nbsp;?	Un sys
 "Nz&Ba47#n/"	Basic	big-fat-deck	En arithmétique, qu’est-ce qu’une base&nbsp;?	"La base est la valeur dont les puissances
  successives détermine l’écriture des nombres. Par exemple, le système 
 décimal utilise la base 10."	
-u@=k$hn+^>	Basic	big-fat-deck	Qu’est-ce que le système binaire ?	Un système de numération utilisant la base 2	
-Iz{ec*+i;N	Basic	big-fat-deck	Qu’est-ce qu’un bit en informatique ?	"<ul>
+u@=k$hn+^> Basic big-fat-deck Qu’est-ce que le système binaire ? Un système de numération utilisant la base 2
+Iz{ec\*+i;N Basic big-fat-deck Qu’est-ce qu’un bit en informatique ? "<ul>
+
   <li>C’est l’abréviation de « binary digit ».</li>
   <li>Il est égal à 0 ou 1, ON ou OFF. </li>
   <li>Il s’agit du plus petit niveau d’information stockée par un ordinateur.</li>

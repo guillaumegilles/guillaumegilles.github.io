@@ -68,24 +68,6 @@ Attention, si « en » est suivi d’un nom (/en silence/ par exemple) ou d’un
 une _préposition_. Le verbe à l’impératif, à la 2e personne du singulier, qui précède ce « en » et qui se termine par un « e » muet
 ne prend pas de « s » : Mange en silence ! Mange en fermant la bouche !
 
-## avoir - indicatif présent
-
-- j'ai
-- tu as
-- il/elle a
-- nous avons
-- vous avez
-- ils/elles ont
-
-## avoir - subjonctif présent
-
-- que j’aie
-- que tu aies
-- qu’il/elle ait
-- que nous ayons
-- que vous ayez
-- qu’ils/elles aient
-
 ## quand utilise-t-on le participe passé
 
 le _participe passé_ est une forme du verbe utilisée :

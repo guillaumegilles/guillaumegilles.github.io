@@ -1,33 +1,40 @@
 ---
-id: 1y4z9z2wfaqygj5u7z4w7nm
 title: "📇 Musique"
-desc: "Notes Anki pour la musique"
-tags: anki
-updated: 1704751204419
-created: 1697487090565
+type: Anki card
+tags: [Anki]
 ---
 
-## Quelle est la qualité d'une piste sur un CD ?
+## Quelle est la **qualité** d'une piste sur un CD ?
 
 <!-- notecardId: 1701640744320 -->
 
 16 bit / 44,1 kHz
 
-## Quelle est la qualité d'une piste studio ?
+## Quelle est la **qualité** d'une piste studio ?
 
 <!-- notecardId: 1701640744323 -->
 
 24 bit / 96 ~ 192 kHz
 
-## que signifie un taux d'échantillonage de 44,1 kHz ?
+## Que signifie la fréquence, ou taux d'échantillonage (_sample rate_), exprimée
+
+en _kHz_ ?
+
+<!-- notecardId: 1701640744330 -->
+
+Le taux d'échantillonnage numérique (_sample rate_) indique le nombre de fois
+par seconde que le signal analogique est enregistré pour produire un signal
+numérique. Plus le taux d'échantillonnage est élevé, plus le signal est "précis",
+c'est-à-dire plus souvent.
+
+![](/assets/images/sample-rate.jpg)
+
+## Que signifie un **taux d'échantillonage** (_sample rate_) de 44,1 kHz ?
 
 <!-- notecardId: 1701640744326 -->
 
-Pour le CD, la fréquence d’échantillonnage utilisée de 44.1kHz ce qui signifie que chaque seconde de son est divisée à la conversion en 44 100 échantillons
-
-## Que signifie la fréquence, ou taux d'échantillonage (sample rate), exprimée en _kHz_ ?
-
-<!-- notecardId: 1701640744330 -->
+Pour le CD, la fréquence d’échantillonnage utilisée de 44.1kHz ce qui signifie
+que chaque seconde de son est divisée à la conversion en 44 100 échantillons
 
 ## Quelles sont les 2 caractéristique de la qualité audio numérique ?
 
