@@ -10,4 +10,8 @@ tags: [Anki]
 
 **B**ourne **A**gain **SH**ell
 
-##
+## En Bash, retourne l'_absolute path_ ?
+
+```{bash}
+$ realpath
+```

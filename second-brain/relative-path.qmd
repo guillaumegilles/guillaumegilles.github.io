@@ -1,15 +1,32 @@
 ---
-title: Relative Path
+title: "Relative Path"
+type:
+tags: []
 ---
 
-Le chemin relatif est l'arborescence permettant d'accéder à un élément _depuis_ le répertoire dans lequel on se trouve. C'est à dire que le chemin relatif vers un éléments évolue à chaque fois qu'on se trouve dans un répertoire différents, à l'inverse du [[chemin absolu|os.absolute-path]] qui est unique.
+[Absolute paths](absolute-path.qmd) are useful, but they're not always efficient.
+Suppose you're in `/var/log/foo` and you want to view a file in `/var/log/bar`.
+There's no reason to "travel" all the way back to `/var`. Instead, use a
+relative path to look outside of foo and into bar.
 
-![](assets/images/relative-path-windows.png)
+```{bash}
+$ sudo cat ../bar/file.txt
+```
 
-Pour facilement identifier le répertoire dans lequel on se trouve, on peut utiliser la commande ![[bash.pwd]]
+Two dots `..` represent moving to a parent directory, so `../bar/file.txt` means
+to move up one directory (into `/var/log`) and then descend into `/var/log/bar`,
+which contains `file.txt`.
 
-### références
+You may notice that using `..` isn't very descriptive. That's both the advantage
+and disadvantage of a relative path. It's an advantage because it can be quicker
+to type and it's flexible. The statement `../bar/file.txt` doesn't care what
+comes before `bar`. It only knows that the bar directory contains a file called
+`file.txt`. That makes it equally true whether a user keeps the `foo` and `bar`
+directories in `/var/log` or in `/opt` or in `/home/tux/.var/log` or any other
+location.
 
-- https://ubuntu.com/tutorials/command-line-for-beginners#3-opening-a-terminal
-- https://www.systranbox.com/how-to-find-the-absolute-path-of-a-file-or-directory-in-linux/
-- https://networkencyclopedia.com/relative-path/
+Relative paths allow applications and scripts to be largely self-contained. As
+long as the immediate environment is predictable, you can always reference files
+from a known location.
+
+![](../assets/images/absolute-relative-path.jpg)
