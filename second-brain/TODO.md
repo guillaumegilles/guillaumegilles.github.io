@@ -42,6 +42,10 @@ title: "To Do"
 - [ ] [Machine Learning Specialization](https://www.coursera.org/specializations/machine-learning-introduction?action=enroll)
 - [ ] [Manim animation](https://github.com/ManimCommunity/manim/)
 
+### Pandas
+
+- [ ] [Python for Data Analysis (3e)](https://wesmckinney.com/book/)
+
 ## Deep Learning
 
 - [ ] [L'apprentissage profon - Yann LeCun](https://www.youtube.com/watch?v=TdLa5h-x2nA&list=PLtimy8tnozIAUxCZZusJbu4xjjNxHYd0Y)

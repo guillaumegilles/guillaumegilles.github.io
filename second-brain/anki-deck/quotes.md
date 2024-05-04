@@ -1,10 +1,7 @@
 ---
-id: d90w97ers8ufhrztiryhe0s
 title: "📇 Citations"
-desc: Mes citations préférées
-tags: anki
-updated: 1704751193276
-created: 1697487332438
+type: Anki card
+tags: [Anki]
 ---
 
 ## « Shoot the moon. Even if you miss, you’ll land among the stars. »
@@ -17,7 +14,7 @@ Norman Vincent Peale
 
 <!-- notecardId: 1702242055215 -->
 
-@abdul-jabbarJimBrownMe2023
+Kareem Abdul-Jabbar
 
 ## « Le plus grand mécanisme d’obstacle à la réussite est l’autocensure. »
 

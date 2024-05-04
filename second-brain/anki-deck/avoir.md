@@ -6,7 +6,7 @@ tags: [Anki]
 # Foam template YAML metadata
 ---
 
-## avoir - indicatif présent
+## avoir - **indicatif présent**
 
 - j'ai
 - tu as
@@ -15,7 +15,7 @@ tags: [Anki]
 - vous avez
 - ils/elles ont
 
-## avoir - subjonctif présent
+## avoir - **subjonctif présent**
 
 - que j’aie
 - que tu aies
