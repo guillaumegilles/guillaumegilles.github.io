@@ -18,9 +18,10 @@ and rows.
 [[numpy-array]] in NumPy can be n-dimensional. This means the data can be a
 single column of numbers, or many columns and rows of numbers.
 
-NumPy has modules for performing some linear algebra functions.
-It also has modules for graphing and plotting numerical arrays.
-Data in NumPy arrays is homogenous, which means it must all be defined as the same type (numbers, strings, Boolean values, etc.). This means data gets processed efficiently.
+NumPy has modules for performing some linear algebra functions. It also has
+modules for graphing and plotting numerical arrays. Data in NumPy arrays is
+homogenous, which means it must all be defined as the same type (numbers,
+strings, Boolean values, etc.). This means data gets processed efficiently.
 
 Best for: Manipulating and processing data for more advanced data science or machine learning operations. If you are crunching numbers, you need NumPy.
 

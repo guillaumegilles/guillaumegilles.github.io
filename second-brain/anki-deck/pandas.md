@@ -177,7 +177,7 @@ ajouter les `()`.
 df = pd.read_csv('~/filename.csv')
 ```
 
-## Quels sont les principaux paramètres de la fonction `read’csv()` de Pandas ?
+## Quels sont les principaux paramètres de la fonction `read_csv()` de Pandas ?
 
 - **`sep =`** permet de sélectionner un autre type de séparateur que la virgule
   par défaut, `,` ;
@@ -213,21 +213,4 @@ On peut remplacer les valeurs manquantes grâce à la méthode `fillna()`.
 1  3.0  4.0  0.0  1.0
 2  0.0  0.0  0.0  0.0
 3  0.0  3.0  0.0  4.0
-```
-
-```python
-compte_cheque['Debit'].fillna(0, inplace = True) # replacing missing values in Debit column with 0
-compte_cheque['Credit'].fillna(0, inplace = True) # replacing missing values in Credit column with 0
-```
-
-L’argument `inplace=True` modifie directement la variable sans avoir besoin de l’appler à nouveau. Ainsi :
-
-```python
-compte_cheque['Debit'] = compte_cheque['Debit'].fillna(0)
-```
-
-Devient :
-
-```python
-compte_cheque['Debit'].fillna(0, inplace = True)
 ```

@@ -3,8 +3,6 @@ title: ${FOAM_TITLE}
 subtitle:
 Abstract:
 image:
-bibliography: ../../assets/references.bib
-citation-location: margin
 categories: []
 foam_template:
   name: "Digital Garden note"

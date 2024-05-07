@@ -3,6 +3,9 @@ title: "Python Method"
 created: 2024-04-15
 ---
 
+A Python method is like a Python function, but it must be called on an object.
+And to create it, you must put it inside a class.
+
 ## Method
 
 In [[python]] a method is a [[python-function]] associated to an object.
