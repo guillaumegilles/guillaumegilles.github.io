@@ -1,9 +1,8 @@
 ---
 # Foam YAML metadata
-title: "📇 Pandas"
-type: Anki card
-tags: [Anki, Pandas, Python]
-# Foam template YAML metadata
+title: "Pandas"
+type: anki
+tags: [pandas, python]
 ---
 
 ## Quelles sont les structures de données de pandas ?

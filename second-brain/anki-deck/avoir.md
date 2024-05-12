@@ -1,9 +1,8 @@
 ---
 # Foam YAML metadata
 title: "Avoir"
-type: Anki card
-tags: [Anki]
-# Foam template YAML metadata
+type: anki
+tags: []
 ---
 
 ## avoir - **indicatif présent**

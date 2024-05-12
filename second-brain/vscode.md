@@ -14,7 +14,13 @@ le fichier de configuration de `VSCode` se trouve dans `~/.config/Code/User/sett
 
 ## User Interface
 
-![vscode-ui](/assets/vscode-ui.png)
+- **A**: Activity Bar
+- **B**: Side Bar
+- **C**: Editor Groups
+- **D**: Panel
+- **E**: Status Bar
+
+![vscode-ui](/assets/images/vscode-ui.png)
 
 ## Command Palette
 

@@ -1,9 +1,8 @@
 ---
 # Foam YAML metadata
-title: "web"
-type: Anki card
-tags: [Anki]
-# Foam template YAML metadata
+title: "Web"
+type: anki
+tags: []
 ---
 
 ## _Regular_ web

@@ -1,9 +1,8 @@
 ---
 # Foam YAML metadata
 title: "Bash"
-type: Anki card
-tags: [Anki]
-# Foam template YAML metadata
+type: anki
+tags: []
 ---
 
 ## Que signifie l’acronyme BASH ?

@@ -1,7 +1,7 @@
 ---
-title: "📇 Musique"
-type: Anki card
-tags: [Anki]
+title: "Musique"
+type: anki
+tags: []
 ---
 
 ## Quelle est la **qualité** d'une piste sur un CD ?
@@ -27,7 +27,7 @@ par seconde que le signal analogique est enregistré pour produire un signal
 numérique. Plus le taux d'échantillonnage est élevé, plus le signal est "précis",
 c'est-à-dire plus souvent.
 
-![](/assets/images/sample-rate.jpg)
+![sample rate](/assets/images/sample-rate.jpg)
 
 ## Que signifie un **taux d'échantillonage** (_sample rate_) de 44,1 kHz ?
 

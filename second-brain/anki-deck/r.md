@@ -1,9 +1,8 @@
 ---
 # Foam YAML metadata
-title: "📇 R"
-type: Anki card
-tags: [Anki, R]
-# Foam template YAML metadata
+title: "R"
+type: anki
+tags: []
 ---
 
 ## `R` est un langage compilé ou interprété ?

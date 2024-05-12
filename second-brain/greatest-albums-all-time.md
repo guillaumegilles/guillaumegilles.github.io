@@ -1,28 +1,54 @@
 ---
-id: 0pxsry2h8e5gos077f0fz8a
 title: "Liste des albums"
-desc: "The Greatest Albums of All Time"
-updated: 1707944300678
-created: 1703703026490
+type:
+tags: [music]
 ---
 
-## The classics are still the classics, but the canon keeps getting bigger and better
+To
 
-Rolling Stone’s list of the 500 Greatest Albums of All Time was originally published in 2003, with a slight update in 2012. Over the years, it’s been the most widely read — and argued over — feature in the history of the magazine (last year, the RS 500 got over 63 million views on the site). But no list is definitive — tastes change, new genres emerge, the history of music keeps being rewritten. So we decided to remake our greatest albums list from scratch.
+## [Rolling Stone’s 500 greatest albums of all time](https://www.rollingstone.com/music/music-lists/best-albums-of-all-time-1062063/)
 
-To do so, we received and tabulated Top 50 Albums lists from more than 300 artists, producers, critics, and music-industry figures (from radio programmers to label heads, like Atlantic Records CEO Craig Kallman). The electorate includes Beyoncé, Taylor Swift, and Billie Eilish; rising artists like H.E.R., Tierra Whack, and Lindsey Jordan of Snail Mail; as well as veteran musicians, such as Adam Clayton and the Edge of U2, Raekwon of the Wu-Tang Clan, Gene Simmons, and Stevie Nicks.
+### The classics are still the classics, but the canon keeps getting bigger and better
 
-## How We Made the List and Who Voted
+Rolling Stone’s list of the 500 Greatest Albums of All Time was originally
+published in 2003, with a slight update in 2012. Over the years, it’s been the
+most widely read — and argued over — feature in the history of the magazine (last
+year, the RS 500 got over 63 million views on the site). But no list is definitive
+— tastes change, new genres emerge, the history of music keeps being rewritten.
+So we decided to remake our greatest albums list from scratch.
 
-When we first did the RS 500 in 2003, people were talking about the “death of the album.” The album —and especially the album release — is more relevant than ever. (As in 2003, we allowed votes for compilations and greatest-hits albums, mainly because a well-made compilation can be just as coherent and significant as an LP, because compilations helped shaped music history, and because many hugely important artists recorded their best work before the album had arrived as a prominent format.)
+To do so, we received and tabulated Top 50 Albums lists from more than 300 artists,
+producers, critics, and music-industry figures (from radio programmers to label
+heads, like Atlantic Records CEO Craig Kallman). The electorate includes Beyoncé,
+Taylor Swift, and Billie Eilish; rising artists like H.E.R., Tierra Whack, and
+Lindsey Jordan of Snail Mail; as well as veteran musicians, such as Adam Clayton
+and the Edge of U2, Raekwon of the Wu-Tang Clan, Gene Simmons, and Stevie Nicks.
 
-Of course, it could still be argued that embarking on a project like this is increasingly difficult in an era of streaming and fragmented taste. But that was part of what made rebooting the RS 500 fascinating and fun; 86 of the albums on the list are from this century, and 154 are new additions that weren’t on the 2003 or 2012 versions. The classics are still the classics, but the canon keeps getting bigger and better.
+### How We Made the List and Who Voted
 
-498. Suicide, ‘Suicide’ - RED STAR, 1977
+When we first did the RS 500 in 2003, people were talking about the “death of
+the album.” The album —and especially the album release — is more relevant than
+ever. (As in 2003, we allowed votes for compilations and greatest-hits albums,
+mainly because a well-made compilation can be just as coherent and significant
+as an LP, because compilations helped shaped music history, and because many
+hugely important artists recorded their best work before the album had arrived
+as a prominent format.)
 
-These New York synth-punks evoke everything from the Velvet Underground to rockabilly. Martin Rev’s low-budget electronics are violent and hypnotic; Alan Vega screams as a rhythmic device. Late-night listening to “Frankie Teardrop,” a 10-minute-plus tale of a multiple murder, is not recommended. A droning voice in the wilderness when they appeared in the Seventies, the duo would influence bands from Arcade Fire and the National to Bruce Springsteen, who covered Suicide live in 2016.
+Of course, it could still be argued that embarking on a project like this is
+increasingly difficult in an era of streaming and fragmented taste. But that was
+part of what made rebooting the RS 500 fascinating and fun; 86 of the albums on
+the list are from this century, and 154 are new additions that weren’t on the
+2003 or 2012 versions. The classics are still the classics, but the canon keeps
+getting bigger and better.
 
-499. Rufus, Chaka Khan, ‘Ask Rufus’ - ABC, 1977
+- 498. Suicide, ‘Suicide’ - RED STAR, 1977: These New York synth-punks evoke
+       everything from the Velvet Underground to rockabilly. Martin Rev’s low-budget
+       electronics are violent and hypnotic; Alan Vega screams as a rhythmic device.
+       Late-night listening to “Frankie Teardrop,” a 10-minute-plus tale of a multiple
+       murder, is not recommended. A droning voice in the wilderness when they appeared
+       in the Seventies, the duo would influence bands from Arcade Fire and the National
+       to Bruce Springsteen, who covered Suicide live in 2016.
+- 499. Rufus, Chaka Khan, ‘Ask Rufus’ - ABC, 1977
 
 Fronted by Chaka Khan, one of soul music’s most combustible singers, Rufus built its mid-Seventies sound on heavy-footed, guitar-slathered funk. But after spending 16 months in the studio working on Ask Rufus, they came out with a record that gave their songs more room to breathe, anticipating the lithe, loose arrangements of Nineties neo-soul. Khan glided through the head-nodding “Everlasting Love” and the twisty-turny “Better Days,” and fans appreciated the adjustment: Ask Rufus was the group’s first platinum record.
 

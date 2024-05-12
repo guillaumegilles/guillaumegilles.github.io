@@ -1,7 +1,7 @@
 ---
-title: Promouvoir
-type: Anki card
-tags: [Anki]
+title: "Promouvoir"
+type: anki
+tags: []
 ---
 
 ## Promouvoir à l’**indicatif présent**

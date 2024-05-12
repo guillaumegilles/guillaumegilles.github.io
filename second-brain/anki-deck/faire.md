@@ -1,7 +1,7 @@
 ---
 title: "Faire"
-type: Anki card
-tags: [Anki]
+type: anki
+tags: []
 ---
 
 ## Faire à l’indicatif présent

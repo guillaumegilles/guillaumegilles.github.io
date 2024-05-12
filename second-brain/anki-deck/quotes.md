@@ -1,7 +1,7 @@
 ---
-title: "📇 Citations"
-type: Anki card
-tags: [Anki]
+title: "Citations"
+type: anki
+tags: []
 ---
 
 ## « Shoot the moon. Even if you miss, you’ll land among the stars. »

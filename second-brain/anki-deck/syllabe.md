@@ -1,9 +1,8 @@
 ---
 # Foam YAML metadata
 title: "Syllabe"
-type: Anki card
-tags: [Anki, Voltaire]
-# Foam template YAML metadata
+type: anki
+tags: []
 ---
 
 ## Qu’est-ce qu’une syllabe ?
