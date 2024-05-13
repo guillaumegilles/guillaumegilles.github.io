@@ -2,8 +2,6 @@
 title: Markdown
 type:
 tags: []
-
-# Quarto YAML metadata
 bibliography: ../assets/references.bib
 ---
 
@@ -16,17 +14,15 @@ Gruber in collaboration with Aaron Swartz.
 ## Markdown syntax
 
 
-|Type|	Or	|… to Get|
-|----|------|--------|
-| `*Italic*` |	`_Italic_`	| _Italic_
-| `**Bold**` | `__Bold__` | **Bold**
-| `# Heading 1` | | #	Heading 1
-| `## Heading 2` | | ##	Heading 2
-| `###### Heading 6` | | ###### Heading 6
-| `[Link](http://a.com)`	[Link][1]
-⋮
-[1]: http://b.org	Link
-![Image](http://url/a.png)	![Image][1]
+|To Get…|	Markdown|
+|-------|---------|
+| _Italic_ | `*Italic*` or	`_Italic_` |	 
+| **Bold** | `**Bold**` or `__Bold__` | 
+| #	Heading 1 | `# Heading 1` | 
+| ##	Heading 2 | `## Heading 2` | 
+| ###### Heading 6 | `###### Heading 6` | 
+| [Link](http://a.com) | `[Link](http://a.com)`	or `[Link][1] … [1]: http://b.org`
+| ![image](http://url/a.png)	![Image][1]
 ⋮
 [1]: http://url/b.jpg	Markdown
 > Blockquote	 	
