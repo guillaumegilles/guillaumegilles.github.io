@@ -4,16 +4,6 @@ Welcome to my personal website! This site was built using [Quarto](https://quart
 a modern and flexible platform for creating interactive and data-driven
 documents.
 
-## TODOs
-
-1. [ ] Built website with **mobile focus**
-    - https://lmnt.me/
-2. [ ] RSS feed
-3. [ ] annotate beside: https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
-   - peut-on trouver la solution, ici : https://quarto.org/docs/authoring/code-annotation.html
-4. [ ] how to cite this blog posts
-
-
 ## Overview
 
 This website serves as a platform for showcasing my portfolio, sharing my
