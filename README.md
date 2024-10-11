@@ -78,6 +78,8 @@ This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE.m
 > 4. [ ] illustrated notes: https://www.lemonde.fr/sciences/visuel/2024/07/09/ariane-6-une-nouvelle-fusee-pour-l-europe_6248203_1650684.html
 > 5. [ ] add font : Nerdfont, IBM Plex Mono, Github Monospace
 > 6. Challenges: Créer un repo pour les challenges avec une page quarto style blog pour les regrouper: cryptohack, leetcode
+> 7. Créer un essays « Math is Fun and Beautiful » : section ou *deep dive* into mathematical ideas with vizualisation
+
 
 <!--
 # The Minimal Light Theme
