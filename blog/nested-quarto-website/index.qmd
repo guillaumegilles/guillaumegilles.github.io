@@ -1,6 +1,7 @@
 ---
 title: Nested Quarto Website
 date: 2025-01-10
+date-modified: 2025-01-17
 ---
 
 1. Need to have navbar properties inside references. so only book + website :
@@ -18,3 +19,34 @@ standalone github repo w/ github-page: OK
 integrated into an overall website: OK
 
 using teaching-listing.yml for listing properties inside teaching.qmd
+
+## Setps
+
+1. `quarto render` projects and teaching
+2. make sure `_quarto.yml` sub-projects information take into consideration the website `docs` directory hierarchy. `../../about.html` jump 2 levels, from specific projects to teaching level, then to root level of website.
+
+```yml
+  # Navbar
+  navbar:
+    logo: ../../images/cat.png
+    title: false
+    right:
+      - text: ABOUT
+        href: ../../about.html
+      - text: PROJECTS
+        href: ../../projects.html
+      - text: TEACHING
+        href: ../../teaching.html
+      - text: BLOG
+        href: ../../blog.html
+```
+
+2. `quarto render` website
+3. Moving each `docs/` sub-projects into website’s `docs/teaching` or `docs/projects` directories (since each render of the website wipes out the `docs/` directory).
+  - rename appropriately from `docs/` to `description-donnees` for example.
+
+## Automatation
+
+- R
+- scripts
+  - build_website
