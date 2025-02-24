@@ -258,8 +258,305 @@ gtag('config', 'G-6BXJC408ED', { 'anonymize_ip': true});
 <li>build_website</li>
 </ul></li>
 </ul>
+<p>Yes! Since Step #2 already processes the directories, we can <strong>remove the redundant loop</strong> in Step #3 and just copy the files.</p>
+<hr>
+<section id="updated-shell-script-build_site.sh" class="level3">
+<h3 class="anchored" data-anchor-id="updated-shell-script-build_site.sh"><strong>Updated Shell Script (<code>build_site.sh</code>)</strong></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Exit on error</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Render the Quarto project</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Rendering Quarto project..."</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Create one level of subdirectories inside docs/, removing `_`</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Creating directory structure in docs/..."</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dir <span class="kw">in</span> teaching projects<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">find</span> <span class="st">"</span><span class="va">$dir</span><span class="st">"</span> <span class="at">-maxdepth</span> 1 <span class="at">-type</span> d <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">subdir</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Remove leading `_` from directory names</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">clean_subdir</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$subdir</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|/_|/|g'</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|^_||'</span><span class="va">)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Construct the corresponding directory inside docs/</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">newdir</span><span class="op">=</span><span class="st">"docs/</span><span class="va">$clean_subdir</span><span class="st">"</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$newdir</span><span class="st">"</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Copy files from `teaching/*/docs/` and `projects/*/docs/` to `docs/teaching/*` and `docs/projects/*`</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Copying files..."</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> teaching projects <span class="at">-maxdepth</span> 2 <span class="at">-type</span> d <span class="at">-name</span> <span class="st">"docs"</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">source_dir</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Determine the parent directory (e.g., teaching/_data-analysis/docs → teaching/_data-analysis)</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="va">parent_dir</span><span class="op">=</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">"</span><span class="va">$source_dir</span><span class="st">"</span><span class="va">)</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Remove leading `_` from parent directory name</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="va">clean_subdir</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$parent_dir</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|/_|/|g'</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|^_||'</span><span class="va">)</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the target directory in `docs/`</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="va">target_dir</span><span class="op">=</span><span class="st">"docs/</span><span class="va">$clean_subdir</span><span class="st">"</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Copy files if the source directory is not empty</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-d</span> <span class="st">"</span><span class="va">$source_dir</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cp</span> <span class="at">-r</span> <span class="st">"</span><span class="va">$source_dir</span><span class="st">"</span>/<span class="pp">*</span> <span class="st">"</span><span class="va">$target_dir</span><span class="st">"</span>/ <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">||</span> <span class="fu">true</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">"Copied files from </span><span class="va">$source_dir</span><span class="st"> to </span><span class="va">$target_dir</span><span class="st">"</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Build process completed successfully!"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p>How It Works</p>
+<pre><code>Creates directories inside docs/, removing _ from names.
+Moves files from teaching/_data-analysis/docs/ → docs/teaching/data-analysis/.
+Ensures no files are lost, and empty docs/ directories inside teaching/ and projects/ are ignored.</code></pre>
+</section>
+<section id="key-fixes" class="level3">
+<h3 class="anchored" data-anchor-id="key-fixes"><strong>Key Fixes</strong></h3>
+<p>✅ <strong>Removes redundant loops in Step #3</strong> since Step #2 already creates the directory structure.<br>
+✅ <strong>Uses <code>cp -r</code> instead of <code>mv</code></strong> to copy files instead of moving them.<br>
+✅ <strong>Uses <code>find ... -maxdepth 2 -type d -name "docs"</code></strong> to locate all <code>docs/</code> directories.<br>
+✅ <strong>Automatically maps <code>teaching/_data-analysis/docs</code> → <code>docs/teaching/data-analysis/</code></strong> while <strong>removing <code>_</code></strong>.</p>
+<hr>
+</section>
+<section id="example" class="level3">
+<h3 class="anchored" data-anchor-id="example"><strong>Example</strong></h3>
+<section id="before-running-the-script" class="level4">
+<h4 class="anchored" data-anchor-id="before-running-the-script"><strong>Before Running the Script</strong></h4>
+<pre><code>teaching/
+  _data-analysis/
+    docs/
+      file1.html
+      file2.pdf
+  _statistics/
+    docs/
+      report.md
+projects/
+  _equity-post-HCT-survival-predictions/
+    docs/
+      analysis.csv</code></pre>
+</section>
+<section id="after-running-the-script" class="level4">
+<h4 class="anchored" data-anchor-id="after-running-the-script"><strong>After Running the Script</strong></h4>
+<pre><code>docs/
+  teaching/
+    data-analysis/
+      file1.html
+      file2.pdf
+    statistics/
+      report.md
+  projects/
+    equity-post-HCT-survival-predictions/
+      analysis.csv</code></pre>
+<p>✅ <strong>All files are copied instead of moved</strong><br>
+✅ <strong>No redundant loops</strong><br>
+✅ <strong><code>_</code> removed from directory names in <code>docs/</code></strong></p>
+<hr>
+</section>
+</section>
+<section id="final-thoughts" class="level3">
+<h3 class="anchored" data-anchor-id="final-thoughts"><strong>Final Thoughts</strong></h3>
+<p>This is now <strong>fully optimized</strong> and should work perfectly for your Quarto project! 🚀<br>
+Let me know if you need any tweaks. 😊</p>
+</section>
+</section>
+<section id="complete-explaining" class="level2">
+<h2 class="anchored" data-anchor-id="complete-explaining">Complete explaining</h2>
+<p>You’re very welcome! 😊 I’m glad it’s working perfectly. Now, let’s go <strong>line by line</strong> and explain exactly what each part of the script does.</p>
+<hr>
+</section>
+<section id="full-script-with-line-by-line-explanation" class="level2">
+<h2 class="anchored" data-anchor-id="full-script-with-line-by-line-explanation"><strong>Full Script with Line-by-Line Explanation</strong></h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>This tells the system to run the script using the <strong>Bash shell</strong>.</li>
+</ul>
+<hr>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exit on error</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>set -e</code> ensures that <strong>if any command fails, the script will immediately stop</strong>.<br>
+</li>
+<li>This prevents silent errors and makes debugging easier.</li>
+</ul>
+<hr>
+<section id="step-1-render-the-quarto-project" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-render-the-quarto-project"><strong>Step 1: Render the Quarto project</strong></h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Render the Quarto project</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Rendering Quarto project..."</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Runs <code>quarto render</code>, which <strong>processes</strong> the Quarto files and generates the output inside the <code>docs/</code> folder.<br>
+</li>
+<li>The <code>echo</code> command prints a message to inform the user.</li>
+</ul>
+<hr>
+</section>
+<section id="step-2-create-the-necessary-directory-structure-inside-docs" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-create-the-necessary-directory-structure-inside-docs"><strong>Step 2: Create the necessary directory structure inside <code>docs/</code></strong></h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Create one level of subdirectories inside docs/, removing `_`</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Creating directory structure in docs/..."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Prints a message to indicate that <strong>the script is creating directories inside <code>docs/</code></strong>.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dir <span class="kw">in</span> teaching projects<span class="kw">;</span> <span class="cf">do</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Loops through two main folders:
+<ul>
+<li><code>teaching/</code></li>
+<li><code>projects/</code></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">find</span> <span class="st">"</span><span class="va">$dir</span><span class="st">"</span> <span class="at">-maxdepth</span> 1 <span class="at">-type</span> d <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">subdir</span><span class="kw">;</span> <span class="cf">do</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Uses <code>find</code> to locate <strong>all immediate subdirectories</strong> (ignoring files) inside <code>teaching/</code> and <code>projects/</code>.</li>
+<li><code>-maxdepth 1</code> ensures <strong>only the first-level directories</strong> are processed.</li>
+<li><code>-type d</code> filters for <strong>directories only</strong>.</li>
+<li>The <code>while read -r subdir; do</code> loop <strong>iterates through each directory found</strong>.</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Remove leading `_` from directory names</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>        <span class="va">clean_subdir</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$subdir</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|/_|/|g'</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|^_||'</span><span class="va">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Uses <code>sed</code> (stream editor) to <strong>remove leading underscores (<code>_</code>)</strong> from directory names:
+<ul>
+<li><code>s|/_|/|g</code> → replaces <code>/_</code> with <code>/</code> (removes <code>_</code> when it’s part of a path).</li>
+<li><code>s|^_||</code> → removes <code>_</code> if it’s at the start of the name.</li>
+</ul></li>
+</ul>
+<p>For example:</p>
+<pre><code>teaching/_data-analysis → teaching/data-analysis
+projects/_equity-post-HCT-survival-predictions → projects/equity-post-HCT-survival-predictions</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Construct the corresponding directory inside docs/</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>        <span class="va">newdir</span><span class="op">=</span><span class="st">"docs/</span><span class="va">$clean_subdir</span><span class="st">"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$newdir</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Creates a <strong>matching directory structure inside <code>docs/</code></strong>, but without <code>_</code>.<br>
+</li>
+<li><code>mkdir -p</code> ensures <strong>it only creates directories if they don’t already exist</strong>.</li>
+</ul>
+<hr>
+</section>
+<section id="step-3-copy-files-from-docs-folders-in-teaching-and-projects" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-copy-files-from-docs-folders-in-teaching-and-projects"><strong>Step 3: Copy Files from <code>/docs/</code> folders in <code>teaching/</code> and <code>projects/</code></strong></h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Copy files from `teaching/*/docs/` and `projects/*/docs/` to the corresponding location in `docs/`</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Copying files..."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Prints a message to indicate that <strong>files are now being copied</strong>.</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> teaching projects <span class="at">-maxdepth</span> 2 <span class="at">-type</span> d <span class="at">-name</span> <span class="st">"docs"</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">source_dir</span><span class="kw">;</span> <span class="cf">do</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Uses <code>find</code> to locate <strong>all <code>docs/</code> subdirectories</strong> inside <code>teaching/</code> and <code>projects/</code>, up to <strong>two levels deep</strong>.</li>
+<li><code>-maxdepth 2</code> ensures it finds <code>docs/</code> only inside first-level subdirectories (e.g., <code>teaching/_data-analysis/docs/</code>).</li>
+<li><code>-type d -name "docs"</code> ensures that <strong>only directories named <code>docs</code></strong> are selected.</li>
+<li><code>while read -r source_dir; do</code> loops over each <code>docs/</code> folder found.</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Determine the parent directory (e.g., teaching/_data-analysis/docs → teaching/_data-analysis)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">parent_dir</span><span class="op">=</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">"</span><span class="va">$source_dir</span><span class="st">"</span><span class="va">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Gets the <strong>parent directory</strong> of <code>docs/</code>, so we know where the files originally belong.
+<ul>
+<li><p>Example:</p>
+<pre><code>teaching/_data-analysis/docs → teaching/_data-analysis</code></pre></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Remove leading `_` from parent directory name</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">clean_subdir</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$parent_dir</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|/_|/|g'</span> <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|^_||'</span><span class="va">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p><strong>Removes <code>_</code></strong> from the parent directory name, just like in Step 2.</p></li>
+<li><p>Example transformation:</p>
+<pre><code>teaching/_data-analysis → teaching/data-analysis</code></pre></li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the target directory in `docs/`</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">target_dir</span><span class="op">=</span><span class="st">"docs/</span><span class="va">$clean_subdir</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Defines where the files <strong>should be copied</strong> inside <code>docs/</code>.</li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Copy files if the source directory is not empty</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-d</span> <span class="st">"</span><span class="va">$source_dir</span><span class="st">"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>Checks if <code>docs/</code> exists</strong> before attempting to copy files.</li>
+</ul>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cp</span> <span class="at">-r</span> <span class="st">"</span><span class="va">$source_dir</span><span class="st">"</span>/<span class="pp">*</span> <span class="st">"</span><span class="va">$target_dir</span><span class="st">"</span>/ <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">||</span> <span class="fu">true</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Copies <strong>all files</strong> from the source <code>docs/</code> folder into the <strong>corresponding <code>docs/</code> directory</strong>.</li>
+<li><code>cp -r</code> ensures it copies <strong>all files and subdirectories</strong>.</li>
+<li><code>2&gt;/dev/null || true</code>:
+<ul>
+<li>Redirects errors (e.g., if <code>docs/</code> is empty) to <strong>prevent script failure</strong>.</li>
+<li>The <code>|| true</code> ensures the script <strong>continues running even if no files exist</strong>.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="st">"Copied files from </span><span class="va">$source_dir</span><span class="st"> to </span><span class="va">$target_dir</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Prints a confirmation message each time files are copied.</li>
+</ul>
+<hr>
+</section>
+<section id="final-step-script-completion-message" class="level3">
+<h3 class="anchored" data-anchor-id="final-step-script-completion-message"><strong>Final Step: Script Completion Message</strong></h3>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Closes both <code>while</code> and <code>for</code> loops.</li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Build process completed successfully!"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Prints a final message indicating <strong>the script finished successfully</strong>.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="summary-of-what-the-script-does" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-what-the-script-does"><strong>Summary of What the Script Does</strong></h2>
+<ol type="1">
+<li><strong>Renders the Quarto project</strong> (<code>quarto render</code>).</li>
+<li><strong>Creates directories inside <code>docs/</code></strong>, ensuring that <code>_</code> is removed from names.</li>
+<li><strong>Finds all <code>docs/</code> folders inside <code>teaching/</code> and <code>projects/</code></strong>.</li>
+<li><strong>Copies files from those <code>docs/</code> folders into the correct <code>docs/</code> directory</strong>.</li>
+<li><strong>Ensures the entire process runs smoothly, even if some folders are empty</strong>.</li>
+</ol>
+<hr>
+</section>
+<section id="example-before-after-running-the-script" class="level2">
+<h2 class="anchored" data-anchor-id="example-before-after-running-the-script"><strong>Example: Before &amp; After Running the Script</strong></h2>
+<section id="before" class="level3">
+<h3 class="anchored" data-anchor-id="before"><strong>Before</strong></h3>
+<pre><code>teaching/
+  _data-analysis/
+    docs/
+      file1.html
+      file2.pdf
+  _statistics/
+    docs/
+      report.md
+projects/
+  _equity-post-HCT-survival-predictions/
+    docs/
+      analysis.csv</code></pre>
+</section>
+<section id="after" class="level3">
+<h3 class="anchored" data-anchor-id="after"><strong>After</strong></h3>
+<pre><code>docs/
+  teaching/
+    data-analysis/
+      file1.html
+      file2.pdf
+    statistics/
+      report.md
+  projects/
+    equity-post-HCT-survival-predictions/
+      analysis.csv</code></pre>
+<p>✅ <strong>Files are copied instead of moved</strong><br>
+✅ <strong>Underscores <code>_</code> are removed from directory names</strong><br>
+✅ <strong>Directory structure is maintained</strong></p>
+<hr>
+</section>
+<section id="final-thoughts-1" class="level3">
+<h3 class="anchored" data-anchor-id="final-thoughts-1"><strong>Final Thoughts</strong></h3>
+<p>This script is now <strong>fully optimized, efficient, and robust</strong>. 🚀<br>
+If you ever need additional tweaks, let me know! 😊</p>
 
 
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
