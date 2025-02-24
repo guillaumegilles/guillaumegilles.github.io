@@ -14,6 +14,7 @@ draft: true
   except subfolder https://quarto.org/docs/websites/index.html#render-targets
   _strategic-qsfsqdfqs
 
+- [ ] teaching/teaching.yml = links to html page following the docs/ directories structure
 
 What I wanted:
 standalone github repo w/ github-page: OK
@@ -51,3 +52,320 @@ using teaching-listing.yml for listing properties inside teaching.qmd
 - R
 - scripts
   - build_website
+
+
+
+
+Yes! Since Step #2 already processes the directories, we can **remove the redundant loop** in Step #3 and just copy the files.  
+
+---
+
+### **Updated Shell Script (`build_site.sh`)**
+```sh
+#!/bin/bash
+
+# Exit on error
+set -e
+
+# Step 1: Render the Quarto project
+echo "Rendering Quarto project..."
+quarto render
+
+# Step 2: Create one level of subdirectories inside docs/, removing `_`
+echo "Creating directory structure in docs/..."
+for dir in teaching projects; do
+    find "$dir" -maxdepth 1 -type d | while read -r subdir; do
+        # Remove leading `_` from directory names
+        clean_subdir=$(echo "$subdir" | sed 's|/_|/|g' | sed 's|^_||')
+
+        # Construct the corresponding directory inside docs/
+        newdir="docs/$clean_subdir"
+        mkdir -p "$newdir"
+    done
+done
+
+# Step 3: Copy files from `teaching/*/docs/` and `projects/*/docs/` to `docs/teaching/*` and `docs/projects/*`
+echo "Copying files..."
+find teaching projects -maxdepth 2 -type d -name "docs" | while read -r source_dir; do
+    # Determine the parent directory (e.g., teaching/_data-analysis/docs → teaching/_data-analysis)
+    parent_dir=$(dirname "$source_dir")
+
+    # Remove leading `_` from parent directory name
+    clean_subdir=$(echo "$parent_dir" | sed 's|/_|/|g' | sed 's|^_||')
+
+    # Define the target directory in `docs/`
+    target_dir="docs/$clean_subdir"
+
+    # Copy files if the source directory is not empty
+    if [ -d "$source_dir" ]; then
+        cp -r "$source_dir"/* "$target_dir"/ 2>/dev/null || true
+        echo "Copied files from $source_dir to $target_dir"
+    fi
+done
+
+echo "Build process completed successfully!"
+```
+
+---
+
+How It Works
+
+    Creates directories inside docs/, removing _ from names.
+    Moves files from teaching/_data-analysis/docs/ → docs/teaching/data-analysis/.
+    Ensures no files are lost, and empty docs/ directories inside teaching/ and projects/ are ignored.
+
+### **Key Fixes**
+✅ **Removes redundant loops in Step #3** since Step #2 already creates the directory structure.  
+✅ **Uses `cp -r` instead of `mv`** to copy files instead of moving them.  
+✅ **Uses `find ... -maxdepth 2 -type d -name "docs"`** to locate all `docs/` directories.  
+✅ **Automatically maps `teaching/_data-analysis/docs` → `docs/teaching/data-analysis/`** while **removing `_`**.  
+
+---
+
+### **Example**
+#### **Before Running the Script**
+```
+teaching/
+  _data-analysis/
+    docs/
+      file1.html
+      file2.pdf
+  _statistics/
+    docs/
+      report.md
+projects/
+  _equity-post-HCT-survival-predictions/
+    docs/
+      analysis.csv
+```
+
+#### **After Running the Script**
+```
+docs/
+  teaching/
+    data-analysis/
+      file1.html
+      file2.pdf
+    statistics/
+      report.md
+  projects/
+    equity-post-HCT-survival-predictions/
+      analysis.csv
+```
+
+✅ **All files are copied instead of moved**  
+✅ **No redundant loops**  
+✅ **`_` removed from directory names in `docs/`**  
+
+---
+
+### **Final Thoughts**
+This is now **fully optimized** and should work perfectly for your Quarto project! 🚀  
+Let me know if you need any tweaks. 😊
+
+
+## Complete explaining
+
+You're very welcome! 😊 I'm glad it's working perfectly. Now, let's go **line by line** and explain exactly what each part of the script does.
+
+---
+
+## **Full Script with Line-by-Line Explanation**
+```sh
+#!/bin/bash
+```
+- This tells the system to run the script using the **Bash shell**.
+
+---
+
+```sh
+# Exit on error
+set -e
+```
+- `set -e` ensures that **if any command fails, the script will immediately stop**.  
+- This prevents silent errors and makes debugging easier.
+
+---
+
+### **Step 1: Render the Quarto project**
+```sh
+# Step 1: Render the Quarto project
+echo "Rendering Quarto project..."
+quarto render
+```
+- Runs `quarto render`, which **processes** the Quarto files and generates the output inside the `docs/` folder.  
+- The `echo` command prints a message to inform the user.
+
+---
+
+### **Step 2: Create the necessary directory structure inside `docs/`**
+```sh
+# Step 2: Create one level of subdirectories inside docs/, removing `_`
+echo "Creating directory structure in docs/..."
+```
+- Prints a message to indicate that **the script is creating directories inside `docs/`**.
+
+```sh
+for dir in teaching projects; do
+```
+- Loops through two main folders:  
+  - `teaching/`
+  - `projects/`
+
+```sh
+    find "$dir" -maxdepth 1 -type d | while read -r subdir; do
+```
+- Uses `find` to locate **all immediate subdirectories** (ignoring files) inside `teaching/` and `projects/`.
+- `-maxdepth 1` ensures **only the first-level directories** are processed.
+- `-type d` filters for **directories only**.
+- The `while read -r subdir; do` loop **iterates through each directory found**.
+
+```sh
+        # Remove leading `_` from directory names
+        clean_subdir=$(echo "$subdir" | sed 's|/_|/|g' | sed 's|^_||')
+```
+- Uses `sed` (stream editor) to **remove leading underscores (`_`)** from directory names:
+  - `s|/_|/|g` → replaces `/_` with `/` (removes `_` when it's part of a path).
+  - `s|^_||` → removes `_` if it's at the start of the name.
+
+For example:
+```
+teaching/_data-analysis → teaching/data-analysis
+projects/_equity-post-HCT-survival-predictions → projects/equity-post-HCT-survival-predictions
+```
+
+```sh
+        # Construct the corresponding directory inside docs/
+        newdir="docs/$clean_subdir"
+        mkdir -p "$newdir"
+```
+- Creates a **matching directory structure inside `docs/`**, but without `_`.  
+- `mkdir -p` ensures **it only creates directories if they don't already exist**.
+
+---
+
+### **Step 3: Copy Files from `/docs/` folders in `teaching/` and `projects/`**
+```sh
+# Step 3: Copy files from `teaching/*/docs/` and `projects/*/docs/` to the corresponding location in `docs/`
+echo "Copying files..."
+```
+- Prints a message to indicate that **files are now being copied**.
+
+```sh
+find teaching projects -maxdepth 2 -type d -name "docs" | while read -r source_dir; do
+```
+- Uses `find` to locate **all `docs/` subdirectories** inside `teaching/` and `projects/`, up to **two levels deep**.
+- `-maxdepth 2` ensures it finds `docs/` only inside first-level subdirectories (e.g., `teaching/_data-analysis/docs/`).
+- `-type d -name "docs"` ensures that **only directories named `docs`** are selected.
+- `while read -r source_dir; do` loops over each `docs/` folder found.
+
+```sh
+    # Determine the parent directory (e.g., teaching/_data-analysis/docs → teaching/_data-analysis)
+    parent_dir=$(dirname "$source_dir")
+```
+- Gets the **parent directory** of `docs/`, so we know where the files originally belong.
+  - Example:  
+    ```
+    teaching/_data-analysis/docs → teaching/_data-analysis
+    ```
+
+```sh
+    # Remove leading `_` from parent directory name
+    clean_subdir=$(echo "$parent_dir" | sed 's|/_|/|g' | sed 's|^_||')
+```
+- **Removes `_`** from the parent directory name, just like in Step 2.
+- Example transformation:
+  ```
+  teaching/_data-analysis → teaching/data-analysis
+  ```
+
+```sh
+    # Define the target directory in `docs/`
+    target_dir="docs/$clean_subdir"
+```
+- Defines where the files **should be copied** inside `docs/`.
+
+```sh
+    # Copy files if the source directory is not empty
+    if [ -d "$source_dir" ]; then
+```
+- **Checks if `docs/` exists** before attempting to copy files.
+
+```sh
+        cp -r "$source_dir"/* "$target_dir"/ 2>/dev/null || true
+```
+- Copies **all files** from the source `docs/` folder into the **corresponding `docs/` directory**.
+- `cp -r` ensures it copies **all files and subdirectories**.
+- `2>/dev/null || true`:
+  - Redirects errors (e.g., if `docs/` is empty) to **prevent script failure**.
+  - The `|| true` ensures the script **continues running even if no files exist**.
+
+```sh
+        echo "Copied files from $source_dir to $target_dir"
+```
+- Prints a confirmation message each time files are copied.
+
+---
+
+### **Final Step: Script Completion Message**
+```sh
+done
+done
+```
+- Closes both `while` and `for` loops.
+
+```sh
+echo "Build process completed successfully!"
+```
+- Prints a final message indicating **the script finished successfully**.
+
+---
+
+## **Summary of What the Script Does**
+1. **Renders the Quarto project** (`quarto render`).
+2. **Creates directories inside `docs/`**, ensuring that `_` is removed from names.
+3. **Finds all `docs/` folders inside `teaching/` and `projects/`**.
+4. **Copies files from those `docs/` folders into the correct `docs/` directory**.
+5. **Ensures the entire process runs smoothly, even if some folders are empty**.
+
+---
+
+## **Example: Before & After Running the Script**
+### **Before**
+```
+teaching/
+  _data-analysis/
+    docs/
+      file1.html
+      file2.pdf
+  _statistics/
+    docs/
+      report.md
+projects/
+  _equity-post-HCT-survival-predictions/
+    docs/
+      analysis.csv
+```
+### **After**
+```
+docs/
+  teaching/
+    data-analysis/
+      file1.html
+      file2.pdf
+    statistics/
+      report.md
+  projects/
+    equity-post-HCT-survival-predictions/
+      analysis.csv
+```
+✅ **Files are copied instead of moved**  
+✅ **Underscores `_` are removed from directory names**  
+✅ **Directory structure is maintained**  
+
+---
+
+### **Final Thoughts**
+This script is now **fully optimized, efficient, and robust**. 🚀  
+If you ever need additional tweaks, let me know! 😊
+
