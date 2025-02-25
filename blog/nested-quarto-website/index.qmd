@@ -1,9 +1,87 @@
 ---
 title: Nested Quarto Website
+description: >
+  Quarto projects provide an easy way to build static websites. But can we take it a step further—embedding one Quarto project within another, Inception-style?
 date: 2025-01-10
 date-modified: 2025-01-17
+categories:
+  - Quarto
 draft: true
 ---
+
+[Quarto projects](https://quarto.org/docs/projects/quarto-projects.html) are directories designed to make publishing collections of documents easy, whether as a blog or a full website. They can also be used to create books and manuscripts in both print formats (PDF and MS Word) and online formats (HTML and ePub). For example, Quarto websites allow for shared navigation, consistent visual styling, customizable rendering options, and dynamic output using Python, R, Julia, and Observable.
+
+How do Quarto projects work? At the root of your directory, a YAML file (`_quarto.yml`) defines metadata that is shared across multiple documents. Any document rendered within the project directory automatically inherits this metadata. For example, a `_quarto.yml` file for a website might look like this:  
+
+```yaml
+project:
+  type: book
+
+book:
+  title: "mybook"
+  author: "Jane Doe"
+  date: "8/18/2021"
+  chapters:
+    - index.qmd
+    - intro.qmd
+...
+```
+
+It is so good that I am using Quarto everywhere I can. Personnaly, my website, teaching materials, blog posts, and projects are basically Quarto projects. My course materails are leaving as a standalone GitHub repository with GitHub Pages activated. In the meantime, my personal website is home to all my contents, but a quarto propjet requires only one YAML file, `_quarto.yml`, at the root level of the directory. Therefore the directory doesn't work, since two `_quarto.yml` at different levels.
+
+```yaml
+.
+├── blog/
+├── teaching/
+|   ├── data-description/
+    |   ├── quarto.yaml
+    |   ├── index.qmd
+├── _quarto.yml                               #  YAML configuration file for Quarto projects
+└── index.md                                  #  Website's home page
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+There you need a solution to have several quarto projectyou can also a websites where everything is integrated into an overall website: OK
+
+```yaml
+.
+├── .github
+|   └── FUNDING.yml                           # the YAML file for my GitHub Sponsor
+├── .quarto                                   # Quarto dotfile to render the website
+├── blog/
+├── docs/
+├── images/
+├── scss/
+|   ├── light.scss                    #  this file will be compiled into a CSS file to control the style of the page
+|   ├── darkscss                    #  this file will be compiled into a CSS file to control the style of the page
+├── .gitignore                                #  this file specifies intentionally untracked files that Git should ignore
+├── _quarto.yml                               #  YAML configuration file for Qaurto projects
+├── LICENSE.md                                   #  the license file
+├── README.md                                 #  Readme file
+├── build_site.sh                               #  shell script
+└── index.md                                  #  the content of the index page, using Markdown
+```
+
+_file directory edited for clarity
+
+
+
+
+------
+------
 
 1. Need to have navbar properties inside references. so only book + website :
   - website: https://quarto.org/docs/reference/projects/websites.html#navbar
@@ -15,10 +93,6 @@ draft: true
   _strategic-qsfsqdfqs
 
 - [ ] teaching/teaching.yml = links to html page following the docs/ directories structure
-
-What I wanted:
-standalone github repo w/ github-page: OK
-integrated into an overall website: OK
 
 using teaching-listing.yml for listing properties inside teaching.qmd
 
@@ -53,14 +127,12 @@ using teaching-listing.yml for listing properties inside teaching.qmd
 - scripts
   - build_website
 
-
-
-
 Yes! Since Step #2 already processes the directories, we can **remove the redundant loop** in Step #3 and just copy the files.  
 
 ---
 
 ### **Updated Shell Script (`build_site.sh`)**
+
 ```sh
 #!/bin/bash
 
