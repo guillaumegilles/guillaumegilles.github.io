@@ -2,85 +2,105 @@
 title: Nested Quarto Website
 description: >
   Quarto projects provide an easy way to build static websites. But can we take it a step further—embedding one Quarto project within another, Inception-style?
-date: 2025-01-10
-date-modified: 2025-01-17
+date: 2025-03-23
+# date-modified: 2025-03-23
 categories:
   - Quarto
-draft: true
 ---
 
 [Quarto projects](https://quarto.org/docs/projects/quarto-projects.html) are directories designed to make publishing collections of documents easy, whether as a blog or a full website. They can also be used to create books and manuscripts in both print formats (PDF and MS Word) and online formats (HTML and ePub). For example, Quarto websites allow for shared navigation, consistent visual styling, customizable rendering options, and dynamic output using Python, R, Julia, and Observable.
 
-How do Quarto projects work? At the root of your directory, a YAML file (`_quarto.yml`) defines metadata that is shared across multiple documents. Any document rendered within the project directory automatically inherits this metadata. For example, a `_quarto.yml` file for a website might look like this:  
+## How do Quarto projects work?
+
+At the root of your directory, a YAML file, `_quarto.yml`, defines metadata that is shared across multiple documents. Any document rendered within the project directory automatically inherits this metadata. The default `_quarto.yml` file for creating a website look like this:  
 
 ```yaml
 project:
-  type: book
+  type: website
 
-book:
-  title: "mybook"
-  author: "Jane Doe"
-  date: "8/18/2021"
-  chapters:
-    - index.qmd
-    - intro.qmd
-...
+website:
+  title: "today"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
 ```
 
-It is so good that I am using Quarto everywhere I can. Personnaly, my website, teaching materials, blog posts, and projects are basically Quarto projects. My course materails are leaving as a standalone GitHub repository with GitHub Pages activated. In the meantime, my personal website is home to all my contents, but a quarto propjet requires only one YAML file, `_quarto.yml`, at the root level of the directory. Therefore the directory doesn't work, since two `_quarto.yml` at different levels.
+With these basic metadata, Quarto will produce an elegant website, with a navigation bar shared across multiple documents, such as the website’s home page, `index.qmd`, and an about page, `about.qmd`.
+
+## One Website to Rule Them All: A Quarto Dilemma
+
+I love Quarto simplicity and versatility so much that I use it everywhere. My website, teaching materials, blog posts, and projects are all built with Quarto. For a coherent user experience between these different projects, my setup ensures that everything shares the same navigation bar, footer, and overall graphical identity while allowing seamless access to my home and about pages from any webpage.
+
+The goals of this workflow are:
+
+1. Hosted directly from your GitHub repository, thanks to [GitHub Pages](https://pages.github.com/)
+2. Standalone GitHub repository with GitHub Pages enabled so they are independantly accessible. 
+3. Finally, a personnal website as a central hub for all my online contents.
+
+In order to achieve this goal, `/home/guillaume/website/` directory on my local machine look like this (_edited for clarity_):
+
+```md
+.
+├── _quarto.yml                             # Root YAML configuration file for the Quarto project
+├── blog/                                   # Directory for blog posts
+├── projects/                               # Directory containing various projects
+│   ├── machine-learning/                   # Machine Learning project
+│   │   ├── _quarto.yml                     # Quarto configuration specific to this project
+│   │   ├── …                               # Other project files
+├── teaching/                               # Directory storing subdirectories for different courses
+│   ├── data-description/                   # Data Description course
+│   │   ├── _quarto.yml                     # Quarto configuration for this course
+│   │   ├── …                               # Other course files
+│   ├── management-information-system/      # Management Information System course
+│   │   ├── _quarto.yml                     # Quarto configuration for this course
+│   │   ├── …                               # Other course files
+└── index.md                                # Website's home page
+```
+
+As you can see, it contains a `_quarto.yml` at the root level for my website defining
+
+several subdirectorires, each with its own independent `_quarto.yml` metadata file. Since a Quarto project requires a single `_quarto.yml` file at the root of the directory, having multiple `_quarto.yml` files at different levels causes conflicts, making the directory structure unworkable.
+
+To host all my Quarto projects within my personal website, I needed to find a workaround.
+
+### Prevent Rendering of Subdirectory Projects  
+
+The first step is to prevent subdirectories from being rendered. Fortunately, the Quarto developers have implemented a simple yet effective feature: any file or directory prefixed with `_` is ignored during the rendering stage of the `quarto render` command.
 
 ```yaml
 .
-├── blog/
-├── teaching/
-|   ├── data-description/
-    |   ├── quarto.yaml
-    |   ├── index.qmd
-├── _quarto.yml                               #  YAML configuration file for Quarto projects
-└── index.md                                  #  Website's home page
+├── _quarto.yml                             # Root YAML configuration file for the Quarto project
+├── blog/                                   # Directory for blog posts
+├── projects/                               # Directory containing various projects
+│   ├── _machine-learning/                  # Machine Learning project
+│   │   ├── _quarto.yml                     # Quarto configuration specific to this project
+│   │   ├── …                               # Other project files
+├── teaching/                               # Directory storing subdirectories for different courses
+│   ├── _data-description/                  # Data Description course
+│   │   ├── _quarto.yml                     # Quarto configuration for this course
+│   │   ├── …                               # Other course files
+│   ├── _management-information-system/     # Management Information System course
+│   │   ├── _quarto.yml                     # Quarto configuration for this course
+│   │   ├── …                               # Other course files
+└── index.md                                # Website's home page
 ```
 
+### Rendering independant subdirectories
+
+In my example, `_machine-learning/` or `_management-information-system/` are independant projects with multiple files and their own metadata YAML file. To ensure a coherent user experience inside my website, I needed to make sure their metadata will match the directory structure they will be living after being rendered by Qaurto.
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-There you need a solution to have several quarto projectyou can also a websites where everything is integrated into an overall website: OK
-
-```yaml
-.
-├── .github
-|   └── FUNDING.yml                           # the YAML file for my GitHub Sponsor
-├── .quarto                                   # Quarto dotfile to render the website
-├── blog/
-├── docs/
-├── images/
-├── scss/
-|   ├── light.scss                    #  this file will be compiled into a CSS file to control the style of the page
-|   ├── darkscss                    #  this file will be compiled into a CSS file to control the style of the page
-├── .gitignore                                #  this file specifies intentionally untracked files that Git should ignore
-├── _quarto.yml                               #  YAML configuration file for Qaurto projects
-├── LICENSE.md                                   #  the license file
-├── README.md                                 #  Readme file
-├── build_site.sh                               #  shell script
-└── index.md                                  #  the content of the index page, using Markdown
-```
-
-_file directory edited for clarity
-
-
-
-
-------
 ------
 
 1. Need to have navbar properties inside references. so only book + website :
