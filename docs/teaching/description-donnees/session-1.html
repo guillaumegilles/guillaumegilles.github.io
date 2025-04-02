@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Guillaume Gilles">
 
-<title>MS02-001-G Description de données - 1. Introduction aux statistiques descriptives</title>
+<title>MS02-001-G Description de données - Session 1 - Introduction aux statistiques descriptives</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -78,6 +79,35 @@ gtag('js', new Date());
 gtag('config', 'G-6BXJC408ED', { 'anonymize_ip': true});
 </script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -125,7 +155,7 @@ gtag('config', 'G-6BXJC408ED', { 'anonymize_ip': true});
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./session-1.html">Cours</a></li><li class="breadcrumb-item"><a href="./session-1.html">1. Introduction aux statistiques descriptives</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./session-1.html">Cours</a></li><li class="breadcrumb-item"><a href="./session-1.html">Session 1 - Introduction aux statistiques descriptives</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -190,7 +220,7 @@ gtag('config', 'G-6BXJC408ED', { 'anonymize_ip': true});
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./session-1.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">1. Introduction aux statistiques descriptives</span></a>
+ <span class="menu-text">Session 1 - Introduction aux statistiques descriptives</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -226,13 +256,13 @@ gtag('config', 'G-6BXJC408ED', { 'anonymize_ip': true});
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./session-7.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">7. Dispersion</span></a>
+ <span class="menu-text">7. Les indicateurs de dispersion</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./session-8.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">8. Distribution</span></a>
+ <span class="menu-text">8. Indicateurs de Forme</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -295,21 +325,64 @@ gtag('config', 'G-6BXJC408ED', { 'anonymize_ip': true});
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#terminologie" id="toc-terminologie" class="nav-link active" data-scroll-target="#terminologie">Terminologie</a>
+  <ul class="collapse">
+  <li><a href="#population" id="toc-population" class="nav-link" data-scroll-target="#population">Population</a></li>
+  <li><a href="#individu-observation" id="toc-individu-observation" class="nav-link" data-scroll-target="#individu-observation">Individu, Observation</a></li>
+  <li><a href="#echantillon" id="toc-echantillon" class="nav-link" data-scroll-target="#echantillon">Echantillon</a></li>
+  <li><a href="#observation" id="toc-observation" class="nav-link" data-scroll-target="#observation">Observation</a></li>
+  <li><a href="#variable" id="toc-variable" class="nav-link" data-scroll-target="#variable">Variable</a></li>
+  </ul></li>
+  <li><a href="#séries-statistiques" id="toc-séries-statistiques" class="nav-link" data-scroll-target="#séries-statistiques">Séries statistiques</a>
+  <ul class="collapse">
+  <li><a href="#terminologie-exemples" id="toc-terminologie-exemples" class="nav-link" data-scroll-target="#terminologie-exemples">Terminologie : Exemples</a>
+  <ul class="collapse">
+  <li><a href="#trouver-la-nature-des-variables" id="toc-trouver-la-nature-des-variables" class="nav-link" data-scroll-target="#trouver-la-nature-des-variables">Trouver la nature des variables :</a></li>
+  </ul></li>
+  <li><a href="#réponses---nature-des-variables" id="toc-réponses---nature-des-variables" class="nav-link" data-scroll-target="#réponses---nature-des-variables">Réponses - Nature des variables</a></li>
+  </ul></li>
+  <li><a href="#représentation-des-données" id="toc-représentation-des-données" class="nav-link" data-scroll-target="#représentation-des-données">Représentation des données</a>
+  <ul class="collapse">
+  <li><a href="#synthèse-par-tableau" id="toc-synthèse-par-tableau" class="nav-link" data-scroll-target="#synthèse-par-tableau">Synthèse par tableau</a></li>
+  <li><a href="#synthèse-des-données-continues" id="toc-synthèse-des-données-continues" class="nav-link" data-scroll-target="#synthèse-des-données-continues">Synthèse des données continues</a>
+  <ul class="collapse">
+  <li><a href="#observations" id="toc-observations" class="nav-link" data-scroll-target="#observations">Observations</a></li>
+  <li><a href="#solution" id="toc-solution" class="nav-link" data-scroll-target="#solution">Solution</a></li>
+  </ul></li>
+  <li><a href="#exemple---données-continues" id="toc-exemple---données-continues" class="nav-link" data-scroll-target="#exemple---données-continues">Exemple - Données continues</a></li>
+  </ul></li>
+  <li><a href="#applications-pratiques" id="toc-applications-pratiques" class="nav-link" data-scroll-target="#applications-pratiques">Applications pratiques</a>
+  <ul class="collapse">
+  <li><a href="#retour-aux-exemples" id="toc-retour-aux-exemples" class="nav-link" data-scroll-target="#retour-aux-exemples">Retour aux exemples</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#remarque-finale" id="toc-remarque-finale" class="nav-link" data-scroll-target="#remarque-finale">Remarque finale</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content column-body" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./session-1.html">Cours</a></li><li class="breadcrumb-item"><a href="./session-1.html">1. Introduction aux statistiques descriptives</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./session-1.html">Cours</a></li><li class="breadcrumb-item"><a href="./session-1.html">Session 1 - Introduction aux statistiques descriptives</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">1. Introduction aux statistiques descriptives</h1>
+<h1 class="title">Session 1 - Introduction aux statistiques descriptives</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-right">
+<div class="quarto-title-meta column-body">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Guillaume Gilles </p>
+          </div>
+  </div>
     
   
     
@@ -320,8 +393,124 @@ gtag('config', 'G-6BXJC408ED', { 'anonymize_ip': true});
 </header>
 
 
+<section id="terminologie" class="level1">
+<h1>Terminologie</h1>
+<section id="population" class="level3">
+<h3 class="anchored" data-anchor-id="population">Population</h3>
+<p>Un ensemble d’éléments partageant une ou plusieurs caractéristiques qui servent à les regrouper. Une population est dite <strong>finie</strong> si nous pouvons déterminer le nombre exact de ses individus, sinon elle est dite <strong>infinie</strong>.</p>
+<p>La notation mathématiques de la Population est <span class="math inline">\(N\)</span>, par exemple <span class="math inline">\(N = 100\)</span> signifie que la population contient 100 individus.</p>
+</section>
+<section id="individu-observation" class="level3">
+<h3 class="anchored" data-anchor-id="individu-observation">Individu, Observation</h3>
+<p>Un élément de la population</p>
+<p>La notation mathématiques pour représenter un individu est <span class="math inline">\(i\)</span>, où <span class="math inline">\(i\)</span> est un indice indiquant sa position dans l’ensemblme des observations. Ainsi, <span class="math inline">\(X_4\)</span> désigne le 4e individu de la population</p>
+</section>
+<section id="echantillon" class="level3">
+<h3 class="anchored" data-anchor-id="echantillon">Echantillon</h3>
+</section>
+<section id="observation" class="level3">
+<h3 class="anchored" data-anchor-id="observation">Observation</h3>
+</section>
+<section id="variable" class="level3">
+<h3 class="anchored" data-anchor-id="variable">Variable</h3>
+</section>
+</section>
+<section id="séries-statistiques" class="level1">
+<h1>Séries statistiques</h1>
+<hr>
+<section id="terminologie-exemples" class="level2">
+<h2 class="anchored" data-anchor-id="terminologie-exemples">Terminologie : Exemples</h2>
+<section id="trouver-la-nature-des-variables" class="level3">
+<h3 class="anchored" data-anchor-id="trouver-la-nature-des-variables">Trouver la nature des variables :</h3>
+<ol type="1">
+<li>La couleur des cheveux des clients d’un salon de coiffure</li>
+<li>Le niveau de satisfaction des clients d’un opérateur téléphonique</li>
+<li>Le nombre de personnes dans les foyers Parisiens</li>
+<li>Le temps d’attente au téléphone avant d’être pris en charge par un service technique</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="réponses---nature-des-variables" class="level2">
+<h2 class="anchored" data-anchor-id="réponses---nature-des-variables">Réponses - Nature des variables</h2>
+<ol type="1">
+<li><strong>Couleur des cheveux</strong> : Qualitative nominale</li>
+<li><strong>Niveau de satisfaction</strong> : Qualitative ordinale</li>
+<li><strong>Nombre de personnes dans un foyer</strong> : Quantitative discrète</li>
+<li><strong>Temps d’attente</strong> : Quantitative continue</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="représentation-des-données" class="level1">
+<h1>Représentation des données</h1>
+<section id="synthèse-par-tableau" class="level2">
+<h2 class="anchored" data-anchor-id="synthèse-par-tableau">Synthèse par tableau</h2>
+<ul>
+<li>Une modalité est une catégorie des réponses obtenues / observées.</li>
+<li>Il existe ( k ) modalités, où ( k ) est un entier entre 1 et ( n ).</li>
+<li>Les modalités sont rangées par ordre croissant, sauf pour les variables qualitatives nominales.</li>
+</ul>
+<hr>
+</section>
+<section id="synthèse-des-données-continues" class="level2">
+<h2 class="anchored" data-anchor-id="synthèse-des-données-continues">Synthèse des données continues</h2>
+<section id="observations" class="level3">
+<h3 class="anchored" data-anchor-id="observations">Observations</h3>
+<ul>
+<li>Les observations sont souvent uniques.</li>
+<li>La synthèse par tableau n’apporte pas de valeur ajoutée directe.</li>
+</ul>
+</section>
+<section id="solution" class="level3">
+<h3 class="anchored" data-anchor-id="solution">Solution</h3>
+<ul>
+<li>Découpage ou regroupement des données en classes ou intervalles.</li>
+<li>Méthodes de découpage :
+<ul>
+<li>Mathématiques</li>
+<li>Classes prédéfinies en fonction du contexte ou des informations préalables.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="exemple---données-continues" class="level2">
+<h2 class="anchored" data-anchor-id="exemple---données-continues">Exemple - Données continues</h2>
+<ul>
+<li>Découpage des données en fonction des modalités prédéfinies.</li>
+<li>Illustration des données discrétisées.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="applications-pratiques" class="level1">
+<h1>Applications pratiques</h1>
+<section id="retour-aux-exemples" class="level3">
+<h3 class="anchored" data-anchor-id="retour-aux-exemples">Retour aux exemples</h3>
+<ul>
+<li>Résolution des exemples discutés dans les diapositives précédentes.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<ul>
+<li>Importance de comprendre la nature des variables.</li>
+<li>Représentation des données adaptée au type de variable.</li>
+<li>Application des outils pour synthétiser et interpréter les données.</li>
+</ul>
+<hr>
+</section>
+<section id="remarque-finale" class="level1">
+<h1>Remarque finale</h1>
+<ul>
+<li>La statistique descriptive est une première étape essentielle pour analyser et interpréter les données.</li>
+</ul>
 
 
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -706,7 +895,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
       <a href="./syllabus.html" class="pagination-link  aria-label=" syllabus"="">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Syllabus</span>
