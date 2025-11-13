@@ -1,0 +1,373 @@
+---
+title: "1️⃣  Calculs mathématiques essentiels pour l’économie et la gestion"
+abstract: |
+  Maîtriser les opérations et propriétés fondamentales des nombres réels,
+  dans une optique appliquée à l’économie et à la gestion.
+date: 2025-09-17
+execute:
+  echo: false
+filters:
+  - shinylive
+---
+
+  Les mathématiques constituent un langage universel indispensable en
+économie et en gestion. Derrière chaque décision de production, de prix,
+d’investissement ou de financement se cachent des calculs, parfois
+simples, parfois plus complexes, mais toujours basés sur les règles
+fondamentales des nombres réels. La maîtrise de ces bases n’est donc pas
+seulement une question scolaire : elle est un outil quotidien de
+raisonnement et d’efficacité professionnelle.
+
+  Dans ce cours, nous allons revisiter les **opérations essentielles**
+: priorités des calculs, valeur absolue, puissances, racines carrées,
+fractions, pourcentages, indices et proportionnalité. L’objectif n’est
+pas seulement de connaître les règles théoriques, mais surtout de
+comprendre leur **utilité dans des situations concrètes** de la vie
+économique et de la gestion d’entreprise.
+
+  Chaque notion sera accompagnée d’exemples tirés de contextes réels
+(salaires, remises, croissance, qualité de production…) et d’exercices
+progressifs pour s’entraîner. À la fin de cette leçon, vous disposerez
+d’un socle solide pour aborder avec assurance les calculs appliqués à
+l’économie et à la gestion.
+
+## 🧰 Outils mathématiques abordés
+
+- [Priorité des opérations arithmétiques](#priorité-des-opérations)
+- [Valeur absolue](#valeur-absolue)
+- Puissances
+- Racine carrée
+- Fractions
+- Pourcentages et indices
+- Règle de proportionnalité
+
+## 1. Priorité des opérations
+
+  La priorité des opérations est une règle fondamentale des
+mathématiques qui permet de résoudre correctement les expressions
+numériques. En effet, l’ordre dans lequel on effectue les calculs peut
+totalement changer le résultat : on ne peut donc pas additionner,
+multiplier ou élever à une puissance dans n’importe quel ordre.
+
+  Pour éviter les erreurs, on applique une hiérarchie stricte : d’abord
+les parenthèses, puis les puissances et racines, ensuite les
+multiplications et divisions (de gauche à droite), et enfin les
+additions et soustractions (de gauche à droite). Cette règle, parfois
+résumée par l’acronyme **PEMDAS**, est indispensable aussi bien pour
+les calculs manuels que pour l’utilisation d’une calculatrice ou d’un
+tableur.
+
+  Dans un contexte économique ou de gestion, savoir respecter ces
+priorités est crucial : une simple erreur de parenthèse peut
+transformer un bénéfice en perte ou fausser une estimation de coûts.
+
+### Rappel des règles
+
+La mnémotechnique, **PEMDAS** permet de mémoriser simplement l'ordre
+des opérations :
+
+1. **P**arenthèses ($()$, $[]$, ${}$)
+2. **E**xposants (puissances et racines)
+3. **M**ultiplications et **D**ivisions (de gauche à droite)
+4. **A**dditions et **S**oustractions (de gauche à droite)
+
+::: {.callout-caution collapse="true"}
+## ⚠️ Attention
+
+La calculatrice n’applique pas toujours correctement les priorités,
+surtout sans parenthèses !
+:::
+
+### Exemple de la vie réelle
+
+Vous avez travaillé $20$ heures rémunérées à $30$ €/h et $40$ heures
+rémunérées à $55$ €/h. Le taux pour passer du brut au net est de $0,8$.
+**Calculez votre revenu total net en euros**.
+
+$$
+0,8 * (20 * 30 + 40 * 55) = 2240
+$$
+
+### Exercices
+
+```{shinylive}
+from shiny import reactive, render
+from shiny.express import input, ui
+
+ui.input_action_button("action_button", "Action")  
+
+@render.text()
+@reactive.event(input.action_button)
+def counter():
+    return f"{input.action_button()}"
+```
+
+```{shinylive}
+
+from shiny import App, ui, reactive, render
+
+# Define questions with LaTeX formatting
+questions = [
+    {"question": r"What is $8 / 2 * (2 + 2)$?", "answer": "16"},
+    {"question": r"What is $4 * (5 - (9 - 2))$?", "answer": "-8"},
+    {"question": r"What is $10 + 2 * (-1) × 2^3$?", "answer": "-6"},
+    {"question": r"What is $(10 + 2 * (-1) * 2^3 - 4 * (5 - (9 - 2)))$?", "answer": "2"},
+    {"question": r"What is $(10+2×(−1)×2^3−4×(5−(9−2)))÷8 $?", "answer": "1/4"},
+    {"question": r"Ajouter des parenthéèses pour que l'égalité soit vraie : 3 + 5 × 2 = 16", "answer": "(3 + 5) × 2 = 16"},
+    {"question": r"Ajouter des parenthéèses pour que l'égalité soit vraie : 10 - 2 + 4 = 4", "answer": "10 - (2 + 4) = 4"},
+    {"question": r"[12 - (3 + 2^3 * (4 - 1)) / 3] * 2 - 5^2", "answer": "-19"},
+    ]
+
+# Reactive state
+current_index = reactive.Value(0)
+score = reactive.Value(0)
+feedback_text = reactive.Value("")
+show_next_button = reactive.Value(False)
+
+# UI
+app_ui = ui.page_fluid(
+    ui.h2("🧮 Math Quiz"),
+    ui.output_ui("question_ui"),
+    ui.input_text("user_answer", "Your answer:", ""),
+    ui.input_action_button("check", "Check Answer"),
+    ui.output_ui("feedback_ui"),
+    ui.output_ui("next_button_ui"),
+    ui.hr(),
+    ui.output_ui("score_ui")
+)
+
+# Server
+def server(input, output, session):
+    @output
+    @render.ui
+    def question_ui():
+        q = questions[current_index.get()]["question"]
+        return ui.markdown(q)
+
+    @output
+    @render.ui
+    def feedback_ui():
+        return ui.markdown(feedback_text.get())
+
+    @output
+    @render.ui
+    def score_ui():
+        return ui.markdown(f"**✅ Correct answers:** {score.get()} / {len(questions)}")
+
+    @output
+    @render.ui
+    def next_button_ui():
+        if show_next_button.get() and current_index.get() < len(questions) - 1:
+            return ui.input_action_button("next", "Next Question")
+        return ui.markdown("")
+
+    @reactive.Effect
+    @reactive.event(input.check)
+    def check_answer():
+        user = input.user_answer().strip()
+        correct = questions[current_index.get()]["answer"]
+
+        if user == correct:
+            score.set(score.get() + 1)
+            feedback_text.set("✅ Correct! Click 'Next Question' to continue.")
+            show_next_button.set(True)
+        else:
+            feedback_text.set("❌ Try again.")
+            show_next_button.set(False)
+
+    @reactive.Effect
+    @reactive.event(input.next)
+    def next_question():
+        if current_index.get() < len(questions) - 1:
+            current_index.set(current_index.get() + 1)
+            feedback_text.set("")
+            show_next_button.set(False)
+
+app = App(app_ui, server)
+
+```
+
+## 2. Valeur absolue
+
+La **valeur absolue** d’un nombre réel **a**, notée $|a|$, est sa distance à zéro :
+
+- $|a| = a$ si $a ≥ 0$
+- $|a| = –a$ si $a < 0$
+
+### Quelques propriétés utiles
+
+- $|a| ≥ 0$
+- $|a| = |−a|$
+- $|a × b| = |a| × |b|$
+- $|a / b| = |a| / |b|$ (si $b ≠ 0$)
+- $|𝑎| = 0 ⟺ 𝑎 = 0$
+- $|𝑎|=|𝑏|⟺𝑎=𝑏$ ou $𝑎=−𝑏$
+- $|𝑎/𝑏|=|𝑎|/|𝑏|$ avec $b≠0$
+
+
+::: {.callout-caution collapse="true"}
+## ⚠️ Attention
+
+En général : $|a + b| ≠ |a| + |b|$
+:::
+ 
+
+### Applications
+
+#### Confort thermique
+
+Écart entre température réelle et température cible :
+
+- Matin : |T<sub>matin</sub><sup>réelle</sup> – T<sub>matin</sub><sup>cible</sup>|
+- Soir : |T<sub>soir</sub><sup>réelle</sup> – T<sub>soir</sub><sup>cible</sup>|
+- Indice d’équilibre : |écart matin – écart soir|
+
+#### Contrôle qualité (ex. plaque métallique) :
+
+* Défaut global : |L<sub>r</sub> – L<sub>c</sub>| + |l<sub>r</sub> – l<sub>c</sub>|
+* Déséquilibre : ||L<sub>r</sub> – L<sub>c</sub>| − |l<sub>r</sub> – l<sub>c</sub>||
+
+### 🎯 Exercice synthèse :
+
+Calculer :
+
+$$
+−2 × |−4 − |1 − 5|| − |(−2)^2| × |4 − 7| + |−3|^2
+$$
+
+✅ Résultat : **−19**
+
+---
+
+## 🔋 3. Puissances
+
+### 📌 Définition :
+
+Une puissance **aⁿ** représente le produit de **a** par lui-même **n** fois.
+
+### 🔧 Propriétés clés :
+
+* aⁿ × aᵐ = aⁿ⁺ᵐ
+* aⁿ / aᵐ = aⁿ⁻ᵐ
+* a⁰ = 1
+* a^(–n) = 1/aⁿ
+* (aⁿ)^m = aⁿᵐ
+* a^(1/2) = √a
+
+> ⚠️ **Attention** : aⁿ + aᵐ ≠ aⁿ⁺ᵐ
+
+### 📈 Application économique :
+
+> Croissance composée (exponentielle) : chaque croissance s’applique à une base déjà augmentée. Ex. : intérêts composés, capitalisation.
+
+### 🎯 Exercice objectif :
+
+$$
+\left( \frac{2^3 × 4^{-2} × 8}{2^{-1} × \sqrt{64} × 8} \right)^2
+$$
+
+✅ Résultat : **4**
+
+---
+
+## 🟰 4. Racine carrée
+
+### 📌 Définition :
+
+La racine carrée de **a** est le nombre positif **b** tel que b² = a.
+
+### 🔧 Propriétés utiles :
+
+* √(a × b) = √a × √b
+* √(a / b) = √a / √b
+* ⚠️ √(a + b) ≠ √a + √b
+
+---
+
+## 🍰 5. Fractions
+
+### 📌 Définition :
+
+Une fraction est une division de deux réels, notée a/b.
+
+### 🔧 Règles fondamentales :
+
+* **Addition / soustraction :**
+
+  * Si dénominateurs identiques → additionner les numérateurs
+  * Sinon → réduire au même dénominateur (PPCM recommandé)
+* **Multiplication :**
+
+  * Multiplier numérateurs entre eux et dénominateurs entre eux
+* **Division :**
+
+  * Multiplier par l’inverse de la deuxième fraction
+
+### 🎯 Exemple objectif :
+
+Calculer :
+
+$$
+\left( \frac{3}{4} + \frac{2}{3} × \left(1 − \frac{5}{6} \right) \right) ÷ \left( \frac{7}{8} − \frac{1}{2} \right)
+$$
+
+✅ Résultat : **62/27**
+
+---
+
+## 📉 6. Pourcentages & Indices
+
+### 📌 Définition :
+
+Un pourcentage est une fraction de dénominateur 100.
+
+Ex. : 25 % de 80 = (25/100) × 80 = 20
+
+### 🔁 Remises successives :
+
+> Manteau à 200 €
+>
+> * 10 % pour soldes
+> * 5 % fidélité
+> * 15 % anniversaire
+
+Prix final =
+
+$$
+200 × 0,90 × 0,95 × 0,85 = 145{,}35 \,€
+$$
+
+Remise globale = 1 – 0,72675 = **27,33 %**
+
+### 📊 Indice :
+
+$$
+\text{Indice} = \left( \frac{\text{valeur actuelle}}{\text{valeur de référence}} \right) × 100
+$$
+
+* Si indice = 100 : stabilité
+* > 100 : augmentation
+* <100 : diminution
+
+Exemple :
+Indice de prix = (145,35 / 200) × 100 = **72,675**
+
+---
+
+## 📐 7. Règle de proportionnalité
+
+### 📌 Définition :
+
+Si deux rapports sont égaux, on dit qu’il y a proportionnalité :
+
+$$
+\frac{a}{b} = \frac{c}{x} \Rightarrow x = \frac{b × c}{a}
+$$
+
+### 🔍 Application :
+
+Comparer deux produits ou remises pour un même taux proportionnel.
+
+---
+
+Souhaitez-vous que je crée également **des fiches synthétiques pour chaque notion** ou des **fiches exercices corrigées** ?
