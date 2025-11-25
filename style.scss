@@ -1,30 +1,30 @@
-
 /* ==========================================================
-   Pixel Theme for Bootstrap
-   Retro 8-bit / Pixel-Art Style
+   Clean Pixel Theme — Readable Retro Style
    ========================================================== */
 
 /*-- scss:defaults --*/
 
-// ----------------------------------------------------------
-// Color Palette (limited, saturated, high contrast)
-// ----------------------------------------------------------
+/* ----------------------------------------------------------
+   Color Palette — bright, readable, limited
+----------------------------------------------------------- */
 
 $black:  #000 !default;
 $white:  #fff !default;
 
-$gray-100: #c0c0c0 !default;
-$gray-800: #303030 !default;
+$gray-50:  #f7f7f7 !default;
+$gray-100: #eeeeee !default;
+$gray-200: #cccccc !default;
+$gray-800: #333333 !default;
 
 $blue:    #3b5dc9 !default;
 $red:     #d62411 !default;
 $green:   #2ecc40 !default;
 $yellow:  #fcd12a !default;
-$pink:    #ff77a9 !default;
-$cyan:    #00ffff !default;
+$cyan:    #00d4ff !default;
 $purple:  #9b30ff !default;
 $orange:  #ff8800 !default;
 
+/* Bootstrap theme colors */
 $primary:   $blue;
 $secondary: $gray-800;
 $success:   $green;
@@ -34,121 +34,170 @@ $info:      $cyan;
 $light:     $gray-100;
 $dark:      $black;
 
-$body-bg:   #1a1a1a    !default;
-$body-color: $gray-100 !default;
+/* Background & text (light mode for readability) */
+$body-bg:    $gray-50 !default;
+$body-color: $black !default;
 
-// ----------------------------------------------------------
-// Typography — Monospace pixel font
-// ----------------------------------------------------------
+/* ----------------------------------------------------------
+   Typography
+----------------------------------------------------------- */
 
-$web-font-path: "https://fonts.googleapis.com/css2?family=VT323&display=swap" !default;
+/* a clean retro monospace font */
+$web-font-path: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap";
 @if $web-font-path {
   @import url($web-font-path);
 }
 
-$font-family-sans-serif: "VT323", monospace !default;
-$font-size-base: 1rem !default; // Small, crisp text
+$font-family-sans-serif: "JetBrains Mono", monospace !default;
+$font-size-base: 1.05rem !default;
+$line-height-base: 1.4 !default;
 
-// ----------------------------------------------------------
-// Layout tweaks
-// ----------------------------------------------------------
-
-$enable-rounded: false !default;
+/* No harsh shadows */
 $enable-shadows: false !default;
+
+/* Pixel-ish but clean */
+$enable-rounded: false !default;
 $border-width: 2px !default;
-$spacer: 0.25rem !default;
 
-// ----------------------------------------------------------
-// Optional: neon-like accent for hover text
-// ----------------------------------------------------------
-
-$link-color: $yellow !default;
-$link-hover-color: lighten($link-color, 10%) !default;
-$link-decoration: none !default;
-
-// ----------------------------------------------------------
-// Override Bootstrap component styles
-// ----------------------------------------------------------
+/* ----------------------------------------------------------
+   Base
+----------------------------------------------------------- */
 
 body {
-  font-family: $font-family-sans-serif;
   background-color: $body-bg;
   color: $body-color;
-  image-rendering: pixelated;
-  line-height: 1.2;
-  text-shadow: 0 0 2px $green;
-  background-image: repeating-linear-gradient(
-    rgba(0,0,0,0) 0px,
-    rgba(0,0,0,0.05) 1px,
-    rgba(0,0,0,0) 2px
-  );
+  text-shadow: none;
 }
 
-/* Buttons */
-.btn {
-  border: 2px solid $black;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  background-color: $primary;
-  color: $white;
-  padding: 0.5rem 1rem;
+/* Headings: retro but minimal */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: none;
+}
+
+/* ----------------------------------------------------------
+   Links — simple 8-bit accent
+----------------------------------------------------------- */
+
+$link-color: $blue !default;
+$link-hover-color: darken($blue, 10%) !default;
+
+a {
+  color: $link-color;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
 
   &:hover {
-    background-color: darken($primary, 15%);
-    transform: translateY(1px);
+    color: $link-hover-color;
+    border-bottom: 1px solid $link-hover-color;
+  }
+}
+
+/* ----------------------------------------------------------
+   Buttons — clean retro UI
+----------------------------------------------------------- */
+
+.btn {
+  border: 2px solid $black !important;
+  border-radius: 0 !important;
+  background-color: $primary;
+  color: $white;
+  padding: 0.35rem 0.9rem;
+  font-weight: 600;
+
+  &:hover {
+    background-color: darken($primary, 10%) !important;
   }
 
   &:active {
-    background-color: darken($primary, 25%);
+    background-color: darken($primary, 20%) !important;
   }
 }
 
-/* Cards, navbars, alerts — blocky with solid outlines */
-.card, .navbar, .alert {
-  border: 2px solid $gray-800;
-  border-radius: 0 !important;
-  background-color: $gray-100;
-  box-shadow: none !important;
+/* ----------------------------------------------------------
+   Navbar — readable pixel toolbar
+----------------------------------------------------------- */
+
+.navbar {
+  background-color: $gray-200 !important;
+  border-bottom: 2px solid $black;
 }
 
-/* Inputs */
+.nav-link {
+  color: $black !important;
+  font-weight: 600;
+
+  &:hover {
+    background-color: $gray-100;
+  }
+}
+
+/* ----------------------------------------------------------
+   Cards — subtle retro window
+----------------------------------------------------------- */
+
+.card {
+  border: 2px solid $black;
+  border-radius: 0;
+  background: $white;
+}
+
+.card-header {
+  background: $gray-200;
+  border-bottom: 2px solid $black;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ----------------------------------------------------------
+   Forms — crisp & readable
+----------------------------------------------------------- */
+
 input, textarea, select {
   border: 2px solid $black;
   border-radius: 0;
   background-color: $white;
-  color: $black;
-  image-rendering: pixelated;
 
   &:focus {
-    outline: 2px solid $yellow;
-    box-shadow: none;
+    outline: 2px solid $blue;
   }
 }
 
-/* Images & sprites */
-img, canvas {
-  image-rendering: pixelated;
+/* ----------------------------------------------------------
+   Tables — simple grid lines
+----------------------------------------------------------- */
+
+.table {
+  border: 2px solid $black;
+
+  th, td {
+    border: 1px solid $black;
+    padding: 0.4rem 0.6rem;
+  }
+
+  thead {
+    background-color: $gray-200;
+    font-weight: bold;
+  }
 }
 
-/* Navbar text */
-.navbar {
-  font-size: 1.5rem;
-  text-shadow: none;
-  background-color: #303030 !important;
-  color: #fff !important;
-  border-bottom: 2px solid #000;
-}
+/* ----------------------------------------------------------
+   Utility class for pixel borders
+----------------------------------------------------------- */
 
-/* Utility class for pixel borders */
 .pixel-border {
   border: 2px solid $black;
 }
 
-/* Optional: blinking text */
-@keyframes blink {
-  50% { opacity: 0; }
-}
-.blink {
-  animation: blink 1s step-start infinite;
-}
+/* ----------------------------------------------------------
+   Pixel rendering — OPTIONAL
+   Only applied when user explicitly opts in:
+   <img class="pixel-art">
+----------------------------------------------------------- */
 
+.pixel-art {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
