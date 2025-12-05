@@ -8,10 +8,12 @@ abstract: |
   l’attribution d’une « cote » de crédit, laquelle traduit la capacité
   d’une entreprise à faire face à ses engagements financiers à un
   horizon de trois ans.
-format: closeread-html
-#    cr-section:
-#      layout: 
-#        overlay-left
+format:
+  closeread-html:
+    cr-section:
+      layout:
+        sidebar-right
+engine: ojs
 ---
 
 ## Qu'est-ce que la cote de crédit Banque de France ?
@@ -34,8 +36,17 @@ La système de cote de la Banque de France se compose de deux éléments :
 
 > Unités en **millions d’euros**.
 
-::::{.cr-section}
+:::{.cr-section}
 
+La cote d'activité indique une fourchette de chiffre d'affaires dans
+laquelle se positionne une entreprise. @cr-cote
+
+Elle est représentée par une lettre de **A**, chiffre d'affaires
+supérieur à $750$ millions d'euros.
+
+à **M**, chiffre d'affaires inférieur à $100.000$ euros.
+
+:::{#cr-cote .scale-to-fill}
 | **Cote** | **Niveau d’activité (M€)**                                                       |
 | -------- | -------------------------------------------------------------------------------- |
 | A        | ≥ 750                                                                            |
@@ -52,23 +63,23 @@ La système de cote de la Banque de France se compose de deux éléments :
 | M        | < 0,10                                                                           |
 | N        | Non significatif                                                                 |
 | X        | Chiffre d’affaires inconnu ou trop ancien (exercice clos depuis plus de 20 mois) |
-
-
-
-![Cote d'activité](cote-activite.png) @cr-cote
-
-:::{#cr-cote}
-La cote d'activité indique une fourchette de chiffre d'affaires dans
-laquelle se positionne une entreprise. Elle est représentée par une
-lettre de **A**, chiffre d'affaires supérieur à $750$ millions d'euros,
-à **M**, chiffre d'affaires inférieur à $100.000$ euros.
 :::
 
-2. **Une cote de crédit**
+::::
 
+#### 2. Une cote de crédit (capacité à honorer les engagements à 3 ans)
 
-### Cote de crédit (capacité à honorer les engagements à 3 ans)
+::::{.cr-section}
 
+La cote de crédit positione l'entreprise sur une échelle de risque de
+crédit. @cr-credit
+
+Elle est représentée par un **chiffre**, parfois nuancé par $+$ ou $-$.
+
+Par exemple, la cote de crédit $2+$ est moins risqué que la cote de
+crédit $3-$.
+
+:::{#cr-credit .scale-to-fill}
 | **Cote** | **Appréciation**      |
 | -------- | --------------------- |
 | 1+       | Excellente ++         |
@@ -93,22 +104,17 @@ lettre de **A**, chiffre d'affaires supérieur à $750$ millions d'euros,
 | 8        | Fortement compromise  |
 | P        | Défaillante           |
 | 0        | Non significative     |
-
-
-La cote de crédit positione l'entreprise sur une échelle de risque de
-crédit. Elle est représentée par une chiffre, parfois nuancé par "+" ou
-"-". Par exemple, la cote de crédit $2+$ est moins risqué que la cote
-de crédit $3-$.
-
-![Cote de crédit](cote-credit.png)
+:::
 
 ::::
 
-> Une entreprise recevant une cote Banque de France, $C1-$ réalise un
-> chiffre d'affaire compris entre $50$ et $150$ millions d'euro et
-> possède une _excellente_ situation financière.
+:::{.callout-tip}
+Une entreprise recevant une cote Banque de France, $C1-$ réalise un
+chiffre d'affaire compris entre $50$ et $150$ millions d'euro et
+possède une _excellente_ situation financière.
+:::
 
-## Pour quelle raison la Banque de France attribue-t-elle une cote
+## Pour quelle raison la Banque de France attribue-t-elle une cote ?
 
 ### ICAS
 
@@ -128,27 +134,6 @@ qui reçoivent les meilleurs cotes peuvent être mobilisées par les
 établissement de crédit auprès de l'Eurosystème en garantie des
 opérations de refinancement.
 
-```{pyhton}
-
-from diagrams import Diagram, Cluster
-from diagrams.generic.blank import Blank
-
-# Create a diagram for refinancing operation
-with Diagram("Refinancing Operation", show=False, direction="LR"):
-    borrower = Blank("Borrower")
-
-    with Cluster("Old Financing"):
-        old_lender = Blank("Old Lender")
-
-    with Cluster("New Financing"):
-        new_lender = Blank("New Lender")
-
-    # Arrows to represent refinancing flow
-    new_lender >> borrower  # New loan provided to borrower
-    borrower >> old_lender  # Borrower repays old lender using new loan
-
-```
-
 ### OEEC
 
 Le système de cotation de la Banque de France bénéficie du statut
@@ -162,27 +147,6 @@ et de mesure de la qualité de leur portefeuille de crédit aux
 entreprises. Elles permettent également la surveillance de la solidité
 des actifs des établissements de crédit par l'Autorité de Contrôle
 Prudentiel et de Résolution, ACPR.
-
-```{pyhton}
-
-from diagrams import Diagram, Cluster
-from diagrams.generic.blank import Blank
-
-# Create a diagram for refinancing operation
-with Diagram("Refinancing Operation", show=False, direction="LR"):
-    borrower = Blank("Borrower")
-
-    with Cluster("Old Financing"):
-        old_lender = Blank("Old Lender")
-
-    with Cluster("New Financing"):
-        new_lender = Blank("New Lender")
-
-    # Arrows to represent refinancing flow
-    new_lender >> borrower  # New loan provided to borrower
-    borrower >> old_lender  # Borrower repays old lender using new loan
-
-```
 
 ## Qui peut accéder à la cote
 
@@ -200,3 +164,69 @@ with Diagram("Refinancing Operation", show=False, direction="LR"):
 - https://www.ecb.europa.eu/mopo/coll/risk/ecaf/html/index.fr.html
 - https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32013R0575
 - https://www.banque-france.fr/fr/a-votre-service/entreprises/rehaussement-du-seuil-de-cotation
+
+
+
+```{ojs}
+
+// Minimal reactive OJS network for Quarto + Closeread
+// Paste this into your {ojs} cell (engine: ojs must be set in YAML)
+
+banks = [
+{ id: "Bank A", reserves: 120 },
+{ id: "Bank B", reserves: 80 },
+{ id: "Bank C", reserves: 200 }
+];
+
+// reactive toggle control (viewof so it's interactive)
+viewof loan = Inputs.toggle({ label: "Trigger Interbank Loan (A → B)", value: false });
+
+// updatedBanks is a *function* that depends on loan (reactive)
+updatedBanks = () => loan ? [
+{ id: "Bank A", reserves: 100 },
+{ id: "Bank B", reserves: 100 },
+{ id: "Bank C", reserves: 200 }
+] : banks;
+
+// network is a DOM node that re-renders whenever updatedBanks() (hence loan) changes
+network = {
+const container = html`<div></div>`;
+
+function render(data) {
+const positions = [50, 225, 400];
+let svg = `<svg width="500" height="200" xmlns="http://www.w3.org/2000/svg">`;
+
+// optional arrow marker (defined once)
+svg += `<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="black"/>
+  </marker>
+</defs>`;
+
+// nodes
+data.forEach((bank, i) => {
+  svg += `<circle cx="${positions[i]}" cy="100" r="40" stroke="black" fill="white"></circle>`;
+  svg += `<text x="${positions[i]}" y="95" text-anchor="middle" font-size="12">${bank.id}</text>`;
+  svg += `<text x="${positions[i]}" y="120" text-anchor="middle" font-size="12">Reserves: ${bank.reserves}</text>`;
+});
+
+// arrow if loan is active
+if (loan) {
+  svg += `<line x1="${positions[0] + 40}" y1="100" x2="${positions[1] - 40}" y2="100" stroke="black" stroke-width="2" marker-end="url(#arrow)"></line>`;
+}
+
+svg += `</svg>`;
+container.innerHTML = svg;
+
+}
+
+// call render once to create the reactive dependency on updatedBanks()
+render(updatedBanks());
+
+// To ensure this cell re-renders when loan changes, make a tiny reactive observer:
+// This expression depends on updatedBanks() (-> depends on loan) so Observable runtime will re-run it.
+_ = (() => { render(updatedBanks()); return null; })();
+
+return container;
+}
+```
