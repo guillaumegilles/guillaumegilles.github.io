@@ -41,3 +41,70 @@ drive human error.
 
 Python · R · Git · Data analysis · Risk awareness
 
+```{ojs}
+
+d3 = require("d3@7")
+
+// Skill data
+skills = [
+  { name: "Python", value: 90, color: "#377eb8" },
+  { name: "R", value: 75, color: "#4daf4a" },
+  { name: "JavaScript", value: 65, color: "#ff7f00" },
+  { name: "C++", value: 50, color: "#e41a1c" }
+];
+
+width = 500;
+height = 150;
+radius = 45;
+thickness = 10;
+
+// SVG container
+svg = d3.create("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+// Group for each skill
+g = svg.selectAll("g")
+  .data(skills)
+  .join("g")
+  .attr("transform", (d, i) => `translate(${80 + i * 110}, ${height / 2})`);
+
+// Background circle
+g.append("circle")
+  .attr("r", radius)
+  .attr("fill", "none")
+  .attr("stroke", "#e6e6e6")
+  .attr("stroke-width", thickness);
+
+// Arc generator
+arc = d3.arc()
+  .innerRadius(radius - thickness)
+  .outerRadius(radius)
+  .startAngle(0);
+
+// Skill arc
+g.append("path")
+  .attr("fill", d => d.color)
+  .attr("d", d =>
+    arc({ endAngle: (d.value / 100) * 2 * Math.PI })
+  );
+
+// Percentage text
+g.append("text")
+  .attr("text-anchor", "middle")
+  .attr("dy", "0.35em")
+  .style("font-size", "14px")
+  .style("font-weight", "bold")
+  .text(d => `${d.value}%`);
+
+// Label
+g.append("text")
+  .attr("text-anchor", "middle")
+  .attr("dy", "2.2em")
+  .style("font-size", "12px")
+  .text(d => d.name);
+
+svg
+
+```
+
