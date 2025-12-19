@@ -21,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -57,6 +92,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <meta cr-debug-mode="false">
 <meta cr-remove-header-space="false">
 
@@ -93,14 +130,10 @@ window.Quarto = {
 <link rel="stylesheet" href="../../site_libs/quarto-contrib/quarto-project/qmd-lab/closeread/closeread.css">
 <meta property="og:title" content="Comprendre la cotation Banque de France – skekCoon">
 <meta property="og:description" content="À la Banque de France, le terme « cotation des entreprises » désigne le processus d’analyse de la situation des entreprises qui conduit à l’attribution d’une « cote » de crédit, laquelle traduit la capacité d’une entreprise à faire face à ses engagements financiers à un horizon de trois ans.">
-<meta property="og:image" content="cote-activite.png">
 <meta property="og:site_name" content="skekCoon">
-<meta property="og:image:alt" content="Cote d’activité">
 <meta name="twitter:title" content="Comprendre la cotation Banque de France – skekCoon">
 <meta name="twitter:description" content="À la Banque de France, le terme « cotation des entreprises » désigne le processus d’analyse de la situation des entreprises qui conduit à l’attribution d’une « cote » de crédit, laquelle traduit la capacité d’une entreprise à faire face à ses engagements financiers à un horizon de trois ans.">
-<meta name="twitter:image" content="cote-activite.png">
-<meta name="twitter:image:alt" content="Cote d’activité">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -127,21 +160,10 @@ window.Quarto = {
     <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Projects</span></a>
   </li>  
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-teaching" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Teaching</span>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-teaching">    
-        <li>
-    <a class="dropdown-item" href="../../teaching/math-fundamentals/index.html">
- <span class="dropdown-text">Fondamentaux mathématiques et d’analyse de données</span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="../../teaching/financial-analysis/00-syllabus.html">
- <span class="dropdown-text">Analyse Financière et Stratégique de l’Entreprise</span></a>
-  </li>  
-    </ul>
-  </li>
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -194,6 +216,7 @@ window.Quarto = {
 </header>
 
 
+<p>warning: false message: false</p>
 <section id="quest-ce-que-la-cote-de-crédit-banque-de-france" class="level2">
 <h2 class="anchored" data-anchor-id="quest-ce-que-la-cote-de-crédit-banque-de-france">Qu’est-ce que la cote de crédit Banque de France ?</h2>
 <p>La cote de Banque de France est un outil de mesure et de suivi du <strong>risque de crédit</strong> des entreprises non financières, c’est-à-dire des entreprises industrielles et commerciales, à l’exception de celles relevant de la sphère financière (établissement de crédit et compagnies d’assurance notamment).</p>
@@ -202,14 +225,32 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="la-cote-dactivité-et-la-cote-de-crédit">La cote d’activité et la cote de crédit</h3>
 <p>La système de cote de la Banque de France se compose de deux éléments :</p>
 <section id="une-cote-dactivité-chiffre-daffaires" class="level4">
-<h4 class="anchored">1. Une cote d’activité (chiffre d’affaires)</h4>
+<h4 class="anchored" data-anchor-id="une-cote-dactivité-chiffre-daffaires">1. Une cote d’activité (chiffre d’affaires)</h4>
 <blockquote class="blockquote">
 <p>Unités en <strong>millions d’euros</strong>.</p>
 </blockquote>
-<div class="cr-section cr-column-screen sidebar-left">
+<div class="cr-section cr-column-screen sidebar-right">
 <div class="narrative-col">
+<div class="trigger new-trigger" data-focus-on="cr-cote">
+<div class="narrative">
+<p>La cote d’activité indique une fourchette de chiffre d’affaires dans laquelle se positionne une entreprise.</p>
+</div>
+</div>
 <div class="trigger">
-<table class="narrative caption-top table">
+<div class="narrative">
+<p>Elle est représentée par une lettre de <strong>A</strong>, chiffre d’affaires supérieur à <span class="math inline">\(750\)</span> millions d’euros.</p>
+</div>
+</div>
+<div class="trigger">
+<div class="narrative">
+<p>à <strong>M</strong>, chiffre d’affaires inférieur à <span class="math inline">\(100.000\)</span> euros.</p>
+</div>
+</div>
+</div>
+<div class="sticky-col">
+<div class="sticky-col-stack">
+<div id="cr-cote" class="scale-to-fill sticky">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
 <col style="width: 90%">
@@ -280,20 +321,34 @@ window.Quarto = {
 </tbody>
 </table>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-cote">
+</div>
+</div>
+</div>
+</section>
+<section id="une-cote-de-crédit-capacité-à-honorer-les-engagements-à-3-ans" class="level4">
+<h4 class="anchored" data-anchor-id="une-cote-de-crédit-capacité-à-honorer-les-engagements-à-3-ans">2. Une cote de crédit (capacité à honorer les engagements à 3 ans)</h4>
+<div class="cr-section cr-column-screen sidebar-right">
+<div class="narrative-col">
+<div class="trigger new-trigger" data-focus-on="cr-credit">
 <div class="narrative">
-<p><img src="cote-activite.png" class="img-fluid" alt="Cote d’activité"></p>
+<p>La cote de crédit positione l’entreprise sur une échelle de risque de crédit.</p>
 </div>
 </div>
 <div class="trigger">
 <div class="narrative">
-<ol start="2" type="1">
-<li><strong>Une cote de crédit</strong></li>
-</ol>
+<p>Elle est représentée par un <strong>chiffre</strong>, parfois nuancé par <span class="math inline">\(+\)</span> ou <span class="math inline">\(-\)</span>.</p>
 </div>
 </div>
 <div class="trigger">
-<table class="narrative caption-top table">
+<div class="narrative">
+<p>Par exemple, la cote de crédit <span class="math inline">\(2+\)</span> est moins risqué que la cote de crédit <span class="math inline">\(3-\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="sticky-col">
+<div class="sticky-col-stack">
+<div id="cr-credit" class="scale-to-fill sticky">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th><strong>Cote</strong></th>
@@ -392,39 +447,35 @@ window.Quarto = {
 </tbody>
 </table>
 </div>
-<div class="trigger">
-<div class="narrative">
-<p>La cote de crédit positione l’entreprise sur une échelle de risque de crédit. Elle est représentée par une chiffre, parfois nuancé par “+” ou “-”. Par exemple, la cote de crédit <span class="math inline">\(2+\)</span> est moins risqué que la cote de crédit <span class="math inline">\(3-\)</span>.</p>
-</div>
-</div>
-<div class="trigger">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="cote-credit.png" class="img-fluid figure-img"></p>
-<figcaption>Cote de crédit</figcaption>
-</figure>
 </div>
 </div>
 </div>
-<div class="sticky-col">
-<div class="sticky-col-stack">
-<div id="cr-cote" class="sticky">
-<p>La cote d’activité indique une fourchette de chiffre d’affaires dans laquelle se positionne une entreprise. Elle est représentée par une lettre de <strong>A</strong>, chiffre d’affaires supérieur à <span class="math inline">\(750\)</span> millions d’euros, à <strong>M</strong>, chiffre d’affaires inférieur à <span class="math inline">\(100.000\)</span> euros.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<section id="cote-de-crédit-capacité-à-honorer-les-engagements-à-3-ans" class="level3 sticky">
-<h3 class="sticky anchored" data-anchor-id="cote-de-crédit-capacité-à-honorer-les-engagements-à-3-ans">Cote de crédit (capacité à honorer les engagements à 3 ans)</h3>
-</section>
-</div>
+<div class="callout-title-container flex-fill">
+Tip
 </div>
 </div>
-<blockquote class="blockquote">
+<div class="callout-body-container callout-body">
 <p>Une entreprise recevant une cote Banque de France, <span class="math inline">\(C1-\)</span> réalise un chiffre d’affaire compris entre <span class="math inline">\(50\)</span> et <span class="math inline">\(150\)</span> millions d’euro et possède une <em>excellente</em> situation financière.</p>
-</blockquote>
+</div>
+</div>
 </section>
 </section>
 </section>
 <section id="pour-quelle-raison-la-banque-de-france-attribue-t-elle-une-cote" class="level2">
-<h2 class="anchored" data-anchor-id="pour-quelle-raison-la-banque-de-france-attribue-t-elle-une-cote">Pour quelle raison la Banque de France attribue-t-elle une cote</h2>
+<h2 class="anchored" data-anchor-id="pour-quelle-raison-la-banque-de-france-attribue-t-elle-une-cote">Pour quelle raison la Banque de France attribue-t-elle une cote ?</h2>
+<section id="une-évaluation-externe-neutre-et-indépendante" class="level3">
+<h3 class="anchored" data-anchor-id="une-évaluation-externe-neutre-et-indépendante">Une évaluation externe neutre et indépendante</h3>
+<p>Pour les dirigeant(e)s d’entreprise, la cotation facilite le dialogue avec les structures de financement. Elle offre une référence commune, conforme aux standards internationaux et reconnue comme objective et indépendante :</p>
+<ul>
+<li>Elle fournit aux prêteurs une information sur la qualité des engagements qu’ils s’apprêtent à décider ou qu’ils ont déjà pris ;</li>
+<li>Elle aide à identifier les facteurs qui influent sur la situation financière de l’entreprise, notamment par rapport à un risque de crédit. Elle constitue un regard extérieur sur cette situation et sur la capacité de votre entreprise à rembourser ses dettes.</li>
+</ul>
+</section>
 <section id="icas" class="level3">
 <h3 class="anchored" data-anchor-id="icas">ICAS</h3>
 <p>La cotation est reconnue par l’Eurosystème comme “système interne d’évaluation du crédit” (<em>In-house Credit Assessment System</em> ICAS).</p>
@@ -442,71 +493,148 @@ Note
 </div>
 </div>
 <p>La cotation permet l’évaluation, à des fins de politique monétaire, de la qualité des créances détenues par les établissements de crédit sur des entreprises non financières. Seules les créances sur les entreprises qui reçoivent les meilleurs cotes peuvent être mobilisées par les établissement de crédit auprès de l’Eurosystème en garantie des opérations de refinancement.</p>
-<pre class="{pyhton}"><code>
-from diagrams import Diagram, Cluster
-from diagrams.generic.blank import Blank
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="157" data-source-offset="-11"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 156;"><span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>d3 <span class="op">=</span> <span class="cf">await</span> <span class="pp">require</span>(<span class="st">"d3@7"</span>)</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="co">// Two banks (use an array)</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>banks <span class="op">=</span> [</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">id</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">name</span><span class="op">:</span> <span class="st">"Bank A"</span><span class="op">,</span> <span class="dt">liquidity</span><span class="op">:</span> <span class="dv">120</span> }<span class="op">,</span></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>{ <span class="dt">id</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">name</span><span class="op">:</span> <span class="st">"Bank B"</span><span class="op">,</span> <span class="dt">liquidity</span><span class="op">:</span> <span class="dv">60</span> }</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="co">// Visualization</span></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>viewof chart <span class="op">=</span> {</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> width <span class="op">=</span> <span class="dv">600</span><span class="op">,</span> height <span class="op">=</span> <span class="dv">250</span><span class="op">;</span></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">create</span>(<span class="st">"svg"</span>)</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> width)</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> height)</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">style</span>(<span class="st">"background"</span><span class="op">,</span> <span class="st">"#fafafa"</span>)</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">style</span>(<span class="st">"border"</span><span class="op">,</span> <span class="st">"1px solid #ddd"</span>)<span class="op">;</span></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="co">//--------------------------------------------</span></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a><span class="co">// Layout positions</span></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="co">//--------------------------------------------</span></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>banks[<span class="dv">0</span>]<span class="op">.</span><span class="at">x</span> <span class="op">=</span> width <span class="op">*</span> <span class="fl">0.25</span><span class="op">;</span></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>banks[<span class="dv">1</span>]<span class="op">.</span><span class="at">x</span> <span class="op">=</span> width <span class="op">*</span> <span class="fl">0.75</span><span class="op">;</span></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>banks<span class="op">.</span><span class="fu">forEach</span>(b <span class="kw">=&gt;</span> b<span class="op">.</span><span class="at">y</span> <span class="op">=</span> height <span class="op">/</span> <span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a><span class="co">//--------------------------------------------</span></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a><span class="co">// SVG bank icon path (simple classical building)</span></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="co">//--------------------------------------------</span></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> bankIconPath <span class="op">=</span> <span class="vs">`     M -30 10 L 30 10 L 30 40 L -30 40 Z</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="vs">    M -35 10 L 0 -20 L 35 10 Z</span></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a><span class="vs">    M -20 10 L -20 40</span></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="vs">    M -5 10 L -5 40</span></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="vs">    M 10 10 L 10 40</span></span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="vs">    M 25 10 L 25 40</span></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a><span class="vs">  `</span><span class="op">;</span></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="co">//--------------------------------------------</span></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="co">// Draw banks with SVG icons</span></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="co">//--------------------------------------------</span></span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> nodes <span class="op">=</span> svg<span class="op">.</span><span class="fu">selectAll</span>(<span class="st">"g.bank"</span>)</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">data</span>(banks)</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">enter</span>()</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">append</span>(<span class="st">"g"</span>)</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"class"</span><span class="op">,</span> <span class="st">"bank"</span>)</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"transform"</span><span class="op">,</span> d <span class="kw">=&gt;</span> <span class="vs">`translate(</span><span class="sc">${</span>d<span class="op">.</span><span class="at">x</span><span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>d<span class="op">.</span><span class="at">y</span><span class="sc">}</span><span class="vs">)`</span>)<span class="op">;</span></span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>nodes<span class="op">.</span><span class="fu">append</span>(<span class="st">"path"</span>)</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"d"</span><span class="op">,</span> bankIconPath)</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"#2f6fa8"</span>)</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"#ffffff"</span>)</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="dv">3</span>)</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"transform"</span><span class="op">,</span> d <span class="kw">=&gt;</span> <span class="vs">`scale(</span><span class="sc">${</span><span class="fl">0.9</span> <span class="op">+</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(d<span class="op">.</span><span class="at">liquidity</span>)<span class="op">/</span><span class="dv">40</span><span class="sc">}</span><span class="vs">)`</span>)<span class="op">;</span></span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>nodes<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"dy"</span><span class="op">,</span> <span class="dv">65</span>)</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">style</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="dv">16</span>)</span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">text</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">name</span>)<span class="op">;</span></span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="co">//--------------------------------------------</span></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a><span class="co">// Animated loan arrow</span></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a><span class="co">//--------------------------------------------</span></span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> loanAmount <span class="op">=</span> <span class="dv">40</span><span class="op">;</span></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> line <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> banks[<span class="dv">0</span>]<span class="op">.</span><span class="at">x</span>)</span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> banks[<span class="dv">0</span>]<span class="op">.</span><span class="at">y</span>)</span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> banks[<span class="dv">1</span>]<span class="op">.</span><span class="at">x</span>)</span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> banks[<span class="dv">1</span>]<span class="op">.</span><span class="at">y</span>)</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"#d9534f"</span>)</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(loanAmount))<span class="op">;</span></span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a><span class="co">// Moving dot</span></span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> dot <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"circle"</span>)</span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> <span class="dv">6</span>)</span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"#d9534f"</span>)<span class="op">;</span></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a><span class="co">//--------------------------------------------</span></span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a><span class="co">// Animation loop</span></span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a><span class="co">//--------------------------------------------</span></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> t <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>d3<span class="op">.</span><span class="fu">timer</span>(() <span class="kw">=&gt;</span> {</span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> (t <span class="op">+</span> <span class="fl">0.005</span>) <span class="op">%</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> x <span class="op">=</span> banks[<span class="dv">0</span>]<span class="op">.</span><span class="at">x</span> <span class="op">+</span> (banks[<span class="dv">1</span>]<span class="op">.</span><span class="at">x</span> <span class="op">-</span> banks[<span class="dv">0</span>]<span class="op">.</span><span class="at">x</span>) <span class="op">*</span> t<span class="op">;</span></span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> y <span class="op">=</span> banks[<span class="dv">0</span>]<span class="op">.</span><span class="at">y</span> <span class="op">+</span> (banks[<span class="dv">1</span>]<span class="op">.</span><span class="at">y</span> <span class="op">-</span> banks[<span class="dv">0</span>]<span class="op">.</span><span class="at">y</span>) <span class="op">*</span> t<span class="op">;</span></span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>dot<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> x)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> y)<span class="op">;</span></span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> svg<span class="op">.</span><span class="fu">node</span>()<span class="op">;</span></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
 
-# Create a diagram for refinancing operation
-with Diagram("Refinancing Operation", show=False, direction="LR"):
-    borrower = Blank("Borrower")
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
 
-    with Cluster("Old Financing"):
-        old_lender = Blank("Old Lender")
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
 
-    with Cluster("New Financing"):
-        new_lender = Blank("New Lender")
-
-    # Arrows to represent refinancing flow
-    new_lender &gt;&gt; borrower  # New loan provided to borrower
-    borrower &gt;&gt; old_lender  # Borrower repays old lender using new loan
-</code></pre>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="oeec" class="level3">
 <h3 class="anchored" data-anchor-id="oeec">OEEC</h3>
 <p>Le système de cotation de la Banque de France bénéficie du statut d’organisme externe d’évaluation du crédit, <strong>OEEC</strong>. Il peut être utilisé par les établissement de crédti pour le calcul de leur besoin en fonds propres réglementaires.</p>
 <p>Dans ce contexte, les cotes, mises à disposition des établissements de crédit, sont exploitées comme un outil d’aide à la décision, de suivi et de mesure de la qualité de leur portefeuille de crédit aux entreprises. Elles permettent également la surveillance de la solidité des actifs des établissements de crédit par l’Autorité de Contrôle Prudentiel et de Résolution, ACPR.</p>
-<pre class="{pyhton}"><code>
-from diagrams import Diagram, Cluster
-from diagrams.generic.blank import Blank
-
-# Create a diagram for refinancing operation
-with Diagram("Refinancing Operation", show=False, direction="LR"):
-    borrower = Blank("Borrower")
-
-    with Cluster("Old Financing"):
-        old_lender = Blank("Old Lender")
-
-    with Cluster("New Financing"):
-        new_lender = Blank("New Lender")
-
-    # Arrows to represent refinancing flow
-    new_lender &gt;&gt; borrower  # New loan provided to borrower
-    borrower &gt;&gt; old_lender  # Borrower repays old lender using new loan
-</code></pre>
 </section>
 </section>
 <section id="qui-peut-accéder-à-la-cote" class="level2">
 <h2 class="anchored" data-anchor-id="qui-peut-accéder-à-la-cote">Qui peut accéder à la cote</h2>
-<hr>
-</section>
-<section id="todo" class="level1">
-<h1>TODO</h1>
-<ul>
-<li><label><input type="checkbox">Diagrams in devcontainer</label></li>
-<li><label><input type="checkbox">taux de défaut pour chaque classe de risque OEEC</label></li>
-<li><label><input type="checkbox">haircut sur ICAS</label></li>
-<li><label><input type="checkbox">quarto figure avec le style.scss : <code>img class="pixel-art"</code></label></li>
-<li>https://www.banque-france.fr/fr/strategie-monetaire/cadre-operationnel/operation-refinancement</li>
-<li>https://memo.bank/magazine/nouvelle-echelle-de-cotation-de-la-banque-de-france/</li>
-<li>https://www.ecb.europa.eu/mopo/coll/risk/ecaf/html/index.fr.html</li>
-<li>https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32013R0575</li>
-<li>https://www.banque-france.fr/fr/a-votre-service/entreprises/rehaussement-du-seuil-de-cotation</li>
-</ul>
 
 
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIExvYWQgZDNcbmQzID0gYXdhaXQgcmVxdWlyZShcImQzQDdcIilcblxuLy8gVHdvIGJhbmtzICh1c2UgYW4gYXJyYXkpXG5iYW5rcyA9IFtcbnsgaWQ6IDAsIG5hbWU6IFwiQmFuayBBXCIsIGxpcXVpZGl0eTogMTIwIH0sXG57IGlkOiAxLCBuYW1lOiBcIkJhbmsgQlwiLCBsaXF1aWRpdHk6IDYwIH1cbl1cblxuLy8gVmlzdWFsaXphdGlvblxuXG52aWV3b2YgY2hhcnQgPSB7XG5jb25zdCB3aWR0aCA9IDYwMCwgaGVpZ2h0ID0gMjUwO1xuXG5jb25zdCBzdmcgPSBkMy5jcmVhdGUoXCJzdmdcIilcbi5hdHRyKFwid2lkdGhcIiwgd2lkdGgpXG4uYXR0cihcImhlaWdodFwiLCBoZWlnaHQpXG4uc3R5bGUoXCJiYWNrZ3JvdW5kXCIsIFwiI2ZhZmFmYVwiKVxuLnN0eWxlKFwiYm9yZGVyXCIsIFwiMXB4IHNvbGlkICNkZGRcIik7XG5cbi8vLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbi8vIExheW91dCBwb3NpdGlvbnNcbi8vLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbmJhbmtzWzBdLnggPSB3aWR0aCAqIDAuMjU7XG5iYW5rc1sxXS54ID0gd2lkdGggKiAwLjc1O1xuYmFua3MuZm9yRWFjaChiID0+IGIueSA9IGhlaWdodCAvIDIpO1xuXG4vLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4vLyBTVkcgYmFuayBpY29uIHBhdGggKHNpbXBsZSBjbGFzc2ljYWwgYnVpbGRpbmcpXG4vLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5jb25zdCBiYW5rSWNvblBhdGggPSBgICAgICBNIC0zMCAxMCBMIDMwIDEwIEwgMzAgNDAgTCAtMzAgNDAgWlxuICAgIE0gLTM1IDEwIEwgMCAtMjAgTCAzNSAxMCBaXG4gICAgTSAtMjAgMTAgTCAtMjAgNDBcbiAgICBNIC01IDEwIEwgLTUgNDBcbiAgICBNIDEwIDEwIEwgMTAgNDBcbiAgICBNIDI1IDEwIEwgMjUgNDBcbiAgYDtcblxuLy8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuLy8gRHJhdyBiYW5rcyB3aXRoIFNWRyBpY29uc1xuLy8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuY29uc3Qgbm9kZXMgPSBzdmcuc2VsZWN0QWxsKFwiZy5iYW5rXCIpXG4uZGF0YShiYW5rcylcbi5lbnRlcigpXG4uYXBwZW5kKFwiZ1wiKVxuLmF0dHIoXCJjbGFzc1wiLCBcImJhbmtcIilcbi5hdHRyKFwidHJhbnNmb3JtXCIsIGQgPT4gYHRyYW5zbGF0ZSgke2QueH0sJHtkLnl9KWApO1xuXG5ub2Rlcy5hcHBlbmQoXCJwYXRoXCIpXG4uYXR0cihcImRcIiwgYmFua0ljb25QYXRoKVxuLmF0dHIoXCJzdHJva2VcIiwgXCIjMmY2ZmE4XCIpXG4uYXR0cihcImZpbGxcIiwgXCIjZmZmZmZmXCIpXG4uYXR0cihcInN0cm9rZS13aWR0aFwiLCAzKVxuLmF0dHIoXCJ0cmFuc2Zvcm1cIiwgZCA9PiBgc2NhbGUoJHswLjkgKyBNYXRoLnNxcnQoZC5saXF1aWRpdHkpLzQwfSlgKTtcblxubm9kZXMuYXBwZW5kKFwidGV4dFwiKVxuLmF0dHIoXCJ0ZXh0LWFuY2hvclwiLCBcIm1pZGRsZVwiKVxuLmF0dHIoXCJkeVwiLCA2NSlcbi5zdHlsZShcImZvbnQtc2l6ZVwiLCAxNilcbi50ZXh0KGQgPT4gZC5uYW1lKTtcblxuLy8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuLy8gQW5pbWF0ZWQgbG9hbiBhcnJvd1xuLy8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuY29uc3QgbG9hbkFtb3VudCA9IDQwO1xuXG5jb25zdCBsaW5lID0gc3ZnLmFwcGVuZChcImxpbmVcIilcbi5hdHRyKFwieDFcIiwgYmFua3NbMF0ueClcbi5hdHRyKFwieTFcIiwgYmFua3NbMF0ueSlcbi5hdHRyKFwieDJcIiwgYmFua3NbMV0ueClcbi5hdHRyKFwieTJcIiwgYmFua3NbMV0ueSlcbi5hdHRyKFwic3Ryb2tlXCIsIFwiI2Q5NTM0ZlwiKVxuLmF0dHIoXCJzdHJva2Utd2lkdGhcIiwgTWF0aC5zcXJ0KGxvYW5BbW91bnQpKTtcblxuLy8gTW92aW5nIGRvdFxuY29uc3QgZG90ID0gc3ZnLmFwcGVuZChcImNpcmNsZVwiKVxuLmF0dHIoXCJyXCIsIDYpXG4uYXR0cihcImZpbGxcIiwgXCIjZDk1MzRmXCIpO1xuXG4vLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4vLyBBbmltYXRpb24gbG9vcFxuLy8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxubGV0IHQgPSAwO1xuZDMudGltZXIoKCkgPT4ge1xudCA9ICh0ICsgMC4wMDUpICUgMTtcblxuY29uc3QgeCA9IGJhbmtzWzBdLnggKyAoYmFua3NbMV0ueCAtIGJhbmtzWzBdLngpICogdDtcbmNvbnN0IHkgPSBiYW5rc1swXS55ICsgKGJhbmtzWzFdLnkgLSBiYW5rc1swXS55KSAqIHQ7XG5cbmRvdC5hdHRyKFwiY3hcIiwgeCkuYXR0cihcImN5XCIsIHkpO1xuXG59KTtcblxucmV0dXJuIHN2Zy5ub2RlKCk7XG59XG5cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnY2hhcnQnKSJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/financial-analysis";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
