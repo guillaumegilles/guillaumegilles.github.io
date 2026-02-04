@@ -14,3 +14,8 @@
   ```sh
   quarto render
   ```
+
+## Color Palette
+
+![](color-palette.png)
+
