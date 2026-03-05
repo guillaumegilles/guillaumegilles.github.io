@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-03-05">
 
-<title>Guillaume Gilles - Loi normale et applications</title>
+<title>Guillaume Gilles - Couples de variables a densite</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -101,11 +101,11 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="Guillaume Gilles - Loi normale et applications">
-<meta property="og:description" content="Ce chapitre présente la loi normale, modèle central en probabilités et en statistique. On introduit d’abord la loi normale centrée réduite \(\mathcal{N}(0,1)\), sa densité en cloche et sa fonction de répartition \(\Phi\), puis les règles de calcul associées (symétrie, lecture directe et inverse des probabilités). On généralise ensuite à la loi \(\mathcal{N}(m,\sigma^2)\) et à la standardisation, outil clé pour ramener tout calcul à la table de \(\Phi\). Le chapitre inclut les propriétés fondamentales (espérance, variance, somme de normales indépendantes) et se prolonge par deux applications classiques : la loi log-normale et la loi du khi-deux.">
+<meta property="og:title" content="Guillaume Gilles - Couples de variables a densite">
+<meta property="og:description" content="Ce chapitre etend la theorie des lois a densite au cas de deux variables aleatoires reelles. On introduit d’abord les integrales doubles sur \(\mathbb{R}^2\) (cadre de Tonelli/Fubini), puis la loi conjointe d’un couple \((X,Y)\) absolument continu. On construit ensuite les lois marginales, on caracterise l’independance par factorisation de la densite, puis on generalise les notions d’esperance et de covariance. Le chapitre se termine par une application centrale: la loi de la somme de deux variables independantes via la convolution des densites.">
 <meta property="og:site_name" content="Guillaume Gilles">
-<meta name="twitter:title" content="Guillaume Gilles - Loi normale et applications">
-<meta name="twitter:description" content="Ce chapitre présente la loi normale, modèle central en probabilités et en statistique. On introduit d’abord la loi normale centrée réduite \(\mathcal{N}(0,1)\), sa densité en cloche et sa fonction de répartition \(\Phi\), puis les règles de calcul associées (symétrie, lecture directe et inverse des probabilités). On généralise ensuite à la loi \(\mathcal{N}(m,\sigma^2)\) et à la standardisation, outil clé pour ramener tout calcul à la table de \(\Phi\). Le chapitre inclut les propriétés fondamentales (espérance, variance, somme de normales indépendantes) et se prolonge par deux applications classiques : la loi log-normale et la loi du khi-deux.">
+<meta name="twitter:title" content="Guillaume Gilles - Couples de variables a densite">
+<meta name="twitter:description" content="Ce chapitre etend la theorie des lois a densite au cas de deux variables aleatoires reelles. On introduit d’abord les integrales doubles sur \(\mathbb{R}^2\) (cadre de Tonelli/Fubini), puis la loi conjointe d’un couple \((X,Y)\) absolument continu. On construit ensuite les lois marginales, on caracterise l’independance par factorisation de la densite, puis on generalise les notions d’esperance et de covariance. Le chapitre se termine par une application centrale: la loi de la somme de deux variables independantes via la convolution des densites.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -154,7 +154,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Loi normale et applications</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Couples de variables a densite</li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -182,20 +182,26 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#i---loi-normale-centrée-réduite-mathcaln01" id="toc-i---loi-normale-centrée-réduite-mathcaln01" class="nav-link active" data-scroll-target="#i---loi-normale-centrée-réduite-mathcaln01">I - Loi normale centrée réduite <span class="math inline">\(\mathcal{N}(0,1)\)</span></a></li>
-  <li><a href="#ii---loi-normale-générale-mathcalnmsigma2" id="toc-ii---loi-normale-générale-mathcalnmsigma2" class="nav-link" data-scroll-target="#ii---loi-normale-générale-mathcalnmsigma2">II - Loi normale générale <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span></a></li>
-  <li><a href="#iii---application-loi-log-normale" id="toc-iii---application-loi-log-normale" class="nav-link" data-scroll-target="#iii---application-loi-log-normale">III - Application : loi log-normale</a></li>
-  <li><a href="#iv---application-loi-du-khi-deux" id="toc-iv---application-loi-du-khi-deux" class="nav-link" data-scroll-target="#iv---application-loi-du-khi-deux">IV - Application : loi du khi-deux</a></li>
-  <li><a href="#v---exercice-de-synthèse" id="toc-v---exercice-de-synthèse" class="nav-link" data-scroll-target="#v---exercice-de-synthèse">V - Exercice de synthèse</a></li>
+  <li><a href="#i---integrales-sur-mathbbr2" id="toc-i---integrales-sur-mathbbr2" class="nav-link active" data-scroll-target="#i---integrales-sur-mathbbr2">I - Integrales sur <span class="math inline">\(\mathbb{R}^2\)</span></a></li>
+  <li><a href="#ii---loi-conjointe-dun-couple-de-variables-aleatoires-continues" id="toc-ii---loi-conjointe-dun-couple-de-variables-aleatoires-continues" class="nav-link" data-scroll-target="#ii---loi-conjointe-dun-couple-de-variables-aleatoires-continues">II - Loi conjointe d’un couple de variables aleatoires continues</a>
+  <ul class="collapse">
+  <li><a href="#densite-de-probabilite-sur-mathbbr2" id="toc-densite-de-probabilite-sur-mathbbr2" class="nav-link" data-scroll-target="#densite-de-probabilite-sur-mathbbr2">1. Densite de probabilite sur <span class="math inline">\(\mathbb{R}^2\)</span></a></li>
+  <li><a href="#fonction-de-repartition-conjointe" id="toc-fonction-de-repartition-conjointe" class="nav-link" data-scroll-target="#fonction-de-repartition-conjointe">2. Fonction de repartition conjointe</a></li>
+  </ul></li>
+  <li><a href="#iii---lois-marginales" id="toc-iii---lois-marginales" class="nav-link" data-scroll-target="#iii---lois-marginales">III - Lois marginales</a></li>
+  <li><a href="#iv---independance-de-deux-variables-continues" id="toc-iv---independance-de-deux-variables-continues" class="nav-link" data-scroll-target="#iv---independance-de-deux-variables-continues">IV - Independance de deux variables continues</a></li>
+  <li><a href="#v---esperance-covariance-correlation" id="toc-v---esperance-covariance-correlation" class="nav-link" data-scroll-target="#v---esperance-covariance-correlation">V - Esperance, covariance, correlation</a></li>
+  <li><a href="#vi---loi-de-la-somme-de-deux-variables-independantes" id="toc-vi---loi-de-la-somme-de-deux-variables-independantes" class="nav-link" data-scroll-target="#vi---loi-de-la-somme-de-deux-variables-independantes">VI - Loi de la somme de deux variables independantes</a></li>
+  <li><a href="#vii---exercice-de-synthese" id="toc-vii---exercice-de-synthese" class="nav-link" data-scroll-target="#vii---exercice-de-synthese">VII - Exercice de synthese</a></li>
   </ul>
-</nav>
+<div class="quarto-code-links"><h2>Code Links</h2><ul><li><a href="worksheet-couples-variables-densite.qmd"><i class="bi bi-link-45deg"></i></a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Loi normale et applications</h1>
+<h1 class="title">Couples de variables a densite</h1>
 </div>
 
 
@@ -222,7 +228,7 @@ window.Quarto = {
 <div>
   <div class="abstract">
     <div class="block-title">Abstract</div>
-    <p>Ce chapitre présente la <strong>loi normale</strong>, modèle central en probabilités et en statistique. On introduit d’abord la loi normale centrée réduite <span class="math inline">\(\mathcal{N}(0,1)\)</span>, sa densité en cloche et sa fonction de répartition <span class="math inline">\(\Phi\)</span>, puis les règles de calcul associées (symétrie, lecture directe et inverse des probabilités). On généralise ensuite à la loi <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span> et à la <strong>standardisation</strong>, outil clé pour ramener tout calcul à la table de <span class="math inline">\(\Phi\)</span>. Le chapitre inclut les propriétés fondamentales (espérance, variance, somme de normales indépendantes) et se prolonge par deux applications classiques : la <strong>loi log-normale</strong> et la <strong>loi du khi-deux</strong>.</p>
+    <p>Ce chapitre etend la theorie des lois a densite au cas de deux variables aleatoires reelles. On introduit d’abord les integrales doubles sur <span class="math inline">\(\mathbb{R}^2\)</span> (cadre de Tonelli/Fubini), puis la <strong>loi conjointe</strong> d’un couple <span class="math inline">\((X,Y)\)</span> absolument continu. On construit ensuite les <strong>lois marginales</strong>, on caracterise l’<strong>independance</strong> par factorisation de la densite, puis on generalise les notions d’<strong>esperance</strong> et de <strong>covariance</strong>. Le chapitre se termine par une application centrale: la loi de la somme de deux variables independantes via la <strong>convolution</strong> des densites.</p>
   </div>
 </div>
 
@@ -231,54 +237,58 @@ window.Quarto = {
 
 
 <blockquote class="blockquote">
-<p>Dans tout ce chapitre, nous nous plaçons dans un espace probabilisé quelconque <span class="math inline">\((\Omega, \mathcal{F}, P)\)</span>.</p>
+<p>Dans tout ce chapitre, nous nous placons dans un espace probabilise quelconque <span class="math inline">\((\Omega, \mathcal{F}, P)\)</span>.</p>
 </blockquote>
-<section id="i---loi-normale-centrée-réduite-mathcaln01" class="level2">
-<h2 class="anchored" data-anchor-id="i---loi-normale-centrée-réduite-mathcaln01">I - Loi normale centrée réduite <span class="math inline">\(\mathcal{N}(0,1)\)</span></h2>
+<section id="i---integrales-sur-mathbbr2" class="level2">
+<h2 class="anchored" data-anchor-id="i---integrales-sur-mathbbr2">I - Integrales sur <span class="math inline">\(\mathbb{R}^2\)</span></h2>
+<p>Un prealable utile est la theorie des integrales multiples (integration sur des domaines du plan).</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Définition
+Theoreme de Tonelli (admis)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Une variable aléatoire réelle <span class="math inline">\(X\)</span> suit la <strong>loi normale centrée réduite</strong>, notée <span class="math inline">\(\mathcal{N}(0,1)\)</span>, si sa densité est <span class="math display">\[f_X(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right), \quad x \in \mathbb{R}.\]</span></p>
+<p>Soit <span class="math inline">\(f : \mathbb{R}^2 \to \mathbb{R}\)</span>, continue par morceaux, positive.</p>
+<p>Alors: <span class="math display">\[
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+= \int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dy\right)dx
+= \int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dx\right)dy,
+\]</span> en autorisant la valeur <span class="math inline">\(+\infty\)</span>.</p>
 </div>
 </div>
-<p>Cette densité est positive, intégrée à 1 sur <span class="math inline">\(\mathbb{R}\)</span>, et paire. La courbe de <span class="math inline">\(f_X\)</span> est donc symétrique par rapport à l’axe des ordonnées. En particulier : <span class="math display">\[P(X \leq 0) = P(X \geq 0) = \frac{1}{2}.\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Remarque
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour une fonction qui peut changer de signe, on utilise le theoreme de <strong>Fubini</strong> sous des hypotheses d’integrabilite adaptees.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Définition - Fonction de répartition
+Definition - Integrabilite sur <span class="math inline">\(\mathbb{R}^2\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span>, on note <span class="math display">\[\Phi(x) = P(X \leq x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{t^2}{2}\right)dt.\]</span></p>
-</div>
-</div>
-<p>La primitive de <span class="math inline">\(e^{-t^2/2}\)</span> n’étant pas élémentaire, les valeurs de <span class="math inline">\(\Phi\)</span> se lisent en pratique dans une table, via calculatrice ou logiciel.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Propriétés utiles
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Pour tout réel <span class="math inline">\(x\)</span> :</p>
-<ul>
-<li><span class="math inline">\(\Phi(-x) = 1 - \Phi(x)\)</span>,</li>
-<li><span class="math inline">\(\Phi(0) = 0{,}5\)</span>,</li>
-<li>pour <span class="math inline">\(x &gt; 0\)</span>, <span class="math inline">\(P(-x \leq X \leq x) = 2\Phi(x) - 1\)</span>.</li>
-</ul>
+<p>Soit <span class="math inline">\(f : \mathbb{R}^2 \to \mathbb{R}\)</span> c.p.m. et positive. On dit que <span class="math inline">\(f\)</span> est integrable sur <span class="math inline">\(\mathbb{R}^2\)</span> si l’une (donc les deux) des quantites suivantes est finie:</p>
+<p><span class="math display">\[
+\int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dy\right)dx,
+\qquad
+\int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dx\right)dy.
+\]</span></p>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -287,31 +297,24 @@ Propriétés utiles
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 1 - Lecture de table pour <span class="math inline">\(\mathcal{N}(0,1)\)</span>
+Exemple 1 - Calculs d’integrales doubles
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Soit <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span>.</p>
 <ol type="1">
-<li>Calculer :</li>
-</ol>
+<li>Soit <span class="math inline">\(D = \{(x,y)\in\mathbb{R}^2 : x\ge 0,\ y\ge 0,\ x+y\le 1\}\)</span>. Calculer:
 <ul>
-<li><span class="math inline">\(P(X \leq 1{,}3)\)</span>,</li>
-<li><span class="math inline">\(P(X &gt; 0{,}22)\)</span>,</li>
-<li><span class="math inline">\(P(X &lt; -1{,}57)\)</span>,</li>
-<li><span class="math inline">\(P(-1{,}5 \leq X \leq 2{,}2)\)</span>,</li>
-<li><span class="math inline">\(P(-1{,}96 \leq X \leq 1{,}96)\)</span>,</li>
-<li><span class="math inline">\(P(-2{,}58 \leq X \leq 2{,}58)\)</span>.</li>
-</ul>
-<ol start="2" type="1">
-<li>Déterminer les réels <span class="math inline">\(a,b,c,d\)</span> tels que :</li>
+<li><span class="math inline">\(\displaystyle \iint_D (x^2+y^2)\,dx\,dy\)</span>,</li>
+<li><span class="math inline">\(\displaystyle \iint_D xy(x+y)\,dx\,dy\)</span>.</li>
+</ul></li>
+<li>Soit <span class="math display">\[
+f(x,y)=
+\begin{cases}
+2e^{-(x+y)} &amp; \text{si } 0\le x\le y,\\
+0 &amp; \text{sinon.}
+\end{cases}
+\]</span> Calculer <span class="math inline">\(\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy\)</span>.</li>
 </ol>
-<ul>
-<li><span class="math inline">\(P(X \leq a)=0{,}1251\)</span>,</li>
-<li><span class="math inline">\(P(X &gt; b)=0{,}2327\)</span>,</li>
-<li><span class="math inline">\(P(0 &lt; X &lt; c)=0{,}4984\)</span>,</li>
-<li><span class="math inline">\(P(-d \leq X \leq d)=0{,}95\)</span>.</li>
-</ul>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -320,101 +323,94 @@ Exemple 1 - Lecture de table pour <span class="math inline">\(\mathcal{N}(0,1)\)
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution - Exemple 1
+Solution - Exemple 1 (resultats)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Avec la table de <span class="math inline">\(\Phi\)</span> :</p>
 <ul>
-<li><span class="math inline">\(P(X \leq 1{,}3)=\Phi(1{,}3)\approx 0{,}9032\)</span>.</li>
-<li><span class="math inline">\(P(X &gt; 0{,}22)=1-\Phi(0{,}22)\approx 1-0{,}5871=0{,}4129\)</span>.</li>
-<li><span class="math inline">\(P(X &lt; -1{,}57)=\Phi(-1{,}57)=1-\Phi(1{,}57)\approx 0{,}0582\)</span>.</li>
-<li><span class="math inline">\(P(-1{,}5 \leq X \leq 2{,}2)=\Phi(2{,}2)-\Phi(-1{,}5)\approx 0{,}9193\)</span>.</li>
-<li><span class="math inline">\(P(-1{,}96 \leq X \leq 1{,}96)=2\Phi(1{,}96)-1\approx 0{,}95\)</span>.</li>
-<li><span class="math inline">\(P(-2{,}58 \leq X \leq 2{,}58)=2\Phi(2{,}58)-1\approx 0{,}9901\)</span>.</li>
+<li><span class="math inline">\(\displaystyle \iint_D (x^2+y^2)\,dx\,dy = \frac{1}{6}\)</span>.</li>
+<li><span class="math inline">\(\displaystyle \iint_D xy(x+y)\,dx\,dy = \frac{1}{30}\)</span>.</li>
+<li><span class="math inline">\(\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy = 1\)</span>.</li>
 </ul>
-<p>Lecture inverse :</p>
-<ul>
-<li><span class="math inline">\(a \approx -1{,}15\)</span> car <span class="math inline">\(\Phi(-1{,}15)=0{,}1251\)</span>.</li>
-<li><span class="math inline">\(b \approx 0{,}73\)</span> car <span class="math inline">\(1-\Phi(b)=0{,}2327 \iff \Phi(b)=0{,}7673\)</span>.</li>
-<li><span class="math inline">\(c \approx 2{,}95\)</span> car <span class="math inline">\(\Phi(c)-0{,}5=0{,}4984 \iff \Phi(c)=0{,}9984\)</span>.</li>
-<li><span class="math inline">\(d \approx 1{,}96\)</span> car <span class="math inline">\(2\Phi(d)-1=0{,}95\)</span>.</li>
-</ul>
+<p>Ainsi, dans le second cas, <span class="math inline">\(f\)</span> est bien normalisee pour jouer le role d’une densite conjointe.</p>
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Proposition
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span>, alors <span class="math display">\[E(X)=0 \quad \text{et} \quad \mathrm{Var}(X)=1.\]</span></p>
-</div>
-</div>
+<hr>
 </section>
-<section id="ii---loi-normale-générale-mathcalnmsigma2" class="level2">
-<h2 class="anchored" data-anchor-id="ii---loi-normale-générale-mathcalnmsigma2">II - Loi normale générale <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span></h2>
+<section id="ii---loi-conjointe-dun-couple-de-variables-aleatoires-continues" class="level2">
+<h2 class="anchored" data-anchor-id="ii---loi-conjointe-dun-couple-de-variables-aleatoires-continues">II - Loi conjointe d’un couple de variables aleatoires continues</h2>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Définition
+Definition - Couple de variables aleatoires continues
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Soient <span class="math inline">\(m \in \mathbb{R}\)</span> et <span class="math inline">\(\sigma &gt; 0\)</span>. On dit que <span class="math inline">\(X\)</span> suit la loi normale <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span> si sa densité est <span class="math display">\[f_X(x)=\frac{1}{\sigma\sqrt{2\pi}}\exp\left(-\frac{(x-m)^2}{2\sigma^2}\right), \quad x\in\mathbb{R}.\]</span></p>
+<p>Un couple de variables aleatoires continues est une application <span class="math display">\[
+(X,Y):\Omega\to\mathbb{R}^2,
+\qquad
+\omega\mapsto (X(\omega),Y(\omega)).
+\]</span></p>
 </div>
 </div>
-<p>Ici, <span class="math inline">\(m\)</span> est le paramètre de position (centre), et <span class="math inline">\(\sigma\)</span> contrôle la dispersion autour de <span class="math inline">\(m\)</span>.</p>
-<div class="callout callout-style-default callout-important callout-titled">
+<section id="densite-de-probabilite-sur-mathbbr2" class="level3">
+<h3 class="anchored" data-anchor-id="densite-de-probabilite-sur-mathbbr2">1. Densite de probabilite sur <span class="math inline">\(\mathbb{R}^2\)</span></h3>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition - Standardisation
+Definition - Densite sur <span class="math inline">\(\mathbb{R}^2\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(X \sim \mathcal{N}(m,\sigma^2)\)</span>, alors la variable <span class="math display">\[Z=\frac{X-m}{\sigma}\]</span> suit <span class="math inline">\(\mathcal{N}(0,1)\)</span>.</p>
-<p>Réciproquement, si <span class="math inline">\(Z \sim \mathcal{N}(0,1)\)</span>, alors <span class="math inline">\(X=m+\sigma Z\)</span> suit <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span>.</p>
+<p>Une fonction <span class="math inline">\(f : \mathbb{R}^2 \to \mathbb{R}\)</span> est une densite de probabilite sur <span class="math inline">\(\mathbb{R}^2\)</span> si:</p>
+<ul>
+<li><span class="math inline">\(f(x,y)\ge 0\)</span> pour tout <span class="math inline">\((x,y)\)</span>,</li>
+<li><span class="math inline">\(f\)</span> est integrable sur <span class="math inline">\(\mathbb{R}^2\)</span>,</li>
+<li><span class="math inline">\(\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy = 1\)</span>.</li>
+</ul>
 </div>
 </div>
-<p>Cette proposition est l’outil central de calcul : toute probabilité sur une loi normale se ramène à une lecture de <span class="math inline">\(\Phi\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition - Couple absolument continu
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le couple <span class="math inline">\((X,Y)\)</span> est dit <strong>absolument continu</strong> s’il existe une densite conjointe <span class="math inline">\(f\)</span> telle que, pour tous intervalles <span class="math inline">\(I,J\subset\mathbb{R}\)</span>, <span class="math display">\[
+P(X\in I,\ Y\in J) = \iint_{I\times J} f(x,y)\,dx\,dy.
+\]</span></p>
+</div>
+</div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 2 - Calculs sur une loi normale générale
+Exemple 2 - Densite exponentielle sur le quadrant
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ol type="1">
-<li>Soit <span class="math inline">\(X \sim \mathcal{N}(30,9)\)</span>. Calculer :</li>
-</ol>
-<ul>
-<li><span class="math inline">\(P(X&gt;36)\)</span>,</li>
-<li><span class="math inline">\(P(25 \leq X \leq 35)\)</span>.</li>
-</ul>
-<ol start="2" type="1">
-<li>Soit <span class="math inline">\(X \sim \mathcal{N}(90,400)\)</span>. Déterminer :</li>
-</ol>
-<ul>
-<li><span class="math inline">\(k\)</span> tel que <span class="math inline">\(P(X&lt;k)=0{,}9798\)</span>,</li>
-<li><span class="math inline">\(k'\)</span> tel que <span class="math inline">\(P(X&gt;k')=0{,}6026\)</span>,</li>
-<li>un intervalle <span class="math inline">\(I\)</span> centré en 90 tel que <span class="math inline">\(P(X\in I)=0{,}85\)</span>.</li>
-</ul>
+<p>Soit <span class="math display">\[
+f(x,y)=
+\begin{cases}
+e^{-(x+y)} &amp; \text{si } x\ge 0,\ y\ge 0,\\
+0 &amp; \text{sinon.}
+\end{cases}
+\]</span> Montrer que <span class="math inline">\(f\)</span> est une densite sur <span class="math inline">\(\mathbb{R}^2\)</span>.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -429,21 +425,53 @@ Solution - Exemple 2
 </div>
 <div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><strong>1.</strong> <span class="math inline">\(X \sim \mathcal{N}(30,9)\)</span> donc <span class="math inline">\(\sigma=3\)</span> et <span class="math inline">\(Z=(X-30)/3 \sim \mathcal{N}(0,1)\)</span>.</p>
-<ul>
-<li><span class="math inline">\(P(X&gt;36)=P\!\left(Z&gt;\frac{36-30}{3}\right)=P(Z&gt;2)=1-\Phi(2)\approx 0{,}0228\)</span>.</li>
-<li><span class="math inline">\(P(25 \leq X \leq 35)=P\!\left(-\frac{5}{3} \leq Z \leq \frac{5}{3}\right)
-\approx 2\Phi(1{,}67)-1 \approx 0{,}9044\)</span>.</li>
-</ul>
-<p><strong>2.</strong> <span class="math inline">\(X \sim \mathcal{N}(90,400)\)</span> donc <span class="math inline">\(\sigma=20\)</span>.</p>
-<ul>
-<li><span class="math inline">\(P(X&lt;k)=0{,}9798 \Rightarrow \dfrac{k-90}{20}=2{,}05\)</span>, donc <span class="math inline">\(k=131\)</span>.</li>
-<li><span class="math inline">\(P(X&gt;k')=0{,}6026 \Rightarrow P(X\leq k')=0{,}3974\)</span>, donc <span class="math inline">\(\dfrac{k'-90}{20}\approx -0{,}26\)</span> et <span class="math inline">\(k'\approx 84{,}8\)</span>.</li>
-<li>On cherche <span class="math inline">\(I=[90-a,90+a]\)</span> avec <span class="math inline">\(P(|X-90|\leq a)=0{,}85\)</span>. En standardisant : <span class="math inline">\(P(|Z|\leq a/20)=0{,}85\)</span>, donc <span class="math inline">\(2\Phi(a/20)-1=0{,}85\)</span>, d’où <span class="math inline">\(\Phi(a/20)=0{,}925\)</span> et <span class="math inline">\(a/20\approx 1{,}44\)</span>. Ainsi <span class="math inline">\(a\approx 28{,}8\)</span>, et <span class="math inline">\(I\approx[61{,}2\,;\,118{,}8]\)</span>.</li>
-</ul>
+<p>La positivite est immediate. Ensuite: <span class="math display">\[
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+= \left(\int_0^{+\infty} e^{-x}\,dx\right)
+\left(\int_0^{+\infty} e^{-y}\,dy\right)=1\cdot 1=1.
+\]</span> Donc <span class="math inline">\(f\)</span> est bien une densite.</p>
 </div>
 </div>
 </div>
+</section>
+<section id="fonction-de-repartition-conjointe" class="level3">
+<h3 class="anchored" data-anchor-id="fonction-de-repartition-conjointe">2. Fonction de repartition conjointe</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La fonction de repartition du couple <span class="math inline">\((X,Y)\)</span> de densite <span class="math inline">\(f\)</span> est <span class="math display">\[
+F(x,y)=P(X\le x,\ Y\le y)=\int_{-\infty}^{x}\int_{-\infty}^{y} f(u,v)\,dv\,du.
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition (admise)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Aux points ou <span class="math inline">\(f\)</span> est continue, <span class="math display">\[
+f(x,y)=\frac{\partial^2 F}{\partial x\partial y}(x,y).
+\]</span></p>
+<p>La densite conjointe et la repartition conjointe caracterisent la loi du couple.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="iii---lois-marginales" class="level2">
+<h2 class="anchored" data-anchor-id="iii---lois-marginales">III - Lois marginales</h2>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -454,7 +482,74 @@ Proposition
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(X \sim \mathcal{N}(m,\sigma^2)\)</span>, alors <span class="math display">\[E(X)=m \quad \text{et} \quad \mathrm{Var}(X)=\sigma^2.\]</span></p>
+<p>Si <span class="math inline">\((X,Y)\)</span> admet une densite conjointe <span class="math inline">\(f\)</span>, alors <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont des variables a densite de densites marginales: <span class="math display">\[
+f_X(x)=\int_{\mathbb{R}} f(x,y)\,dy,
+\qquad
+f_Y(y)=\int_{\mathbb{R}} f(x,y)\,dx.
+\]</span></p>
+</div>
+</div>
+<p>Ces formules se lisent comme une “projection” de la densite conjointe sur chaque axe: on integre selon l’autre variable pour ne garder qu’une seule coordonnee.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 3 - Loi uniforme sur le disque unite
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(D=\{(x,y)\in\mathbb{R}^2 : x^2+y^2\le 1\}\)</span> et <span class="math display">\[
+f(x,y)=\frac{1}{\pi}\mathbf{1}_D(x,y).
+\]</span></p>
+<ol type="1">
+<li>Verifier que <span class="math inline">\(f\)</span> est une densite.</li>
+<li>Determiner les densites marginales <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>.</li>
+<li>Verifier que <span class="math inline">\(\int_{\mathbb{R}} f_X(x)\,dx=\int_{\mathbb{R}} f_Y(y)\,dy=1\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 3 (resultat marginal)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Pour <span class="math inline">\(|x|\le 1\)</span>: <span class="math display">\[
+f_X(x)=\int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}}\frac{1}{\pi}\,dy
+=\frac{2}{\pi}\sqrt{1-x^2},
+\]</span> et <span class="math inline">\(f_X(x)=0\)</span> sinon.</p>
+<p>Par symetrie, <span class="math display">\[
+f_Y(y)=\frac{2}{\pi}\sqrt{1-y^2}\ \text{pour }|y|\le 1,
+\quad f_Y(y)=0\ \text{sinon.}
+\]</span></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="iv---independance-de-deux-variables-continues" class="level2">
+<h2 class="anchored" data-anchor-id="iv---independance-de-deux-variables-continues">IV - Independance de deux variables continues</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Les variables continues <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont independantes si, pour tous intervalles <span class="math inline">\(I,J\)</span>, <span class="math display">\[
+P(X\in I,\ Y\in J)=P(X\in I)P(Y\in J).
+\]</span></p>
 </div>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -463,11 +558,16 @@ Proposition
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition (admise) - Somme de normales indépendantes
+Proposition - Caracterisations equivalentes
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(X_1,\dots,X_n\)</span> sont indépendantes et <span class="math inline">\(X_i\sim\mathcal{N}(m_i,\sigma_i^2)\)</span>, alors <span class="math display">\[Y=\sum_{i=1}^n X_i \sim \mathcal{N}\left(\sum_{i=1}^n m_i,\sum_{i=1}^n \sigma_i^2\right).\]</span></p>
+<p>Soit <span class="math inline">\((X,Y)\)</span> de densite conjointe <span class="math inline">\(f\)</span>, de repartition conjointe <span class="math inline">\(F\)</span>, et de marginales <span class="math inline">\((f_X,f_Y)\)</span>, <span class="math inline">\((F_X,F_Y)\)</span>. Les proprietes suivantes sont equivalentes:</p>
+<ol type="1">
+<li><span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont independantes.</li>
+<li><span class="math inline">\(F(x,y)=F_X(x)F_Y(y)\)</span> pour tout <span class="math inline">\((x,y)\)</span>.</li>
+<li><span class="math inline">\(f(x,y)=f_X(x)f_Y(y)\)</span> pour tout <span class="math inline">\((x,y)\)</span>.</li>
+</ol>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -476,44 +576,21 @@ Proposition (admise) - Somme de normales indépendantes
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 3
+Exemple 4 - Test d’independance
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Lors d’un test, 70 % des individus ont un score inférieur à 60. On suppose une loi normale d’écart-type 20. Déterminer l’espérance <span class="math inline">\(m\)</span>.</p>
+<p>On reprend la densite de l’exemple 2: <span class="math display">\[
+f(x,y)=e^{-(x+y)}\mathbf{1}_{x\ge 0, y\ge 0}.
+\]</span></p>
+<ol type="1">
+<li>Calculer <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>.</li>
+<li>Conclure sur l’independance de <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span>.</li>
+</ol>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution - Exemple 3
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(X\sim\mathcal{N}(m,20^2)\)</span> et <span class="math inline">\(P(X\leq 60)=0{,}70\)</span>, alors <span class="math display">\[\frac{60-m}{20}=z_{0{,}70}\approx 0{,}5244.\]</span> Donc <span class="math display">\[m \approx 60-20\times 0{,}5244 \approx 49{,}5.\]</span></p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exemple 4
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Soient <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> indépendantes de loi <span class="math inline">\(\mathcal{N}(0,2)\)</span>. Calculer <span class="math inline">\(P(X+Y\leq 1)\)</span>.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -522,111 +599,62 @@ Solution - Exemple 4
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Par stabilité de la loi normale, <span class="math display">\[X+Y \sim \mathcal{N}(0,4).\]</span> Donc <span class="math display">\[P(X+Y\leq 1)=P\left(\frac{X+Y}{2}\leq \frac12\right)=\Phi(0{,}5)\approx 0{,}6915.\]</span></p>
+<ul>
+<li><span class="math inline">\(f_X(x)=e^{-x}\mathbf{1}_{x\ge 0}\)</span>,</li>
+<li><span class="math inline">\(f_Y(y)=e^{-y}\mathbf{1}_{y\ge 0}\)</span>,</li>
+<li>donc <span class="math inline">\(f(x,y)=f_X(x)f_Y(y)\)</span>.</li>
+</ul>
+<p>Les variables <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont independantes.</p>
 </div>
 </div>
 </div>
+<hr>
 </section>
-<section id="iii---application-loi-log-normale" class="level2">
-<h2 class="anchored" data-anchor-id="iii---application-loi-log-normale">III - Application : loi log-normale</h2>
+<section id="v---esperance-covariance-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="v---esperance-covariance-correlation">V - Esperance, covariance, correlation</h2>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Définition
+Definitions
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>On dit que <span class="math inline">\(X\)</span> suit une <strong>loi log-normale</strong> de paramètres <span class="math inline">\(m\in\mathbb{R}\)</span> et <span class="math inline">\(\sigma&gt;0\)</span> si <span class="math display">\[\ln(X)\sim\mathcal{N}(m,\sigma^2).\]</span> En particulier, <span class="math inline">\(X&gt;0\)</span> presque sûrement.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Proposition
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(X\)</span> est log-normale de paramètres <span class="math inline">\((m,\sigma)\)</span>, alors pour <span class="math inline">\(x&gt;0\)</span> : <span class="math display">\[f_X(x)=\frac{1}{x\sigma\sqrt{2\pi}}\exp\left(-\frac{1}{2}\left(\frac{\ln x-m}{\sigma}\right)^2\right).\]</span></p>
-<p>De plus, <span class="math display">\[E(X)=e^{m+\sigma^2/2}, \qquad \mathrm{Var}(X)=e^{2m+\sigma^2}(e^{\sigma^2}-1).\]</span></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exemple 5
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Soit <span class="math inline">\(X\)</span> log-normale de paramètres <span class="math inline">\(m=1\)</span> et <span class="math inline">\(\sigma=1\)</span>. Calculer <span class="math inline">\(P(X&gt;1)\)</span>.</p>
+<p>Si <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont integrables, <span class="math display">\[
+E(X)=\int_{\mathbb{R}} x f_X(x)\,dx,
+\qquad
+E(Y)=\int_{\mathbb{R}} y f_Y(y)\,dy.
+\]</span></p>
+<p>Si <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont de carre integrable, la covariance est <span class="math display">\[
+\operatorname{Cov}(X,Y)=E\!\left[(X-E(X))(Y-E(Y))\right]
+=E(XY)-E(X)E(Y),
+\]</span> avec <span class="math display">\[
+E(XY)=\iint_{\mathbb{R}^2} xy f(x,y)\,dx\,dy.
+\]</span></p>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution - Exemple 5
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-20" class="callout-20-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Comme <span class="math inline">\(\ln(X)\sim\mathcal{N}(1,1)\)</span>, <span class="math display">\[P(X&gt;1)=P(\ln(X)&gt;0)=P(Z&gt;-1)=\Phi(1)\approx 0{,}8413.\]</span></p>
-</div>
-</div>
-</div>
-</section>
-<section id="iv---application-loi-du-khi-deux" class="level2">
-<h2 class="anchored" data-anchor-id="iv---application-loi-du-khi-deux">IV - Application : loi du khi-deux</h2>
-<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Définition - 1 degré de liberté
+Remarques
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(Z\sim\mathcal{N}(0,1)\)</span>, alors <span class="math inline">\(Y=Z^2\)</span> suit la loi du khi-deux à 1 degré de liberté, notée <span class="math inline">\(\chi^2_1\)</span>.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Propriétés de <span class="math inline">\(\chi^2_1\)</span>
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>La densité de <span class="math inline">\(Y\sim\chi^2_1\)</span> est, pour <span class="math inline">\(x&gt;0\)</span>, <span class="math display">\[f_Y(x)=\frac{1}{\sqrt{2\pi}}x^{-1/2}e^{-x/2},\]</span> et <span class="math display">\[E(Y)=1, \qquad \mathrm{Var}(Y)=2.\]</span></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Définition - <span class="math inline">\(n\)</span> degrés de liberté
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(Z_1,\dots,Z_n\)</span> sont indépendantes et suivent toutes <span class="math inline">\(\mathcal{N}(0,1)\)</span>, alors <span class="math display">\[X=\sum_{i=1}^n Z_i^2\]</span> suit la loi <span class="math inline">\(\chi^2_n\)</span>.</p>
+<ul>
+<li>On peut aussi ecrire:
+<ul>
+<li><span class="math inline">\(\displaystyle E(X)=\iint_{\mathbb{R}^2} x f(x,y)\,dx\,dy\)</span>,</li>
+<li><span class="math inline">\(\displaystyle E(Y)=\iint_{\mathbb{R}^2} y f(x,y)\,dx\,dy\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(\operatorname{Cov}(X,X)=\operatorname{Var}(X)\)</span>.</li>
+</ul>
 </div>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -639,7 +667,45 @@ Proposition
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(X\sim\chi^2_n\)</span>, alors <span class="math display">\[E(X)=n \qquad \text{et} \qquad \mathrm{Var}(X)=2n.\]</span></p>
+<p>Si <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont independantes, alors <span class="math display">\[
+\operatorname{Cov}(X,Y)=0.
+\]</span> La reciproque est fausse en general.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition - Coefficient de correlation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(\sigma(X)&gt;0\)</span> et <span class="math inline">\(\sigma(Y)&gt;0\)</span>, <span class="math display">\[
+\rho(X,Y)=\frac{\operatorname{Cov}(X,Y)}{\sigma(X)\sigma(Y)}.
+\]</span> Ce coefficient mesure la force (lineaire) de la liaison entre <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="vi---loi-de-la-somme-de-deux-variables-independantes" class="level2">
+<h2 class="anchored" data-anchor-id="vi---loi-de-la-somme-de-deux-variables-independantes">VI - Loi de la somme de deux variables independantes</h2>
+<p>Soient <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> independantes, de densites <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>, et posons <span class="math inline">\(Z=X+Y\)</span>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition - Formule de convolution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La variable <span class="math inline">\(Z\)</span> admet la densite <span class="math display">\[
+f_Z(z)=\int_{\mathbb{R}} f_X(x)f_Y(z-x)\,dx.
+\]</span></p>
+<p>On dit que <span class="math inline">\(f_Z\)</span> est le <strong>produit de convolution</strong> de <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -648,21 +714,14 @@ Proposition
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 6 - Lecture de table <span class="math inline">\(\chi^2\)</span>
+Exemple 5 - Somme de deux lois uniformes
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Soit <span class="math inline">\(X\sim\chi^2_7\)</span>. À l’aide de la table :</p>
+<p>Soient <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> independantes, de loi uniforme sur <span class="math inline">\([0,1]\)</span>.</p>
 <ol type="1">
-<li>Calculer :</li>
-</ol>
-<ul>
-<li><span class="math inline">\(P(X&lt;4{,}255)\)</span>,</li>
-<li><span class="math inline">\(P(X\geq 9{,}037)\)</span>,</li>
-<li><span class="math inline">\(P(2{,}167\leq X\leq 12{,}02)\)</span>.</li>
-</ul>
-<ol start="2" type="1">
-<li>Déterminer <span class="math inline">\(x\)</span> tel que <span class="math inline">\(P(X&lt;x)=0{,}1\)</span>.</li>
+<li>Determiner la densite de <span class="math inline">\(Z=X+Y\)</span>.</li>
+<li>Verifier qu’il s’agit d’une densite (positive et integree a 1).</li>
 </ol>
 </div>
 </div>
@@ -672,52 +731,51 @@ Exemple 6 - Lecture de table <span class="math inline">\(\chi^2\)</span>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution - Exemple 6
+Solution - Exemple 5
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-26" class="callout-26-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Pour <span class="math inline">\(n=7\)</span>, la table donne approximativement :</p>
-<ul>
-<li><span class="math inline">\(F(4{,}255)=0{,}25\)</span>,</li>
-<li><span class="math inline">\(F(9{,}037)=0{,}75\)</span>,</li>
-<li><span class="math inline">\(F(2{,}167)=0{,}10\)</span>,</li>
-<li><span class="math inline">\(F(12{,}02)=0{,}90\)</span>.</li>
-</ul>
-<p>Donc :</p>
-<ul>
-<li><span class="math inline">\(P(X&lt;4{,}255)=0{,}25\)</span>,</li>
-<li><span class="math inline">\(P(X\geq 9{,}037)=1-0{,}75=0{,}25\)</span>,</li>
-<li><span class="math inline">\(P(2{,}167\leq X\leq 12{,}02)=0{,}90-0{,}10=0{,}80\)</span>,</li>
-<li>le quantile d’ordre 0,1 vaut <span class="math inline">\(x=2{,}167\)</span>.</li>
-</ul>
+<p>Ici <span class="math inline">\(f_X=f_Y=\mathbf{1}_{[0,1]}\)</span>. Donc <span class="math display">\[
+f_Z(z)=\int_{\mathbb{R}} \mathbf{1}_{[0,1]}(x)\mathbf{1}_{[0,1]}(z-x)\,dx,
+\]</span> ce qui donne la densite triangulaire: <span class="math display">\[
+f_Z(z)=
+\begin{cases}
+z &amp; \text{si } 0\le z\le 1,\\
+2-z &amp; \text{si } 1&lt;z\le 2,\\
+0 &amp; \text{sinon.}
+\end{cases}
+\]</span> Elle est positive et son aire totale vaut 1.</p>
 </div>
 </div>
 </div>
+<hr>
 </section>
-<section id="v---exercice-de-synthèse" class="level2">
-<h2 class="anchored" data-anchor-id="v---exercice-de-synthèse">V - Exercice de synthèse</h2>
+<section id="vii---exercice-de-synthese" class="level2">
+<h2 class="anchored" data-anchor-id="vii---exercice-de-synthese">VII - Exercice de synthese</h2>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 7 - D’une mesure physique à une probabilité de dépassement
+Exercice 6 - Loi conjointe, marginales et covariance
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>La résistance à la rupture (en MPa) d’un matériau est modélisée par une variable aléatoire <span class="math inline">\(R\)</span> de loi normale <span class="math inline">\(\mathcal{N}(250,15^2)\)</span>. On considère la charge appliquée par une machine, modélisée par <span class="math inline">\(C\sim\mathcal{N}(220,10^2)\)</span>, indépendante de <span class="math inline">\(R\)</span>.</p>
+<p>Soit le triangle <span class="math display">\[
+T=\{(x,y)\in\mathbb{R}^2 : 0\le x\le 1,\ 0\le y\le 1,\ x+y\le 1\}
+\]</span> et la fonction <span class="math display">\[
+f(x,y)=2\mathbf{1}_T(x,y).
+\]</span></p>
 <ol type="1">
-<li>Calculer <span class="math inline">\(P(R&lt;230)\)</span>.</li>
-<li>Déterminer le seuil <span class="math inline">\(s\)</span> tel que <span class="math inline">\(P(R\geq s)=0{,}10\)</span>.</li>
-<li>On définit la marge de sécurité <span class="math inline">\(M=R-C\)</span>.</li>
+<li>Verifier que <span class="math inline">\(f\)</span> est une densite conjointe.</li>
+<li>Determiner <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>.</li>
+<li>Calculer <span class="math inline">\(E(X)\)</span>, <span class="math inline">\(E(Y)\)</span>, puis <span class="math inline">\(E(XY)\)</span>.</li>
+<li>En deduire <span class="math inline">\(\operatorname{Cov}(X,Y)\)</span>.</li>
+<li>Les variables <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont-elles independantes?</li>
 </ol>
-<ul>
-<li>Déterminer la loi de <span class="math inline">\(M\)</span>.</li>
-<li>Calculer <span class="math inline">\(P(M&gt;0)\)</span> et interpréter le résultat.</li>
-</ul>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -726,41 +784,34 @@ Exercice 7 - D’une mesure physique à une probabilité de dépassement
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution - Exercice 7
+Solution - Exercice 6
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-28" class="callout-28-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><p><strong>Probabilité de résistance insuffisante</strong> <span class="math display">\[P(R&lt;230)=P\left(\frac{R-250}{15}&lt;\frac{230-250}{15}\right)=P(Z&lt;-1{,}33)
-\approx 0{,}0918.\]</span></p></li>
-<li><p><strong>Quantile à 90 %</strong> <span class="math display">\[P(R\geq s)=0{,}10 \iff P(R\leq s)=0{,}90.\]</span> Avec <span class="math inline">\(z_{0{,}90}\approx 1{,}28\)</span>, <span class="math display">\[s=250+15\times 1{,}28\approx 269{,}2\ \text{MPa}.\]</span></p></li>
-<li><p><strong>Marge de sécurité</strong></p></li>
+<li><p>Aire de <span class="math inline">\(T=\frac{1}{2}\)</span>, donc <span class="math display">\[
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy=2\times\frac{1}{2}=1.
+\]</span></p></li>
+<li><p>Pour <span class="math inline">\(0\le x\le 1\)</span>, <span class="math display">\[
+f_X(x)=\int_0^{1-x}2\,dy=2(1-x),
+\]</span> et sinon <span class="math inline">\(0\)</span>. De meme, <span class="math display">\[
+f_Y(y)=2(1-y)\ \text{pour }0\le y\le 1,
+\]</span> et sinon <span class="math inline">\(0\)</span>.</p></li>
+<li><p><span class="math display">\[
+E(X)=\int_0^1 x\,2(1-x)\,dx=\frac{1}{3},
+\quad
+E(Y)=\frac{1}{3}.
+\]</span> Puis <span class="math display">\[
+E(XY)=\int_0^1\int_0^{1-x}2xy\,dy\,dx=\frac{1}{12}.
+\]</span></p></li>
+<li><p><span class="math display">\[
+\operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y)=\frac{1}{12}-\frac{1}{9}=-\frac{1}{36}.
+\]</span></p></li>
+<li><p>Non: les variables ne sont pas independantes (le support triangulaire interdit deja la factorisation sur un rectangle, et la covariance est negative).</p></li>
 </ol>
-<p>Comme <span class="math inline">\(R\)</span> et <span class="math inline">\(C\)</span> sont indépendantes et normales, <span class="math display">\[M=R-C \sim \mathcal{N}(250-220,15^2+10^2)=\mathcal{N}(30,325).\]</span> Donc <span class="math inline">\(\sigma_M=\sqrt{325}\approx 18{,}03\)</span>.</p>
-<p>Alors <span class="math display">\[P(M&gt;0)=P\left(\frac{M-30}{18{,}03}&gt;\frac{0-30}{18{,}03}\right)
-= P(Z&gt;-1{,}66)=\Phi(1{,}66)\approx 0{,}9515.\]</span></p>
-<p>Interprétation : dans ce modèle, la résistance dépasse la charge dans environ 95 % des cas.</p>
 </div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-À retenir
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>La standardisation <span class="math inline">\(Z=(X-m)/\sigma\)</span> est la clé de presque tous les calculs sur les lois normales.</li>
-<li>La loi normale est stable par somme de variables indépendantes.</li>
-<li>Les lois log-normale et khi-deux se construisent directement à partir de la loi normale.</li>
-<li>Les quantiles (lecture inverse) sont indispensables pour fixer des seuils de risque.</li>
-</ul>
 </div>
 </div>
 
