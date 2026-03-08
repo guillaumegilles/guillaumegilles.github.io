@@ -199,6 +199,229 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!-- ============================================================ -->
+<!-- AI Resume Chat Widget                                        -->
+<!-- Replace WORKER_URL with your Cloudflare Worker URL after    -->
+<!-- running: wrangler deploy (inside the worker/ directory)     -->
+<!-- ============================================================ -->
+<style>
+  #chat-fab {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    border: none;
+    background: #4f46e5;
+    color: #fff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s, background .2s;
+  }
+  #chat-fab:hover { background: #4338ca; transform: scale(1.07); }
+
+  #chat-panel {
+    position: fixed;
+    bottom: 5.5rem;
+    right: 1.5rem;
+    z-index: 9998;
+    width: min(380px, calc(100vw - 2rem));
+    max-height: 520px;
+    border-radius: .75rem;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,.2);
+    display: none;
+    flex-direction: column;
+    background: var(--bs-body-bg, #fff);
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    font-family: inherit;
+  }
+  #chat-panel.open { display: flex; }
+
+  #chat-header {
+    padding: .75rem 1rem;
+    background: #4f46e5;
+    color: #fff;
+    font-weight: 600;
+    font-size: .9rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  #chat-header span { flex: 1; }
+  #chat-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+  }
+
+  #chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: .75rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    scroll-behavior: smooth;
+  }
+
+  .chat-msg {
+    max-width: 85%;
+    padding: .5rem .75rem;
+    border-radius: .6rem;
+    font-size: .875rem;
+    line-height: 1.45;
+    word-break: break-word;
+  }
+  .chat-msg.user {
+    align-self: flex-end;
+    background: #4f46e5;
+    color: #fff;
+    border-bottom-right-radius: .15rem;
+  }
+  .chat-msg.bot {
+    align-self: flex-start;
+    background: var(--bs-secondary-bg, #f1f3f5);
+    color: var(--bs-body-color, #212529);
+    border-bottom-left-radius: .15rem;
+  }
+  .chat-msg.bot.typing { opacity: .6; font-style: italic; }
+
+  #chat-input-row {
+    display: flex;
+    gap: .4rem;
+    padding: .6rem .75rem;
+    border-top: 1px solid var(--bs-border-color, #dee2e6);
+    background: var(--bs-body-bg, #fff);
+  }
+  #chat-input {
+    flex: 1;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: .4rem;
+    padding: .4rem .6rem;
+    font-size: .875rem;
+    background: var(--bs-body-bg, #fff);
+    color: var(--bs-body-color, #212529);
+    outline: none;
+  }
+  #chat-input:focus { border-color: #4f46e5; }
+  #chat-send {
+    background: #4f46e5;
+    color: #fff;
+    border: none;
+    border-radius: .4rem;
+    padding: .4rem .75rem;
+    font-size: .875rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #chat-send:disabled { opacity: .5; cursor: not-allowed; }
+</style>
+
+<!-- Floating action button -->
+<button id="chat-fab" title="Ask about my experience" aria-label="Open AI chat">💬</button>
+
+<!-- Chat panel -->
+<div id="chat-panel" role="dialog" aria-label="AI Resume Assistant">
+  <div id="chat-header">
+    <span>🤖 Ask about my experience</span>
+    <button id="chat-close" aria-label="Close chat">✕</button>
+  </div>
+  <div id="chat-messages">
+    <div class="chat-msg bot">
+      Hi! I'm an AI assistant. Ask me anything about Guillaume's background,
+      skills, or experience. 👋
+    </div>
+  </div>
+  <div id="chat-input-row">
+    <input id="chat-input" type="text" placeholder="e.g. What's his cybersecurity experience?" autocomplete="off">
+    <button id="chat-send">Send</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  // ← Replace with your deployed Cloudflare Worker URL after running: wrangler deploy
+  const WORKER_URL = "https://resume-chat.YOUR-SUBDOMAIN.workers.dev";
+
+  const fab    = document.getElementById("chat-fab");
+  const panel  = document.getElementById("chat-panel");
+  const close  = document.getElementById("chat-close");
+  const msgs   = document.getElementById("chat-messages");
+  const input  = document.getElementById("chat-input");
+  const send   = document.getElementById("chat-send");
+
+  let history = [];
+  let busy = false;
+
+  fab.addEventListener("click", () => {
+    panel.classList.toggle("open");
+    if (panel.classList.contains("open")) input.focus();
+  });
+  close.addEventListener("click", () => panel.classList.remove("open"));
+
+  send.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+
+  function appendMsg(text, role) {
+    const div = document.createElement("div");
+    div.className = `chat-msg ${role}`;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text || busy) return;
+
+    busy = true;
+    send.disabled = true;
+    input.value = "";
+
+    appendMsg(text, "user");
+    const thinking = appendMsg("Thinking…", "bot typing");
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, history }),
+      });
+
+      const data = await res.json();
+      const reply = data.reply || data.error || "Something went wrong.";
+
+      thinking.className = "chat-msg bot";
+      thinking.textContent = reply;
+
+      history.push({ role: "user", content: text });
+      history.push({ role: "assistant", content: reply });
+    } catch {
+      thinking.className = "chat-msg bot";
+      thinking.textContent = "⚠️ Could not reach the assistant. Please try again.";
+    }
+
+    busy = false;
+    send.disabled = false;
+    input.focus();
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

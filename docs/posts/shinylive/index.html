@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -79,7 +113,7 @@ ul.task-list li input[type="checkbox"] {
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -119,36 +153,23 @@ ul.task-list li input[type="checkbox"] {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../teaching/statistics-probability/density-function.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lois à densité</span></a>
-  </div>
-</li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#settig-up-shinylive" id="toc-settig-up-shinylive" class="nav-link active" data-scroll-target="#settig-up-shinylive">Settig up Shinylive</a></li>
+  <li><a href="#create-a-vrtual-environnement" id="toc-create-a-vrtual-environnement" class="nav-link" data-scroll-target="#create-a-vrtual-environnement">1. Create a vrtual environnement</a></li>
+  <li><a href="#install-shinylive" id="toc-install-shinylive" class="nav-link" data-scroll-target="#install-shinylive">2. install shinylive</a></li>
+  <li><a href="#use-shinylive-in-quarto-document" id="toc-use-shinylive-in-quarto-document" class="nav-link" data-scroll-target="#use-shinylive-in-quarto-document">3. use shinylive in quarto document</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -156,11 +177,266 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>ECE LYON - ING 3 TD DE MATHÉMATIQUES PROBABILITÉS ET STATISTIQUES TD2 : LOIS NORMALES ET APPLICATIONS EXERCICE 1 : Soit X une variable aléatoire suivant la loi normale centrée réduite. 1. Calculer les probabilités suivantes : a. P(X &lt; 1,23) b. P(X &gt; 0,96) c.&nbsp;P(−2,05 &lt; X &lt; 1) d.&nbsp;P(X2 &lt; 1,44). 2. Déterminer k dans les différents cas suivants : a. P(X &lt; k) = 0,7 b. P(X &gt; k) = 0,962 c.&nbsp;P(|X| &gt; k) = 0,6 EXERCICE 2 : Soit X ,→N ¡ 1 ; 0,52¢ . 1. Calculer P(X &lt; 1,91), P(X &gt; 0,82) et P(0,82 &lt; X &lt; 1,91). 2. Trouver la valeur de t telle que : a) P(X &lt; t ) = 0,670 b) P(X ≥ t ) = 0,791 c) P(|X −1| &lt; t ) = 0,866 EXERCICE 3 : Soit X ,→N ¡ m; σ2¢ . Calculer P(|X −m| &lt; σ), P(|X −m| &lt; 2σ) et P(|X −m| &lt; 3σ). On pourra arrondir les résultats à 10−3 près. EXERCICE 4 : Soit X une v.a.r. 1. Si X ,→N (10 ; 4), calculer P(X &lt; 14). 2. Si X ,→N (0 ; 1), calculer P(|X −1| &gt; 0, 5). 3. Si X ,→N (1 ; 4), calculer a &gt; 0 tel que P(|X −1| &gt; a) ≤ 0,03. EXERCICE 5 : Soit X ,→N ¡ m; σ2¢ . 1. Sachant que Var(X) = 4 et que P(X &gt; 2) = 0, 4, calculer E(X). 2. Sachant que E(X) = −2,56 et que P(X &lt; 0) = 0, 9, calculer Var(X). EXERCICE 6 : Un lot contient des pièces défectueuses dont le nombre aléatoire X suit une loi normaleN ¡ m; σ2¢ . On sait que P(X ≤ 204) = 0,58 et que P(X ≥ 235) = 0,04. Déterminerm et σ. EXERCICE 7 : Dans la ville de Prairie, la taille X des individus, en centimètres, est telle que X ,→N ¡ m; σ2¢ . 30,85 % des individusmesurentmoins de 1,65met 15,87 % mesurent plus de 1,80m. Déterminerm et σ. Page 1/3 EXERCICE 8 : Soit X une variable aléatoire suivant une loiN (20 ; 4). On pose : Y = 50X Z = X50 i=1 Xi W = Z 50 Déterminer la loi de Y , Z etW. EXERCICE 9 : Un étudiant passe un examen comportant deux épreuves de même coefficient et conduisant à l’attribution de deux notes sur 20 X et Y indépendantes. On suppose que X suit une loiN (12 ; 2) et Y une loiN (13 ; 5). 1. Quelle est la loi de la variable aléatoire Z correspondant à la moyenne de X et Y ? 2. Quelle est la probabilité que l’étudiant ait au moins 10 à l’examen? 3. Déterminer un intervalle centré sur l’espérance de Z dans lequel la moyenne de l’étudiant a une probabilité de 0,9 de se situer. 4. Quelle est la probabilité qu’il ait au moins 10 aux deux épreuves? 5. Pour cette épreuve, unemention n’est accordée qu’aux étudiants ayant une note supérieure ou égale à 14 et aucune note en dessous de 10. Quelle est la probabilité que cet étudiant ait une mention à cet examen? EXERCICE 10 : Une entreprise reçoit un chargement de 100 wagons de céréales. Les masses de céréales transportées, exprimées en tonnes, sont des v.a.r. indépendantes Mi suivant la même loi normaleN (55 ; 0,25). 1. Déterminer la loi de la masse totale MT du chargement. 2. Déterminer la loi de la masse moyenne M d’un wagon. 3. Déterminer le réel a &gt; 0 tel que P(M ∈ [55−a;55+a]) &gt; 0,95. EXERCICE 11 : Soit X ,→N (1 ; 4) et Y = 2X +1. 1. Déterminer la loi de Y . 2. Calculer E(Y 2). EXERCICE 12 : Soient X ,→N ¡ m; σ2¢ et b &gt; 0. Déterminer x tel que P(x &lt; X &lt; x +b) soit maximale. On pourra étudier la fonction f définie par f (x) = P(x &lt; X &lt; x +b). EXERCICE 13 : Soient X ,→N ¡ m; σ2¢ et Y = aX +b avec (a,b) ∈ R∗ ×R. 1. Calculer E(Y ) et Var(Y ). 2. Montrer que Y ,→N ¡ am+b ; a2σ2¢ . EXERCICE 14 : Soient X ,→N (0 ; 1) etU une v.a.r. telle que P(U = 1) = P(U = −1) = 0, 5. En supposant que X etU sont indépendantes, déterminer la loi de Z = XU. Page 2/3 EXERCICE 15 : loi log-normale Soit Y une v.a.r. suivant une loi log-normale de paramètresm et σ, c’est-à-dire telle que X = ln(Y ) ,→N ¡ m; σ2¢ . 1. On se place dans le casm = 3 et σ = 2. Calculer P(1 ≤ Y ≤ e5). 2. On se placemaintenant dans le cas général. a. Déterminer une densité de Y . b. On admet que X =m+σZ avec Z une v.a.r. suivant une loiN (0;1). Montrer que E(Y ) = emE(eσZ ). c.&nbsp;En déduire l’espérance et la variance de Y . d.&nbsp;Déterminer la loi deW = 1 Y . EXERCICE 16 : loi log-normale Dans certains modèles financiers, le cours d’une action à une date future est une v.a.r. ST = S0eX avec S0 une constante strictement positive (appelée cours spot) et X ,→N ¡ m; σ2¢ . 1. Justifier que ST suit une loi log-normale dont on déterminera les paramètres. 2. Vérifier que E(ST ) = S0 ⇐⇒ m = − σ2 2 . 3. Exprimer alors Var(ST ) en fonction de σ et de S0 lorsque la condition précédente est vérifiée. EXERCICE 17 : Soit X ,→χ23 . 1. Déterminer P(X &gt; 7,815) et P(2,366 &lt; X &lt; 4,108). 2. Démontrer que E(X) = 3 et Var(X) = 6. Page 3/3</p>
+<p>Implementing user interaction into static web pages are now possible thanks to shiny and web assembly = shinylive.</p>
+<section id="settig-up-shinylive" class="level2">
+<h2 class="anchored" data-anchor-id="settig-up-shinylive">Settig up Shinylive<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></h2>
+</section>
+<section id="create-a-vrtual-environnement" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-vrtual-environnement">1. Create a vrtual environnement</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .venv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="install-shinylive" class="level2">
+<h2 class="anchored" data-anchor-id="install-shinylive">2. <a href="https://github.com/quarto-ext/shinylive?tab=readme-ov-file#installation">install shinylive</a></h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install shinylive <span class="at">--upgrade</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="use-shinylive-in-quarto-document" class="level2">
+<h2 class="anchored" data-anchor-id="use-shinylive-in-quarto-document">3. <a href="https://github.com/quarto-ext/shinylive?tab=readme-ov-file#usage">use shinylive in quarto document</a></h2>
+<p>To use this extension in your Quarto project, run this in the top level of your Quarto project:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> add quarto-ext/shinylive</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ul>
+<li><a href="https://shiny.posit.co/py/get-started/shinylive.html">shinylive</a></li>
+<li><a href="https://shiny.posit.co/py/get-started/shinylive.html#deploying-shinylive-applications">deploying shiny app with quarto</a></li>
+<li><a href="https://github.com/quarto-ext/shinylive">shinylive github repo</a></li>
+<li><a href="https://shiny.posit.co/py/">shiny for python web page</a></li>
+</ul>
 
 
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>https://github.com/quarto-ext/shinylive?tab=readme-ov-file#installation<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<!-- ============================================================ -->
+<!-- AI Resume Chat Widget                                        -->
+<!-- Replace WORKER_URL with your Cloudflare Worker URL after    -->
+<!-- running: wrangler deploy (inside the worker/ directory)     -->
+<!-- ============================================================ -->
+<style>
+  #chat-fab {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    border: none;
+    background: #4f46e5;
+    color: #fff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s, background .2s;
+  }
+  #chat-fab:hover { background: #4338ca; transform: scale(1.07); }
+
+  #chat-panel {
+    position: fixed;
+    bottom: 5.5rem;
+    right: 1.5rem;
+    z-index: 9998;
+    width: min(380px, calc(100vw - 2rem));
+    max-height: 520px;
+    border-radius: .75rem;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,.2);
+    display: none;
+    flex-direction: column;
+    background: var(--bs-body-bg, #fff);
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    font-family: inherit;
+  }
+  #chat-panel.open { display: flex; }
+
+  #chat-header {
+    padding: .75rem 1rem;
+    background: #4f46e5;
+    color: #fff;
+    font-weight: 600;
+    font-size: .9rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  #chat-header span { flex: 1; }
+  #chat-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+  }
+
+  #chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: .75rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    scroll-behavior: smooth;
+  }
+
+  .chat-msg {
+    max-width: 85%;
+    padding: .5rem .75rem;
+    border-radius: .6rem;
+    font-size: .875rem;
+    line-height: 1.45;
+    word-break: break-word;
+  }
+  .chat-msg.user {
+    align-self: flex-end;
+    background: #4f46e5;
+    color: #fff;
+    border-bottom-right-radius: .15rem;
+  }
+  .chat-msg.bot {
+    align-self: flex-start;
+    background: var(--bs-secondary-bg, #f1f3f5);
+    color: var(--bs-body-color, #212529);
+    border-bottom-left-radius: .15rem;
+  }
+  .chat-msg.bot.typing { opacity: .6; font-style: italic; }
+
+  #chat-input-row {
+    display: flex;
+    gap: .4rem;
+    padding: .6rem .75rem;
+    border-top: 1px solid var(--bs-border-color, #dee2e6);
+    background: var(--bs-body-bg, #fff);
+  }
+  #chat-input {
+    flex: 1;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: .4rem;
+    padding: .4rem .6rem;
+    font-size: .875rem;
+    background: var(--bs-body-bg, #fff);
+    color: var(--bs-body-color, #212529);
+    outline: none;
+  }
+  #chat-input:focus { border-color: #4f46e5; }
+  #chat-send {
+    background: #4f46e5;
+    color: #fff;
+    border: none;
+    border-radius: .4rem;
+    padding: .4rem .75rem;
+    font-size: .875rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #chat-send:disabled { opacity: .5; cursor: not-allowed; }
+</style>
+
+<!-- Floating action button -->
+<button id="chat-fab" title="Ask about my experience" aria-label="Open AI chat">💬</button>
+
+<!-- Chat panel -->
+<div id="chat-panel" role="dialog" aria-label="AI Resume Assistant">
+  <div id="chat-header">
+    <span>🤖 Ask about my experience</span>
+    <button id="chat-close" aria-label="Close chat">✕</button>
+  </div>
+  <div id="chat-messages">
+    <div class="chat-msg bot">
+      Hi! I'm an AI assistant. Ask me anything about Guillaume's background,
+      skills, or experience. 👋
+    </div>
+  </div>
+  <div id="chat-input-row">
+    <input id="chat-input" type="text" placeholder="e.g. What's his cybersecurity experience?" autocomplete="off">
+    <button id="chat-send">Send</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  // ← Replace with your deployed Cloudflare Worker URL after running: wrangler deploy
+  const WORKER_URL = "https://resume-chat.YOUR-SUBDOMAIN.workers.dev";
+
+  const fab    = document.getElementById("chat-fab");
+  const panel  = document.getElementById("chat-panel");
+  const close  = document.getElementById("chat-close");
+  const msgs   = document.getElementById("chat-messages");
+  const input  = document.getElementById("chat-input");
+  const send   = document.getElementById("chat-send");
+
+  let history = [];
+  let busy = false;
+
+  fab.addEventListener("click", () => {
+    panel.classList.toggle("open");
+    if (panel.classList.contains("open")) input.focus();
+  });
+  close.addEventListener("click", () => panel.classList.remove("open"));
+
+  send.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+
+  function appendMsg(text, role) {
+    const div = document.createElement("div");
+    div.className = `chat-msg ${role}`;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text || busy) return;
+
+    busy = true;
+    send.disabled = true;
+    input.value = "";
+
+    appendMsg(text, "user");
+    const thinking = appendMsg("Thinking…", "bot typing");
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, history }),
+      });
+
+      const data = await res.json();
+      const reply = data.reply || data.error || "Something went wrong.";
+
+      thinking.className = "chat-msg bot";
+      thinking.textContent = reply;
+
+      history.push({ role: "user", content: text });
+      history.push({ role: "assistant", content: reply });
+    } catch {
+      thinking.className = "chat-msg bot";
+      thinking.textContent = "⚠️ Could not reach the assistant. Please try again.";
+    }
+
+    busy = false;
+    send.disabled = false;
+    input.focus();
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -687,6 +963,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<script src="https://giscus.app/client.js" data-repo="guillaumegilles/guillaumegilles.github.io" data-repo-id="R_kgDOQVAmCQ" data-category="General" data-category-id="DIC_kwDOQVAmCc4C3-XH" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
 </div> <!-- /content -->
 
 
