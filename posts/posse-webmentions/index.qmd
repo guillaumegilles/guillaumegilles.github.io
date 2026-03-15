@@ -1,0 +1,326 @@
+---
+title: "POSSE & Webmentions on a Static Quarto Site"
+abstract: |
+  The IndieWeb movement offers a compelling answer to social media fatigue: own
+  your content, syndicate it outward, and let the web itself carry the
+  conversation back to you. In this post I walk through how I implemented
+  POSSE and Webmentions on this site — a fully static Quarto website hosted on
+  GitHub Pages — with no backend, no database, and no third-party JavaScript
+  framework.
+date: 2026-03-15
+author:
+  - name: Guillaume Gilles
+  - name: Claude Sonnet 4.6
+    url: https://www.anthropic.com/claude/sonnet
+    roles:
+      - reviewing code
+      - writing - review & editing
+image: image.png
+word-count: true
+categories: [IndieWeb, Quarto, Web]
+---
+
+## The problem with social media as infrastructure
+
+Every time you publish a thought on LinkedIn, a thread on a forum, or a reply
+on a social platform, you are building on rented land. The platform controls
+discovery, the platform controls the archive, and the platform can — and
+does — change the rules. Accounts get suspended, APIs get restricted, companies
+get acquired.
+
+The [IndieWeb](https://indieweb.org/) movement's answer is simple and old:
+**own your content.** Publish first on a domain you control, then push copies
+outward. The acronym for this workflow is **POSSE**: *Publish on your Own Site,
+Syndicate Elsewhere.*
+
+But owning the canonical post is only half the equation. If someone replies to
+your LinkedIn copy, that conversation is trapped on LinkedIn. **Webmentions**
+close that loop: they are a W3C-standardised protocol that lets any website
+notify another that it has linked to or responded to it. Combined, POSSE +
+Webmentions give you a personal site that is the source of truth *and* an
+active participant in distributed conversations.
+
+## How POSSE works
+
+The POSSE workflow is deliberately low-tech:
+
+1. **Write and publish on your own site first.** The URL on your domain is the
+   canonical URL — the one you want search engines, archives, and readers to
+   remember.
+2. **Syndicate copies to platforms** — LinkedIn, Mastodon, a newsletter, an
+   aggregator — each copy links back to the original with a `rel="canonical"`
+   or just a plain "Originally published at…" line.
+3. **Collect responses.** Ideally, replies on those platforms flow back to your
+   site via Webmentions (more on that below). At minimum, you know the
+   conversation happened because you own the thread.
+
+The key insight is the direction of authority: the copy points to the original,
+never the other way around. Your domain is the source; social media platforms
+are distribution channels.
+
+For this site, the technical foundation of POSSE is already in place:
+
+- **`site-url: https://ggilles.dev`** in `_quarto.yml` — Quarto embeds this
+  as the canonical base URL in every page's `<head>`, so syndicated copies can
+  always point home.
+- **RSS feed** at `/blog.xml` — any reader or aggregator can subscribe
+  directly without going through an algorithm.
+
+## How Webmentions work
+
+[Webmention](https://www.w3.org/TR/webmention/) (W3C Recommendation, 2017) is
+a simple HTTP protocol. When site B publishes a post that links to a URL on
+site A, site B's publishing software sends a POST request to site A's
+webmention endpoint. Site A receives the notification, verifies that the link
+is real, and can display it however it likes.
+
+The full flow looks like this:
+
+```
+Site B publishes a post linking to https://ggilles.dev/posts/my-post/
+  ↓
+Site B (or a service) POSTs to https://webmention.io/ggilles.dev/webmention
+  with source=https://siteB.com/their-post & target=https://ggilles.dev/posts/my-post/
+  ↓
+webmention.io verifies the link exists in site B's page
+  ↓
+webmention.io stores the mention
+  ↓
+ggilles.dev fetches the mention from the webmention.io API and displays it
+```
+
+Three actors are involved:
+
+| Actor | Role |
+|---|---|
+| [webmention.io](https://webmention.io) | Receives and stores incoming webmentions for your domain |
+| [Bridgy](https://brid.gy) | Polls social platforms (LinkedIn, Mastodon…) and converts likes, reposts, and replies into webmentions |
+| Your site | Declares the endpoint; fetches and renders the stored mentions |
+
+## Implementation on a static Quarto site
+
+A static site cannot receive HTTP POST requests, which is why webmention.io
+exists: it acts as your inbox. Your site only needs to advertise the endpoint
+in its `<head>` and fetch the stored data via a read API.
+
+### Step 1 — Declare your identity and endpoint
+
+Create `assets/head-indieweb.html`:
+
+```html
+<!-- IndieWeb: webmention endpoint -->
+<link rel="webmention" href="https://webmention.io/ggilles.dev/webmention" />
+<link rel="pingback"   href="https://webmention.io/ggilles.dev/xmlrpc" />
+
+<!-- IndieAuth: rel="me" identity links -->
+<link rel="me" href="https://github.com/guillaumegilles" />
+<link rel="me" href="https://www.linkedin.com/in/guillaumegilles" />
+```
+
+The `rel="webmention"` tag tells any Webmention-aware sender where to deliver
+notifications. The `rel="me"` tags are used by [IndieAuth](https://indieauth.com/)
+to verify that the profiles listed belong to the owner of `ggilles.dev` — a
+prerequisite for signing in to webmention.io without a password.[^indieauth]
+
+[^indieauth]: IndieAuth works by cross-referencing: your site links to your
+  GitHub profile with `rel="me"`, and your GitHub profile links back to your
+  site. This mutual link proves ownership.
+
+Add this file to `_quarto.yml` so it is injected into every page:
+
+```yaml
+format:
+  html:
+    include-in-header: assets/head-indieweb.html
+```
+
+### Step 2 — Sign up at webmention.io
+
+Go to [webmention.io](https://webmention.io) and sign in with your site's URL.
+webmention.io will look for the `rel="me"` links in your `<head>` and verify
+your identity via IndieAuth. Once confirmed, it starts accepting mentions
+addressed to your domain.
+
+This is a one-time, zero-configuration step. webmention.io is free for
+personal sites.
+
+### Step 3 — Wire up Bridgy for social backfeeding
+
+[Bridgy](https://brid.gy) is the bridge between siloed social platforms and
+the open web. Connect it to your LinkedIn, Mastodon, or other accounts and it
+will:
+
+1. Poll those platforms for likes, reposts, and replies on posts that link to
+   your site.
+2. Convert each interaction into a Webmention and send it to webmention.io.
+
+No code required — it is a point-and-click setup on brid.gy. Once connected,
+social interactions flow automatically into your webmention.io inbox.
+
+### Step 4 — Display webmentions on posts
+
+The webmention.io read API is public. A small JavaScript snippet — included
+once and applied to every post — fetches mentions for the current page URL and
+renders them.
+
+Create `assets/webmentions.html`:
+
+```html
+<section id="webmentions">
+  <h2>Webmentions</h2>
+  <div id="wm-facepile"></div>
+  <div id="wm-replies"></div>
+  <p id="wm-empty" style="display:none;">No webmentions yet.</p>
+</section>
+
+<script>
+(function () {
+  const LIKES   = ["like-of", "bookmark-of"];
+  const REPOSTS = ["repost-of"];
+  const REPLIES = ["in-reply-to", "mention-of"];
+
+  const target = encodeURIComponent(window.location.href);
+  const api    = `https://webmention.io/api/mentions.jf2?target=${target}&per-page=100`;
+
+  fetch(api)
+    .then(r => r.json())
+    .then(data => {
+      const mentions = data.children || [];
+      if (!mentions.length) {
+        document.getElementById("wm-empty").style.display = "block";
+        return;
+      }
+      const facepile  = document.getElementById("wm-facepile");
+      const repliesEl = document.getElementById("wm-replies");
+
+      mentions.forEach(m => {
+        const type   = m["wm-property"];
+        const author = m.author || {};
+        // render likes/reposts as avatars, replies as cards
+        // … (see full source below)
+      });
+    });
+})();
+</script>
+```
+
+The API returns a [JF2](https://www.w3.org/TR/jf2/) feed — a JSON format for
+social interactions. Each entry has a `wm-property` field that describes the
+interaction type:
+
+| `wm-property` | Meaning |
+|---|---|
+| `like-of` | Someone liked the post |
+| `bookmark-of` | Someone bookmarked it |
+| `repost-of` | Someone reposted or shared it |
+| `in-reply-to` | A direct reply |
+| `mention-of` | The post was mentioned but not directly replied to |
+
+Likes and reposts are rendered as a compact **facepile** — a row of avatar
+images. Replies and mentions get a full **reply card** with the author's name,
+date, and a preview of their text.
+
+Tell Quarto to append this widget to every post by adding one line to
+`posts/_metadata.yml`:
+
+```yaml
+format:
+  html:
+    include-after-body: ../assets/webmentions.html
+```
+
+`_metadata.yml` in a subdirectory applies to all documents in that directory
+and its children — so this single line adds the widget to every post without
+touching individual `.qmd` files.
+
+## The full picture
+
+Here is how all the pieces fit together in the final architecture:
+
+```
+You write a post → quarto render → push to GitHub Pages
+                                         │
+                    ┌────────────────────┘
+                    │ <link rel="webmention" href="webmention.io/…" />
+                    │ <link rel="me" href="github.com/guillaumegilles" />
+                    │ RSS feed at /blog.xml
+                    └→ ggilles.dev (canonical source)
+
+You share the post URL on LinkedIn / Mastodon
+                    └→ Bridgy polls LinkedIn
+                         └→ sends Webmention to webmention.io
+                              └→ stored in webmention.io inbox
+
+Reader opens a post on ggilles.dev
+                    └→ webmentions.html JS runs
+                         └→ GET webmention.io/api/mentions.jf2?target=…
+                              └→ renders likes, reposts, replies inline
+```
+
+No server, no database, no build-time API calls. The canonical content is
+fully static; social interactions are fetched client-side on demand.
+
+## Sending webmentions when you publish
+
+Receiving webmentions is automatic once the endpoint is declared. Sending them
+— notifying other sites that you have linked to them — requires an extra step.
+
+The simplest approach is [webmention.app](https://webmention.app/): a free
+service that polls your RSS feed for new posts and sends webmentions to every
+URL you link to. Point it at `https://ggilles.dev/blog.xml` and it handles the
+rest.
+
+Alternatively, you can trigger sends manually with the [`webmention`
+CLI](https://www.npmjs.com/package/webmention) or add a GitHub Actions
+workflow that runs on every push to `main`.
+
+## What does not require any of this
+
+POSSE does not require Webmentions to be useful. Even without the feedback
+loop, the discipline of publishing on your own domain first — and treating
+social platforms as mirrors rather than originals — gives you:
+
+- A permanent, searchable archive you control.
+- A canonical URL to link to from anywhere.
+- Independence from any single platform's algorithm or terms of service.
+
+Webmentions are the layer that makes the distributed conversation visible.
+They are a nice-to-have that upgrades the experience significantly if the
+people engaging with your content are on IndieWeb-aware platforms (Mastodon,
+personal blogs running WordPress with the Webmention plugin, etc.).
+
+LinkedIn and most corporate platforms will likely never implement Webmention
+natively — that is what Bridgy is for.
+
+## Replicating this on your own Quarto site
+
+The full implementation is four files and two external accounts:
+
+**Files**
+
+| File | Purpose |
+|---|---|
+| `assets/head-indieweb.html` | Webmention endpoint + `rel="me"` identity |
+| `assets/webmentions.html` | Client-side display widget |
+| `posts/_metadata.yml` | Auto-include widget on all posts |
+| `_quarto.yml` | `include-in-header`, `site-url` |
+
+**External accounts (both free)**
+
+| Service | What it does |
+|---|---|
+| [webmention.io](https://webmention.io) | Your webmention inbox |
+| [brid.gy](https://brid.gy) | Social platform backfeeding |
+
+Replace every occurrence of `ggilles.dev` with your own domain and every
+social profile URL with yours. The rest is generic and reusable as-is.
+
+## References
+
+- [IndieWeb: POSSE](https://indieweb.org/POSSE)
+- [W3C Webmention Recommendation](https://www.w3.org/TR/webmention/)
+- [JF2 Post Serialization Format](https://www.w3.org/TR/jf2/)
+- [webmention.io](https://webmention.io) — Aaron Parecki
+- [Bridgy](https://brid.gy) — Ryan Barrett
+- [Quarto: `include-in-header`](https://quarto.org/docs/output-formats/html-basics.html#includes)
+- [Quarto: `_metadata.yml`](https://quarto.org/docs/projects/quarto-projects.html#directory-metadata)

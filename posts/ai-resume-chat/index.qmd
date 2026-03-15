@@ -1,0 +1,574 @@
+---
+title: "Adding an AI Chat Assistant to a Static Website"
+abstract: |
+  Most personal websites are one-way streets: you publish, visitors read.
+  What if they could *ask* instead? In this post I walk through adding a
+  small AI assistant — powered by OpenAI and Cloudflare Workers — that lets
+  anyone query my experience and résumé in plain English, with zero backend
+  server to maintain.
+date: 2026-03-08
+date-modified: 2026-03-08
+categories: [AI, Cloudflare, Quarto, Web]
+draft: true
+---
+
+> **What you will build:** a floating chat widget on a static website that
+> answers questions about your background using an LLM, backed by a
+> serverless API you own and control.
+
+## Why bother?
+
+A PDF résumé is a frozen snapshot. Visitors have to skim it, guess what is
+relevant to them, and hope they find the right section. A recruiter looking
+for your Python experience and a professor curious about your teaching history
+need very different things — but they both have to read the same document.
+
+An AI assistant changes that dynamic. Instead of making the visitor do the
+work, you let them ask in plain language: *"Does he have any experience with
+time-series forecasting?"* or *"What level does he teach at?"* and get a
+direct, personalised answer in seconds.
+
+The goal of this post is to build exactly that, in a way that is:
+
+- **Free (or nearly so)** — Cloudflare Workers has a generous free tier
+  (100,000 requests/day); OpenAI costs fractions of a cent per conversation.
+- **Private** — your OpenAI key never touches the browser; only your server
+  ever sees it.
+- **Maintenance-free** — no server to patch, no database, no uptime to worry
+  about.
+- **Portable** — the approach works with any static site generator (Quarto,
+  Hugo, Jekyll, plain HTML…).
+
+---
+
+## The big picture
+
+Before diving into code, it helps to understand the three moving parts and
+how they talk to each other.
+
+```
+Visitor's browser
+      │  1. types a question
+      ▼
+Chat widget (HTML/JS)
+      │  2. POST { message } to Worker URL
+      ▼
+Cloudflare Worker  ──►  OpenAI API
+      │                     │
+      │  3. sends system     │  4. returns answer
+      │     prompt + message │
+      ◄─────────────────────-
+      │  5. forwards answer
+      ▼
+Chat widget displays reply
+```
+
+**Step 1 – The widget** is a small piece of HTML and JavaScript injected into
+every page of the site. It renders a floating chat button and panel, captures
+the user's message, and sends it to the Worker.
+
+**Step 2 & 3 – The Cloudflare Worker** is a tiny JavaScript function that
+runs on Cloudflare's global network. It receives the message, prepends a
+*system prompt* that describes your background in detail, and forwards
+everything to OpenAI's API using your secret key.
+
+**Step 4 & 5 – OpenAI** generates an answer and returns it. The Worker
+passes it back to the browser, which displays it in the chat panel.
+
+The key insight is that **the browser never talks to OpenAI directly**, which
+means your API key stays secret on the server side, and you can add rate
+limits or filters to the Worker later if you need them.
+
+---
+
+## Part 1 — The Cloudflare Worker
+
+### What is a Cloudflare Worker?
+
+Think of a Worker as a tiny script that lives "at the edge" — on servers
+physically close to your visitors, all over the world. You write a JavaScript
+function, deploy it once, and Cloudflare runs it automatically whenever
+someone hits your chosen URL. There is no server to provision, no container
+to manage, no uptime page to check.
+
+The free plan allows **100,000 requests per day**, which is more than enough
+for a personal website.
+
+### Setting up Wrangler
+
+Wrangler is the official Cloudflare command-line tool. You will use it to
+log in, deploy your Worker, and store secrets.
+
+```bash
+# Install globally with npm (Node.js must be installed)
+npm install -g wrangler
+
+# Authenticate — this opens a browser window
+wrangler login
+```
+
+If you do not have a Cloudflare account yet, the login flow will walk you
+through creating a free one. No credit card required.
+
+### The project structure
+
+Create a `worker/` directory at the root of your site:
+
+```
+your-website/
+├── worker/
+│   ├── index.js       ← the Worker code
+│   └── wrangler.toml  ← Cloudflare configuration
+├── _partials/
+│   └── chat-widget.html
+└── … (rest of your site)
+```
+
+### `wrangler.toml` — telling Cloudflare about your Worker
+
+```toml
+name = "resume-chat"
+main = "index.js"
+compatibility_date = "2024-09-01"
+```
+
+- **`name`**: the subdomain your Worker will be deployed to
+  (`resume-chat.<your-account>.workers.dev`).
+- **`main`**: the entry-point file.
+- **`compatibility_date`**: locks the Worker runtime to a stable feature set;
+  use a recent date.
+
+### `worker/index.js` — the Worker itself
+
+Let's walk through the code section by section.
+
+#### 1. The system prompt
+
+The system prompt is the most important part of the whole setup. It is a
+block of text that you prepend to *every* conversation, before the visitor's
+message. It tells the LLM who it is, what it knows, and how to behave.
+
+```js
+const SYSTEM_PROMPT = `You are an AI assistant representing Guillaume Gilles.
+Answer questions about his professional background, skills, and experience
+based strictly on the information below. Be concise, friendly, and professional.
+If asked about something not covered, say you don't have that information.
+
+--- PROFILE ---
+Guillaume Gilles is a former Banque de France financial analyst who now
+channels a decade of risk assessment and teaching into cybersecurity…
+
+--- EXPERIENCE ---
+Regional Economist — Banque de France (2020 – Present)
+…
+
+--- EDUCATION ---
+…
+
+--- SKILLS ---
+…`;
+```
+
+A few things to notice:
+
+- **"based strictly on the information below"** — this instruction keeps the
+  model from hallucinating or making up things that are not in your résumé.
+- **"Be concise"** — without this, LLMs tend to produce very long answers.
+- The content mirrors your résumé exactly — keep it updated whenever your
+  situation changes.
+
+#### 2. CORS headers
+
+CORS (Cross-Origin Resource Sharing) is a browser security feature. When your
+chat widget (hosted at `guillaumegilles.github.io`) tries to call your Worker
+(hosted at `resume-chat.workers.dev`), the browser checks whether the Worker
+explicitly allows that. If it does not, the browser blocks the request.
+
+```js
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+```
+
+Setting `Access-Control-Allow-Origin: *` means any website can call your
+Worker. This is fine for a public résumé assistant. If you wanted to restrict
+it to your domain only, you would set the value to `https://yoursite.com`
+instead.
+
+#### 3. Handling the preflight `OPTIONS` request
+
+Before every cross-origin `POST`, the browser automatically sends a quick
+`OPTIONS` "preflight" request to ask the server: *"Are you OK with this?"*
+Your Worker must respond to it correctly, or the real request never goes
+through.
+
+```js
+export default {
+  async fetch(request, env) {
+    // Handle the browser's preflight check
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: CORS_HEADERS });
+    }
+```
+
+#### 4. Parsing the incoming message
+
+```js
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return new Response("Invalid JSON", { status: 400 });
+    }
+
+    const { message, history = [] } = body;
+```
+
+The widget sends a JSON object with two fields:
+
+- **`message`** — the visitor's current question.
+- **`history`** — the last few messages of the conversation, so the LLM
+  has context and can answer follow-up questions sensibly.
+
+#### 5. Calling OpenAI
+
+```js
+    const messages = [
+      { role: "system", content: SYSTEM_PROMPT },
+      ...history.slice(-6),   // keep last 3 exchanges
+      { role: "user", content: message },
+    ];
+
+    const openaiRes = await fetch(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages,
+          max_tokens: 400,
+          temperature: 0.4,
+        }),
+      }
+    );
+```
+
+A few decisions worth explaining:
+
+- **`gpt-4o-mini`** is fast and cheap — well suited to short Q&A. As of
+  early 2026, it costs roughly $0.15 per million input tokens and $0.60 per
+  million output tokens. A typical résumé conversation will use a few hundred
+  tokens. The cost per visitor is a fraction of a cent.
+- **`max_tokens: 400`** caps the answer length so the widget panel does not
+  overflow with text.
+- **`temperature: 0.4`** makes the model slightly less creative and more
+  factual — desirable for a résumé assistant.
+- **`env.OPENAI_API_KEY`** — the key is read from the Worker's secret store,
+  not from the code. This is crucial: secrets stored this way never appear in
+  your source code or repository.
+
+#### 6. Returning the reply
+
+```js
+    const data = await openaiRes.json();
+    const reply = data.choices[0].message.content;
+
+    return new Response(JSON.stringify({ reply }), {
+      headers: {
+        "Content-Type": "application/json",
+        ...CORS_HEADERS,
+      },
+    });
+  },
+};
+```
+
+The Worker extracts the text reply from OpenAI's response and sends it back
+to the browser as a simple `{ reply: "…" }` JSON object.
+
+### Storing your API key securely
+
+Never put secrets in code. Wrangler provides a dedicated secret store:
+
+```bash
+cd worker/
+wrangler secret put OPENAI_API_KEY
+# Wrangler will prompt you to paste the value — it is never logged
+```
+
+The value is encrypted and only accessible inside your Worker as
+`env.OPENAI_API_KEY`. Not even Cloudflare's dashboard shows it in plain text
+after you set it.
+
+### Deploying
+
+```bash
+cd worker/
+wrangler deploy
+```
+
+Wrangler prints something like:
+
+```
+Deployed resume-chat to
+https://resume-chat.abc123.workers.dev
+```
+
+Copy that URL — you will need it in the next part.
+
+You can test it immediately from the terminal:
+
+```bash
+curl -X POST https://resume-chat.abc123.workers.dev \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is his current job?"}'
+# → {"reply":"Guillaume is currently a Regional Economist at the Banque de France…"}
+```
+
+---
+
+## Part 2 — The chat widget
+
+The widget is a self-contained HTML file that gets injected into every page
+of the site. It has three parts: styles, the HTML structure, and the
+JavaScript logic.
+
+### The HTML structure
+
+```html
+<!-- Floating action button — always visible -->
+<button id="chat-fab" title="Ask about my experience">💬</button>
+
+<!-- The chat panel — hidden until the button is clicked -->
+<div id="chat-panel">
+  <div id="chat-header">
+    <span>🤖 Ask about my experience</span>
+    <button id="chat-close">✕</button>
+  </div>
+  <div id="chat-messages">
+    <!-- Messages appear here dynamically -->
+    <div class="chat-msg bot">
+      Hi! Ask me anything about Guillaume's background… 👋
+    </div>
+  </div>
+  <div id="chat-input-row">
+    <input id="chat-input" type="text" placeholder="e.g. What languages does he speak?" />
+    <button id="chat-send">Send</button>
+  </div>
+</div>
+```
+
+The floating button (`chat-fab`) is positioned in the bottom-right corner
+using CSS `position: fixed`. Clicking it toggles the `.open` class on the
+panel, which switches it from `display: none` to `display: flex`.
+
+### The CSS
+
+A few key choices:
+
+```css
+#chat-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;          /* stays on top of everything */
+  border-radius: 50%;     /* circular button */
+  background: #4f46e5;    /* indigo — feel free to change */
+}
+
+#chat-panel {
+  position: fixed;
+  bottom: 5.5rem;         /* sits just above the button */
+  right: 1.5rem;
+  width: min(380px, calc(100vw - 2rem));  /* responsive */
+  max-height: 520px;
+  display: none;          /* hidden by default */
+}
+#chat-panel.open { display: flex; }
+```
+
+The `width: min(380px, calc(100vw - 2rem))` trick ensures the panel is
+380 px wide on desktop but never wider than the screen on mobile, keeping
+1 rem of margin on each side.
+
+User messages and assistant replies are styled differently to make the
+conversation easy to follow:
+
+```css
+.chat-msg.user {
+  align-self: flex-end;        /* right-aligned */
+  background: #4f46e5;         /* indigo bubble */
+  color: #fff;
+}
+.chat-msg.bot {
+  align-self: flex-start;      /* left-aligned */
+  background: var(--bs-secondary-bg, #f1f3f5);
+  color: var(--bs-body-color, #212529);
+}
+```
+
+The `var(--bs-…)` CSS variables come from Bootstrap (which Quarto uses),
+so the widget automatically adapts to light and dark themes without any
+extra JavaScript.
+
+### The JavaScript
+
+```js
+const WORKER_URL = "https://resume-chat.abc123.workers.dev";
+
+let history = [];  // stores the conversation for context
+let busy = false;  // prevents double-sending
+
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text || busy) return;
+
+  busy = true;
+  send.disabled = true;
+  input.value = "";
+
+  appendMsg(text, "user");                        // show user bubble
+  const thinking = appendMsg("Thinking…", "bot typing");  // show placeholder
+
+  const res = await fetch(WORKER_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: text, history }),
+  });
+
+  const data = await res.json();
+  thinking.textContent = data.reply;             // replace placeholder
+  thinking.className = "chat-msg bot";           // remove italic style
+
+  // Store exchange in history for follow-up context
+  history.push({ role: "user", content: text });
+  history.push({ role: "assistant", content: data.reply });
+
+  busy = false;
+  send.disabled = false;
+}
+```
+
+The `history` array is the mechanism for multi-turn conversation. Each
+time a reply arrives, the exchange is appended to `history` and sent back
+to the Worker with the next message. The Worker keeps only the last 6
+entries (`history.slice(-6)`) to avoid sending very long payloads that would
+cost more and slow things down.
+
+---
+
+## Part 3 — Integrating with Quarto
+
+Quarto's `include-after-body` option lets you inject arbitrary HTML at the
+end of every generated page, just before the closing `</body>` tag. This is
+exactly what you need to add the widget site-wide without modifying every
+individual page.
+
+In `_quarto.yml`:
+
+```yaml
+format:
+  html:
+    toc: true
+    theme:
+      light: assets/light.scss
+      dark: assets/dark.scss
+    include-after-body: _partials/chat-widget.html   # ← add this line
+```
+
+That single line is all Quarto needs. After a `quarto render`, the widget
+will appear on every page — blog posts, the about page, the teaching
+section — everywhere.
+
+---
+
+## Putting it all together
+
+Here is the complete deployment checklist:
+
+```bash
+# 1. Install Wrangler
+npm install -g wrangler
+
+# 2. Authenticate with Cloudflare (creates a free account if needed)
+wrangler login
+
+# 3. Deploy the Worker
+cd worker/
+wrangler deploy
+# Note the URL printed: https://resume-chat.<subdomain>.workers.dev
+
+# 4. Store your OpenAI API key
+wrangler secret put OPENAI_API_KEY
+# Paste your key when prompted
+
+# 5. Update the widget with your Worker URL
+# Open _partials/chat-widget.html and change:
+#   const WORKER_URL = "https://resume-chat.YOUR-SUBDOMAIN.workers.dev";
+# to your actual URL.
+
+# 6. Rebuild the site
+cd ..
+quarto render
+
+# 7. Publish
+git add -A
+git commit -m "Add AI résumé chat assistant"
+git push
+```
+
+---
+
+## What to customise
+
+Once the basic setup works, here are the most common things you will want
+to tweak:
+
+**Change the accent colour** — search for `#4f46e5` in
+`_partials/chat-widget.html` and replace it with your preferred hex colour.
+
+**Update the résumé content** — open `worker/index.js` and edit the
+`SYSTEM_PROMPT` string. Then run `wrangler deploy` again to push the
+update. The website itself does not need to be rebuilt.
+
+**Restrict which pages show the widget** — instead of setting
+`include-after-body` globally in `_quarto.yml`, you can add it to the
+front matter of individual pages:
+
+```yaml
+---
+title: "About"
+include-after-body: ../../_partials/chat-widget.html
+---
+```
+
+**Tighten the CORS policy** — if you only want your own domain to be able
+to call the Worker, change the header in `worker/index.js`:
+
+```js
+"Access-Control-Allow-Origin": "https://guillaumegilles.github.io",
+```
+
+**Swap the model** — replace `"gpt-4o-mini"` with `"gpt-4o"` for higher
+quality answers (at a higher cost), or try another OpenAI model depending on
+your needs.
+
+---
+
+## Closing thoughts
+
+The whole implementation is about 130 lines of code spread across two files.
+Despite its small footprint, it covers several important concepts that show
+up in many real-world projects: serverless functions, CORS, secret management,
+prompt engineering, and progressive enhancement (the site works perfectly for
+visitors who never open the chat).
+
+If you replicate this on your own site, feel free to open a
+[GitHub issue](https://github.com/guillaumegilles/guillaumegilles.github.io)
+or reach out on LinkedIn — I'd be happy to help you debug it.

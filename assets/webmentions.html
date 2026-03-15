@@ -1,0 +1,101 @@
+<section id="webmentions" style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--bs-border-color, #dee2e6);">
+  <h2 style="font-size: 1.1rem; margin-bottom: 1rem;">Webmentions</h2>
+
+  <div id="wm-facepile" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;"></div>
+  <div id="wm-replies" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+  <p id="wm-empty" style="color: var(--bs-secondary-color); font-size: 0.875rem; display: none;">
+    No webmentions yet. Be the first to respond!
+  </p>
+</section>
+
+<script>
+(function () {
+  const LIKES    = ["like-of", "bookmark-of"];
+  const REPOSTS  = ["repost-of"];
+  const REPLIES  = ["in-reply-to", "mention-of"];
+
+  const target = encodeURIComponent(window.location.href);
+  const api    = `https://webmention.io/api/mentions.jf2?target=${target}&per-page=100`;
+
+  fetch(api)
+    .then(r => r.json())
+    .then(data => {
+      const mentions = (data.children || []);
+      if (!mentions.length) {
+        document.getElementById("wm-empty").style.display = "block";
+        return;
+      }
+
+      const facepile = document.getElementById("wm-facepile");
+      const repliesEl = document.getElementById("wm-replies");
+
+      mentions.forEach(m => {
+        const type   = m["wm-property"];
+        const author = m.author || {};
+        const photo  = author.photo  || "";
+        const name   = author.name   || "Anonymous";
+        const url    = author.url    || m.url || "#";
+
+        if (LIKES.includes(type) || REPOSTS.includes(type)) {
+          // Facepile: avatar only
+          const emoji = REPOSTS.includes(type) ? "🔁 " : "";
+          const a = document.createElement("a");
+          a.href = url;
+          a.title = `${emoji}${name}`;
+          a.target = "_blank";
+          a.rel = "noopener";
+          if (photo) {
+            const img = document.createElement("img");
+            img.src = photo;
+            img.alt = name;
+            img.style.cssText = "width:2rem;height:2rem;border-radius:50%;object-fit:cover;";
+            a.appendChild(img);
+          } else {
+            a.textContent = name.charAt(0).toUpperCase();
+            a.style.cssText = "display:inline-flex;align-items:center;justify-content:center;" +
+              "width:2rem;height:2rem;border-radius:50%;background:var(--bs-secondary-bg);font-size:0.85rem;";
+          }
+          facepile.appendChild(a);
+
+        } else if (REPLIES.includes(type)) {
+          // Full reply card
+          const card = document.createElement("div");
+          card.style.cssText = "display:flex;gap:0.75rem;font-size:0.875rem;";
+
+          const avatarWrap = document.createElement("a");
+          avatarWrap.href = url;
+          avatarWrap.target = "_blank";
+          avatarWrap.rel = "noopener";
+          if (photo) {
+            const img = document.createElement("img");
+            img.src = photo;
+            img.alt = name;
+            img.style.cssText = "width:2.5rem;height:2.5rem;border-radius:50%;object-fit:cover;flex-shrink:0;";
+            avatarWrap.appendChild(img);
+          }
+
+          const body = document.createElement("div");
+          const meta = document.createElement("div");
+          meta.style.cssText = "margin-bottom:0.25rem;";
+          meta.innerHTML = `<a href="${url}" target="_blank" rel="noopener" style="font-weight:600;">${name}</a>` +
+            (m.published ? ` · <time style="color:var(--bs-secondary-color);">${new Date(m.published).toLocaleDateString()}</time>` : "");
+          body.appendChild(meta);
+
+          if (m.content?.text) {
+            const p = document.createElement("p");
+            p.style.margin = "0";
+            p.textContent = m.content.text.slice(0, 280) + (m.content.text.length > 280 ? "…" : "");
+            body.appendChild(p);
+          }
+
+          card.appendChild(avatarWrap);
+          card.appendChild(body);
+          repliesEl.appendChild(card);
+        }
+      });
+    })
+    .catch(() => {
+      document.getElementById("wm-empty").style.display = "block";
+    });
+})();
+</script>
