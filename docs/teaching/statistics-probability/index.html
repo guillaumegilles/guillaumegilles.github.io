@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-01-01">
 
-<title>Guillaume Gilles</title>
+<title>Guillaume Gilles - Probabilités &amp; Statistiques</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../teaching/statistics-probability/density-function.html" rel="next">
+<link href="../../teaching/statistics-probability/classes/density-function.html" rel="next">
 <link href="../../assets/favicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -70,14 +71,57 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<!-- IndieWeb: webmention endpoint -->
+<link rel="webmention" href="https://webmention.io/ggilles.dev/webmention">
+<link rel="pingback" href="https://webmention.io/ggilles.dev/xmlrpc">
 
+<!-- IndieAuth: rel="me" identity links -->
+<link rel="me" href="https://github.com/guillaumegilles">
+<link rel="me" href="https://www.linkedin.com/in/guillaumegilles">
 
-<meta property="og:title" content="Guillaume Gilles">
-<meta property="og:description" content="">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Guillaume Gilles - Probabilités &amp; Statistiques">
+<meta property="og:description" content="Ce cours introduit les probabilités et les statistiques comme outils de modélisation de l’incertitude et d’analyse de données. Il couvre les variables aléatoires continues (densités, lois classiques, couples), les théorèmes de convergence (loi des grands nombres, théorème central limite), ainsi que les statistiques descriptives et inférentielles (estimation, intervalles de confiance).">
+<meta property="og:image" content="https://ggilles.dev/teaching/statistics-probability/image.png">
 <meta property="og:site_name" content="Guillaume Gilles">
-<meta name="twitter:title" content="Guillaume Gilles">
-<meta name="twitter:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:image:height" content="1536">
+<meta property="og:image:width" content="1024">
+<meta name="twitter:title" content="Guillaume Gilles - Probabilités &amp; Statistiques">
+<meta name="twitter:description" content="Ce cours introduit les probabilités et les statistiques comme outils de modélisation de l’incertitude et d’analyse de données. Il couvre les variables aléatoires continues (densités, lois classiques, couples), les théorèmes de convergence (loi des grands nombres, théorème central limite), ainsi que les statistiques descriptives et inférentielles (estimation, intervalles de confiance).">
+<meta name="twitter:image" content="https://ggilles.dev/teaching/statistics-probability/image.png">
+<meta name="twitter:image-height" content="1536">
+<meta name="twitter:image-width" content="1024">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-sidebar floating nav-fixed">
@@ -125,7 +169,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/index.html">Syllabus</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/index.html">Probabilités &amp; Statistiques</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -140,7 +184,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/statistics-probability/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Syllabus</span></a>
+ <span class="menu-text">Probabilités &amp; Statistiques</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -154,37 +198,37 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/statistics-probability/density-function.html" class="sidebar-item-text sidebar-link">
+  <a href="../../teaching/statistics-probability/classes/density-function.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Lois à densité</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/statistics-probability/normal-distribution.html" class="sidebar-item-text sidebar-link">
+  <a href="../../teaching/statistics-probability/classes/normal-distribution.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Loi normale et applications</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/statistics-probability/joint-continuous-variables.html" class="sidebar-item-text sidebar-link">
+  <a href="../../teaching/statistics-probability/classes/joint-continuous-variables.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Couples de variables a densite</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/statistics-probability/univariate-descriptive-statistics.html" class="sidebar-item-text sidebar-link">
+  <a href="../../teaching/statistics-probability/classes/univariate-descriptive-statistics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Statistiques descriptives a une variable</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/statistics-probability/bivariate-descriptive-statistics.html" class="sidebar-item-text sidebar-link">
+  <a href="../../teaching/statistics-probability/classes/bivariate-descriptive-statistics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Statistiques descriptives a deux variables</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/statistics-probability/sampling-distribution.html" class="sidebar-item-text sidebar-link">
+  <a href="../../teaching/statistics-probability/classes/sampling-distribution.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Distribution d’echantillonnage</span></a>
   </div>
 </li>
@@ -202,794 +246,303 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#syllabus" id="toc-syllabus" class="nav-link active" data-scroll-target="#syllabus">Syllabus</a>
   <ul class="collapse">
+  <li><a href="#objectifs-pédagogiques" id="toc-objectifs-pédagogiques" class="nav-link" data-scroll-target="#objectifs-pédagogiques">Objectifs pédagogiques</a></li>
+  <li><a href="#contenu-du-cours" id="toc-contenu-du-cours" class="nav-link" data-scroll-target="#contenu-du-cours">Contenu du cours</a>
+  <ul class="collapse">
+  <li><a href="#probabilités-variables-aléatoires-continues" id="toc-probabilités-variables-aléatoires-continues" class="nav-link" data-scroll-target="#probabilités-variables-aléatoires-continues">Probabilités — Variables aléatoires continues</a></li>
+  <li><a href="#théorèmes-limites" id="toc-théorèmes-limites" class="nav-link" data-scroll-target="#théorèmes-limites">Théorèmes limites</a></li>
+  <li><a href="#statistiques-descriptives" id="toc-statistiques-descriptives" class="nav-link" data-scroll-target="#statistiques-descriptives">Statistiques descriptives</a></li>
+  <li><a href="#statistiques-inférentielles" id="toc-statistiques-inférentielles" class="nav-link" data-scroll-target="#statistiques-inférentielles">Statistiques inférentielles</a></li>
+  <li><a href="#annexes" id="toc-annexes" class="nav-link" data-scroll-target="#annexes">Annexes</a></li>
+  </ul></li>
+  </ul></li>
   <li><a href="#évaluation-du-module" id="toc-évaluation-du-module" class="nav-link" data-scroll-target="#évaluation-du-module">Évaluation du module</a>
   <ul class="collapse">
   <li><a href="#niveaux" id="toc-niveaux" class="nav-link" data-scroll-target="#niveaux">Niveaux</a></li>
+  <li><a href="#activités-notées" id="toc-activités-notées" class="nav-link" data-scroll-target="#activités-notées">Activités notées</a></li>
+  <li><a href="#utilisation-du-site-du-cours" id="toc-utilisation-du-site-du-cours" class="nav-link" data-scroll-target="#utilisation-du-site-du-cours">Utilisation du site du cours</a></li>
   </ul></li>
-  </ul></li>
-  <li><a href="#cours-probabilités-statistiques-pour-ingénieurs" id="toc-cours-probabilités-statistiques-pour-ingénieurs" class="nav-link" data-scroll-target="#cours-probabilités-statistiques-pour-ingénieurs">🎓 Cours : Probabilités &amp; Statistiques pour Ingénieurs</a></li>
-  <li><a href="#bloc-1-fondations-probabilistes-séances-1-à-5" id="toc-bloc-1-fondations-probabilistes-séances-1-à-5" class="nav-link" data-scroll-target="#bloc-1-fondations-probabilistes-séances-1-à-5">🧱 BLOC 1 — Fondations probabilistes (Séances 1 à 5)</a>
-  <ul class="collapse">
-  <li><a href="#séance-1-modéliser-lincertitude" id="toc-séance-1-modéliser-lincertitude" class="nav-link" data-scroll-target="#séance-1-modéliser-lincertitude">🔹 Séance 1 — Modéliser l’incertitude</a>
-  <ul class="collapse">
-  <li><a href="#objectifs" id="toc-objectifs" class="nav-link" data-scroll-target="#objectifs">🎯 Objectifs</a></li>
-  <li><a href="#théorie-2h" id="toc-théorie-2h" class="nav-link" data-scroll-target="#théorie-2h">📚 Théorie (2h)</a></li>
-  <li><a href="#tp-python-2h" id="toc-tp-python-2h" class="nav-link" data-scroll-target="#tp-python-2h">💻 TP Python (2h)</a></li>
-  </ul></li>
-  <li><a href="#séance-2-lois-usuelles-modélisation-continue" id="toc-séance-2-lois-usuelles-modélisation-continue" class="nav-link" data-scroll-target="#séance-2-lois-usuelles-modélisation-continue">🔹 Séance 2 — Lois usuelles &amp; modélisation continue</a>
-  <ul class="collapse">
-  <li><a href="#théorie" id="toc-théorie" class="nav-link" data-scroll-target="#théorie">📚 Théorie</a></li>
-  <li><a href="#tp" id="toc-tp" class="nav-link" data-scroll-target="#tp">💻 TP</a></li>
-  </ul></li>
-  <li><a href="#séance-3-vecteurs-aléatoires-dépendance" id="toc-séance-3-vecteurs-aléatoires-dépendance" class="nav-link" data-scroll-target="#séance-3-vecteurs-aléatoires-dépendance">🔹 Séance 3 — Vecteurs aléatoires &amp; dépendance</a>
-  <ul class="collapse">
-  <li><a href="#théorie-1" id="toc-théorie-1" class="nav-link" data-scroll-target="#théorie-1">📚 Théorie</a></li>
-  <li><a href="#tp-1" id="toc-tp-1" class="nav-link" data-scroll-target="#tp-1">💻 TP</a></li>
-  </ul></li>
-  <li><a href="#séance-4-théorème-central-limite" id="toc-séance-4-théorème-central-limite" class="nav-link" data-scroll-target="#séance-4-théorème-central-limite">🔹 Séance 4 — Théorème Central Limite</a>
-  <ul class="collapse">
-  <li><a href="#théorie-2" id="toc-théorie-2" class="nav-link" data-scroll-target="#théorie-2">📚 Théorie</a></li>
-  <li><a href="#tp-2" id="toc-tp-2" class="nav-link" data-scroll-target="#tp-2">💻 TP</a></li>
-  </ul></li>
-  <li><a href="#séance-5-introduction-à-linférence" id="toc-séance-5-introduction-à-linférence" class="nav-link" data-scroll-target="#séance-5-introduction-à-linférence">🔹 Séance 5 — Introduction à l’inférence</a>
-  <ul class="collapse">
-  <li><a href="#théorie-3" id="toc-théorie-3" class="nav-link" data-scroll-target="#théorie-3">📚 Théorie</a></li>
-  <li><a href="#tp-3" id="toc-tp-3" class="nav-link" data-scroll-target="#tp-3">💻 TP</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#bloc-2-statistiques-inférentielles-séances-6-à-9" id="toc-bloc-2-statistiques-inférentielles-séances-6-à-9" class="nav-link" data-scroll-target="#bloc-2-statistiques-inférentielles-séances-6-à-9">🧪 BLOC 2 — Statistiques inférentielles (Séances 6 à 9)</a>
-  <ul class="collapse">
-  <li><a href="#séance-6-intervalles-de-confiance" id="toc-séance-6-intervalles-de-confiance" class="nav-link" data-scroll-target="#séance-6-intervalles-de-confiance">🔹 Séance 6 — Intervalles de confiance</a>
-  <ul class="collapse">
-  <li><a href="#théorie-4" id="toc-théorie-4" class="nav-link" data-scroll-target="#théorie-4">📚 Théorie</a></li>
-  <li><a href="#tp-4" id="toc-tp-4" class="nav-link" data-scroll-target="#tp-4">💻 TP</a></li>
-  </ul></li>
-  <li><a href="#séance-7-tests-dhypothèses" id="toc-séance-7-tests-dhypothèses" class="nav-link" data-scroll-target="#séance-7-tests-dhypothèses">🔹 Séance 7 — Tests d’hypothèses</a>
-  <ul class="collapse">
-  <li><a href="#théorie-5" id="toc-théorie-5" class="nav-link" data-scroll-target="#théorie-5">📚 Théorie</a></li>
-  <li><a href="#tp-5" id="toc-tp-5" class="nav-link" data-scroll-target="#tp-5">💻 TP</a></li>
-  </ul></li>
-  <li><a href="#séance-8-régression-linéaire" id="toc-séance-8-régression-linéaire" class="nav-link" data-scroll-target="#séance-8-régression-linéaire">🔹 Séance 8 — Régression linéaire</a>
-  <ul class="collapse">
-  <li><a href="#théorie-6" id="toc-théorie-6" class="nav-link" data-scroll-target="#théorie-6">📚 Théorie</a></li>
-  <li><a href="#tp-6" id="toc-tp-6" class="nav-link" data-scroll-target="#tp-6">💻 TP</a></li>
-  </ul></li>
-  <li><a href="#séance-9-validation-limites-du-modèle" id="toc-séance-9-validation-limites-du-modèle" class="nav-link" data-scroll-target="#séance-9-validation-limites-du-modèle">🔹 Séance 9 — Validation &amp; limites du modèle</a>
-  <ul class="collapse">
-  <li><a href="#théorie-7" id="toc-théorie-7" class="nav-link" data-scroll-target="#théorie-7">📚 Théorie</a></li>
-  <li><a href="#tp-7" id="toc-tp-7" class="nav-link" data-scroll-target="#tp-7">💻 TP</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#bloc-3-approfondissement-vision-ingénieur-séances-10-à-13" id="toc-bloc-3-approfondissement-vision-ingénieur-séances-10-à-13" class="nav-link" data-scroll-target="#bloc-3-approfondissement-vision-ingénieur-séances-10-à-13">🧠 BLOC 3 — Approfondissement &amp; vision ingénieur (Séances 10 à 13)</a>
-  <ul class="collapse">
-  <li><a href="#séance-10-maximum-de-vraisemblance" id="toc-séance-10-maximum-de-vraisemblance" class="nav-link" data-scroll-target="#séance-10-maximum-de-vraisemblance">🔹 Séance 10 — Maximum de vraisemblance</a>
-  <ul class="collapse">
-  <li><a href="#théorie-8" id="toc-théorie-8" class="nav-link" data-scroll-target="#théorie-8">📚 Théorie</a></li>
-  <li><a href="#tp-8" id="toc-tp-8" class="nav-link" data-scroll-target="#tp-8">💻 TP</a></li>
-  </ul></li>
-  <li><a href="#séance-11-introduction-au-bayésien" id="toc-séance-11-introduction-au-bayésien" class="nav-link" data-scroll-target="#séance-11-introduction-au-bayésien">🔹 Séance 11 — Introduction au bayésien</a>
-  <ul class="collapse">
-  <li><a href="#théorie-9" id="toc-théorie-9" class="nav-link" data-scroll-target="#théorie-9">📚 Théorie</a></li>
-  <li><a href="#tp-9" id="toc-tp-9" class="nav-link" data-scroll-target="#tp-9">💻 TP</a></li>
-  </ul></li>
-  <li><a href="#séance-12-méthodes-monte-carlo" id="toc-séance-12-méthodes-monte-carlo" class="nav-link" data-scroll-target="#séance-12-méthodes-monte-carlo">🔹 Séance 12 — Méthodes Monte Carlo</a>
-  <ul class="collapse">
-  <li><a href="#théorie-10" id="toc-théorie-10" class="nav-link" data-scroll-target="#théorie-10">📚 Théorie</a></li>
-  <li><a href="#tp-10" id="toc-tp-10" class="nav-link" data-scroll-target="#tp-10">💻 TP</a></li>
-  </ul></li>
-  <li><a href="#séance-13-projet-final-intégré" id="toc-séance-13-projet-final-intégré" class="nav-link" data-scroll-target="#séance-13-projet-final-intégré">🔹 Séance 13 — Projet final intégré</a>
-  <ul class="collapse">
-  <li><a href="#objectif" id="toc-objectif" class="nav-link" data-scroll-target="#objectif">🎯 Objectif</a></li>
-  <li><a href="#cas-possible" id="toc-cas-possible" class="nav-link" data-scroll-target="#cas-possible">📦 Cas possible</a></li>
-  <li><a href="#travail-demandé" id="toc-travail-demandé" class="nav-link" data-scroll-target="#travail-demandé">Travail demandé</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#évaluation-recommandée" id="toc-évaluation-recommandée" class="nav-link" data-scroll-target="#évaluation-recommandée">📊 Évaluation recommandée</a></li>
-  <li><a href="#logiciels-recommandés" id="toc-logiciels-recommandés" class="nav-link" data-scroll-target="#logiciels-recommandés">🧩 Logiciels recommandés</a></li>
-  <li><a href="#philosophie-pédagogique" id="toc-philosophie-pédagogique" class="nav-link" data-scroll-target="#philosophie-pédagogique">🏗 Philosophie pédagogique</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Probabilités &amp; Statistiques</h1>
+</div>
 
 
 
-<section id="syllabus" class="level1 unnumbered">
-<h1 class="unnumbered">Syllabus</h1>
-<p>https://verbaltovisual.com/all-models-are-wrong-but-some-are-useful/#:~:text=%E2%80%9CAll%20models%20are%20wrong%2C%20but,for%20the%20situation%20at%20hand.</p>
-<p>Centré sur une approche d’apprentissage <em>actif</em>, le cours transforme les étudiants en joueurs, les modules en quêtes, les évaluations en points d’expérience (XP), et les compétences en niveaux à atteindre <span class="citation" data-cites="sheldon_multiplayer_2020">[@sheldon_multiplayer_2020]</span>.</p>
-<section id="évaluation-du-module" class="level2">
-<h2 class="anchored" data-anchor-id="évaluation-du-module">Évaluation du module</h2>
-<p>Dans le cadre de ce cours, les étudiants évoluent dans un univers pédagogique <em>gamifié</em>, Chaque activité, qu’il s’agisse d’une mission individuelle, d’un travail en groupe ou d’une présentation, permet de gagner des <strong>points d’expérience (XP)</strong>. Ces XP reflètent l’engagement, la qualité du travail et la progression dans l’acquisition des compétences. Le système est structuré en <strong>niveaux</strong> : <em>Analyste Junior</em>, <em>Analyste Confirmé</em>, <em>Stratège Financier</em>, et enfin <em>Experts en Stratégie Financière</em>.</p>
-<p>À mesure qu’ils accumulent des XP, les étudiants débloquent des <strong>badges</strong> valorisant leurs compétences techniques (diagnostic, ratios, ESG), leur esprit collaboratif, et leur capacité stratégique. Ce dispositif favorise la motivation, la participation active et la montée en compétence progressive, tout en rendant l’apprentissage plus immersif et stimulant.</p>
-<section id="niveaux" class="level3">
-<h3 class="anchored" data-anchor-id="niveaux">Niveaux</h3>
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 1, 2026</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">March 10, 2026</p>
+    </div>
+  </div>
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>Ce cours introduit les probabilités et les statistiques comme outils de modélisation de l’incertitude et d’analyse de données. Il couvre les variables aléatoires continues (densités, lois classiques, couples), les théorèmes de convergence (loi des grands nombres, théorème central limite), ainsi que les statistiques descriptives et inférentielles (estimation, intervalles de confiance).</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<section id="syllabus" class="level1">
+<h1>Syllabus</h1>
+<blockquote class="blockquote">
+<p>“Tous les modèles sont faux, mais certains sont utiles.” — George E. P. Box</p>
+</blockquote>
+<p>Ce cours introduit les <strong>probabilités et les statistiques</strong> comme outils de modélisation de l’incertitude et d’analyse de données. Il s’articule autour de trois axes complémentaires : la théorie des <strong>variables aléatoires continues</strong> (densités, lois classiques), les <strong>théorèmes de convergence</strong> (loi des grands nombres, théorème central limite) et les <strong>statistiques descriptives et inférentielles</strong> (résumé de données, estimation, tests).</p>
+<section id="objectifs-pédagogiques" class="level2">
+<h2 class="anchored" data-anchor-id="objectifs-pédagogiques">Objectifs pédagogiques</h2>
+<p>À l’issue de ce module, l’étudiant sera capable de :</p>
+<ul>
+<li>Calculer des probabilités pour des variables aléatoires à densité et maîtriser les lois classiques (uniforme, exponentielle, normale).</li>
+<li>Analyser des couples de variables aléatoires : densités conjointes, indépendance, covariance, et loi de la somme par convolution.</li>
+<li>Comprendre et appliquer les théorèmes limites (loi des grands nombres, théorème central limite) à des problèmes concrets.</li>
+<li>Décrire et résumer des données uni- et bivariées à l’aide des outils de statistique descriptive.</li>
+<li>Construire des estimateurs (méthode des moments, maximum de vraisemblance) et des intervalles de confiance.</li>
+</ul>
+</section>
+<section id="contenu-du-cours" class="level2">
+<h2 class="anchored" data-anchor-id="contenu-du-cours">Contenu du cours</h2>
+<section id="probabilités-variables-aléatoires-continues" class="level3">
+<h3 class="anchored" data-anchor-id="probabilités-variables-aléatoires-continues">Probabilités — Variables aléatoires continues</h3>
 <table class="table">
 <thead>
 <tr class="header">
-<th style="text-align: center;">Niveaux</th>
-<th>Titres</th>
-<th style="text-align: center;">XP nécessaires</th>
+<th style="text-align: center;">#</th>
+<th>Chapitre</th>
+<th>Thèmes principaux</th>
+<th style="text-align: center;">Exercices</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">Niveau 1</td>
+<td style="text-align: center;">1</td>
+<td><a href="../../teaching/statistics-probability/classes/density-function.html">Lois à densité</a></td>
+<td>Intégrales généralisées · Densité et fonction de répartition · Loi uniforme <span class="math inline">\(\mathcal{U}([a,b])\)</span> · Loi exponentielle <span class="math inline">\(\mathcal{E}(\lambda)\)</span> · Espérance, variance, écart-type</td>
+<td style="text-align: center;"><a href="solutions/worksheet-density-function.qmd">→</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td><a href="../../teaching/statistics-probability/classes/normal-distribution.html">Loi normale</a></td>
+<td>Loi <span class="math inline">\(\mathcal{N}(0,1)\)</span> et table <span class="math inline">\(\Phi\)</span> · Standardisation · Loi <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span> · Stabilité par somme · Loi log-normale · Loi du khi-deux <span class="math inline">\(\chi^2_n\)</span></td>
+<td style="text-align: center;"><a href="../../teaching/statistics-probability/worksheets/worksheet-normal-distribution.html">→</a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td><a href="../../teaching/statistics-probability/classes/joint-continuous-variables.html">Couples de variables à densité</a></td>
+<td>Intégrales doubles (Fubini-Tonelli) · Densité conjointe · Lois marginales · Indépendance · Covariance et corrélation · Convolution</td>
+<td style="text-align: center;"><a href="../../teaching/statistics-probability/worksheets/worksheet-couples-variables-densite.html">→</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="théorèmes-limites" class="level3">
+<h3 class="anchored" data-anchor-id="théorèmes-limites">Théorèmes limites</h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">#</th>
+<th>Chapitre</th>
+<th>Thèmes principaux</th>
+<th style="text-align: center;">Exercices</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td><a href="../../teaching/statistics-probability/classes/convergence-va.html">Convergence de variables aléatoires</a></td>
+<td>Inégalités de Markov et Bienaymé-Tchebychev · Convergences en probabilité, en loi, en moyenne quadratique · Loi faible des grands nombres · Théorème central limite · Approximation de la loi binomiale</td>
+<td style="text-align: center;"><a href="../../teaching/statistics-probability/worksheets/worksheet-convergence-variables-aleatoires.html">→</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="statistiques-descriptives" class="level3">
+<h3 class="anchored" data-anchor-id="statistiques-descriptives">Statistiques descriptives</h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">#</th>
+<th>Chapitre</th>
+<th>Thèmes principaux</th>
+<th style="text-align: center;">Exercices</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td><a href="../../teaching/statistics-probability/classes/univariate-descriptive-statistics.html">Statistiques à une variable</a></td>
+<td>Série discrète et continue · Histogramme (densité) · Fonction de répartition empirique · Médiane, quartiles, écart interquartile · Moyenne, variance, König-Huygens · Transformations affines</td>
+<td style="text-align: center;"><a href="../../teaching/statistics-probability/worksheets/worksheet-statistiques-une-variable.html">→</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td><a href="../../teaching/statistics-probability/classes/bivariate-descriptive-statistics.html">Statistiques à deux variables</a></td>
+<td>Tableau de contingence · Distributions marginales et conditionnelles · Indépendance statistique · Test du <span class="math inline">\(\chi^2\)</span> d’indépendance · Résidus standardisés</td>
+<td style="text-align: center;"><a href="../../teaching/statistics-probability/worksheets/worksheet-statistiques-deux-variables.html">→</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="statistiques-inférentielles" class="level3">
+<h3 class="anchored" data-anchor-id="statistiques-inférentielles">Statistiques inférentielles</h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">#</th>
+<th>Chapitre</th>
+<th>Thèmes principaux</th>
+<th style="text-align: center;">Exercices</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td><a href="../../teaching/statistics-probability/classes/sampling-distribution.html">Distribution d’échantillonnage</a></td>
+<td>Échantillon i.i.d. · Statistique · Moyenne empirique (espérance, variance, loi) · Variance empirique corrigée et biais · Lois exactes en cas gaussien (<span class="math inline">\(\mathcal{N}\)</span>, <span class="math inline">\(\chi^2\)</span>)</td>
+<td style="text-align: center;"><a href="../../teaching/statistics-probability/worksheets/worksheet-distribution-echantillonnage.html">→</a></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td><a href="../../teaching/statistics-probability/classes/estimate.html">Estimation</a></td>
+<td>Estimateur, biais, erreur quadratique · Méthode des moments · Maximum de vraisemblance · Intervalles de confiance pour une proportion, une moyenne, une variance</td>
+<td style="text-align: center;">—</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="annexes" class="level3">
+<h3 class="anchored" data-anchor-id="annexes">Annexes</h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Ressource</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="../../teaching/statistics-probability/tables.html">Tables statistiques</a></td>
+<td>Table de la loi de Poisson · Quantiles du <span class="math inline">\(\chi^2\)</span> · Quantiles de la loi de Student</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="évaluation-du-module" class="level1">
+<h1>Évaluation du module</h1>
+<p>Ce cours s’appuie sur une approche d’<strong>apprentissage actif</strong> <span class="citation" data-cites="sheldon_multiplayer_2020">[@sheldon_multiplayer_2020]</span> : les étudiants progressent au travers de missions, accumulent des <strong>points d’expérience (XP)</strong> et débloquent des niveaux au fil du semestre.</p>
+<section id="niveaux" class="level2">
+<h2 class="anchored" data-anchor-id="niveaux">Niveaux</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Niveau</th>
+<th>Titre</th>
+<th style="text-align: center;">XP requises</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
 <td>Analyste Junior</td>
 <td style="text-align: center;">&lt; 400</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Niveau 2</td>
+<td style="text-align: center;">2</td>
 <td>Analyste Confirmé</td>
-<td style="text-align: center;">&gt; 400</td>
+<td style="text-align: center;">≥ 400</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">Niveau 3</td>
+<td style="text-align: center;">3</td>
 <td>Stratège Financier</td>
-<td style="text-align: center;">&gt; 800</td>
+<td style="text-align: center;">≥ 800</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Niveau 4</td>
+<td style="text-align: center;">4</td>
 <td>Expert en Stratégie Financière</td>
-<td style="text-align: center;">&gt; 1200</td>
+<td style="text-align: center;">≥ 1 200</td>
 </tr>
 </tbody>
 </table>
-<p>Include a section in your syllabus devoted to explaining how you’d like students to use the course website. Create a new (but short) syllabus section on all of the activities you’d like students to do in the course website. Many students need some explicit explanation of what role the course website will serve in your class because they may never have used a course website before. Try to operationalize student activities using action words (e.g.&nbsp;“Respond to in-class reading assignments using the “Discussions” tool” or “Post reading responses in the course website’s blog.”).</p>
-<!--
-
-### Système de Badges : Les Insignes de StratFin Corp
-
-#### 🎓 Badges de Compétence
-
-Ces badges valorisent la maîtrise des savoirs et savoir-faire financier.
-
-| 🏅 Badge                      | Nom                                                   | Critère d’obtention      |
-| ------------------------------ |-------------------------------------------------------|--------------------------|
-| 📊 **Maître des Bilans**      | Lecture et interprétation parfaite d’un bilan         | Score élevé à la quête 1 |
-| 🔍 **Œil du Diagnostiqueur**  | Diagnostic complet et pertinent d’une entreprise      | Boss de fin de jour 1    |
-| 📈 **Champion des Ratios**    | Maîtrise des ratios ROE, ROCE, solvabilité, etc.      | Quête 4 réussie          |
-| 🧭 **Architecte Stratégique** | Élaboration d’un plan financier cohérent              | Quête 8 réussie          |
-| 🌱 **Gardien ESG**            | Intégration réussie des critères ESG dans une analyse | Boss de fin de jour 3    |
-
-#### 🤝 Badges de Collaboration
-
-Ces badges encouragent le travail en équipe et la co-construction.
-
-| 🏅 Badge                | Nom                                              | Critère d’obtention |
-|--------------------------|--------------------------------------------------|---------------------|
-| 🧠 **Esprit d’Équipe**  | Participation active à une mission collaborative | Quêtes 2, 5 ou 7    |
-| 🗣️ **Orateur Stratège** | Présentation orale claire et convaincante        | Boss de jour 1 ou 3 |
-| 🧩 **Puzzle Master**    | Résolution d’un défi complexe en groupe          | Escape game ou SWOT |
-
-
-#### 🚀 Badges de Progression
-
-Ces badges marquent les étapes franchies dans le parcours.
-
-| 🏅 Badge                  | Nom               | Critère d’obtention |
-|----------------------------|-------------------|---------------------|
-| 🥉 **Analyste Junior**    | Atteindre 400 XP  | Niveau 1            |
-| 🥈 **Analyste Confirmé**  | Atteindre 800 XP  | Niveau 2            |
-| 🥇 **Stratège Financier** | Atteindre 1200 XP | Niveau 3            |
-| 🏆 **Expert RNCP**        | Atteindre 1600 XP | Niveau 4            |
-
-#### 💡 Badges Bonus
-
-Pour valoriser l’engagement, la créativité et la curiosité.
-
-| 🏅 Badge                      | Nom                                              | Critère d’obtention  |
-|--------------------------------|--------------------------------------------------|----------------------|
-| 🔎 **Veilleur du Marché**     | Contribution à la veille réglementaire           | Quête 7              |
-| 🧠 **Initiative Personnelle** | Proposition d’une amélioration ou idée originale | Hors mission         |
-| 💬 **Feedback Constructif**   | Aide à améliorer le cours ou le jeu              | Retour écrit ou oral |
-
--->
-<p>Voici un <strong>plan de cours complet sur 13 séances de 4h (≈ 46–52h)</strong> conçu pour des <strong>élèves ingénieurs</strong>, avec alternance structurée :</p>
+</section>
+<section id="activités-notées" class="level2">
+<h2 class="anchored" data-anchor-id="activités-notées">Activités notées</h2>
+<p>Chaque activité du cours génère des XP selon son type :</p>
+<table class="table">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 48%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Activité</th>
+<th>Description</th>
+<th style="text-align: center;">XP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Feuille d’exercices</strong></td>
+<td>Rendue individuellement avant chaque séance via le site du cours</td>
+<td style="text-align: center;">50</td>
+</tr>
+<tr class="even">
+<td><strong>Participation en séance</strong></td>
+<td>Questions, réponses et discussions lors des corrections</td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr class="odd">
+<td><strong>Mission de groupe</strong></td>
+<td>Étude de cas appliquée réalisée en binôme ou trinôme</td>
+<td style="text-align: center;">100</td>
+</tr>
+<tr class="even">
+<td><strong>Examen écrit</strong></td>
+<td>Contrôle final sur table (2 h) couvrant l’ensemble du cours</td>
+<td style="text-align: center;">200</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="utilisation-du-site-du-cours" class="level2">
+<h2 class="anchored" data-anchor-id="utilisation-du-site-du-cours">Utilisation du site du cours</h2>
+<p>Le site du cours est votre <strong>référence principale</strong> tout au long du semestre. Il est attendu que vous :</p>
 <ul>
-<li>2h théorie</li>
-<li>2h TP Python</li>
-<li>progression probabilités → statistiques → intégration</li>
-<li>forte composante simulation et données réelles</li>
-</ul>
-<hr>
-</section>
-</section>
-</section>
-<section id="cours-probabilités-statistiques-pour-ingénieurs" class="level1">
-<h1>🎓 Cours : Probabilités &amp; Statistiques pour Ingénieurs</h1>
-<p><strong>Format : 13 séances × 4h</strong></p>
-<hr>
-</section>
-<section id="bloc-1-fondations-probabilistes-séances-1-à-5" class="level1">
-<h1>🧱 BLOC 1 — Fondations probabilistes (Séances 1 à 5)</h1>
-<hr>
-<section id="séance-1-modéliser-lincertitude" class="level2">
-<h2 class="anchored" data-anchor-id="séance-1-modéliser-lincertitude">🔹 Séance 1 — Modéliser l’incertitude</h2>
-<section id="objectifs" class="level3">
-<h3 class="anchored" data-anchor-id="objectifs">🎯 Objectifs</h3>
-<ul>
-<li>Comprendre la notion de modèle probabiliste</li>
-<li>Introduire variable aléatoire</li>
-<li>Lois discrètes</li>
-</ul>
-</section>
-<section id="théorie-2h" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-2h">📚 Théorie (2h)</h3>
-<ul>
-<li>Expérience aléatoire</li>
-<li>Espace probabilisé</li>
-<li>Variable aléatoire discrète</li>
-<li>Loi de Bernoulli</li>
-<li>Loi binomiale</li>
-<li>Espérance et variance</li>
-</ul>
-</section>
-<section id="tp-python-2h" class="level3">
-<h3 class="anchored" data-anchor-id="tp-python-2h">💻 TP Python (2h)</h3>
-<ul>
-<li>Simulation de lancers de pièces</li>
-<li>Simulation loi binomiale</li>
-<li>Visualisation histogrammes</li>
-<li>Convergence fréquence → probabilité</li>
-<li>Mini-projet : modélisation d’un système binaire défaillant</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="séance-2-lois-usuelles-modélisation-continue" class="level2">
-<h2 class="anchored" data-anchor-id="séance-2-lois-usuelles-modélisation-continue">🔹 Séance 2 — Lois usuelles &amp; modélisation continue</h2>
-<section id="théorie" class="level3">
-<h3 class="anchored" data-anchor-id="théorie">📚 Théorie</h3>
-<ul>
-<li>Variable continue</li>
-<li>Densité</li>
-<li>Loi uniforme</li>
-<li>Loi exponentielle (fiabilité)</li>
-<li>Introduction loi normale</li>
-</ul>
-</section>
-<section id="tp" class="level3">
-<h3 class="anchored" data-anchor-id="tp">💻 TP</h3>
-<ul>
-<li>Simulation exponentielle (temps de panne)</li>
-<li>Estimation empirique moyenne/variance</li>
-<li>Ajustement d’une loi normale</li>
-<li>QQ-plot</li>
-<li>Cas industriel : durée de vie composant</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="séance-3-vecteurs-aléatoires-dépendance" class="level2">
-<h2 class="anchored" data-anchor-id="séance-3-vecteurs-aléatoires-dépendance">🔹 Séance 3 — Vecteurs aléatoires &amp; dépendance</h2>
-<section id="théorie-1" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-1">📚 Théorie</h3>
-<ul>
-<li>Loi jointe</li>
-<li>Indépendance</li>
-<li>Covariance</li>
-<li>Corrélation</li>
-<li>Loi normale multidimensionnelle (intuition)</li>
-</ul>
-</section>
-<section id="tp-1" class="level3">
-<h3 class="anchored" data-anchor-id="tp-1">💻 TP</h3>
-<ul>
-<li>Simulation corrélation</li>
-<li>Nuages de points</li>
-<li>Matrice de covariance</li>
-<li>Visualisation ellipse gaussienne</li>
-<li>Cas capteurs corrélés</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="séance-4-théorème-central-limite" class="level2">
-<h2 class="anchored" data-anchor-id="séance-4-théorème-central-limite">🔹 Séance 4 — Théorème Central Limite</h2>
-<section id="théorie-2" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-2">📚 Théorie</h3>
-<ul>
-<li>Sommes de variables</li>
-<li>TCL</li>
-<li>Approximation normale</li>
-<li>Importance pour ingénieurs</li>
-</ul>
-</section>
-<section id="tp-2" class="level3">
-<h3 class="anchored" data-anchor-id="tp-2">💻 TP</h3>
-<ul>
-<li>Simulation TCL (différentes lois)</li>
-<li>Visualisation convergence vers normale</li>
-<li>Approximation binomiale par normale</li>
-<li>Erreurs d’approximation</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="séance-5-introduction-à-linférence" class="level2">
-<h2 class="anchored" data-anchor-id="séance-5-introduction-à-linférence">🔹 Séance 5 — Introduction à l’inférence</h2>
-<section id="théorie-3" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-3">📚 Théorie</h3>
-<ul>
-<li>Population vs échantillon</li>
-<li>Estimateur</li>
-<li>Biais</li>
-<li>Variance</li>
-<li>Introduction au maximum de vraisemblance (intuition)</li>
-</ul>
-</section>
-<section id="tp-3" class="level3">
-<h3 class="anchored" data-anchor-id="tp-3">💻 TP</h3>
-<ul>
-<li>Estimation moyenne inconnue</li>
-<li>Simulation biais/variance</li>
-<li>Comparaison estimateurs</li>
-<li>Cas : calibration capteur</li>
-</ul>
-<hr>
-</section>
-</section>
-</section>
-<section id="bloc-2-statistiques-inférentielles-séances-6-à-9" class="level1">
-<h1>🧪 BLOC 2 — Statistiques inférentielles (Séances 6 à 9)</h1>
-<hr>
-<section id="séance-6-intervalles-de-confiance" class="level2">
-<h2 class="anchored" data-anchor-id="séance-6-intervalles-de-confiance">🔹 Séance 6 — Intervalles de confiance</h2>
-<section id="théorie-4" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-4">📚 Théorie</h3>
-<ul>
-<li>Intervalle moyenne (variance connue/inconnue)</li>
-<li>Loi de Student</li>
-<li>Interprétation correcte</li>
-</ul>
-</section>
-<section id="tp-4" class="level3">
-<h3 class="anchored" data-anchor-id="tp-4">💻 TP</h3>
-<ul>
-<li>Construction IC</li>
-<li>Simulation taux de couverture</li>
-<li>Visualisation répétitions échantillonnage</li>
-<li>Cas industriel : contrôle qualité</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="séance-7-tests-dhypothèses" class="level2">
-<h2 class="anchored" data-anchor-id="séance-7-tests-dhypothèses">🔹 Séance 7 — Tests d’hypothèses</h2>
-<section id="théorie-5" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-5">📚 Théorie</h3>
-<ul>
-<li>Hypothèse nulle</li>
-<li>Risque α, β</li>
-<li>Puissance</li>
-<li>Test moyenne</li>
-<li>p-value</li>
-</ul>
-</section>
-<section id="tp-5" class="level3">
-<h3 class="anchored" data-anchor-id="tp-5">💻 TP</h3>
-<ul>
-<li>Simulation erreurs type I / II</li>
-<li>Calcul puissance</li>
-<li>Cas : détection dérive production</li>
-<li>Visualisation régions critiques</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="séance-8-régression-linéaire" class="level2">
-<h2 class="anchored" data-anchor-id="séance-8-régression-linéaire">🔹 Séance 8 — Régression linéaire</h2>
-<section id="théorie-6" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-6">📚 Théorie</h3>
-<ul>
-<li>Modèle linéaire</li>
-<li>Moindres carrés</li>
-<li>Interprétation géométrique</li>
-<li>Hypothèses du modèle</li>
-</ul>
-</section>
-<section id="tp-6" class="level3">
-<h3 class="anchored" data-anchor-id="tp-6">💻 TP</h3>
-<ul>
-<li>Implémentation OLS</li>
-<li>Visualisation résidus</li>
-<li>Intervalle de confiance coefficients</li>
-<li>Cas : modélisation consommation énergie</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="séance-9-validation-limites-du-modèle" class="level2">
-<h2 class="anchored" data-anchor-id="séance-9-validation-limites-du-modèle">🔹 Séance 9 — Validation &amp; limites du modèle</h2>
-<section id="théorie-7" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-7">📚 Théorie</h3>
-<ul>
-<li>Surapprentissage</li>
-<li>Variance vs biais</li>
-<li>R²</li>
-<li>Introduction validation croisée</li>
-</ul>
-</section>
-<section id="tp-7" class="level3">
-<h3 class="anchored" data-anchor-id="tp-7">💻 TP</h3>
-<ul>
-<li>Simulation overfitting</li>
-<li>Comparaison modèles polynomiaux</li>
-<li>Split train/test</li>
-<li>Cas prédiction industrielle</li>
-</ul>
-<hr>
-</section>
-</section>
-</section>
-<section id="bloc-3-approfondissement-vision-ingénieur-séances-10-à-13" class="level1">
-<h1>🧠 BLOC 3 — Approfondissement &amp; vision ingénieur (Séances 10 à 13)</h1>
-<hr>
-<section id="séance-10-maximum-de-vraisemblance" class="level2">
-<h2 class="anchored" data-anchor-id="séance-10-maximum-de-vraisemblance">🔹 Séance 10 — Maximum de vraisemblance</h2>
-<section id="théorie-8" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-8">📚 Théorie</h3>
-<ul>
-<li>Définition formelle</li>
-<li>Exemple binomiale</li>
-<li>Exemple normale</li>
-<li>Propriétés</li>
-</ul>
-</section>
-<section id="tp-8" class="level3">
-<h3 class="anchored" data-anchor-id="tp-8">💻 TP</h3>
-<ul>
-<li>Implémentation MLE à la main</li>
-<li>Optimisation numérique</li>
-<li>Visualisation surface vraisemblance</li>
-<li>Cas : estimation paramètre fiabilité</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="séance-11-introduction-au-bayésien" class="level2">
-<h2 class="anchored" data-anchor-id="séance-11-introduction-au-bayésien">🔹 Séance 11 — Introduction au bayésien</h2>
-<section id="théorie-9" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-9">📚 Théorie</h3>
-<ul>
-<li>Théorème de Bayes</li>
-<li>Interprétation ingénieur</li>
-<li>Conjugaison Beta-Binomiale</li>
-<li>Différence fréquentiste / bayésien</li>
-</ul>
-</section>
-<section id="tp-9" class="level3">
-<h3 class="anchored" data-anchor-id="tp-9">💻 TP</h3>
-<ul>
-<li>Mise à jour croyance</li>
-<li>Visualisation posterior</li>
-<li>Cas : taux défaut inconnu</li>
-<li>Comparaison IC vs intervalle crédible</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="séance-12-méthodes-monte-carlo" class="level2">
-<h2 class="anchored" data-anchor-id="séance-12-méthodes-monte-carlo">🔹 Séance 12 — Méthodes Monte Carlo</h2>
-<section id="théorie-10" class="level3">
-<h3 class="anchored" data-anchor-id="théorie-10">📚 Théorie</h3>
-<ul>
-<li>Simulation</li>
-<li>Intégration Monte Carlo</li>
-<li>Estimation numérique</li>
-<li>Propagation d’incertitude</li>
-</ul>
-</section>
-<section id="tp-10" class="level3">
-<h3 class="anchored" data-anchor-id="tp-10">💻 TP</h3>
-<ul>
-<li>Estimation π</li>
-<li>Propagation erreur modèle physique</li>
-<li>Simulation chaîne logistique</li>
-<li>Analyse risque projet</li>
-</ul>
-<hr>
-</section>
-</section>
-<section id="séance-13-projet-final-intégré" class="level2">
-<h2 class="anchored" data-anchor-id="séance-13-projet-final-intégré">🔹 Séance 13 — Projet final intégré</h2>
-<section id="objectif" class="level3">
-<h3 class="anchored" data-anchor-id="objectif">🎯 Objectif</h3>
-<p>Mobiliser tout le cours</p>
-</section>
-<section id="cas-possible" class="level3">
-<h3 class="anchored" data-anchor-id="cas-possible">📦 Cas possible</h3>
-<ul>
-<li>Analyse données production industrielle</li>
-<li>Fiabilité système multi-composants</li>
-<li>Détection défaut capteurs</li>
-<li>Analyse données environnementales</li>
-</ul>
-</section>
-<section id="travail-demandé" class="level3">
-<h3 class="anchored" data-anchor-id="travail-demandé">Travail demandé</h3>
-<ul>
-<li>Modélisation probabiliste</li>
-<li>Estimation paramètres</li>
-<li>IC / tests</li>
-<li>Régression si pertinent</li>
-<li>Interprétation ingénieur</li>
-<li>Rapport + notebook</li>
-</ul>
-<hr>
-</section>
-</section>
-</section>
-<section id="évaluation-recommandée" class="level1">
-<h1>📊 Évaluation recommandée</h1>
-<ul>
-<li>30% TP notés</li>
-<li>30% projet final</li>
-<li>40% examen écrit (théorie + interprétation)</li>
-</ul>
-<hr>
-</section>
-<section id="logiciels-recommandés" class="level1">
-<h1>🧩 Logiciels recommandés</h1>
-<ul>
-<li>Python</li>
-<li>numpy</li>
-<li>scipy</li>
-<li>matplotlib</li>
-<li>pandas</li>
-<li>seaborn (visualisation)</li>
-<li>statsmodels</li>
-</ul>
-<hr>
-</section>
-<section id="philosophie-pédagogique" class="level1">
-<h1>🏗 Philosophie pédagogique</h1>
-<ol type="1">
-<li>Toujours partir d’un problème réel</li>
-<li>Introduire la théorie pour résoudre le problème</li>
-<li>Simuler avant de démontrer</li>
-<li>Visualiser systématiquement</li>
-<li>Relier aux applications industrielles</li>
-</ol>
-<hr>
-<p>Si vous le souhaitez, je peux aussi vous fournir :</p>
-<ul>
-<li>📁 Une trame complète de notebooks Python pour chaque séance</li>
-<li>📘 Un polycopié structuré prêt à distribuer</li>
-<li>🧪 Une banque d’exercices corrigés</li>
-<li>🎯 Une version adaptée à une école spécifique (Centrale, INSA, Mines, etc.)</li>
+<li><strong>Consultiez les chapitres</strong> avant chaque séance pour vous familiariser avec les notions abordées.</li>
+<li><strong>Téléchargiez et complètiez</strong> la feuille d’exercices associée à chaque chapitre, puis déposiez votre travail avant le délai fixé.</li>
+<li><strong>Vérifiez vos solutions</strong> en déroulant les corrigés détaillés disponibles sur chaque feuille d’exercices.</li>
+<li><strong>Utilisiez les tables statistiques</strong> (loi de Poisson, <span class="math inline">\(\chi^2\)</span>, Student) en ligne lors de vos révisions et à l’examen.</li>
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
-<!-- ============================================================ -->
-<!-- AI Resume Chat Widget                                        -->
-<!-- Replace WORKER_URL with your Cloudflare Worker URL after    -->
-<!-- running: wrangler deploy (inside the worker/ directory)     -->
-<!-- ============================================================ -->
-<style>
-  #chat-fab {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    z-index: 9999;
-    width: 3.25rem;
-    height: 3.25rem;
-    border-radius: 50%;
-    border: none;
-    background: #4f46e5;
-    color: #fff;
-    font-size: 1.4rem;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0,0,0,.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform .2s, background .2s;
-  }
-  #chat-fab:hover { background: #4338ca; transform: scale(1.07); }
-
-  #chat-panel {
-    position: fixed;
-    bottom: 5.5rem;
-    right: 1.5rem;
-    z-index: 9998;
-    width: min(380px, calc(100vw - 2rem));
-    max-height: 520px;
-    border-radius: .75rem;
-    overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0,0,0,.2);
-    display: none;
-    flex-direction: column;
-    background: var(--bs-body-bg, #fff);
-    border: 1px solid var(--bs-border-color, #dee2e6);
-    font-family: inherit;
-  }
-  #chat-panel.open { display: flex; }
-
-  #chat-header {
-    padding: .75rem 1rem;
-    background: #4f46e5;
-    color: #fff;
-    font-weight: 600;
-    font-size: .9rem;
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-  }
-  #chat-header span { flex: 1; }
-  #chat-close {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 1.1rem;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0;
-  }
-
-  #chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: .75rem;
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-    scroll-behavior: smooth;
-  }
-
-  .chat-msg {
-    max-width: 85%;
-    padding: .5rem .75rem;
-    border-radius: .6rem;
-    font-size: .875rem;
-    line-height: 1.45;
-    word-break: break-word;
-  }
-  .chat-msg.user {
-    align-self: flex-end;
-    background: #4f46e5;
-    color: #fff;
-    border-bottom-right-radius: .15rem;
-  }
-  .chat-msg.bot {
-    align-self: flex-start;
-    background: var(--bs-secondary-bg, #f1f3f5);
-    color: var(--bs-body-color, #212529);
-    border-bottom-left-radius: .15rem;
-  }
-  .chat-msg.bot.typing { opacity: .6; font-style: italic; }
-
-  #chat-input-row {
-    display: flex;
-    gap: .4rem;
-    padding: .6rem .75rem;
-    border-top: 1px solid var(--bs-border-color, #dee2e6);
-    background: var(--bs-body-bg, #fff);
-  }
-  #chat-input {
-    flex: 1;
-    border: 1px solid var(--bs-border-color, #dee2e6);
-    border-radius: .4rem;
-    padding: .4rem .6rem;
-    font-size: .875rem;
-    background: var(--bs-body-bg, #fff);
-    color: var(--bs-body-color, #212529);
-    outline: none;
-  }
-  #chat-input:focus { border-color: #4f46e5; }
-  #chat-send {
-    background: #4f46e5;
-    color: #fff;
-    border: none;
-    border-radius: .4rem;
-    padding: .4rem .75rem;
-    font-size: .875rem;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  #chat-send:disabled { opacity: .5; cursor: not-allowed; }
-</style>
-
-<!-- Floating action button -->
-<button id="chat-fab" title="Ask about my experience" aria-label="Open AI chat">💬</button>
-
-<!-- Chat panel -->
-<div id="chat-panel" role="dialog" aria-label="AI Resume Assistant">
-  <div id="chat-header">
-    <span>🤖 Ask about my experience</span>
-    <button id="chat-close" aria-label="Close chat">✕</button>
-  </div>
-  <div id="chat-messages">
-    <div class="chat-msg bot">
-      Hi! I'm an AI assistant. Ask me anything about Guillaume's background,
-      skills, or experience. 👋
-    </div>
-  </div>
-  <div id="chat-input-row">
-    <input id="chat-input" type="text" placeholder="e.g. What's his cybersecurity experience?" autocomplete="off">
-    <button id="chat-send">Send</button>
-  </div>
-</div>
-
-<script>
-(function () {
-  // ← Replace with your deployed Cloudflare Worker URL after running: wrangler deploy
-  const WORKER_URL = "https://resume-chat.YOUR-SUBDOMAIN.workers.dev";
-
-  const fab    = document.getElementById("chat-fab");
-  const panel  = document.getElementById("chat-panel");
-  const close  = document.getElementById("chat-close");
-  const msgs   = document.getElementById("chat-messages");
-  const input  = document.getElementById("chat-input");
-  const send   = document.getElementById("chat-send");
-
-  let history = [];
-  let busy = false;
-
-  fab.addEventListener("click", () => {
-    panel.classList.toggle("open");
-    if (panel.classList.contains("open")) input.focus();
-  });
-  close.addEventListener("click", () => panel.classList.remove("open"));
-
-  send.addEventListener("click", sendMessage);
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  });
-
-  function appendMsg(text, role) {
-    const div = document.createElement("div");
-    div.className = `chat-msg ${role}`;
-    div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-    return div;
-  }
-
-  async function sendMessage() {
-    const text = input.value.trim();
-    if (!text || busy) return;
-
-    busy = true;
-    send.disabled = true;
-    input.value = "";
-
-    appendMsg(text, "user");
-    const thinking = appendMsg("Thinking…", "bot typing");
-
-    try {
-      const res = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history }),
-      });
-
-      const data = await res.json();
-      const reply = data.reply || data.error || "Something went wrong.";
-
-      thinking.className = "chat-msg bot";
-      thinking.textContent = reply;
-
-      history.push({ role: "user", content: text });
-      history.push({ role: "assistant", content: reply });
-    } catch {
-      thinking.className = "chat-msg bot";
-      thinking.textContent = "⚠️ Could not reach the assistant. Please try again.";
-    }
-
-    busy = false;
-    send.disabled = false;
-    input.focus();
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-})();
-</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1520,14 +1073,59 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../teaching/statistics-probability/density-function.html" class="pagination-link" aria-label="Lois à densité">
+      <a href="../../teaching/statistics-probability/classes/density-function.html" class="pagination-link" aria-label="Lois à densité">
         <span class="nav-page-text">Lois à densité</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>2025 - 2026 · Built with <a href="https://quarto.org">Quarto</a> and my 🐈‍⬛ · <a href="https://github.com/guillaumegilles/guillaumegilles.github.io">Source <i class="bi bi-github"></i></a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://ggilles.dev/blog.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/guillaumegilles">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/guillaumegilles">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://app.hackthebox.com/profile/2425807">
+      <i class="bi bi-box" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://tryhackme.com/p/skekCoon">
+      <i class="bi bi-cloud-rain" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
 
 
 
 
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Guillaume Gilles">
+<meta name="author" content="Claude Sonnet 4.6">
+<meta name="dcterms.date" content="2026-03-15">
+
+<title>Guillaume Gilles - POSSE &amp; Webmentions on a Static Quarto Site</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<!-- IndieWeb: webmention endpoint -->
+<link rel="webmention" href="https://webmention.io/ggilles.dev/webmention">
+<link rel="pingback" href="https://webmention.io/ggilles.dev/xmlrpc">
+
+<!-- IndieAuth: rel="me" identity links -->
+<link rel="me" href="https://github.com/guillaumegilles">
+<link rel="me" href="https://www.linkedin.com/in/guillaumegilles">
+
+
+<meta property="og:title" content="Guillaume Gilles - POSSE &amp; Webmentions on a Static Quarto Site">
+<meta property="og:description" content="The IndieWeb movement offers a compelling answer to social media fatigue: own your content, syndicate it outward, and let the web itself carry the conversation back to you. In this post I walk through how I implemented POSSE and Webmentions on this site — a fully static Quarto website hosted on GitHub Pages — with no backend, no database, and no third-party JavaScript framework.">
+<meta property="og:image" content="https://ggilles.dev/posts/posse-webmentions/image.png">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - POSSE &amp; Webmentions on a Static Quarto Site">
+<meta name="twitter:description" content="The IndieWeb movement offers a compelling answer to social media fatigue: own your content, syndicate it outward, and let the web itself carry the conversation back to you. In this post I walk through how I implemented POSSE and Webmentions on this site — a fully static Quarto website hosted on GitHub Pages — with no backend, no database, and no third-party JavaScript framework.">
+<meta name="twitter:image" content="https://ggilles.dev/posts/posse-webmentions/image.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about/index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-problem-with-social-media-as-infrastructure" id="toc-the-problem-with-social-media-as-infrastructure" class="nav-link active" data-scroll-target="#the-problem-with-social-media-as-infrastructure">The problem with social media as infrastructure</a></li>
+  <li><a href="#how-posse-works" id="toc-how-posse-works" class="nav-link" data-scroll-target="#how-posse-works">How POSSE works</a></li>
+  <li><a href="#how-webmentions-work" id="toc-how-webmentions-work" class="nav-link" data-scroll-target="#how-webmentions-work">How Webmentions work</a></li>
+  <li><a href="#implementation-on-a-static-quarto-site" id="toc-implementation-on-a-static-quarto-site" class="nav-link" data-scroll-target="#implementation-on-a-static-quarto-site">Implementation on a static Quarto site</a>
+  <ul class="collapse">
+  <li><a href="#step-1-declare-your-identity-and-endpoint" id="toc-step-1-declare-your-identity-and-endpoint" class="nav-link" data-scroll-target="#step-1-declare-your-identity-and-endpoint">Step 1 — Declare your identity and endpoint</a></li>
+  <li><a href="#step-2-sign-up-at-webmention.io" id="toc-step-2-sign-up-at-webmention.io" class="nav-link" data-scroll-target="#step-2-sign-up-at-webmention.io">Step 2 — Sign up at webmention.io</a></li>
+  <li><a href="#step-3-wire-up-bridgy-for-social-backfeeding" id="toc-step-3-wire-up-bridgy-for-social-backfeeding" class="nav-link" data-scroll-target="#step-3-wire-up-bridgy-for-social-backfeeding">Step 3 — Wire up Bridgy for social backfeeding</a></li>
+  <li><a href="#step-4-display-webmentions-on-posts" id="toc-step-4-display-webmentions-on-posts" class="nav-link" data-scroll-target="#step-4-display-webmentions-on-posts">Step 4 — Display webmentions on posts</a></li>
+  </ul></li>
+  <li><a href="#the-full-picture" id="toc-the-full-picture" class="nav-link" data-scroll-target="#the-full-picture">The full picture</a></li>
+  <li><a href="#sending-webmentions-when-you-publish" id="toc-sending-webmentions-when-you-publish" class="nav-link" data-scroll-target="#sending-webmentions-when-you-publish">Sending webmentions when you publish</a></li>
+  <li><a href="#what-does-not-require-any-of-this" id="toc-what-does-not-require-any-of-this" class="nav-link" data-scroll-target="#what-does-not-require-any-of-this">What does not require any of this</a></li>
+  <li><a href="#replicating-this-on-your-own-quarto-site" id="toc-replicating-this-on-your-own-quarto-site" class="nav-link" data-scroll-target="#replicating-this-on-your-own-quarto-site">Replicating this on your own Quarto site</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">POSSE &amp; Webmentions on a Static Quarto Site</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">IndieWeb</div>
+    <div class="quarto-category">Quarto</div>
+    <div class="quarto-category">Web</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Guillaume Gilles </p>
+             <p><a href="https://www.anthropic.com/claude/sonnet">Claude Sonnet 4.6</a> </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 15, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>The IndieWeb movement offers a compelling answer to social media fatigue: own your content, syndicate it outward, and let the web itself carry the conversation back to you. In this post I walk through how I implemented POSSE and Webmentions on this site — a fully static Quarto website hosted on GitHub Pages — with no backend, no database, and no third-party JavaScript framework.</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<section id="the-problem-with-social-media-as-infrastructure" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem-with-social-media-as-infrastructure">The problem with social media as infrastructure</h2>
+<p>Every time you publish a thought on LinkedIn, a thread on a forum, or a reply on a social platform, you are building on rented land. The platform controls discovery, the platform controls the archive, and the platform can — and does — change the rules. Accounts get suspended, APIs get restricted, companies get acquired.</p>
+<p>The <a href="https://indieweb.org/">IndieWeb</a> movement’s answer is simple and old: <strong>own your content.</strong> Publish first on a domain you control, then push copies outward. The acronym for this workflow is <strong>POSSE</strong>: <em>Publish on your Own Site, Syndicate Elsewhere.</em></p>
+<p>But owning the canonical post is only half the equation. If someone replies to your LinkedIn copy, that conversation is trapped on LinkedIn. <strong>Webmentions</strong> close that loop: they are a W3C-standardised protocol that lets any website notify another that it has linked to or responded to it. Combined, POSSE + Webmentions give you a personal site that is the source of truth <em>and</em> an active participant in distributed conversations.</p>
+</section>
+<section id="how-posse-works" class="level2">
+<h2 class="anchored" data-anchor-id="how-posse-works">How POSSE works</h2>
+<p>The POSSE workflow is deliberately low-tech:</p>
+<ol type="1">
+<li><strong>Write and publish on your own site first.</strong> The URL on your domain is the canonical URL — the one you want search engines, archives, and readers to remember.</li>
+<li><strong>Syndicate copies to platforms</strong> — LinkedIn, Mastodon, a newsletter, an aggregator — each copy links back to the original with a <code>rel="canonical"</code> or just a plain “Originally published at…” line.</li>
+<li><strong>Collect responses.</strong> Ideally, replies on those platforms flow back to your site via Webmentions (more on that below). At minimum, you know the conversation happened because you own the thread.</li>
+</ol>
+<p>The key insight is the direction of authority: the copy points to the original, never the other way around. Your domain is the source; social media platforms are distribution channels.</p>
+<p>For this site, the technical foundation of POSSE is already in place:</p>
+<ul>
+<li><strong><code>site-url: https://ggilles.dev</code></strong> in <code>_quarto.yml</code> — Quarto embeds this as the canonical base URL in every page’s <code>&lt;head&gt;</code>, so syndicated copies can always point home.</li>
+<li><strong>RSS feed</strong> at <code>/blog.xml</code> — any reader or aggregator can subscribe directly without going through an algorithm.</li>
+</ul>
+</section>
+<section id="how-webmentions-work" class="level2">
+<h2 class="anchored" data-anchor-id="how-webmentions-work">How Webmentions work</h2>
+<p><a href="https://www.w3.org/TR/webmention/">Webmention</a> (W3C Recommendation, 2017) is a simple HTTP protocol. When site B publishes a post that links to a URL on site A, site B’s publishing software sends a POST request to site A’s webmention endpoint. Site A receives the notification, verifies that the link is real, and can display it however it likes.</p>
+<p>The full flow looks like this:</p>
+<pre><code>Site B publishes a post linking to https://ggilles.dev/posts/my-post/
+  ↓
+Site B (or a service) POSTs to https://webmention.io/ggilles.dev/webmention
+  with source=https://siteB.com/their-post &amp; target=https://ggilles.dev/posts/my-post/
+  ↓
+webmention.io verifies the link exists in site B's page
+  ↓
+webmention.io stores the mention
+  ↓
+ggilles.dev fetches the mention from the webmention.io API and displays it</code></pre>
+<p>Three actors are involved:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Actor</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://webmention.io">webmention.io</a></td>
+<td>Receives and stores incoming webmentions for your domain</td>
+</tr>
+<tr class="even">
+<td><a href="https://brid.gy">Bridgy</a></td>
+<td>Polls social platforms (LinkedIn, Mastodon…) and converts likes, reposts, and replies into webmentions</td>
+</tr>
+<tr class="odd">
+<td>Your site</td>
+<td>Declares the endpoint; fetches and renders the stored mentions</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="implementation-on-a-static-quarto-site" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="implementation-on-a-static-quarto-site">Implementation on a static Quarto site</h2>
+<p>A static site cannot receive HTTP POST requests, which is why webmention.io exists: it acts as your inbox. Your site only needs to advertise the endpoint in its <code>&lt;head&gt;</code> and fetch the stored data via a read API.</p>
+<section id="step-1-declare-your-identity-and-endpoint" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="step-1-declare-your-identity-and-endpoint">Step 1 — Declare your identity and endpoint</h3>
+<p>Create <code>assets/head-indieweb.html</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- IndieWeb: webmention endpoint --&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"webmention"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://webmention.io/ggilles.dev/webmention"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"pingback"</span><span class="ot">   href</span><span class="op">=</span><span class="st">"https://webmention.io/ggilles.dev/xmlrpc"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- IndieAuth: rel="me" identity links --&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"me"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://github.com/guillaumegilles"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"me"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://www.linkedin.com/in/guillaumegilles"</span><span class="ot"> </span><span class="dt">/&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>rel="webmention"</code> tag tells any Webmention-aware sender where to deliver notifications. The <code>rel="me"</code> tags are used by <a href="https://indieauth.com/">IndieAuth</a> to verify that the profiles listed belong to the owner of <code>ggilles.dev</code> — a prerequisite for signing in to webmention.io without a password.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="no-row-height column-margin column-container"><p><sup>1</sup>&nbsp;IndieAuth works by cross-referencing: your site links to your GitHub profile with <code>rel="me"</code>, and your GitHub profile links back to your site. This mutual link proves ownership.</p></div><p>Add this file to <code>_quarto.yml</code> so it is injected into every page:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span><span class="at"> assets/head-indieweb.html</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-2-sign-up-at-webmention.io" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-sign-up-at-webmention.io">Step 2 — Sign up at webmention.io</h3>
+<p>Go to <a href="https://webmention.io">webmention.io</a> and sign in with your site’s URL. webmention.io will look for the <code>rel="me"</code> links in your <code>&lt;head&gt;</code> and verify your identity via IndieAuth. Once confirmed, it starts accepting mentions addressed to your domain.</p>
+<p>This is a one-time, zero-configuration step. webmention.io is free for personal sites.</p>
+</section>
+<section id="step-3-wire-up-bridgy-for-social-backfeeding" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-wire-up-bridgy-for-social-backfeeding">Step 3 — Wire up Bridgy for social backfeeding</h3>
+<p><a href="https://brid.gy">Bridgy</a> is the bridge between siloed social platforms and the open web. Connect it to your LinkedIn, Mastodon, or other accounts and it will:</p>
+<ol type="1">
+<li>Poll those platforms for likes, reposts, and replies on posts that link to your site.</li>
+<li>Convert each interaction into a Webmention and send it to webmention.io.</li>
+</ol>
+<p>No code required — it is a point-and-click setup on brid.gy. Once connected, social interactions flow automatically into your webmention.io inbox.</p>
+</section>
+<section id="step-4-display-webmentions-on-posts" class="level3">
+<h3 class="anchored" data-anchor-id="step-4-display-webmentions-on-posts">Step 4 — Display webmentions on posts</h3>
+<p>The webmention.io read API is public. A small JavaScript snippet — included once and applied to every post — fetches mentions for the current page URL and renders them.</p>
+<p>Create <code>assets/webmentions.html</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">section</span><span class="ot"> id</span><span class="op">=</span><span class="st">"webmentions"</span><span class="dt">&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>Webmentions<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">"wm-facepile"</span><span class="dt">&gt;&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">"wm-replies"</span><span class="dt">&gt;&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> id</span><span class="op">=</span><span class="st">"wm-empty"</span><span class="ot"> style</span><span class="op">=</span><span class="st">"display:none;"</span><span class="dt">&gt;</span>No webmentions yet.<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>(<span class="kw">function</span> () {</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> LIKES   <span class="op">=</span> [<span class="st">"like-of"</span><span class="op">,</span> <span class="st">"bookmark-of"</span>]<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> REPOSTS <span class="op">=</span> [<span class="st">"repost-of"</span>]<span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> REPLIES <span class="op">=</span> [<span class="st">"in-reply-to"</span><span class="op">,</span> <span class="st">"mention-of"</span>]<span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> target <span class="op">=</span> <span class="pp">encodeURIComponent</span>(<span class="bu">window</span><span class="op">.</span><span class="at">location</span><span class="op">.</span><span class="at">href</span>)<span class="op">;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> api    <span class="op">=</span> <span class="vs">`https://webmention.io/api/mentions.jf2?target=</span><span class="sc">${</span>target<span class="sc">}</span><span class="vs">&amp;per-page=100`</span><span class="op">;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fetch</span>(api)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">then</span>(r <span class="kw">=&gt;</span> r<span class="op">.</span><span class="fu">json</span>())</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">then</span>(data <span class="kw">=&gt;</span> {</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> mentions <span class="op">=</span> data<span class="op">.</span><span class="at">children</span> <span class="op">||</span> []<span class="op">;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="op">!</span>mentions<span class="op">.</span><span class="at">length</span>) {</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"wm-empty"</span>)<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">display</span> <span class="op">=</span> <span class="st">"block"</span><span class="op">;</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> facepile  <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"wm-facepile"</span>)<span class="op">;</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> repliesEl <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"wm-replies"</span>)<span class="op">;</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      mentions<span class="op">.</span><span class="fu">forEach</span>(m <span class="kw">=&gt;</span> {</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> type   <span class="op">=</span> m[<span class="st">"wm-property"</span>]<span class="op">;</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> author <span class="op">=</span> m<span class="op">.</span><span class="at">author</span> <span class="op">||</span> {}<span class="op">;</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        <span class="co">// render likes/reposts as avatars, replies as cards</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        <span class="co">// … (see full source below)</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>})()<span class="op">;</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The API returns a <a href="https://www.w3.org/TR/jf2/">JF2</a> feed — a JSON format for social interactions. Each entry has a <code>wm-property</code> field that describes the interaction type:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th><code>wm-property</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>like-of</code></td>
+<td>Someone liked the post</td>
+</tr>
+<tr class="even">
+<td><code>bookmark-of</code></td>
+<td>Someone bookmarked it</td>
+</tr>
+<tr class="odd">
+<td><code>repost-of</code></td>
+<td>Someone reposted or shared it</td>
+</tr>
+<tr class="even">
+<td><code>in-reply-to</code></td>
+<td>A direct reply</td>
+</tr>
+<tr class="odd">
+<td><code>mention-of</code></td>
+<td>The post was mentioned but not directly replied to</td>
+</tr>
+</tbody>
+</table>
+<p>Likes and reposts are rendered as a compact <strong>facepile</strong> — a row of avatar images. Replies and mentions get a full <strong>reply card</strong> with the author’s name, date, and a preview of their text.</p>
+<p>Tell Quarto to append this widget to every post by adding one line to <code>posts/_metadata.yml</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-after-body</span><span class="kw">:</span><span class="at"> ../assets/webmentions.html</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>_metadata.yml</code> in a subdirectory applies to all documents in that directory and its children — so this single line adds the widget to every post without touching individual <code>.qmd</code> files.</p>
+</section>
+</section>
+<section id="the-full-picture" class="level2">
+<h2 class="anchored" data-anchor-id="the-full-picture">The full picture</h2>
+<p>Here is how all the pieces fit together in the final architecture:</p>
+<pre><code>You write a post → quarto render → push to GitHub Pages
+                                         │
+                    ┌────────────────────┘
+                    │ &lt;link rel="webmention" href="webmention.io/…" /&gt;
+                    │ &lt;link rel="me" href="github.com/guillaumegilles" /&gt;
+                    │ RSS feed at /blog.xml
+                    └→ ggilles.dev (canonical source)
+
+You share the post URL on LinkedIn / Mastodon
+                    └→ Bridgy polls LinkedIn
+                         └→ sends Webmention to webmention.io
+                              └→ stored in webmention.io inbox
+
+Reader opens a post on ggilles.dev
+                    └→ webmentions.html JS runs
+                         └→ GET webmention.io/api/mentions.jf2?target=…
+                              └→ renders likes, reposts, replies inline</code></pre>
+<p>No server, no database, no build-time API calls. The canonical content is fully static; social interactions are fetched client-side on demand.</p>
+</section>
+<section id="sending-webmentions-when-you-publish" class="level2">
+<h2 class="anchored" data-anchor-id="sending-webmentions-when-you-publish">Sending webmentions when you publish</h2>
+<p>Receiving webmentions is automatic once the endpoint is declared. Sending them — notifying other sites that you have linked to them — requires an extra step.</p>
+<p>The simplest approach is <a href="https://webmention.app/">webmention.app</a>: a free service that polls your RSS feed for new posts and sends webmentions to every URL you link to. Point it at <code>https://ggilles.dev/blog.xml</code> and it handles the rest.</p>
+<p>Alternatively, you can trigger sends manually with the <a href="https://www.npmjs.com/package/webmention"><code>webmention</code> CLI</a> or add a GitHub Actions workflow that runs on every push to <code>main</code>.</p>
+</section>
+<section id="what-does-not-require-any-of-this" class="level2">
+<h2 class="anchored" data-anchor-id="what-does-not-require-any-of-this">What does not require any of this</h2>
+<p>POSSE does not require Webmentions to be useful. Even without the feedback loop, the discipline of publishing on your own domain first — and treating social platforms as mirrors rather than originals — gives you:</p>
+<ul>
+<li>A permanent, searchable archive you control.</li>
+<li>A canonical URL to link to from anywhere.</li>
+<li>Independence from any single platform’s algorithm or terms of service.</li>
+</ul>
+<p>Webmentions are the layer that makes the distributed conversation visible. They are a nice-to-have that upgrades the experience significantly if the people engaging with your content are on IndieWeb-aware platforms (Mastodon, personal blogs running WordPress with the Webmention plugin, etc.).</p>
+<p>LinkedIn and most corporate platforms will likely never implement Webmention natively — that is what Bridgy is for.</p>
+</section>
+<section id="replicating-this-on-your-own-quarto-site" class="level2">
+<h2 class="anchored" data-anchor-id="replicating-this-on-your-own-quarto-site">Replicating this on your own Quarto site</h2>
+<p>The full implementation is four files and two external accounts:</p>
+<p><strong>Files</strong></p>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>assets/head-indieweb.html</code></td>
+<td>Webmention endpoint + <code>rel="me"</code> identity</td>
+</tr>
+<tr class="even">
+<td><code>assets/webmentions.html</code></td>
+<td>Client-side display widget</td>
+</tr>
+<tr class="odd">
+<td><code>posts/_metadata.yml</code></td>
+<td>Auto-include widget on all posts</td>
+</tr>
+<tr class="even">
+<td><code>_quarto.yml</code></td>
+<td><code>include-in-header</code>, <code>site-url</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>External accounts (both free)</strong></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Service</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://webmention.io">webmention.io</a></td>
+<td>Your webmention inbox</td>
+</tr>
+<tr class="even">
+<td><a href="https://brid.gy">brid.gy</a></td>
+<td>Social platform backfeeding</td>
+</tr>
+</tbody>
+</table>
+<p>Replace every occurrence of <code>ggilles.dev</code> with your own domain and every social profile URL with yours. The rest is generic and reusable as-is.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://indieweb.org/POSSE">IndieWeb: POSSE</a></li>
+<li><a href="https://www.w3.org/TR/webmention/">W3C Webmention Recommendation</a></li>
+<li><a href="https://www.w3.org/TR/jf2/">JF2 Post Serialization Format</a></li>
+<li><a href="https://webmention.io">webmention.io</a> — Aaron Parecki</li>
+<li><a href="https://brid.gy">Bridgy</a> — Ryan Barrett</li>
+<li><a href="https://quarto.org/docs/output-formats/html-basics.html#includes">Quarto: <code>include-in-header</code></a></li>
+<li><a href="https://quarto.org/docs/projects/quarto-projects.html#directory-metadata">Quarto: <code>_metadata.yml</code></a></li>
+</ul>
+
+
+</section>
+
+
+</main> <!-- /main -->
+<section id="webmentions" style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--bs-border-color, #dee2e6);">
+  <h2 style="font-size: 1.1rem; margin-bottom: 1rem;">Webmentions</h2>
+
+  <div id="wm-facepile" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem;"></div>
+  <div id="wm-replies" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+  <p id="wm-empty" style="color: var(--bs-secondary-color); font-size: 0.875rem; display: none;">
+    No webmentions yet. Be the first to respond!
+  </p>
+</section>
+
+<script>
+(function () {
+  const LIKES    = ["like-of", "bookmark-of"];
+  const REPOSTS  = ["repost-of"];
+  const REPLIES  = ["in-reply-to", "mention-of"];
+
+  const target = encodeURIComponent(window.location.href);
+  const api    = `https://webmention.io/api/mentions.jf2?target=${target}&per-page=100`;
+
+  fetch(api)
+    .then(r => r.json())
+    .then(data => {
+      const mentions = (data.children || []);
+      if (!mentions.length) {
+        document.getElementById("wm-empty").style.display = "block";
+        return;
+      }
+
+      const facepile = document.getElementById("wm-facepile");
+      const repliesEl = document.getElementById("wm-replies");
+
+      mentions.forEach(m => {
+        const type   = m["wm-property"];
+        const author = m.author || {};
+        const photo  = author.photo  || "";
+        const name   = author.name   || "Anonymous";
+        const url    = author.url    || m.url || "#";
+
+        if (LIKES.includes(type) || REPOSTS.includes(type)) {
+          // Facepile: avatar only
+          const emoji = REPOSTS.includes(type) ? "🔁 " : "";
+          const a = document.createElement("a");
+          a.href = url;
+          a.title = `${emoji}${name}`;
+          a.target = "_blank";
+          a.rel = "noopener";
+          if (photo) {
+            const img = document.createElement("img");
+            img.src = photo;
+            img.alt = name;
+            img.style.cssText = "width:2rem;height:2rem;border-radius:50%;object-fit:cover;";
+            a.appendChild(img);
+          } else {
+            a.textContent = name.charAt(0).toUpperCase();
+            a.style.cssText = "display:inline-flex;align-items:center;justify-content:center;" +
+              "width:2rem;height:2rem;border-radius:50%;background:var(--bs-secondary-bg);font-size:0.85rem;";
+          }
+          facepile.appendChild(a);
+
+        } else if (REPLIES.includes(type)) {
+          // Full reply card
+          const card = document.createElement("div");
+          card.style.cssText = "display:flex;gap:0.75rem;font-size:0.875rem;";
+
+          const avatarWrap = document.createElement("a");
+          avatarWrap.href = url;
+          avatarWrap.target = "_blank";
+          avatarWrap.rel = "noopener";
+          if (photo) {
+            const img = document.createElement("img");
+            img.src = photo;
+            img.alt = name;
+            img.style.cssText = "width:2.5rem;height:2.5rem;border-radius:50%;object-fit:cover;flex-shrink:0;";
+            avatarWrap.appendChild(img);
+          }
+
+          const body = document.createElement("div");
+          const meta = document.createElement("div");
+          meta.style.cssText = "margin-bottom:0.25rem;";
+          meta.innerHTML = `<a href="${url}" target="_blank" rel="noopener" style="font-weight:600;">${name}</a>` +
+            (m.published ? ` · <time style="color:var(--bs-secondary-color);">${new Date(m.published).toLocaleDateString()}</time>` : "");
+          body.appendChild(meta);
+
+          if (m.content?.text) {
+            const p = document.createElement("p");
+            p.style.margin = "0";
+            p.textContent = m.content.text.slice(0, 280) + (m.content.text.length > 280 ? "…" : "");
+            body.appendChild(p);
+          }
+
+          card.appendChild(avatarWrap);
+          card.appendChild(body);
+          repliesEl.appendChild(card);
+        }
+      });
+    })
+    .catch(() => {
+      document.getElementById("wm-empty").style.display = "block";
+    });
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="guillaumegilles/guillaumegilles.github.io" data-repo-id="R_kgDOQVAmCQ" data-category="General" data-category-id="DIC_kwDOQVAmCc4C3-XH" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>2025 - 2026 · Built with <a href="https://quarto.org">Quarto</a> and my 🐈‍⬛ · <a href="https://github.com/guillaumegilles/guillaumegilles.github.io">Source <i class="bi bi-github"></i></a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://ggilles.dev/blog.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/guillaumegilles">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/guillaumegilles">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://app.hackthebox.com/profile/2425807">
+      <i class="bi bi-box" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://tryhackme.com/p/skekCoon">
+      <i class="bi bi-cloud-rain" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

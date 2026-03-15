@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-03-05">
+
+<title>Guillaume Gilles - Statistiques descriptives a une variable</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../teaching/statistics-probability/classes/bivariate-descriptive-statistics.html" rel="next">
+<link href="../../../teaching/statistics-probability/classes/joint-continuous-variables.html" rel="prev">
+<link href="../../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<!-- IndieWeb: webmention endpoint -->
+<link rel="webmention" href="https://webmention.io/ggilles.dev/webmention">
+<link rel="pingback" href="https://webmention.io/ggilles.dev/xmlrpc">
+
+<!-- IndieAuth: rel="me" identity links -->
+<link rel="me" href="https://github.com/guillaumegilles">
+<link rel="me" href="https://www.linkedin.com/in/guillaumegilles">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Guillaume Gilles - Statistiques descriptives a une variable">
+<meta property="og:description" content="Ce chapitre presente les bases de la statistique descriptive univariee, avec l’objectif de decrire rigoureusement une population a partir d’un seul caractere. On introduit d’abord le vocabulaire (population, individu, variable, modalite), puis les outils de synthese pour les series discretes (effectifs, frequences, cumuls, mode). Le chapitre traite ensuite le cas des series continues regroupees en classes, en expliquant l’usage correct de l’histogramme (densites) et de la fonction de repartition. Les indicateurs de position et de dispersion sont ensuite developpes : mediane, quartiles, intervalle interquartile, moyenne, variance, ecart-type, avec les formules pratiques (dont Konig-Huygens) et les transformations affines. Le chapitre se termine par une synthese methodologique complete pour mener une etude statistique de bout en bout.">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Statistiques descriptives a une variable">
+<meta name="twitter:description" content="Ce chapitre presente les bases de la statistique descriptive univariee, avec l’objectif de decrire rigoureusement une population a partir d’un seul caractere. On introduit d’abord le vocabulaire (population, individu, variable, modalite), puis les outils de synthese pour les series discretes (effectifs, frequences, cumuls, mode). Le chapitre traite ensuite le cas des series continues regroupees en classes, en expliquant l’usage correct de l’histogramme (densites) et de la fonction de repartition. Les indicateurs de position et de dispersion sont ensuite developpes : mediane, quartiles, intervalle interquartile, moyenne, variance, ecart-type, avec les formules pratiques (dont Konig-Huygens) et les transformations affines. Le chapitre se termine par une synthese methodologique complete pour mener une etude statistique de bout en bout.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about/index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../teaching/statistics-probability/classes/density-function.html">Descriptive Statistics</a></li><li class="breadcrumb-item"><a href="../../../teaching/statistics-probability/classes/univariate-descriptive-statistics.html">Statistiques descriptives a une variable</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probabilités &amp; Statistiques</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Descriptive Statistics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/density-function.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lois à densité</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/normal-distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loi normale et applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/joint-continuous-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Couples de variables a densite</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/univariate-descriptive-statistics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Statistiques descriptives a une variable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/bivariate-descriptive-statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistiques descriptives a deux variables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/sampling-distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Distribution d’echantillonnage</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#i---vocabulaire-de-base" id="toc-i---vocabulaire-de-base" class="nav-link active" data-scroll-target="#i---vocabulaire-de-base">I - Vocabulaire de base</a></li>
+  <li><a href="#ii---distribution-discrete-finie" id="toc-ii---distribution-discrete-finie" class="nav-link" data-scroll-target="#ii---distribution-discrete-finie">II - Distribution discrete finie</a></li>
+  <li><a href="#iii---distribution-continue-en-classes" id="toc-iii---distribution-continue-en-classes" class="nav-link" data-scroll-target="#iii---distribution-continue-en-classes">III - Distribution continue en classes</a>
+  <ul class="collapse">
+  <li><a href="#histogramme" id="toc-histogramme" class="nav-link" data-scroll-target="#histogramme">1. Histogramme</a></li>
+  <li><a href="#fonction-de-repartition-empirique-en-classes" id="toc-fonction-de-repartition-empirique-en-classes" class="nav-link" data-scroll-target="#fonction-de-repartition-empirique-en-classes">2. Fonction de repartition empirique en classes</a></li>
+  </ul></li>
+  <li><a href="#iv---mediane-quartiles-et-dispersion" id="toc-iv---mediane-quartiles-et-dispersion" class="nav-link" data-scroll-target="#iv---mediane-quartiles-et-dispersion">IV - Mediane, quartiles et dispersion</a></li>
+  <li><a href="#v---moyenne-variance-ecart-type" id="toc-v---moyenne-variance-ecart-type" class="nav-link" data-scroll-target="#v---moyenne-variance-ecart-type">V - Moyenne, variance, ecart-type</a></li>
+  <li><a href="#vi---transformations-affines" id="toc-vi---transformations-affines" class="nav-link" data-scroll-target="#vi---transformations-affines">VI - Transformations affines</a></li>
+  <li><a href="#vii---methode-de-synthese-a-retenir" id="toc-vii---methode-de-synthese-a-retenir" class="nav-link" data-scroll-target="#vii---methode-de-synthese-a-retenir">VII - Methode de synthese (a retenir)</a></li>
+  </ul>
+<div class="quarto-code-links"><h2>Code Links</h2><ul><li><a href="../worksheets/worksheet-statistiques-une-variable.qmd"><i class="bi bi-link-45deg"></i></a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../teaching/statistics-probability/classes/density-function.html">Descriptive Statistics</a></li><li class="breadcrumb-item"><a href="../../../teaching/statistics-probability/classes/univariate-descriptive-statistics.html">Statistiques descriptives a une variable</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Statistiques descriptives a une variable</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 5, 2026</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">March 5, 2026</p>
+    </div>
+  </div>
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>Ce chapitre presente les bases de la <strong>statistique descriptive univariee</strong>, avec l’objectif de decrire rigoureusement une population a partir d’un seul caractere. On introduit d’abord le vocabulaire (population, individu, variable, modalite), puis les outils de synthese pour les series <strong>discretes</strong> (effectifs, frequences, cumuls, mode). Le chapitre traite ensuite le cas des series <strong>continues</strong> regroupees en classes, en expliquant l’usage correct de l’histogramme (densites) et de la fonction de repartition. Les indicateurs de position et de dispersion sont ensuite developpes : mediane, quartiles, intervalle interquartile, moyenne, variance, ecart-type, avec les formules pratiques (dont Konig-Huygens) et les transformations affines. Le chapitre se termine par une synthese methodologique complete pour mener une etude statistique de bout en bout.</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>Dans tout ce chapitre, on etudie une serie statistique a <strong>une variable</strong> observee sur une population finie.</p>
+</blockquote>
+<section id="i---vocabulaire-de-base" class="level2">
+<h2 class="anchored" data-anchor-id="i---vocabulaire-de-base">I - Vocabulaire de base</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definitions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>La <strong>population</strong> <span class="math inline">\(P\)</span> est l’ensemble des individus etudies.</li>
+<li>Les <strong>individus</strong> (ou unites statistiques) sont les elements de <span class="math inline">\(P\)</span>.</li>
+<li>Le <strong>caractere</strong> (ou variable) est une application <span class="math display">\[x : P \to E,\]</span> ou <span class="math inline">\(E\)</span> est l’ensemble des <strong>modalites</strong>.</li>
+<li>Le couple <span class="math inline">\((P,x)\)</span> est une <strong>serie statistique</strong> (ou distribution statistique).</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Types de variables
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Qualitative</strong> : les modalites ne sont pas numeriques.
+<ul>
+<li>nominale : sans ordre naturel,</li>
+<li>ordinale : avec ordre naturel.</li>
+</ul></li>
+<li><strong>Quantitative</strong> : les modalites sont numeriques.
+<ul>
+<li>discrete : ensemble de valeurs fini ou denombrable,</li>
+<li>continue : ensemble de valeurs de type intervalle.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<p>Dans ce chapitre, on se concentre sur les variables quantitatives (discretes puis continues en classes).</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 1 - Identifier la nature d’un caractere
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour chaque situation, preciser la population, le caractere et le type du caractere.</p>
+<ol type="1">
+<li>Metier des adultes d’un groupe de skieurs.</li>
+<li>Age des participants a un concours.</li>
+<li>Taille des etudiants d’un amphitheatre.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Metier : variable qualitative nominale.</li>
+<li>Age : variable quantitative discrete (si age en annees entieres) ou continue (si mesure exacte).</li>
+<li>Taille : variable quantitative continue.</li>
+</ol>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="ii---distribution-discrete-finie" class="level2">
+<h2 class="anchored" data-anchor-id="ii---distribution-discrete-finie">II - Distribution discrete finie</h2>
+<p>Soit une variable quantitative discrete <span class="math inline">\(x\)</span> prenant les valeurs distinctes <span class="math display">\[x_1 &lt; x_2 &lt; \cdots &lt; x_r.\]</span> On note <span class="math inline">\(n\)</span> l’effectif total, <span class="math inline">\(n_i\)</span> l’effectif de <span class="math inline">\(x_i\)</span>, et <span class="math display">\[f_i = \frac{n_i}{n}\]</span> sa frequence.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definitions - Cumuls et mode
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Effectif cumule croissant (E.C.C.) : <span class="math display">\[N_i^+ = \sum_{k=1}^i n_k.\]</span></li>
+<li>Frequence cumulee croissante (F.C.C.) : <span class="math display">\[F_i^+ = \sum_{k=1}^i f_k = \frac{N_i^+}{n}.\]</span></li>
+<li><strong>Mode</strong> : toute modalite d’effectif maximal.</li>
+</ul>
+</div>
+</div>
+<p>Le diagramme de reference pour une serie discrete est le <strong>diagramme en batons</strong>.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 2 - Tableau statistique complet
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une etude porte sur le nombre d’enfants par foyer. Les resultats observes sont :</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Valeur <span class="math inline">\(x_i\)</span></th>
+<th style="text-align: right;">0</th>
+<th style="text-align: right;">1</th>
+<th style="text-align: right;">2</th>
+<th style="text-align: right;">3</th>
+<th style="text-align: right;">4</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Effectif <span class="math inline">\(n_i\)</span></td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">120</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Calculer les frequences <span class="math inline">\(f_i\)</span>.</li>
+<li>Calculer les E.C.C. et F.C.C.</li>
+<li>Determiner la frequence de foyers ayant au plus 2 enfants.</li>
+<li>Donner le (ou les) mode(s).</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 2 (resultats)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(f_i = n_i/120\)</span>.</li>
+<li>E.C.C. : <span class="math inline">\(18, 52, 92, 112, 120\)</span>.</li>
+<li>F.C.C. : <span class="math inline">\(0{,}15, 0{,}433, 0{,}767, 0{,}933, 1\)</span>.</li>
+<li>Frequence de foyers avec au plus 2 enfants : <span class="math inline">\(F_2^+ = 92/120 \approx 0{,}767\)</span>.</li>
+<li>Mode : valeur 2 (effectif maximal 40).</li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="iii---distribution-continue-en-classes" class="level2">
+<h2 class="anchored" data-anchor-id="iii---distribution-continue-en-classes">III - Distribution continue en classes</h2>
+<p>Quand les donnees sont nombreuses et presque toutes distinctes, on regroupe les observations en classes <span class="math display">\[[a_i, a_{i+1}[, \quad i=1,\dots,r.\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definitions - Classes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour la classe <span class="math inline">\([a_i,a_{i+1}[\)</span> :</p>
+<ul>
+<li>amplitude : <span class="math display">\[A_i = a_{i+1}-a_i,\]</span></li>
+<li>centre : <span class="math display">\[c_i = \frac{a_i+a_{i+1}}{2},\]</span></li>
+<li>effectif : <span class="math inline">\(n_i\)</span>, frequence : <span class="math inline">\(f_i = n_i/n\)</span>,</li>
+<li>densite de frequence : <span class="math display">\[d_i = \frac{f_i}{A_i}.\]</span></li>
+</ul>
+</div>
+</div>
+<section id="histogramme" class="level3">
+<h3 class="anchored" data-anchor-id="histogramme">1. Histogramme</h3>
+<p>Dans un histogramme correct, la <strong>surface</strong> de chaque rectangle est proportionnelle a la frequence de classe. Donc la <strong>hauteur</strong> doit etre proportionnelle a la densite <span class="math inline">\(d_i\)</span> (et non a <span class="math inline">\(f_i\)</span> si les amplitudes sont differentes).</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Point cle
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si les amplitudes sont differentes, comparer seulement les hauteurs des barres peut induire en erreur. La grandeur pertinente est la surface (hauteur x largeur).</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 3 - Densites et hauteurs corrigees
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On considere la distribution suivante :</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Classe</th>
+<th style="text-align: right;"><span class="math inline">\([30,40[\)</span></th>
+<th style="text-align: right;"><span class="math inline">\([40,45[\)</span></th>
+<th style="text-align: right;"><span class="math inline">\([45,50[\)</span></th>
+<th style="text-align: right;"><span class="math inline">\([50,65[\)</span></th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Effectif <span class="math inline">\(n_i\)</span></td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">25</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Calculer les frequences <span class="math inline">\(f_i\)</span>.</li>
+<li>Calculer les amplitudes <span class="math inline">\(A_i\)</span>.</li>
+<li>Calculer les densites <span class="math inline">\(d_i = f_i/A_i\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 3 (resultats)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(f_i = (0{,}44, 0{,}28, 0{,}20, 0{,}08)\)</span>.</li>
+<li><span class="math inline">\(A_i = (10, 5, 5, 15)\)</span>.</li>
+<li><span class="math inline">\(d_i = (0{,}044, 0{,}056, 0{,}040, 0{,}0053)\)</span>.</li>
+</ul>
+<p>La deuxieme classe est plus dense que la premiere, bien qu’elle ait un effectif inferieur.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="fonction-de-repartition-empirique-en-classes" class="level3">
+<h3 class="anchored" data-anchor-id="fonction-de-repartition-empirique-en-classes">2. Fonction de repartition empirique en classes</h3>
+<p>Sous l’hypothese d’equirepartition dans chaque classe, la fonction de repartition <span class="math inline">\(F\)</span> est :</p>
+<ul>
+<li>croissante,</li>
+<li>continue,</li>
+<li>affine par morceaux,</li>
+<li>telle que <span class="math inline">\(F(a_i)\)</span> vaut la frequence cumulee au bord <span class="math inline">\(a_i\)</span>.</li>
+</ul>
+<p>Pour <span class="math inline">\(x\in[a_i,a_{i+1}[\)</span>, on obtient <span class="math inline">\(F(x)\)</span> par interpolation lineaire : <span class="math display">\[
+F(x)=F(a_i)+\frac{F(a_{i+1})-F(a_i)}{a_{i+1}-a_i}(x-a_i).
+\]</span></p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 4 - Lecture de repartition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Avec la distribution de l’exemple 3, calculer <span class="math inline">\(F(42)\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 4
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(42\in[40,45[\)</span>.</li>
+<li><span class="math inline">\(F(40)=0{,}44\)</span> et <span class="math inline">\(F(45)=0{,}72\)</span>.</li>
+<li>Donc <span class="math display">\[
+F(42)=0{,}44+\frac{0{,}72-0{,}44}{5}(2)=0{,}552.
+\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="iv---mediane-quartiles-et-dispersion" class="level2">
+<h2 class="anchored" data-anchor-id="iv---mediane-quartiles-et-dispersion">IV - Mediane, quartiles et dispersion</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definitions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>La <strong>mediane</strong> est une valeur qui partage la population en deux moities (50 % / 50 %).</li>
+<li>Les <strong>quartiles</strong> <span class="math inline">\(Q_1, Q_2, Q_3\)</span> partagent en quatre parts de 25 %.</li>
+<li>On a <span class="math inline">\(Q_2 =\)</span> mediane.</li>
+<li>L’<strong>ecart interquartile</strong> vaut <span class="math display">\[IQR = Q_3-Q_1,\]</span> et mesure la dispersion centrale.</li>
+</ul>
+</div>
+</div>
+<p>Pour les series continues en classes, on determine les quantiles par lecture de la fonction de repartition (interpolation lineaire).</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 5 - Quantiles d’une serie discrete
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit la serie :</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Valeur <span class="math inline">\(x_i\)</span></th>
+<th style="text-align: right;">5</th>
+<th style="text-align: right;">10</th>
+<th style="text-align: right;">15</th>
+<th style="text-align: right;">20</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Effectif <span class="math inline">\(n_i\)</span></td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">26</td>
+</tr>
+</tbody>
+</table>
+<p>Determiner la mediane, <span class="math inline">\(Q_1\)</span>, <span class="math inline">\(Q_3\)</span> et l’ecart interquartile.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 5 (resultats)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Rangs cumules : - valeur 5 : rangs 1 a 11, - valeur 10 : rangs 12 a 18, - valeur 15 : rangs 19 a 23, - valeur 20 : rangs 24 a 26.</p>
+<p>Donc : - mediane (entre rangs 13 et 14) = 10, - <span class="math inline">\(Q_1\)</span> (autour du rang 7) = 5, - <span class="math inline">\(Q_3\)</span> (autour du rang 20) = 15, - <span class="math inline">\(IQR = 15-5=10\)</span>.</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="v---moyenne-variance-ecart-type" class="level2">
+<h2 class="anchored" data-anchor-id="v---moyenne-variance-ecart-type">V - Moyenne, variance, ecart-type</h2>
+<p>Soit une serie quantitative discrete :</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Valeur</th>
+<th style="text-align: right;"><span class="math inline">\(x_1\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(x_2\)</span></th>
+<th style="text-align: right;">…</th>
+<th style="text-align: right;"><span class="math inline">\(x_r\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Effectif</td>
+<td style="text-align: right;"><span class="math inline">\(n_1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(n_2\)</span></td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;"><span class="math inline">\(n_r\)</span></td>
+</tr>
+<tr class="even">
+<td>Frequence</td>
+<td style="text-align: right;"><span class="math inline">\(f_1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(f_2\)</span></td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;"><span class="math inline">\(f_r\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>avec <span class="math inline">\(\sum n_i=n\)</span> et <span class="math inline">\(\sum f_i=1\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definitions - Indicateurs numeriques
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Moyenne : <span class="math display">\[\bar x = \frac{1}{n}\sum_{i=1}^r n_i x_i = \sum_{i=1}^r f_i x_i.\]</span></li>
+<li>Variance : <span class="math display">\[\mathrm{Var}(x)=\frac{1}{n}\sum_{i=1}^r n_i(x_i-\bar x)^2.\]</span></li>
+<li>Ecart-type : <span class="math display">\[\sigma(x)=\sqrt{\mathrm{Var}(x)}.\]</span></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Formule de Konig-Huygens
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+\mathrm{Var}(x)=\overline{x^2}-(\bar x)^2
+\quad\text{avec}\quad
+\overline{x^2}=\frac{1}{n}\sum_{i=1}^r n_i x_i^2.
+\]</span></p>
+</div>
+</div>
+<p>Pour une serie en classes, on applique les memes formules en remplacant <span class="math inline">\(x_i\)</span> par les centres <span class="math inline">\(c_i\)</span>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>La moyenne est un indicateur de <strong>position</strong>.</li>
+<li>La variance et l’ecart-type sont des indicateurs de <strong>dispersion</strong>.</li>
+<li>La moyenne est sensible aux valeurs extremes, contrairement a la mediane.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 6 - Calcul numerique complet
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit la serie en classes :</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Classe</th>
+<th style="text-align: right;"><span class="math inline">\([0,2[\)</span></th>
+<th style="text-align: right;"><span class="math inline">\([2,4[\)</span></th>
+<th style="text-align: right;"><span class="math inline">\([4,6[\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Effectif <span class="math inline">\(n_i\)</span></td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">5</td>
+</tr>
+</tbody>
+</table>
+<p>Calculer la moyenne, la variance et l’ecart-type en utilisant les centres de classes.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-21-contents" aria-controls="callout-21" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 6
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-21" class="callout-21-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Centres : <span class="math inline">\(c_1=1\)</span>, <span class="math inline">\(c_2=3\)</span>, <span class="math inline">\(c_3=5\)</span> ; effectif total <span class="math inline">\(n=20\)</span>.</p>
+<p>Moyenne : <span class="math display">\[
+\bar x=\frac{9\cdot1+6\cdot3+5\cdot5}{20}=\frac{52}{20}=2{,}6.
+\]</span></p>
+<p>Moyenne des carres : <span class="math display">\[
+\overline{x^2}=\frac{9\cdot1^2+6\cdot3^2+5\cdot5^2}{20}=\frac{188}{20}=9{,}4.
+\]</span></p>
+<p>Variance : <span class="math display">\[
+\mathrm{Var}(x)=9{,}4-2{,}6^2=2{,}64.
+\]</span></p>
+<p>Ecart-type : <span class="math display">\[
+\sigma(x)=\sqrt{2{,}64}\approx 1{,}625.
+\]</span></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="vi---transformations-affines" class="level2">
+<h2 class="anchored" data-anchor-id="vi---transformations-affines">VI - Transformations affines</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Propriete (admise)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour <span class="math inline">\(y=ax+b\)</span> avec <span class="math inline">\(a\ne 0\)</span>:</p>
+<ul>
+<li>moyenne : <span class="math display">\[\bar y = a\bar x + b,\]</span></li>
+<li>variance : <span class="math display">\[\mathrm{Var}(y)=a^2\mathrm{Var}(x),\]</span></li>
+<li>ecart-type : <span class="math display">\[\sigma(y)=|a|\sigma(x).\]</span></li>
+</ul>
+</div>
+</div>
+<p>La translation (ajout de <span class="math inline">\(b\)</span>) deplace le centre mais ne change pas la dispersion ; le facteur <span class="math inline">\(a\)</span> dilate/contracte l’echelle.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 7 - Changement d’unite
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une serie de salaires a pour moyenne 37 000 et ecart-type 700 (euros). On definit <span class="math display">\[
+Y=\frac{X-35\,000}{1\,000}.
+\]</span> Determiner <span class="math inline">\(E(Y)\)</span>, <span class="math inline">\(\mathrm{Var}(Y)\)</span> et <span class="math inline">\(\sigma(Y)\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 7
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-24" class="callout-24-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Ici <span class="math inline">\(a=1/1000\)</span> et <span class="math inline">\(b=-35\)</span>.</p>
+<p><span class="math display">\[
+E(Y)=\frac{37\,000-35\,000}{1\,000}=2,
+\]</span> <span class="math display">\[
+\sigma(Y)=\frac{700}{1\,000}=0{,}7,
+\qquad
+\mathrm{Var}(Y)=0{,}49.
+\]</span></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="vii---methode-de-synthese-a-retenir" class="level2">
+<h2 class="anchored" data-anchor-id="vii---methode-de-synthese-a-retenir">VII - Methode de synthese (a retenir)</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Procedure recommandee pour une etude univariee
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Identifier la population, la variable et son type.</li>
+<li>Construire le tableau statistique (effectifs, frequences, cumuls).</li>
+<li>Choisir une representation adaptee :
+<ul>
+<li>batons pour discret,</li>
+<li>histogramme en densites pour classes.</li>
+</ul></li>
+<li>Calculer les indicateurs de position : mode, mediane, quartiles, moyenne.</li>
+<li>Calculer les indicateurs de dispersion : IQR, variance, ecart-type.</li>
+<li>Interpreter les resultats dans le contexte (asymetrie, valeurs extremes, stabilite).</li>
+</ol>
+</div>
+</div>
+<p>Cette demarche permet de passer des donnees brutes a une lecture quantitative robuste, utile avant toute phase d’inference statistique.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../teaching/statistics-probability/classes/joint-continuous-variables.html" class="pagination-link  aria-label=" couples="" de="" variables="" a="" densite"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Couples de variables a densite</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../teaching/statistics-probability/classes/bivariate-descriptive-statistics.html" class="pagination-link" aria-label="Statistiques descriptives a deux variables">
+        <span class="nav-page-text">Statistiques descriptives a deux variables</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>2025 - 2026 · Built with <a href="https://quarto.org">Quarto</a> and my 🐈‍⬛ · <a href="https://github.com/guillaumegilles/guillaumegilles.github.io">Source <i class="bi bi-github"></i></a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://ggilles.dev/blog.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/guillaumegilles">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/guillaumegilles">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://app.hackthebox.com/profile/2425807">
+      <i class="bi bi-box" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://tryhackme.com/p/skekCoon">
+      <i class="bi bi-cloud-rain" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-03-05">
+
+<title>Guillaume Gilles - Couples de variables a densite</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../teaching/statistics-probability/classes/univariate-descriptive-statistics.html" rel="next">
+<link href="../../../teaching/statistics-probability/classes/normal-distribution.html" rel="prev">
+<link href="../../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<!-- IndieWeb: webmention endpoint -->
+<link rel="webmention" href="https://webmention.io/ggilles.dev/webmention">
+<link rel="pingback" href="https://webmention.io/ggilles.dev/xmlrpc">
+
+<!-- IndieAuth: rel="me" identity links -->
+<link rel="me" href="https://github.com/guillaumegilles">
+<link rel="me" href="https://www.linkedin.com/in/guillaumegilles">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Guillaume Gilles - Couples de variables a densite">
+<meta property="og:description" content="Ce chapitre etend la theorie des lois a densite au cas de deux variables aleatoires reelles. On introduit d’abord les integrales doubles sur \(\mathbb{R}^2\) (cadre de Tonelli/Fubini), puis la loi conjointe d’un couple \((X,Y)\) absolument continu. On construit ensuite les lois marginales, on caracterise l’independance par factorisation de la densite, puis on generalise les notions d’esperance et de covariance. Le chapitre se termine par une application centrale: la loi de la somme de deux variables independantes via la convolution des densites.">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Couples de variables a densite">
+<meta name="twitter:description" content="Ce chapitre etend la theorie des lois a densite au cas de deux variables aleatoires reelles. On introduit d’abord les integrales doubles sur \(\mathbb{R}^2\) (cadre de Tonelli/Fubini), puis la loi conjointe d’un couple \((X,Y)\) absolument continu. On construit ensuite les lois marginales, on caracterise l’independance par factorisation de la densite, puis on generalise les notions d’esperance et de covariance. Le chapitre se termine par une application centrale: la loi de la somme de deux variables independantes via la convolution des densites.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about/index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../teaching/statistics-probability/classes/density-function.html">Descriptive Statistics</a></li><li class="breadcrumb-item"><a href="../../../teaching/statistics-probability/classes/joint-continuous-variables.html">Couples de variables a densite</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probabilités &amp; Statistiques</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Descriptive Statistics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/density-function.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lois à densité</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/normal-distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loi normale et applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/joint-continuous-variables.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Couples de variables a densite</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/univariate-descriptive-statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistiques descriptives a une variable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/bivariate-descriptive-statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistiques descriptives a deux variables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../teaching/statistics-probability/classes/sampling-distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Distribution d’echantillonnage</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#i---integrales-sur-mathbbr2" id="toc-i---integrales-sur-mathbbr2" class="nav-link active" data-scroll-target="#i---integrales-sur-mathbbr2">I - Integrales sur <span class="math inline">\(\mathbb{R}^2\)</span></a></li>
+  <li><a href="#ii---loi-conjointe-dun-couple-de-variables-aleatoires-continues" id="toc-ii---loi-conjointe-dun-couple-de-variables-aleatoires-continues" class="nav-link" data-scroll-target="#ii---loi-conjointe-dun-couple-de-variables-aleatoires-continues">II - Loi conjointe d’un couple de variables aleatoires continues</a>
+  <ul class="collapse">
+  <li><a href="#densite-de-probabilite-sur-mathbbr2" id="toc-densite-de-probabilite-sur-mathbbr2" class="nav-link" data-scroll-target="#densite-de-probabilite-sur-mathbbr2">1. Densite de probabilite sur <span class="math inline">\(\mathbb{R}^2\)</span></a></li>
+  <li><a href="#fonction-de-repartition-conjointe" id="toc-fonction-de-repartition-conjointe" class="nav-link" data-scroll-target="#fonction-de-repartition-conjointe">2. Fonction de repartition conjointe</a></li>
+  </ul></li>
+  <li><a href="#iii---lois-marginales" id="toc-iii---lois-marginales" class="nav-link" data-scroll-target="#iii---lois-marginales">III - Lois marginales</a></li>
+  <li><a href="#iv---independance-de-deux-variables-continues" id="toc-iv---independance-de-deux-variables-continues" class="nav-link" data-scroll-target="#iv---independance-de-deux-variables-continues">IV - Independance de deux variables continues</a></li>
+  <li><a href="#v---esperance-covariance-correlation" id="toc-v---esperance-covariance-correlation" class="nav-link" data-scroll-target="#v---esperance-covariance-correlation">V - Esperance, covariance, correlation</a></li>
+  <li><a href="#vi---loi-de-la-somme-de-deux-variables-independantes" id="toc-vi---loi-de-la-somme-de-deux-variables-independantes" class="nav-link" data-scroll-target="#vi---loi-de-la-somme-de-deux-variables-independantes">VI - Loi de la somme de deux variables independantes</a></li>
+  <li><a href="#vii---exercice-de-synthese" id="toc-vii---exercice-de-synthese" class="nav-link" data-scroll-target="#vii---exercice-de-synthese">VII - Exercice de synthese</a></li>
+  </ul>
+<div class="quarto-code-links"><h2>Code Links</h2><ul><li><a href="../worksheets/worksheet-couples-variables-densite.qmd"><i class="bi bi-link-45deg"></i></a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../teaching/statistics-probability/classes/density-function.html">Descriptive Statistics</a></li><li class="breadcrumb-item"><a href="../../../teaching/statistics-probability/classes/joint-continuous-variables.html">Couples de variables a densite</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Couples de variables a densite</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 5, 2026</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">March 5, 2026</p>
+    </div>
+  </div>
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>Ce chapitre etend la theorie des lois a densite au cas de deux variables aleatoires reelles. On introduit d’abord les integrales doubles sur <span class="math inline">\(\mathbb{R}^2\)</span> (cadre de Tonelli/Fubini), puis la <strong>loi conjointe</strong> d’un couple <span class="math inline">\((X,Y)\)</span> absolument continu. On construit ensuite les <strong>lois marginales</strong>, on caracterise l’<strong>independance</strong> par factorisation de la densite, puis on generalise les notions d’<strong>esperance</strong> et de <strong>covariance</strong>. Le chapitre se termine par une application centrale: la loi de la somme de deux variables independantes via la <strong>convolution</strong> des densites.</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>Dans tout ce chapitre, nous nous placons dans un espace probabilise quelconque <span class="math inline">\((\Omega, \mathcal{F}, P)\)</span>.</p>
+</blockquote>
+<section id="i---integrales-sur-mathbbr2" class="level2">
+<h2 class="anchored" data-anchor-id="i---integrales-sur-mathbbr2">I - Integrales sur <span class="math inline">\(\mathbb{R}^2\)</span></h2>
+<p>Un prealable utile est la theorie des integrales multiples (integration sur des domaines du plan).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Theoreme de Tonelli (admis)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(f : \mathbb{R}^2 \to \mathbb{R}\)</span>, continue par morceaux, positive.</p>
+<p>Alors: <span class="math display">\[
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+= \int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dy\right)dx
+= \int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dx\right)dy,
+\]</span> en autorisant la valeur <span class="math inline">\(+\infty\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Remarque
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour une fonction qui peut changer de signe, on utilise le theoreme de <strong>Fubini</strong> sous des hypotheses d’integrabilite adaptees.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition - Integrabilite sur <span class="math inline">\(\mathbb{R}^2\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(f : \mathbb{R}^2 \to \mathbb{R}\)</span> c.p.m. et positive. On dit que <span class="math inline">\(f\)</span> est integrable sur <span class="math inline">\(\mathbb{R}^2\)</span> si l’une (donc les deux) des quantites suivantes est finie:</p>
+<p><span class="math display">\[
+\int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dy\right)dx,
+\qquad
+\int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dx\right)dy.
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 1 - Calculs d’integrales doubles
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Soit <span class="math inline">\(D = \{(x,y)\in\mathbb{R}^2 : x\ge 0,\ y\ge 0,\ x+y\le 1\}\)</span>. Calculer:
+<ul>
+<li><span class="math inline">\(\displaystyle \iint_D (x^2+y^2)\,dx\,dy\)</span>,</li>
+<li><span class="math inline">\(\displaystyle \iint_D xy(x+y)\,dx\,dy\)</span>.</li>
+</ul></li>
+<li>Soit <span class="math display">\[
+f(x,y)=
+\begin{cases}
+2e^{-(x+y)} &amp; \text{si } 0\le x\le y,\\
+0 &amp; \text{sinon.}
+\end{cases}
+\]</span> Calculer <span class="math inline">\(\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 1 (resultats)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(\displaystyle \iint_D (x^2+y^2)\,dx\,dy = \frac{1}{6}\)</span>.</li>
+<li><span class="math inline">\(\displaystyle \iint_D xy(x+y)\,dx\,dy = \frac{1}{30}\)</span>.</li>
+<li><span class="math inline">\(\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy = 1\)</span>.</li>
+</ul>
+<p>Ainsi, dans le second cas, <span class="math inline">\(f\)</span> est bien normalisee pour jouer le role d’une densite conjointe.</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="ii---loi-conjointe-dun-couple-de-variables-aleatoires-continues" class="level2">
+<h2 class="anchored" data-anchor-id="ii---loi-conjointe-dun-couple-de-variables-aleatoires-continues">II - Loi conjointe d’un couple de variables aleatoires continues</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition - Couple de variables aleatoires continues
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un couple de variables aleatoires continues est une application <span class="math display">\[
+(X,Y):\Omega\to\mathbb{R}^2,
+\qquad
+\omega\mapsto (X(\omega),Y(\omega)).
+\]</span></p>
+</div>
+</div>
+<section id="densite-de-probabilite-sur-mathbbr2" class="level3">
+<h3 class="anchored" data-anchor-id="densite-de-probabilite-sur-mathbbr2">1. Densite de probabilite sur <span class="math inline">\(\mathbb{R}^2\)</span></h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition - Densite sur <span class="math inline">\(\mathbb{R}^2\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une fonction <span class="math inline">\(f : \mathbb{R}^2 \to \mathbb{R}\)</span> est une densite de probabilite sur <span class="math inline">\(\mathbb{R}^2\)</span> si:</p>
+<ul>
+<li><span class="math inline">\(f(x,y)\ge 0\)</span> pour tout <span class="math inline">\((x,y)\)</span>,</li>
+<li><span class="math inline">\(f\)</span> est integrable sur <span class="math inline">\(\mathbb{R}^2\)</span>,</li>
+<li><span class="math inline">\(\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy = 1\)</span>.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition - Couple absolument continu
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le couple <span class="math inline">\((X,Y)\)</span> est dit <strong>absolument continu</strong> s’il existe une densite conjointe <span class="math inline">\(f\)</span> telle que, pour tous intervalles <span class="math inline">\(I,J\subset\mathbb{R}\)</span>, <span class="math display">\[
+P(X\in I,\ Y\in J) = \iint_{I\times J} f(x,y)\,dx\,dy.
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 2 - Densite exponentielle sur le quadrant
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math display">\[
+f(x,y)=
+\begin{cases}
+e^{-(x+y)} &amp; \text{si } x\ge 0,\ y\ge 0,\\
+0 &amp; \text{sinon.}
+\end{cases}
+\]</span> Montrer que <span class="math inline">\(f\)</span> est une densite sur <span class="math inline">\(\mathbb{R}^2\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 2
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>La positivite est immediate. Ensuite: <span class="math display">\[
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+= \left(\int_0^{+\infty} e^{-x}\,dx\right)
+\left(\int_0^{+\infty} e^{-y}\,dy\right)=1\cdot 1=1.
+\]</span> Donc <span class="math inline">\(f\)</span> est bien une densite.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="fonction-de-repartition-conjointe" class="level3">
+<h3 class="anchored" data-anchor-id="fonction-de-repartition-conjointe">2. Fonction de repartition conjointe</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La fonction de repartition du couple <span class="math inline">\((X,Y)\)</span> de densite <span class="math inline">\(f\)</span> est <span class="math display">\[
+F(x,y)=P(X\le x,\ Y\le y)=\int_{-\infty}^{x}\int_{-\infty}^{y} f(u,v)\,dv\,du.
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition (admise)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Aux points ou <span class="math inline">\(f\)</span> est continue, <span class="math display">\[
+f(x,y)=\frac{\partial^2 F}{\partial x\partial y}(x,y).
+\]</span></p>
+<p>La densite conjointe et la repartition conjointe caracterisent la loi du couple.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="iii---lois-marginales" class="level2">
+<h2 class="anchored" data-anchor-id="iii---lois-marginales">III - Lois marginales</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\((X,Y)\)</span> admet une densite conjointe <span class="math inline">\(f\)</span>, alors <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont des variables a densite de densites marginales: <span class="math display">\[
+f_X(x)=\int_{\mathbb{R}} f(x,y)\,dy,
+\qquad
+f_Y(y)=\int_{\mathbb{R}} f(x,y)\,dx.
+\]</span></p>
+</div>
+</div>
+<p>Ces formules se lisent comme une “projection” de la densite conjointe sur chaque axe: on integre selon l’autre variable pour ne garder qu’une seule coordonnee.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 3 - Loi uniforme sur le disque unite
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(D=\{(x,y)\in\mathbb{R}^2 : x^2+y^2\le 1\}\)</span> et <span class="math display">\[
+f(x,y)=\frac{1}{\pi}\mathbf{1}_D(x,y).
+\]</span></p>
+<ol type="1">
+<li>Verifier que <span class="math inline">\(f\)</span> est une densite.</li>
+<li>Determiner les densites marginales <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>.</li>
+<li>Verifier que <span class="math inline">\(\int_{\mathbb{R}} f_X(x)\,dx=\int_{\mathbb{R}} f_Y(y)\,dy=1\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 3 (resultat marginal)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Pour <span class="math inline">\(|x|\le 1\)</span>: <span class="math display">\[
+f_X(x)=\int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}}\frac{1}{\pi}\,dy
+=\frac{2}{\pi}\sqrt{1-x^2},
+\]</span> et <span class="math inline">\(f_X(x)=0\)</span> sinon.</p>
+<p>Par symetrie, <span class="math display">\[
+f_Y(y)=\frac{2}{\pi}\sqrt{1-y^2}\ \text{pour }|y|\le 1,
+\quad f_Y(y)=0\ \text{sinon.}
+\]</span></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="iv---independance-de-deux-variables-continues" class="level2">
+<h2 class="anchored" data-anchor-id="iv---independance-de-deux-variables-continues">IV - Independance de deux variables continues</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Les variables continues <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont independantes si, pour tous intervalles <span class="math inline">\(I,J\)</span>, <span class="math display">\[
+P(X\in I,\ Y\in J)=P(X\in I)P(Y\in J).
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition - Caracterisations equivalentes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\((X,Y)\)</span> de densite conjointe <span class="math inline">\(f\)</span>, de repartition conjointe <span class="math inline">\(F\)</span>, et de marginales <span class="math inline">\((f_X,f_Y)\)</span>, <span class="math inline">\((F_X,F_Y)\)</span>. Les proprietes suivantes sont equivalentes:</p>
+<ol type="1">
+<li><span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont independantes.</li>
+<li><span class="math inline">\(F(x,y)=F_X(x)F_Y(y)\)</span> pour tout <span class="math inline">\((x,y)\)</span>.</li>
+<li><span class="math inline">\(f(x,y)=f_X(x)f_Y(y)\)</span> pour tout <span class="math inline">\((x,y)\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 4 - Test d’independance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On reprend la densite de l’exemple 2: <span class="math display">\[
+f(x,y)=e^{-(x+y)}\mathbf{1}_{x\ge 0, y\ge 0}.
+\]</span></p>
+<ol type="1">
+<li>Calculer <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>.</li>
+<li>Conclure sur l’independance de <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 4
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(f_X(x)=e^{-x}\mathbf{1}_{x\ge 0}\)</span>,</li>
+<li><span class="math inline">\(f_Y(y)=e^{-y}\mathbf{1}_{y\ge 0}\)</span>,</li>
+<li>donc <span class="math inline">\(f(x,y)=f_X(x)f_Y(y)\)</span>.</li>
+</ul>
+<p>Les variables <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont independantes.</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="v---esperance-covariance-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="v---esperance-covariance-correlation">V - Esperance, covariance, correlation</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definitions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont integrables, <span class="math display">\[
+E(X)=\int_{\mathbb{R}} x f_X(x)\,dx,
+\qquad
+E(Y)=\int_{\mathbb{R}} y f_Y(y)\,dy.
+\]</span></p>
+<p>Si <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont de carre integrable, la covariance est <span class="math display">\[
+\operatorname{Cov}(X,Y)=E\!\left[(X-E(X))(Y-E(Y))\right]
+=E(XY)-E(X)E(Y),
+\]</span> avec <span class="math display">\[
+E(XY)=\iint_{\mathbb{R}^2} xy f(x,y)\,dx\,dy.
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Remarques
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>On peut aussi ecrire:
+<ul>
+<li><span class="math inline">\(\displaystyle E(X)=\iint_{\mathbb{R}^2} x f(x,y)\,dx\,dy\)</span>,</li>
+<li><span class="math inline">\(\displaystyle E(Y)=\iint_{\mathbb{R}^2} y f(x,y)\,dx\,dy\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(\operatorname{Cov}(X,X)=\operatorname{Var}(X)\)</span>.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont independantes, alors <span class="math display">\[
+\operatorname{Cov}(X,Y)=0.
+\]</span> La reciproque est fausse en general.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition - Coefficient de correlation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(\sigma(X)&gt;0\)</span> et <span class="math inline">\(\sigma(Y)&gt;0\)</span>, <span class="math display">\[
+\rho(X,Y)=\frac{\operatorname{Cov}(X,Y)}{\sigma(X)\sigma(Y)}.
+\]</span> Ce coefficient mesure la force (lineaire) de la liaison entre <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="vi---loi-de-la-somme-de-deux-variables-independantes" class="level2">
+<h2 class="anchored" data-anchor-id="vi---loi-de-la-somme-de-deux-variables-independantes">VI - Loi de la somme de deux variables independantes</h2>
+<p>Soient <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> independantes, de densites <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>, et posons <span class="math inline">\(Z=X+Y\)</span>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition - Formule de convolution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La variable <span class="math inline">\(Z\)</span> admet la densite <span class="math display">\[
+f_Z(z)=\int_{\mathbb{R}} f_X(x)f_Y(z-x)\,dx.
+\]</span></p>
+<p>On dit que <span class="math inline">\(f_Z\)</span> est le <strong>produit de convolution</strong> de <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 5 - Somme de deux lois uniformes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soient <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> independantes, de loi uniforme sur <span class="math inline">\([0,1]\)</span>.</p>
+<ol type="1">
+<li>Determiner la densite de <span class="math inline">\(Z=X+Y\)</span>.</li>
+<li>Verifier qu’il s’agit d’une densite (positive et integree a 1).</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 5
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-26" class="callout-26-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Ici <span class="math inline">\(f_X=f_Y=\mathbf{1}_{[0,1]}\)</span>. Donc <span class="math display">\[
+f_Z(z)=\int_{\mathbb{R}} \mathbf{1}_{[0,1]}(x)\mathbf{1}_{[0,1]}(z-x)\,dx,
+\]</span> ce qui donne la densite triangulaire: <span class="math display">\[
+f_Z(z)=
+\begin{cases}
+z &amp; \text{si } 0\le z\le 1,\\
+2-z &amp; \text{si } 1&lt;z\le 2,\\
+0 &amp; \text{sinon.}
+\end{cases}
+\]</span> Elle est positive et son aire totale vaut 1.</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="vii---exercice-de-synthese" class="level2">
+<h2 class="anchored" data-anchor-id="vii---exercice-de-synthese">VII - Exercice de synthese</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 6 - Loi conjointe, marginales et covariance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit le triangle <span class="math display">\[
+T=\{(x,y)\in\mathbb{R}^2 : 0\le x\le 1,\ 0\le y\le 1,\ x+y\le 1\}
+\]</span> et la fonction <span class="math display">\[
+f(x,y)=2\mathbf{1}_T(x,y).
+\]</span></p>
+<ol type="1">
+<li>Verifier que <span class="math inline">\(f\)</span> est une densite conjointe.</li>
+<li>Determiner <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>.</li>
+<li>Calculer <span class="math inline">\(E(X)\)</span>, <span class="math inline">\(E(Y)\)</span>, puis <span class="math inline">\(E(XY)\)</span>.</li>
+<li>En deduire <span class="math inline">\(\operatorname{Cov}(X,Y)\)</span>.</li>
+<li>Les variables <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont-elles independantes?</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-28-contents" aria-controls="callout-28" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exercice 6
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-28" class="callout-28-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>Aire de <span class="math inline">\(T=\frac{1}{2}\)</span>, donc <span class="math display">\[
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy=2\times\frac{1}{2}=1.
+\]</span></p></li>
+<li><p>Pour <span class="math inline">\(0\le x\le 1\)</span>, <span class="math display">\[
+f_X(x)=\int_0^{1-x}2\,dy=2(1-x),
+\]</span> et sinon <span class="math inline">\(0\)</span>. De meme, <span class="math display">\[
+f_Y(y)=2(1-y)\ \text{pour }0\le y\le 1,
+\]</span> et sinon <span class="math inline">\(0\)</span>.</p></li>
+<li><p><span class="math display">\[
+E(X)=\int_0^1 x\,2(1-x)\,dx=\frac{1}{3},
+\quad
+E(Y)=\frac{1}{3}.
+\]</span> Puis <span class="math display">\[
+E(XY)=\int_0^1\int_0^{1-x}2xy\,dy\,dx=\frac{1}{12}.
+\]</span></p></li>
+<li><p><span class="math display">\[
+\operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y)=\frac{1}{12}-\frac{1}{9}=-\frac{1}{36}.
+\]</span></p></li>
+<li><p>Non: les variables ne sont pas independantes (le support triangulaire interdit deja la factorisation sur un rectangle, et la covariance est negative).</p></li>
+</ol>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../teaching/statistics-probability/classes/normal-distribution.html" class="pagination-link  aria-label=" loi="" normale="" et="" applications"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Loi normale et applications</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../teaching/statistics-probability/classes/univariate-descriptive-statistics.html" class="pagination-link" aria-label="Statistiques descriptives a une variable">
+        <span class="nav-page-text">Statistiques descriptives a une variable</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>2025 - 2026 · Built with <a href="https://quarto.org">Quarto</a> and my 🐈‍⬛ · <a href="https://github.com/guillaumegilles/guillaumegilles.github.io">Source <i class="bi bi-github"></i></a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://ggilles.dev/blog.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/guillaumegilles">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/guillaumegilles">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://app.hackthebox.com/profile/2425807">
+      <i class="bi bi-box" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://tryhackme.com/p/skekCoon">
+      <i class="bi bi-cloud-rain" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -17,6 +17,11 @@ thinking.
 
 </div>
 
+<iframe src="https://github.com/sponsors/guillaumegilles/button" title="Sponsor guillaumegilles" height="32" width="114" style="border: 0; border-radius: 6px;">
+</iframe>
+<iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=7028520" style="border:none;">
+</iframe>
+
 Today, I’m immersed in **cybersecurity**: ranking up on
 [HackTheBox](https://app.hackthebox.com/profile/2425807), learning
 penetration testing, and exploring digital forensics, secure network
@@ -49,12 +54,3 @@ Coon](https://fr.wikipedia.org/wiki/Maine_coon).*
   ENSAE](https://www.lecepe.fr/certificats/data-scientist/)
 - **2016**: [Senior Financial Analyst @
   ESSEC](https://www.essec.edu/en/pages/custom-programs/)
-
-## 📈 GitHub Stats
-
-[![Anurag’s GitHub
-stats](https://github-readme-stats.vercel.app/api?username=anuraghazra.png)](https://github.com/anuraghazra/github-readme-stats)
-<p align="center">
-<img src="https://github-readme-stats.vercel.app/api?username=guillaumegilles&show_icons=true&count_private=true&theme=radical&hide_border=true" />
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=guillaumegilles&layout=compact&theme=radical&hide_border=true" />
-</p>
