@@ -200,3 +200,19 @@ the left with `hello.qmd` open, and the live Quarto preview rendering a polar
 plot on the right — no local setup required.
 
 ![VS Code for the web with `hello.qmd` open and its Quarto preview side by side.](preview.png)
+
+```{=html}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const toc = document.querySelector('#TOC, .sidebar.toc-left, nav[role="doc-toc"]');
+  const crSection = document.querySelector('.cr-section');
+  if (!toc || !crSection) return;
+  const observer = new IntersectionObserver(([entry]) => {
+    toc.style.visibility = entry.isIntersecting ? 'hidden' : 'visible';
+    toc.style.opacity    = entry.isIntersecting ? '0'       : '1';
+    toc.style.transition = 'opacity 0.2s, visibility 0.2s';
+  }, { threshold: 0 });
+  observer.observe(crSection);
+});
+</script>
+```
