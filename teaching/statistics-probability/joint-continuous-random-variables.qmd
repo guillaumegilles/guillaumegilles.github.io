@@ -1,0 +1,843 @@
+---
+title: "Couples de variables a densite"
+abstract: |
+  Ce chapitre etend la theorie des lois a densite au cas de deux variables
+  aleatoires reelles. On introduit d'abord les integrales doubles sur
+  $\mathbb{R}^2$ (cadre de Tonelli/Fubini), puis la **loi conjointe** d'un
+  couple $(X,Y)$ absolument continu. On construit ensuite les **lois
+  marginales**, on caracterise l'**independance** par factorisation de la
+  densite, puis on generalise les notions d'**esperance** et de **covariance**.
+  Le chapitre se termine par une application centrale: la loi de la somme de
+  deux variables independantes via la **convolution** des densites.
+date-modified: 2026-03-24
+---
+
+> Dans tout ce chapitre, nous nous placons dans un espace probabilise quelconque $(\Omega, \mathcal{F}, P)$.
+
+## I - Integrales sur $\mathbb{R}^2$
+
+Un prealable utile est la theorie des integrales multiples (integration sur des domaines du plan).
+
+::: {.callout-note}
+## Theoreme de Tonelli (admis)
+
+Soit $f : \mathbb{R}^2 \to \mathbb{R}$, continue par morceaux, positive.
+
+Alors:
+$$
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+= \int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dy\right)dx
+= \int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dx\right)dy,
+$$
+en autorisant la valeur $+\infty$.
+:::
+
+::: {.callout-tip}
+## Remarque
+
+Pour une fonction qui peut changer de signe, on utilise le theoreme de **Fubini** sous des hypotheses d'integrabilite adaptees.
+:::
+
+::: {.callout-note}
+## Definition - Integrabilite sur $\mathbb{R}^2$
+
+Soit $f : \mathbb{R}^2 \to \mathbb{R}$ c.p.m. et positive. On dit que $f$ est integrable sur $\mathbb{R}^2$ si l'une (donc les deux) des quantites suivantes est finie:
+
+$$
+\int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dy\right)dx,
+\qquad
+\int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dx\right)dy.
+$$
+:::
+
+::: {.callout-caution}
+## Exemple 1 - Calculs d'integrales doubles
+
+1. Soit $D = \{(x,y)\in\mathbb{R}^2 : x\ge 0,\ y\ge 0,\ x+y\le 1\}$. Calculer:
+   - $\displaystyle \iint_D (x^2+y^2)\,dx\,dy$,
+   - $\displaystyle \iint_D xy(x+y)\,dx\,dy$.
+
+2. Soit
+$$
+f(x,y)=
+\begin{cases}
+2e^{-(x+y)} & \text{si } 0\le x\le y,\\
+0 & \text{sinon.}
+\end{cases}
+$$
+Calculer $\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 1 (resultats)
+
+- $\displaystyle \iint_D (x^2+y^2)\,dx\,dy = \frac{1}{6}$.
+- $\displaystyle \iint_D xy(x+y)\,dx\,dy = \frac{1}{30}$.
+- $\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy = 1$.
+
+Ainsi, dans le second cas, $f$ est bien normalisee pour jouer le role d'une densite conjointe.
+:::
+
+---
+
+## II - Loi conjointe d'un couple de variables aleatoires continues
+
+::: {.callout-note}
+## Definition - Couple de variables aleatoires continues
+
+Un couple de variables aleatoires continues est une application
+$$
+(X,Y):\Omega\to\mathbb{R}^2,
+\qquad
+\omega\mapsto (X(\omega),Y(\omega)).
+$$
+:::
+
+### 1. Densite de probabilite sur $\mathbb{R}^2$
+
+::: {.callout-note}
+## Definition - Densite sur $\mathbb{R}^2$
+
+Une fonction $f : \mathbb{R}^2 \to \mathbb{R}$ est une densite de probabilite sur $\mathbb{R}^2$ si:
+
+- $f(x,y)\ge 0$ pour tout $(x,y)$,
+- $f$ est integrable sur $\mathbb{R}^2$,
+- $\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy = 1$.
+:::
+
+::: {.callout-note}
+## Definition - Couple absolument continu
+
+Le couple $(X,Y)$ est dit **absolument continu** s'il existe une densite conjointe $f$ telle que, pour tous intervalles $I,J\subset\mathbb{R}$,
+$$
+P(X\in I,\ Y\in J) = \iint_{I\times J} f(x,y)\,dx\,dy.
+$$
+:::
+
+::: {.callout-caution}
+## Exemple 2 - Densite exponentielle sur le quadrant
+
+Soit
+$$
+f(x,y)=
+\begin{cases}
+e^{-(x+y)} & \text{si } x\ge 0,\ y\ge 0,\\
+0 & \text{sinon.}
+\end{cases}
+$$
+Montrer que $f$ est une densite sur $\mathbb{R}^2$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 2
+
+La positivite est immediate. Ensuite:
+$$
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+= \left(\int_0^{+\infty} e^{-x}\,dx\right)
+\left(\int_0^{+\infty} e^{-y}\,dy\right)=1\cdot 1=1.
+$$
+Donc $f$ est bien une densite.
+:::
+
+### 2. Fonction de repartition conjointe
+
+::: {.callout-note}
+## Definition
+
+La fonction de repartition du couple $(X,Y)$ de densite $f$ est
+$$
+F(x,y)=P(X\le x,\ Y\le y)=\int_{-\infty}^{x}\int_{-\infty}^{y} f(u,v)\,dv\,du.
+$$
+:::
+
+::: {.callout-important}
+## Proposition (admise)
+
+Aux points ou $f$ est continue,
+$$
+f(x,y)=\frac{\partial^2 F}{\partial x\partial y}(x,y).
+$$
+
+La densite conjointe et la repartition conjointe caracterisent la loi du couple.
+:::
+
+---
+
+## III - Lois marginales
+
+::: {.callout-important}
+## Proposition
+
+Si $(X,Y)$ admet une densite conjointe $f$, alors $X$ et $Y$ sont des variables a densite de densites marginales:
+$$
+f_X(x)=\int_{\mathbb{R}} f(x,y)\,dy,
+\qquad
+f_Y(y)=\int_{\mathbb{R}} f(x,y)\,dx.
+$$
+:::
+
+Ces formules se lisent comme une "projection" de la densite conjointe sur chaque axe: on integre selon l'autre variable pour ne garder qu'une seule coordonnee.
+
+::: {.callout-caution}
+## Exemple 3 - Loi uniforme sur le disque unite
+
+Soit $D=\{(x,y)\in\mathbb{R}^2 : x^2+y^2\le 1\}$ et
+$$
+f(x,y)=\frac{1}{\pi}\mathbf{1}_D(x,y).
+$$
+
+1. Verifier que $f$ est une densite.
+2. Determiner les densites marginales $f_X$ et $f_Y$.
+3. Verifier que $\int_{\mathbb{R}} f_X(x)\,dx=\int_{\mathbb{R}} f_Y(y)\,dy=1$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 3 (resultat marginal)
+
+Pour $|x|\le 1$:
+$$
+f_X(x)=\int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}}\frac{1}{\pi}\,dy
+=\frac{2}{\pi}\sqrt{1-x^2},
+$$
+et $f_X(x)=0$ sinon.
+
+Par symetrie,
+$$
+f_Y(y)=\frac{2}{\pi}\sqrt{1-y^2}\ \text{pour }|y|\le 1,
+\quad f_Y(y)=0\ \text{sinon.}
+$$
+:::
+
+::: {.callout-caution}
+## Exercice — Cible de tir a l'arc
+
+Marc fait du tir a l'arc sur une cible circulaire de rayon $4$. Le point d'impact $M$ de la fleche, de coordonnees aleatoires $(X;Y)$, suit une loi uniformement distribuee sur la cible. On note $D=\{(x,y)\in\mathbb{R}^2 : x^2+y^2\le 16\}$.
+
+1. Determiner la densite du couple $(X;Y)$.
+2. La zone centrale, permettant de marquer un maximum de points, est un cercle de rayon $1$ et de meme centre que la cible. Calculer la probabilite que Marc atteigne la zone centrale.
+3. Determiner les lois marginales de $X$ et de $Y$. Les variables $X$ et $Y$ sont-elles independantes ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice Cible de tir a l'arc
+
+**1.** La loi est uniforme sur $D$, d'aire $\pi\cdot 4^2=16\pi$. La densite est donc:
+$$
+f(x,y)=\frac{1}{16\pi}\,\mathbf{1}_D(x,y).
+$$
+
+**2.** La zone centrale $C=\{x^2+y^2\le 1\}$ a l'aire $\pi\cdot 1^2=\pi$. Par la loi uniforme:
+$$
+P(X^2+Y^2\le 1)=\frac{\pi}{16\pi}=\frac{1}{16}.
+$$
+
+**3.** Pour $|x|\le 4$, on integre $f$ par rapport a $y$ sur $[-\sqrt{16-x^2},\,\sqrt{16-x^2}]$:
+$$
+f_X(x)=\int_{-\sqrt{16-x^2}}^{\sqrt{16-x^2}}\frac{1}{16\pi}\,dy
+=\frac{2\sqrt{16-x^2}}{16\pi}=\frac{\sqrt{16-x^2}}{8\pi},
+$$
+et $f_X(x)=0$ pour $|x|>4$. Par symetrie, $f_Y(y)=\dfrac{\sqrt{16-y^2}}{8\pi}$ pour $|y|\le 4$.
+
+Les variables $X$ et $Y$ ne sont **pas independantes** : le support de $f$ est le disque $D$, qui n'est pas un rectangle, donc on ne peut pas ecrire $f(x,y)=f_X(x)f_Y(y)$ sur tout $\mathbb{R}^2$.
+:::
+
+---
+
+## IV - Independance de deux variables continues
+
+::: {.callout-note}
+## Definition
+
+Les variables continues $X$ et $Y$ sont independantes si, pour tous intervalles $I,J$,
+$$
+P(X\in I,\ Y\in J)=P(X\in I)P(Y\in J).
+$$
+:::
+
+::: {.callout-important}
+## Proposition - Caracterisations equivalentes
+
+Soit $(X,Y)$ de densite conjointe $f$, de repartition conjointe $F$, et de marginales $(f_X,f_Y)$, $(F_X,F_Y)$. Les proprietes suivantes sont equivalentes:
+
+1. $X$ et $Y$ sont independantes.
+2. $F(x,y)=F_X(x)F_Y(y)$ pour tout $(x,y)$.
+3. $f(x,y)=f_X(x)f_Y(y)$ pour tout $(x,y)$.
+:::
+
+::: {.callout-caution}
+## Exemple 4 - Test d'independance
+
+On reprend la densite de l'exemple 2:
+$$
+f(x,y)=e^{-(x+y)}\mathbf{1}_{x\ge 0, y\ge 0}.
+$$
+
+1. Calculer $f_X$ et $f_Y$.
+2. Conclure sur l'independance de $X$ et $Y$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 4
+
+- $f_X(x)=e^{-x}\mathbf{1}_{x\ge 0}$,
+- $f_Y(y)=e^{-y}\mathbf{1}_{y\ge 0}$,
+- donc $f(x,y)=f_X(x)f_Y(y)$.
+
+Les variables $X$ et $Y$ sont independantes.
+:::
+
+::: {.callout-caution}
+## Exercice 2
+
+Soit $\lambda>0$ et
+$$f(x,y)=\lambda^2e^{-\lambda x}\mathbf{1}_{\{0<y<x\}}.$$
+
+1. Verifier que $f$ est une densite sur $\mathbb{R}^2$.
+2. Determiner les lois marginales de $X$ et de $Y$.
+3. Les variables $X$ et $Y$ sont-elles independantes ?
+4. Calculer $P(X<Y)$, $P(Y<X)$ et $P\!\left(Y<\frac{X}{2}\right)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 2
+
+- Integrer d'abord en $y$ entre 0 et $x$.
+- Pour la loi de $Y$, fixer $y$ puis integrer en $x$ de $y$ a $+\infty$.
+- Sur le support, $y<x$ toujours, donc certaines probabilites sont immediates.
+:::
+
+::: {.callout-caution}
+## Exercice 3
+
+Soient $\lambda,\mu>0$ et $X_1, X_2$ independantes, avec
+$$X_1\sim\mathcal{E}(\lambda),\qquad X_2\sim\mathcal{E}(\mu).$$
+
+1. Calculer $P(X_1=X_2)$ et $P(X_1<X_2)$.
+2. Determiner la loi de
+$$Y=\min(X_1,X_2),\qquad Z=\max(X_1,X_2).$$
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 3
+
+- Utiliser la continuite pour $P(X_1=X_2)$.
+- Pour $Y$ : $P(Y>t)=P(X_1>t, X_2>t)$.
+- Pour $Z$ : $P(Z\le t)=P(X_1\le t, X_2\le t)$.
+:::
+
+::: {.callout-caution}
+## Exercice — Densite $ke^{-y}$
+
+Soit $k\in\mathbb{R}$ et $f$ la fonction definie sur $\mathbb{R}^2$ par
+$$
+f(x,y)=k\,e^{-y}\,\mathbf{1}_{\{0<x<y\}}(x,y).
+$$
+
+1. Pour quelle valeur de $k$ la fonction $f$ est-elle une densite ?
+2. Soit $(X,Y)$ un couple de v.a.r. a densite $f$.
+   a. Determiner les lois marginales de $X$ et de $Y$.
+   b. $X$ et $Y$ sont-elles independantes ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice Densite $ke^{-y}$
+
+**1.** La fonction est positive si $k\ge 0$. On calcule:
+$$
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+=k\int_0^{+\infty}\!\int_x^{+\infty} e^{-y}\,dy\,dx
+=k\int_0^{+\infty} e^{-x}\,dx=k.
+$$
+Donc $f$ est une densite si et seulement si $\boxed{k=1}$.
+
+**2a. Loi marginale de $X$** ($x>0$):
+$$
+f_X(x)=\int_x^{+\infty} e^{-y}\,dy=e^{-x}.
+$$
+Ainsi $f_X(x)=e^{-x}\mathbf{1}_{x>0}$, soit $X\sim\mathcal{E}(1)$.
+
+**Loi marginale de $Y$** ($y>0$):
+$$
+f_Y(y)=\int_0^{y} e^{-y}\,dx=y\,e^{-y}.
+$$
+Ainsi $f_Y(y)=y\,e^{-y}\mathbf{1}_{y>0}$, soit $Y\sim\Gamma(2,1)$.
+
+**2b.** On compare $f(x,y)=e^{-y}\mathbf{1}_{0<x<y}$ et $f_X(x)f_Y(y)=e^{-x}\cdot y\,e^{-y}$. Ces deux expressions ne coincident pas (par exemple en $x=1, y=2$ : $e^{-2}\ne e^{-1}\cdot 2e^{-2}$). Donc $X$ et $Y$ ne sont **pas independantes**.
+:::
+
+::: {.callout-caution}
+## Exercice — Romeo et Juliette
+
+Romeo et Juliette se donnent rendez-vous devant une salle de theatre entre 20h et 21h. Le temps ecoule depuis 20h avant les arrivees de Romeo et de Juliette sont deux variables aleatoires $R$ et $J$ independantes de loi uniforme sur $[0;1]$ (en heures).
+
+1. Determiner la loi du couple $(R;J)$.
+2. Donner $E(RJ)$ sans la calculer directement.
+3. Montrer que $P(|J-R|<\tfrac{1}{4})=1-2P(J-R>\tfrac{1}{4})$.
+4. Chacun decide d'attendre au plus 15 minutes que l'autre arrive avant d'entrer dans la salle. Quelle est la probabilite qu'ils entrent ensemble ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice Romeo et Juliette
+
+**1.** $R$ et $J$ sont independantes et uniformes sur $[0,1]$, donc le couple $(R,J)$ est uniforme sur le carre $[0,1]^2$, de densite $f(r,j)=1$ sur $[0,1]^2$.
+
+**2.** Par independance : $E(RJ)=E(R)\,E(J)=\dfrac{1}{2}\cdot\dfrac{1}{2}=\dfrac{1}{4}$.
+
+**3.** Par symetrie du carre $[0,1]^2$, l'evenement $\{J-R>\tfrac{1}{4}\}$ a la meme probabilite que $\{R-J>\tfrac{1}{4}\}$. Ces deux evenements sont disjoints et leur reunion est le complementaire de $\{|J-R|\le\tfrac{1}{4}\}$. Donc:
+$$
+P(|J-R|\le\tfrac{1}{4})=1-P(J-R>\tfrac{1}{4})-P(R-J>\tfrac{1}{4})=1-2P(J-R>\tfrac{1}{4}).
+$$
+
+**4.** Les deux entrent ensemble si et seulement si $|J-R|\le\tfrac{1}{4}$. La zone $\{J-R>\tfrac{1}{4}\}$ dans $[0,1]^2$ est un triangle rectangle de cote $\tfrac{3}{4}$, d'aire $\tfrac{1}{2}\left(\tfrac{3}{4}\right)^2=\tfrac{9}{32}$. Donc:
+$$
+P(|J-R|\le\tfrac{1}{4})=1-2\cdot\frac{9}{32}=1-\frac{9}{16}=\frac{7}{16}.
+$$
+:::
+
+---
+
+## Densite conditionnelle
+
+::: {.callout-note}
+## Definition - Densite conditionnelle
+
+Soit $(X,Y)$ un couple de v.a.r. de densite conjointe $f$, et soit $f_X$ la densite marginale de $X$. Pour tout $x$ tel que $f_X(x) > 0$, on definit la **densite conditionnelle** de $Y$ sachant $X = x$ par:
+$$
+f_{Y|X}(y \mid x) = \frac{f(x,y)}{f_X(x)}.
+$$
+
+De meme, pour tout $y$ tel que $f_Y(y) > 0$:
+$$
+f_{X|Y}(x \mid y) = \frac{f(x,y)}{f_Y(y)}.
+$$
+:::
+
+::: {.callout-note}
+## Definition - Esperance conditionnelle
+
+L'**esperance conditionnelle** de $Y$ sachant $X = x$ est:
+$$
+E(Y \mid X = x) = \int_{\mathbb{R}} y \, f_{Y|X}(y \mid x) \, dy.
+$$
+:::
+
+::: {.callout-caution}
+## Exemple - Densite conditionnelle
+
+Reprenons l'exercice avec $f(x,y)=e^{-y}\,\mathbf{1}_{\{0<x<y\}}$. On a vu que $f_X(x)=e^{-x}\mathbf{1}_{x>0}$ et $f_Y(y)=y\,e^{-y}\mathbf{1}_{y>0}$.
+
+La densite conditionnelle de $Y$ sachant $X = x$ ($x > 0$) est:
+$$
+f_{Y|X}(y \mid x) = \frac{e^{-y}\mathbf{1}_{0<x<y}}{e^{-x}} = e^{-(y-x)}\mathbf{1}_{y > x}.
+$$
+
+On reconnait une loi exponentielle $\mathcal{E}(1)$ **translatée** de $x$, soit $Y \mid X=x \sim x + \mathcal{E}(1)$.
+:::
+
+---
+
+## V - Esperance, covariance, correlation
+
+::: {.callout-note}
+## Definitions
+
+L'**esperance d'un couple** de v.a.r. continues et integrables est le couple des esperances:
+$$
+E(X, Y) = \bigl(E(X),\, E(Y)\bigr),
+$$
+avec
+$$
+E(X)=\int_{\mathbb{R}} x f_X(x)\,dx,
+\qquad
+E(Y)=\int_{\mathbb{R}} y f_Y(y)\,dy.
+$$
+
+Si $X$ et $Y$ sont de carre integrable, la covariance est
+$$
+\operatorname{Cov}(X,Y)=E\!\left[(X-E(X))(Y-E(Y))\right]
+=E(XY)-E(X)E(Y),
+$$
+avec
+$$
+E(XY)=\iint_{\mathbb{R}^2} xy f(x,y)\,dx\,dy.
+$$
+:::
+
+::: {.callout-tip}
+## Remarques
+
+- On peut aussi ecrire:
+  - $\displaystyle E(X)=\iint_{\mathbb{R}^2} x f(x,y)\,dx\,dy$,
+  - $\displaystyle E(Y)=\iint_{\mathbb{R}^2} y f(x,y)\,dx\,dy$.
+- $\operatorname{Cov}(X,X)=\operatorname{Var}(X)$.
+:::
+
+::: {.callout-important}
+## Proposition
+
+Si $X$ et $Y$ sont independantes, alors
+$$
+\operatorname{Cov}(X,Y)=0.
+$$
+La reciproque est fausse en general.
+:::
+
+::: {.callout-note}
+## Definition - Coefficient de correlation
+
+Si $\sigma(X)>0$ et $\sigma(Y)>0$,
+$$
+\rho(X,Y)=\frac{\operatorname{Cov}(X,Y)}{\sigma(X)\sigma(Y)}.
+$$
+Ce coefficient mesure la force (lineaire) de la liaison entre $X$ et $Y$.
+:::
+
+::: {.callout-important}
+## Proposition - Proprietes du coefficient de correlation
+
+Pour tout couple $(X, Y)$ de v.a.r. de carre integrable avec $\sigma(X) > 0$ et $\sigma(Y) > 0$:
+
+1. $\rho(X,Y) \in [-1,\, 1]$.
+2. $|\rho(X,Y)| = 1$ si et seulement s'il existe $a \ne 0$ et $b \in \mathbb{R}$ tels que $Y = aX + b$ p.s.
+
+*Esquisse de preuve.*
+
+**1.** Par l'inegalite de Cauchy-Schwarz appliquee aux v.a. centrees:
+$$
+|\operatorname{Cov}(X,Y)| = \bigl|E\!\left[(X-E(X))(Y-E(Y))\right]\bigr|
+\le \sqrt{E\!\left[(X-E(X))^2\right]\,E\!\left[(Y-E(Y))^2\right]}
+= \sigma(X)\,\sigma(Y),
+$$
+d'ou $|\rho(X,Y)| \le 1$.
+
+**2.** L'egalite dans Cauchy-Schwarz a lieu si et seulement si $Y - E(Y) = a(X - E(X))$ p.s. pour un certain $a \ne 0$, soit $Y = aX + b$ avec $b = E(Y) - aE(X)$.
+:::
+
+::: {.callout-tip}
+## Remarque - Interpretation de $\rho$
+
+- $\rho(X,Y) = 0$ : absence de liaison lineaire (variables **non correlees**).
+- $\rho(X,Y) > 0$ : liaison lineaire positive ($X$ et $Y$ varient dans le meme sens).
+- $\rho(X,Y) < 0$ : liaison lineaire negative ($X$ et $Y$ varient en sens oppose).
+- $|\rho(X,Y)| = 1$ : liaison lineaire parfaite (relation affine exacte).
+:::
+
+::: {.callout-caution}
+## Exercice 1
+
+Soit la fonction
+$$f(x,y)=2\,\mathbf{1}_{\{0\le y\le x\le 1\}}.$$
+
+1. Montrer que $f$ est une densite sur $\mathbb{R}^2$.
+2. Soit $(X,Y)$ un couple de variables aleatoires de densite $f$.
+   Calculer $P(X<Y)$ et $P(Y<X)$.
+3. Calculer $E(XY)$ puis $\operatorname{Cov}(X,Y)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 1
+
+- Le support est le triangle $0\le y\le x\le 1$.
+- $P(X<Y)$ correspond a une zone vide sur ce support.
+- Pour la covariance : $\operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y)$.
+:::
+
+---
+
+## VI - Loi de la somme de deux variables independantes
+
+Soient $X$ et $Y$ independantes, de densites $f_X$ et $f_Y$, et posons $Z=X+Y$.
+
+::: {.callout-important}
+## Proposition - Formule de convolution
+
+La variable $Z$ admet la densite
+$$
+f_Z(z)=\int_{\mathbb{R}} f_X(x)f_Y(z-x)\,dx.
+$$
+
+On dit que $f_Z$ est le **produit de convolution** de $f_X$ et $f_Y$.
+:::
+
+::: {.callout-caution}
+## Exemple 5 - Somme de deux lois uniformes
+
+Soient $X$ et $Y$ independantes, de loi uniforme sur $[0,1]$.
+
+1. Determiner la densite de $Z=X+Y$.
+2. Verifier qu'il s'agit d'une densite (positive et integree a 1).
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 5
+
+Ici $f_X=f_Y=\mathbf{1}_{[0,1]}$. Donc
+$$
+f_Z(z)=\int_{\mathbb{R}} \mathbf{1}_{[0,1]}(x)\mathbf{1}_{[0,1]}(z-x)\,dx,
+$$
+ce qui donne la densite triangulaire:
+$$
+f_Z(z)=
+\begin{cases}
+z & \text{si } 0\le z\le 1,\\
+2-z & \text{si } 1<z\le 2,\\
+0 & \text{sinon.}
+\end{cases}
+$$
+Elle est positive et son aire totale vaut 1.
+:::
+
+::: {.callout-caution}
+## Exercice 4
+
+Soient $X$ et $Y$ independantes, de meme loi.
+On pose $Z=X+Y$.
+
+Determiner la densite de $Z$ dans les deux cas suivants :
+
+1. $X,Y\sim\mathcal{U}([0,1])$.
+2. $X,Y\sim\mathcal{N}(0,1)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 4
+
+- Utiliser la formule de convolution :
+$$f_Z(z)=\int_{\mathbb{R}} f_X(x)f_Y(z-x)\,dx.$$
+- Cas uniforme : bien decrire l'intersection des intervalles.
+- Cas normal : on peut reconnaitre directement la stabilite de la loi normale.
+:::
+
+::: {.callout-caution}
+## Exercice 5
+
+Soient $\sigma_1>0$, $\sigma_2>0$ et deux variables independantes
+$$X\sim\mathcal{N}(0,\sigma_1^2),\qquad Y\sim\mathcal{N}(0,\sigma_2^2).$$
+On pose $Z=X+Y$.
+
+1. Montrer que, pour tous $(x,t)\in\mathbb{R}^2$,
+$$\frac{x^2}{\sigma_1^2}+\frac{(t-x)^2}{\sigma_2^2}
+=\frac{\sigma^2}{\sigma_1^2\sigma_2^2}\left(x-\frac{\sigma_1^2}{\sigma^2}t\right)^2
++\frac{t^2}{\sigma^2},$$
+ou $\sigma^2=\sigma_1^2+\sigma_2^2$.
+2. En deduire la loi de $Z$.
+3. Generaliser au cas
+$$X\sim\mathcal{N}(m_1,\sigma_1^2),\qquad Y\sim\mathcal{N}(m_2,\sigma_2^2).$$
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 5
+
+**1.** On developpe le membre de droite. Posons $\sigma^2 = \sigma_1^2 + \sigma_2^2$. Alors:
+$$
+\frac{\sigma^2}{\sigma_1^2\sigma_2^2}\left(x - \frac{\sigma_1^2}{\sigma^2}t\right)^2 + \frac{t^2}{\sigma^2}
+= \frac{\sigma^2}{\sigma_1^2\sigma_2^2}\left(x^2 - \frac{2\sigma_1^2}{\sigma^2}xt + \frac{\sigma_1^4}{\sigma^4}t^2\right) + \frac{t^2}{\sigma^2}.
+$$
+
+En developpant:
+$$
+= \frac{x^2}{\sigma_1^2} \cdot \frac{\sigma^2}{\sigma_2^2} \cdot \frac{1}{\frac{\sigma^2}{\sigma_1^2}} - \frac{2xt}{\sigma_2^2} + \frac{\sigma_1^2 t^2}{\sigma_2^2 \sigma^2} + \frac{t^2}{\sigma^2}.
+$$
+
+Apres simplification, on retrouve $\dfrac{x^2}{\sigma_1^2} + \dfrac{(t-x)^2}{\sigma_2^2}$, ce qui se verifie aussi directement en developpant $\dfrac{(t-x)^2}{\sigma_2^2} = \dfrac{t^2 - 2tx + x^2}{\sigma_2^2}$ et en regroupant les termes en $x^2$, $xt$ et $t^2$.
+
+**2.** Par la formule de convolution, la densite de $Z = X + Y$ est:
+$$
+f_Z(t) = \int_{\mathbb{R}} f_X(x)\,f_Y(t-x)\,dx
+= \int_{\mathbb{R}} \frac{1}{\sqrt{2\pi}\sigma_1}\,e^{-\frac{x^2}{2\sigma_1^2}}
+\cdot \frac{1}{\sqrt{2\pi}\sigma_2}\,e^{-\frac{(t-x)^2}{2\sigma_2^2}}\,dx.
+$$
+
+Soit:
+$$
+f_Z(t) = \frac{1}{2\pi\sigma_1\sigma_2}\int_{\mathbb{R}} \exp\!\left(-\frac{1}{2}\left[\frac{x^2}{\sigma_1^2}+\frac{(t-x)^2}{\sigma_2^2}\right]\right)dx.
+$$
+
+En utilisant l'identite de la question 1:
+$$
+f_Z(t) = \frac{1}{2\pi\sigma_1\sigma_2}\,e^{-\frac{t^2}{2\sigma^2}}
+\int_{\mathbb{R}} \exp\!\left(-\frac{\sigma^2}{2\sigma_1^2\sigma_2^2}\left(x-\frac{\sigma_1^2}{\sigma^2}t\right)^2\right)dx.
+$$
+
+L'integrale est celle d'une gaussienne en $x$. Par le changement de variable $u = \dfrac{\sigma}{\sigma_1\sigma_2}\!\left(x - \dfrac{\sigma_1^2}{\sigma^2}t\right)$, on reconnait $\displaystyle\int_{\mathbb{R}} e^{-u^2/2}\,du = \sqrt{2\pi}$, d'ou:
+$$
+\int_{\mathbb{R}} \exp\!\left(-\frac{\sigma^2}{2\sigma_1^2\sigma_2^2}\left(x-\frac{\sigma_1^2}{\sigma^2}t\right)^2\right)dx
+= \frac{\sigma_1\sigma_2}{\sigma}\sqrt{2\pi}.
+$$
+
+Finalement:
+$$
+f_Z(t) = \frac{1}{2\pi\sigma_1\sigma_2}\cdot\frac{\sigma_1\sigma_2}{\sigma}\sqrt{2\pi}\cdot e^{-\frac{t^2}{2\sigma^2}}
+= \frac{1}{\sqrt{2\pi}\,\sigma}\,e^{-\frac{t^2}{2\sigma^2}}.
+$$
+
+On reconnait la densite de $\mathcal{N}(0, \sigma^2)$ avec $\sigma^2 = \sigma_1^2 + \sigma_2^2$, donc:
+$$
+\boxed{Z \sim \mathcal{N}(0,\, \sigma_1^2 + \sigma_2^2).}
+$$
+
+**3.** Si $X \sim \mathcal{N}(m_1, \sigma_1^2)$ et $Y \sim \mathcal{N}(m_2, \sigma_2^2)$ independantes, on ecrit $X = m_1 + X'$ et $Y = m_2 + Y'$ avec $X' \sim \mathcal{N}(0,\sigma_1^2)$ et $Y' \sim \mathcal{N}(0,\sigma_2^2)$ independantes. Alors:
+$$
+Z = X + Y = (m_1 + m_2) + (X' + Y'),
+$$
+et par la question 2, $X' + Y' \sim \mathcal{N}(0, \sigma_1^2 + \sigma_2^2)$. Par translation:
+$$
+\boxed{Z \sim \mathcal{N}(m_1 + m_2,\, \sigma_1^2 + \sigma_2^2).}
+$$
+
+C'est la **stabilite de la loi normale** : la somme de deux normales independantes est normale.
+:::
+
+## VII — Changement de variables bidimensionnel
+
+::: {.callout-important}
+## Théorème — Changement de variables pour un couple de v.a.r.
+
+Soit $(X,Y)$ un couple de v.a.r. continues de densité conjointe $f_{(X,Y)}$, à valeurs dans un ouvert $\mathcal{O} \subset \mathbb{R}^2$.
+
+Soit $G : \mathcal{O} \to \mathcal{O}'$ un $\mathcal{C}^1$-difféomorphisme (bijection de classe $\mathcal{C}^1$ dont l'inverse $H = G^{-1}$ est également de classe $\mathcal{C}^1$), et posons $(U, V) = G(X, Y)$.
+
+Alors le couple $(U, V)$ admet la densité :
+$$
+f_{(U,V)}(u,v) = f_{(X,Y)}\!\bigl(H(u,v)\bigr) \cdot \bigl|J_H(u,v)\bigr| \cdot \mathbf{1}_{\mathcal{O}'}(u,v),
+$$
+où $J_H(u,v)$ est le **jacobien** (déterminant de la matrice jacobienne) de $H$ :
+$$
+J_H(u,v) = \det\begin{pmatrix} \dfrac{\partial h_1}{\partial u} & \dfrac{\partial h_1}{\partial v} \\[6pt] \dfrac{\partial h_2}{\partial u} & \dfrac{\partial h_2}{\partial v} \end{pmatrix},
+\qquad
+\text{avec } H(u,v) = \bigl(h_1(u,v),\, h_2(u,v)\bigr).
+$$
+:::
+
+::: {.callout-tip}
+## Remarque
+
+La formule de convolution (section VI) est un cas particulier de ce théorème, obtenu en posant $U = X + Y$ et $V = Y$ (changement de variables de jacobien $|J_H| = 1$).
+:::
+
+::: {.callout-caution}
+## Exemple — Passage en coordonnées polaires
+
+Soit $(X, Y)$ un couple de loi uniforme sur le disque unité : $f_{(X,Y)}(x,y) = \dfrac{1}{\pi}\,\mathbf{1}_{x^2+y^2 \le 1}$.
+
+On effectue le changement de variables $(R, \Theta) = G^{-1}(X, Y)$ avec $X = R\cos\Theta$, $Y = R\sin\Theta$.
+
+Le jacobien est $J = r$ et la densité de $(R, \Theta)$ est :
+$$
+f_{(R,\Theta)}(r, \theta) = \frac{r}{\pi}\,\mathbf{1}_{[0,1]}(r)\,\mathbf{1}_{[0,2\pi]}(\theta).
+$$
+:::
+
+---
+
+## VIII — Exercice de synthèse
+
+::: {.callout-caution}
+## Exercice 6 - Loi conjointe, marginales et covariance
+
+Soit le triangle
+$$
+T=\{(x,y)\in\mathbb{R}^2 : 0\le x\le 1,\ 0\le y\le 1,\ x+y\le 1\}
+$$
+et la fonction
+$$
+f(x,y)=2\mathbf{1}_T(x,y).
+$$
+
+1. Verifier que $f$ est une densite conjointe.
+2. Determiner $f_X$ et $f_Y$.
+3. Calculer $E(X)$, $E(Y)$, puis $E(XY)$.
+4. En deduire $\operatorname{Cov}(X,Y)$.
+5. Les variables $X$ et $Y$ sont-elles independantes?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exercice 6
+
+1. Aire de $T=\frac{1}{2}$, donc
+$$
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy=2\times\frac{1}{2}=1.
+$$
+
+2. Pour $0\le x\le 1$,
+$$
+f_X(x)=\int_0^{1-x}2\,dy=2(1-x),
+$$
+et sinon $0$. De meme,
+$$
+f_Y(y)=2(1-y)\ \text{pour }0\le y\le 1,
+$$
+et sinon $0$.
+
+3.
+$$
+E(X)=\int_0^1 x\,2(1-x)\,dx=\frac{1}{3},
+\quad
+E(Y)=\frac{1}{3}.
+$$
+Puis
+$$
+E(XY)=\int_0^1\int_0^{1-x}2xy\,dy\,dx=\frac{1}{12}.
+$$
+
+4.
+$$
+\operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y)=\frac{1}{12}-\frac{1}{9}=-\frac{1}{36}.
+$$
+
+5. Non: les variables ne sont pas independantes (le support triangulaire interdit deja la factorisation sur un rectangle, et la covariance est negative).
+:::
+
+::: {.callout-caution}
+## Exercice — Aiguilles de Buffon
+
+On lance une aiguille de longueur $a$ sur un parquet constitue de lames paralleles de meme largeur $l$, et on veut determiner la probabilite que l'aiguille tombe a cheval sur une rainure du parquet.
+
+On note $O$ le centre de l'aiguille, $Y$ la distance entre $O$ et la rainure la plus proche, et $\theta$ l'angle entre l'aiguille et la parallele aux rainures passant par $O$.
+
+On admet que $Y$ et $\theta$ sont independantes, que $Y\sim\mathcal{U}\!\left([0;\tfrac{l}{2}]\right)$ et que $\theta\sim\mathcal{U}\!\left([0;\tfrac{\pi}{2}]\right)$.
+
+1. Donner la loi du couple $(Y;\theta)$.
+2. On note $A$ l'evenement "l'aiguille tombe a cheval sur une rainure". Exprimer $A$ a l'aide de $Y$ et $\theta$.
+3. Calculer $P(A)$ dans le cas $a\le l$, puis dans le cas $a>l$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice Aiguilles de Buffon
+
+**1.** Par independance, la densite conjointe est le produit des densites marginales :
+$$
+f(y,\theta)=\frac{2}{l}\cdot\frac{2}{\pi}=\frac{4}{l\pi}
+\quad\text{sur }\left[0,\frac{l}{2}\right]\times\left[0,\frac{\pi}{2}\right].
+$$
+
+**2.** L'aiguille touche une rainure si et seulement si la demi-longueur projetee $\frac{a}{2}\sin\theta$ depasse la distance $Y$ a la rainure :
+$$
+A=\left\{Y\le\frac{a}{2}\sin\theta\right\}.
+$$
+
+**3. Cas $a\le l$.**
+Pour tout $\theta\in[0,\tfrac{\pi}{2}]$, on a $\tfrac{a}{2}\sin\theta\le\tfrac{a}{2}\le\tfrac{l}{2}$, donc la contrainte $Y\le\tfrac{a}{2}\sin\theta$ ne sature pas la borne superieure de $Y$. On integre:
+$$
+P(A)=\int_0^{\pi/2}\int_0^{(a/2)\sin\theta}\frac{4}{l\pi}\,dy\,d\theta
+=\frac{4}{l\pi}\int_0^{\pi/2}\frac{a}{2}\sin\theta\,d\theta
+=\frac{2a}{l\pi}\Bigl[-\cos\theta\Bigr]_0^{\pi/2}
+=\frac{2a}{l\pi}.
+$$
+
+**Cas $a>l$.**
+Pour les angles $\theta$ petits, $\tfrac{a}{2}\sin\theta$ peut depasser $\tfrac{l}{2}$. On pose $\theta_0=\arcsin\!\bigl(\tfrac{l}{a}\bigr)$. On decoupe l'integrale :
+$$
+P(A)=\frac{4}{l\pi}\left[
+\int_0^{\theta_0}\frac{a}{2}\sin\theta\,d\theta
++\int_{\theta_0}^{\pi/2}\frac{l}{2}\,d\theta
+\right]
+=\frac{2a}{l\pi}\left(1-\cos\theta_0\right)+\frac{2}{\pi}\left(\frac{\pi}{2}-\theta_0\right).
+$$
+Avec $\cos\theta_0=\sqrt{1-\tfrac{l^2}{a^2}}$, on obtient :
+$$
+P(A)=\frac{2a}{l\pi}\left(1-\sqrt{1-\frac{l^2}{a^2}}\right)+1-\frac{2\theta_0}{\pi}.
+$$
+:::
+

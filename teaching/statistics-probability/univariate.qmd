@@ -1,0 +1,479 @@
+---
+title: "Statistiques descriptives à une variable"
+abstract: |
+  Ce chapitre presente les bases de la **statistique descriptive univariee**,
+  avec l'objectif de decrire rigoureusement une population a partir d'un seul
+  caractere. On introduit d'abord le vocabulaire (population, individu,
+  variable, modalite), puis les outils de synthese pour les series
+  **discretes** (effectifs, frequences, cumuls, mode). Le chapitre traite
+  ensuite le cas des series **continues** regroupees en classes, en expliquant
+  l'usage correct de l'histogramme (densites) et de la fonction de repartition.
+  Les indicateurs de position et de dispersion sont ensuite developpes :
+  mediane, quartiles, intervalle interquartile, moyenne, variance, ecart-type,
+  avec les formules pratiques (dont Konig-Huygens) et les transformations
+  affines. Le chapitre se termine par une synthese methodologique complete pour
+  mener une etude statistique de bout en bout.
+date-modified: 2026-03-22
+---
+
+> Dans tout ce chapitre, on etudie une serie statistique a **une variable** observee sur une population finie.
+
+## I - Vocabulaire de base
+
+::: {.callout-note}
+## Definitions
+
+- La **population** $P$ est l'ensemble des individus etudies.
+- Les **individus** (ou unites statistiques) sont les elements de $P$.
+- Le **caractere** (ou variable) est une application
+  $$x : P \to E,$$
+  ou $E$ est l'ensemble des **modalites**.
+- Le couple $(P,x)$ est une **serie statistique** (ou distribution statistique).
+:::
+
+::: {.callout-note}
+## Types de variables
+
+- **Qualitative** : les modalites ne sont pas numeriques.
+  - nominale : sans ordre naturel,
+  - ordinale : avec ordre naturel.
+- **Quantitative** : les modalites sont numeriques.
+  - discrete : ensemble de valeurs fini ou denombrable,
+  - continue : ensemble de valeurs de type intervalle.
+:::
+
+Dans ce chapitre, on se concentre sur les variables quantitatives (discretes puis continues en classes).
+
+::: {.callout-caution}
+## Exemple 1 - Identifier la nature d'un caractere
+
+Pour chaque situation, preciser la population, le caractere et le type du caractere.
+
+1. Metier des adultes d'un groupe de skieurs.
+2. Age des participants a un concours.
+3. Taille des etudiants d'un amphitheatre.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 1
+
+1. Metier : variable qualitative nominale.
+2. Age : variable quantitative discrete (si age en annees entieres) ou continue (si mesure exacte).
+3. Taille : variable quantitative continue.
+:::
+
+---
+
+## II - Distribution discrete finie
+
+Soit une variable quantitative discrete $x$ prenant les valeurs distinctes
+$$x_1 < x_2 < \cdots < x_r.$$
+On note $n$ l'effectif total, $n_i$ l'effectif de $x_i$, et
+$$f_i = \frac{n_i}{n}$$
+sa frequence.
+
+::: {.callout-note}
+## Definitions - Cumuls et mode
+
+- Effectif cumule croissant (E.C.C.) :
+  $$N_i^+ = \sum_{k=1}^i n_k.$$
+- Frequence cumulee croissante (F.C.C.) :
+  $$F_i^+ = \sum_{k=1}^i f_k = \frac{N_i^+}{n}.$$
+- **Mode** : toute modalite d'effectif maximal.
+:::
+
+Le diagramme de reference pour une serie discrete est le **diagramme en batons**.
+
+::: {.callout-caution}
+## Exemple 2 - Tableau statistique complet
+
+Une etude porte sur le nombre d'enfants par foyer. Les resultats observes sont :
+
+| Valeur $x_i$ | 0 | 1 | 2 | 3 | 4 | Total |
+|---|---:|---:|---:|---:|---:|---:|
+| Effectif $n_i$ | 18 | 34 | 40 | 20 | 8 | 120 |
+
+1. Calculer les frequences $f_i$.
+2. Calculer les E.C.C. et F.C.C.
+3. Determiner la frequence de foyers ayant au plus 2 enfants.
+4. Donner le (ou les) mode(s).
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 2 (resultats)
+
+- $f_i = n_i/120$.
+- E.C.C. : $18, 52, 92, 112, 120$.
+- F.C.C. : $0{,}15, 0{,}433, 0{,}767, 0{,}933, 1$.
+- Frequence de foyers avec au plus 2 enfants : $F_2^+ = 92/120 \approx 0{,}767$.
+- Mode : valeur 2 (effectif maximal 40).
+:::
+
+---
+
+## III - Distribution continue en classes
+
+Quand les donnees sont nombreuses et presque toutes distinctes, on regroupe les observations en classes
+$$[a_i, a_{i+1}[, \quad i=1,\dots,r.$$
+
+::: {.callout-note}
+## Definitions - Classes
+
+Pour la classe $[a_i,a_{i+1}[$ :
+
+- amplitude :
+  $$A_i = a_{i+1}-a_i,$$
+- centre :
+  $$c_i = \frac{a_i+a_{i+1}}{2},$$
+- effectif : $n_i$, frequence : $f_i = n_i/n$,
+- densite de frequence :
+  $$d_i = \frac{f_i}{A_i}.$$
+:::
+
+### 1. Histogramme
+
+Dans un histogramme correct, la **surface** de chaque rectangle est proportionnelle a la frequence de classe.
+Donc la **hauteur** doit etre proportionnelle a la densite $d_i$ (et non a $f_i$ si les amplitudes sont differentes).
+
+::: {.callout-important}
+## Point cle
+
+Si les amplitudes sont differentes, comparer seulement les hauteurs des barres peut induire en erreur.
+La grandeur pertinente est la surface (hauteur x largeur).
+:::
+
+::: {.callout-caution}
+## Exemple 3 - Densites et hauteurs corrigees
+
+On considere la distribution suivante :
+
+| Classe | $[30,40[$ | $[40,45[$ | $[45,50[$ | $[50,65[$ | Total |
+|---|---:|---:|---:|---:|---:|
+| Effectif $n_i$ | 11 | 7 | 5 | 2 | 25 |
+
+1. Calculer les frequences $f_i$.
+2. Calculer les amplitudes $A_i$.
+3. Calculer les densites $d_i = f_i/A_i$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 3 (resultats)
+
+- $f_i = (0{,}44, 0{,}28, 0{,}20, 0{,}08)$.
+- $A_i = (10, 5, 5, 15)$.
+- $d_i = (0{,}044, 0{,}056, 0{,}040, 0{,}0053)$.
+
+La deuxieme classe est plus dense que la premiere, bien qu'elle ait un effectif inferieur.
+:::
+
+### 2. Fonction de repartition empirique en classes
+
+Sous l'hypothese d'equirepartition dans chaque classe, la fonction de repartition $F$ est :
+
+- croissante,
+- continue,
+- affine par morceaux,
+- telle que $F(a_i)$ vaut la frequence cumulee au bord $a_i$.
+
+Pour $x\in[a_i,a_{i+1}[$, on obtient $F(x)$ par interpolation lineaire :
+$$
+F(x)=F(a_i)+\frac{F(a_{i+1})-F(a_i)}{a_{i+1}-a_i}(x-a_i).
+$$
+
+::: {.callout-caution}
+## Exemple 4 - Lecture de repartition
+
+Avec la distribution de l'exemple 3, calculer $F(42)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 4
+
+- $42\in[40,45[$.
+- $F(40)=0{,}44$ et $F(45)=0{,}72$.
+- Donc
+$$
+F(42)=0{,}44+\frac{0{,}72-0{,}44}{5}(2)=0{,}552.
+$$
+:::
+
+---
+
+## IV - Mediane, quartiles et dispersion
+
+::: {.callout-note}
+## Definitions
+
+- La **mediane** est une valeur qui partage la population en deux moities (50 % / 50 %).
+- Les **quartiles** $Q_1, Q_2, Q_3$ partagent en quatre parts de 25 %.
+- On a $Q_2 =$ mediane.
+- L'**ecart interquartile** vaut
+  $$IQR = Q_3-Q_1,$$
+  et mesure la dispersion centrale.
+:::
+
+Pour les series continues en classes, on determine les quantiles par lecture de la fonction de repartition (interpolation lineaire).
+
+::: {.callout-caution}
+## Exemple 5 - Quantiles d'une serie discrete
+
+Soit la serie :
+
+| Valeur $x_i$ | 5 | 10 | 15 | 20 | Total |
+|---|---:|---:|---:|---:|---:|
+| Effectif $n_i$ | 11 | 7 | 5 | 3 | 26 |
+
+Determiner la mediane, $Q_1$, $Q_3$ et l'ecart interquartile.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 5 (resultats)
+
+Rangs cumules :
+- valeur 5 : rangs 1 a 11,
+- valeur 10 : rangs 12 a 18,
+- valeur 15 : rangs 19 a 23,
+- valeur 20 : rangs 24 a 26.
+
+Donc :
+- mediane (entre rangs 13 et 14) = 10,
+- $Q_1$ (autour du rang 7) = 5,
+- $Q_3$ (autour du rang 20) = 15,
+- $IQR = 15-5=10$.
+:::
+
+---
+
+## V - Moyenne, variance, ecart-type
+
+Soit une serie quantitative discrete :
+
+| Valeur | $x_1$ | $x_2$ | ... | $x_r$ |
+|---|---:|---:|---:|---:|
+| Effectif | $n_1$ | $n_2$ | ... | $n_r$ |
+| Frequence | $f_1$ | $f_2$ | ... | $f_r$ |
+
+avec $\sum n_i=n$ et $\sum f_i=1$.
+
+::: {.callout-note}
+## Definitions - Indicateurs numeriques
+
+- Moyenne :
+  $$\bar x = \frac{1}{n}\sum_{i=1}^r n_i x_i = \sum_{i=1}^r f_i x_i.$$
+- Variance :
+  $$\mathrm{Var}(x)=\frac{1}{n}\sum_{i=1}^r n_i(x_i-\bar x)^2.$$
+- Ecart-type :
+  $$\sigma(x)=\sqrt{\mathrm{Var}(x)}.$$
+:::
+
+::: {.callout-tip}
+## Formule de Konig-Huygens
+
+$$
+\mathrm{Var}(x)=\overline{x^2}-(\bar x)^2
+\quad\text{avec}\quad
+\overline{x^2}=\frac{1}{n}\sum_{i=1}^r n_i x_i^2.
+$$
+:::
+
+Pour une serie en classes, on applique les memes formules en remplacant $x_i$ par les centres $c_i$.
+
+::: {.callout-important}
+## Interpretation
+
+- La moyenne est un indicateur de **position**.
+- La variance et l'ecart-type sont des indicateurs de **dispersion**.
+- La moyenne est sensible aux valeurs extremes, contrairement a la mediane.
+:::
+
+::: {.callout-caution}
+## Exemple 6 - Calcul numerique complet
+
+Soit la serie en classes :
+
+| Classe | $[0,2[$ | $[2,4[$ | $[4,6[$ |
+|---|---:|---:|---:|
+| Effectif $n_i$ | 9 | 6 | 5 |
+
+Calculer la moyenne, la variance et l'ecart-type en utilisant les centres de classes.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 6
+
+Centres : $c_1=1$, $c_2=3$, $c_3=5$ ; effectif total $n=20$.
+
+Moyenne :
+$$
+\bar x=\frac{9\cdot1+6\cdot3+5\cdot5}{20}=\frac{52}{20}=2{,}6.
+$$
+
+Moyenne des carres :
+$$
+\overline{x^2}=\frac{9\cdot1^2+6\cdot3^2+5\cdot5^2}{20}=\frac{188}{20}=9{,}4.
+$$
+
+Variance :
+$$
+\mathrm{Var}(x)=9{,}4-2{,}6^2=2{,}64.
+$$
+
+Ecart-type :
+$$
+\sigma(x)=\sqrt{2{,}64}\approx 1{,}625.
+$$
+:::
+
+::: {.callout-caution}
+## Exercice 1 — Fréquentation d'une boutique
+
+Le nombre de clients reçus chaque jour dans une boutique a été relevé pendant
+une semaine :
+
+| Jour | Lundi | Mardi | Mercredi | Jeudi | Vendredi | Samedi |
+|---|---:|---:|---:|---:|---:|---:|
+| Nombre de clients | 23 | 42 | 38 | 41 | 55 | 51 |
+
+Déterminer la moyenne, la variance et l'écart-type de la série.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+Considérer les 6 valeurs comme une série quantitative discrète simple :
+$$\bar x=\frac{1}{n}\sum_{i=1}^n x_i, \qquad
+V=\frac{1}{n}\sum_{i=1}^n (x_i-\bar x)^2, \qquad
+\sigma=\sqrt{V}.$$
+:::
+
+::: {.callout-caution}
+## Exercice 2 — Tirs réussis
+
+Voici un relevé des tirs réussis sur 6 tirs lors d'une campagne :
+
+| Tirs réussis $x_i$ | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Nombre de tireurs $n_i$ | 3 | 15 | 9 | 11 | 8 | 4 | 2 |
+
+1. Déterminer la population, le caractère et le type du caractère étudiés.
+2. Représenter cette série par un diagramme en bâtons.
+3. Déterminer les couples : (mode, étendue) ; (médiane, écart interquartile) ; (moyenne, écart-type).
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+- Effectif total : $N=\sum n_i$.
+- Médiane et quartiles : travailler avec les effectifs cumulés croissants.
+- Moyenne et variance pondérées :
+$$\bar x=\frac{1}{N}\sum n_i x_i, \qquad V=\frac{1}{N}\sum n_i(x_i-\bar x)^2.$$
+:::
+
+::: {.callout-caution}
+## Exercice 3 — Exploitations agricoles
+
+Dans une région, l'étude des exploitations agricoles a conduit au tableau
+suivant (surface en hectares) :
+
+| Surface (ha) | $[0;2[$ | $[2;3[$ | $[3;4[$ | $[4;5[$ | $[5;6[$ |
+|---|---:|---:|---:|---:|---:|
+| Nombre d'exploitations | 15 | 25 | 30 | 25 | 5 |
+
+1. Déterminer la population, le caractère et le type du caractère étudiés.
+2. Représenter cette série par un histogramme (hauteurs = densités).
+3. Tracer la fonction de répartition empirique associée.
+4. Calculer : (médiane, écart interquartile) ; (moyenne, écart-type).
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+- Pour l'histogramme, tenir compte des amplitudes de classes inégales : hauteur $= d_i = f_i/A_i$.
+- Pour médiane et quartiles, procéder par interpolation linéaire dans la classe qui contient le quantile.
+- Pour moyenne et variance, utiliser les centres de classes.
+:::
+
+---
+
+## VI - Transformations affines
+
+::: {.callout-important}
+## Propriete (admise)
+
+Pour $y=ax+b$ avec $a\ne 0$:
+
+- moyenne :
+  $$\bar y = a\bar x + b,$$
+- variance :
+  $$\mathrm{Var}(y)=a^2\mathrm{Var}(x),$$
+- ecart-type :
+  $$\sigma(y)=|a|\sigma(x).$$
+:::
+
+La translation (ajout de $b$) deplace le centre mais ne change pas la dispersion ; le facteur $a$ dilate/contracte l'echelle.
+
+::: {.callout-caution}
+## Exemple 7 - Changement d'unite
+
+Une serie de salaires a pour moyenne 37 000 et ecart-type 700 (euros).
+On definit
+$$
+Y=\frac{X-35\,000}{1\,000}.
+$$
+Determiner $E(Y)$, $\mathrm{Var}(Y)$ et $\sigma(Y)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 7
+
+Ici $a=1/1000$ et $b=-35$.
+
+$$
+E(Y)=\frac{37\,000-35\,000}{1\,000}=2,
+$$
+$$
+\sigma(Y)=\frac{700}{1\,000}=0{,}7,
+\qquad
+\mathrm{Var}(Y)=0{,}49.
+$$
+:::
+
+::: {.callout-caution}
+## Exercice 4 — Transformation d'une série salariale
+
+Un service de ressources humaines étudie la masse salariale $S$ et trouve :
+- moyenne : $\bar S=37\,000$ euros,
+- écart-type : $\sigma_S=700$ euros.
+
+Pour faciliter les calculs, il pose $Y=\dfrac{S-35\,000}{1\,000}$.
+
+Déterminer la moyenne, la variance et l'écart-type de la nouvelle série $Y$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+Pour une transformation affine $Y=aX+b$ avec $a=1/1000$ et $b=-35$ :
+- $\bar Y = a\bar X + b$,
+- $\mathrm{Var}(Y)=a^2\mathrm{Var}(X)$,
+- $\sigma_Y=|a|\sigma_X$.
+:::
+
+---
+
+## VII - Methode de synthese (a retenir)
+
+::: {.callout-note}
+## Procedure recommandee pour une etude univariee
+
+1. Identifier la population, la variable et son type.
+2. Construire le tableau statistique (effectifs, frequences, cumuls).
+3. Choisir une representation adaptee :
+   - batons pour discret,
+   - histogramme en densites pour classes.
+4. Calculer les indicateurs de position : mode, mediane, quartiles, moyenne.
+5. Calculer les indicateurs de dispersion : IQR, variance, ecart-type.
+6. Interpreter les resultats dans le contexte (asymetrie, valeurs extremes, stabilite).
+:::
+
+Cette demarche permet de passer des donnees brutes a une lecture quantitative robuste, utile avant toute phase d'inference statistique.

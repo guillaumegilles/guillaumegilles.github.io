@@ -1,0 +1,369 @@
+---
+title: "Statistiques descriptives a deux variables"
+abstract: |
+  Ce chapitre prolonge la statistique descriptive au cas de deux caracteres
+  observes simultanement sur une meme population. On introduit la
+  **distribution conjointe** d'un couple de variables via les tableaux de
+  contingence, puis les **distributions marginales** et
+  **conditionnelles**, indispensables pour decrire les relations entre
+  variables. Le chapitre formalise ensuite la notion d'**independance** et la
+  caracterisation par factorisation des frequences. Enfin, il presente le
+  **test du khi-deux d'independance** (conditions, construction des effectifs
+  theoriques, statistique, degres de liberte, regle de decision) avec une
+  methodologie complete d'interpretation.
+date-modified: 2026-03-22
+---
+
+> Dans tout ce chapitre, on etudie deux variables observees sur une meme population finie de taille $n$.
+
+## I - Distribution conjointe
+
+Soit $P$ une population et $(x,y)$ un couple de variables, c'est-a-dire une application
+$$
+(x,y):P\to E_x\times E_y,
+\qquad
+u\mapsto (x(u),y(u)).
+$$
+
+Les variables peuvent etre qualitatives ou quantitatives (discretes ou regroupees en classes).
+
+::: {.callout-note}
+## Definitions
+
+Si $x_1,\dots,x_p$ sont les modalites de $x$ et $y_1,\dots,y_q$ celles de $y$ :
+
+- $n_{ij}$ est l'**effectif conjoint** du couple $(x_i,y_j)$,
+- $f_{ij}=n_{ij}/n$ est la **frequence conjointe**,
+- l'ensemble des triplets $(x_i,y_j,n_{ij})$ forme la **distribution conjointe**.
+
+On a toujours :
+$$
+\sum_{i=1}^p\sum_{j=1}^q n_{ij}=n,
+\qquad
+\sum_{i=1}^p\sum_{j=1}^q f_{ij}=1.
+$$
+:::
+
+La representation standard est le **tableau de contingence**.
+
+::: {.callout-caution}
+## Exemple 1 - Tableau conjoint et frequence globale
+
+Une enquete porte sur 2000 habitants. On observe :
+
+| Quartier / Revenu annuel | $[10000,20000[$ | $[20000,50000[$ | $[50000,100000[$ | Total |
+|---|---:|---:|---:|---:|
+| A | 413 | 298 | 288 | ? |
+| B | 227 | 193 | 170 | ? |
+| C | 167 | 132 | 112 | ? |
+| Total | ? | ? | ? | 2000 |
+
+1. Completer le tableau.
+2. Calculer la frequence d'habitants ayant un revenu d'au moins 20 000.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 1 (resultats)
+
+- Totaux lignes :
+  - A : 999,
+  - B : 590,
+  - C : 411.
+- Totaux colonnes :
+  - $[10000,20000[$ : 807,
+  - $[20000,50000[$ : 623,
+  - $[50000,100000[$ : 570.
+- Frequence revenu $\ge 20000$ :
+$$
+\frac{623+570}{2000}=\frac{1193}{2000}=0{,}5965.
+$$
+:::
+
+---
+
+## II - Distributions marginales
+
+A partir de la distribution conjointe, on obtient les distributions de chaque variable prise separement.
+
+::: {.callout-note}
+## Definitions
+
+- Effectif marginal de $x_i$ :
+  $$n_{i\cdot}=\sum_{j=1}^q n_{ij}, \qquad f_{i\cdot}=\frac{n_{i\cdot}}{n}.$$
+- Effectif marginal de $y_j$ :
+  $$n_{\cdot j}=\sum_{i=1}^p n_{ij}, \qquad f_{\cdot j}=\frac{n_{\cdot j}}{n}.$$
+
+Les couples $(x_i,n_{i\cdot})$ et $(y_j,n_{\cdot j})$ definissent les distributions marginales de $x$ et $y$.
+:::
+
+Ces marginales permettent de calculer les indicateurs usuels de chaque variable (moyenne, mediane, ecart-type, etc.) si le type de variable le permet.
+
+::: {.callout-caution}
+## Exemple 2 - Exploiter les marginales
+
+Reprendre l'exemple 1.
+
+1. Determiner les distributions marginales de "Quartier" et de "Revenu annuel".
+2. Pour "Revenu annuel" (en classes), estimer la moyenne a l'aide des centres de classes.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 2 (idee)
+
+- Marginale de "Quartier" : totaux de lignes / 2000.
+- Marginale de "Revenu annuel" : totaux de colonnes / 2000.
+- Moyenne approximative du revenu :
+$$
+\bar y\approx\sum_j c_j f_{\cdot j},
+$$
+ou $c_j$ est le centre de la classe $j$.
+:::
+
+---
+
+## III - Distributions conditionnelles
+
+Une ligne (resp. colonne) du tableau de contingence decrit la repartition conditionnelle de $y$ sachant $x=x_i$ (resp. de $x$ sachant $y=y_j$).
+
+::: {.callout-note}
+## Definitions
+
+- Frequence conditionnelle de $y_j$ sachant $x_i$ :
+  $$f_{y_j\mid x_i}=\frac{n_{ij}}{n_{i\cdot}}.$$
+- Frequence conditionnelle de $x_i$ sachant $y_j$ :
+  $$f_{x_i\mid y_j}=\frac{n_{ij}}{n_{\cdot j}}.$$
+:::
+
+Les distributions conditionnelles servent a comparer les profils entre sous-populations.
+
+::: {.callout-caution}
+## Exemple 3 - Profil conditionnel
+
+Dans l'exemple 1, determiner la distribution conditionnelle du revenu sachant que l'on est dans le quartier A.
+Puis identifier la classe de revenu majoritaire dans ce quartier.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 3 (resultats)
+
+Comme $n_{A\cdot}=999$ :
+$$
+\left(\frac{413}{999},\frac{298}{999},\frac{288}{999}\right)
+\approx (0{,}413,0{,}298,0{,}288).
+$$
+La classe majoritaire est $[10000,20000[$.
+:::
+
+---
+
+## IV - Independance de deux variables
+
+::: {.callout-note}
+## Definition
+
+Les variables $x$ et $y$ sont **independantes** si les distributions conditionnelles de l'une ne dependent pas des modalites de l'autre.
+:::
+
+::: {.callout-important}
+## Caracterisation equivalente (admise)
+
+Les proprietes suivantes sont equivalentes :
+
+1. $x$ et $y$ sont independantes.
+2. Pour tout $i,j$,
+   $$f_{ij}=f_{i\cdot}f_{\cdot j}.$$
+3. Pour tout $i,j$,
+   $$n_{ij}=\frac{n_{i\cdot}n_{\cdot j}}{n}.$$
+:::
+
+En pratique, l'independance se traduit par des profils de lignes (ou colonnes) proches les uns des autres.
+
+::: {.callout-caution}
+## Exemple 4 - Verification rapide
+
+Dans un tableau $2\times 2$ avec
+$$
+\begin{pmatrix}
+30 & 20\\
+15 & 35
+\end{pmatrix},
+\quad n=100,
+$$
+verifier si l'independance est satisfaite exactement.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 4
+
+Totaux : lignes $(50,50)$, colonnes $(45,55)$.
+Sous independance, la case (1,1) devrait valoir $50\times45/100=22{,}5$ (et non 30).
+Donc les variables ne sont pas independantes.
+:::
+
+---
+
+## V - Test du khi-deux d'independance
+
+On teste :
+
+- $H_0$ : independance entre $x$ et $y$,
+- $H_1$ : dependance.
+
+### 1. Effectifs theoriques
+
+Sous $H_0$, on calcule pour chaque case :
+$$
+E_{ij}=\frac{n_{i\cdot}n_{\cdot j}}{n}.
+$$
+
+::: {.callout-tip}
+## Regle de Cochran
+
+Le test est fiable si au moins 80 % des $E_{ij}$ sont superieurs ou egaux a 5 et si aucun $E_{ij}$ n'est tres petit.
+Sinon, regrouper des modalites.
+:::
+
+### 2. Statistique de test
+
+On calcule
+$$
+\chi^2_{obs}=\sum_{i=1}^p\sum_{j=1}^q\frac{(O_{ij}-E_{ij})^2}{E_{ij}},
+$$
+ou $O_{ij}=n_{ij}$.
+
+Sous $H_0$, cette statistique est approximativement distribuee selon une loi
+$$
+\chi^2_\nu,
+\qquad
+\nu=(p-1)(q-1)
+$$
+(degres de liberte).
+
+### 3. Regle de decision
+
+Au seuil $\alpha$ :
+
+- on lit la valeur critique $\chi^2_{1-\alpha,\nu}$,
+- si $\chi^2_{obs}>\chi^2_{1-\alpha,\nu}$, on rejette $H_0$,
+- sinon, on ne rejette pas $H_0$.
+
+::: {.callout-caution}
+## Exemple 5 - Application complete
+
+Reprendre le tableau de l'exemple 1 et tester l'independance entre "Quartier" et "Revenu annuel" au seuil $\alpha=5\%$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 5 (synthese)
+
+1. Calculer tous les $E_{ij}=n_{i\cdot}n_{\cdot j}/2000$.
+2. Calculer les contributions
+   $$\frac{(O_{ij}-E_{ij})^2}{E_{ij}}$$
+   et les sommer.
+3. Ici $p=3$, $q=3$, donc $\nu=(3-1)(3-1)=4$.
+4. Comparer $\chi^2_{obs}$ a $\chi^2_{0{,}95,4}\approx 9{,}49$.
+
+Conclusion selon la comparaison : rejet (dependance) ou non-rejet (compatibilite avec l'independance).
+:::
+
+::: {.callout-caution}
+## Exercice 1
+
+Cent fruits sont tries selon :
+- leur poids (en grammes),
+- leur qualite (accepte/refuse).
+
+| Poids (g) | Accepte | Refuse |
+|---|---:|---:|
+| $[200;240[$ | 8 | 23 |
+| $[240;280[$ | 7 | 45 |
+| $[280;360[$ | 4 | 13 |
+
+1. Identifier les caracteres etudies et leur type.
+2. Determiner la distribution marginale de la variable "poids" et le poids median.
+3. Determiner la proportion de fruits dans la classe $[240;280[$ pour chaque qualite.
+   Les variables "poids" et "qualite" semblent-elles independantes ?
+4. Tester l'independance de "qualite" et "poids" au risque $\alpha=5\%$ (test du khi-deux).
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 1
+
+- Construire les totaux lignes/colonnes puis les frequences marginales.
+- Pour le test du khi-deux :
+  - hypotheses $H_0$ (independance) / $H_1$ (dependance),
+  - effectifs theoriques $E_{ij}=\dfrac{n_{i\cdot}n_{\cdot j}}{n}$,
+  - statistique $\chi^2=\sum\dfrac{(O_{ij}-E_{ij})^2}{E_{ij}}$,
+  - ddl $=(r-1)(c-1)$.
+:::
+
+::: {.callout-caution}
+## Exercice 2
+
+Le tableau suivant donne la distribution conjointe (frequences) du temps de
+trajet domicile-travail et du mode de transport :
+
+| Temps (h) | $[0;0{,}5[$ | $[0{,}5;1[$ | $[1;2[$ |
+|---|---:|---:|---:|
+| Collectif | 0,05 | 0,09 | 0,14 |
+| Individuel | 0,25 | 0,24 | 0,23 |
+
+1. Determiner le temps moyen pour chacun des deux modes de transport.
+2. En supposant un echantillon de 1000 personnes, tester l'independance entre
+   mode de transport et classe de temps au risque $\alpha=5\%$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 2
+
+- Pour la moyenne conditionnelle, utiliser les centres de classes :
+  $0{,}25$, $0{,}75$, $1{,}5$.
+- Convertir les frequences en effectifs en multipliant par 1000.
+- Puis appliquer le test du khi-deux sur le tableau d'effectifs.
+:::
+
+::: {.callout-caution}
+## Exercice 3
+
+Voici les resultats d'une enquete sur les intentions de vote selon la classe
+d'age :
+
+| Liste / Age | $[18;35[$ | $[35;50[$ | $[50;80[$ |
+|---|---:|---:|---:|
+| Vers l'avenir | 110 | 113 | 145 |
+| Pour la democratie | 127 | 120 | 220 |
+| En avant | 57 | 41 | 67 |
+
+1. Determiner la proportion de personnes entre 18 et 35 ans pour chacune des
+   listes. Commenter.
+2. Les variables "intentions de vote" et "age" sont-elles independantes ?
+3. Realiser un test du khi-deux d'independance au risque $\alpha=5\%$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 3
+
+- Question 1 : proportions conditionnelles par ligne (conditionnees par la liste).
+- Questions 2-3 :
+  - comparer rapidement les distributions conditionnelles,
+  - puis confirmer par le test du khi-deux avec ddl $=(3-1)(3-1)=4$.
+:::
+
+---
+
+## VI - Lecture et interpretation des resultats
+
+::: {.callout-important}
+## Bonnes pratiques d'analyse
+
+1. Toujours commenter **l'ampleur** des ecarts, pas seulement la decision binaire du test.
+2. Examiner les distributions conditionnelles pour identifier les associations les plus marquantes.
+3. Verifier la qualite du tableau (effectifs suffisants, classes pertinentes).
+4. Distinguer "absence de preuve de dependance" et "preuve d'independance".
+:::
+
+Pour des analyses plus fines, on peut completer par l'etude des residus standardises
+$$
+R_{ij}=\frac{O_{ij}-E_{ij}}{\sqrt{E_{ij}}},
+$$
+qui indiquent quelles cases contribuent le plus a $\chi^2_{obs}$.
