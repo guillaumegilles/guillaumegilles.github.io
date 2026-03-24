@@ -1,0 +1,206 @@
+---
+title: "One File, Two Outputs: Syncing Your Quarto About Page with Your GitHub Profile README"
+author:
+  - name: Guillaume Gilles
+  - name: Claude Opus 4.6
+    url: https://www.anthropic.com/claude
+    roles:
+      - implementation
+      - writing - review & editing
+abstract: |
+  How to use Quarto's conditional content blocks to maintain a single
+  `about.qmd` that renders as both a rich website page and a clean GitHub
+  profile README — with automatic sync on every build.
+date: 2026-03-24
+categories: [Quarto, GitHub, Dev Tools, POSSE]
+---
+
+## The Problem
+
+If you maintain a personal website **and** a
+[GitHub profile README](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme),
+you've probably felt the pain of keeping them in sync. Update your bio on
+one, forget the other. Add a new certification here, miss it there.
+
+My website is built with [Quarto](https://quarto.org), and my about page
+uses the beautiful
+[Trestles template](https://quarto.org/docs/websites/website-about.html#templates)
+with columns, callout blocks, and iframes — features that don't exist in
+GitHub-flavored Markdown. So I used to maintain two separate files.
+
+**Not anymore.** A single `about.qmd` now produces both outputs, and a
+post-render script pushes the README to my profile repo automatically.
+
+## The Approach
+
+The trick relies on three Quarto features:
+
+1. **`.content-visible when-format="..."`** — conditional content blocks
+   that only render for a specific output format
+2. **Multi-format rendering** — the same `.qmd` can be rendered to HTML
+   *and* GFM (GitHub-Flavored Markdown)
+3. **Post-render scripts** — custom scripts that run after `quarto render`
+
+### One gotcha: format names
+
+When rendering to GFM, you might expect `when-format="gfm"` to work.
+It doesn't! Quarto internally maps GFM to the `commonmark` Pandoc
+writer, and `.content-visible` matches against the **format family**.
+The correct value is:
+
+```yaml
+when-format="markdown"   # ✅ works for GFM
+when-format="gfm"        # ❌ does not match
+```
+
+## Structuring `about.qmd`
+
+The file has three types of content:
+
+### 1. HTML-only (website)
+
+Wrap everything that uses Quarto-specific features — the Trestles hero
+section, column layouts, callout blocks, and iframes:
+
+```markdown
+::: {.content-visible when-format="html"}
+
+::: {#hero-heading}
+# Your headline here
+> Your tagline
+:::
+
+::::: {.columns}
+<!-- two-column layout -->
+:::::
+
+::: {.callout-tip}
+## Sponsor section with iframe
+:::
+
+:::
+```
+
+### 2. GFM-only (GitHub profile)
+
+Add a centered header with badge links and a profile table — things that
+look great on GitHub but would clash with the Trestles template:
+
+```markdown
+::: {.content-visible when-format="markdown"}
+
+<div align="center">
+<img src="https://yoursite.dev/assets/profile.png" width="150" />
+
+### Your Name
+
+[![Website](https://img.shields.io/badge/Website-yoursite.dev-blue)](https://yoursite.dev)
+</div>
+
+---
+
+| Platform | Profile | Focus |
+|----------|---------|-------|
+| **HackTheBox** | [user](https://...) | Pentesting |
+
+:::
+```
+
+### 3. Shared content (both)
+
+Everything outside `.content-visible` blocks renders in **both**
+formats. This is where you put the content you actually want to keep in
+sync:
+
+```markdown
+<!-- No wrapper — appears everywhere -->
+
+Today, I'm immersed in **cybersecurity**...
+
+## 🛠️ Tech Stack
+## 💼 Experience
+## 🎓 Education & Certifications
+```
+
+## The Post-Render Script
+
+Create `scripts/update-profile-readme.sh`:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Prevent infinite recursion: the GFM render triggers
+# another post-render, which would call this script again.
+if [ "${PROFILE_README_RUNNING:-}" = "1" ]; then
+  exit 0
+fi
+export PROFILE_README_RUNNING=1
+
+REPO="your-username/your-username"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+TMPDIR="$(mktemp -d)"
+trap 'rm -rf "$TMPDIR"' EXIT
+
+# 1. Render GFM
+quarto render "$PROJECT_DIR/about.qmd" --to gfm \
+  --output README.md --output-dir "$TMPDIR" 2>/dev/null
+
+# 2. Clean up Quarto artifacts
+sed -i '1{/^# About$/d}' "$TMPDIR/README.md"
+sed -i '1{/^$/d}' "$TMPDIR/README.md"
+sed -i 's/logoColor=fff\.png/logoColor=fff/g' "$TMPDIR/README.md"
+
+# 3. Clone, diff, push
+git clone --depth 1 "git@github.com:${REPO}.git" "$TMPDIR/repo"
+
+if ! diff -q "$TMPDIR/README.md" "$TMPDIR/repo/README.md" &>/dev/null; then
+  cp "$TMPDIR/README.md" "$TMPDIR/repo/README.md"
+  cd "$TMPDIR/repo"
+  git add README.md
+  git commit -m "chore: sync profile README from website"
+  git push
+fi
+```
+
+Two cleanup steps are needed because Quarto:
+
+- Injects a `# About` title from the YAML `title:` field
+- Appends `.png` to shields.io badge URLs via `default-image-extension`
+
+### The recursion guard
+
+This is the most critical part. When the post-render script calls
+`quarto render about.qmd --to gfm`, Quarto sees it as a project render
+and triggers the post-render hook **again** — creating an infinite loop.
+The `PROFILE_README_RUNNING` environment variable breaks the cycle.
+
+## Wiring It Up
+
+Add the post-render hook to `_quarto.yml`:
+
+```yaml
+project:
+  type: website
+  output-dir: docs
+  post-render:
+    - scripts/update-profile-readme.sh
+```
+
+Make the script executable:
+
+```bash
+chmod +x scripts/update-profile-readme.sh
+```
+
+## The Result
+
+Now every `quarto render` does double duty:
+
+1. **Website** → `docs/about.html` with the full Trestles layout,
+   columns, callouts, and embedded iframes
+2. **GitHub README** → auto-pushed to `your-username/your-username` as
+   a clean GFM file with badge links and a profile table
+
+Edit once, publish everywhere.
