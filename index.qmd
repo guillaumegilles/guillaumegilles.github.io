@@ -1,0 +1,109 @@
+---
+title: "Hello there!"
+page-layout: full
+---
+
+By day, I'm a regional economist at **Banque de France** — decoding inflation trends,
+assessing corporate solvency, and turning macroeconomic noise into strategic signal for
+decision-makers. Over a decade of financial analysis, and I still find the numbers
+interesting.
+
+By evening, I'm on **HackTheBox**, breaking things intentionally. I'm pivoting into
+cybersecurity — penetration testing, digital forensics, incident investigation — drawn
+to the place where data, security, and human error intersect.
+
+In between, I teach. **Statistics and information systems** at ESSCA, **financial
+analysis** at INSEEC. I run my courses like RPGs: students earn XP, level up, and
+hopefully leave knowing why the Central Limit Theorem actually matters.
+
+This site is my lab notebook — [writeups](/posts/) from CTF challenges, tutorials on
+[AI-powered static sites](/posts/) and cloud dev environments, and course materials
+for my [students](/teaching/). Everything here is built with Quarto, Python, and R,
+with occasional detours into Cloudflare Workers and Kali Linux.
+
+[About me →](about.qmd)
+
+```{=html}
+<!-- AI Resume Chat Box -->
+<!-- Replace WORKER_URL with your Cloudflare Worker URL after    -->
+<!-- running: wrangler deploy (inside the worker/ directory)     -->
+
+<div id="chat-box">
+  <div id="chat-messages">
+    <div class="chat-msg bot">
+      Hi! I'm an AI assistant. Ask me anything about Guillaume's background,
+      skills, or experience. 👋
+    </div>
+  </div>
+  <div id="chat-input-row">
+    <input id="chat-input" type="text" placeholder="e.g. What's his cybersecurity experience?" autocomplete="off" />
+    <button id="chat-send">Send</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  // ← Replace with your deployed Cloudflare Worker URL after running: wrangler deploy
+  const WORKER_URL = "https://resume-chat.YOUR-SUBDOMAIN.workers.dev";
+
+  const msgs  = document.getElementById("chat-messages");
+  const input = document.getElementById("chat-input");
+  const send  = document.getElementById("chat-send");
+
+  let history = [];
+  let busy = false;
+
+  send.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+
+  function appendMsg(text, role) {
+    const div = document.createElement("div");
+    div.className = `chat-msg ${role}`;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text || busy) return;
+
+    busy = true;
+    send.disabled = true;
+    input.value = "";
+
+    appendMsg(text, "user");
+    const thinking = appendMsg("Thinking…", "bot typing");
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, history }),
+      });
+
+      const data = await res.json();
+      const reply = data.reply || data.error || "Something went wrong.";
+
+      thinking.className = "chat-msg bot";
+      thinking.textContent = reply;
+
+      history.push({ role: "user", content: text });
+      history.push({ role: "assistant", content: reply });
+    } catch {
+      thinking.className = "chat-msg bot";
+      thinking.textContent = "⚠️ Could not reach the assistant. Please try again.";
+    }
+
+    busy = false;
+    send.disabled = false;
+    input.focus();
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+})();
+</script>
+```
+

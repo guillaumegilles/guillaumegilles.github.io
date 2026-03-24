@@ -1,0 +1,59 @@
+---
+title: "Low Logic"
+abstract: |
+  I have this simple chip, I want you to understand how it's works and then
+  give me the output.
+categories: [HTB, Challenges, Hardware]
+draft: true
+---
+
+The [Low logic](https://app.hackthebox.com/challenges/Low%2520Logic) challenge
+has been created by [cOnrad](https://app.hackthebox.com/users/37210). He designed
+a basic chip with resistor and NPN transitor that replicate the behavior of AND
+as well as OR logical gate. In his circuit, four inputs, `IN0` to `IN3` flows
+through these gates to go to an outpout or not, `OUT0`.
+
+* **AND gates** for `in0 & in1` and `in2 & in3`
+* Then **OR gate** combining those results
+
+The goal of this challenge is to understand this circuit and figure out the output.
+A csv file gives us 192 lines of input.
+
+### The correct **logical function** for the output is:
+
+$$
+\text{out} = (in0 \land in1) \lor (in2 \land in3)
+$$
+
+1. `IN0` and `IN1` flows thought the first logical AND gate made of treansistors.
+So both these inputs needs to be 1 in order to get a 1
+2. `IN2` and `IN3` flows thought the seconf logical AND gate made of treansistors.
+So both these inputs needs to be 1 in order to get a 1
+
+Before reaching output it goes through an OR logical gate made of transistors.
+
+```{.python}
+import pands as pd
+inputs = pd.read_csv("input.xlsx")
+```
+
+```python
+if (in0 and in1) or (in2 and in3):
+    out = 1
+else:
+    out = 0
+```
+
+
+### ✅ Correct Logic (per your description):
+
+| in0 | in1 | in2 | in3 | (in0 & in1) | (in2 & in3) | out |
+| --- | --- | --- | --- | ----------- | ----------- | --- |
+| 1   | 1   | 0   | 0   | 1           | 0           | 1   |
+| 0   | 0   | 1   | 1   | 0           | 1           | 1   |
+| 1   | 0   | 0   | 1   | 0           | 0           | 0   |
+| 0   | 0   | 0   | 0   | 0           | 0           | 0   |
+
+
+https://en.wikipedia.org/wiki/Electronic_symbol
+
