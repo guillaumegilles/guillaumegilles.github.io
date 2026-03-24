@@ -1,0 +1,855 @@
+---
+title: "Estimation ponctuelle et par intervalle de confiance"
+abstract: |
+  Ce chapitre présente les méthodes d'**estimation statistique**. On étudie
+  d'abord l'**estimation ponctuelle** : propriétés des estimateurs (biais,
+  convergence, erreur quadratique), puis deux méthodes de construction —
+  méthode des moments et maximum de vraisemblance. On aborde ensuite
+  l'**estimation par intervalle de confiance** pour une proportion, une
+  moyenne et une variance.
+date-modified: 2026-03-24
+---
+
+Soit $(X_1, \ldots, X_n)$ un échantillon de loi $\mathcal{L}$ dépendant d'un
+paramètre inconnu $\theta$. **L'estimation ponctuelle** consiste à approcher
+$\theta$ par une fonction des réalisations $(x_1, \ldots, x_n)$ de cet
+échantillon.
+
+::: {.callout-caution}
+## Exemple 1 — Estimation d'une proportion
+
+Une urne contient des boules rouges en proportion inconnue $p \in ]0,1[$.
+On effectue 10 tirages avec remise. Le nombre de boules rouges tirées suit
+une loi $\mathcal{B}(10, p)$ avec $p$ inconnu.
+
+Une estimation naturelle de $p$ est la fréquence observée $\hat{p} = k/10$,
+où $k$ est le nombre de boules rouges obtenues.
+:::
+
+## I — Estimateurs et leurs propriétés
+
+### 1. Définitions
+
+::: {.callout-note}
+## Définition — Estimateur et estimation
+
+Soit $(X_1, \ldots, X_n)$ un échantillon de loi dépendant d'un paramètre $\theta$.
+
+- Un **estimateur** de $\theta$ est une statistique $\hat{\theta}_n = T_n(X_1, \ldots, X_n)$
+  ne dépendant pas de $\theta$.
+- Une **estimation** est une réalisation de l'estimateur, c'est-à-dire la valeur
+  $T_n(x_1, \ldots, x_n)$ calculée sur un échantillon observé.
+:::
+
+::: {.callout-note}
+## Définition — Biais et erreur quadratique
+
+Soit $\hat{\theta}_n$ un estimateur de $\theta$.
+
+- Le **biais** de $\hat{\theta}_n$ est le réel $b_n(\theta) = E(\hat{\theta}_n) - \theta$.
+- $\hat{\theta}_n$ est dit **sans biais** si $E(\hat{\theta}_n) = \theta$, i.e. $b_n(\theta)=0$.
+- $\hat{\theta}_n$ est dit **asymptotiquement sans biais** si
+  $\displaystyle\lim_{n\to+\infty} E(\hat{\theta}_n) = \theta$.
+- L'**erreur quadratique moyenne** (EQM) de $\hat{\theta}_n$ est
+  $$R(\hat{\theta}_n) = E\!\left[(\hat{\theta}_n - \theta)^2\right].$$
+
+Un estimateur $\hat{\theta}'_n$ est dit **meilleur** que $\hat{\theta}_n$ au sens de l'EQM
+s'il existe $N$ tel que, pour tout $n \geq N$, $R(\hat{\theta}'_n) \leq R(\hat{\theta}_n)$.
+:::
+
+::: {.callout-important}
+## Proposition — Décomposition biais–variance
+
+$$R(\hat{\theta}_n) = \mathrm{Var}(\hat{\theta}_n) + b_n(\theta)^2.$$
+:::
+
+::: {.callout-tip collapse="true"}
+## Démonstration
+
+On pose $b = b_n(\theta) = E(\hat{\theta}_n) - \theta$. Alors :
+$$E\!\left[(\hat{\theta}_n - \theta)^2\right]
+= E\!\left[(\hat{\theta}_n - E(\hat{\theta}_n) + b)^2\right]
+= \mathrm{Var}(\hat{\theta}_n) + 2b\,\underbrace{E(\hat{\theta}_n - E(\hat{\theta}_n))}_{=\,0} + b^2.$$
+:::
+
+::: {.callout-tip}
+## Remarque — Efficacité
+
+Pour des estimateurs **sans biais** ($b_n(\theta) = 0$), l'EQM se réduit à la
+variance : $R(\hat{\theta}_n) = \mathrm{Var}(\hat{\theta}_n)$. Plus la variance est
+petite, plus l'estimateur est dit **efficace**.
+:::
+
+### 2. Convergence
+
+::: {.callout-note}
+## Définition — Convergence d'un estimateur
+
+Soit $\hat{\theta}_n$ un estimateur de $\theta$.
+
+- $\hat{\theta}_n$ est **convergent** (ou consistant) si
+  $\hat{\theta}_n \xrightarrow[n\to+\infty]{P} \theta$, c'est-à-dire
+  $$\forall \varepsilon > 0,\quad \lim_{n\to+\infty} P\!\left(|\hat{\theta}_n - \theta| > \varepsilon\right) = 0.$$
+- $\hat{\theta}_n$ est **convergent en moyenne quadratique** si
+  $R(\hat{\theta}_n) \xrightarrow[n\to+\infty]{} 0$.
+:::
+
+::: {.callout-tip}
+## Remarque — Critère pratique de convergence
+
+D'après le chapitre sur la convergence des variables aléatoires :
+
+- $\hat{\theta}_n$ est convergent en moyenne quadratique si et seulement si
+  $\hat{\theta}_n$ est (asymptotiquement) sans biais **et**
+  $\mathrm{Var}(\hat{\theta}_n) \to 0$.
+- La convergence en moyenne quadratique implique la convergence en probabilité
+  (la réciproque est fausse en général).
+:::
+
+### 3. Estimateurs de la moyenne et de la variance
+
+::: {.callout-caution}
+## Exemple 2 — Moyenne et variance empiriques
+
+Soit $(X_1, \ldots, X_n)$ un échantillon i.i.d. de carré intégrable, avec
+$E(X_i) = m$ et $\mathrm{Var}(X_i) = \sigma^2$. On pose :
+$$\overline{X}_n = \frac{1}{n}\sum_{i=1}^n X_i, \qquad
+S'^2_n = \frac{1}{n}\sum_{i=1}^n (X_i - \overline{X}_n)^2, \qquad
+S^2_n = \frac{1}{n-1}\sum_{i=1}^n (X_i - \overline{X}_n)^2.$$
+
+Justifier que :
+
+1. $\overline{X}_n$ est un estimateur sans biais et convergent de $m$.
+2. $S'^2_n$ est un estimateur biaisé, asymptotiquement sans biais et convergent de $\sigma^2$.
+3. $S^2_n$ est un estimateur sans biais et convergent de $\sigma^2$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 2
+
+**1. Moyenne empirique $\overline{X}_n$.**
+
+Par linéarité : $E(\overline{X}_n) = m$, donc $\overline{X}_n$ est sans biais.
+
+$\mathrm{Var}(\overline{X}_n) = \sigma^2/n \to 0$ et $E(\overline{X}_n) = m$, donc
+$\overline{X}_n$ converge en moyenne quadratique (et donc en probabilité) vers $m$.
+
+**2. Variance empirique $S'^2_n$.**
+
+En développant : $\displaystyle\sum_{i=1}^n (X_i - \overline{X}_n)^2
+= \sum_{i=1}^n X_i^2 - n\overline{X}_n^2$.
+
+$$E\!\left[\sum_{i=1}^n X_i^2\right] = n(m^2+\sigma^2), \qquad
+E\!\left[n\overline{X}_n^2\right] = n\!\left(m^2+\frac{\sigma^2}{n}\right)
+= nm^2 + \sigma^2.$$
+
+Donc $E[S'^2_n] = \dfrac{(n-1)\sigma^2}{n} \neq \sigma^2$ : $S'^2_n$ est biaisé,
+avec biais $b_n = -\sigma^2/n \to 0$ (asymptotiquement sans biais). La
+convergence découle de $\mathrm{Var}(S'^2_n) \to 0$ (admis).
+
+**3. Variance corrigée $S^2_n$.**
+
+$S^2_n = \dfrac{n}{n-1}\,S'^2_n$, donc
+$E[S^2_n] = \dfrac{n}{n-1}\cdot\dfrac{(n-1)\sigma^2}{n} = \sigma^2$ : sans biais.
+Convergence : $\mathrm{Var}(S^2_n) \to 0$ (admis) et $E(S^2_n) = \sigma^2$, donc
+$S^2_n \xrightarrow{L^2} \sigma^2$.
+:::
+
+## II — Méthodes de construction d'estimateurs
+
+### 1. Méthode des moments (EMM)
+
+L'idée est d'**estimer les moments théoriques par leurs équivalents empiriques** :
+une espérance est approchée par une moyenne empirique, une variance par une
+variance empirique, etc.
+
+::: {.callout-note}
+## Définition — Estimateur par la méthode des moments
+
+Si le paramètre vérifie $\varphi(\theta) = E[f(X)]$ pour des fonctions connues
+$\varphi$ et $f$, l'EMM de $\theta$ est :
+$$\hat{\theta}_n = \varphi^{-1}\!\left(\frac{1}{n}\sum_{i=1}^n f(X_i)\right).$$
+:::
+
+::: {.callout-important}
+## Proposition (admise) — Propriétés de l'EMM
+
+L'EMM $\hat{\theta}_n$ est un estimateur **asymptotiquement sans biais** et
+**convergent** de $\theta$.
+:::
+
+::: {.callout-caution}
+## Exemple 3 — EMM pour des lois classiques
+
+Soit $(X_1, \ldots, X_n)$ un échantillon i.i.d. Donner l'EMM de $\theta$ dans
+chaque cas :
+
+1. $X_i \sim \mathcal{B}(p)$ et $\theta = p$.
+2. $X_i \sim \mathcal{N}(m, \sigma^2)$ et $\theta = m$.
+3. $X_i \sim \mathcal{N}(m, \sigma^2)$ et $\theta = \sigma^2$.
+4. $X_i \sim \mathcal{E}(\lambda)$ et $\theta = \lambda$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 3
+
+**1.** $E(X_i) = p$, donc $\hat{p}_n = \overline{X}_n$.
+
+**2.** $E(X_i) = m$, donc $\hat{m}_n = \overline{X}_n$.
+
+**3.** $\mathrm{Var}(X_i) = E(X_i^2) - m^2 = \sigma^2$, soit
+$E(X_i^2) = m^2 + \sigma^2$. L'EMM de $\sigma^2$ est :
+$$\hat{\sigma}^2_n = \frac{1}{n}\sum_{i=1}^n X_i^2 - \overline{X}_n^2 = S'^2_n.$$
+
+**4.** $E(X_i) = 1/\lambda$, donc $\lambda = 1/E(X_i)$ et
+$\hat{\lambda}_n = 1/\overline{X}_n$.
+:::
+
+::: {.callout-caution}
+## Exercice 1 — EMM dans deux cas particuliers
+
+Soient $X$ une v.a. et $(X_1, \ldots, X_n)$ un $n$-échantillon de $X$.
+Déterminer l'EMM de $a$ dans chacun des cas :
+
+1. $a > 0$ et $X$ est discrète avec
+   $P(X=0) = \dfrac{a}{a+1}$ et $P(X=1) = \dfrac{1}{a+1}$.
+
+2. $a \in ]0,1[$ et $X$ admet la densité
+$$f(x) = \begin{cases}
+\dfrac{1}{2a} & \text{si } 0 \leq x \leq a,\\[4pt]
+\dfrac{1}{2(1-a)} & \text{si } a < x \leq 1,\\[4pt]
+0 & \text{sinon.}
+\end{cases}$$
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication et solution
+
+**1.** $E(X) = 0 \cdot \dfrac{a}{a+1} + 1 \cdot \dfrac{1}{a+1} = \dfrac{1}{a+1}$.
+
+Donc $a = \dfrac{1}{E(X)} - 1$ et l'EMM est $\hat{a}_n = \dfrac{1}{\overline{X}_n} - 1$.
+
+**2.** On calcule :
+$$E(X) = \int_0^a \frac{x}{2a}\,dx + \int_a^1 \frac{x}{2(1-a)}\,dx
+= \frac{a}{4} + \frac{1+a}{4} = \frac{1+2a}{4}.$$
+
+Donc $a = 2E(X) - \dfrac{1}{2}$ et l'EMM est $\hat{a}_n = 2\overline{X}_n - \dfrac{1}{2}$.
+:::
+
+### 2. Méthode du maximum de vraisemblance (EMV)
+
+::: {.callout-note}
+## Définition — Vraisemblance
+
+Soit $(X_1, \ldots, X_n)$ un $n$-échantillon de loi parente $\mathcal{L}(\theta)$.
+La **vraisemblance** de l'échantillon est la fonction $L$ définie par :
+
+- **Cas discret :** $L(x_1, \ldots, x_n;\, \theta) = P(X_1=x_1) \times \cdots \times P(X_n=x_n)$.
+- **Cas continu** (densité $f$) : $L(x_1, \ldots, x_n;\, \theta) = f(x_1) \times \cdots \times f(x_n)$.
+:::
+
+::: {.callout-caution}
+## Exemple 4 — Vraisemblance d'un tirage dans une urne
+
+Une urne contient une proportion $p \in ]0,1[$ de boules rouges. On tire 15 boules
+avec remise et on observe 5 boules rouges.
+
+1. Exprimer $L(5;\, p)$ en fonction de $p$.
+2. Le tableau suivant donne quelques valeurs de $L(5;\, p)$ :
+
+| $p$ | 0,1 | 0,2 | 0,3 | 0,4 | 0,5 | 0,6 | 0,7 | 0,8 | 0,9 |
+|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+| $L(5;\,p)$ | 0,01 | 0,10 | 0,21 | 0,19 | 0,09 | 0,02 | 0,003 | $10^{-4}$ | $2{\times}10^{-7}$ |
+
+Quelle valeur de $p$ semble la plus vraisemblable parmi celles testées ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 4
+
+**1.** Le nombre de boules rouges suit $\mathcal{B}(15, p)$, donc :
+$$L(5;\, p) = \binom{15}{5} p^5 (1-p)^{10}.$$
+
+**2.** D'après le tableau, $L$ est maximale pour $p = 0{,}3$ (valeur 0,21 parmi
+celles testées). La valeur exacte de l'EMV est $\hat{p} = 5/15 = 1/3 \approx 0{,}333$.
+:::
+
+::: {.callout-note}
+## Définition — Estimateur du maximum de vraisemblance (EMV)
+
+On appelle **EMV** tout estimateur $\hat{\theta}_n = g(X_1, \ldots, X_n)$ où
+$g(x_1, \ldots, x_n)$ est une solution du problème d'optimisation :
+$$\max_\theta\; L(x_1, \ldots, x_n;\, \theta).$$
+:::
+
+::: {.callout-important}
+## Proposition (admise) — Invariance de l'EMV
+
+Si $\hat{\theta}_n$ est un EMV de $\theta$ et $\varphi$ est une fonction continue
+par morceaux sur $\mathbb{R}$, alors $\varphi(\hat{\theta}_n)$ est un EMV de
+$\varphi(\theta)$.
+:::
+
+::: {.callout-important}
+## Proposition (admise) — Calcul pratique de l'EMV
+
+Si $\theta \mapsto L(x_1, \ldots, x_n;\, \theta)$ est deux fois dérivable,
+l'EMV s'obtient en résolvant :
+$$\frac{\partial L}{\partial \theta} = 0 \quad \text{avec} \quad
+\frac{\partial^2 L}{\partial \theta^2} < 0.$$
+
+En pratique, on maximise la **log-vraisemblance**
+$\ell(\theta) = \ln L(x_1, \ldots, x_n;\, \theta)$, qui admet les mêmes extrema.
+:::
+
+::: {.callout-caution}
+## Exemple 5 — EMV pour des lois classiques
+
+Soit $(X_1, \ldots, X_n)$ un échantillon i.i.d. Donner l'EMV de $\theta$ dans
+chaque cas :
+
+1. $X_i \sim \mathcal{B}(p)$ et $\theta = p$.
+2. $X_i \sim \mathcal{E}(\lambda)$ et $\theta = \lambda$.
+3. $X_i \sim \mathcal{N}(m, \sigma^2)$ et $\theta = m$ ($\sigma^2$ connu).
+4. $X_i \sim \mathcal{N}(m, \sigma^2)$ et $\theta = \sigma^2$ ($m$ connu).
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 5
+
+**1. Loi de Bernoulli.**
+$$\ell(p) = \Bigl(\sum x_i\Bigr)\ln p + \Bigl(n - \sum x_i\Bigr)\ln(1-p).$$
+$$\ell'(p) = \frac{\sum x_i}{p} - \frac{n - \sum x_i}{1-p} = 0
+\implies \hat{p}_n = \overline{X}_n.$$
+
+**2. Loi exponentielle.**
+$$\ell(\lambda) = n\ln\lambda - \lambda\sum x_i.$$
+$$\ell'(\lambda) = \frac{n}{\lambda} - \sum x_i = 0
+\implies \hat{\lambda}_n = \frac{1}{\overline{X}_n}.$$
+
+**3. Loi normale, $\theta = m$.**
+$$\ell(m) = -\frac{n}{2}\ln(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum(x_i - m)^2.$$
+$$\ell'(m) = \frac{1}{\sigma^2}\sum(x_i - m) = 0 \implies \hat{m}_n = \overline{X}_n.$$
+
+**4. Loi normale, $\theta = \sigma^2$.**
+En posant $u = \sigma^2$ :
+$$\ell(u) = -\frac{n}{2}\ln u - \frac{1}{2u}\sum(x_i - m)^2.$$
+$$\ell'(u) = -\frac{n}{2u} + \frac{\sum(x_i - m)^2}{2u^2} = 0
+\implies \hat{\sigma}^2_n = \frac{1}{n}\sum_{i=1}^n(X_i - m)^2.$$
+:::
+
+### 3. Information de Fisher et efficacité
+
+::: {.callout-note}
+## Définition — Information de Fisher
+
+Sous les hypothèses dites de Cramér-Rao, on définit l'**information de Fisher**
+de l'échantillon $(X_1, \ldots, X_n)$ par :
+$$I_n(\theta) = E\!\left(-\frac{\partial^2 \ln L}{\partial \theta^2}\right).$$
+
+L'information de Fisher mesure la **quantité d'information** que l'échantillon
+contient sur le paramètre $\theta$ : plus $I_n(\theta)$ est grande, plus
+l'échantillon est informatif sur $\theta$.
+:::
+
+::: {.callout-tip}
+## Remarque — Information de Fisher pour un échantillon i.i.d.
+
+Pour un $n$-échantillon i.i.d. de densité (ou probabilité) $f(x;\theta)$,
+on a $I_n(\theta) = n \cdot I_1(\theta)$, où
+$$I_1(\theta) = E\!\left(-\frac{\partial^2 \ln f(X;\,\theta)}{\partial \theta^2}\right)$$
+est l'information de Fisher d'une seule observation.
+:::
+
+::: {.callout-important}
+## Théorème — Inégalité de Fréchet-Darmois-Cramér-Rao (FDCR)
+
+Sous les hypothèses de Cramér-Rao, pour tout estimateur $\hat{\theta}_n$
+**sans biais** de $\theta$ :
+$$\boxed{\mathrm{Var}(\hat{\theta}_n) \geq \frac{1}{I_n(\theta)} = BF(\theta),}$$
+où $BF(\theta)$ est appelée la **borne de Fréchet-Darmois-Cramér-Rao**
+(borne FDCR).
+:::
+
+::: {.callout-note}
+## Définition — Estimateur efficace
+
+Un estimateur $\hat{\theta}_n$ sans biais est dit **efficace** si sa variance
+atteint la borne FDCR :
+$$\mathrm{Var}(\hat{\theta}_n) = \frac{1}{I_n(\theta)} = BF(\theta).$$
+:::
+
+::: {.callout-tip}
+## Remarques — Efficacité et EMV
+
+- S'il existe un estimateur efficace, il est le **meilleur** parmi tous les
+  estimateurs sans biais (variance minimale).
+- L'inverse est faux : un estimateur ayant la plus petite variance parmi les
+  sans biais (estimateur optimal) n'est pas nécessairement efficace.
+- Il peut **ne pas exister** d'estimateur efficace.
+:::
+
+::: {.callout-important}
+## Théorème — Lien entre efficacité et EMV
+
+S'il existe un estimateur $\hat{\theta}_n$ efficace de $\theta$, alors c'est
+un EMV de $\theta$.
+
+Il est donc naturel de chercher un estimateur efficace parmi les EMV.
+Cependant, un EMV peut ne pas être efficace : il convient de le vérifier
+au cas par cas.
+:::
+
+::: {.callout-important}
+## Proposition (admise) — Propriétés asymptotiques de l'EMV
+
+L'EMV $\hat{\theta}_n$ possède les propriétés suivantes :
+
+- Il peut être **biaisé**, mais il est **asymptotiquement sans biais** :
+  $\displaystyle\lim_{n\to+\infty} E(\hat{\theta}_n) = \theta$.
+- Il est **convergent** (consistant) :
+  $\hat{\theta}_n \xrightarrow{P} \theta$.
+- Il est **asymptotiquement efficace** : sa variance tend vers la borne FDCR
+  lorsque $n \to +\infty$.
+:::
+
+::: {.callout-caution}
+## Exercice 2 — EMV pour la hauteur des crues d'un fleuve
+
+La hauteur maximale (en mètres) de la crue annuelle d'un fleuve est une v.a.
+$X$ de densité :
+$$f(x) = \frac{x}{a}\,e^{-x^2/(2a)}\,\mathbf{1}_{x \geq 0}, \qquad a > 0.$$
+
+1. Soient $n \in \mathbb{N}^*$ et $(X_1, \ldots, X_n)$ un $n$-échantillon de $X$.
+   Déterminer l'EMV $\hat{a}_n$ de $a$.
+2. On observe pendant 8 ans les hauteurs (en m) suivantes :
+   $2{,}5;\; 2{,}9;\; 1{,}8;\; 0{,}9;\; 1{,}7;\; 2{,}1;\; 2{,}2;\; 2{,}8.$
+
+   Donner une estimation de $a$ et de la probabilité d'une catastrophe
+   (crue supérieure à 6 m) une année donnée.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication et solution
+
+**1.** La log-vraisemblance est :
+$$\ell(a) = \sum_{i=1}^n \ln x_i - n\ln a - \frac{1}{2a}\sum_{i=1}^n x_i^2.$$
+$$\ell'(a) = -\frac{n}{a} + \frac{\sum x_i^2}{2a^2} = 0
+\implies \hat{a}_n = \frac{1}{2n}\sum_{i=1}^n X_i^2 = \frac{\overline{X^2_n}}{2}.$$
+On vérifie $\ell''(\hat{a}_n) < 0$ : c'est bien un maximum. ✓
+
+**2.** $\displaystyle\sum_{i=1}^8 x_i^2 = 6{,}25 + 8{,}41 + 3{,}24 + 0{,}81 + 2{,}89 + 4{,}41 + 4{,}84 + 7{,}84 = 38{,}69.$
+$$\hat{a} = \frac{38{,}69}{16} \approx 2{,}42.$$
+
+**Probabilité de catastrophe :**
+$$P(X > 6) = \int_6^{+\infty} \frac{x}{a}\,e^{-x^2/(2a)}\,dx
+= \Bigl[-e^{-x^2/(2a)}\Bigr]_6^{+\infty} = e^{-36/(2\hat{a})}
+= e^{-36/4{,}84} \approx e^{-7{,}44} \approx 0{,}06\%.$$
+:::
+
+## III — Estimation par intervalle de confiance
+
+On cherche maintenant à quantifier la **confiance** que l'on peut accorder à
+l'estimation ponctuelle. Un intervalle de confiance est un intervalle aléatoire
+(dépendant de l'échantillon) qui contient le vrai paramètre avec une probabilité
+au moins égale à un niveau prescrit.
+
+::: {.callout-note}
+## Définition — Intervalle de confiance
+
+Soient $(X_1, \ldots, X_n)$ un échantillon de loi $\mathcal{L}(\theta)$ et
+$\alpha \in ]0,1[$. On appelle **intervalle de confiance** pour $\theta$ au
+**niveau de confiance** $1-\alpha$ tout intervalle
+$$I_\alpha = [a(X_1, \ldots, X_n);\; b(X_1, \ldots, X_n)]$$
+où $a$ et $b$ sont des fonctions de l'échantillon indépendantes de $\theta$,
+vérifiant $P(\theta \in I_\alpha) \geq 1-\alpha$.
+:::
+
+::: {.callout-tip}
+## Remarques
+
+- Plus $1-\alpha$ est grand (plus de confiance), plus $I_\alpha$ est large.
+- La construction de $a$ et $b$ repose sur la loi de l'estimateur de $\theta$.
+- Si la loi est symétrique, on choisit un intervalle symétrique (loi normale) ;
+  si elle est unilatérale, on peut choisir un intervalle asymétrique (loi du $\chi^2$).
+:::
+
+### 1. Intervalle de confiance pour une proportion
+
+Soit $(X_1, \ldots, X_n)$ un $n$-échantillon de loi $\mathcal{B}(p)$.
+L'EMV de $p$ est $\hat{p}_n = \overline{X}_n$. Par le TCL, si $n \geq 30$,
+$n\hat{p}_n \geq 5$ et $n(1-\hat{p}_n) \geq 5$ :
+$$\frac{\hat{p}_n - p}{\sqrt{p(1-p)/n}} \xrightarrow{\mathcal{L}} \mathcal{N}(0,1).$$
+
+Lorsque $n\hat{p}_n(1-\hat{p}_n) \geq 3$, on approche $p(1-p)$ par
+$\hat{p}_n(1-\hat{p}_n)$.
+
+::: {.callout-note}
+## Définition — IC pour une proportion
+
+Sous les conditions $n \geq 30$, $n\hat{p}_n \geq 5$, $n(1-\hat{p}_n) \geq 5$
+et $n\hat{p}_n(1-\hat{p}_n) \geq 3$, un intervalle de confiance pour $p$ au
+niveau $1-\alpha$ est :
+$$I_\alpha = \left[\hat{p}_n - t_\alpha\sqrt{\frac{\hat{p}_n(1-\hat{p}_n)}{n}};\;
+\hat{p}_n + t_\alpha\sqrt{\frac{\hat{p}_n(1-\hat{p}_n)}{n}}\right],$$
+où $t_\alpha = \Phi^{-1}(1-\alpha/2)$ est le quantile de la loi $\mathcal{N}(0,1)$.
+
+**Valeurs usuelles :** $t_{0{,}05} = 1{,}96$ (niveau 95 %),
+$t_{0{,}01} = 2{,}576$ (niveau 99 %).
+:::
+
+::: {.callout-caution}
+## Exemple 6 — Prévalence du cholestérol
+
+Dans un échantillon de 1 000 personnes, on observe que 8 % ont un problème
+de cholestérol. Construire un intervalle de confiance pour la proportion
+de personnes touchées dans la population au niveau 95 %.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 6
+
+$n = 1000$, $\hat{p} = 0{,}08$, $1-\alpha = 0{,}95$, $t_\alpha = 1{,}96$.
+
+**Vérification :** $n = 1000 \geq 30$ ✓, $n\hat{p} = 80 \geq 5$ ✓,
+$n(1-\hat{p}) = 920 \geq 5$ ✓, $n\hat{p}(1-\hat{p}) = 73{,}6 \geq 3$ ✓.
+
+$$\sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = \sqrt{\frac{0{,}08 \times 0{,}92}{1000}}
+\approx 0{,}00859.$$
+
+$$I_{0{,}05} = [0{,}08 - 1{,}96\times 0{,}00859;\; 0{,}08 + 1{,}96\times 0{,}00859]
+\approx [0{,}063;\; 0{,}097].$$
+
+On peut affirmer avec 95 % de confiance que la proportion de personnes
+touchées par le cholestérol dans la population est comprise entre **6,3 %** et **9,7 %**.
+:::
+
+### 2. Intervalle de confiance pour une moyenne
+
+Soit $(X_1, \ldots, X_n)$ un $n$-échantillon de loi $\mathcal{N}(m, \sigma^2)$
+(ou un échantillon i.i.d. quelconque avec $n \geq 30$). L'estimateur $\overline{X}_n$
+est sans biais de $m$ et, par le TCL :
+$$\frac{\overline{X}_n - m}{\sigma/\sqrt{n}} \xrightarrow{\mathcal{L}} \mathcal{N}(0,1).$$
+
+::: {.callout-note}
+## Définition — IC pour une moyenne ($\sigma$ connu ou $n \geq 30$)
+
+Un intervalle de confiance pour $m$ au niveau $1-\alpha$ est :
+$$I_\alpha = \left[\overline{X}_n - t_\alpha\,\frac{\sigma}{\sqrt{n}};\;
+\overline{X}_n + t_\alpha\,\frac{\sigma}{\sqrt{n}}\right],$$
+où $t_\alpha = \Phi^{-1}(1-\alpha/2)$. Si $n \geq 30$ et $\sigma$ est inconnu,
+on le remplace par l'écart-type empirique corrigé $S_n = \sqrt{S^2_n}$.
+:::
+
+::: {.callout-tip}
+## Cas $n < 30$ et $\sigma^2$ inconnu — Loi de Student
+
+Si l'échantillon suit $\mathcal{N}(m, \sigma^2)$ avec $\sigma^2$ inconnu et $n < 30$,
+on utilise la statistique de Student :
+$$T_{n-1} = \frac{\overline{X}_n - m}{S_n/\sqrt{n}} \sim \mathcal{T}(n-1).$$
+
+L'IC pour $m$ au niveau $1-\alpha$ est :
+$$I_\alpha = \left[\overline{X}_n - t\,\frac{S_n}{\sqrt{n}};\;
+\overline{X}_n + t\,\frac{S_n}{\sqrt{n}}\right],$$
+où $t$ est le fractile d'ordre $1-\alpha/2$ de la loi $\mathcal{T}(n-1)$.
+:::
+
+::: {.callout-caution}
+## Exemple 7 — Notes au baccalauréat
+
+Dans un échantillon de 1 000 bacheliers, la moyenne des notes est 12,15 avec
+un écart-type de 2. Construire un intervalle de confiance pour la moyenne
+nationale au niveau 95 %.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 7
+
+$n = 1000 \geq 30$, $\overline{x} = 12{,}15$, $s = 2$, $t_\alpha = 1{,}96$.
+
+On remplace $\sigma$ par $s = 2$ :
+$$\frac{s}{\sqrt{n}} = \frac{2}{\sqrt{1000}} \approx 0{,}0632.$$
+
+$$I_{0{,}05} = [12{,}15 - 1{,}96 \times 0{,}0632;\; 12{,}15 + 1{,}96 \times 0{,}0632]
+\approx [12{,}026;\; 12{,}274].$$
+
+On peut affirmer avec 95 % de confiance que la moyenne nationale est comprise
+entre **12,03** et **12,27**.
+:::
+
+### 3. Intervalle de confiance pour une variance
+
+Soit $(X_1, \ldots, X_n)$ un $n$-échantillon de loi $\mathcal{N}(m, \sigma^2)$.
+
+- **Si $m$ est connu :** on utilise $\hat{\sigma}^2_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n(X_i-m)^2$
+  et $\dfrac{n\hat{\sigma}^2_n}{\sigma^2} \sim \chi^2(n)$.
+- **Si $m$ est inconnu :** on utilise $S^2_n = \dfrac{1}{n-1}\displaystyle\sum_{i=1}^n(X_i-\overline{X}_n)^2$
+  et $\dfrac{(n-1)S^2_n}{\sigma^2} \sim \chi^2(n-1)$.
+
+En notant $t_1 = \chi^2_{n-1,\,\alpha/2}$ et $t_2 = \chi^2_{n-1,\,1-\alpha/2}$ :
+$$P\!\left(\frac{(n-1)S^2_n}{t_2} \leq \sigma^2 \leq \frac{(n-1)S^2_n}{t_1}\right) = 1-\alpha.$$
+
+::: {.callout-note}
+## Définition — IC pour une variance ($m$ inconnu)
+
+Un intervalle de confiance pour $\sigma^2$ au niveau $1-\alpha$ est :
+$$I_\alpha = \left[\frac{(n-1)S^2_n}{t_2};\; \frac{(n-1)S^2_n}{t_1}\right],$$
+où $t_1 = \chi^2_{n-1,\,\alpha/2}$ et $t_2 = \chi^2_{n-1,\,1-\alpha/2}$ sont
+les fractiles de la loi $\chi^2(n-1)$.
+:::
+
+::: {.callout-note}
+## Définition — IC pour une variance ($m$ connu)
+
+Si la moyenne $m$ est **connue**, on utilise l'estimateur
+$\hat{\sigma}^2_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n(X_i - m)^2$,
+sans biais et convergent, tel que
+$\dfrac{n\hat{\sigma}^2_n}{\sigma^2} \sim \chi^2(n)$.
+
+Un intervalle de confiance pour $\sigma^2$ au niveau $1-\alpha$ est :
+$$I_\alpha = \left[\frac{n\hat{\sigma}^2_n}{t_2};\; \frac{n\hat{\sigma}^2_n}{t_1}\right],$$
+où $t_1 = \chi^2_{n,\,\alpha/2}$ et $t_2 = \chi^2_{n,\,1-\alpha/2}$ sont
+les fractiles de la loi $\chi^2(n)$.
+:::
+
+::: {.callout-caution}
+## Exemple 8 — Variance des notes à un examen de certification
+
+Dans un échantillon de 1 000 personnes, la moyenne est 12 et l'écart-type est 3.
+Construire un intervalle de confiance pour la variance des notes au niveau 95 %.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 8
+
+$n = 1000$, $S^2_n = 9$, $\alpha = 0{,}05$.
+
+On cherche $t_1 = \chi^2_{999,\,0{,}025}$ et $t_2 = \chi^2_{999,\,0{,}975}$.
+Pour $n$ grand, on utilise l'approximation $\chi^2_\nu \approx \mathcal{N}(\nu, 2\nu)$ :
+$$t_1 \approx 999 - 1{,}96\sqrt{2\times 999} \approx 911{,}3, \qquad
+t_2 \approx 999 + 1{,}96\sqrt{2\times 999} \approx 1086{,}7.$$
+
+$$I_{0{,}05} = \left[\frac{999 \times 9}{1086{,}7};\; \frac{999 \times 9}{911{,}3}\right]
+\approx [8{,}27;\; 9{,}87].$$
+
+On peut affirmer avec 95 % de confiance que la variance des notes est comprise
+entre **8,27** et **9,87**.
+:::
+
+::: {.callout-caution}
+## Exercice 3 — Estimation du paramètre d'une loi de Poisson
+
+On considère que le nombre de véhicules traversant un péage en une heure suit
+une loi de Poisson de paramètre $\lambda$. La première semaine d'avril, on a
+compté entre 12 h et 13 h les nombres de véhicules suivants :
+
+| Jour | lun | mar | mer | jeu | ven | sam | dim |
+|------|-----|-----|-----|-----|-----|-----|-----|
+| Nombre | 1131 | 820 | 925 | 1325 | 1005 | 965 | 850 |
+
+Soit $(X_1, \ldots, X_n)$ un $n$-échantillon de cette loi.
+
+1. Déterminer la fonction de vraisemblance, la log-vraisemblance, et en déduire
+   un EMV $\hat{\lambda}_n$ du paramètre $\lambda$.
+2. Montrer que cet estimateur est sans biais, convergent et efficace.
+3. Déterminer une estimation de $\lambda$ à partir des données du tableau.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 3
+
+**1.** Les $X_i$ sont i.i.d. de loi $\mathcal{P}(\lambda)$ :
+$P(X_i = x_i) = e^{-\lambda}\dfrac{\lambda^{x_i}}{x_i!}$.
+
+**Vraisemblance :**
+$$L(x_1,\ldots,x_n;\,\lambda) = \prod_{i=1}^n e^{-\lambda}\frac{\lambda^{x_i}}{x_i!}
+= e^{-n\lambda}\,\frac{\lambda^{\sum x_i}}{\prod x_i!}.$$
+
+**Log-vraisemblance :**
+$$\ell(\lambda) = -n\lambda + \Bigl(\sum_{i=1}^n x_i\Bigr)\ln\lambda
+- \sum_{i=1}^n \ln(x_i!).$$
+
+$$\ell'(\lambda) = -n + \frac{\sum x_i}{\lambda} = 0
+\implies \hat{\lambda}_n = \frac{1}{n}\sum_{i=1}^n X_i = \overline{X}_n.$$
+
+$\ell''(\lambda) = -\sum x_i / \lambda^2 < 0$ : c'est bien un maximum. ✓
+
+**2. Sans biais :** $E(\hat{\lambda}_n) = E(\overline{X}_n) = \lambda$. ✓
+
+**Convergent :** $\mathrm{Var}(\hat{\lambda}_n) = \lambda/n \to 0$, donc
+convergent en moyenne quadratique (et en probabilité). ✓
+
+**Efficace :** On calcule l'information de Fisher :
+$$I_n(\lambda) = E\!\left(-\frac{\partial^2 \ell}{\partial\lambda^2}\right)
+= E\!\left(\frac{\sum X_i}{\lambda^2}\right) = \frac{n\lambda}{\lambda^2}
+= \frac{n}{\lambda}.$$
+
+La borne FDCR est $BF(\lambda) = \dfrac{\lambda}{n} = \mathrm{Var}(\hat{\lambda}_n)$.
+L'estimateur atteint la borne : il est **efficace**. ✓
+
+**3.** $\hat{\lambda} = \overline{x} = \dfrac{1131+820+925+1325+1005+965+850}{7}
+= \dfrac{7021}{7} \approx 1003$.
+:::
+
+::: {.callout-caution}
+## Exercice 4 — Estimateurs de la moyenne et de la variance d'une population
+
+Soit une population de moyenne $m$ et de variance $\sigma^2$. On note
+$\mu_4 = E\!\left[(X_1-m)^4\right]$.
+
+**1. On suppose $m$ inconnue.**
+
+a) Donner un estimateur sans biais et convergent de $m$.
+
+b) Donner un estimateur sans biais et convergent de $\sigma^2$.
+
+**2. On suppose $m$ connue.** On pose
+$V_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n (X_i - m)^2$ et
+$S^2_n = \dfrac{1}{n-1}\displaystyle\sum_{i=1}^n (X_i - \overline{X}_n)^2$.
+
+On rappelle que $\mathrm{Var}(V_n) = \dfrac{\mu_4 - \sigma^4}{n}$ et
+$\mathrm{Var}(S^2_n) = \dfrac{\mu_4}{n} - \dfrac{n-3}{n(n-1)}\,\sigma^4$.
+
+a) Donner deux estimateurs sans biais de $\sigma^2$. Expliquer pourquoi l'un
+   d'eux ne pouvait pas être utilisé dans le cas $m$ inconnue.
+
+b) Comparer ces deux estimateurs.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 4
+
+**1a.** $\overline{X}_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n X_i$ est sans
+biais ($E(\overline{X}_n)=m$) et convergent
+($\mathrm{Var}(\overline{X}_n)=\sigma^2/n \to 0$).
+
+**1b.** $S^2_n = \dfrac{1}{n-1}\displaystyle\sum_{i=1}^n (X_i-\overline{X}_n)^2$
+est sans biais ($E(S^2_n) = \sigma^2$) et convergent
+($\mathrm{Var}(S^2_n) \to 0$).
+
+**2a.** Deux estimateurs sans biais de $\sigma^2$ lorsque $m$ est connu :
+
+- $V_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n (X_i-m)^2$ : puisque
+  $E\!\left[(X_i-m)^2\right] = \sigma^2$, on a $E(V_n) = \sigma^2$ (sans biais).
+  Cet estimateur utilise la vraie moyenne $m$ : il **ne peut pas** être utilisé
+  lorsque $m$ est inconnue.
+- $S^2_n = \dfrac{1}{n-1}\displaystyle\sum_{i=1}^n (X_i-\overline{X}_n)^2$ :
+  toujours sans biais, utilisable que $m$ soit connu ou non.
+
+**2b.** Comparons leurs variances :
+$$\mathrm{Var}(S^2_n) - \mathrm{Var}(V_n)
+= \frac{\mu_4}{n} - \frac{n-3}{n(n-1)}\,\sigma^4
+- \frac{\mu_4 - \sigma^4}{n}
+= \frac{\sigma^4}{n} - \frac{n-3}{n(n-1)}\,\sigma^4
+= \frac{2\sigma^4}{n(n-1)} > 0.$$
+
+Donc $\mathrm{Var}(V_n) < \mathrm{Var}(S^2_n)$ : lorsque $m$ est connu,
+$V_n$ est **meilleur** que $S^2_n$ au sens de l'erreur quadratique.
+:::
+
+::: {.callout-caution}
+## Exercice 5 — Estimateur d'une proportion
+
+Soit $p \in ]0,1[$ et $n \in \mathbb{N}^*$. Une population contient une
+proportion $p$ d'individus présentant une caractéristique $c$. On considère un
+échantillon $(X_1, \ldots, X_n)$ où $X_i = 1$ si le $i$-ème individu présente
+la caractéristique et $X_i = 0$ sinon.
+
+On note $(x_1, \ldots, x_n)$ une réalisation de cet échantillon.
+
+1. En remarquant que pour $x_i \in \{0,1\}$,
+   $P(X_i = x_i) = p^{x_i}(1-p)^{1-x_i}$, déterminer la vraisemblance $L$
+   et la log-vraisemblance $\ell$.
+2. En déduire l'EMV $\hat{p}_n$ du paramètre $p$ et vérifier qu'il est sans
+   biais et convergent.
+3. *(Subsidiaire)* L'estimateur $\hat{p}_n$ est-il efficace ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 5
+
+**1.** Les $X_i$ sont i.i.d. de loi $\mathcal{B}(p)$ :
+
+$$L(x_1,\ldots,x_n;\,p) = \prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}
+= p^{\sum x_i}\,(1-p)^{n-\sum x_i}.$$
+
+$$\ell(p) = \Bigl(\sum x_i\Bigr)\ln p + \Bigl(n - \sum x_i\Bigr)\ln(1-p).$$
+
+**2.** $\ell'(p) = \dfrac{\sum x_i}{p} - \dfrac{n-\sum x_i}{1-p} = 0$, d'où :
+$$\hat{p}_n = \frac{1}{n}\sum_{i=1}^n X_i = \overline{X}_n.$$
+
+$\ell''(p) = -\dfrac{\sum x_i}{p^2} - \dfrac{n-\sum x_i}{(1-p)^2} < 0$ :
+c'est bien un maximum. ✓
+
+**Sans biais :** $E(\hat{p}_n) = E(\overline{X}_n) = p$. ✓
+
+**Convergent :** $\mathrm{Var}(\hat{p}_n) = \dfrac{p(1-p)}{n} \to 0$. ✓
+
+**3.** Information de Fisher :
+$$I_n(p) = E\!\left(-\ell''(p)\right)
+= E\!\left(\frac{\sum X_i}{p^2} + \frac{n-\sum X_i}{(1-p)^2}\right)
+= \frac{np}{p^2} + \frac{n(1-p)}{(1-p)^2}
+= \frac{n}{p} + \frac{n}{1-p} = \frac{n}{p(1-p)}.$$
+
+La borne FDCR est $BF(p) = \dfrac{p(1-p)}{n} = \mathrm{Var}(\hat{p}_n)$.
+
+L'estimateur atteint la borne : $\hat{p}_n$ est **efficace**. ✓
+:::
+
+::: {.callout-caution}
+## Exercice 6 — Estimation pour une loi inconnue
+
+Voici un échantillon de 10 valeurs de loi inconnue :
+$$0 \quad 1 \quad 2 \quad 0 \quad 2 \quad 2 \quad 1 \quad 2 \quad 1 \quad 1$$
+
+On donne $\displaystyle\sum x_i = 12$ et $\displaystyle\sum x_i^2 = 20$.
+
+1. Déterminer des estimations non biaisées de la moyenne et de la variance
+   de cette loi.
+2. On choisit de modéliser l'expérience par une loi binomiale $\mathcal{B}(2, p)$.
+   Déterminer à l'aide de la moyenne empirique une estimation non biaisée de $p$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 6
+
+**1.** $n = 10$.
+
+**Moyenne :** la moyenne empirique $\overline{x} = \dfrac{\sum x_i}{n}
+= \dfrac{12}{10} = 1{,}2$ est un estimateur sans biais de $E(X)$.
+
+**Variance :** l'estimateur sans biais est la variance corrigée :
+$$s^2 = \frac{1}{n-1}\left(\sum x_i^2 - n\overline{x}^2\right)
+= \frac{1}{9}\left(20 - 10 \times 1{,}44\right)
+= \frac{5{,}6}{9} \approx 0{,}622.$$
+
+**2.** Si $X \sim \mathcal{B}(2, p)$, alors $E(X) = 2p$, d'où
+$p = \dfrac{E(X)}{2}$.
+
+L'EMM de $p$ est $\hat{p} = \dfrac{\overline{x}}{2} = \dfrac{1{,}2}{2} = 0{,}6$.
+
+Cet estimateur est sans biais car $E(\hat{p}) = \dfrac{E(\overline{X}_n)}{2}
+= \dfrac{2p}{2} = p$. ✓
+:::
+
+::: {.callout-tip}
+## À retenir
+
+- Un **bon estimateur** doit être sans biais (ou asymptotiquement sans biais)
+  et convergent. Pour des estimateurs sans biais, l'efficacité se mesure par la
+  variance.
+- La **méthode des moments** est simple à mettre en œuvre ; la **méthode du
+  maximum de vraisemblance** donne en général des estimateurs plus efficaces
+  et possède des propriétés d'invariance utiles.
+- Un **intervalle de confiance** au niveau $1-\alpha$ est une procédure qui,
+  répétée sur de nombreux échantillons, produit un intervalle contenant le
+  vrai paramètre dans $(1-\alpha)\times 100\,\%$ des cas.
+- **Lois pivots à connaître :**
+  - Proportion et grande moyenne : $\mathcal{N}(0,1)$
+  - Petite moyenne avec $\sigma^2$ inconnu : $\mathcal{T}(n-1)$
+  - Variance ($m$ inconnu) : $\chi^2(n-1)$
+  - Variance ($m$ connu) : $\chi^2(n)$
+- **Information de Fisher et borne FDCR :** la variance d'un estimateur sans
+  biais ne peut descendre en dessous de $1/I_n(\theta)$. Un estimateur
+  atteignant cette borne est dit efficace ; s'il existe, c'est un EMV.
+:::

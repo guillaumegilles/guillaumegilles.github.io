@@ -1,0 +1,484 @@
+---
+title: "Distribution d'echantillonnage"
+abstract: |
+  Ce chapitre introduit la logique de l'**echantillonnage aleatoire** et la
+  notion centrale de **distribution d'echantillonnage** d'une statistique. On
+  precise d'abord le lien entre population, loi parente et n-echantillon
+  i.i.d., puis on etudie les statistiques fondamentales : la moyenne empirique,
+  la variance empirique non corrigee et la variance empirique corrigee. Le
+  chapitre etablit leurs proprietes d'esperance et de variance, met en evidence
+  le biais de la variance non corrigee, puis presente les lois exactes dans le
+  cas d'une loi parente gaussienne (loi normale et loi du khi-deux). Enfin, il
+  propose une methode pratique pour analyser et interpreter des resultats
+  d'echantillonnage en statistique inferentielle.
+date-modified: 2026-03-24
+---
+
+> Dans tout ce chapitre, on considere des echantillons aleatoires simples preleves dans une population.
+
+## I - Echantillonnage
+
+On souhaite etudier un caractere $X$ sur une population $P$ de taille $N$. En pratique, on n'observe qu'une partie de la population : un **echantillon** de taille $n$.
+
+::: {.callout-note}
+## Definition - n-echantillon aleatoire
+
+Soit $X$ une variable de loi parente $\mathcal{L}$.
+Un **n-echantillon aleatoire** est un n-uplet
+$$
+(X_1,\dots,X_n)
+$$
+de variables aleatoires independantes et de meme loi
+$$
+X_i\sim\mathcal{L} \quad (i=1,\dots,n).
+$$
+:::
+
+Les valeurs observees changent d'un echantillon a l'autre : c'est la **fluctuation d'echantillonnage**.
+
+::: {.callout-tip}
+## Remarque - Fluctuation d'echantillonnage
+
+Si l'on preleve plusieurs echantillons de meme taille $n$ dans une meme population, les valeurs observees $(x_1,\dots,x_n)$ different d'un tirage a l'autre. Par consequent, toute statistique calculee sur l'echantillon (moyenne, variance, proportion...) varie elle aussi. Ce phenomene, appele **fluctuation d'echantillonnage**, est incontournable : il ne traduit pas une erreur de mesure mais la variabilite inherente au tirage aleatoire. L'objectif de la distribution d'echantillonnage est precisement de quantifier cette variabilite.
+:::
+
+::: {.callout-tip}
+## Remarque - Avec ou sans remise
+
+- **Avec remise** : les tirages sont independants. Si $p$ est la proportion d'individus possedant un caractere $c$ dans la population, on pose $X_i=1$ si l'individu $i$ possede le caractere et $X_i=0$ sinon. Chaque $X_i\sim\mathcal{B}(p)$ et le nombre d'individus possedant $c$ dans l'echantillon vaut $\sum_{i=1}^n X_i\sim\mathcal{B}(n,p)$.
+- **Sans remise** : les tirages ne sont plus independants. Le nombre d'individus possedant $c$ suit alors une loi hypergeometrique $\mathcal{H}(n,p,N)$, dont la loi est donnee par
+$$
+P\!\left(\sum_{i=1}^n X_i=k\right)
+=\frac{\displaystyle\binom{pN}{k}\binom{(1-p)N}{n-k}}{\displaystyle\binom{N}{n}},
+\qquad 0\le k\le n.
+$$
+- **Regle pratique** : on peut approcher $\mathcal{H}(n,p,N)$ par $\mathcal{B}(n,p)$ des que l'echantillon represente moins de 10 % de la population, c'est-a-dire $10n\ll N$ (ou de facon equivalente $n/N<0{,}1$).
+:::
+
+::: {.callout-caution}
+## Exemple 1 - Proportion d'un caractere
+
+Dans une population, on note $p$ la proportion d'individus ayant un caractere donne (par exemple "yeux bleus").
+On interroge $n$ personnes et on pose
+$$
+X_i=
+\begin{cases}
+1 & \text{si la personne i possede le caractere,}\\
+0 & \text{sinon.}
+\end{cases}
+$$
+
+1. Quelle est la loi de chaque $X_i$ ?
+2. Quelle est la loi de $\sum_{i=1}^n X_i$ dans un schema avec remise ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 1
+
+- Chaque $X_i$ suit une loi de Bernoulli $\mathcal{B}(p)$.
+- La somme $\sum_{i=1}^n X_i$ suit une loi binomiale
+$$
+\mathcal{B}(n,p).
+$$
+:::
+
+---
+
+## II - Distribution d'echantillonnage
+
+::: {.callout-note}
+## Definition - Statistique
+
+Une **statistique** est toute fonction des variables d'echantillon :
+$$
+T=T(X_1,\dots,X_n).
+$$
+
+La **distribution d'echantillonnage** de $T$ est la loi de la variable aleatoire $T$.
+:::
+
+Ce point de vue est fondamental : en inferentielle, on n'observe pas un seul $T$ "fixe", mais une realisation d'une variable aleatoire dont la loi controle precision et incertitude.
+
+::: {.callout-caution}
+## Exercice 1
+
+Lors d'une election, un sondage sur un echantillon de 1000 personnes attribue au
+candidat Durand 50,2 % des voix. Le resultat final publie est 51,1 %.
+
+Identifier dans cet enonce :
+- la population,
+- la variable etudiee,
+- la loi du caractere observe,
+- la statistique utilisee.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 1
+
+On modelise en general chaque reponse par une variable de Bernoulli
+(valeur 1 si vote Durand, 0 sinon). La statistique naturelle est la proportion
+empirique dans l'echantillon.
+:::
+
+---
+
+## III - Moyenne empirique
+
+::: {.callout-note}
+## Definition
+
+La moyenne empirique est
+$$
+\overline{X}_n=\frac{1}{n}\sum_{i=1}^n X_i.
+$$
+:::
+
+::: {.callout-important}
+## Proposition
+
+Si la loi parente admet une moyenne $m$ et une variance $\sigma^2$, alors
+$$
+E(\overline{X}_n)=m,
+\qquad
+\mathrm{Var}(\overline{X}_n)=\frac{\sigma^2}{n}.
+$$
+:::
+
+La moyenne empirique est donc centree sur la vraie moyenne, et sa dispersion diminue en $1/n$.
+
+::: {.callout-important}
+## Cas gaussien
+
+Si $X_i\sim\mathcal{N}(m,\sigma^2)$ (i.i.d.), alors
+$$
+\overline{X}_n\sim\mathcal{N}\!\left(m,\frac{\sigma^2}{n}\right).
+$$
+:::
+
+::: {.callout-caution}
+## Exemple 2 - Notes d'examen
+
+Les notes suivent une loi normale $\mathcal{N}(10,25)$.
+
+1. Donner la loi de $\overline{X}_{100}$.
+2. Quelle est son esperance ?
+3. Que devient la variance si on passe a $n=400$ ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 2
+
+- $\overline{X}_{100}\sim\mathcal{N}(10,25/100)=\mathcal{N}(10,0{,}25)$.
+- Esperance : $10$.
+- Pour $n=400$ : variance $25/400=0{,}0625$.
+:::
+
+::: {.callout-caution}
+## Exercice 4
+
+Six personnes (trois hommes et trois femmes) montent dans un ascenseur de
+charge maximale 450 kg.
+
+- poids d'un homme : $\mathcal{N}(77,144)$,
+- poids d'une femme : $\mathcal{N}(63,100)$,
+- independance supposee.
+
+1. Determiner les lois du poids total $T$ et du poids moyen $\overline{T}$.
+2. Calculer $P(T>450)$.
+3. Dans un scenario pessimiste, chaque personne suit $\mathcal{N}(77,144)$.
+   Determiner la charge maximale reelle $M$ pour que
+   $$P(T>M)\le 0{,}005.$$
+   (Arrondir aux 10 kg superieurs.)
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 4
+
+- Somme de normales independantes : moyenne = somme des moyennes,
+  variance = somme des variances.
+- Question 3 : chercher un quantile haut de la loi normale de $T$.
+:::
+
+::: {.callout-caution}
+## Exercice 5
+
+Les bouteilles de biere ont une contenance moyenne de 300 ml avec ecart-type
+5 ml. Elles sont vendues par packs de 6.
+
+1. Determiner l'ecart-type de la contenance moyenne d'un pack.
+2. En supposant la normalite, quelle valeur la contenance moyenne d'un pack a-t-elle
+   1,7 % de chances de depasser ? (Arrondir a 0,1 ml.)
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 5
+
+Si $\overline{X}_6$ est la moyenne du pack :
+$$\sigma_{\overline{X}_6}=\frac{\sigma}{\sqrt{6}}.$$
+Puis utiliser un quantile normal tel que $P(\overline{X}_6>c)=0{,}017$.
+:::
+
+---
+
+## IV - Variance empirique et variance corrigee
+
+### 1. Variance empirique non corrigee
+
+::: {.callout-note}
+## Definition
+
+$$
+S_n'^2=\frac{1}{n}\sum_{i=1}^n (X_i-\overline{X}_n)^2
+=\frac{1}{n}\sum_{i=1}^n X_i^2-(\overline{X}_n)^2.
+$$
+:::
+
+::: {.callout-important}
+## Proposition
+
+Si la loi parente a variance $\sigma^2$, alors
+$$
+E(S_n'^2)=\frac{n-1}{n}\sigma^2.
+$$
+:::
+
+Donc $S_n'^2$ sous-estime en moyenne $\sigma^2$ : c'est un estimateur biaise.
+
+### 2. Variance empirique corrigee
+
+::: {.callout-note}
+## Definition
+
+$$
+S_n^2=\frac{n}{n-1}S_n'^2
+=\frac{1}{n-1}\sum_{i=1}^n (X_i-\overline{X}_n)^2.
+$$
+:::
+
+::: {.callout-important}
+## Proposition
+
+$$
+E(S_n^2)=\sigma^2.
+$$
+
+La variance empirique corrigee est sans biais.
+:::
+
+### 3. Cas gaussien
+
+::: {.callout-important}
+## Lois associees (admis)
+
+Si $X_i\sim\mathcal{N}(m,\sigma^2)$ (i.i.d.), alors :
+
+$$
+\frac{1}{\sigma^2}\sum_{i=1}^n (X_i-m)^2\sim\chi_n^2,
+$$
+$$
+\frac{n}{\sigma^2}S_n'^2
+=\frac{n-1}{\sigma^2}S_n^2
+=\frac{1}{\sigma^2}\sum_{i=1}^n (X_i-\overline{X}_n)^2
+\sim\chi_{n-1}^2.
+$$
+:::
+
+La perte d'un degre de liberte vient de la contrainte introduite par l'estimation de la moyenne avec $\overline{X}_n$.
+
+::: {.callout-caution}
+## Exemple 3 - Esperance des variances empiriques
+
+On sait que $\sigma^2=25$ et $n=100$.
+
+1. Calculer $E(S_{100}'^2)$.
+2. Calculer $E(S_{100}^2)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 3
+
+$$
+E(S_{100}'^2)=\frac{99}{100}\times 25=24{,}75,
+$$
+$$
+E(S_{100}^2)=25.
+$$
+:::
+
+::: {.callout-caution}
+## Exercice 2
+
+Soit $n\ge 1$ et $(X_1,\dots,X_n)$ un $n$-echantillon d'une loi parente
+$\mathcal{N}(m,\sigma^2)$.
+
+On considere :
+$$\overline{X}_n=\frac1n\sum_{i=1}^n X_i,
+\qquad V_n=\frac1n\sum_{i=1}^n (X_i-m)^2,$$
+$$S_n'^2=\frac1n\sum_{i=1}^n (X_i-\overline{X}_n)^2,
+\qquad S_n^2=\frac1{n-1}\sum_{i=1}^n (X_i-\overline{X}_n)^2.$$
+
+1. Nommer chacune de ces variables.
+2. Donner les lois de :
+$$\overline{X}_n,\qquad \frac{n}{\sigma^2}V_n,
+\qquad \frac{n}{\sigma^2}S_n'^2,
+\qquad \frac{n-1}{\sigma^2}S_n^2.$$
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 2
+
+- $\overline{X}_n$ est la moyenne empirique.
+- $S_n'^2$ est la variance empirique non corrigee.
+- $S_n^2$ est la variance empirique corrigee.
+- En loi normale, les sommes de carres standardisees suivent une loi $\chi^2$.
+:::
+
+::: {.callout-caution}
+## Exercice 3
+
+Lors d'un examen, les notes suivent la loi $\mathcal{N}(10,25)$.
+
+1. Pour $n=25$, calculer
+$$P(9{,}5\le \overline{X}_n\le 11).$$
+Que devient cette probabilite pour $n=100$ ? Commenter.
+
+2. Pour $n=25$, evaluer
+$$P(S_n'^2>36{,}42)$$
+et resoudre
+$$P(S_n^2>a)=0{,}05.$$
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication — Exercice 3
+
+- $\overline{X}_n\sim \mathcal{N}\!\left(10,\frac{25}{n}\right)$.
+- Pour la question 2, ramener a des quantiles de loi $\chi^2$ via :
+$$\frac{n}{\sigma^2}S_n'^2\sim\chi_n^2,
+\qquad
+\frac{n-1}{\sigma^2}S_n^2\sim\chi_{n-1}^2.$$
+:::
+
+---
+
+## V - Lecture inferentielle
+
+L'interet de ces resultats est direct :
+
+- $\overline{X}_n$ sert a estimer $m$ (precision amelioree si $n$ augmente),
+- $S_n^2$ sert a estimer $\sigma^2$ sans biais,
+- les lois normales et khi-deux permettent de construire des intervalles de confiance et des tests.
+
+::: {.callout-note}
+## Methode pratique
+
+1. Verifier le modele d'echantillonnage (i.i.d., taille, contexte).
+2. Identifier la statistique cible ($\overline{X}_n$, $S_n'^2$, $S_n^2$, proportion...).
+3. Utiliser sa distribution d'echantillonnage.
+4. Quantifier l'incertitude (variance, quantiles, probabilites).
+5. Interpreter dans le contexte metier (risque, precision, decision).
+:::
+
+Cette logique constitue le passage cle entre statistique descriptive et statistique inferentielle.
+
+---
+
+## VI - Exercice de synthese
+
+::: {.callout-caution}
+## Exercice 6 - Etude d'un echantillonnage discret
+
+On considere un lot de billets : 40 billets de 50 euros et 60 billets de 20 euros.
+On preleve des echantillons de 3 billets avec remise.
+
+1. Calculer la moyenne et la variance de la population.
+2. Lister tous les echantillons-types de taille 3 (en distinguant les compositions)
+   et calculer les moyennes correspondantes.
+3. Retrouver les resultats precedents avec les proprietes de la moyenne empirique.
+4. Calculer la moyenne des variances empiriques non corrigees obtenues.
+5. Retrouver ce resultat via les proprietes de la variance empirique.
+6. Determiner $E(S_3^2)$ (variance empirique corrigee) a l'aide du cours.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 6
+
+**1. Moyenne et variance de la population.**
+
+La variable $X$ (valeur d'un billet tire au hasard) prend les valeurs $50$ et $20$ avec les probabilites
+$$
+P(X=50)=\frac{40}{100}=0{,}4,\qquad P(X=20)=\frac{60}{100}=0{,}6.
+$$
+On calcule :
+$$
+m=E(X)=50\times 0{,}4+20\times 0{,}6=20+12=32,
+$$
+$$
+E(X^2)=50^2\times 0{,}4+20^2\times 0{,}6=1000+240=1240,
+$$
+$$
+\sigma^2=\mathrm{Var}(X)=E(X^2)-[E(X)]^2=1240-1024=216.
+$$
+
+**2. Echantillons de taille 3 (avec remise) — moyennes et probabilites.**
+
+On distingue les compositions selon le nombre $k$ de billets de 50 € (les echantillons de meme composition ont la meme probabilite, donnee par la loi binomiale) :
+
+| $k$ (nb de 50 €) | Composition type | Probabilite | $\overline{x}$ |
+|:-:|:-:|:-:|:-:|
+| 3 | (50, 50, 50) | $\binom{3}{3}(0{,}4)^3(0{,}6)^0=0{,}064$ | 50 |
+| 2 | (50, 50, 20) | $\binom{3}{2}(0{,}4)^2(0{,}6)^1=0{,}288$ | 40 |
+| 1 | (50, 20, 20) | $\binom{3}{1}(0{,}4)^1(0{,}6)^2=0{,}432$ | 30 |
+| 0 | (20, 20, 20) | $\binom{3}{0}(0{,}4)^0(0{,}6)^3=0{,}216$ | 20 |
+
+Moyenne des moyennes :
+$$
+E(\overline{X}_3)=50\times 0{,}064+40\times 0{,}288+30\times 0{,}432+20\times 0{,}216=32=m.\;\checkmark
+$$
+
+Variance des moyennes :
+$$
+E(\overline{X}_3^2)=2500\times 0{,}064+1600\times 0{,}288+900\times 0{,}432+400\times 0{,}216=1096,
+$$
+$$
+\mathrm{Var}(\overline{X}_3)=1096-32^2=72.
+$$
+
+**3. Verification par les proprietes de la moyenne empirique.**
+
+$$
+E(\overline{X}_3)=m=32,\qquad
+\mathrm{Var}(\overline{X}_3)=\frac{\sigma^2}{n}=\frac{216}{3}=72.\;\checkmark
+$$
+
+**4. Moyenne des variances empiriques non corrigees.**
+
+Pour chaque type d'echantillon, $S_3'^2=\frac{1}{3}\sum_{i=1}^3(X_i-\overline{X}_3)^2$ :
+
+| Composition type | $\overline{x}$ | $S'^2$ |
+|:-:|:-:|:-:|
+| (50, 50, 50) | 50 | 0 |
+| (50, 50, 20) | 40 | $\frac{1}{3}(100+100+400)=200$ |
+| (50, 20, 20) | 30 | $\frac{1}{3}(400+100+100)=200$ |
+| (20, 20, 20) | 20 | 0 |
+
+$$
+E(S_3'^2)=0\times 0{,}064+200\times 0{,}288+200\times 0{,}432+0\times 0{,}216=144.
+$$
+
+**5. Verification par les proprietes de la variance empirique.**
+
+$$
+E(S_3'^2)=\frac{n-1}{n}\,\sigma^2=\frac{2}{3}\times 216=144.\;\checkmark
+$$
+
+**6. Variance empirique corrigee.**
+
+$$
+E(S_3^2)=\sigma^2=216.
+$$
+
+On peut aussi verifier directement : $S_3^2=\frac{n}{n-1}S_3'^2=\frac{3}{2}S_3'^2$, donc les valeurs prises sont $0$, $300$ et $300$, et
+$$
+E(S_3^2)=0\times 0{,}064+300\times 0{,}288+300\times 0{,}432+0\times 0{,}216=216=\sigma^2.\;\checkmark
+$$
+:::

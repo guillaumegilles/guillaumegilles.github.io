@@ -1,0 +1,383 @@
+---
+title: "Rappels de probabilités discrètes"
+abstract: |
+  Ce chapitre constitue un rappel des notions fondamentales sur les **variables aléatoires discrètes**, supposées connues des années précédentes. On y définit les variables aléatoires à valeurs dans un ensemble fini ou dénombrable, leur **loi de probabilité** (fonction de masse), leur **fonction de répartition** (fonction en escalier), ainsi que les indicateurs numériques — **espérance** et **variance** — qui résument leur comportement. On passe ensuite en revue les **lois discrètes classiques** : loi de Bernoulli, loi binomiale (et le schéma de Bernoulli qui la fait apparaître), loi uniforme discrète, loi géométrique (et sa propriété sans mémoire), et loi de Poisson (loi des événements rares, avec l'approximation de la loi binomiale). Ces rappels serviront de point de comparaison constant avec les lois à densité étudiées dans la suite du cours.
+date-modified: 2026-03-24
+---
+
+> Dans toute cette partie, on se place dans un espace probabilisé quelconque $(\Omega, \mathcal{A}, P)$.
+
+## I — Variables aléatoires discrètes
+
+### 1. Définition et loi de probabilité
+
+::: {.callout-note}
+## Définition — Variable aléatoire discrète
+
+Une **variable aléatoire discrète** $X$ est une application $X : \Omega \to E$ où $E$ est un ensemble **fini ou dénombrable** (c'est-à-dire en bijection avec une partie de $\mathbb{N}$). L'ensemble $X(\Omega)$ est appelé l'ensemble des **valeurs prises** par $X$.
+:::
+
+En pratique, $X$ associe à chaque résultat de l'expérience aléatoire un nombre : le nombre de Pile obtenus lors de lancers, le rang d'apparition du premier succès, le nombre de pannes dans un système, etc. Le caractère *discret* signifie que les valeurs possibles sont isolées les unes des autres — on peut les lister.
+
+::: {.callout-note}
+## Définition — Loi de probabilité (fonction de masse)
+
+La **loi de probabilité** (ou **fonction de masse**) de $X$ est la donnée de l'ensemble des valeurs prises $X(\Omega) = \{x_1, x_2, \ldots\}$ et des probabilités associées :
+$$\forall\, i, \quad p_i = P(X = x_i) \geq 0, \qquad \sum_i p_i = 1.$$
+:::
+
+La condition $\sum_i p_i = 1$ traduit l'axiome fondamental : quelque chose se produit forcément. En pratique, la loi de $X$ est souvent présentée sous forme d'un tableau :
+
+| $x_i$      | $x_1$  | $x_2$  | $\cdots$ |
+|:-----------:|:------:|:------:|:--------:|
+| $P(X=x_i)$ | $p_1$  | $p_2$  | $\cdots$ |
+
+::: {.callout-caution}
+## Exemple 1 — Trois lancers d'une pièce truquée
+
+On effectue trois lancers indépendants d'une pièce Pile/Face truquée où Pile a deux fois plus de chances d'apparaître que Face. On note $X$ le nombre de Pile obtenus.
+
+1. Déterminer $p = P(\text{Face})$, puis la loi de $X$.
+2. Calculer $P(X \geq 2)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 1
+
+Pour chaque lancer $X_i$, on a $P(X_i = 0) = p$ et $P(X_i = 1) = 2p$. Comme $p + 2p = 1$, on obtient $p = 1/3$.
+
+Les $X_i$ sont indépendantes et de même loi $\text{Ber}(2/3)$, donc $X = X_1 + X_2 + X_3 \hookrightarrow \mathcal{B}(3\,;\, 2/3)$.
+
+| $i$         | 0      | 1      | 2       | 3      |
+|:-----------:|:------:|:------:|:-------:|:------:|
+| $P(X = i)$  | $1/27$ | $6/27$ | $12/27$ | $8/27$ |
+
+On vérifie : $\sum P(X = i) = 27/27 = 1$.
+
+$$P(X \geq 2) = 1 - P(X = 0) - P(X = 1) = 1 - \frac{1}{27} - \frac{6}{27} = \frac{20}{27}.$$
+:::
+
+### 2. Fonction de répartition
+
+::: {.callout-note}
+## Définition — Fonction de répartition (cas discret)
+
+La **fonction de répartition** de la v.a.r. discrète $X$ est la fonction $F_X : \mathbb{R} \to [0\,;\,1]$ définie par :
+$$F_X(x) = P(X \leq x) = \sum_{x_i \leq x} P(X = x_i).$$
+:::
+
+Contrairement au cas continu (où $F_X$ est une fonction continue), la fonction de répartition d'une variable discrète est une **fonction en escalier** : elle est constante entre deux valeurs successives prises par $X$ et présente un saut de hauteur $P(X = x_i)$ en chaque point $x_i \in X(\Omega)$.
+
+::: {.callout-tip}
+## Remarques
+
+- $F_X$ est **croissante**, **continue à droite**, avec $\displaystyle\lim_{x \to -\infty} F_X(x) = 0$ et $\displaystyle\lim_{x \to +\infty} F_X(x) = 1$.
+- On peut retrouver la loi de $X$ à partir de $F_X$ en lisant les sauts : $P(X = x_i) = F_X(x_i) - F_X(x_i^-)$.
+- $P(a < X \leq b) = F_X(b) - F_X(a)$.
+:::
+
+### 3. Espérance et variance
+
+::: {.callout-note}
+## Définition — Espérance
+
+L'**espérance** de la v.a.r. discrète $X$ prenant les valeurs $x_1, x_2, \ldots$ est :
+$$E(X) = \sum_i x_i\, P(X = x_i)$$
+lorsque cette somme converge absolument.
+:::
+
+L'espérance est un **paramètre de position** : elle indique autour de quelle valeur se concentre la loi de $X$. On peut l'interpréter comme la **moyenne pondérée** des valeurs possibles, chaque valeur étant pondérée par sa probabilité.
+
+::: {.callout-note}
+## Définition — Variance et écart-type
+
+La **variance** de $X$ est :
+$$\text{Var}(X) = E\bigl[(X - E(X))^2\bigr] = E(X^2) - \bigl(E(X)\bigr)^2.$$
+
+L'**écart-type** est $\sigma(X) = \sqrt{\text{Var}(X)}$.
+:::
+
+La variance est un **paramètre de dispersion** : elle mesure l'étendue de la répartition des valeurs autour de l'espérance. La seconde égalité, dite **formule de König–Huygens**, simplifie les calculs en pratique.
+
+::: {.callout-important}
+## Proposition — Propriétés de l'espérance et de la variance
+
+Pour $X, Y$ des v.a.r. discrètes et $a, b \in \mathbb{R}$ :
+
+- **Linéarité de l'espérance** : $E(aX + b) = a\,E(X) + b$.
+- **Variance** : $\text{Var}(aX + b) = a^2\,\text{Var}(X)$.
+- **Théorème de transfert** : si $g : \mathbb{R} \to \mathbb{R}$, alors $E(g(X)) = \displaystyle\sum_i g(x_i)\, P(X = x_i)$.
+- Si $X$ et $Y$ sont **indépendantes** : $E(XY) = E(X)\,E(Y)$ et $\text{Var}(X+Y) = \text{Var}(X) + \text{Var}(Y)$.
+:::
+
+## II — Lois discrètes classiques
+
+### 1. Loi de Bernoulli
+
+::: {.callout-note}
+## Définition — Loi de Bernoulli $\text{Ber}(p)$
+
+Soit $p \in\, ]0\,;\,1[$. La v.a.r. $X$ suit une **loi de Bernoulli** de paramètre $p$, notée $X \hookrightarrow \text{Ber}(p)$, si :
+$$X(\Omega) = \{0,\, 1\}, \qquad P(X = 1) = p, \qquad P(X = 0) = 1 - p.$$
+
+- $E(X) = p$
+- $\text{Var}(X) = p(1-p)$
+:::
+
+La loi de Bernoulli modélise toute expérience à deux issues : succès ($X = 1$) ou échec ($X = 0$). Elle constitue la brique de base de nombreuses lois plus complexes.
+
+### 2. Loi binomiale et schéma de Bernoulli
+
+::: {.callout-note}
+## Définition — Loi binomiale $\mathcal{B}(n, p)$
+
+Soit $n \in \mathbb{N}^*$ et $p \in\, ]0\,;\,1[$. La v.a.r. $X$ suit une **loi binomiale** de paramètres $n$ et $p$, notée $X \hookrightarrow \mathcal{B}(n, p)$, si :
+$$X(\Omega) = \{0, 1, \ldots, n\}, \qquad \forall\, k = 0, \ldots, n, \quad P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}.$$
+
+- $E(X) = np$
+- $\text{Var}(X) = np(1-p)$
+:::
+
+::: {.callout-important}
+## Théorème — Schéma de Bernoulli
+
+Si on effectue $n$ expériences **indépendantes** de type Succès/Échec, chacune avec une même probabilité de succès $p$, et si $X$ désigne le nombre total de succès, alors :
+$$X \hookrightarrow \mathcal{B}(n, p).$$
+
+Réciproquement, si $X \hookrightarrow \mathcal{B}(n, p)$, alors $X = \displaystyle\sum_{i=1}^n X_i$ où les $X_i \hookrightarrow \text{Ber}(p)$ sont indépendantes.
+:::
+
+Le schéma de Bernoulli fait le lien entre la loi de Bernoulli (une seule épreuve) et la loi binomiale ($n$ épreuves). L'espérance $E(X) = np$ se déduit directement par linéarité : $E(X) = \sum E(X_i) = np$. De même, par indépendance : $\text{Var}(X) = \sum \text{Var}(X_i) = np(1-p)$.
+
+::: {.callout-caution}
+## Exemple 2 — Machines en panne
+
+On dispose de $n = 10$ machines qui tombent en panne indépendamment les unes des autres, chacune avec une probabilité $p = 0{,}01$. Quelle est la probabilité qu'il y ait au moins 2 machines en panne ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 2
+
+Pour $i = 1, \ldots, 10$, on pose $X_i = 1$ si la $i$-ème machine est en panne, $0$ sinon. Les $X_i$ sont indépendantes et $X_i \hookrightarrow \text{Ber}(0{,}01)$, donc $X = \sum_{i=1}^{10} X_i \hookrightarrow \mathcal{B}(10\,;\, 0{,}01)$.
+
+$$P(X \geq 2) = 1 - P(X = 0) - P(X = 1) = 1 - 0{,}99^{10} - 10 \times 0{,}01 \times 0{,}99^9 \simeq 0{,}004.$$
+:::
+
+### 3. Loi uniforme discrète
+
+::: {.callout-note}
+## Définition — Loi uniforme discrète $\mathcal{U}([\![1,\,n]\!])$
+
+La v.a.r. $X$ suit une **loi uniforme discrète** sur $[\![1, n]\!] = \{1, 2, \ldots, n\}$, notée $X \hookrightarrow \mathcal{U}([\![1, n]\!])$, si :
+$$\forall\, k = 1, \ldots, n, \quad P(X = k) = \frac{1}{n}.$$
+
+- $E(X) = \dfrac{n+1}{2}$ (milieu de l'intervalle $[\![1, n]\!]$)
+- $\text{Var}(X) = \dfrac{n^2 - 1}{12}$
+:::
+
+La loi uniforme discrète traduit l'**équiprobabilité** : toutes les valeurs sont également vraisemblables. C'est la loi naturelle d'un tirage au sort.
+
+**Démonstration des moments.** On utilise les formules classiques sur les sommes :
+
+$$E(X) = \frac{1}{n}\sum_{k=1}^n k = \frac{1}{n} \cdot \frac{n(n+1)}{2} = \frac{n+1}{2}.$$
+
+$$E(X^2) = \frac{1}{n}\sum_{k=1}^n k^2 = \frac{1}{n} \cdot \frac{n(n+1)(2n+1)}{6} = \frac{(n+1)(2n+1)}{6}.$$
+
+$$\text{Var}(X) = E(X^2) - (E(X))^2 = \frac{(n+1)(2n+1)}{6} - \frac{(n+1)^2}{4} = \frac{n^2 - 1}{12}.$$
+
+::: {.callout-caution}
+## Exemple 3 — Lancer de dé
+
+On lance un dé équilibré à 6 faces. Soit $X$ le numéro obtenu. Alors $X \hookrightarrow \mathcal{U}([\![1, 6]\!])$.
+
+$$E(X) = \frac{7}{2}, \qquad \text{Var}(X) = \frac{35}{12}.$$
+:::
+
+### 4. Loi géométrique
+
+::: {.callout-note}
+## Définition — Loi géométrique $\mathcal{G}(p)$
+
+Soit $p \in\, ]0\,;\,1[$ et $q = 1 - p$. La v.a.r. $X$ suit une **loi géométrique** de paramètre $p$, notée $X \hookrightarrow \mathcal{G}(p)$, si :
+$$X(\Omega) = \mathbb{N}^*, \qquad \forall\, n \geq 1, \quad P(X = n) = (1-p)^{n-1}\, p.$$
+
+- $E(X) = \dfrac{1}{p}$
+- $\text{Var}(X) = \dfrac{1-p}{p^2} = \dfrac{q}{p^2}$
+:::
+
+La loi géométrique modélise le **rang du premier succès** dans une suite d'épreuves de Bernoulli indépendantes. Si l'on effectue indéfiniment des lancers Pile/Face avec probabilité $p$ d'obtenir Pile, et si $X$ désigne le rang du premier Pile, alors $X \hookrightarrow \mathcal{G}(p)$.
+
+**Vérification.** L'événement $\{X = n\}$ signifie $n - 1$ échecs suivis d'un succès. Par indépendance :
+
+$$P(X = n) = \underbrace{(1-p) \cdots (1-p)}_{n-1 \text{ fois}} \times p = (1-p)^{n-1}\, p.$$
+
+On vérifie que c'est bien une loi de probabilité :
+
+$$\sum_{n=1}^{+\infty} (1-p)^{n-1}\, p = p \sum_{n=0}^{+\infty} (1-p)^n = p \cdot \frac{1}{1-(1-p)} = 1.$$
+
+::: {.callout-important}
+## Proposition — Propriété sans mémoire
+
+La loi géométrique est la seule loi discrète à posséder la **propriété sans mémoire** : pour tous $n, m \in \mathbb{N}^*$,
+
+$$P(X > n + m \mid X > n) = P(X > m).$$
+
+Autrement dit, sachant qu'on n'a pas eu de succès pendant les $n$ premières épreuves, la probabilité de devoir encore attendre au moins $m$ épreuves est la même que si l'on repartait de zéro.
+:::
+
+**Démonstration.** On calcule d'abord $P(X > n)$ : c'est la probabilité de $n$ échecs consécutifs, soit $P(X > n) = (1-p)^n$. Alors :
+
+$$P(X > n + m \mid X > n) = \frac{P(X > n + m)}{P(X > n)} = \frac{(1-p)^{n+m}}{(1-p)^n} = (1-p)^m = P(X > m). \qquad \square$$
+
+::: {.callout-caution}
+## Exemple 4 — Rang du premier Pile
+
+On lance indéfiniment une pièce équilibrée ($p = 1/2$). Soit $X$ le rang du premier Pile.
+
+1. Quelle est la loi de $X$ ? Calculer $E(X)$.
+2. Calculer $P(X > 3 \mid X > 1)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 4
+
+**1.** $X \hookrightarrow \mathcal{G}(1/2)$ donc $P(X = n) = (1/2)^n$ pour $n \geq 1$, et $E(X) = 1/p = 2$.
+
+**2.** Par la propriété sans mémoire :
+$$P(X > 3 \mid X > 1) = P(X > 2) = (1 - 1/2)^2 = 1/4.$$
+:::
+
+### 5. Loi de Poisson
+
+::: {.callout-note}
+## Définition — Loi de Poisson $\mathcal{P}(\lambda)$
+
+Soit $\lambda > 0$. La v.a.r. $X$ suit une **loi de Poisson** d'intensité $\lambda$, notée $X \hookrightarrow \mathcal{P}(\lambda)$, si :
+$$X(\Omega) = \mathbb{N}, \qquad \forall\, n \in \mathbb{N}, \quad P(X = n) = e^{-\lambda}\,\frac{\lambda^n}{n!}.$$
+
+- $E(X) = \lambda$
+- $\text{Var}(X) = \lambda$
+:::
+
+La loi de Poisson est la **loi des événements rares** : elle apparaît naturellement lorsqu'on compte le nombre d'occurrences d'un événement rare sur un grand nombre d'épreuves, ou sur un intervalle de temps/espace continu. La propriété remarquable $\text{Var}(X) = E(X) = \lambda$ est caractéristique de la loi de Poisson.
+
+**Vérification.** On utilise le développement en série de l'exponentielle : $\displaystyle\sum_{n=0}^{+\infty} \frac{x^n}{n!} = e^x$ pour tout $x \in \mathbb{R}$.
+
+$$\sum_{n=0}^{+\infty} P(X = n) = e^{-\lambda} \sum_{n=0}^{+\infty} \frac{\lambda^n}{n!} = e^{-\lambda} \cdot e^{\lambda} = 1. \quad \checkmark$$
+
+**Calcul de l'espérance :**
+
+$$E(X) = \sum_{n=0}^{+\infty} n\, e^{-\lambda}\,\frac{\lambda^n}{n!} = e^{-\lambda} \sum_{n=1}^{+\infty} \frac{\lambda^n}{(n-1)!} = \lambda\, e^{-\lambda} \sum_{n=0}^{+\infty} \frac{\lambda^n}{n!} = \lambda\, e^{-\lambda}\, e^{\lambda} = \lambda.$$
+
+**Calcul de la variance :** On calcule d'abord $E(X(X-1)) = \lambda^2$ (par un raisonnement analogue), puis :
+
+$$\text{Var}(X) = E(X(X-1)) + E(X) - (E(X))^2 = \lambda^2 + \lambda - \lambda^2 = \lambda.$$
+
+## III — Approximation de la loi binomiale par la loi de Poisson
+
+::: {.callout-important}
+## Proposition — Approximation de Poisson
+
+Si $X_n \hookrightarrow \mathcal{B}(n, p_n)$ avec $\displaystyle\lim_{n \to +\infty} n\, p_n = \lambda > 0$, alors pour tout $k \in \mathbb{N}$ :
+$$\lim_{n \to +\infty} P(X_n = k) = e^{-\lambda}\,\frac{\lambda^k}{k!}.$$
+
+En pratique, on admet l'approximation $\mathcal{B}(n, p) \approx \mathcal{P}(\lambda)$ avec $\lambda = np$ lorsque :
+
+- $n \geq 50$,
+- $p \leq 0{,}1$,
+- $np \leq 10$.
+:::
+
+Cette approximation est extrêmement utile en pratique : dès que le nombre d'épreuves est grand et la probabilité de succès faible, les calculs combinatoires de la loi binomiale deviennent très lourds (coefficients binomiaux géants, puissances proches de 1). La loi de Poisson fournit une formule plus simple et des valeurs tabulées.
+
+::: {.callout-caution}
+## Exemple 5 — Billes dans des boîtes
+
+On répartit $N$ billes au hasard dans $m$ boîtes. Soit $X$ le nombre de billes dans une boîte donnée.
+
+1. Quelle est la loi de $X$ ?
+2. Sous quelle condition peut-on approcher la loi de $X$ par une loi de Poisson ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 5
+
+**1.** On pose $X_i = 1$ si la $i$-ème bille arrive dans la boîte considérée, $0$ sinon. Chaque $X_i \hookrightarrow \text{Ber}(1/m)$ et les $X_i$ sont indépendantes. Donc $X = \sum_{i=1}^N X_i \hookrightarrow \mathcal{B}(N,\, 1/m)$.
+
+**2.** Si $N$ devient grand et que le nombre moyen de billes par boîte $\lambda = N/m$ tend vers une constante $\lambda > 0$, alors les conditions de l'approximation de Poisson sont réunies (car $p = 1/m$ est petit quand $m$ est grand) et :
+$$X \approx \mathcal{P}(\lambda) \quad \text{avec } \lambda = \frac{N}{m}.$$
+:::
+
+## IV — Résumé des lois discrètes classiques
+
+| Loi | Notation | $X(\Omega)$ | $P(X = k)$ | $E(X)$ | $\text{Var}(X)$ |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| Bernoulli | $\text{Ber}(p)$ | $\{0, 1\}$ | $p^k(1-p)^{1-k}$ | $p$ | $p(1-p)$ |
+| Binomiale | $\mathcal{B}(n, p)$ | $\{0, \ldots, n\}$ | $\binom{n}{k}p^k(1-p)^{n-k}$ | $np$ | $np(1-p)$ |
+| Uniforme | $\mathcal{U}([\![1,n]\!])$ | $\{1, \ldots, n\}$ | $1/n$ | $\frac{n+1}{2}$ | $\frac{n^2-1}{12}$ |
+| Géométrique | $\mathcal{G}(p)$ | $\mathbb{N}^*$ | $(1-p)^{k-1}p$ | $\frac{1}{p}$ | $\frac{1-p}{p^2}$ |
+| Poisson | $\mathcal{P}(\lambda)$ | $\mathbb{N}$ | $e^{-\lambda}\frac{\lambda^k}{k!}$ | $\lambda$ | $\lambda$ |
+
+### Exercice 1
+
+Un lot contient $5\%$ de pièces défectueuses. On prélève $n = 100$ pièces de façon indépendante.
+
+a. Soit $X$ le nombre de pièces défectueuses. Quelle est la loi de $X$ ?
+b. Calculer $E(X)$ et $\text{Var}(X)$.
+c. Justifier que l'on peut approcher la loi de $X$ par une loi de Poisson. Préciser le paramètre $\lambda$.
+d. En utilisant cette approximation, calculer $P(X = 0)$, $P(X = 1)$ et $P(X \geq 2)$.
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+**a.** Les $100$ prélèvements sont indépendants, chacun avec probabilité $p = 0{,}05$ de tomber sur une pièce défectueuse. Donc $X \hookrightarrow \mathcal{B}(100\,;\, 0{,}05)$.
+
+**b.** $E(X) = np = 5$ et $\text{Var}(X) = np(1-p) = 4{,}75$.
+
+**c.** On a $n = 100 \geq 50$, $p = 0{,}05 \leq 0{,}1$ et $np = 5 \leq 10$ : les conditions de l'approximation de Poisson sont satisfaites, avec $\lambda = np = 5$.
+
+**d.** Avec $X \approx \mathcal{P}(5)$ :
+
+$$P(X = 0) = e^{-5} \simeq 0{,}0067, \qquad P(X = 1) = 5\,e^{-5} \simeq 0{,}0337.$$
+
+$$P(X \geq 2) = 1 - P(X = 0) - P(X = 1) = 1 - 6\,e^{-5} \simeq 0{,}960.$$
+:::
+
+### Exercice 2
+
+Un central téléphonique reçoit en moyenne $\lambda = 3$ appels par minute.
+
+a. Justifier la modélisation par une loi de Poisson $\mathcal{P}(3)$.
+b. Calculer la probabilité de ne recevoir aucun appel pendant une minute.
+c. Calculer la probabilité de recevoir au moins 2 appels pendant une minute.
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+**a.** Les appels sont des événements rares et indépendants survenant à un taux moyen constant : c'est le modèle de la loi de Poisson. Soit $X$ le nombre d'appels par minute, $X \hookrightarrow \mathcal{P}(3)$.
+
+**b.** $P(X = 0) = e^{-3} \simeq 0{,}0498$.
+
+**c.** $P(X \geq 2) = 1 - P(X = 0) - P(X = 1) = 1 - e^{-3} - 3e^{-3} = 1 - 4e^{-3} \simeq 0{,}801$.
+:::
+
+### Exercice 3
+
+On lance indéfiniment un dé équilibré à 6 faces. Soit $X$ le rang d'apparition du premier 6.
+
+a. Quelle est la loi de $X$ ? Calculer $E(X)$.
+b. Calculer $P(X > 6)$, puis $P(X > 12 \mid X > 6)$.
+c. Commenter le résultat de la question b. à la lumière de la propriété sans mémoire.
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+**a.** $X \hookrightarrow \mathcal{G}(1/6)$ car à chaque lancer la probabilité de succès est $p = 1/6$. $E(X) = 6$ : en moyenne, il faut 6 lancers pour obtenir le premier 6.
+
+**b.** $P(X > 6) = (1 - 1/6)^6 = (5/6)^6 \simeq 0{,}335$.
+
+Par la propriété sans mémoire :
+$$P(X > 12 \mid X > 6) = P(X > 6) = (5/6)^6 \simeq 0{,}335.$$
+
+**c.** Sachant que les 6 premiers lancers n'ont donné aucun 6, la probabilité de devoir encore attendre au moins 6 lancers est exactement la même que la probabilité initiale de devoir attendre au moins 6 lancers. Le dé « ne se souvient pas » des résultats passés : c'est la propriété sans mémoire de la loi géométrique.
+:::

@@ -1,0 +1,714 @@
+---
+title: "Convergence de variables aléatoires"
+abstract: |
+  Ce chapitre étudie les différentes notions de **convergence** pour des suites
+  de variables aléatoires. On présente d'abord les **inégalités de
+  concentration** (Markov, Bienaymé-Tchebychev) qui permettent de contrôler
+  les déviations d'une variable par rapport à son espérance. On introduit
+  ensuite la **convergence en probabilité** et la **convergence en moyenne
+  quadratique**, et on établit la **loi faible des grands nombres**. On
+  présente la **convergence presque sûre**, la **loi forte des grands
+  nombres** et la **méthode de Monte-Carlo**. Le chapitre se poursuit par
+  la **convergence en loi** et le **théorème limite central**, puis se termine
+  par les **résultats de continuité** et le **théorème de Slutsky**.
+date-modified: 2026-03-24
+---
+
+> Dans tout ce chapitre, les variables aléatoires réelles considérées sont définies sur un même espace probabilisé $(\Omega, \mathcal{F}, P)$.
+
+## I - Inégalités de concentration
+
+### 1. Inégalité de Markov
+
+::: {.callout-important}
+## Proposition — Inégalité de Markov
+
+Soit $X$ une v.a.r. intégrable **positive**. Alors :
+$$\forall a > 0,\quad P(X \geq a) \leq \frac{E(X)}{a}.$$
+:::
+
+::: {.callout-tip collapse="true"}
+## Démonstration
+
+On écrit $X \geq a\,\mathbf{1}_{\{X \geq a\}}$ (car $X \geq 0$), puis on prend l'espérance :
+$$E(X) \geq a\,P(X \geq a),$$
+d'où le résultat.
+:::
+
+Cette inégalité ne suppose aucune connaissance de la loi de $X$ au-delà de son espérance. Elle devient sans intérêt dès que $a < E(X)$, car le majorant dépasse alors 1.
+
+::: {.callout-caution}
+## Exemple 1 — Salaire moyen en France
+
+En 2022, le salaire brut mensuel moyen en France était de 2 988 €.
+Majorer la probabilité qu'un salarié français choisi au hasard gagne plus de 8 964 €.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 1
+
+Soit $X$ le salaire brut mensuel. On a $E(X) = 2988$ et $X \geq 0$.
+Par l'inégalité de Markov :
+$$P(X \geq 8964) \leq \frac{2988}{8964} = \frac{1}{3} \approx 0{,}333.$$
+
+Moins d'un tiers des salariés gagnent plus de 8 964 € bruts par mois.
+:::
+
+### 2. Inégalité de Bienaymé-Tchebychev
+
+::: {.callout-important}
+## Proposition — Inégalité de Bienaymé-Tchebychev
+
+Soit $X$ une v.a.r. de carré intégrable. Alors :
+$$\forall \varepsilon > 0,\quad P(|X - E(X)| \geq \varepsilon) \leq \frac{\mathrm{Var}(X)}{\varepsilon^2}.$$
+:::
+
+::: {.callout-tip collapse="true"}
+## Démonstration
+
+La variable $Y = (X - E(X))^2$ est positive et $E(Y) = \mathrm{Var}(X)$. On applique
+l'inégalité de Markov à $Y$ avec le seuil $a = \varepsilon^2$ :
+$$P\!\left((X - E(X))^2 \geq \varepsilon^2\right) \leq \frac{\mathrm{Var}(X)}{\varepsilon^2}.$$
+Or $\{(X - E(X))^2 \geq \varepsilon^2\} = \{|X - E(X)| \geq \varepsilon\}$.
+:::
+
+::: {.callout-tip}
+## Remarques
+
+- Cette inégalité est souvent médiocre numériquement : pour $X \sim \mathcal{N}(m, \sigma^2)$,
+  elle donne $P(|X - m| \geq 2\sigma) \leq \tfrac{1}{4}$, alors que la valeur exacte est
+  environ $0{,}05$.
+- Son intérêt est avant tout **théorique** : elle permet de démontrer la loi faible des
+  grands nombres et de calibrer les tailles d'échantillon.
+:::
+
+::: {.callout-caution}
+## Exemple 2 — Paniers par match
+
+Lors d'une saison, une équipe a marqué en moyenne 40 paniers par match avec une variance de 5.
+Majorer la probabilité que lors de son prochain match, l'équipe marque moins de 30 ou plus de 50 paniers.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 2
+
+Soit $X$ le nombre de paniers. On a $E(X) = 40$ et $\mathrm{Var}(X) = 5$.
+$$P(X < 30 \text{ ou } X > 50) = P(|X - 40| \geq 10)
+\leq \frac{\mathrm{Var}(X)}{10^2} = \frac{5}{100} = 0{,}05.$$
+:::
+
+::: {.callout-caution}
+## Exercice 1 — Précision d'un sondage
+
+Dans une ville de 20 000 habitants, 75 % des personnes interrogées sont
+favorables à la rénovation du théâtre municipal.
+
+Pour $1\le k\le n$, on note $X_k=1$ si la $k$-ième personne est favorable,
+$X_k=0$ sinon.
+
+1. Donner la loi de $X_k$, son espérance $m$ et sa variance $\sigma^2$.
+2. On note $M_n=\dfrac{1}{n}\displaystyle\sum_{k=1}^n X_k$.
+Déterminer une taille d'échantillon $n$ pour obtenir :
+   - une précision 0,05 avec risque 0,1, soit $P(|M_n-m|\ge 0{,}05)\le 0{,}1$,
+   - une précision 0,01 avec risque 0,05.
+
+   Commenter le réalisme de la seconde situation.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+- $X_k\sim\mathcal{B}(p)$ avec $p=0{,}75$.
+- Utiliser l'inégalité de Bienaymé-Tchebychev :
+$$P(|M_n-m|\ge \varepsilon)\le \frac{\mathrm{Var}(M_n)}{\varepsilon^2}
+=\frac{p(1-p)}{n\varepsilon^2}.$$
+- Pour la précision 0,05 avec risque 0,1 : $n \geq \dfrac{p(1-p)}{\varepsilon^2 \cdot \alpha} = \dfrac{0{,}75 \times 0{,}25}{(0{,}05)^2 \times 0{,}1} = 750$.
+- Pour la précision 0,01 avec risque 0,05 : $n \geq \dfrac{0{,}75 \times 0{,}25}{(0{,}01)^2 \times 0{,}05} = 37\,500$. Ce chiffre dépasse largement la taille de la ville (20 000 hab.), ce qui rend le sondage irréalisable.
+:::
+
+## II - Convergence en probabilité et loi faible des grands nombres
+
+### 1. Définitions de convergence
+
+::: {.callout-note}
+## Définition — Convergence en probabilité
+
+On dit qu'une suite de v.a.r. $(X_n)$ **converge en probabilité** vers une v.a.r. $X$,
+et on note $X_n \xrightarrow[n\to+\infty]{P} X$, si et seulement si :
+$$\forall \varepsilon > 0,\quad \lim_{n\to+\infty} P(|X_n - X| > \varepsilon) = 0.$$
+:::
+
+::: {.callout-caution}
+## Exemple 3 — Convergence en probabilité et lois uniformes
+
+Soit $(U_n)$ une suite de v.a.r. indépendantes de même loi $\mathcal{U}([0,1])$.
+On pose, pour tout entier $n \geq 1$, $X_n = \min(U_1, \ldots, U_n)$.
+
+Montrer que $X_n \xrightarrow{P} 0$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 3
+
+Pour tout $\varepsilon \in (0,1)$, par indépendance des $U_i$ :
+$$P(|X_n - 0| > \varepsilon) = P(X_n > \varepsilon)
+= P(U_1 > \varepsilon, \ldots, U_n > \varepsilon)
+= \prod_{i=1}^n P(U_i > \varepsilon)
+= (1 - \varepsilon)^n.$$
+
+Comme $0 < 1 - \varepsilon < 1$, on a $(1 - \varepsilon)^n \to 0$, donc $X_n \xrightarrow{P} 0$.
+:::
+
+::: {.callout-note}
+## Définition — Convergence en moyenne quadratique
+
+On dit que $(X_n)$ **converge en moyenne quadratique** vers $X$,
+et on note $X_n \xrightarrow[n\to+\infty]{L^2} X$, si et seulement si :
+$$\lim_{n\to+\infty} E\!\left[(X_n - X)^2\right] = 0.$$
+:::
+
+::: {.callout-important}
+## Proposition
+
+$$X_n \xrightarrow{L^2} X \implies X_n \xrightarrow{P} X.$$
+:::
+
+::: {.callout-tip collapse="true"}
+## Démonstration
+
+Par Bienaymé-Tchebychev appliqué à $X_n - X$ :
+$$P(|X_n - X| > \varepsilon) \leq \frac{E\!\left[(X_n - X)^2\right]}{\varepsilon^2} \xrightarrow[n\to+\infty]{} 0.$$
+:::
+
+::: {.callout-caution}
+## Exercice 2 — Contre-exemple : convergence en probabilité sans convergence $L^2$
+
+On considère une suite $(X_n)$ définie par
+$$P(X_n=n)=\frac{1}{n}, \qquad P(X_n=0)=1-\frac{1}{n}.$$
+
+1. Pour $\varepsilon>0$, calculer $P(|X_n|>\varepsilon)$.
+   En déduire que $X_n\to 0$ en probabilité.
+2. Calculer $E(X_n)$ et $\mathrm{Var}(X_n)$ et montrer que la convergence en
+   moyenne quadratique vers 0 n'a pas lieu.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+- Pour tout $\varepsilon>0$, dès que $n>\varepsilon$ :
+$$P(|X_n|>\varepsilon)=P(X_n=n)=\frac{1}{n} \to 0.$$
+- Pour la convergence $L^2$ vers 0, il faut $E(X_n^2)\to 0$. Or $E(X_n^2)=n^2 \cdot \dfrac{1}{n} = n \to +\infty$.
+- Donc $X_n \xrightarrow{P} 0$ mais $X_n \not\xrightarrow{L^2} 0$ : la convergence en probabilité n'implique pas la convergence en moyenne quadratique.
+:::
+
+::: {.callout-important}
+## Proposition (admise) — Caractérisation de la convergence $L^2$
+
+$$X_n \xrightarrow{L^2} m \iff
+\begin{cases}
+E(X_n) \xrightarrow[n\to+\infty]{} m,\\
+\mathrm{Var}(X_n) \xrightarrow[n\to+\infty]{} 0.
+\end{cases}$$
+
+En particulier, dans ce cas, $X_n \xrightarrow{P} m$.
+:::
+
+### 2. Loi faible des grands nombres
+
+Soit $(X_n)$ une suite de v.a.r. i.i.d. de carré intégrable, d'espérance $m$ et de variance
+$\sigma^2$. La **moyenne empirique** est :
+$$\overline{X}_n = \frac{1}{n}\sum_{i=1}^n X_i.$$
+
+::: {.callout-important}
+## Proposition — Loi faible des grands nombres
+
+Soit $(X_n)$ une suite de v.a.r. i.i.d. de carré intégrable, d'espérance $m$ et de
+variance $\sigma^2$. Alors :
+$$\forall \varepsilon > 0,\quad P\!\left(|\overline{X}_n - m| \geq \varepsilon\right)
+\leq \frac{\sigma^2}{n\varepsilon^2}.$$
+
+En particulier, $\overline{X}_n \xrightarrow[n\to+\infty]{P} m$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Démonstration
+
+On vérifie la convergence $L^2$ :
+$$E(\overline{X}_n) = m, \qquad \mathrm{Var}(\overline{X}_n) = \frac{\sigma^2}{n} \xrightarrow[n\to+\infty]{} 0.$$
+
+Donc $\overline{X}_n \xrightarrow{L^2} m$, ce qui implique $\overline{X}_n \xrightarrow{P} m$.
+L'inégalité découle alors directement de Bienaymé-Tchebychev :
+$$P\!\left(|\overline{X}_n - m| \geq \varepsilon\right) \leq \frac{\mathrm{Var}(\overline{X}_n)}{\varepsilon^2} = \frac{\sigma^2}{n\varepsilon^2}.$$
+:::
+
+::: {.callout-caution}
+## Exemple 4 — Population de daltoniens
+
+Une population d'individus contient 3 % de daltoniens. On prélève un échantillon de
+$n$ individus avec remise.
+
+Déterminer $n$ pour que la probabilité que l'échantillon contienne entre 2,5 % et 3,5 %
+de daltoniens soit supérieure à 95 %.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 4
+
+Soit $X_i = 1$ si la personne $i$ est daltonienne, 0 sinon. Les $X_i$ sont i.i.d. de loi
+$\mathcal{B}(p)$ avec $p = 0{,}03$, et $\mathrm{Var}(X_i) = p(1-p) = 0{,}03 \times 0{,}97$.
+
+On cherche $n$ tel que $P(|\overline{X}_n - 0{,}03| < 0{,}005) \geq 0{,}95$, soit :
+$$P\!\left(|\overline{X}_n - 0{,}03| \geq 0{,}005\right) \leq 0{,}05.$$
+
+Par Bienaymé-Tchebychev :
+$$\frac{p(1-p)}{n \times (0{,}005)^2} \leq 0{,}05
+\implies n \geq \frac{0{,}03 \times 0{,}97}{0{,}05 \times 0{,}000025} = 23\,280.$$
+:::
+
+::: {.callout-important}
+## Proposition (admise) — Convergence de la variance empirique
+
+Soit $(X_n)$ une suite de v.a.r. i.i.d. d'espérance $m$ et de variance $\sigma^2$. Alors :
+$$S_n'^2 = \frac{1}{n}\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2
+\xrightarrow[n\to+\infty]{P} \sigma^2,$$
+$$S_n^2 = \frac{1}{n-1}\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2
+\xrightarrow[n\to+\infty]{P} \sigma^2.$$
+:::
+
+::: {.callout-caution}
+## Exercice 3 — Dé équilibré et trois types de convergence
+
+On lance indéfiniment un dé équilibré à 6 faces.
+Pour $n\ge 1$, on note $X_n$ la moyenne des $n$ premiers lancers.
+
+1. Calculer $E(X_1)$, $\mathrm{Var}(X_1)$, puis $E(X_n)$ et $\mathrm{Var}(X_n)$.
+2. Avec Bienaymé-Tchebychev, déterminer $n$ tel que
+$$P(3{,}4\le X_n\le 3{,}6)\ge 0{,}8.$$
+3. Montrer que $(X_n)$ converge vers un réel $m$ à préciser :
+   - en probabilité,
+   - en moyenne quadratique,
+   - en loi.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+- Les lancers sont i.i.d. de loi uniforme sur $\{1,\ldots,6\}$, donc $m = E(X_1) = 3{,}5$ et $\mathrm{Var}(X_1) = \dfrac{35}{12}$.
+- $\mathrm{Var}(X_n) = \mathrm{Var}(X_1)/n \to 0$.
+- Pour (2) : $P(|X_n - 3{,}5| < 0{,}1) \geq 1 - \dfrac{\mathrm{Var}(X_n)}{(0{,}1)^2} \geq 0{,}8$ donne $n \geq \dfrac{35/12}{0{,}01 \times 0{,}2} \approx 1458$.
+- Pour (3) : convergence en probabilité par la LFGN ; convergence $L^2$ car $\mathrm{Var}(X_n)\to 0$ et $E(X_n)\to m$ ; convergence en loi découle de la convergence en probabilité.
+:::
+
+## III - Convergence presque sûre et loi forte des grands nombres
+
+### 1. Convergence presque sûre
+
+::: {.callout-note}
+## Définition — Convergence presque sûre
+
+On dit qu'une suite de v.a.r. $(X_n)$ **converge presque sûrement** (p.s.) vers une v.a.r. $X$,
+et on note $X_n \xrightarrow[n\to+\infty]{p.s.} X$, si et seulement si :
+$$P\!\left(\left\{\omega \in \Omega \mid X_n(\omega) \xrightarrow[n\to+\infty]{} X(\omega)\right\}\right) = 1.$$
+:::
+
+::: {.callout-tip}
+## Remarques
+
+- $X_n \xrightarrow{p.s.} X$ signifie que pour presque tout $\omega \in \Omega$, la suite numérique $X_n(\omega)$ converge vers $X(\omega)$. La convergence a lieu sauf éventuellement sur un ensemble d'événements de probabilité nulle.
+- La convergence presque sûre ne dit rien sur la **vitesse** de convergence.
+:::
+
+::: {.callout-important}
+## Proposition (admise)
+
+$$X_n \xrightarrow{p.s.} X \implies X_n \xrightarrow{P} X.$$
+
+La réciproque est fausse en général.
+:::
+
+### 2. Loi forte des grands nombres
+
+::: {.callout-important}
+## Théorème (admis) — Loi forte des grands nombres
+
+Soit $(X_n)$ une suite de v.a.r. i.i.d. **intégrables**, d'espérance commune $m$. Alors :
+$$\overline{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow[n\to+\infty]{p.s.} m.$$
+:::
+
+::: {.callout-tip}
+## Remarque — Comparaison avec la loi faible
+
+- La **loi faible** des grands nombres (section II) affirme $\overline{X}_n \xrightarrow{P} m$ sous l'hypothèse que les $X_i$ sont de carré intégrable (existence de la variance).
+- La **loi forte** donne un résultat plus puissant (convergence p.s.) sous une hypothèse plus faible (simple intégrabilité, pas besoin de variance finie).
+- La loi forte implique la loi faible, mais la réciproque est fausse.
+:::
+
+### 3. Méthode de Monte-Carlo
+
+::: {.callout-important}
+## Proposition — Méthode de Monte-Carlo
+
+Soit $(X_n)$ une suite de v.a.r. i.i.d. de densité $p$ sur $\mathbb{R}$, et $h : \mathbb{R} \to \mathbb{R}$ une fonction continue par morceaux telle que $h(X_1)$ soit intégrable. Alors :
+$$I_n = \frac{1}{n}\sum_{i=1}^n h(X_i) \xrightarrow[n\to+\infty]{p.s.} E(h(X_1)) = \int_{\mathbb{R}} h(x)\,p(x)\,dx.$$
+
+Si de plus $h(X_1)$ est de carré intégrable, en posant $\sigma^2 = \mathrm{Var}(h(X_1))$, la vitesse de convergence est de l'ordre de $\sigma / \sqrt{n}$.
+:::
+
+::: {.callout-tip}
+## Remarque
+
+La méthode de Monte-Carlo permet d'**estimer numériquement** une intégrale $\int_{\mathbb{R}} h(x)\,p(x)\,dx$ en simulant un grand nombre de réalisations de $X$ et en calculant la moyenne empirique de $h(X_i)$.
+:::
+
+::: {.callout-caution}
+## Exemple 7 — Estimation d'une intégrale par Monte-Carlo
+
+On souhaite estimer $I = \int_0^1 e^{-x^2}\,dx$.
+
+On pose $h(x) = e^{-x^2}$ et on génère $n$ réalisations $U_1, \ldots, U_n$ i.i.d. de loi $\mathcal{U}([0,1])$. Alors :
+$$I_n = \frac{1}{n}\sum_{i=1}^n e^{-U_i^2} \xrightarrow[n\to+\infty]{p.s.} E(e^{-U_1^2}) = \int_0^1 e^{-x^2}\,dx = I.$$
+
+Pour $n = 10\,000$, on obtient typiquement $I_n \approx 0{,}747$, proche de la valeur exacte $I \approx 0{,}7468$.
+:::
+
+## IV - Convergence en loi et théorème limite central
+
+::: {.callout-note}
+## Définition — Convergence en loi
+
+Soit $(X_n)$ une suite de v.a.r. de fonctions de répartition $F_{X_n}$, et $X$ une v.a.r.
+de fonction de répartition $F_X$. On dit que $(X_n)$ **converge en loi** vers $X$,
+et on note $X_n \xrightarrow[n\to+\infty]{\mathcal{L}} X$, si et seulement si, en tout point
+de continuité de $F_X$ :
+$$\lim_{n\to+\infty} F_{X_n}(x) = F_X(x).$$
+:::
+
+::: {.callout-tip}
+## Remarque
+
+Pour une suite de v.a.r. **discrètes** :
+$X_n \xrightarrow{\mathcal{L}} X \iff \forall k \in \mathbb{N},\; P(X_n = k) \to P(X = k)$.
+:::
+
+::: {.callout-important}
+## Proposition (admise) — Lien entre convergence en probabilité et en loi
+
+$$X_n \xrightarrow{P} X \implies X_n \xrightarrow{\mathcal{L}} X.$$
+
+La réciproque est fausse en général.
+:::
+
+::: {.callout-caution}
+## Exemple 5
+
+En reprenant l'exemple 3, justifier que $X_n \xrightarrow{\mathcal{L}} 0$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 5
+
+On a montré dans l'exemple 3 que $X_n \xrightarrow{P} 0$. Puisque la convergence en
+probabilité implique la convergence en loi, on conclut $X_n \xrightarrow{\mathcal{L}} 0$.
+:::
+
+::: {.callout-caution}
+## Exercice 4 — Suites de lois exponentielles
+
+On considère une suite $(\lambda_n)$ de réels strictement positifs avec
+$\lambda_n\to\lambda\in(0,+\infty]$,
+et une suite $(X_n)$ telle que $X_n\sim\mathcal{E}(\lambda_n)$.
+
+1. Étudier la convergence en loi de $(X_n)$.
+2. Si $\lambda=+\infty$, étudier la convergence de $X_n$ vers 0 :
+   - en probabilité,
+   - en moyenne quadratique.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+- La fonction de répartition de $X_n$ est $F_n(x)=1-e^{-\lambda_n x}$ pour $x\ge 0$.
+- Si $\lambda_n\to\lambda\in(0,+\infty)$ : $F_n(x)\to 1-e^{-\lambda x}$, donc $X_n\xrightarrow{\mathcal{L}}\mathcal{E}(\lambda)$.
+- Si $\lambda_n\to+\infty$ : $F_n(x)\to 1$ pour tout $x>0$, donc $X_n\xrightarrow{\mathcal{L}}0$ (masse de Dirac en 0).
+- Convergence en probabilité vers 0 ($\lambda=+\infty$) : $P(X_n>\varepsilon)=e^{-\lambda_n\varepsilon}\to 0$.
+- Convergence $L^2$ vers 0 : $E(X_n^2)=2/\lambda_n^2\to 0$, donc $X_n\xrightarrow{L^2}0$.
+:::
+
+::: {.callout-important}
+## Proposition (admise) — Théorème limite central
+
+Soit $(X_n)$ une suite de v.a.r. i.i.d. de carré intégrable, d'espérance $m$ et de
+variance $\sigma^2 > 0$. Alors :
+$$Z_n = \frac{\overline{X}_n - m}{\sigma / \sqrt{n}}
+\xrightarrow[n\to+\infty]{\mathcal{L}} \mathcal{N}(0,1).$$
+
+Autrement dit, $F_{Z_n}(t) \to \Phi(t)$ pour tout $t$, où $\Phi$ désigne la fonction de
+répartition de $\mathcal{N}(0,1)$.
+:::
+
+Lorsque $n \to +\infty$, $\overline{X}_n$ se comporte en loi comme
+$\mathcal{N}\!\left(m, \dfrac{\sigma^2}{n}\right)$, et ce **quelle que soit la loi des $X_i$** :
+c'est le caractère universel du théorème limite central.
+
+::: {.callout-important}
+## Proposition — Approximation normale de la loi binomiale
+
+Soit $(X_n)$ une suite de v.a.r. i.i.d. de loi $\mathcal{B}(p)$.
+Alors $S_n = \sum_{i=1}^n X_i \sim \mathcal{B}(n,p)$ et :
+$$\frac{S_n - np}{\sqrt{np(1-p)}} \xrightarrow[n\to+\infty]{\mathcal{L}} \mathcal{N}(0,1),$$
+soit $S_n \overset{\mathcal{L}}{\approx} \mathcal{N}\!\left(np,\; np(1-p)\right)$.
+
+**Conditions pratiques :** $n \geq 30$, $np \geq 5$ et $n(1-p) \geq 5$.
+:::
+
+::: {.callout-tip}
+## Remarque — Approximation de Poisson
+
+Si $p$ est petit (ou $p \to 0$ quand $n \to +\infty$), il est préférable d'approximer
+$\mathcal{B}(n,p)$ par une loi de Poisson $\mathcal{P}(np)$.
+
+**Conditions pratiques :** $n \geq 30$, $p \leq 0{,}1$ et $np < 15$.
+:::
+
+::: {.callout-caution}
+## Exemple 6 — Daltoniens dans un grand échantillon
+
+On suppose que la population est composée de 3 % de daltoniens et on interroge
+1 000 personnes (avec remise).
+
+Quelle est la probabilité qu'il y ait plus de 25 daltoniens dans l'échantillon ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exemple 6
+
+Soit $X$ le nombre de daltoniens. On a $X \sim \mathcal{B}(1000, 0{,}03)$.
+
+**Vérification :** $n = 1000 \geq 30$, $np = 30 \geq 5$, $n(1-p) = 970 \geq 5$. ✓
+
+On approche $X \approx \mathcal{N}(30,\; 30 \times 0{,}97) = \mathcal{N}(30,\; 29{,}1)$.
+
+$$P(X > 25)
+= P\!\left(\frac{X - 30}{\sqrt{29{,}1}} > \frac{25 - 30}{\sqrt{29{,}1}}\right)
+= P(Z > -0{,}93)
+= \Phi(0{,}93) \approx 0{,}824.$$
+
+Il y a donc environ 82 % de chances qu'il y ait plus de 25 daltoniens dans l'échantillon.
+:::
+
+::: {.callout-caution}
+## Exercice 5 — Contrôle de pannes d'ordinateurs
+
+On contrôle un lot de 1000 ordinateurs. On suppose qu'un ordinateur a 1 % de
+probabilité de tomber en panne dans le mois.
+
+On pose, pour $i=1,\dots,1000$, $X_i=\mathbf{1}_{\{\text{panne du }i\text{-ième ordinateur}\}}$,
+et $S_n=\sum_{i=1}^n X_i$, $\overline{X}_n=S_n/n$.
+
+1. Que représentent $S_n$ et $\overline{X}_n$ ? Donner la loi de $S_n$.
+2. Calculer la moyenne et la variance de $X_1$.
+3. À l'aide du TCL, approcher la probabilité $P(0{,}005\le \overline{X}_{1000}\le 0{,}015)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+- $S_n\sim\mathcal{B}(1000,0{,}01)$ ; $\overline{X}_n$ est la proportion de pannes.
+- $E(X_1)=0{,}01$ et $\mathrm{Var}(X_1)=0{,}01\times 0{,}99=0{,}0099$.
+- Standardiser : $Z=\dfrac{\overline{X}_n - 0{,}01}{\sqrt{0{,}0099/1000}}$ et utiliser $P(-1{,}6\le Z\le 1{,}6)\approx 89{,}0\%$.
+:::
+
+::: {.callout-caution}
+## Exercice 6 — Restaurant scolaire
+
+Une école compte 2000 élèves. En moyenne, 60 % fréquentent le restaurant scolaire.
+
+Combien de repas faut-il prévoir pour que la probabilité d'en manquer soit
+inférieure à 0,28 % ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+- Modéliser le nombre de présents par $S\sim\mathcal{B}(2000,0{,}6)$.
+- $E(S)=1200$ et $\mathrm{Var}(S)=2000\times 0{,}6\times 0{,}4=480$.
+- On cherche $n$ tel que $P(S>n)\le 0{,}0028$, soit $P\!\left(Z>\dfrac{n-1200}{\sqrt{480}}\right)\le 0{,}0028$.
+- Le quantile $z_{0{,}0028}\approx 2{,}77$, donc $n\ge 1200+2{,}77\sqrt{480}\approx 1261$.
+:::
+
+::: {.callout-caution}
+## Exercice 7 — Répartition de passagers entre deux avions
+
+Après la panne d'un avion, 400 passagers sont répartis au hasard entre deux
+avions identiques de $n$ places chacun ($n\ge 200$).
+
+On note $X$ et $Y$ les nombres de passagers affectés à chaque avion.
+
+1. Donner la loi de $X$ et de $Y$. Par quelle loi continue peut-on les approcher ?
+2. Déterminer la valeur minimale de $n$ pour que la probabilité qu'un voyageur
+   n'ait pas de place soit inférieure à $10^{-3}$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Indication
+
+- $X\sim\mathcal{B}(400,0{,}5)$ et $Y=400-X$, donc $E(X)=200$ et $\mathrm{Var}(X)=100$.
+- On approche $X\approx\mathcal{N}(200,100)$.
+- « Un voyageur sans place » signifie $X>n$ ou $Y>n$, soit $X>n$ ou $X<400-n$.
+- Par symétrie : $P(X>n\text{ ou }X<400-n)=2P(X>n)\le 10^{-3}$, donc $P(X>n)\le 5\times 10^{-4}$.
+- On cherche $z$ tel que $P(Z>z)=5\times 10^{-4}$, i.e.\ $z\approx 3{,}29$, puis $n\ge 200+3{,}29\times 10\approx 233$.
+:::
+
+## V - Résultats de continuité
+
+### 1. Théorème de continuité
+
+::: {.callout-important}
+## Proposition — Continuité et convergence
+
+Soit $(X_n)$ une suite de v.a.r., $X$ une v.a.r. et $f : \mathbb{R} \to \mathbb{R}$ une fonction **continue**. Alors :
+
+- $X_n \xrightarrow{p.s.} X \implies f(X_n) \xrightarrow{p.s.} f(X)$
+- $X_n \xrightarrow{P} X \implies f(X_n) \xrightarrow{P} f(X)$
+- $X_n \xrightarrow{\mathcal{L}} X \implies f(X_n) \xrightarrow{\mathcal{L}} f(X)$
+:::
+
+### 2. Opérations algébriques et convergence
+
+::: {.callout-important}
+## Proposition — Opérations sur les convergences
+
+Soit $(X_n)$ et $(Y_n)$ deux suites de v.a.r. et $X$, $Y$ deux v.a.r. Si $X_n \xrightarrow{p.s.} X$ et $Y_n \xrightarrow{p.s.} Y$, alors pour tous réels $a$ et $b$ :
+
+- $a\,X_n + b\,Y_n \xrightarrow{p.s.} a\,X + b\,Y$
+- $X_n\,Y_n \xrightarrow{p.s.} X\,Y$
+- Si $P(Y = 0) = 0$, alors $X_n / Y_n \xrightarrow{p.s.} X / Y$
+:::
+
+### 3. Théorème de Slutsky
+
+::: {.callout-important}
+## Théorème (admis) — Théorème de Slutsky
+
+Soit $(X_n)$ et $(Y_n)$ deux suites de v.a.r. telles que $X_n \xrightarrow{\mathcal{L}} a \in \mathbb{R}$ (constante) et $Y_n \xrightarrow{\mathcal{L}} Y$. Alors :
+
+- $X_n + Y_n \xrightarrow{\mathcal{L}} a + Y$
+- $X_n \cdot Y_n \xrightarrow{\mathcal{L}} a \cdot Y$
+:::
+
+::: {.callout-important}
+## Proposition — Convergence vers une constante
+
+Soit $a \in \mathbb{R}$ et $(X_n)$ une suite de v.a.r. Alors :
+$$X_n \xrightarrow{P} a \iff X_n \xrightarrow{\mathcal{L}} a.$$
+:::
+
+::: {.callout-tip}
+## Remarque — Hiérarchie des convergences
+
+Les différentes convergences sont liées par le schéma d'implications suivant :
+
+$$\boxed{L^2} \implies \boxed{P} \implies \boxed{\mathcal{L}}$$
+$$\boxed{p.s.} \implies \boxed{P} \implies \boxed{\mathcal{L}}$$
+
+- Aucune implication n'existe entre $L^2$ et p.s. (ni dans un sens, ni dans l'autre).
+- La convergence en loi est la **plus faible** de toutes.
+- La convergence vers une **constante** est un cas particulier où convergence en probabilité et convergence en loi sont équivalentes.
+:::
+
+::: {.callout-caution}
+## Exercice 8 — Convergence de $V_n$ vers $\sigma^2$
+
+Soit $(X_n)$ une suite i.i.d. de v.a.r. de carré intégrable, de moyenne $m$ et de variance $\sigma^2 > 0$.
+
+On pose $V_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n (X_i - m)^2$.
+
+1. Montrer que $V_n$ converge presque sûrement, en probabilité et en loi vers $\sigma^2$.
+
+   *Indication :* poser $Y_i = (X_i - m)^2$ et appliquer les lois des grands nombres à la suite $(Y_i)$.
+2. Montrer que si $\mu_4 = E\!\left((X_1 - m)^4\right)$ est défini, alors $V_n$ converge aussi en moyenne quadratique.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 8
+
+**1.** On pose $Y_i = (X_i - m)^2$. Les $Y_i$ sont i.i.d. et intégrables avec :
+$$E(Y_i) = E\!\left((X_i - m)^2\right) = \sigma^2.$$
+
+On a $V_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n Y_i = \overline{Y}_n$.
+
+- **Convergence p.s. :** par la loi forte des grands nombres, $\overline{Y}_n \xrightarrow{p.s.} E(Y_1) = \sigma^2$.
+- **Convergence en probabilité :** la convergence p.s. implique la convergence en probabilité, donc $V_n \xrightarrow{P} \sigma^2$.
+- **Convergence en loi :** la convergence en probabilité implique la convergence en loi, donc $V_n \xrightarrow{\mathcal{L}} \sigma^2$.
+
+**2.** On utilise la caractérisation de la convergence $L^2$ : il faut que $E(V_n) \to \sigma^2$ et $\mathrm{Var}(V_n) \to 0$.
+
+On a déjà $E(V_n) = E(Y_1) = \sigma^2$ (constant).
+
+Pour la variance :
+$$\mathrm{Var}(V_n) = \mathrm{Var}\!\left(\frac{1}{n}\sum_{i=1}^n Y_i\right) = \frac{\mathrm{Var}(Y_1)}{n}.$$
+
+Or $\mathrm{Var}(Y_1) = E(Y_1^2) - (E(Y_1))^2 = E\!\left((X_1 - m)^4\right) - \sigma^4 = \mu_4 - \sigma^4$, qui est fini par hypothèse.
+
+Donc $\mathrm{Var}(V_n) = \dfrac{\mu_4 - \sigma^4}{n} \to 0$, et $V_n \xrightarrow{L^2} \sigma^2$.
+:::
+
+::: {.callout-caution}
+## Exercice 9 — Convergence de la variance empirique $S_n'^2$
+
+Soit $(X_n)$ une suite i.i.d. de v.a.r. de carré intégrable, de moyenne $m$ et de variance $\sigma^2 > 0$. On considère :
+$$V_n = \frac{1}{n}\sum_{i=1}^n (X_i - m)^2, \qquad
+S_n'^2 = \frac{1}{n}\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2, \qquad
+S_n^2 = \frac{1}{n-1}\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2.$$
+
+1. Montrer, en développant $\displaystyle\sum_{i=1}^n \left[(X_i - m) - (\overline{X}_n - m)\right]^2$, que :
+$$S_n'^2 = V_n - \left(\overline{X}_n - m\right)^2.$$
+2. En utilisant un théorème de continuité, montrer que $\left(\overline{X}_n - m\right)^2$ converge p.s., en probabilité et en loi vers 0.
+3. En déduire que $S_n'^2$ et $S_n^2$ convergent p.s., en probabilité et en loi vers $\sigma^2$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 9
+
+**1.** On développe :
+$$\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2
+= \sum_{i=1}^n \left[(X_i - m) - (\overline{X}_n - m)\right]^2$$
+$$= \sum_{i=1}^n (X_i - m)^2 - 2(\overline{X}_n - m)\sum_{i=1}^n (X_i - m) + n(\overline{X}_n - m)^2.$$
+
+Or $\displaystyle\sum_{i=1}^n (X_i - m) = n(\overline{X}_n - m)$, donc :
+$$= \sum_{i=1}^n (X_i - m)^2 - 2n(\overline{X}_n - m)^2 + n(\overline{X}_n - m)^2
+= \sum_{i=1}^n (X_i - m)^2 - n(\overline{X}_n - m)^2.$$
+
+En divisant par $n$ :
+$$S_n'^2 = V_n - \left(\overline{X}_n - m\right)^2.$$
+
+**2.** Par la loi forte des grands nombres, $\overline{X}_n \xrightarrow{p.s.} m$, donc $\overline{X}_n - m \xrightarrow{p.s.} 0$.
+
+La fonction $f : x \mapsto x^2$ est continue, donc par le théorème de continuité :
+$$\left(\overline{X}_n - m\right)^2 \xrightarrow{p.s.} 0.$$
+
+La convergence p.s. implique la convergence en probabilité, qui implique la convergence en loi. Donc $(\overline{X}_n - m)^2$ converge vers 0 dans les trois modes.
+
+**3.** D'après l'exercice 8, $V_n \xrightarrow{p.s.} \sigma^2$. D'après la question 2, $(\overline{X}_n - m)^2 \xrightarrow{p.s.} 0$.
+
+Donc, par différence :
+$$S_n'^2 = V_n - (\overline{X}_n - m)^2 \xrightarrow{p.s.} \sigma^2 - 0 = \sigma^2.$$
+
+La convergence p.s. implique les convergences en probabilité et en loi.
+
+Enfin, $S_n^2 = \dfrac{n}{n-1}\,S_n'^2$ et $\dfrac{n}{n-1} \to 1$, donc $S_n^2 \xrightarrow{p.s.} \sigma^2$ (et de même en probabilité et en loi).
+:::
+
+::: {.callout-tip}
+## À retenir
+
+- L'inégalité de Bienaymé-Tchebychev contrôle les déviations et sert à calibrer les
+  tailles d'échantillon.
+- La **loi faible** des grands nombres garantit que $\overline{X}_n \xrightarrow{P} m$.
+- La **loi forte** des grands nombres renforce ce résultat : $\overline{X}_n \xrightarrow{p.s.} m$.
+- La **méthode de Monte-Carlo** exploite la loi forte pour estimer des intégrales par simulation.
+- Le **théorème limite central** justifie l'approximation normale pour de grands échantillons,
+  **quelle que soit la loi parente**.
+- Le **théorème de Slutsky** permet de combiner convergence en loi et convergence vers une constante.
+- Les implications entre convergences sont : $L^2 \Rightarrow P \Rightarrow \mathcal{L}$ et $p.s. \Rightarrow P \Rightarrow \mathcal{L}$.
+:::
