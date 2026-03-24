@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Guillaume Gilles">
+<meta name="author" content="Claude Opus 4.6">
+<meta name="dcterms.date" content="2026-03-24">
 
-<title>Guillaume Gilles - Setting up Shinylive and Quarto for teaching effenciecy</title>
+<title>Guillaume Gilles - One File, Two Outputs: Syncing Your Quarto About Page with Your GitHub Profile README</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,11 +109,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <style>html{ scroll-behavior: smooth; }</style>
 
 
-<meta property="og:title" content="Guillaume Gilles - Setting up Shinylive and Quarto for teaching effenciecy">
-<meta property="og:description" content="">
+<meta property="og:title" content="Guillaume Gilles - One File, Two Outputs: Syncing Your Quarto About Page with Your GitHub Profile README">
+<meta property="og:description" content="How to use Quarto’s conditional content blocks to maintain a single about.qmd that renders as both a rich website page and a clean GitHub profile README — with automatic sync on every build.">
 <meta property="og:site_name" content="Guillaume Gilles">
-<meta name="twitter:title" content="Guillaume Gilles - Setting up Shinylive and Quarto for teaching effenciecy">
-<meta name="twitter:description" content="">
+<meta name="twitter:title" content="Guillaume Gilles - One File, Two Outputs: Syncing Your Quarto About Page with Your GitHub Profile README">
+<meta name="twitter:description" content="How to use Quarto’s conditional content blocks to maintain a single about.qmd that renders as both a rich website page and a clean GitHub profile README — with automatic sync on every build.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -165,66 +168,220 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#settig-up-shinylive" id="toc-settig-up-shinylive" class="nav-link active" data-scroll-target="#settig-up-shinylive">Settig up Shinylive</a></li>
-  <li><a href="#create-a-vrtual-environnement" id="toc-create-a-vrtual-environnement" class="nav-link" data-scroll-target="#create-a-vrtual-environnement">1. Create a vrtual environnement</a></li>
-  <li><a href="#install-shinylive" id="toc-install-shinylive" class="nav-link" data-scroll-target="#install-shinylive">2. install shinylive</a></li>
-  <li><a href="#use-shinylive-in-quarto-document" id="toc-use-shinylive-in-quarto-document" class="nav-link" data-scroll-target="#use-shinylive-in-quarto-document">3. use shinylive in quarto document</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link active" data-scroll-target="#the-problem">The Problem</a></li>
+  <li><a href="#the-approach" id="toc-the-approach" class="nav-link" data-scroll-target="#the-approach">The Approach</a>
+  <ul class="collapse">
+  <li><a href="#one-gotcha-format-names" id="toc-one-gotcha-format-names" class="nav-link" data-scroll-target="#one-gotcha-format-names">One gotcha: format names</a></li>
+  </ul></li>
+  <li><a href="#structuring-about.qmd" id="toc-structuring-about.qmd" class="nav-link" data-scroll-target="#structuring-about.qmd">Structuring <code>about.qmd</code></a>
+  <ul class="collapse">
+  <li><a href="#html-only-website" id="toc-html-only-website" class="nav-link" data-scroll-target="#html-only-website">1. HTML-only (website)</a></li>
+  <li><a href="#gfm-only-github-profile" id="toc-gfm-only-github-profile" class="nav-link" data-scroll-target="#gfm-only-github-profile">2. GFM-only (GitHub profile)</a></li>
+  <li><a href="#shared-content-both" id="toc-shared-content-both" class="nav-link" data-scroll-target="#shared-content-both">3. Shared content (both)</a></li>
+  </ul></li>
+  <li><a href="#the-post-render-script" id="toc-the-post-render-script" class="nav-link" data-scroll-target="#the-post-render-script">The Post-Render Script</a>
+  <ul class="collapse">
+  <li><a href="#the-recursion-guard" id="toc-the-recursion-guard" class="nav-link" data-scroll-target="#the-recursion-guard">The recursion guard</a></li>
+  </ul></li>
+  <li><a href="#wiring-it-up" id="toc-wiring-it-up" class="nav-link" data-scroll-target="#wiring-it-up">Wiring It Up</a></li>
+  <li><a href="#the-result" id="toc-the-result" class="nav-link" data-scroll-target="#the-result">The Result</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Setting up Shinylive and Quarto for teaching effenciecy</h1>
-</div>
+<h1 class="title">One File, Two Outputs: Syncing Your Quarto About Page with Your GitHub Profile README</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Quarto</div>
+    <div class="quarto-category">GitHub</div>
+    <div class="quarto-category">Dev Tools</div>
+    <div class="quarto-category">POSSE</div>
+  </div>
+  </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Guillaume Gilles </p>
+             <p><a href="https://www.anthropic.com/claude">Claude Opus 4.6</a> </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 24, 2026</p>
+    </div>
+  </div>
   
     
   </div>
   
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>How to use Quarto’s conditional content blocks to maintain a single <code>about.qmd</code> that renders as both a rich website page and a clean GitHub profile README — with automatic sync on every build.</p>
+  </div>
+</div>
 
 
 </header>
 
 
-<p>Implementing user interaction into static web pages are now possible thanks to shiny and web assembly = shinylive.</p>
-<section id="settig-up-shinylive" class="level2">
-<h2 class="anchored" data-anchor-id="settig-up-shinylive">Settig up Shinylive<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></h2>
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
+<p>If you maintain a personal website <strong>and</strong> a <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme">GitHub profile README</a>, you’ve probably felt the pain of keeping them in sync. Update your bio on one, forget the other. Add a new certification here, miss it there.</p>
+<p>My website is built with <a href="https://quarto.org">Quarto</a>, and my about page uses the beautiful <a href="https://quarto.org/docs/websites/website-about.html#templates">Trestles template</a> with columns, callout blocks, and iframes — features that don’t exist in GitHub-flavored Markdown. So I used to maintain two separate files.</p>
+<p><strong>Not anymore.</strong> A single <code>about.qmd</code> now produces both outputs, and a post-render script pushes the README to my profile repo automatically.</p>
 </section>
-<div class="no-row-height column-margin column-container"><p><sup>1</sup>&nbsp;https://github.com/quarto-ext/shinylive?tab=readme-ov-file#installation</p></div><section id="create-a-vrtual-environnement" class="level2">
-<h2 class="anchored" data-anchor-id="create-a-vrtual-environnement">1. Create a vrtual environnement</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .venv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="the-approach" class="level2">
+<h2 class="anchored" data-anchor-id="the-approach">The Approach</h2>
+<p>The trick relies on three Quarto features:</p>
+<ol type="1">
+<li><strong><code>.content-visible when-format="..."</code></strong> — conditional content blocks that only render for a specific output format</li>
+<li><strong>Multi-format rendering</strong> — the same <code>.qmd</code> can be rendered to HTML <em>and</em> GFM (GitHub-Flavored Markdown)</li>
+<li><strong>Post-render scripts</strong> — custom scripts that run after <code>quarto render</code></li>
+</ol>
+<section id="one-gotcha-format-names" class="level3">
+<h3 class="anchored" data-anchor-id="one-gotcha-format-names">One gotcha: format names</h3>
+<p>When rendering to GFM, you might expect <code>when-format="gfm"</code> to work. It doesn’t! Quarto internally maps GFM to the <code>commonmark</code> Pandoc writer, and <code>.content-visible</code> matches against the <strong>format family</strong>. The correct value is:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">when-format="markdown"</span><span class="co">   # ✅ works for GFM</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">when-format="gfm"</span><span class="co">        # ❌ does not match</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="install-shinylive" class="level2">
-<h2 class="anchored" data-anchor-id="install-shinylive">2. <a href="https://github.com/quarto-ext/shinylive?tab=readme-ov-file#installation">install shinylive</a></h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install shinylive <span class="at">--upgrade</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="use-shinylive-in-quarto-document" class="level2">
-<h2 class="anchored" data-anchor-id="use-shinylive-in-quarto-document">3. <a href="https://github.com/quarto-ext/shinylive?tab=readme-ov-file#usage">use shinylive in quarto document</a></h2>
-<p>To use this extension in your Quarto project, run this in the top level of your Quarto project:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> add quarto-ext/shinylive</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="structuring-about.qmd" class="level2">
+<h2 class="anchored" data-anchor-id="structuring-about.qmd">Structuring <code>about.qmd</code></h2>
+<p>The file has three types of content:</p>
+<section id="html-only-website" class="level3">
+<h3 class="anchored" data-anchor-id="html-only-website">1. HTML-only (website)</h3>
+<p>Wrap everything that uses Quarto-specific features — the Trestles hero section, column layouts, callout blocks, and iframes:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>::: {#hero-heading}</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu"># Your headline here</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Your tagline</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">:::</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>::::: {.columns}</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- two-column layout --&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>:::::</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Sponsor section with iframe</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References:</h2>
+<section id="gfm-only-github-profile" class="level3">
+<h3 class="anchored" data-anchor-id="gfm-only-github-profile">2. GFM-only (GitHub profile)</h3>
+<p>Add a centered header with badge links and a profile table — things that look great on GitHub but would clash with the Trestles template:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="markdown"}</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>&lt;div align="center"&gt;</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>&lt;img src="https://yoursite.dev/assets/profile.png" width="150" /&gt;</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">### Your Name</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="al">![Website](https://img.shields.io/badge/Website-yoursite.dev-blue)</span><span class="co">](https://yoursite.dev)</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>&lt;/div&gt;</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>| Platform | Profile | Focus |</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>|----------|---------|-------|</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>| **HackTheBox** | <span class="co">[</span><span class="ot">user</span><span class="co">](https://...)</span> | Pentesting |</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="shared-content-both" class="level3">
+<h3 class="anchored" data-anchor-id="shared-content-both">3. Shared content (both)</h3>
+<p>Everything outside <code>.content-visible</code> blocks renders in <strong>both</strong> formats. This is where you put the content you actually want to keep in sync:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- No wrapper — appears everywhere --&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Today, I'm immersed in **cybersecurity**...</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🛠️ Tech Stack</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## 💼 Experience</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🎓 Education &amp; Certifications</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="the-post-render-script" class="level2">
+<h2 class="anchored" data-anchor-id="the-post-render-script">The Post-Render Script</h2>
+<p>Create <code>scripts/update-profile-readme.sh</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-euo</span> pipefail</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Prevent infinite recursion: the GFM render triggers</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># another post-render, which would call this script again.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">${PROFILE_README_RUNNING</span><span class="op">:-</span><span class="va">}</span><span class="st">"</span> <span class="ot">=</span> <span class="st">"1"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 0</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PROFILE_README_RUNNING</span><span class="op">=</span>1</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="va">REPO</span><span class="op">=</span><span class="st">"your-username/your-username"</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="va">SCRIPT_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="bu">cd</span> <span class="st">"</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">"</span><span class="va">$0</span><span class="st">"</span><span class="va">)</span><span class="st">"</span> <span class="kw">&amp;&amp;</span> <span class="bu">pwd</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="va">PROJECT_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">"</span><span class="va">$SCRIPT_DIR</span><span class="st">"</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="va">TMPDIR</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="fu">mktemp</span> <span class="at">-d</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">trap</span> <span class="st">'rm -rf "$TMPDIR"'</span> EXIT</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Render GFM</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render <span class="st">"</span><span class="va">$PROJECT_DIR</span><span class="st">/about.qmd"</span> <span class="at">--to</span> gfm <span class="dt">\</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output</span> README.md <span class="at">--output-dir</span> <span class="st">"</span><span class="va">$TMPDIR</span><span class="st">"</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Clean up Quarto artifacts</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="st">'1{/^# About$/d}'</span> <span class="st">"</span><span class="va">$TMPDIR</span><span class="st">/README.md"</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="st">'1{/^$/d}'</span> <span class="st">"</span><span class="va">$TMPDIR</span><span class="st">/README.md"</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-i</span> <span class="st">'s/logoColor=fff\.png/logoColor=fff/g'</span> <span class="st">"</span><span class="va">$TMPDIR</span><span class="st">/README.md"</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Clone, diff, push</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--depth</span> 1 <span class="st">"git@github.com:</span><span class="va">${REPO}</span><span class="st">.git"</span> <span class="st">"</span><span class="va">$TMPDIR</span><span class="st">/repo"</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ot">! </span><span class="fu">diff</span> <span class="at">-q</span> <span class="st">"</span><span class="va">$TMPDIR</span><span class="st">/README.md"</span> <span class="st">"</span><span class="va">$TMPDIR</span><span class="st">/repo/README.md"</span> <span class="op">&amp;&gt;</span>/dev/null<span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cp</span> <span class="st">"</span><span class="va">$TMPDIR</span><span class="st">/README.md"</span> <span class="st">"</span><span class="va">$TMPDIR</span><span class="st">/repo/README.md"</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="bu">cd</span> <span class="st">"</span><span class="va">$TMPDIR</span><span class="st">/repo"</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">git</span> add README.md</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"chore: sync profile README from website"</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">git</span> push</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Two cleanup steps are needed because Quarto:</p>
 <ul>
-<li><a href="https://shiny.posit.co/py/get-started/shinylive.html">shinylive</a></li>
-<li><a href="https://shiny.posit.co/py/get-started/shinylive.html#deploying-shinylive-applications">deploying shiny app with quarto</a></li>
-<li><a href="https://github.com/quarto-ext/shinylive">shinylive github repo</a></li>
-<li><a href="https://shiny.posit.co/py/">shiny for python web page</a></li>
+<li>Injects a <code># About</code> title from the YAML <code>title:</code> field</li>
+<li>Appends <code>.png</code> to shields.io badge URLs via <code>default-image-extension</code></li>
 </ul>
+<section id="the-recursion-guard" class="level3">
+<h3 class="anchored" data-anchor-id="the-recursion-guard">The recursion guard</h3>
+<p>This is the most critical part. When the post-render script calls <code>quarto render about.qmd --to gfm</code>, Quarto sees it as a project render and triggers the post-render hook <strong>again</strong> — creating an infinite loop. The <code>PROFILE_README_RUNNING</code> environment variable breaks the cycle.</p>
+</section>
+</section>
+<section id="wiring-it-up" class="level2">
+<h2 class="anchored" data-anchor-id="wiring-it-up">Wiring It Up</h2>
+<p>Add the post-render hook to <code>_quarto.yml</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output-dir</span><span class="kw">:</span><span class="at"> docs</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">post-render</span><span class="kw">:</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> scripts/update-profile-readme.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Make the script executable:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x scripts/update-profile-readme.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="the-result" class="level2">
+<h2 class="anchored" data-anchor-id="the-result">The Result</h2>
+<p>Now every <code>quarto render</code> does double duty:</p>
+<ol type="1">
+<li><strong>Website</strong> → <code>docs/about.html</code> with the full Trestles layout, columns, callouts, and embedded iframes</li>
+<li><strong>GitHub README</strong> → auto-pushed to <code>your-username/your-username</code> as a clean GFM file with badge links and a profile table</li>
+</ol>
+<p>Edit once, publish everywhere.</p>
 
 
 </section>
-
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
