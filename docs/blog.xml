@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Guillaume Gilles</title>
+<link>https://ggilles.dev/blog.html</link>
+<atom:link href="https://ggilles.dev/blog.xml" rel="self" type="application/rss+xml"/>
+<description></description>
+<generator>quarto-1.4.537</generator>
+<lastBuildDate>Mon, 23 Feb 2026 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>GitHub Codespaces + Quarto</title>
+  <dc:creator>Guillaume Gilles</dc:creator>
+  <dc:creator>Claude Sonnet 4.6</dc:creator>
+  <link>https://ggilles.dev/posts/quarto-codespaces/</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="the-problem-with-local-setup" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem-with-local-setup">The problem with local setup</h2>
+<p>Every time you start a new project, you go through the same ritual: install the right version of Python, find the right extension for your editor, configure the environment, and debug why it doesn’t work on <em>your</em> machine. With Quarto, this often means installing the CLI, setting up Jupyter, adding VS Code extensions, and getting the preview server running — before writing a single line.</p>
+<p><a href="https://github.com/features/codespaces">GitHub Codespaces</a> solves this by moving the entire development environment into the cloud. You define the environment once as code, and anyone (including future you) can launch a fully configured workspace from a browser in seconds.</p>
+<p>Each codespace runs in a <a href="https://www.docker.com/resources/what-container/">Docker container</a> on a GitHub-managed virtual machine. Every personal GitHub account includes <strong>120 core hours of free compute time</strong> and <strong>15 GB of storage per month</strong> — more than enough for writing and publishing. (With the 4-core machine this template requests, that works out to 30 hours of usage per month.)</p>
+</section>
+<section id="the-template" class="level2">
+<h2 class="anchored" data-anchor-id="the-template">The template</h2>
+<p>I built a ready-to-use template repository that bundles everything you need to write and publish Quarto documents without installing anything locally. Click the button below to launch it instantly:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://codespaces.new/guillaumegilles/codespaces-quarto"><img src="https://github.com/codespaces/badge.svg" class="img-fluid figure-img" alt="Open in GitHub Codespaces"></a></p>
+<figcaption>Open in GitHub Codespaces</figcaption>
+</figure>
+</div>
+<p>When the codespace starts, you get:</p>
+<ul>
+<li>The <strong>Quarto CLI</strong> (latest), ready to render <code>.qmd</code> files</li>
+<li><strong>Python</strong> with <code>jupyter</code>, <code>matplotlib</code>, and <code>plotly</code> pre-installed</li>
+<li><strong>VS Code for the web</strong> with the Quarto, Python, and Jupyter extensions</li>
+<li>A <strong>live preview</strong> of <code>hello.qmd</code> that opens automatically in the side panel</li>
+</ul>
+<p>All of this is driven by a single configuration file: <code>.devcontainer/devcontainer.json</code>.</p>
+</section>
+<section id="walking-through-devcontainer.json" class="level2">
+<h2 class="anchored" data-anchor-id="walking-through-devcontainer.json">Walking through <code>devcontainer.json</code></h2>
+<p>The <code>.devcontainer/devcontainer.json</code> file is the heart of any Codespaces setup. It tells GitHub exactly what container image to use, what tools to install, and how to configure the editor. Scroll through the story below to see how each piece of this file works.</p>
+<div class="cr-section cr-column-screen sidebar-left">
+<div class="narrative-col">
+<div class="trigger new-trigger" data-focus-on="cr-config">
+<div class="narrative">
+<p>This is the complete <code>.devcontainer/devcontainer.json</code> for this template. Every key plays a specific role — let’s go through them one by one.</p>
+</div>
+</div>
+<div class="trigger new-trigger" data-highlight="2,4" data-focus-on="cr-config">
+<div class="narrative">
+<p><strong><code>name</code></strong> is just a human-readable label shown in the Codespaces dashboard. <strong><code>image</code></strong> sets the base container. The Microsoft Ubuntu image is a lean starting point with <code>git</code>, <code>curl</code>, and common shell tools — without the bloat of the universal image.</p>
+</div>
+</div>
+<div class="trigger new-trigger" data-highlight="6-13" data-focus-on="cr-config">
+<div class="narrative">
+<p><strong><code>features</code></strong> are the magic of dev containers. Each entry is a self-contained install script that layers on top of the base image. Here we pull in two: the official Python feature (which also sets up <code>pip</code>) and the Rocker project’s Quarto CLI feature (which installs the latest <code>quarto</code> binary). </p>
+</div>
+</div>
+<div class="trigger new-trigger" data-highlight="15-17" data-focus-on="cr-config">
+<div class="narrative">
+<p><strong><code>hostRequirements</code></strong> asks GitHub to provision a machine with at least 4 CPU cores. Quarto rendering — especially with Jupyter kernels — benefits from extra CPU headroom, so this prevents the codespace from running on the smallest tier. </p>
+</div>
+</div>
+<div class="trigger new-trigger" data-highlight="19" data-focus-on="cr-config">
+<div class="narrative">
+<p><strong><code>waitFor</code></strong> tells the lifecycle to wait until <code>onCreateCommand</code> has finished before running subsequent commands. This ensures the container is fully ready before installing Python packages or starting the preview server. </p>
+</div>
+</div>
+<div class="trigger new-trigger" data-highlight="20" data-focus-on="cr-config">
+<div class="narrative">
+<p><strong><code>updateContentCommand</code></strong> runs every time the codespace content is updated (including on creation). Here it installs all Python packages listed in <code>requirements.txt</code> — so adding a dependency to that file is all you need to do to make it available in your codespace. </p>
+</div>
+</div>
+<div class="trigger new-trigger" data-highlight="21-23" data-focus-on="cr-config">
+<div class="narrative">
+<p><strong><code>postAttachCommand</code></strong> runs once VS Code connects to the container. The <code>server</code> key starts a <code>quarto preview</code> process in the background, watching <code>hello.qmd</code> and serving a live preview on port 8000. </p>
+</div>
+</div>
+<div class="trigger new-trigger" data-highlight="24-29" data-focus-on="cr-config">
+<div class="narrative">
+<p><strong><code>portsAttributes</code></strong> tells Codespaces what to do when port 8000 is open. <code>"onAutoForward": "openPreview"</code> makes the preview appear directly in the VS Code side panel — no copying URLs, no browser tabs. </p>
+</div>
+</div>
+<div class="trigger new-trigger" data-highlight="31-42" data-focus-on="cr-config">
+<div class="narrative">
+<p><strong><code>customizations</code></strong> configures the editor itself. The <code>codespaces.openFiles</code> list causes <code>hello.qmd</code> to open automatically when the workspace loads. The <code>vscode.extensions</code> list pre-installs three extensions: <strong>Quarto</strong> for syntax highlighting and rendering commands, <strong>Python</strong> for IntelliSense, and <strong>Jupyter</strong> for running notebook cells inline. </p>
+</div>
+</div>
+<div class="trigger new-trigger" data-highlight="44" data-focus-on="cr-config">
+<div class="narrative">
+<p><strong><code>forwardPorts</code></strong> ensures port 8000 is always forwarded to your browser, even if <code>portsAttributes</code> automatic forwarding hasn’t triggered yet. This is the safety net that guarantees the preview is always reachable. </p>
+</div>
+</div>
+</div>
+<div class="sticky-col">
+<div class="sticky-col-stack">
+<div id="cr-config" class="sticky">
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"name"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Quarto Codespaces"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-3"></span>
+<span id="cb1-4">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"image"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mcr.microsoft.com/devcontainers/base:ubuntu"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-5"></span>
+<span id="cb1-6">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"features"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-7">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"ghcr.io/devcontainers/features/python:1"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-8">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"version"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"latest"</span></span>
+<span id="cb1-9">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb1-10">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"ghcr.io/rocker-org/devcontainer-features/quarto-cli:1"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-11">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"version"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"latest"</span></span>
+<span id="cb1-12">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb1-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb1-14"></span>
+<span id="cb1-15">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"hostRequirements"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-16">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"cpus"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span></span>
+<span id="cb1-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb1-18"></span>
+<span id="cb1-19">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"waitFor"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"onCreateCommand"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-20">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"updateContentCommand"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"python3 -m pip install -r requirements.txt"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-21">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"postAttachCommand"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-22">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"server"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"quarto preview hello.qmd --no-browser --port 8000"</span></span>
+<span id="cb1-23">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb1-24">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"portsAttributes"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-25">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"8000"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-26">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"label"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Quarto Preview"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-27">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"onAutoForward"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"openPreview"</span></span>
+<span id="cb1-28">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb1-29">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb1-30"></span>
+<span id="cb1-31">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"customizations"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-32">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"codespaces"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-33">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"openFiles"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hello.qmd"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-34">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb1-35">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"vscode"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-36">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"extensions"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb1-37">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"quarto.quarto"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-38">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ms-python.python"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-39">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ms-toolsai.jupyter"</span></span>
+<span id="cb1-40">      <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-41">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb1-42">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb1-43"></span>
+<span id="cb1-44">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"forwardPorts"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8000</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-45"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-the-template" class="level2">
+<h2 class="anchored" data-anchor-id="using-the-template">Using the template</h2>
+<p>The quickest way to get started is to click the badge above. Alternatively, you can use it to seed your own repository:</p>
+<ol type="1">
+<li>Go to <a href="https://github.com/guillaumegilles/codespaces-quarto">github.com/guillaumegilles/codespaces-quarto</a></li>
+<li>Click <strong>“Use this template”</strong> → <strong>“Create a new repository”</strong></li>
+<li>Open your new repo and click <strong>“Code”</strong> → <strong>“Codespaces”</strong> → <strong>“Create codespace on main”</strong></li>
+</ol>
+<p>Within about 90 seconds the container will be built, Python packages installed, and a live Quarto preview will open in your browser — ready to write.</p>
+</section>
+<section id="going-further" class="level2">
+<h2 class="anchored" data-anchor-id="going-further">Going further</h2>
+<p>Once you’re comfortable with the template, you can extend it by editing <code>.devcontainer/devcontainer.json</code>:</p>
+<ul>
+<li><strong>Add R support</strong> by including the <code>ghcr.io/rocker-org/devcontainer-features/r-rig:1</code> feature</li>
+<li><strong>Add more Python packages</strong> by editing <code>requirements.txt</code></li>
+<li><strong>Pre-install more VS Code extensions</strong> by adding their IDs to the <code>extensions</code> list</li>
+<li><strong>Change the base image</strong> to the universal image if you need a wider set of pre-installed runtimes</li>
+</ul>
+<p>The configuration-as-code approach means any change you commit is instantly available to anyone who opens the repository in a codespace.</p>
+</section>
+<section id="what-to-expect" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-expect">What to expect</h2>
+<p>Here is what the codespace looks like once it has finished loading: VS Code on the left with <code>hello.qmd</code> open, and the live Quarto preview rendering a polar plot on the right — no local setup required.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ggilles.dev/posts/quarto-codespaces/preview.png" class="img-fluid figure-img"></p>
+<figcaption>VS Code for the web with <code>hello.qmd</code> open and its Quarto preview side by side.</figcaption>
+</figure>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const toc = document.querySelector('#TOC, .sidebar.toc-left, nav[role="doc-toc"]');
+  const crSection = document.querySelector('.cr-section');
+  if (!toc || !crSection) return;
+  const observer = new IntersectionObserver(([entry]) => {
+    toc.style.visibility = entry.isIntersecting ? 'hidden' : 'visible';
+    toc.style.opacity    = entry.isIntersecting ? '0'       : '1';
+    toc.style.transition = 'opacity 0.2s, visibility 0.2s';
+  }, { threshold: 0 });
+  observer.observe(crSection);
+});
+</script>
+
+
+</section>
+
+ ]]></description>
+  <category>Quarto</category>
+  <category>GitHub</category>
+  <category>Dev Tools</category>
+  <guid>https://ggilles.dev/posts/quarto-codespaces/</guid>
+  <pubDate>Mon, 23 Feb 2026 23:00:00 GMT</pubDate>
+  <media:content url="https://ggilles.dev/posts/quarto-codespaces/image.jpg" medium="image" type="image/jpeg"/>
+</item>
+</channel>
+</rss>

@@ -1,0 +1,2331 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Guillaume Gilles - Loi normale et applications</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../teaching/statistics-probability/joint-continuous-random-variables.html" rel="next">
+<link href="../../teaching/statistics-probability/density-function.html" rel="prev">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Guillaume Gilles - Loi normale et applications">
+<meta property="og:description" content="Ce chapitre présente la loi normale, modèle central en probabilités et en statistique. On introduit d’abord la loi normale centrée réduite \(\mathcal{N}(0,1)\), sa densité en cloche et sa fonction de répartition \(\Phi\), puis les règles de calcul associées (symétrie, lecture directe et inverse des probabilités). On généralise ensuite à la loi \(\mathcal{N}(m,\sigma^2)\) et à la standardisation, outil clé pour ramener tout calcul à la table de \(\Phi\). Le chapitre inclut les propriétés fondamentales (espérance, variance, somme de normales indépendantes) et se prolonge par deux applications classiques : la loi log-normale et la loi du khi-deux, et conclut par la loi de Student.">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Loi normale et applications">
+<meta name="twitter:description" content="Ce chapitre présente la loi normale, modèle central en probabilités et en statistique. On introduit d’abord la loi normale centrée réduite \(\mathcal{N}(0,1)\), sa densité en cloche et sa fonction de répartition \(\Phi\), puis les règles de calcul associées (symétrie, lecture directe et inverse des probabilités). On généralise ensuite à la loi \(\mathcal{N}(m,\sigma^2)\) et à la standardisation, outil clé pour ramener tout calcul à la table de \(\Phi\). Le chapitre inclut les propriétés fondamentales (espérance, variance, somme de normales indépendantes) et se prolonge par deux applications classiques : la loi log-normale et la loi du khi-deux, et conclut par la loi de Student.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Recherche"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/probability.html">Rappels de probabilités discrètes</a></li><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/normal-distribution.html">Loi normale et applications</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probabilités &amp; Statistiques</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/statistics-probability/statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistiques</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/univariate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistiques descriptives à une variable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/bivariate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistiques descriptives a deux variables</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/statistics-probability/probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rappels de probabilités discrètes</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/density-function.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lois à densité</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/normal-distribution.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Loi normale et applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/joint-continuous-random-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Couples de variables a densite</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/sampling-distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Distribution d’echantillonnage</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/convergence-random-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Convergence de variables aléatoires</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/point-estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Estimation ponctuelle et par intervalle de confiance</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Ressources</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tables statistiques</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/leaderboard.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Leaderboard</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossaire</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Sur cette page</h2>
+   
+  <ul>
+  <li><a href="#i---loi-normale-centrée-réduite-mathcaln01" id="toc-i---loi-normale-centrée-réduite-mathcaln01" class="nav-link active" data-scroll-target="#i---loi-normale-centrée-réduite-mathcaln01">I - Loi normale centrée réduite <span class="math inline">\(\mathcal{N}(0,1)\)</span></a></li>
+  <li><a href="#ii---loi-normale-générale-mathcalnmsigma2" id="toc-ii---loi-normale-générale-mathcalnmsigma2" class="nav-link" data-scroll-target="#ii---loi-normale-générale-mathcalnmsigma2">II - Loi normale générale <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span></a></li>
+  <li><a href="#iii---application-loi-log-normale" id="toc-iii---application-loi-log-normale" class="nav-link" data-scroll-target="#iii---application-loi-log-normale">III - Application : loi log-normale</a></li>
+  <li><a href="#iv---application-loi-du-khi-deux" id="toc-iv---application-loi-du-khi-deux" class="nav-link" data-scroll-target="#iv---application-loi-du-khi-deux">IV - Application : loi du khi-deux</a></li>
+  <li><a href="#v-application-loi-de-student" id="toc-v-application-loi-de-student" class="nav-link" data-scroll-target="#v-application-loi-de-student">V — Application : loi de Student</a>
+  <ul class="collapse">
+  <li><a href="#exercice-18" id="toc-exercice-18" class="nav-link" data-scroll-target="#exercice-18">Exercice 18</a></li>
+  <li><a href="#exercice-19" id="toc-exercice-19" class="nav-link" data-scroll-target="#exercice-19">Exercice 19</a></li>
+  <li><a href="#exercice-20-règle-empirique-trois-sigma" id="toc-exercice-20-règle-empirique-trois-sigma" class="nav-link" data-scroll-target="#exercice-20-règle-empirique-trois-sigma">Exercice 20 — Règle empirique (trois sigma)</a></li>
+  <li><a href="#exercice-21-intervalle-optimal-de-largeur-fixée" id="toc-exercice-21-intervalle-optimal-de-largeur-fixée" class="nav-link" data-scroll-target="#exercice-21-intervalle-optimal-de-largeur-fixée">Exercice 21 — Intervalle optimal de largeur fixée</a></li>
+  </ul></li>
+  <li><a href="#vi-exercice-de-synthèse" id="toc-vi-exercice-de-synthèse" class="nav-link" data-scroll-target="#vi-exercice-de-synthèse">VI — Exercice de synthèse</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/probability.html">Rappels de probabilités discrètes</a></li><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/normal-distribution.html">Loi normale et applications</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Loi normale et applications</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Date de publication</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">18 février 2026</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modifié</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">24 mars 2026</p>
+    </div>
+  </div>
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Résumé</div>
+    <p>Ce chapitre présente la <strong>loi normale</strong>, modèle central en probabilités et en statistique. On introduit d’abord la loi normale centrée réduite <span class="math inline">\(\mathcal{N}(0,1)\)</span>, sa densité en cloche et sa fonction de répartition <span class="math inline">\(\Phi\)</span>, puis les règles de calcul associées (symétrie, lecture directe et inverse des probabilités). On généralise ensuite à la loi <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span> et à la <strong>standardisation</strong>, outil clé pour ramener tout calcul à la table de <span class="math inline">\(\Phi\)</span>. Le chapitre inclut les propriétés fondamentales (espérance, variance, somme de normales indépendantes) et se prolonge par deux applications classiques : la <strong>loi log-normale</strong> et la <strong>loi du khi-deux</strong>, et conclut par la <strong>loi de Student</strong>.</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>Dans tout ce chapitre, nous nous plaçons dans un espace probabilisé quelconque <span class="math inline">\((\Omega, \mathcal{F}, P)\)</span>.</p>
+</blockquote>
+<section id="i---loi-normale-centrée-réduite-mathcaln01" class="level2">
+<h2 class="anchored" data-anchor-id="i---loi-normale-centrée-réduite-mathcaln01">I - Loi normale centrée réduite <span class="math inline">\(\mathcal{N}(0,1)\)</span></h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une variable aléatoire réelle <span class="math inline">\(X\)</span> suit la <strong>loi normale centrée réduite</strong>, notée <span class="math inline">\(\mathcal{N}(0,1)\)</span>, si sa densité est <span class="math display">\[f_X(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right), \quad x \in \mathbb{R}.\]</span></p>
+</div>
+</div>
+<p>Cette densité est positive, intégrée à 1 sur <span class="math inline">\(\mathbb{R}\)</span>, et paire. La courbe de <span class="math inline">\(f_X\)</span> est donc symétrique par rapport à l’axe des ordonnées. En particulier : <span class="math display">\[P(X \leq 0) = P(X \geq 0) = \frac{1}{2}.\]</span></p>
+<p>Le qualificatif « centrée » signifie que l’espérance vaut 0 (la distribution est équilibrée autour de l’origine), et « réduite » signifie que la variance vaut 1 (et donc l’écart-type vaut également 1). La courbe en cloche atteint son maximum en <span class="math inline">\(x = 0\)</span>, présente des points d’inflexion en <span class="math inline">\(x = \pm 1\)</span>, et ses queues décroissent plus vite que toute puissance de <span class="math inline">\(x\)</span> : la quasi-totalité de la masse est concentrée dans l’intervalle <span class="math inline">\([-3, 3]\)</span>. Bien que la primitive de <span class="math inline">\(e^{-x^2/2}\)</span> ne soit pas une fonction élémentaire, l’intégrale sur <span class="math inline">\(\mathbb{R}\)</span> vaut exactement 1 — ce qui s’établit par l’astuce de Poisson (passage en coordonnées polaires d’une intégrale double). La loi <span class="math inline">\(\mathcal{N}(0,1)\)</span> est la distribution de référence à partir de laquelle toutes les autres lois normales sont déduites par simple changement de localisation et d’échelle.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition - Fonction de répartition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span>, on note <span class="math display">\[\Phi(x) = P(X \leq x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{t^2}{2}\right)dt.\]</span></p>
+</div>
+</div>
+<p>La primitive de <span class="math inline">\(e^{-t^2/2}\)</span> n’étant pas élémentaire, les valeurs de <span class="math inline">\(\Phi\)</span> se lisent en pratique dans une table, via calculatrice ou logiciel.</p>
+<p>La fonction <span class="math inline">\(\Phi\)</span> est strictement croissante de 0 à 1 lorsque <span class="math inline">\(x\)</span> parcourt <span class="math inline">\(\mathbb{R}\)</span> de <span class="math inline">\(-\infty\)</span> à <span class="math inline">\(+\infty\)</span> : <span class="math inline">\(\Phi(x)\)</span> représente l’aire sous la cloche à gauche du point <span class="math inline">\(x\)</span>, grandeur toujours comprise entre 0 et 1. Par convention, les tables ne donnent <span class="math inline">\(\Phi\)</span> que pour <span class="math inline">\(x \geq 0\)</span> ; les valeurs pour <span class="math inline">\(x &lt; 0\)</span> s’obtiennent grâce à la formule de symétrie <span class="math inline">\(\Phi(-x) = 1 - \Phi(x)\)</span>. L’importance pratique de <span class="math inline">\(\Phi\)</span> est considérable : tout calcul de probabilité sur une loi normale se ramène à l’évaluation de <span class="math inline">\(\Phi\)</span> en un ou deux points.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Propriétés utiles
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour tout réel <span class="math inline">\(x\)</span> :</p>
+<ul>
+<li><span class="math inline">\(\Phi(-x) = 1 - \Phi(x)\)</span>,</li>
+<li><span class="math inline">\(\Phi(0) = 0{,}5\)</span>,</li>
+<li>pour <span class="math inline">\(x &gt; 0\)</span>, <span class="math inline">\(P(-x \leq X \leq x) = 2\Phi(x) - 1\)</span>.</li>
+</ul>
+</div>
+</div>
+<p>Ces trois propriétés sont les outils de base pour tout calcul sur la loi <span class="math inline">\(\mathcal{N}(0,1)\)</span>. La première, <span class="math inline">\(\Phi(-x) = 1 - \Phi(x)\)</span>, traduit la symétrie de la cloche : l’aire à gauche de <span class="math inline">\(-x\)</span> égale l’aire à droite de <span class="math inline">\(x\)</span> ; c’est elle qui permet d’étendre la table (tabulée pour <span class="math inline">\(x \geq 0\)</span>) aux valeurs négatives. La deuxième, <span class="math inline">\(\Phi(0) = 0{,}5\)</span>, n’est que l’expression de la symétrie globale : la moitié de la masse se trouve de chaque côté de l’origine. La troisième, <span class="math inline">\(P(-x \leq X \leq x) = 2\Phi(x) - 1\)</span>, donne directement la probabilité d’un intervalle symétrique : on double l’aire du côté droit, puis on soustrait la demie-masse centrale.</p>
+<div id="cell-fig-normale-standard" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div id="fig-normale-standard" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-normale-standard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="normal-distribution_files/figure-html/fig-normale-standard-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="661" height="372">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-normale-standard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Densité de la loi normale centrée réduite <span class="math inline">\(\mathcal{N}(0,1)\)</span> et illustration de la propriété de symétrie.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 1 - Lecture de table pour <span class="math inline">\(\mathcal{N}(0,1)\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span>.</p>
+<ol type="1">
+<li>Calculer :</li>
+</ol>
+<ul>
+<li><span class="math inline">\(P(X \leq 1{,}3)\)</span>,</li>
+<li><span class="math inline">\(P(X &gt; 0{,}22)\)</span>,</li>
+<li><span class="math inline">\(P(X &lt; -1{,}57)\)</span>,</li>
+<li><span class="math inline">\(P(-1{,}5 \leq X \leq 2{,}2)\)</span>,</li>
+<li><span class="math inline">\(P(-1{,}96 \leq X \leq 1{,}96)\)</span>,</li>
+<li><span class="math inline">\(P(-2{,}58 \leq X \leq 2{,}58)\)</span>.</li>
+</ul>
+<ol start="2" type="1">
+<li>Déterminer les réels <span class="math inline">\(a,b,c,d\)</span> tels que :</li>
+</ol>
+<ul>
+<li><span class="math inline">\(P(X \leq a)=0{,}1251\)</span>,</li>
+<li><span class="math inline">\(P(X &gt; b)=0{,}2327\)</span>,</li>
+<li><span class="math inline">\(P(0 &lt; X &lt; c)=0{,}4984\)</span>,</li>
+<li><span class="math inline">\(P(-d \leq X \leq d)=0{,}95\)</span>.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>La table de <span class="math inline">\(\Phi\)</span> donne directement les probabilités pour les valeurs positives. Pour les valeurs <strong>négatives</strong>, on utilise la symétrie : <span class="math inline">\(\Phi(-x) = 1 - \Phi(x)\)</span>. Pour un intervalle <span class="math inline">\([a, b]\)</span>, on écrit <span class="math inline">\(P(a \leq X \leq b) = \Phi(b) - \Phi(a)\)</span>. En <strong>lecture inverse</strong>, on réécrit l’événement sous la forme <span class="math inline">\(P(X \leq t) = p\)</span> afin de retrouver <span class="math inline">\(t = \Phi^{-1}(p)\)</span> dans la table.</p>
+<p>Avec la table de <span class="math inline">\(\Phi\)</span> :</p>
+<ul>
+<li><span class="math inline">\(P(X \leq 1{,}3)=\Phi(1{,}3)\approx 0{,}9032\)</span>.</li>
+<li><span class="math inline">\(P(X &gt; 0{,}22)=1-\Phi(0{,}22)\approx 1-0{,}5871=0{,}4129\)</span>.</li>
+<li><span class="math inline">\(P(X &lt; -1{,}57)=\Phi(-1{,}57)=1-\Phi(1{,}57)\approx 0{,}0582\)</span>.</li>
+<li><span class="math inline">\(P(-1{,}5 \leq X \leq 2{,}2)=\Phi(2{,}2)-\Phi(-1{,}5)\approx 0{,}9193\)</span>.</li>
+<li><span class="math inline">\(P(-1{,}96 \leq X \leq 1{,}96)=2\Phi(1{,}96)-1\approx 0{,}95\)</span>.</li>
+<li><span class="math inline">\(P(-2{,}58 \leq X \leq 2{,}58)=2\Phi(2{,}58)-1\approx 0{,}9901\)</span>.</li>
+</ul>
+<p>Lecture inverse :</p>
+<ul>
+<li><span class="math inline">\(a \approx -1{,}15\)</span> car <span class="math inline">\(\Phi(-1{,}15)=0{,}1251\)</span>.</li>
+<li><span class="math inline">\(b \approx 0{,}73\)</span> car <span class="math inline">\(1-\Phi(b)=0{,}2327 \iff \Phi(b)=0{,}7673\)</span>.</li>
+<li><span class="math inline">\(c \approx 2{,}95\)</span> car <span class="math inline">\(\Phi(c)-0{,}5=0{,}4984 \iff \Phi(c)=0{,}9984\)</span>.</li>
+<li><span class="math inline">\(d \approx 1{,}96\)</span> car <span class="math inline">\(2\Phi(d)-1=0{,}95\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span>, alors <span class="math display">\[E(X)=0 \quad \text{et} \quad \mathrm{Var}(X)=1.\]</span></p>
+</div>
+</div>
+<p>L’espérance <span class="math inline">\(E(X) = 0\)</span> s’obtient en remarquant que l’intégrande <span class="math inline">\(x \mapsto x f_X(x)\)</span> est une fonction impaire, dont l’intégrale sur <span class="math inline">\(\mathbb{R}\)</span> est nulle. La variance <span class="math inline">\(\mathrm{Var}(X) = E(X^2) = 1\)</span> se calcule par une intégration par parties qui ramène <span class="math inline">\(\int x^2 e^{-x^2/2} dx\)</span> à l’intégrale gaussienne usuelle. Ces deux valeurs justifient la terminologie : « centrée » pour <span class="math inline">\(E(X)=0\)</span> et « réduite » pour <span class="math inline">\(\mathrm{Var}(X)=1\)</span> (soit un écart-type égal à 1). La loi <span class="math inline">\(\mathcal{N}(0,1)\)</span> est ainsi le représentant canonique de la famille des lois normales, à partir duquel tous les autres se déduisent par transformation linéaire.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span>.</p>
+<ol type="1">
+<li>Calculer les probabilités suivantes :
+<ul>
+<li><span class="math inline">\(P(X &lt; 1{,}23)\)</span>,</li>
+<li><span class="math inline">\(P(X &gt; 0{,}96)\)</span>,</li>
+<li><span class="math inline">\(P(-2{,}05 &lt; X &lt; 1)\)</span>,</li>
+<li><span class="math inline">\(P(X^2 &lt; 1{,}44)\)</span>.</li>
+</ul></li>
+<li>Déterminer <span class="math inline">\(k\)</span> dans les cas suivants :
+<ul>
+<li><span class="math inline">\(P(X &lt; k) = 0{,}7\)</span>,</li>
+<li><span class="math inline">\(P(X &gt; k) = 0{,}962\)</span>,</li>
+<li><span class="math inline">\(P(|X| &gt; k) = 0{,}6\)</span>.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Utiliser directement la table de <span class="math inline">\(\Phi\)</span> et les relations : <span class="math inline">\(P(X&gt;a)=1-\Phi(a)\)</span>, <span class="math inline">\(P(-a&lt;X&lt;a)=2\Phi(a)-1\)</span>, <span class="math inline">\(P(X^2&lt;c)=P(-\sqrt{c}&lt;X&lt;\sqrt{c})\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="ii---loi-normale-générale-mathcalnmsigma2" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="ii---loi-normale-générale-mathcalnmsigma2">II - Loi normale générale <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span></h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soient <span class="math inline">\(m \in \mathbb{R}\)</span> et <span class="math inline">\(\sigma &gt; 0\)</span>. On dit que <span class="math inline">\(X\)</span> suit la loi normale <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span> si sa densité est <span class="math display">\[f_X(x)=\frac{1}{\sigma\sqrt{2\pi}}\exp\left(-\frac{(x-m)^2}{2\sigma^2}\right), \quad x\in\mathbb{R}.\]</span></p>
+</div>
+</div>
+<p>Ici, <span class="math inline">\(m\)</span> est le paramètre de position (centre), et <span class="math inline">\(\sigma\)</span> contrôle la dispersion autour de <span class="math inline">\(m\)</span>.</p>
+<p>Le paramètre <span class="math inline">\(m\)</span> déplace la courbe en cloche vers la gauche ou vers la droite sans en modifier la forme ; <span class="math inline">\(\sigma\)</span> en change l’échelle : un grand <span class="math inline">\(\sigma\)</span> donne une courbe aplatie et étalée, un petit <span class="math inline">\(\sigma\)</span> donne une courbe étroite et pointue. Le maximum de <span class="math inline">\(f_X\)</span> est atteint en <span class="math inline">\(x = m\)</span> (c’est aussi le mode et la médiane), et les points d’inflexion se trouvent en <span class="math inline">\(x = m \pm \sigma\)</span>. Le facteur <span class="math inline">\(\frac{1}{\sigma\sqrt{2\pi}}\)</span> assure la normalisation : quelle que soient <span class="math inline">\(m \in \mathbb{R}\)</span> et <span class="math inline">\(\sigma &gt; 0\)</span>, l’intégrale de <span class="math inline">\(f_X\)</span> sur <span class="math inline">\(\mathbb{R}\)</span> vaut exactement 1. Enfin, si <span class="math inline">\(Z \sim \mathcal{N}(0,1)\)</span>, alors <span class="math inline">\(X = m + \sigma Z\)</span> suit <span class="math inline">\(\mathcal{N}(m, \sigma^2)\)</span> : la loi générale n’est qu’une version décalée et redimensionnée de la loi centrée réduite.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition - Standardisation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(X \sim \mathcal{N}(m,\sigma^2)\)</span>, alors la variable <span class="math display">\[Z=\frac{X-m}{\sigma}\]</span> suit <span class="math inline">\(\mathcal{N}(0,1)\)</span>.</p>
+<p>Réciproquement, si <span class="math inline">\(Z \sim \mathcal{N}(0,1)\)</span>, alors <span class="math inline">\(X=m+\sigma Z\)</span> suit <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span>.</p>
+</div>
+</div>
+<p>Cette proposition est l’outil central de calcul : toute probabilité sur une loi normale se ramène à une lecture de <span class="math inline">\(\Phi\)</span>.</p>
+<p>Géométriquement, standardiser revient à re-centrer la distribution en 0 et à la comprimer ou dilater pour que son écart-type vaille 1 : on passe ainsi de n’importe quelle loi <span class="math inline">\(\mathcal{N}(m, \sigma^2)\)</span> à la loi de référence <span class="math inline">\(\mathcal{N}(0,1)\)</span>. Grâce à cette transformation, une seule table (celle de <span class="math inline">\(\Phi\)</span>) suffit pour calculer des probabilités sur toutes les lois normales. Le schéma de calcul est le suivant : <span class="math inline">\(P(X \leq a) = P\!\left(Z \leq \dfrac{a - m}{\sigma}\right) = \Phi\!\left(\dfrac{a - m}{\sigma}\right)\)</span>. La quantité <span class="math inline">\(\dfrac{a - m}{\sigma}\)</span> est appelée la <strong>valeur centrée réduite</strong> (ou <em>z-score</em>) de <span class="math inline">\(a\)</span> : elle indique de combien d’écarts-types <span class="math inline">\(a\)</span> se trouve au-dessus (ou en dessous) de la moyenne <span class="math inline">\(m\)</span>. Cette transformation est linéaire, ce qui préserve la normalité et rend la standardisation exacte (et non approximative).</p>
+<div class="page-columns page-full">
+<div id="cell-fig-normale-generale" class="cell page-columns page-full" data-execution_count="2">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-normale-generale" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-normale-generale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="normal-distribution_files/figure-html/fig-normale-generale-output-1.png" class="quarto-figure quarto-figure-center figure-img column-page" width="1141" height="371">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-normale-generale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Densités de lois normales <span class="math inline">\(\mathcal{N}(m, \sigma^2)\)</span> pour différentes valeurs de <span class="math inline">\(m\)</span> et <span class="math inline">\(\sigma\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 2 - Calculs sur une loi normale générale
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Soit <span class="math inline">\(X \sim \mathcal{N}(30,9)\)</span>. Calculer :</li>
+</ol>
+<ul>
+<li><span class="math inline">\(P(X&gt;36)\)</span>,</li>
+<li><span class="math inline">\(P(25 \leq X \leq 35)\)</span>.</li>
+</ul>
+<ol start="2" type="1">
+<li>Soit <span class="math inline">\(X \sim \mathcal{N}(90,400)\)</span>. Déterminer :</li>
+</ol>
+<ul>
+<li><span class="math inline">\(k\)</span> tel que <span class="math inline">\(P(X&lt;k)=0{,}9798\)</span>,</li>
+<li><span class="math inline">\(k'\)</span> tel que <span class="math inline">\(P(X&gt;k')=0{,}6026\)</span>,</li>
+<li>un intervalle <span class="math inline">\(I\)</span> centré en 90 tel que <span class="math inline">\(P(X\in I)=0{,}85\)</span>.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 2
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>La méthode universelle est la <strong>standardisation</strong> : on pose <span class="math inline">\(Z = (X-m)/\sigma\)</span>, qui suit <span class="math inline">\(\mathcal{N}(0,1)\)</span>, et on se ramène à une lecture de <span class="math inline">\(\Phi\)</span>. Pour les problèmes <strong>inverses</strong>, on isole d’abord le quantile de <span class="math inline">\(Z\)</span> dans la table, puis on retrouve la valeur de <span class="math inline">\(X\)</span> en appliquant <span class="math inline">\(X = m + \sigma Z\)</span>.</p>
+<p><strong>1.</strong> <span class="math inline">\(X \sim \mathcal{N}(30,9)\)</span> donc <span class="math inline">\(\sigma=3\)</span> et <span class="math inline">\(Z=(X-30)/3 \sim \mathcal{N}(0,1)\)</span>.</p>
+<ul>
+<li><span class="math inline">\(P(X&gt;36)=P\!\left(Z&gt;\frac{36-30}{3}\right)=P(Z&gt;2)=1-\Phi(2)\approx 0{,}0228\)</span>.</li>
+<li><span class="math inline">\(P(25 \leq X \leq 35)=P\!\left(-\frac{5}{3} \leq Z \leq \frac{5}{3}\right)
+\approx 2\Phi(1{,}67)-1 \approx 0{,}9044\)</span>.</li>
+</ul>
+<p><strong>2.</strong> <span class="math inline">\(X \sim \mathcal{N}(90,400)\)</span> donc <span class="math inline">\(\sigma=20\)</span>.</p>
+<ul>
+<li><span class="math inline">\(P(X&lt;k)=0{,}9798 \Rightarrow \dfrac{k-90}{20}=2{,}05\)</span>, donc <span class="math inline">\(k=131\)</span>.</li>
+<li><span class="math inline">\(P(X&gt;k')=0{,}6026 \Rightarrow P(X\leq k')=0{,}3974\)</span>, donc <span class="math inline">\(\dfrac{k'-90}{20}\approx -0{,}26\)</span> et <span class="math inline">\(k'\approx 84{,}8\)</span>.</li>
+<li>On cherche <span class="math inline">\(I=[90-a,90+a]\)</span> avec <span class="math inline">\(P(|X-90|\leq a)=0{,}85\)</span>. En standardisant : <span class="math inline">\(P(|Z|\leq a/20)=0{,}85\)</span>, donc <span class="math inline">\(2\Phi(a/20)-1=0{,}85\)</span>, d’où <span class="math inline">\(\Phi(a/20)=0{,}925\)</span> et <span class="math inline">\(a/20\approx 1{,}44\)</span>. Ainsi <span class="math inline">\(a\approx 28{,}8\)</span>, et <span class="math inline">\(I\approx[61{,}2\,;\,118{,}8]\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 2
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X \sim \mathcal{N}(1,0{,}5^2)\)</span>.</p>
+<ol type="1">
+<li>Calculer <span class="math inline">\(P(X &lt; 1{,}91)\)</span>, <span class="math inline">\(P(X &gt; 0{,}82)\)</span> et <span class="math inline">\(P(0{,}82 &lt; X &lt; 1{,}91)\)</span>.</li>
+<li>Trouver <span class="math inline">\(t\)</span> tel que :
+<ul>
+<li><span class="math inline">\(P(X &lt; t) = 0{,}670\)</span>,</li>
+<li><span class="math inline">\(P(X \ge t) = 0{,}791\)</span>,</li>
+<li><span class="math inline">\(P(|X-1| &lt; t) = 0{,}866\)</span>.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 2
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Standardiser avec <span class="math inline">\(Z=\dfrac{X-1}{0{,}5}\)</span>, puis revenir à <span class="math inline">\(X\)</span> via <span class="math inline">\(t=1+0{,}5z\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 3
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X \sim \mathcal{N}(m,\sigma^2)\)</span>.</p>
+<p>Calculer : - <span class="math inline">\(P(|X-m|&lt;\sigma)\)</span>, - <span class="math inline">\(P(|X-m|&lt;2\sigma)\)</span>, - <span class="math inline">\(P(|X-m|&lt;3\sigma)\)</span>.</p>
+<p>Arrondir à <span class="math inline">\(10^{-3}\)</span> près.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exercice 3
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>On pose <span class="math inline">\(Z = \dfrac{X-m}{\sigma} \sim \mathcal{N}(0,1)\)</span>. Alors pour tout <span class="math inline">\(k &gt; 0\)</span> : <span class="math display">\[P(|X - m| &lt; k\sigma) = P(|Z| &lt; k) = 2\Phi(k) - 1.\]</span></p>
+<ul>
+<li><span class="math inline">\(P(|X-m| &lt; \sigma) = 2\Phi(1) - 1 \approx 2 \times 0{,}8413 - 1 = 0{,}683\)</span>.</li>
+<li><span class="math inline">\(P(|X-m| &lt; 2\sigma) = 2\Phi(2) - 1 \approx 2 \times 0{,}9772 - 1 = 0{,}954\)</span>.</li>
+<li><span class="math inline">\(P(|X-m| &lt; 3\sigma) = 2\Phi(3) - 1 \approx 2 \times 0{,}9987 - 1 = 0{,}997\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 4
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X\)</span> une variable aléatoire.</p>
+<ol type="1">
+<li>Si <span class="math inline">\(X \sim \mathcal{N}(10,4)\)</span>, calculer <span class="math inline">\(P(X&lt;14)\)</span>.</li>
+<li>Si <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span>, calculer <span class="math inline">\(P(|X-1|&gt;0{,}5)\)</span>.</li>
+<li>Si <span class="math inline">\(X \sim \mathcal{N}(1,4)\)</span>, déterminer <span class="math inline">\(a&gt;0\)</span> tel que <span class="math inline">\(P(|X-1|&gt;a)\le 0{,}03\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 4
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Pour la question 3 : <span class="math inline">\(P(|X-1|&gt;a)\le 0{,}03 \iff P(|Z|\le a/2)\ge 0{,}97\)</span>, avec <span class="math inline">\(Z\sim\mathcal{N}(0,1)\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(X \sim \mathcal{N}(m,\sigma^2)\)</span>, alors <span class="math display">\[E(X)=m \quad \text{et} \quad \mathrm{Var}(X)=\sigma^2.\]</span></p>
+</div>
+</div>
+<p>Ces résultats confirment l’interprétation des paramètres : <span class="math inline">\(m\)</span> est bien le centre de masse (l’espérance) et <span class="math inline">\(\sigma\)</span> est l’écart-type, mesure directe de la dispersion typique de <span class="math inline">\(X\)</span> autour de sa moyenne. On les obtient à partir du cas <span class="math inline">\(\mathcal{N}(0,1)\)</span> par la transformation linéaire <span class="math inline">\(X = m + \sigma Z\)</span> : <span class="math inline">\(E(X) = m + \sigma \cdot E(Z) = m\)</span> et <span class="math inline">\(\mathrm{Var}(X) = \sigma^2 \cdot \mathrm{Var}(Z) = \sigma^2\)</span>. Ces formules sont cohérentes avec le cas particulier <span class="math inline">\(\mathcal{N}(0,1)\)</span> où <span class="math inline">\(m = 0\)</span> et <span class="math inline">\(\sigma = 1\)</span>, et elles montrent que les paramètres de la loi ont une signification statistique immédiate et intuitive.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Remarque — Règle empirique (68–95–99,7)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour toute variable <span class="math inline">\(X \sim \mathcal{N}(m,\sigma^2)\)</span>, la standardisation donne immédiatement :</p>
+<p><span class="math display">\[P(|X-m| &lt; \sigma) \approx 0{,}683, \qquad P(|X-m| &lt; 2\sigma) \approx 0{,}954, \qquad P(|X-m| &lt; 3\sigma) \approx 0{,}997.\]</span></p>
+<p>Autrement dit, environ <strong>68 %</strong> des valeurs se trouvent à moins d’un écart-type de la moyenne, <strong>95 %</strong> à moins de deux écarts-types et <strong>99,7 %</strong> à moins de trois écarts-types. Cette <strong>règle des trois sigma</strong> fournit un repère mental rapide pour apprécier la « normalité » d’une observation : une valeur au-delà de <span class="math inline">\(3\sigma\)</span> est exceptionnelle (moins de 0,3 % de chances).</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition (admise) - Somme de normales indépendantes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(X_1,\dots,X_n\)</span> sont indépendantes et <span class="math inline">\(X_i\sim\mathcal{N}(m_i,\sigma_i^2)\)</span>, alors <span class="math display">\[Y=\sum_{i=1}^n X_i \sim \mathcal{N}\left(\sum_{i=1}^n m_i,\sum_{i=1}^n \sigma_i^2\right).\]</span></p>
+</div>
+</div>
+<p>Cette propriété de stabilité signifie que la famille des lois normales est fermée par addition de variables indépendantes : une somme de normales indépendantes reste normale. La nouvelle espérance est la somme des espérances (par linéarité), et la nouvelle variance est la somme des variances (par indépendance). Attention : ce sont bien les <strong>variances</strong> qui s’additionnent, et non les écarts-types. Cette propriété est fondamentale en pratique pour modéliser la somme de nombreuses contributions indépendantes (erreurs de mesure, fluctuations aléatoires, etc.). Le résultat est « admis » car sa démonstration fait appel aux fonctions caractéristiques ou à la convolution des densités, outils qui dépassent le cadre de ce cours.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 3
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Lors d’un test, 70 % des individus ont un score inférieur à 60. On suppose une loi normale d’écart-type 20. Déterminer l’espérance <span class="math inline">\(m\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 3
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-23" class="callout-23-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Il s’agit d’un <strong>problème inverse</strong> : on connaît la probabilité et on cherche le paramètre <span class="math inline">\(m\)</span>. Après standardisation, la condition <span class="math inline">\(P(X \leq 60) = 0{,}70\)</span> signifie que la valeur standardisée <span class="math inline">\(\dfrac{60-m}{20}\)</span> doit coïncider avec le quantile d’ordre <span class="math inline">\(0{,}70\)</span> de <span class="math inline">\(\mathcal{N}(0,1)\)</span>, que l’on lit dans la table de <span class="math inline">\(\Phi\)</span>.</p>
+<p>Si <span class="math inline">\(X\sim\mathcal{N}(m,20^2)\)</span> et <span class="math inline">\(P(X\leq 60)=0{,}70\)</span>, alors <span class="math display">\[\frac{60-m}{20}=z_{0{,}70}\approx 0{,}5244.\]</span> Donc <span class="math display">\[m \approx 60-20\times 0{,}5244 \approx 49{,}5.\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 5
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X \sim \mathcal{N}(m,\sigma^2)\)</span>.</p>
+<ol type="1">
+<li>Sachant que <span class="math inline">\(\mathrm{Var}(X)=4\)</span> et <span class="math inline">\(P(X&gt;2)=0{,}4\)</span>, calculer <span class="math inline">\(E(X)\)</span>.</li>
+<li>Sachant que <span class="math inline">\(E(X)=-2{,}56\)</span> et <span class="math inline">\(P(X&lt;0)=0{,}9\)</span>, calculer <span class="math inline">\(\mathrm{Var}(X)\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 5
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-25" class="callout-25-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Écrire chaque condition sous la forme <span class="math inline">\(\Phi\!\left(\dfrac{x_0-m}{\sigma}\right)=p\)</span> puis utiliser la table inverse.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 6
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un lot contient des pièces défectueuses dont le nombre aléatoire <span class="math inline">\(X\)</span> suit une loi <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span>.</p>
+<p>On sait que : - <span class="math inline">\(P(X\le 204)=0{,}58\)</span>, - <span class="math inline">\(P(X\ge 235)=0{,}04\)</span>.</p>
+<p>Déterminer <span class="math inline">\(m\)</span> et <span class="math inline">\(\sigma\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-27-contents" aria-controls="callout-27" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 6
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-27" class="callout-27-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Transformer en : <span class="math inline">\(\dfrac{204-m}{\sigma}=z_{0{,}58}\)</span> et <span class="math inline">\(\dfrac{235-m}{\sigma}=z_{0{,}96}\)</span>, puis résoudre le système à deux inconnues.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 7
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Dans la ville de Prairie, la taille <span class="math inline">\(X\)</span> des individus (en cm) suit une loi <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span>.</p>
+<p>On observe que : - 30,85 % des individus mesurent moins de 165 cm, - 15,87 % mesurent plus de 180 cm.</p>
+<p>Déterminer <span class="math inline">\(m\)</span> et <span class="math inline">\(\sigma\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-29-contents" aria-controls="callout-29" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 7
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-29" class="callout-29-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Utiliser : <span class="math inline">\(\Phi\!\left(\dfrac{165-m}{\sigma}\right)=0{,}3085\)</span> et <span class="math inline">\(\Phi\!\left(\dfrac{180-m}{\sigma}\right)=0{,}8413\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 4
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soient <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> indépendantes de loi <span class="math inline">\(\mathcal{N}(0,2)\)</span>. Calculer <span class="math inline">\(P(X+Y\leq 1)\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-31-contents" aria-controls="callout-31" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 4
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-31" class="callout-31-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>La propriété de <strong>stabilité</strong> de la loi normale garantit que la somme de variables aléatoires normales indépendantes est encore une variable normale. Il suffit donc d’additionner les espérances et les <strong>variances</strong> (et non les écarts-types) pour identifier la loi de <span class="math inline">\(X+Y\)</span>.</p>
+<p>Par stabilité de la loi normale, <span class="math display">\[X+Y \sim \mathcal{N}(0,4).\]</span> Donc <span class="math display">\[P(X+Y\leq 1)=P\left(\frac{X+Y}{2}\leq \frac12\right)=\Phi(0{,}5)\approx 0{,}6915.\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 8
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X \sim \mathcal{N}(20,4)\)</span>. On pose : - <span class="math inline">\(Y=50X\)</span>, - <span class="math inline">\(Z=\sum_{i=1}^{50} X_i\)</span> où les <span class="math inline">\(X_i\)</span> sont indépendantes et de même loi que <span class="math inline">\(X\)</span>, - <span class="math inline">\(W=\dfrac{Z}{50}\)</span>.</p>
+<p>Déterminer la loi de <span class="math inline">\(Y\)</span>, <span class="math inline">\(Z\)</span> et <span class="math inline">\(W\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-33-contents" aria-controls="callout-33" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 8
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-33" class="callout-33-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Utiliser : - la transformation affine d’une normale, - la stabilité par somme de normales indépendantes.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 9
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un étudiant passe un examen comportant deux épreuves de même coefficient, notées indépendantes <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> avec : - <span class="math inline">\(X \sim \mathcal{N}(12,2)\)</span>, - <span class="math inline">\(Y \sim \mathcal{N}(13,5)\)</span>.</p>
+<ol type="1">
+<li>Déterminer la loi de la moyenne <span class="math inline">\(Z=\dfrac{X+Y}{2}\)</span>.</li>
+<li>Calculer <span class="math inline">\(P(Z\ge 10)\)</span>.</li>
+<li>Déterminer un intervalle centré sur <span class="math inline">\(E(Z)\)</span> contenant <span class="math inline">\(Z\)</span> avec probabilité 0,9.</li>
+<li>Calculer <span class="math inline">\(P(X\ge 10\ \text{et}\ Y\ge 10)\)</span>.</li>
+<li>Une mention est attribuée si <span class="math inline">\(Z\ge 14\)</span> et si aucune note n’est en dessous de 10. Calculer la probabilité d’obtenir la mention.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-35-contents" aria-controls="callout-35" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 9
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-35" class="callout-35-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Question 4 : utiliser l’indépendance, <span class="math inline">\(P(X\ge 10, Y\ge 10)=P(X\ge 10)P(Y\ge 10)\)</span>.</li>
+<li>Question 5 : l’événement est <span class="math inline">\(\{Z\ge 14\}\cap\{X\ge 10\}\cap\{Y\ge 10\}\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 10
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une entreprise reçoit un chargement de 100 wagons de céréales. Les masses transportées (en tonnes) sont des v.a.r. indépendantes <span class="math inline">\(M_i\)</span> suivant la loi <span class="math inline">\(\mathcal{N}(55,0{,}25)\)</span>.</p>
+<ol type="1">
+<li>Déterminer la loi de la masse totale <span class="math inline">\(M_T=\sum_{i=1}^{100} M_i\)</span>.</li>
+<li>Déterminer la loi de la masse moyenne <span class="math inline">\(\overline{M}=\dfrac{1}{100}\sum_{i=1}^{100}M_i\)</span>.</li>
+<li>Déterminer <span class="math inline">\(a&gt;0\)</span> tel que <span class="math inline">\(P\big(\overline{M}\in[55-a\,;\,55+a]\big)&gt;0{,}95\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-37-contents" aria-controls="callout-37" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 10
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-37" class="callout-37-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(\overline{M}\)</span> est normale de moyenne 55 et de variance <span class="math inline">\(0{,}25/100\)</span>. Ramener ensuite à <span class="math inline">\(P(|Z|\le z_{0{,}975})\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 11
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X \sim \mathcal{N}(1,4)\)</span> et <span class="math inline">\(Y=2X+1\)</span>.</p>
+<ol type="1">
+<li>Déterminer la loi de <span class="math inline">\(Y\)</span>.</li>
+<li>Calculer <span class="math inline">\(E(Y^2)\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-39-contents" aria-controls="callout-39" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 11
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-39" class="callout-39-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Utiliser <span class="math inline">\(E(Y^2)=\mathrm{Var}(Y)+E(Y)^2\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 12
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soient <span class="math inline">\(X \sim \mathcal{N}(m,\sigma^2)\)</span> et <span class="math inline">\(b&gt;0\)</span>. Déterminer <span class="math inline">\(x\)</span> tel que <span class="math inline">\(P(x&lt;X&lt;x+b)\)</span> soit maximale.</p>
+<p>(On pourra étudier <span class="math inline">\(f(x)=P(x&lt;X&lt;x+b)\)</span>.)</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-41-contents" aria-controls="callout-41" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exercice 12
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-41" class="callout-41-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>On pose <span class="math inline">\(f(x) = P(x &lt; X &lt; x + b) = F_X(x+b) - F_X(x)\)</span>, où <span class="math inline">\(F_X\)</span> est la fonction de répartition de <span class="math inline">\(X\)</span>.</p>
+<p>La fonction <span class="math inline">\(f\)</span> est dérivable et : <span class="math display">\[f'(x) = f_X(x+b) - f_X(x),\]</span> où <span class="math inline">\(f_X\)</span> est la densité de <span class="math inline">\(X \sim \mathcal{N}(m, \sigma^2)\)</span>.</p>
+<p>On cherche <span class="math inline">\(f'(x) = 0\)</span>, c’est-à-dire <span class="math inline">\(f_X(x+b) = f_X(x)\)</span>.</p>
+<p>Comme la densité normale est symétrique par rapport à <span class="math inline">\(m\)</span>, l’égalité <span class="math inline">\(f_X(x+b) = f_X(x)\)</span> impose que <span class="math inline">\(x\)</span> et <span class="math inline">\(x+b\)</span> soient symétriques par rapport à <span class="math inline">\(m\)</span> : <span class="math display">\[\frac{x + (x+b)}{2} = m \implies x = m - \frac{b}{2}.\]</span></p>
+<p>On vérifie que c’est bien un maximum : c’est le seul point critique, et <span class="math inline">\(f(x) \to 0\)</span> quand <span class="math inline">\(x \to \pm \infty\)</span>.</p>
+<p><strong>Conclusion</strong> : la probabilité <span class="math inline">\(P(x &lt; X &lt; x+b)\)</span> est maximale pour <span class="math inline">\(x = m - \dfrac{b}{2}\)</span>, c’est-à-dire lorsque l’intervalle <span class="math inline">\(]x, x+b[\)</span> est <strong>centré en <span class="math inline">\(m\)</span></strong>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 13
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soient <span class="math inline">\(X \sim \mathcal{N}(m,\sigma^2)\)</span> et <span class="math inline">\(Y=aX+b\)</span> avec <span class="math inline">\((a,b)\in\mathbb{R}^*\times\mathbb{R}\)</span>.</p>
+<ol type="1">
+<li>Calculer <span class="math inline">\(E(Y)\)</span> et <span class="math inline">\(\mathrm{Var}(Y)\)</span>.</li>
+<li>Montrer que <span class="math inline">\(Y \sim \mathcal{N}(am+b, a^2\sigma^2)\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-43-contents" aria-controls="callout-43" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 13
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-43" class="callout-43-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Montrer que <span class="math inline">\(\dfrac{Y-(am+b)}{|a|\sigma}=\operatorname{sgn}(a)\dfrac{X-m}{\sigma}\)</span>, puis utiliser l’invariance de la loi de <span class="math inline">\(Z\sim\mathcal{N}(0,1)\)</span> par symétrie.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 14
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soient <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span> et <span class="math inline">\(U\)</span> une v.a.r. telle que <span class="math inline">\(P(U=1)=P(U=-1)=0{,}5\)</span>.</p>
+<p>En supposant <span class="math inline">\(X\)</span> et <span class="math inline">\(U\)</span> indépendantes, déterminer la loi de <span class="math inline">\(Z=XU\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-45-contents" aria-controls="callout-45" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 14
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-45" class="callout-45-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Conditionner par <span class="math inline">\(U=1\)</span> et <span class="math inline">\(U=-1\)</span>. Comparer les lois de <span class="math inline">\(X\)</span> et <span class="math inline">\(-X\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="iii---application-loi-log-normale" class="level2">
+<h2 class="anchored" data-anchor-id="iii---application-loi-log-normale">III - Application : loi log-normale</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On dit que <span class="math inline">\(X\)</span> suit une <strong>loi log-normale</strong> de paramètres <span class="math inline">\(m\in\mathbb{R}\)</span> et <span class="math inline">\(\sigma&gt;0\)</span> si <span class="math display">\[\ln(X)\sim\mathcal{N}(m,\sigma^2).\]</span> En particulier, <span class="math inline">\(X&gt;0\)</span> presque sûrement.</p>
+</div>
+</div>
+<p>De nombreuses quantités réelles sont strictement positives et ont un logarithme qui suit approximativement une loi normale : c’est le cas des prix d’actifs financiers, des tailles biologiques ou encore de certains revenus. Si <span class="math inline">\(\ln(X) \sim \mathcal{N}(m, \sigma^2)\)</span>, alors <span class="math inline">\(X = e^{\ln X}\)</span> est obtenu en appliquant l’exponentielle à une variable normale, ce qui garantit <span class="math inline">\(X &gt; 0\)</span> presque sûrement. Il est important de noter que <span class="math inline">\(m\)</span> et <span class="math inline">\(\sigma\)</span> sont la moyenne et l’écart-type de <span class="math inline">\(\ln(X)\)</span>, et non de <span class="math inline">\(X\)</span> lui-même : l’espérance de <span class="math inline">\(X\)</span> vaut <span class="math inline">\(e^{m + \sigma^2/2}\)</span>, qui est toujours supérieure à <span class="math inline">\(e^m\)</span> en raison de la convexité de l’exponentielle (inégalité de Jensen). Cette différence entre la moyenne et la médiane (qui vaut <span class="math inline">\(e^m\)</span>) reflète l’asymétrie à droite caractéristique de la loi log-normale.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(X\)</span> est log-normale de paramètres <span class="math inline">\((m,\sigma)\)</span>, alors pour <span class="math inline">\(x&gt;0\)</span> : <span class="math display">\[f_X(x)=\frac{1}{x\sigma\sqrt{2\pi}}\exp\left(-\frac{1}{2}\left(\frac{\ln x-m}{\sigma}\right)^2\right).\]</span></p>
+<p>De plus, <span class="math display">\[E(X)=e^{m+\sigma^2/2}, \qquad \mathrm{Var}(X)=e^{2m+\sigma^2}(e^{\sigma^2}-1).\]</span></p>
+</div>
+</div>
+<p>Dans la formule de densité, le facteur <span class="math inline">\(1/x\)</span> provient du changement de variable <span class="math inline">\(x \mapsto \ln x\)</span> (jacobien de la transformation), et le reste n’est autre que la densité <span class="math inline">\(\mathcal{N}(m, \sigma^2)\)</span> évaluée en <span class="math inline">\(\ln x\)</span>. La clé pour les calculs de probabilités est la relation <span class="math inline">\(P(X \leq a) = P(\ln X \leq \ln a) = \Phi\!\left(\dfrac{\ln a - m}{\sigma}\right)\)</span>, qui ramène tout calcul à une évaluation de <span class="math inline">\(\Phi\)</span> après une simple transformation logarithmique. L’espérance <span class="math inline">\(E(X) = e^{m + \sigma^2/2}\)</span> est strictement supérieure à la médiane <span class="math inline">\(e^m\)</span> : la distribution est asymétrique à droite, avec quelques très grandes valeurs qui tirent la moyenne vers le haut.</p>
+<div id="cell-fig-loi-lognormale" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="fig-loi-lognormale" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-loi-lognormale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="normal-distribution_files/figure-html/fig-loi-lognormale-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="661" height="372">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loi-lognormale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Densité de la loi log-normale pour différentes valeurs de <span class="math inline">\((m, \sigma)\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 5
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X\)</span> log-normale de paramètres <span class="math inline">\(m=1\)</span> et <span class="math inline">\(\sigma=1\)</span>. Calculer <span class="math inline">\(P(X&gt;1)\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-49-contents" aria-controls="callout-49" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 5
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-49" class="callout-49-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>L’idée clé est la <strong>transformation logarithmique</strong> : puisque <span class="math inline">\(\ln(X) \sim \mathcal{N}(1,1)\)</span>, tout événement portant sur <span class="math inline">\(X\)</span> se traduit immédiatement en événement sur une variable normale. En particulier, <span class="math inline">\(P(X &gt; 1) = P(\ln X &gt; \ln 1) = P(\ln X &gt; 0)\)</span>, ce qui ramène le calcul à la loi <span class="math inline">\(\mathcal{N}(1,1)\)</span> puis, après standardisation, à <span class="math inline">\(\Phi\)</span>.</p>
+<p>Comme <span class="math inline">\(\ln(X)\sim\mathcal{N}(1,1)\)</span>, <span class="math display">\[P(X&gt;1)=P(\ln(X)&gt;0)=P(Z&gt;-1)=\Phi(1)\approx 0{,}8413.\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 15
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(Y\)</span> une v.a.r. suivant une loi log-normale de paramètres <span class="math inline">\(m\)</span> et <span class="math inline">\(\sigma\)</span>, c’est-à-dire telle que <span class="math inline">\(X=\ln(Y)\sim\mathcal{N}(m,\sigma^2)\)</span>.</p>
+<ol type="1">
+<li>Cas <span class="math inline">\(m=3\)</span>, <span class="math inline">\(\sigma=2\)</span> : calculer <span class="math inline">\(P(1\le Y\le e^5)\)</span>.</li>
+<li>Cas général :
+<ul>
+<li>déterminer une densité de <span class="math inline">\(Y\)</span>,</li>
+<li>en admettant <span class="math inline">\(X=m+\sigma Z\)</span> avec <span class="math inline">\(Z\sim\mathcal{N}(0,1)\)</span>, montrer que <span class="math inline">\(E(Y)=e^m E(e^{\sigma Z})\)</span>,</li>
+<li>en déduire <span class="math inline">\(E(Y)\)</span> et <span class="math inline">\(\mathrm{Var}(Y)\)</span>,</li>
+<li>déterminer la loi de <span class="math inline">\(W=\dfrac{1}{Y}\)</span>.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-51-contents" aria-controls="callout-51" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 15
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-51" class="callout-51-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Pour la densité : dériver <span class="math inline">\(F_Y(y)=P(X\le\ln y)\)</span> pour <span class="math inline">\(y&gt;0\)</span>.</li>
+<li>Pour <span class="math inline">\(W=1/Y\)</span>, remarquer que <span class="math inline">\(\ln(W)=-\ln(Y)\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 16
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Dans certains modèles financiers, le cours futur d’une action est : <span class="math display">\[S_T=S_0e^X,\]</span> où <span class="math inline">\(S_0&gt;0\)</span> et <span class="math inline">\(X\sim\mathcal{N}(m,\sigma^2)\)</span>.</p>
+<ol type="1">
+<li>Justifier que <span class="math inline">\(S_T\)</span> suit une loi log-normale et en donner les paramètres.</li>
+<li>Vérifier que <span class="math inline">\(E(S_T)=S_0 \iff m=-\dfrac{\sigma^2}{2}\)</span>.</li>
+<li>Exprimer alors <span class="math inline">\(\mathrm{Var}(S_T)\)</span> en fonction de <span class="math inline">\(\sigma\)</span> et <span class="math inline">\(S_0\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-53-contents" aria-controls="callout-53" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 16
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-53" class="callout-53-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Utiliser <span class="math inline">\(E(e^X)=e^{m+\sigma^2/2}\)</span> et <span class="math inline">\(\mathrm{Var}(S_T)=S_0^2\mathrm{Var}(e^X)\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="iv---application-loi-du-khi-deux" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="iv---application-loi-du-khi-deux">IV - Application : loi du khi-deux</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition - 1 degré de liberté
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(Z\sim\mathcal{N}(0,1)\)</span>, alors <span class="math inline">\(Y=Z^2\)</span> suit la loi du khi-deux à 1 degré de liberté, notée <span class="math inline">\(\chi^2_1\)</span>.</p>
+</div>
+</div>
+<p>Élever une variable au carré ne peut donner qu’un résultat positif, ce qui explique que <span class="math inline">\(\chi^2_1\)</span> soit une loi sur <span class="math inline">\((0, +\infty)\)</span>. Par symétrie de la loi <span class="math inline">\(\mathcal{N}(0,1)\)</span>, les valeurs <span class="math inline">\(Z\)</span> et <span class="math inline">\(-Z\)</span> produisent le même carré : la droite réelle se « replie » sur la demi-droite positive, concentrant en particulier de la masse près de 0. Cette loi apparaît naturellement en statistique dès que l’on calcule un carré de résidu ou un carré d’écart-type empirique, et constitue le fondement de la loi du khi-deux à <span class="math inline">\(n\)</span> degrés de liberté.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Propriétés de <span class="math inline">\(\chi^2_1\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La densité de <span class="math inline">\(Y\sim\chi^2_1\)</span> est, pour <span class="math inline">\(x&gt;0\)</span>, <span class="math display">\[f_Y(x)=\frac{1}{\sqrt{2\pi}}x^{-1/2}e^{-x/2},\]</span> et <span class="math display">\[E(Y)=1, \qquad \mathrm{Var}(Y)=2.\]</span></p>
+</div>
+</div>
+<p>L’espérance <span class="math inline">\(E(Y) = 1\)</span> s’obtient immédiatement : <span class="math inline">\(Y = Z^2\)</span> et <span class="math inline">\(E(Z^2) = \mathrm{Var}(Z) = 1\)</span> pour <span class="math inline">\(Z \sim \mathcal{N}(0,1)\)</span>. La variance <span class="math inline">\(\mathrm{Var}(Y) = 2\)</span> nécessite de calculer <span class="math inline">\(E(Z^4) = 3\)</span> (moment d’ordre 4 de la loi normale), ce qui donne <span class="math inline">\(\mathrm{Var}(Z^2) = E(Z^4) - (E(Z^2))^2 = 3 - 1 = 2\)</span>. La densité <span class="math inline">\(f_Y\)</span> est singulière en <span class="math inline">\(x = 0\)</span> (elle tend vers <span class="math inline">\(+\infty\)</span>) car le repliement de la droite réelle concentre une densité importante de masse près de 0, correspondant aux valeurs de <span class="math inline">\(Z\)</span> proches de 0 de part et d’autre.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition - <span class="math inline">\(n\)</span> degrés de liberté
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(Z_1,\dots,Z_n\)</span> sont indépendantes et suivent toutes <span class="math inline">\(\mathcal{N}(0,1)\)</span>, alors <span class="math display">\[X=\sum_{i=1}^n Z_i^2\]</span> suit la loi <span class="math inline">\(\chi^2_n\)</span>.</p>
+</div>
+</div>
+<p>La loi <span class="math inline">\(\chi^2_n\)</span> est donc une somme de <span class="math inline">\(n\)</span> variables indépendantes <span class="math inline">\(\chi^2_1\)</span>, ce qui en fait une généralisation naturelle du cas <span class="math inline">\(n = 1\)</span>. L’entier <span class="math inline">\(n\)</span> est appelé le <strong>degré de liberté</strong> ; il contrôle la forme de la distribution : pour de petites valeurs de <span class="math inline">\(n\)</span>, la loi est fortement asymétrique à droite, tandis que pour de grandes valeurs de <span class="math inline">\(n\)</span>, elle s’approche d’une loi normale (par le théorème central limite). En statistique, <span class="math inline">\(\chi^2_n\)</span> apparaît très naturellement comme la loi de la somme de <span class="math inline">\(n\)</span> carrés de résidus standardisés, par exemple dans les tests d’indépendance sur des tableaux de contingence ou dans les tests d’ajustement.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Remarque — Densité générale de <span class="math inline">\(\chi^2_n\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La densité de la loi <span class="math inline">\(\chi^2_n\)</span> fait appel à la fonction Gamma d’Euler. Pour <span class="math inline">\(x &gt; 0\)</span> : <span class="math display">\[f_X(x) = \frac{1}{2^{n/2}\,\Gamma(n/2)}\,x^{(n-2)/2}\,e^{-x/2}\,\mathbf{1}_{]0,+\infty[}(x),\]</span> où <span class="math inline">\(\Gamma\)</span> est définie par <span class="math inline">\(\Gamma(s) = \displaystyle\int_0^{+\infty} t^{s-1}e^{-t}\,dt\)</span> pour <span class="math inline">\(s &gt; 0\)</span>.</p>
+<p>On retrouve la densité de <span class="math inline">\(\chi^2_1\)</span> en posant <span class="math inline">\(n=1\)</span> et en utilisant <span class="math inline">\(\Gamma(1/2) = \sqrt{\pi}\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(X\sim\chi^2_n\)</span>, alors <span class="math display">\[E(X)=n \qquad \text{et} \qquad \mathrm{Var}(X)=2n.\]</span></p>
+</div>
+</div>
+<p>L’espérance <span class="math inline">\(E(X) = n\)</span> découle directement de la linéarité : <span class="math inline">\(X\)</span> est la somme de <span class="math inline">\(n\)</span> variables indépendantes <span class="math inline">\(Y_i \sim \chi^2_1\)</span>, chacune d’espérance 1, donc <span class="math inline">\(E(X) = n \cdot 1 = n\)</span>. De même, par indépendance, <span class="math inline">\(\mathrm{Var}(X) = n \cdot \mathrm{Var}(Y_i) = n \cdot 2 = 2n\)</span>. Lorsque <span class="math inline">\(n\)</span> grandit, la moyenne croît linéairement tandis que l’écart-type ne croît qu’en <span class="math inline">\(\sqrt{2n}\)</span> : le coefficient de variation <span class="math inline">\(\sigma/\mu = \sqrt{2n}/n \to 0\)</span>, ce qui signifie que la distribution se concentre relativement de plus en plus autour de sa moyenne. C’est précisément pourquoi, pour de grands degrés de liberté, la loi <span class="math inline">\(\chi^2_n\)</span> est bien approchée par une loi normale.</p>
+<div class="page-columns page-full">
+<div id="cell-fig-loi-khi-deux" class="cell page-columns page-full" data-execution_count="4">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-loi-khi-deux" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-loi-khi-deux-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="normal-distribution_files/figure-html/fig-loi-khi-deux-output-1.png" class="quarto-figure quarto-figure-center figure-img column-page" width="1141" height="372">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loi-khi-deux-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Densité de la loi du khi-deux <span class="math inline">\(\chi^2_n\)</span> pour différents degrés de liberté <span class="math inline">\(n\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 6 - Lecture de table <span class="math inline">\(\chi^2\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X\sim\chi^2_7\)</span>. À l’aide de la table :</p>
+<ol type="1">
+<li>Calculer :</li>
+</ol>
+<ul>
+<li><span class="math inline">\(P(X&lt;4{,}255)\)</span>,</li>
+<li><span class="math inline">\(P(X\geq 9{,}037)\)</span>,</li>
+<li><span class="math inline">\(P(2{,}167\leq X\leq 12{,}02)\)</span>.</li>
+</ul>
+<ol start="2" type="1">
+<li>Déterminer <span class="math inline">\(x\)</span> tel que <span class="math inline">\(P(X&lt;x)=0{,}1\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-60-contents" aria-controls="callout-60" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exemple 6
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-60" class="callout-60-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>La table du <span class="math inline">\(\chi^2\)</span> donne des <strong>quantiles</strong> : pour chaque degré de liberté <span class="math inline">\(n\)</span>, elle fournit des valeurs <span class="math inline">\(x\)</span> telles que <span class="math inline">\(P(X &lt; x) = p\)</span> pour des probabilités <span class="math inline">\(p\)</span> usuelles. La lecture est donc l’<strong>inverse</strong> de la table normale : on repère <span class="math inline">\(x\)</span> dans le corps du tableau pour retrouver <span class="math inline">\(p\)</span>, ou on repère <span class="math inline">\(p\)</span> pour retrouver <span class="math inline">\(x\)</span> (lecture inverse). Pour <span class="math inline">\(n=7\)</span>, on lit directement les valeurs souhaitées dans la ligne correspondante.</p>
+<p>Pour <span class="math inline">\(n=7\)</span>, la table donne approximativement :</p>
+<ul>
+<li><span class="math inline">\(F(4{,}255)=0{,}25\)</span>,</li>
+<li><span class="math inline">\(F(9{,}037)=0{,}75\)</span>,</li>
+<li><span class="math inline">\(F(2{,}167)=0{,}10\)</span>,</li>
+<li><span class="math inline">\(F(12{,}02)=0{,}90\)</span>.</li>
+</ul>
+<p>Donc :</p>
+<ul>
+<li><span class="math inline">\(P(X&lt;4{,}255)=0{,}25\)</span>,</li>
+<li><span class="math inline">\(P(X\geq 9{,}037)=1-0{,}75=0{,}25\)</span>,</li>
+<li><span class="math inline">\(P(2{,}167\leq X\leq 12{,}02)=0{,}90-0{,}10=0{,}80\)</span>,</li>
+<li>le quantile d’ordre 0,1 vaut <span class="math inline">\(x=2{,}167\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice 17
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(X\sim\chi^2_3\)</span>.</p>
+<ol type="1">
+<li>Déterminer :
+<ul>
+<li><span class="math inline">\(P(X&gt;7{,}815)\)</span>,</li>
+<li><span class="math inline">\(P(2{,}366&lt;X&lt;4{,}108)\)</span>.</li>
+</ul></li>
+<li>Démontrer que <span class="math inline">\(E(X)=3\)</span> et <span class="math inline">\(\mathrm{Var}(X)=6\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-62-contents" aria-controls="callout-62" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indication — Exercice 17
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-62" class="callout-62-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Question 1 : utiliser la table de la loi du khi-deux.</li>
+<li>Question 2 : écrire <span class="math inline">\(X=Z_1^2+Z_2^2+Z_3^2\)</span> avec <span class="math inline">\(Z_i\sim\mathcal{N}(0,1)\)</span> indépendantes.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="v-application-loi-de-student" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="v-application-loi-de-student">V — Application : loi de Student</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soient <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> deux variables aléatoires <strong>indépendantes</strong> avec <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span> et <span class="math inline">\(Y \sim \chi^2_n\)</span>.</p>
+<p>La variable aléatoire <span class="math display">\[T_n = \frac{X}{\sqrt{Y/n}}\]</span> suit la <strong>loi de Student</strong> à <span class="math inline">\(n\)</span> degrés de liberté, notée <span class="math inline">\(\mathcal{T}_n\)</span> (ou <span class="math inline">\(t_n\)</span>).</p>
+</div>
+</div>
+<p>La loi de Student porte le nom du pseudonyme « Student » utilisé par William Sealy Gosset (1876–1937), statisticien à la brasserie Guinness, qui a publié cette distribution en 1908. Elle apparaît naturellement en statistique lorsqu’on estime la moyenne d’une population normale en remplaçant l’écart-type théorique <span class="math inline">\(\sigma\)</span> par l’écart-type empirique <span class="math inline">\(S_n\)</span> : le rapport résultant suit une loi de Student et non une loi normale. Le paramètre <span class="math inline">\(n\)</span> (degrés de liberté) contrôle l’épaisseur des queues : plus <span class="math inline">\(n\)</span> est petit, plus les queues sont lourdes, reflétant l’incertitude supplémentaire due à l’estimation de <span class="math inline">\(\sigma\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Remarque — Densité de <span class="math inline">\(\mathcal{T}_n\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La densité de la loi de Student à <span class="math inline">\(n\)</span> degrés de liberté est, pour <span class="math inline">\(t \in \mathbb{R}\)</span> : <span class="math display">\[f_{T_n}(t) = \frac{\Gamma\!\left(\frac{n+1}{2}\right)}{\sqrt{n\pi}\;\Gamma\!\left(\frac{n}{2}\right)}\left(1+\frac{t^2}{n}\right)^{-(n+1)/2},\]</span> où <span class="math inline">\(\Gamma\)</span> est la fonction Gamma d’Euler. Cette densité est <strong>symétrique</strong> par rapport à <span class="math inline">\(0\)</span> et ressemble à la cloche de Gauss, mais avec des queues plus épaisses.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition — Moments et convergence
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(T_n \sim \mathcal{T}_n\)</span>.</p>
+<ul>
+<li>Si <span class="math inline">\(n \geq 2\)</span> : <span class="math inline">\(\;E(T_n) = 0\)</span>.</li>
+<li>Si <span class="math inline">\(n \geq 3\)</span> : <span class="math inline">\(\;\mathrm{Var}(T_n) = \dfrac{n}{n-2}\)</span>.</li>
+<li>Lorsque <span class="math inline">\(n \to +\infty\)</span>, la loi <span class="math inline">\(\mathcal{T}_n\)</span> <strong>converge vers</strong> <span class="math inline">\(\mathcal{N}(0,1)\)</span>.</li>
+<li>En pratique, pour <span class="math inline">\(n &gt; 30\)</span>, on assimile <span class="math inline">\(\mathcal{T}_n\)</span> à <span class="math inline">\(\mathcal{N}(0,1)\)</span>.</li>
+</ul>
+</div>
+</div>
+<p>L’espérance <span class="math inline">\(E(T_n) = 0\)</span> pour <span class="math inline">\(n \geq 2\)</span> traduit la symétrie de la densité. La variance <span class="math inline">\(\dfrac{n}{n-2}\)</span> est strictement supérieure à 1 (la variance de <span class="math inline">\(\mathcal{N}(0,1)\)</span>), ce qui confirme que les queues de la loi de Student sont plus lourdes que celles de la loi normale. Lorsque <span class="math inline">\(n\)</span> croît, <span class="math inline">\(\dfrac{n}{n-2} \to 1\)</span> : la loi de Student se rapproche de la loi normale, les queues s’amincissent progressivement. Pour <span class="math inline">\(n = 1\)</span>, on obtient la loi de Cauchy (dont l’espérance n’existe pas) ; pour <span class="math inline">\(n \leq 2\)</span>, la variance est infinie. Les valeurs de la fonction de répartition de <span class="math inline">\(\mathcal{T}_n\)</span> sont tabulées (voir la <a href="../../teaching/statistics-probability/tables.html">table de Student</a>).</p>
+<div class="page-columns page-full">
+<div id="cell-fig-loi-student" class="cell page-columns page-full" data-execution_count="5">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-loi-student" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-loi-student-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="normal-distribution_files/figure-html/fig-loi-student-output-1.png" class="quarto-figure quarto-figure-center figure-img column-page" width="757" height="372">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loi-student-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Densité de la loi de Student <span class="math inline">\(\mathcal{T}_n\)</span> pour différents degrés de liberté <span class="math inline">\(n\)</span>, comparée à la loi <span class="math inline">\(\mathcal{N}(0,1)\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<section id="exercice-18" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-18">Exercice 18</h3>
+<p>Deux machines 1 et 2 produisent un aliment en quantités horaires <span class="math inline">\(X_1\)</span> et <span class="math inline">\(X_2\)</span> (en kg) indépendantes, avec : <span class="math display">\[X_1 \sim \mathcal{N}(50{,}2\;;\; 0{,}04), \qquad X_2 \sim \mathcal{N}(50{,}1\;;\; 0{,}09).\]</span></p>
+<p>On pose <span class="math inline">\(D = X_2 - X_1\)</span>.</p>
+<ol type="1">
+<li>Déterminer la loi de <span class="math inline">\(D\)</span>.</li>
+<li>Calculer <span class="math inline">\(P(X_2 &gt; X_1)\)</span>.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-66-contents" aria-controls="callout-66" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exercice 18
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-66" class="callout-66-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(X_1\)</span> et <span class="math inline">\(X_2\)</span> étant indépendantes et normales, leur différence est encore normale.</p>
+<p><strong>1.</strong> <span class="math inline">\(D = X_2 - X_1 \sim \mathcal{N}(m_D,\, \sigma_D^2)\)</span> avec : <span class="math display">\[m_D = 50{,}1 - 50{,}2 = -0{,}1, \qquad \sigma_D^2 = 0{,}09 + 0{,}04 = 0{,}13.\]</span> Donc <span class="math inline">\(D \sim \mathcal{N}(-0{,}1\;;\; 0{,}13)\)</span> et <span class="math inline">\(\sigma_D = \sqrt{0{,}13} \approx 0{,}361\)</span>.</p>
+<p><strong>2.</strong> On cherche <span class="math inline">\(P(X_2 &gt; X_1) = P(D &gt; 0)\)</span>.</p>
+<p>En standardisant : <span class="math display">\[P(D &gt; 0) = P\!\left(Z &gt; \frac{0 - (-0{,}1)}{0{,}361}\right) = P(Z &gt; 0{,}28) = 1 - \Phi(0{,}28) \approx 1 - 0{,}6103 = 0{,}390.\]</span></p>
+<p>La machine 2 produit plus que la machine 1 dans environ 39 % des cas.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="exercice-19" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-19">Exercice 19</h3>
+<ol type="1">
+<li><p>Soit <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span> et <span class="math inline">\(\lambda \in \mathbb{R}\)</span>. Calculer la <strong>transformée de Laplace</strong> <span class="math inline">\(E\!\left(e^{\lambda X}\right)\)</span>.</p></li>
+<li><p>En déduire <span class="math inline">\(E\!\left(e^{\lambda X}\right)\)</span> pour <span class="math inline">\(X \sim \mathcal{N}(m, \sigma^2)\)</span>.</p></li>
+<li><p>Dans un modèle financier, le cours d’une action à la date <span class="math inline">\(T\)</span> est : <span class="math display">\[S_T = S_0\, e^{Z}, \qquad Z \sim \mathcal{N}(\mu T,\, \sigma^2 T),\]</span> où <span class="math inline">\(S_0 &gt; 0\)</span> est le cours spot. Quelle condition sur <span class="math inline">\(\mu\)</span> et <span class="math inline">\(\sigma\)</span> assure que <span class="math inline">\(E(S_T) = S_0\)</span> ? Calculer alors <span class="math inline">\(\mathrm{Var}(S_T)\)</span> en fonction de <span class="math inline">\(\sigma\)</span>, <span class="math inline">\(T\)</span> et <span class="math inline">\(S_0\)</span>.</p></li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-67-contents" aria-controls="callout-67" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exercice 19
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-67" class="callout-67-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>1.</strong> Pour <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span> : <span class="math display">\[E\!\left(e^{\lambda X}\right) = \int_{-\infty}^{+\infty} e^{\lambda x} \frac{1}{\sqrt{2\pi}} e^{-x^2/2}\,dx = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} e^{-(x^2 - 2\lambda x)/2}\,dx.\]</span></p>
+<p>On complète le carré : <span class="math inline">\(x^2 - 2\lambda x = (x - \lambda)^2 - \lambda^2\)</span>, donc : <span class="math display">\[E\!\left(e^{\lambda X}\right) = e^{\lambda^2/2} \cdot \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} e^{-(x-\lambda)^2/2}\,dx = e^{\lambda^2/2}.\]</span></p>
+<p><span class="math display">\[\boxed{E\!\left(e^{\lambda X}\right) = e^{\lambda^2/2}}\]</span></p>
+<p><strong>2.</strong> Pour <span class="math inline">\(X \sim \mathcal{N}(m, \sigma^2)\)</span>, on écrit <span class="math inline">\(X = m + \sigma Z\)</span> avec <span class="math inline">\(Z \sim \mathcal{N}(0,1)\)</span> : <span class="math display">\[E\!\left(e^{\lambda X}\right) = E\!\left(e^{\lambda(m + \sigma Z)}\right) = e^{\lambda m}\,E\!\left(e^{\lambda\sigma Z}\right) = e^{\lambda m + \lambda^2\sigma^2/2}.\]</span></p>
+<p><span class="math display">\[\boxed{E\!\left(e^{\lambda X}\right) = e^{\lambda m + \lambda^2\sigma^2/2}}\]</span></p>
+<p><strong>3.</strong> On a <span class="math inline">\(S_T = S_0 e^Z\)</span> avec <span class="math inline">\(Z \sim \mathcal{N}(\mu T,\, \sigma^2 T)\)</span>.</p>
+<p>En utilisant la question 2 avec <span class="math inline">\(\lambda = 1\)</span>, <span class="math inline">\(m = \mu T\)</span>, <span class="math inline">\(\sigma^2 = \sigma^2 T\)</span> : <span class="math display">\[E(S_T) = S_0\,E(e^Z) = S_0\,e^{\mu T + \sigma^2 T/2}.\]</span></p>
+<p>La condition <span class="math inline">\(E(S_T) = S_0\)</span> impose : <span class="math display">\[e^{\mu T + \sigma^2 T/2} = 1 \implies \mu T + \frac{\sigma^2 T}{2} = 0 \implies \boxed{\mu = -\frac{\sigma^2}{2}}.\]</span></p>
+<p><strong>Variance</strong> : <span class="math inline">\(\mathrm{Var}(S_T) = E(S_T^2) - E(S_T)^2\)</span>.</p>
+<p>On a <span class="math inline">\(S_T^2 = S_0^2\, e^{2Z}\)</span>, donc avec <span class="math inline">\(\lambda = 2\)</span> : <span class="math display">\[E(S_T^2) = S_0^2\,e^{2\mu T + 2\sigma^2 T}.\]</span> Sous la condition <span class="math inline">\(\mu = -\sigma^2/2\)</span> : <span class="math display">\[E(S_T^2) = S_0^2\,e^{-\sigma^2 T + 2\sigma^2 T} = S_0^2\,e^{\sigma^2 T}.\]</span> Donc : <span class="math display">\[\boxed{\mathrm{Var}(S_T) = S_0^2\!\left(e^{\sigma^2 T} - 1\right)}.\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="exercice-20-règle-empirique-trois-sigma" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-20-règle-empirique-trois-sigma">Exercice 20 — Règle empirique (trois sigma)</h3>
+<p>Soit <span class="math inline">\(X \sim \mathcal{N}(m, \sigma^2)\)</span>.</p>
+<ol type="1">
+<li>Montrer que <span class="math inline">\(P(|X - m| &lt; \sigma) \approx 0{,}683\)</span>.</li>
+<li>Montrer que <span class="math inline">\(P(|X - m| &lt; 2\sigma) \approx 0{,}954\)</span>.</li>
+<li>Montrer que <span class="math inline">\(P(|X - m| &lt; 3\sigma) \approx 0{,}997\)</span>.</li>
+<li>En déduire la probabilité d’observer une valeur située au-delà de <span class="math inline">\(3\sigma\)</span> de la moyenne.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-68-contents" aria-controls="callout-68" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exercice 20
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-68" class="callout-68-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Par standardisation, <span class="math inline">\(Z = (X-m)/\sigma \sim \mathcal{N}(0,1)\)</span>, et <span class="math inline">\(P(|X-m| &lt; k\sigma) = P(|Z| &lt; k) = 2\Phi(k) - 1\)</span>.</p>
+<p><strong>1.</strong> <span class="math inline">\(P(|X-m| &lt; \sigma) = 2\Phi(1) - 1 = 2 \times 0{,}8413 - 1 = 0{,}6826 \approx 68{,}3\,\%\)</span>.</p>
+<p><strong>2.</strong> <span class="math inline">\(P(|X-m| &lt; 2\sigma) = 2\Phi(2) - 1 = 2 \times 0{,}9772 - 1 = 0{,}9544 \approx 95{,}4\,\%\)</span>.</p>
+<p><strong>3.</strong> <span class="math inline">\(P(|X-m| &lt; 3\sigma) = 2\Phi(3) - 1 = 2 \times 0{,}9987 - 1 = 0{,}9974 \approx 99{,}7\,\%\)</span>.</p>
+<p><strong>4.</strong> <span class="math inline">\(P(|X-m| \geq 3\sigma) = 1 - 0{,}9974 = 0{,}0026\)</span>, soit environ <span class="math inline">\(0{,}26\,\%\)</span> (1 chance sur 385).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="exercice-21-intervalle-optimal-de-largeur-fixée" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-21-intervalle-optimal-de-largeur-fixée">Exercice 21 — Intervalle optimal de largeur fixée</h3>
+<p>Soit <span class="math inline">\(X \sim \mathcal{N}(m, \sigma^2)\)</span> et <span class="math inline">\(b &gt; 0\)</span> une largeur fixée.</p>
+<p>On cherche l’intervalle <span class="math inline">\(]x,\; x+b[\)</span> qui maximise <span class="math inline">\(P(x &lt; X &lt; x+b)\)</span>.</p>
+<ol type="1">
+<li>Exprimer <span class="math inline">\(P(x &lt; X &lt; x+b)\)</span> en fonction de <span class="math inline">\(\Phi\)</span>, <span class="math inline">\(m\)</span>, <span class="math inline">\(\sigma\)</span> et <span class="math inline">\(x\)</span>.</li>
+<li>Montrer que le maximum est atteint lorsque l’intervalle est centré en <span class="math inline">\(m\)</span>, c’est-à-dire <span class="math inline">\(x = m - b/2\)</span>.</li>
+<li>En déduire la valeur maximale de <span class="math inline">\(P(x &lt; X &lt; x+b)\)</span>.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-69-contents" aria-controls="callout-69" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exercice 21
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-69" class="callout-69-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>1.</strong> <span class="math inline">\(P(x &lt; X &lt; x+b) = \Phi\!\left(\dfrac{x+b-m}{\sigma}\right) - \Phi\!\left(\dfrac{x-m}{\sigma}\right)\)</span>.</p>
+<p><strong>2.</strong> On dérive par rapport à <span class="math inline">\(x\)</span> et on annule : <span class="math display">\[\frac{d}{dx}\left[\Phi\!\left(\frac{x+b-m}{\sigma}\right) - \Phi\!\left(\frac{x-m}{\sigma}\right)\right] = \frac{1}{\sigma}\left[\varphi\!\left(\frac{x+b-m}{\sigma}\right) - \varphi\!\left(\frac{x-m}{\sigma}\right)\right] = 0,\]</span> où <span class="math inline">\(\varphi\)</span> est la densité de <span class="math inline">\(\mathcal{N}(0,1)\)</span>.</p>
+<p>On a <span class="math inline">\(\varphi(u) = \varphi(v) \iff |u| = |v|\)</span>. Comme <span class="math inline">\(b &gt; 0\)</span>, les deux arguments ne sont pas égaux, donc : <span class="math display">\[\frac{x+b-m}{\sigma} = -\frac{x-m}{\sigma} \implies 2x + b = 2m \implies x = m - \frac{b}{2}.\]</span></p>
+<p>On vérifie que c’est un maximum (la dérivée seconde est négative en ce point).</p>
+<p><strong>3.</strong> En substituant <span class="math inline">\(x = m - b/2\)</span> : <span class="math display">\[\max P(x &lt; X &lt; x+b) = \Phi\!\left(\frac{b}{2\sigma}\right) - \Phi\!\left(-\frac{b}{2\sigma}\right) = 2\Phi\!\left(\frac{b}{2\sigma}\right) - 1.\]</span></p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="vi-exercice-de-synthèse" class="level2">
+<h2 class="anchored" data-anchor-id="vi-exercice-de-synthèse">VI — Exercice de synthèse</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice de synthèse - D’une mesure physique à une probabilité de dépassement
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La résistance à la rupture (en MPa) d’un matériau est modélisée par une variable aléatoire <span class="math inline">\(R\)</span> de loi normale <span class="math inline">\(\mathcal{N}(250,15^2)\)</span>. On considère la charge appliquée par une machine, modélisée par <span class="math inline">\(C\sim\mathcal{N}(220,10^2)\)</span>, indépendante de <span class="math inline">\(R\)</span>.</p>
+<ol type="1">
+<li>Calculer <span class="math inline">\(P(R&lt;230)\)</span>.</li>
+<li>Déterminer le seuil <span class="math inline">\(s\)</span> tel que <span class="math inline">\(P(R\geq s)=0{,}10\)</span>.</li>
+<li>On définit la marge de sécurité <span class="math inline">\(M=R-C\)</span>.</li>
+</ol>
+<ul>
+<li>Déterminer la loi de <span class="math inline">\(M\)</span>.</li>
+<li>Calculer <span class="math inline">\(P(M&gt;0)\)</span> et interpréter le résultat.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-71-contents" aria-controls="callout-71" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution - Exercice de synthèse
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-71" class="callout-71-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Cet exercice combine les trois usages principaux de la loi normale. <strong>Partie 1</strong> : standardisation directe, puis lecture de <span class="math inline">\(\Phi\)</span> (queue gauche). <strong>Partie 2</strong> : lecture <strong>inverse</strong> — on réécrit <span class="math inline">\(P(R \geq s) = 0{,}10\)</span> comme <span class="math inline">\(P(R \leq s) = 0{,}90\)</span>, puis on lit le quantile d’ordre <span class="math inline">\(0{,}90\)</span> dans la table. <strong>Partie 3</strong> : par indépendance, les variances de <span class="math inline">\(R\)</span> et <span class="math inline">\(C\)</span> s’<strong>additionnent</strong> (et non les écarts-types) pour obtenir la variance de <span class="math inline">\(M = R - C\)</span> ; on standardise ensuite <span class="math inline">\(M\)</span> pour exprimer <span class="math inline">\(P(M &gt; 0)\)</span> en termes de <span class="math inline">\(\Phi\)</span>.</p>
+<ol type="1">
+<li><p><strong>Probabilité de résistance insuffisante</strong> <span class="math display">\[P(R&lt;230)=P\left(\frac{R-250}{15}&lt;\frac{230-250}{15}\right)=P(Z&lt;-1{,}33)
+\approx 0{,}0918.\]</span></p></li>
+<li><p><strong>Quantile à 90 %</strong> <span class="math display">\[P(R\geq s)=0{,}10 \iff P(R\leq s)=0{,}90.\]</span> Avec <span class="math inline">\(z_{0{,}90}\approx 1{,}28\)</span>, <span class="math display">\[s=250+15\times 1{,}28\approx 269{,}2\ \text{MPa}.\]</span></p></li>
+<li><p><strong>Marge de sécurité</strong></p></li>
+</ol>
+<p>Comme <span class="math inline">\(R\)</span> et <span class="math inline">\(C\)</span> sont indépendantes et normales, <span class="math display">\[M=R-C \sim \mathcal{N}(250-220,15^2+10^2)=\mathcal{N}(30,325).\]</span> Donc <span class="math inline">\(\sigma_M=\sqrt{325}\approx 18{,}03\)</span>.</p>
+<p>Alors <span class="math display">\[P(M&gt;0)=P\left(\frac{M-30}{18{,}03}&gt;\frac{0-30}{18{,}03}\right)
+= P(Z&gt;-1{,}66)=\Phi(1{,}66)\approx 0{,}9515.\]</span></p>
+<div id="cell-fig-marge-securite" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div id="fig-marge-securite" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-marge-securite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="normal-distribution_files/figure-html/fig-marge-securite-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="757" height="372">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-marge-securite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Distribution de la marge de sécurité <span class="math inline">\(M = R - C \sim \mathcal{N}(30, 325)\)</span> avec la probabilité <span class="math inline">\(P(M&gt;0)\)</span> mise en évidence.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Interprétation : dans ce modèle, la résistance dépasse la charge dans environ 95 % des cas.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+À retenir
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>La standardisation <span class="math inline">\(Z=(X-m)/\sigma\)</span> est la clé de presque tous les calculs sur les lois normales.</li>
+<li>La règle empirique (68–95–99,7) donne un repère mental immédiat sur la dispersion autour de la moyenne.</li>
+<li>La loi normale est stable par somme de variables indépendantes.</li>
+<li>Les lois log-normale et khi-deux se construisent directement à partir de la loi normale.</li>
+<li>La loi de Student intervient dès que l’on remplace <span class="math inline">\(\sigma\)</span> par un estimateur ; elle converge vers <span class="math inline">\(\mathcal{N}(0,1)\)</span> pour <span class="math inline">\(n &gt; 30\)</span>.</li>
+<li>Les quantiles (lecture inverse) sont indispensables pour fixer des seuils de risque.</li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copié");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copié");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../teaching/statistics-probability/density-function.html" class="pagination-link  aria-label=" lois="" à="" densité"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lois à densité</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../teaching/statistics-probability/joint-continuous-random-variables.html" class="pagination-link" aria-label="Couples de variables a densite">
+        <span class="nav-page-text">Couples de variables a densite</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

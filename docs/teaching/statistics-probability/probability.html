@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Guillaume Gilles - Rappels de probabilités discrètes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../teaching/statistics-probability/density-function.html" rel="next">
+<link href="../../teaching/statistics-probability/bivariate.html" rel="prev">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Guillaume Gilles - Rappels de probabilités discrètes">
+<meta property="og:description" content="Ce chapitre constitue un rappel des notions fondamentales sur les variables aléatoires discrètes, supposées connues des années précédentes. On y définit les variables aléatoires à valeurs dans un ensemble fini ou dénombrable, leur loi de probabilité (fonction de masse), leur fonction de répartition (fonction en escalier), ainsi que les indicateurs numériques — espérance et variance — qui résument leur comportement. On passe ensuite en revue les lois discrètes classiques : loi de Bernoulli, loi binomiale (et le schéma de Bernoulli qui la fait apparaître), loi uniforme discrète, loi géométrique (et sa propriété sans mémoire), et loi de Poisson (loi des événements rares, avec l’approximation de la loi binomiale). Ces rappels serviront de point de comparaison constant avec les lois à densité étudiées dans la suite du cours.">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Rappels de probabilités discrètes">
+<meta name="twitter:description" content="Ce chapitre constitue un rappel des notions fondamentales sur les variables aléatoires discrètes, supposées connues des années précédentes. On y définit les variables aléatoires à valeurs dans un ensemble fini ou dénombrable, leur loi de probabilité (fonction de masse), leur fonction de répartition (fonction en escalier), ainsi que les indicateurs numériques — espérance et variance — qui résument leur comportement. On passe ensuite en revue les lois discrètes classiques : loi de Bernoulli, loi binomiale (et le schéma de Bernoulli qui la fait apparaître), loi uniforme discrète, loi géométrique (et sa propriété sans mémoire), et loi de Poisson (loi des événements rares, avec l’approximation de la loi binomiale). Ces rappels serviront de point de comparaison constant avec les lois à densité étudiées dans la suite du cours.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Recherche"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Basculer le mode sombre"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/probability.html">Rappels de probabilités discrètes</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probabilités &amp; Statistiques</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/statistics-probability/statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistiques</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/univariate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistiques descriptives à une variable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/bivariate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistiques descriptives a deux variables</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/statistics-probability/probability.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Rappels de probabilités discrètes</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/density-function.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lois à densité</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/normal-distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loi normale et applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/joint-continuous-random-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Couples de variables a densite</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/sampling-distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Distribution d’echantillonnage</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/convergence-random-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Convergence de variables aléatoires</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/point-estimation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Estimation ponctuelle et par intervalle de confiance</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Ressources</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tables statistiques</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/leaderboard.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Leaderboard</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossaire</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Sur cette page</h2>
+   
+  <ul>
+  <li><a href="#i-variables-aléatoires-discrètes" id="toc-i-variables-aléatoires-discrètes" class="nav-link active" data-scroll-target="#i-variables-aléatoires-discrètes">I — Variables aléatoires discrètes</a>
+  <ul class="collapse">
+  <li><a href="#définition-et-loi-de-probabilité" id="toc-définition-et-loi-de-probabilité" class="nav-link" data-scroll-target="#définition-et-loi-de-probabilité">1. Définition et loi de probabilité</a></li>
+  <li><a href="#fonction-de-répartition" id="toc-fonction-de-répartition" class="nav-link" data-scroll-target="#fonction-de-répartition">2. Fonction de répartition</a></li>
+  <li><a href="#espérance-et-variance" id="toc-espérance-et-variance" class="nav-link" data-scroll-target="#espérance-et-variance">3. Espérance et variance</a></li>
+  </ul></li>
+  <li><a href="#ii-lois-discrètes-classiques" id="toc-ii-lois-discrètes-classiques" class="nav-link" data-scroll-target="#ii-lois-discrètes-classiques">II — Lois discrètes classiques</a>
+  <ul class="collapse">
+  <li><a href="#loi-de-bernoulli" id="toc-loi-de-bernoulli" class="nav-link" data-scroll-target="#loi-de-bernoulli">1. Loi de Bernoulli</a></li>
+  <li><a href="#loi-binomiale-et-schéma-de-bernoulli" id="toc-loi-binomiale-et-schéma-de-bernoulli" class="nav-link" data-scroll-target="#loi-binomiale-et-schéma-de-bernoulli">2. Loi binomiale et schéma de Bernoulli</a></li>
+  <li><a href="#loi-uniforme-discrète" id="toc-loi-uniforme-discrète" class="nav-link" data-scroll-target="#loi-uniforme-discrète">3. Loi uniforme discrète</a></li>
+  <li><a href="#loi-géométrique" id="toc-loi-géométrique" class="nav-link" data-scroll-target="#loi-géométrique">4. Loi géométrique</a></li>
+  <li><a href="#loi-de-poisson" id="toc-loi-de-poisson" class="nav-link" data-scroll-target="#loi-de-poisson">5. Loi de Poisson</a></li>
+  </ul></li>
+  <li><a href="#iii-approximation-de-la-loi-binomiale-par-la-loi-de-poisson" id="toc-iii-approximation-de-la-loi-binomiale-par-la-loi-de-poisson" class="nav-link" data-scroll-target="#iii-approximation-de-la-loi-binomiale-par-la-loi-de-poisson">III — Approximation de la loi binomiale par la loi de Poisson</a></li>
+  <li><a href="#iv-résumé-des-lois-discrètes-classiques" id="toc-iv-résumé-des-lois-discrètes-classiques" class="nav-link" data-scroll-target="#iv-résumé-des-lois-discrètes-classiques">IV — Résumé des lois discrètes classiques</a>
+  <ul class="collapse">
+  <li><a href="#exercice-1" id="toc-exercice-1" class="nav-link" data-scroll-target="#exercice-1">Exercice 1</a></li>
+  <li><a href="#exercice-2" id="toc-exercice-2" class="nav-link" data-scroll-target="#exercice-2">Exercice 2</a></li>
+  <li><a href="#exercice-3" id="toc-exercice-3" class="nav-link" data-scroll-target="#exercice-3">Exercice 3</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Rappels de probabilités discrètes</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Date de publication</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">18 février 2026</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modifié</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">24 mars 2026</p>
+    </div>
+  </div>
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Résumé</div>
+    <p>Ce chapitre constitue un rappel des notions fondamentales sur les <strong>variables aléatoires discrètes</strong>, supposées connues des années précédentes. On y définit les variables aléatoires à valeurs dans un ensemble fini ou dénombrable, leur <strong>loi de probabilité</strong> (fonction de masse), leur <strong>fonction de répartition</strong> (fonction en escalier), ainsi que les indicateurs numériques — <strong>espérance</strong> et <strong>variance</strong> — qui résument leur comportement. On passe ensuite en revue les <strong>lois discrètes classiques</strong> : loi de Bernoulli, loi binomiale (et le schéma de Bernoulli qui la fait apparaître), loi uniforme discrète, loi géométrique (et sa propriété sans mémoire), et loi de Poisson (loi des événements rares, avec l’approximation de la loi binomiale). Ces rappels serviront de point de comparaison constant avec les lois à densité étudiées dans la suite du cours.</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>Dans toute cette partie, on se place dans un espace probabilisé quelconque <span class="math inline">\((\Omega, \mathcal{A}, P)\)</span>.</p>
+</blockquote>
+<section id="i-variables-aléatoires-discrètes" class="level2">
+<h2 class="anchored" data-anchor-id="i-variables-aléatoires-discrètes">I — Variables aléatoires discrètes</h2>
+<section id="définition-et-loi-de-probabilité" class="level3">
+<h3 class="anchored" data-anchor-id="définition-et-loi-de-probabilité">1. Définition et loi de probabilité</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition — Variable aléatoire discrète
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une <strong>variable aléatoire discrète</strong> <span class="math inline">\(X\)</span> est une application <span class="math inline">\(X : \Omega \to E\)</span> où <span class="math inline">\(E\)</span> est un ensemble <strong>fini ou dénombrable</strong> (c’est-à-dire en bijection avec une partie de <span class="math inline">\(\mathbb{N}\)</span>). L’ensemble <span class="math inline">\(X(\Omega)\)</span> est appelé l’ensemble des <strong>valeurs prises</strong> par <span class="math inline">\(X\)</span>.</p>
+</div>
+</div>
+<p>En pratique, <span class="math inline">\(X\)</span> associe à chaque résultat de l’expérience aléatoire un nombre : le nombre de Pile obtenus lors de lancers, le rang d’apparition du premier succès, le nombre de pannes dans un système, etc. Le caractère <em>discret</em> signifie que les valeurs possibles sont isolées les unes des autres — on peut les lister.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition — Loi de probabilité (fonction de masse)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La <strong>loi de probabilité</strong> (ou <strong>fonction de masse</strong>) de <span class="math inline">\(X\)</span> est la donnée de l’ensemble des valeurs prises <span class="math inline">\(X(\Omega) = \{x_1, x_2, \ldots\}\)</span> et des probabilités associées : <span class="math display">\[\forall\, i, \quad p_i = P(X = x_i) \geq 0, \qquad \sum_i p_i = 1.\]</span></p>
+</div>
+</div>
+<p>La condition <span class="math inline">\(\sum_i p_i = 1\)</span> traduit l’axiome fondamental : quelque chose se produit forcément. En pratique, la loi de <span class="math inline">\(X\)</span> est souvent présentée sous forme d’un tableau :</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(x_i\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(x_2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\cdots\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(P(X=x_i)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(p_1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(p_2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\cdots\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 1 — Trois lancers d’une pièce truquée
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On effectue trois lancers indépendants d’une pièce Pile/Face truquée où Pile a deux fois plus de chances d’apparaître que Face. On note <span class="math inline">\(X\)</span> le nombre de Pile obtenus.</p>
+<ol type="1">
+<li>Déterminer <span class="math inline">\(p = P(\text{Face})\)</span>, puis la loi de <span class="math inline">\(X\)</span>.</li>
+<li>Calculer <span class="math inline">\(P(X \geq 2)\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exemple 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Pour chaque lancer <span class="math inline">\(X_i\)</span>, on a <span class="math inline">\(P(X_i = 0) = p\)</span> et <span class="math inline">\(P(X_i = 1) = 2p\)</span>. Comme <span class="math inline">\(p + 2p = 1\)</span>, on obtient <span class="math inline">\(p = 1/3\)</span>.</p>
+<p>Les <span class="math inline">\(X_i\)</span> sont indépendantes et de même loi <span class="math inline">\(\text{Ber}(2/3)\)</span>, donc <span class="math inline">\(X = X_1 + X_2 + X_3 \hookrightarrow \mathcal{B}(3\,;\, 2/3)\)</span>.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(i\)</span></th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(P(X = i)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/27\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(6/27\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(12/27\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(8/27\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>On vérifie : <span class="math inline">\(\sum P(X = i) = 27/27 = 1\)</span>.</p>
+<p><span class="math display">\[P(X \geq 2) = 1 - P(X = 0) - P(X = 1) = 1 - \frac{1}{27} - \frac{6}{27} = \frac{20}{27}.\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="fonction-de-répartition" class="level3">
+<h3 class="anchored" data-anchor-id="fonction-de-répartition">2. Fonction de répartition</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition — Fonction de répartition (cas discret)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La <strong>fonction de répartition</strong> de la v.a.r. discrète <span class="math inline">\(X\)</span> est la fonction <span class="math inline">\(F_X : \mathbb{R} \to [0\,;\,1]\)</span> définie par : <span class="math display">\[F_X(x) = P(X \leq x) = \sum_{x_i \leq x} P(X = x_i).\]</span></p>
+</div>
+</div>
+<p>Contrairement au cas continu (où <span class="math inline">\(F_X\)</span> est une fonction continue), la fonction de répartition d’une variable discrète est une <strong>fonction en escalier</strong> : elle est constante entre deux valeurs successives prises par <span class="math inline">\(X\)</span> et présente un saut de hauteur <span class="math inline">\(P(X = x_i)\)</span> en chaque point <span class="math inline">\(x_i \in X(\Omega)\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Remarques
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(F_X\)</span> est <strong>croissante</strong>, <strong>continue à droite</strong>, avec <span class="math inline">\(\displaystyle\lim_{x \to -\infty} F_X(x) = 0\)</span> et <span class="math inline">\(\displaystyle\lim_{x \to +\infty} F_X(x) = 1\)</span>.</li>
+<li>On peut retrouver la loi de <span class="math inline">\(X\)</span> à partir de <span class="math inline">\(F_X\)</span> en lisant les sauts : <span class="math inline">\(P(X = x_i) = F_X(x_i) - F_X(x_i^-)\)</span>.</li>
+<li><span class="math inline">\(P(a &lt; X \leq b) = F_X(b) - F_X(a)\)</span>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="espérance-et-variance" class="level3">
+<h3 class="anchored" data-anchor-id="espérance-et-variance">3. Espérance et variance</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition — Espérance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>L’<strong>espérance</strong> de la v.a.r. discrète <span class="math inline">\(X\)</span> prenant les valeurs <span class="math inline">\(x_1, x_2, \ldots\)</span> est : <span class="math display">\[E(X) = \sum_i x_i\, P(X = x_i)\]</span> lorsque cette somme converge absolument.</p>
+</div>
+</div>
+<p>L’espérance est un <strong>paramètre de position</strong> : elle indique autour de quelle valeur se concentre la loi de <span class="math inline">\(X\)</span>. On peut l’interpréter comme la <strong>moyenne pondérée</strong> des valeurs possibles, chaque valeur étant pondérée par sa probabilité.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition — Variance et écart-type
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La <strong>variance</strong> de <span class="math inline">\(X\)</span> est : <span class="math display">\[\text{Var}(X) = E\bigl[(X - E(X))^2\bigr] = E(X^2) - \bigl(E(X)\bigr)^2.\]</span></p>
+<p>L’<strong>écart-type</strong> est <span class="math inline">\(\sigma(X) = \sqrt{\text{Var}(X)}\)</span>.</p>
+</div>
+</div>
+<p>La variance est un <strong>paramètre de dispersion</strong> : elle mesure l’étendue de la répartition des valeurs autour de l’espérance. La seconde égalité, dite <strong>formule de König–Huygens</strong>, simplifie les calculs en pratique.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition — Propriétés de l’espérance et de la variance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour <span class="math inline">\(X, Y\)</span> des v.a.r. discrètes et <span class="math inline">\(a, b \in \mathbb{R}\)</span> :</p>
+<ul>
+<li><strong>Linéarité de l’espérance</strong> : <span class="math inline">\(E(aX + b) = a\,E(X) + b\)</span>.</li>
+<li><strong>Variance</strong> : <span class="math inline">\(\text{Var}(aX + b) = a^2\,\text{Var}(X)\)</span>.</li>
+<li><strong>Théorème de transfert</strong> : si <span class="math inline">\(g : \mathbb{R} \to \mathbb{R}\)</span>, alors <span class="math inline">\(E(g(X)) = \displaystyle\sum_i g(x_i)\, P(X = x_i)\)</span>.</li>
+<li>Si <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont <strong>indépendantes</strong> : <span class="math inline">\(E(XY) = E(X)\,E(Y)\)</span> et <span class="math inline">\(\text{Var}(X+Y) = \text{Var}(X) + \text{Var}(Y)\)</span>.</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="ii-lois-discrètes-classiques" class="level2">
+<h2 class="anchored" data-anchor-id="ii-lois-discrètes-classiques">II — Lois discrètes classiques</h2>
+<section id="loi-de-bernoulli" class="level3">
+<h3 class="anchored" data-anchor-id="loi-de-bernoulli">1. Loi de Bernoulli</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition — Loi de Bernoulli <span class="math inline">\(\text{Ber}(p)\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(p \in\, ]0\,;\,1[\)</span>. La v.a.r. <span class="math inline">\(X\)</span> suit une <strong>loi de Bernoulli</strong> de paramètre <span class="math inline">\(p\)</span>, notée <span class="math inline">\(X \hookrightarrow \text{Ber}(p)\)</span>, si : <span class="math display">\[X(\Omega) = \{0,\, 1\}, \qquad P(X = 1) = p, \qquad P(X = 0) = 1 - p.\]</span></p>
+<ul>
+<li><span class="math inline">\(E(X) = p\)</span></li>
+<li><span class="math inline">\(\text{Var}(X) = p(1-p)\)</span></li>
+</ul>
+</div>
+</div>
+<p>La loi de Bernoulli modélise toute expérience à deux issues : succès (<span class="math inline">\(X = 1\)</span>) ou échec (<span class="math inline">\(X = 0\)</span>). Elle constitue la brique de base de nombreuses lois plus complexes.</p>
+</section>
+<section id="loi-binomiale-et-schéma-de-bernoulli" class="level3">
+<h3 class="anchored" data-anchor-id="loi-binomiale-et-schéma-de-bernoulli">2. Loi binomiale et schéma de Bernoulli</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition — Loi binomiale <span class="math inline">\(\mathcal{B}(n, p)\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(n \in \mathbb{N}^*\)</span> et <span class="math inline">\(p \in\, ]0\,;\,1[\)</span>. La v.a.r. <span class="math inline">\(X\)</span> suit une <strong>loi binomiale</strong> de paramètres <span class="math inline">\(n\)</span> et <span class="math inline">\(p\)</span>, notée <span class="math inline">\(X \hookrightarrow \mathcal{B}(n, p)\)</span>, si : <span class="math display">\[X(\Omega) = \{0, 1, \ldots, n\}, \qquad \forall\, k = 0, \ldots, n, \quad P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}.\]</span></p>
+<ul>
+<li><span class="math inline">\(E(X) = np\)</span></li>
+<li><span class="math inline">\(\text{Var}(X) = np(1-p)\)</span></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Théorème — Schéma de Bernoulli
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si on effectue <span class="math inline">\(n\)</span> expériences <strong>indépendantes</strong> de type Succès/Échec, chacune avec une même probabilité de succès <span class="math inline">\(p\)</span>, et si <span class="math inline">\(X\)</span> désigne le nombre total de succès, alors : <span class="math display">\[X \hookrightarrow \mathcal{B}(n, p).\]</span></p>
+<p>Réciproquement, si <span class="math inline">\(X \hookrightarrow \mathcal{B}(n, p)\)</span>, alors <span class="math inline">\(X = \displaystyle\sum_{i=1}^n X_i\)</span> où les <span class="math inline">\(X_i \hookrightarrow \text{Ber}(p)\)</span> sont indépendantes.</p>
+</div>
+</div>
+<p>Le schéma de Bernoulli fait le lien entre la loi de Bernoulli (une seule épreuve) et la loi binomiale (<span class="math inline">\(n\)</span> épreuves). L’espérance <span class="math inline">\(E(X) = np\)</span> se déduit directement par linéarité : <span class="math inline">\(E(X) = \sum E(X_i) = np\)</span>. De même, par indépendance : <span class="math inline">\(\text{Var}(X) = \sum \text{Var}(X_i) = np(1-p)\)</span>.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 2 — Machines en panne
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On dispose de <span class="math inline">\(n = 10\)</span> machines qui tombent en panne indépendamment les unes des autres, chacune avec une probabilité <span class="math inline">\(p = 0{,}01\)</span>. Quelle est la probabilité qu’il y ait au moins 2 machines en panne ?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exemple 2
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Pour <span class="math inline">\(i = 1, \ldots, 10\)</span>, on pose <span class="math inline">\(X_i = 1\)</span> si la <span class="math inline">\(i\)</span>-ème machine est en panne, <span class="math inline">\(0\)</span> sinon. Les <span class="math inline">\(X_i\)</span> sont indépendantes et <span class="math inline">\(X_i \hookrightarrow \text{Ber}(0{,}01)\)</span>, donc <span class="math inline">\(X = \sum_{i=1}^{10} X_i \hookrightarrow \mathcal{B}(10\,;\, 0{,}01)\)</span>.</p>
+<p><span class="math display">\[P(X \geq 2) = 1 - P(X = 0) - P(X = 1) = 1 - 0{,}99^{10} - 10 \times 0{,}01 \times 0{,}99^9 \simeq 0{,}004.\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="loi-uniforme-discrète" class="level3">
+<h3 class="anchored" data-anchor-id="loi-uniforme-discrète">3. Loi uniforme discrète</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition — Loi uniforme discrète <span class="math inline">\(\mathcal{U}([\![1,\,n]\!])\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La v.a.r. <span class="math inline">\(X\)</span> suit une <strong>loi uniforme discrète</strong> sur <span class="math inline">\([\![1, n]\!] = \{1, 2, \ldots, n\}\)</span>, notée <span class="math inline">\(X \hookrightarrow \mathcal{U}([\![1, n]\!])\)</span>, si : <span class="math display">\[\forall\, k = 1, \ldots, n, \quad P(X = k) = \frac{1}{n}.\]</span></p>
+<ul>
+<li><span class="math inline">\(E(X) = \dfrac{n+1}{2}\)</span> (milieu de l’intervalle <span class="math inline">\([\![1, n]\!]\)</span>)</li>
+<li><span class="math inline">\(\text{Var}(X) = \dfrac{n^2 - 1}{12}\)</span></li>
+</ul>
+</div>
+</div>
+<p>La loi uniforme discrète traduit l’<strong>équiprobabilité</strong> : toutes les valeurs sont également vraisemblables. C’est la loi naturelle d’un tirage au sort.</p>
+<p><strong>Démonstration des moments.</strong> On utilise les formules classiques sur les sommes :</p>
+<p><span class="math display">\[E(X) = \frac{1}{n}\sum_{k=1}^n k = \frac{1}{n} \cdot \frac{n(n+1)}{2} = \frac{n+1}{2}.\]</span></p>
+<p><span class="math display">\[E(X^2) = \frac{1}{n}\sum_{k=1}^n k^2 = \frac{1}{n} \cdot \frac{n(n+1)(2n+1)}{6} = \frac{(n+1)(2n+1)}{6}.\]</span></p>
+<p><span class="math display">\[\text{Var}(X) = E(X^2) - (E(X))^2 = \frac{(n+1)(2n+1)}{6} - \frac{(n+1)^2}{4} = \frac{n^2 - 1}{12}.\]</span></p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 3 — Lancer de dé
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On lance un dé équilibré à 6 faces. Soit <span class="math inline">\(X\)</span> le numéro obtenu. Alors <span class="math inline">\(X \hookrightarrow \mathcal{U}([\![1, 6]\!])\)</span>.</p>
+<p><span class="math display">\[E(X) = \frac{7}{2}, \qquad \text{Var}(X) = \frac{35}{12}.\]</span></p>
+</div>
+</div>
+</section>
+<section id="loi-géométrique" class="level3">
+<h3 class="anchored" data-anchor-id="loi-géométrique">4. Loi géométrique</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition — Loi géométrique <span class="math inline">\(\mathcal{G}(p)\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(p \in\, ]0\,;\,1[\)</span> et <span class="math inline">\(q = 1 - p\)</span>. La v.a.r. <span class="math inline">\(X\)</span> suit une <strong>loi géométrique</strong> de paramètre <span class="math inline">\(p\)</span>, notée <span class="math inline">\(X \hookrightarrow \mathcal{G}(p)\)</span>, si : <span class="math display">\[X(\Omega) = \mathbb{N}^*, \qquad \forall\, n \geq 1, \quad P(X = n) = (1-p)^{n-1}\, p.\]</span></p>
+<ul>
+<li><span class="math inline">\(E(X) = \dfrac{1}{p}\)</span></li>
+<li><span class="math inline">\(\text{Var}(X) = \dfrac{1-p}{p^2} = \dfrac{q}{p^2}\)</span></li>
+</ul>
+</div>
+</div>
+<p>La loi géométrique modélise le <strong>rang du premier succès</strong> dans une suite d’épreuves de Bernoulli indépendantes. Si l’on effectue indéfiniment des lancers Pile/Face avec probabilité <span class="math inline">\(p\)</span> d’obtenir Pile, et si <span class="math inline">\(X\)</span> désigne le rang du premier Pile, alors <span class="math inline">\(X \hookrightarrow \mathcal{G}(p)\)</span>.</p>
+<p><strong>Vérification.</strong> L’événement <span class="math inline">\(\{X = n\}\)</span> signifie <span class="math inline">\(n - 1\)</span> échecs suivis d’un succès. Par indépendance :</p>
+<p><span class="math display">\[P(X = n) = \underbrace{(1-p) \cdots (1-p)}_{n-1 \text{ fois}} \times p = (1-p)^{n-1}\, p.\]</span></p>
+<p>On vérifie que c’est bien une loi de probabilité :</p>
+<p><span class="math display">\[\sum_{n=1}^{+\infty} (1-p)^{n-1}\, p = p \sum_{n=0}^{+\infty} (1-p)^n = p \cdot \frac{1}{1-(1-p)} = 1.\]</span></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition — Propriété sans mémoire
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La loi géométrique est la seule loi discrète à posséder la <strong>propriété sans mémoire</strong> : pour tous <span class="math inline">\(n, m \in \mathbb{N}^*\)</span>,</p>
+<p><span class="math display">\[P(X &gt; n + m \mid X &gt; n) = P(X &gt; m).\]</span></p>
+<p>Autrement dit, sachant qu’on n’a pas eu de succès pendant les <span class="math inline">\(n\)</span> premières épreuves, la probabilité de devoir encore attendre au moins <span class="math inline">\(m\)</span> épreuves est la même que si l’on repartait de zéro.</p>
+</div>
+</div>
+<p><strong>Démonstration.</strong> On calcule d’abord <span class="math inline">\(P(X &gt; n)\)</span> : c’est la probabilité de <span class="math inline">\(n\)</span> échecs consécutifs, soit <span class="math inline">\(P(X &gt; n) = (1-p)^n\)</span>. Alors :</p>
+<p><span class="math display">\[P(X &gt; n + m \mid X &gt; n) = \frac{P(X &gt; n + m)}{P(X &gt; n)} = \frac{(1-p)^{n+m}}{(1-p)^n} = (1-p)^m = P(X &gt; m). \qquad \square\]</span></p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 4 — Rang du premier Pile
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On lance indéfiniment une pièce équilibrée (<span class="math inline">\(p = 1/2\)</span>). Soit <span class="math inline">\(X\)</span> le rang du premier Pile.</p>
+<ol type="1">
+<li>Quelle est la loi de <span class="math inline">\(X\)</span> ? Calculer <span class="math inline">\(E(X)\)</span>.</li>
+<li>Calculer <span class="math inline">\(P(X &gt; 3 \mid X &gt; 1)\)</span>.</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exemple 4
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-20" class="callout-20-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>1.</strong> <span class="math inline">\(X \hookrightarrow \mathcal{G}(1/2)\)</span> donc <span class="math inline">\(P(X = n) = (1/2)^n\)</span> pour <span class="math inline">\(n \geq 1\)</span>, et <span class="math inline">\(E(X) = 1/p = 2\)</span>.</p>
+<p><strong>2.</strong> Par la propriété sans mémoire : <span class="math display">\[P(X &gt; 3 \mid X &gt; 1) = P(X &gt; 2) = (1 - 1/2)^2 = 1/4.\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="loi-de-poisson" class="level3">
+<h3 class="anchored" data-anchor-id="loi-de-poisson">5. Loi de Poisson</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition — Loi de Poisson <span class="math inline">\(\mathcal{P}(\lambda)\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(\lambda &gt; 0\)</span>. La v.a.r. <span class="math inline">\(X\)</span> suit une <strong>loi de Poisson</strong> d’intensité <span class="math inline">\(\lambda\)</span>, notée <span class="math inline">\(X \hookrightarrow \mathcal{P}(\lambda)\)</span>, si : <span class="math display">\[X(\Omega) = \mathbb{N}, \qquad \forall\, n \in \mathbb{N}, \quad P(X = n) = e^{-\lambda}\,\frac{\lambda^n}{n!}.\]</span></p>
+<ul>
+<li><span class="math inline">\(E(X) = \lambda\)</span></li>
+<li><span class="math inline">\(\text{Var}(X) = \lambda\)</span></li>
+</ul>
+</div>
+</div>
+<p>La loi de Poisson est la <strong>loi des événements rares</strong> : elle apparaît naturellement lorsqu’on compte le nombre d’occurrences d’un événement rare sur un grand nombre d’épreuves, ou sur un intervalle de temps/espace continu. La propriété remarquable <span class="math inline">\(\text{Var}(X) = E(X) = \lambda\)</span> est caractéristique de la loi de Poisson.</p>
+<p><strong>Vérification.</strong> On utilise le développement en série de l’exponentielle : <span class="math inline">\(\displaystyle\sum_{n=0}^{+\infty} \frac{x^n}{n!} = e^x\)</span> pour tout <span class="math inline">\(x \in \mathbb{R}\)</span>.</p>
+<p><span class="math display">\[\sum_{n=0}^{+\infty} P(X = n) = e^{-\lambda} \sum_{n=0}^{+\infty} \frac{\lambda^n}{n!} = e^{-\lambda} \cdot e^{\lambda} = 1. \quad \checkmark\]</span></p>
+<p><strong>Calcul de l’espérance :</strong></p>
+<p><span class="math display">\[E(X) = \sum_{n=0}^{+\infty} n\, e^{-\lambda}\,\frac{\lambda^n}{n!} = e^{-\lambda} \sum_{n=1}^{+\infty} \frac{\lambda^n}{(n-1)!} = \lambda\, e^{-\lambda} \sum_{n=0}^{+\infty} \frac{\lambda^n}{n!} = \lambda\, e^{-\lambda}\, e^{\lambda} = \lambda.\]</span></p>
+<p><strong>Calcul de la variance :</strong> On calcule d’abord <span class="math inline">\(E(X(X-1)) = \lambda^2\)</span> (par un raisonnement analogue), puis :</p>
+<p><span class="math display">\[\text{Var}(X) = E(X(X-1)) + E(X) - (E(X))^2 = \lambda^2 + \lambda - \lambda^2 = \lambda.\]</span></p>
+</section>
+</section>
+<section id="iii-approximation-de-la-loi-binomiale-par-la-loi-de-poisson" class="level2">
+<h2 class="anchored" data-anchor-id="iii-approximation-de-la-loi-binomiale-par-la-loi-de-poisson">III — Approximation de la loi binomiale par la loi de Poisson</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition — Approximation de Poisson
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(X_n \hookrightarrow \mathcal{B}(n, p_n)\)</span> avec <span class="math inline">\(\displaystyle\lim_{n \to +\infty} n\, p_n = \lambda &gt; 0\)</span>, alors pour tout <span class="math inline">\(k \in \mathbb{N}\)</span> : <span class="math display">\[\lim_{n \to +\infty} P(X_n = k) = e^{-\lambda}\,\frac{\lambda^k}{k!}.\]</span></p>
+<p>En pratique, on admet l’approximation <span class="math inline">\(\mathcal{B}(n, p) \approx \mathcal{P}(\lambda)\)</span> avec <span class="math inline">\(\lambda = np\)</span> lorsque :</p>
+<ul>
+<li><span class="math inline">\(n \geq 50\)</span>,</li>
+<li><span class="math inline">\(p \leq 0{,}1\)</span>,</li>
+<li><span class="math inline">\(np \leq 10\)</span>.</li>
+</ul>
+</div>
+</div>
+<p>Cette approximation est extrêmement utile en pratique : dès que le nombre d’épreuves est grand et la probabilité de succès faible, les calculs combinatoires de la loi binomiale deviennent très lourds (coefficients binomiaux géants, puissances proches de 1). La loi de Poisson fournit une formule plus simple et des valeurs tabulées.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 5 — Billes dans des boîtes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On répartit <span class="math inline">\(N\)</span> billes au hasard dans <span class="math inline">\(m\)</span> boîtes. Soit <span class="math inline">\(X\)</span> le nombre de billes dans une boîte donnée.</p>
+<ol type="1">
+<li>Quelle est la loi de <span class="math inline">\(X\)</span> ?</li>
+<li>Sous quelle condition peut-on approcher la loi de <span class="math inline">\(X\)</span> par une loi de Poisson ?</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exemple 5
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-24" class="callout-24-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>1.</strong> On pose <span class="math inline">\(X_i = 1\)</span> si la <span class="math inline">\(i\)</span>-ème bille arrive dans la boîte considérée, <span class="math inline">\(0\)</span> sinon. Chaque <span class="math inline">\(X_i \hookrightarrow \text{Ber}(1/m)\)</span> et les <span class="math inline">\(X_i\)</span> sont indépendantes. Donc <span class="math inline">\(X = \sum_{i=1}^N X_i \hookrightarrow \mathcal{B}(N,\, 1/m)\)</span>.</p>
+<p><strong>2.</strong> Si <span class="math inline">\(N\)</span> devient grand et que le nombre moyen de billes par boîte <span class="math inline">\(\lambda = N/m\)</span> tend vers une constante <span class="math inline">\(\lambda &gt; 0\)</span>, alors les conditions de l’approximation de Poisson sont réunies (car <span class="math inline">\(p = 1/m\)</span> est petit quand <span class="math inline">\(m\)</span> est grand) et : <span class="math display">\[X \approx \mathcal{P}(\lambda) \quad \text{avec } \lambda = \frac{N}{m}.\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="iv-résumé-des-lois-discrètes-classiques" class="level2">
+<h2 class="anchored" data-anchor-id="iv-résumé-des-lois-discrètes-classiques">IV — Résumé des lois discrètes classiques</h2>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Loi</th>
+<th style="text-align: center;">Notation</th>
+<th style="text-align: center;"><span class="math inline">\(X(\Omega)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(P(X = k)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(E(X)\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\text{Var}(X)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bernoulli</td>
+<td style="text-align: center;"><span class="math inline">\(\text{Ber}(p)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{0, 1\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(p^k(1-p)^{1-k}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(p\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(p(1-p)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Binomiale</td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{B}(n, p)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{0, \ldots, n\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\binom{n}{k}p^k(1-p)^{n-k}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(np\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(np(1-p)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Uniforme</td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{U}([\![1,n]\!])\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{1, \ldots, n\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/n\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\frac{n+1}{2}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\frac{n^2-1}{12}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Géométrique</td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{G}(p)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathbb{N}^*\)</span></td>
+<td style="text-align: center;"><span class="math inline">\((1-p)^{k-1}p\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\frac{1}{p}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\frac{1-p}{p^2}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poisson</td>
+<td style="text-align: center;"><span class="math inline">\(\mathcal{P}(\lambda)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\mathbb{N}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(e^{-\lambda}\frac{\lambda^k}{k!}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\lambda\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\lambda\)</span></td>
+</tr>
+</tbody>
+</table>
+<section id="exercice-1" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-1">Exercice 1</h3>
+<p>Un lot contient <span class="math inline">\(5\%\)</span> de pièces défectueuses. On prélève <span class="math inline">\(n = 100\)</span> pièces de façon indépendante.</p>
+<ol type="a">
+<li>Soit <span class="math inline">\(X\)</span> le nombre de pièces défectueuses. Quelle est la loi de <span class="math inline">\(X\)</span> ?</li>
+<li>Calculer <span class="math inline">\(E(X)\)</span> et <span class="math inline">\(\text{Var}(X)\)</span>.</li>
+<li>Justifier que l’on peut approcher la loi de <span class="math inline">\(X\)</span> par une loi de Poisson. Préciser le paramètre <span class="math inline">\(\lambda\)</span>.</li>
+<li>En utilisant cette approximation, calculer <span class="math inline">\(P(X = 0)\)</span>, <span class="math inline">\(P(X = 1)\)</span> et <span class="math inline">\(P(X \geq 2)\)</span>.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-25" class="callout-25-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>a.</strong> Les <span class="math inline">\(100\)</span> prélèvements sont indépendants, chacun avec probabilité <span class="math inline">\(p = 0{,}05\)</span> de tomber sur une pièce défectueuse. Donc <span class="math inline">\(X \hookrightarrow \mathcal{B}(100\,;\, 0{,}05)\)</span>.</p>
+<p><strong>b.</strong> <span class="math inline">\(E(X) = np = 5\)</span> et <span class="math inline">\(\text{Var}(X) = np(1-p) = 4{,}75\)</span>.</p>
+<p><strong>c.</strong> On a <span class="math inline">\(n = 100 \geq 50\)</span>, <span class="math inline">\(p = 0{,}05 \leq 0{,}1\)</span> et <span class="math inline">\(np = 5 \leq 10\)</span> : les conditions de l’approximation de Poisson sont satisfaites, avec <span class="math inline">\(\lambda = np = 5\)</span>.</p>
+<p><strong>d.</strong> Avec <span class="math inline">\(X \approx \mathcal{P}(5)\)</span> :</p>
+<p><span class="math display">\[P(X = 0) = e^{-5} \simeq 0{,}0067, \qquad P(X = 1) = 5\,e^{-5} \simeq 0{,}0337.\]</span></p>
+<p><span class="math display">\[P(X \geq 2) = 1 - P(X = 0) - P(X = 1) = 1 - 6\,e^{-5} \simeq 0{,}960.\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="exercice-2" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-2">Exercice 2</h3>
+<p>Un central téléphonique reçoit en moyenne <span class="math inline">\(\lambda = 3\)</span> appels par minute.</p>
+<ol type="a">
+<li>Justifier la modélisation par une loi de Poisson <span class="math inline">\(\mathcal{P}(3)\)</span>.</li>
+<li>Calculer la probabilité de ne recevoir aucun appel pendant une minute.</li>
+<li>Calculer la probabilité de recevoir au moins 2 appels pendant une minute.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-26" class="callout-26-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>a.</strong> Les appels sont des événements rares et indépendants survenant à un taux moyen constant : c’est le modèle de la loi de Poisson. Soit <span class="math inline">\(X\)</span> le nombre d’appels par minute, <span class="math inline">\(X \hookrightarrow \mathcal{P}(3)\)</span>.</p>
+<p><strong>b.</strong> <span class="math inline">\(P(X = 0) = e^{-3} \simeq 0{,}0498\)</span>.</p>
+<p><strong>c.</strong> <span class="math inline">\(P(X \geq 2) = 1 - P(X = 0) - P(X = 1) = 1 - e^{-3} - 3e^{-3} = 1 - 4e^{-3} \simeq 0{,}801\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="exercice-3" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-3">Exercice 3</h3>
+<p>On lance indéfiniment un dé équilibré à 6 faces. Soit <span class="math inline">\(X\)</span> le rang d’apparition du premier 6.</p>
+<ol type="a">
+<li>Quelle est la loi de <span class="math inline">\(X\)</span> ? Calculer <span class="math inline">\(E(X)\)</span>.</li>
+<li>Calculer <span class="math inline">\(P(X &gt; 6)\)</span>, puis <span class="math inline">\(P(X &gt; 12 \mid X &gt; 6)\)</span>.</li>
+<li>Commenter le résultat de la question b. à la lumière de la propriété sans mémoire.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-27-contents" aria-controls="callout-27" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-27" class="callout-27-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>a.</strong> <span class="math inline">\(X \hookrightarrow \mathcal{G}(1/6)\)</span> car à chaque lancer la probabilité de succès est <span class="math inline">\(p = 1/6\)</span>. <span class="math inline">\(E(X) = 6\)</span> : en moyenne, il faut 6 lancers pour obtenir le premier 6.</p>
+<p><strong>b.</strong> <span class="math inline">\(P(X &gt; 6) = (1 - 1/6)^6 = (5/6)^6 \simeq 0{,}335\)</span>.</p>
+<p>Par la propriété sans mémoire : <span class="math display">\[P(X &gt; 12 \mid X &gt; 6) = P(X &gt; 6) = (5/6)^6 \simeq 0{,}335.\]</span></p>
+<p><strong>c.</strong> Sachant que les 6 premiers lancers n’ont donné aucun 6, la probabilité de devoir encore attendre au moins 6 lancers est exactement la même que la probabilité initiale de devoir attendre au moins 6 lancers. Le dé « ne se souvient pas » des résultats passés : c’est la propriété sans mémoire de la loi géométrique.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copié");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copié");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../teaching/statistics-probability/bivariate.html" class="pagination-link  aria-label=" statistiques="" descriptives="" a="" deux="" variables"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Statistiques descriptives a deux variables</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../teaching/statistics-probability/density-function.html" class="pagination-link" aria-label="Lois à densité">
+        <span class="nav-page-text">Lois à densité</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
