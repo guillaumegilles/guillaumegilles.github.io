@@ -72,6 +72,9 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -104,10 +107,10 @@ window.Quarto = {
 </script>
 
 <meta property="og:title" content="Guillaume Gilles - Statistiques descriptives à une variable">
-<meta property="og:description" content="Ce chapitre presente les bases de la statistique descriptive univariee, avec l’objectif de decrire rigoureusement une population a partir d’un seul caractere. On introduit d’abord le vocabulaire (population, individu, variable, modalite), puis les outils de synthese pour les series discretes (effectifs, frequences, cumuls, mode). Le chapitre traite ensuite le cas des series continues regroupees en classes, en expliquant l’usage correct de l’histogramme (densites) et de la fonction de repartition. Les indicateurs de position et de dispersion sont ensuite developpes : mediane, quartiles, intervalle interquartile, moyenne, variance, ecart-type, avec les formules pratiques (dont Konig-Huygens) et les transformations affines. Le chapitre se termine par une synthese methodologique complete pour mener une etude statistique de bout en bout.">
+<meta property="og:description" content="Ce chapitre presente les bases de la statistique descriptive univariée, avec l’objectif de décrire rigoureusement une population à partir d’un seul caractère. On introduit d’abord le vocabulaire (population, individu, variable, modalité), puis les outils de synthèse pour les séries discrètes (effectifs, fréquences, cumuls, mode). Le chapitre traite ensuite le cas des séries continues regroupées en classes, en expliquant l’usage correct de l’histogramme (densités) et de la fonction de répartition. Les indicateurs de position et de dispersion sont ensuite developpés : médiane, quartiles, intervalle interquartile, moyenne, variance, écart-type, avec les formules pratiques (dont Konig-Huygens) et les transformations affines. Le chapitre se termine par une synthese methodologique complète pour mener une étude statistique de bout en bout.">
 <meta property="og:site_name" content="Guillaume Gilles">
 <meta name="twitter:title" content="Guillaume Gilles - Statistiques descriptives à une variable">
-<meta name="twitter:description" content="Ce chapitre presente les bases de la statistique descriptive univariee, avec l’objectif de decrire rigoureusement une population a partir d’un seul caractere. On introduit d’abord le vocabulaire (population, individu, variable, modalite), puis les outils de synthese pour les series discretes (effectifs, frequences, cumuls, mode). Le chapitre traite ensuite le cas des series continues regroupees en classes, en expliquant l’usage correct de l’histogramme (densites) et de la fonction de repartition. Les indicateurs de position et de dispersion sont ensuite developpes : mediane, quartiles, intervalle interquartile, moyenne, variance, ecart-type, avec les formules pratiques (dont Konig-Huygens) et les transformations affines. Le chapitre se termine par une synthese methodologique complete pour mener une etude statistique de bout en bout.">
+<meta name="twitter:description" content="Ce chapitre presente les bases de la statistique descriptive univariée, avec l’objectif de décrire rigoureusement une population à partir d’un seul caractère. On introduit d’abord le vocabulaire (population, individu, variable, modalité), puis les outils de synthèse pour les séries discrètes (effectifs, fréquences, cumuls, mode). Le chapitre traite ensuite le cas des séries continues regroupées en classes, en expliquant l’usage correct de l’histogramme (densités) et de la fonction de répartition. Les indicateurs de position et de dispersion sont ensuite developpés : médiane, quartiles, intervalle interquartile, moyenne, variance, écart-type, avec les formules pratiques (dont Konig-Huygens) et les transformations affines. Le chapitre se termine par une synthese methodologique complète pour mener une étude statistique de bout en bout.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -172,7 +175,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/statistics-probability/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Probabilités &amp; Statistiques</span></a>
+ <span class="menu-text">Statistiques et Probabilités</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/notation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notations mathématiques en statistiques</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -284,17 +293,21 @@ window.Quarto = {
     <h2 id="toc-title">Sur cette page</h2>
    
   <ul>
-  <li><a href="#i---vocabulaire-de-base" id="toc-i---vocabulaire-de-base" class="nav-link active" data-scroll-target="#i---vocabulaire-de-base">I - Vocabulaire de base</a></li>
-  <li><a href="#ii---distribution-discrete-finie" id="toc-ii---distribution-discrete-finie" class="nav-link" data-scroll-target="#ii---distribution-discrete-finie">II - Distribution discrete finie</a></li>
-  <li><a href="#iii---distribution-continue-en-classes" id="toc-iii---distribution-continue-en-classes" class="nav-link" data-scroll-target="#iii---distribution-continue-en-classes">III - Distribution continue en classes</a>
+  <li><a href="#vocabulaire-de-base" id="toc-vocabulaire-de-base" class="nav-link active" data-scroll-target="#vocabulaire-de-base">Vocabulaire de base</a>
   <ul class="collapse">
-  <li><a href="#histogramme" id="toc-histogramme" class="nav-link" data-scroll-target="#histogramme">1. Histogramme</a></li>
-  <li><a href="#fonction-de-repartition-empirique-en-classes" id="toc-fonction-de-repartition-empirique-en-classes" class="nav-link" data-scroll-target="#fonction-de-repartition-empirique-en-classes">2. Fonction de repartition empirique en classes</a></li>
+  <li><a href="#définitions" id="toc-définitions" class="nav-link" data-scroll-target="#définitions">Définitions</a></li>
+  <li><a href="#types-de-variables" id="toc-types-de-variables" class="nav-link" data-scroll-target="#types-de-variables">Types de variables</a></li>
   </ul></li>
-  <li><a href="#iv---mediane-quartiles-et-dispersion" id="toc-iv---mediane-quartiles-et-dispersion" class="nav-link" data-scroll-target="#iv---mediane-quartiles-et-dispersion">IV - Mediane, quartiles et dispersion</a></li>
-  <li><a href="#v---moyenne-variance-ecart-type" id="toc-v---moyenne-variance-ecart-type" class="nav-link" data-scroll-target="#v---moyenne-variance-ecart-type">V - Moyenne, variance, ecart-type</a></li>
-  <li><a href="#vi---transformations-affines" id="toc-vi---transformations-affines" class="nav-link" data-scroll-target="#vi---transformations-affines">VI - Transformations affines</a></li>
-  <li><a href="#vii---methode-de-synthese-a-retenir" id="toc-vii---methode-de-synthese-a-retenir" class="nav-link" data-scroll-target="#vii---methode-de-synthese-a-retenir">VII - Methode de synthese (a retenir)</a></li>
+  <li><a href="#distribution-discrete-finie" id="toc-distribution-discrete-finie" class="nav-link" data-scroll-target="#distribution-discrete-finie">Distribution discrete finie</a></li>
+  <li><a href="#distribution-continue-en-classes" id="toc-distribution-continue-en-classes" class="nav-link" data-scroll-target="#distribution-continue-en-classes">Distribution continue en classes</a>
+  <ul class="collapse">
+  <li><a href="#histogramme" id="toc-histogramme" class="nav-link" data-scroll-target="#histogramme">Histogramme</a></li>
+  <li><a href="#fonction-de-repartition-empirique-en-classes" id="toc-fonction-de-repartition-empirique-en-classes" class="nav-link" data-scroll-target="#fonction-de-repartition-empirique-en-classes">Fonction de repartition empirique en classes</a></li>
+  </ul></li>
+  <li><a href="#mediane-quartiles-et-dispersion" id="toc-mediane-quartiles-et-dispersion" class="nav-link" data-scroll-target="#mediane-quartiles-et-dispersion">Mediane, quartiles et dispersion</a></li>
+  <li><a href="#moyenne-variance-ecart-type" id="toc-moyenne-variance-ecart-type" class="nav-link" data-scroll-target="#moyenne-variance-ecart-type">Moyenne, variance, ecart-type</a></li>
+  <li><a href="#transformations-affines" id="toc-transformations-affines" class="nav-link" data-scroll-target="#transformations-affines">Transformations affines</a></li>
+  <li><a href="#methode-de-synthese-a-retenir" id="toc-methode-de-synthese-a-retenir" class="nav-link" data-scroll-target="#methode-de-synthese-a-retenir">Methode de synthese (a retenir)</a></li>
   </ul>
 </nav>
     </div>
@@ -321,7 +334,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modifié</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">22 mars 2026</p>
+      <p class="date-modified">25 mars 2026</p>
     </div>
   </div>
     
@@ -330,7 +343,7 @@ window.Quarto = {
 <div>
   <div class="abstract">
     <div class="block-title">Résumé</div>
-    <p>Ce chapitre presente les bases de la <strong>statistique descriptive univariee</strong>, avec l’objectif de decrire rigoureusement une population a partir d’un seul caractere. On introduit d’abord le vocabulaire (population, individu, variable, modalite), puis les outils de synthese pour les series <strong>discretes</strong> (effectifs, frequences, cumuls, mode). Le chapitre traite ensuite le cas des series <strong>continues</strong> regroupees en classes, en expliquant l’usage correct de l’histogramme (densites) et de la fonction de repartition. Les indicateurs de position et de dispersion sont ensuite developpes : mediane, quartiles, intervalle interquartile, moyenne, variance, ecart-type, avec les formules pratiques (dont Konig-Huygens) et les transformations affines. Le chapitre se termine par une synthese methodologique complete pour mener une etude statistique de bout en bout.</p>
+    <p>Ce chapitre presente les bases de la <strong>statistique descriptive univariée</strong>, avec l’objectif de décrire rigoureusement une population à partir d’un seul caractère. On introduit d’abord le vocabulaire (population, individu, variable, modalité), puis les outils de synthèse pour les séries <strong>discrètes</strong> (effectifs, fréquences, cumuls, mode). Le chapitre traite ensuite le cas des séries <strong>continues</strong> regroupées en classes, en expliquant l’usage correct de l’histogramme (densités) et de la fonction de répartition. Les indicateurs de position et de dispersion sont ensuite developpés : médiane, quartiles, intervalle interquartile, moyenne, variance, écart-type, avec les formules pratiques (dont Konig-Huygens) et les transformations affines. Le chapitre se termine par une synthese methodologique complète pour mener une étude statistique de bout en bout.</p>
   </div>
 </div>
 
@@ -339,38 +352,21 @@ window.Quarto = {
 
 
 <blockquote class="blockquote">
-<p>Dans tout ce chapitre, on etudie une serie statistique a <strong>une variable</strong> observee sur une population finie.</p>
+<p>Dans tout ce chapitre, on étudie une serie statistique à <strong>une variable</strong> observée sur une population finie.</p>
 </blockquote>
-<section id="i---vocabulaire-de-base" class="level2">
-<h2 class="anchored" data-anchor-id="i---vocabulaire-de-base">I - Vocabulaire de base</h2>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Definitions
-</div>
-</div>
-<div class="callout-body-container callout-body">
+<section id="vocabulaire-de-base" class="level2">
+<h2 class="anchored" data-anchor-id="vocabulaire-de-base">Vocabulaire de base</h2>
+<section id="définitions" class="level3">
+<h3 class="anchored" data-anchor-id="définitions">Définitions</h3>
 <ul>
 <li>La <strong>population</strong> <span class="math inline">\(P\)</span> est l’ensemble des individus etudies.</li>
 <li>Les <strong>individus</strong> (ou unites statistiques) sont les elements de <span class="math inline">\(P\)</span>.</li>
 <li>Le <strong>caractere</strong> (ou variable) est une application <span class="math display">\[x : P \to E,\]</span> ou <span class="math inline">\(E\)</span> est l’ensemble des <strong>modalites</strong>.</li>
 <li>Le couple <span class="math inline">\((P,x)\)</span> est une <strong>serie statistique</strong> (ou distribution statistique).</li>
 </ul>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Types de variables
-</div>
-</div>
-<div class="callout-body-container callout-body">
+</section>
+<section id="types-de-variables" class="level3">
+<h3 class="anchored" data-anchor-id="types-de-variables">Types de variables</h3>
 <ul>
 <li><strong>Qualitative</strong> : les modalites ne sont pas numeriques.
 <ul>
@@ -383,9 +379,41 @@ Types de variables
 <li>continue : ensemble de valeurs de type intervalle.</li>
 </ul></li>
 </ul>
+<p>Le schema ci-dessous resume cette classification :</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-types-variables" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-types-variables-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-types-variables">flowchart TD
+    V["&lt;b&gt;Variable statistique&lt;/b&gt;"]
+    V --&gt; QUAL["&lt;b&gt;Qualitative&lt;/b&gt;&lt;br&gt;&lt;i&gt;modalités non numériques&lt;/i&gt;"]
+    V --&gt; QUANT["&lt;b&gt;Quantitative&lt;/b&gt;&lt;br&gt;&lt;i&gt;modalités numériques&lt;/i&gt;"]
+    QUAL --&gt; NOM["Nominale&lt;br&gt;&lt;small&gt;pas d'ordre naturel&lt;/small&gt;&lt;br&gt;&lt;small&gt;ex. : couleur, métier&lt;/small&gt;"]
+    QUAL --&gt; ORD["Ordinale&lt;br&gt;&lt;small&gt;ordre naturel&lt;/small&gt;&lt;br&gt;&lt;small&gt;ex. : mention, niveau&lt;/small&gt;"]
+    QUANT --&gt; DISC["Discrète&lt;br&gt;&lt;small&gt;valeurs isolées&lt;/small&gt;&lt;br&gt;&lt;small&gt;ex. : nb d'enfants&lt;/small&gt;"]
+    QUANT --&gt; CONT["Continue&lt;br&gt;&lt;small&gt;valeurs dans un intervalle&lt;/small&gt;&lt;br&gt;&lt;small&gt;ex. : taille, poids&lt;/small&gt;"]
+
+    style V fill:#f5f5f5,stroke:#333,color:#333
+    style QUAL fill:#fff3e0,stroke:#e65100,color:#333
+    style QUANT fill:#e3f2fd,stroke:#1565c0,color:#333
+    style NOM fill:#fff3e0,stroke:#e65100,color:#333
+    style ORD fill:#fff3e0,stroke:#e65100,color:#333
+    style DISC fill:#e3f2fd,stroke:#1565c0,color:#333
+    style CONT fill:#e3f2fd,stroke:#1565c0,color:#333
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-types-variables-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Classification des types de variables statistiques.
+</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>Dans ce chapitre, on se concentre sur les variables quantitatives (discretes puis continues en classes).</p>
+<p>Avant tout calcul, il est essentiel de bien identifier ces elements : la population fixe le perimetre de l’etude (sur <em>qui</em> porte-t-elle ?), le caractere precise <em>ce que l’on mesure</em>, et la nature du caractere (qualitative, discrete, continue) determine les outils de representation et de calcul que l’on pourra utiliser. Une erreur a ce stade fausse toute l’analyse qui suit.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -405,7 +433,7 @@ Exemple 1 - Identifier la nature d’un caractere
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -414,7 +442,7 @@ Solution - Exemple 1
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ol type="1">
 <li>Metier : variable qualitative nominale.</li>
@@ -426,9 +454,11 @@ Solution - Exemple 1
 </div>
 <hr>
 </section>
-<section id="ii---distribution-discrete-finie" class="level2">
-<h2 class="anchored" data-anchor-id="ii---distribution-discrete-finie">II - Distribution discrete finie</h2>
+</section>
+<section id="distribution-discrete-finie" class="level2">
+<h2 class="anchored" data-anchor-id="distribution-discrete-finie">Distribution discrete finie</h2>
 <p>Soit une variable quantitative discrete <span class="math inline">\(x\)</span> prenant les valeurs distinctes <span class="math display">\[x_1 &lt; x_2 &lt; \cdots &lt; x_r.\]</span> On note <span class="math inline">\(n\)</span> l’effectif total, <span class="math inline">\(n_i\)</span> l’effectif de <span class="math inline">\(x_i\)</span>, et <span class="math display">\[f_i = \frac{n_i}{n}\]</span> sa frequence.</p>
+<p>L’effectif <span class="math inline">\(n_i\)</span> compte simplement <em>combien</em> d’individus prennent la valeur <span class="math inline">\(x_i\)</span>. La frequence <span class="math inline">\(f_i\)</span> exprime cette meme information en <em>proportion</em> du total : dire <span class="math inline">\(f_i = 0{,}3\)</span> signifie que 30 % des individus presentent la modalite <span class="math inline">\(x_i\)</span>. Travailler en frequences permet de comparer des series de tailles differentes, car la somme des frequences vaut toujours 1.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -446,7 +476,9 @@ Definitions - Cumuls et mode
 </ul>
 </div>
 </div>
-<p>Le diagramme de reference pour une serie discrete est le <strong>diagramme en batons</strong>.</p>
+<p>Les cumuls repondent a des questions du type <em>« combien d’individus prennent une valeur <strong>inferieure ou egale</strong> a <span class="math inline">\(x_i\)</span> ? »</em>. L’E.C.C. <span class="math inline">\(N_i^+\)</span> donne cette reponse en effectif, la F.C.C. <span class="math inline">\(F_i^+\)</span> en proportion. Par exemple, si <span class="math inline">\(F_3^+ = 0{,}80\)</span>, cela signifie que 80 % de la population a une valeur inferieure ou egale a <span class="math inline">\(x_3\)</span>.</p>
+<p>Quant au mode, c’est la valeur la plus frequemment observee. Il n’est pas forcement unique : une serie peut etre <strong>bimodale</strong> (deux modes) voire <strong>multimodale</strong>.</p>
+<p>Le diagramme de reference pour une serie discrete est le <strong>diagramme en batons</strong>. Contrairement a un diagramme en barres (qui utilise des rectangles), le diagramme en batons represente chaque valeur par un simple trait vertical dont la hauteur est proportionnelle a l’effectif. On utilise des batons et non des barres car la variable est discrete : chaque valeur est un point isole sur l’axe des abscisses, il n’y a pas de continuite entre les modalites.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -491,7 +523,7 @@ Exemple 2 - Tableau statistique complet
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -500,7 +532,7 @@ Solution - Exemple 2 (resultats)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><span class="math inline">\(f_i = n_i/120\)</span>.</li>
@@ -512,11 +544,26 @@ Solution - Exemple 2 (resultats)
 </div>
 </div>
 </div>
+<div id="cell-fig-batons-enfants" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div id="fig-batons-enfants" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-batons-enfants-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="univariate_files/figure-html/fig-batons-enfants-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="554" height="372">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-batons-enfants-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Diagramme en bâtons de la série « nombre d’enfants par foyer ». Le <strong>mode</strong> (valeur d’effectif maximal) est mis en évidence en rouge.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <hr>
 </section>
-<section id="iii---distribution-continue-en-classes" class="level2">
-<h2 class="anchored" data-anchor-id="iii---distribution-continue-en-classes">III - Distribution continue en classes</h2>
+<section id="distribution-continue-en-classes" class="level2">
+<h2 class="anchored" data-anchor-id="distribution-continue-en-classes">Distribution continue en classes</h2>
 <p>Quand les donnees sont nombreuses et presque toutes distinctes, on regroupe les observations en classes <span class="math display">\[[a_i, a_{i+1}[, \quad i=1,\dots,r.\]</span></p>
+<p>En effet, si l’on mesurait par exemple la taille de 500 personnes au millimetre pres, on obtiendrait presque autant de valeurs distinctes que d’individus, et un diagramme en batons serait illisible. En regroupant les observations par intervalles (par exemple <span class="math inline">\([160, 165[\)</span>, <span class="math inline">\([165, 170[\)</span>, etc.), on obtient une vision synthetique de la distribution. Le choix du nombre de classes et de leurs bornes releve du jugement de l’analyste : trop peu de classes masquent les details, trop de classes dispersent l’information.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -536,9 +583,11 @@ Definitions - Classes
 </ul>
 </div>
 </div>
+<p>Le centre d’une classe sert d’approximation pour representer toutes les observations de cette classe par une seule valeur : il sera utilise plus tard dans le calcul de la moyenne et de la variance. La densite de frequence <span class="math inline">\(d_i\)</span>, elle, permet de comparer equitablement des classes d’amplitudes differentes : une classe large peut contenir beaucoup d’individus simplement parce qu’elle couvre un grand intervalle, sans pour autant etre plus « dense ».</p>
 <section id="histogramme" class="level3">
-<h3 class="anchored" data-anchor-id="histogramme">1. Histogramme</h3>
+<h3 class="anchored" data-anchor-id="histogramme">Histogramme</h3>
 <p>Dans un histogramme correct, la <strong>surface</strong> de chaque rectangle est proportionnelle a la frequence de classe. Donc la <strong>hauteur</strong> doit etre proportionnelle a la densite <span class="math inline">\(d_i\)</span> (et non a <span class="math inline">\(f_i\)</span> si les amplitudes sont differentes).</p>
+<p>C’est un piege classique : si toutes les classes ont la meme amplitude, il n’y a pas de probleme, car hauteur proportionnelle a <span class="math inline">\(f_i\)</span> et hauteur proportionnelle a <span class="math inline">\(d_i\)</span> reviennent au meme (on divise par une constante). En revanche, des que les amplitudes different, utiliser <span class="math inline">\(f_i\)</span> en ordonnee donne une representation <strong>trompeuse</strong> : une classe large paraitra visuellement dominante alors qu’elle est peut-etre moins dense qu’une classe etroite.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -593,7 +642,7 @@ Exemple 3 - Densites et hauteurs corrigees
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -602,7 +651,7 @@ Solution - Exemple 3 (resultats)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><span class="math inline">\(f_i = (0{,}44, 0{,}28, 0{,}20, 0{,}08)\)</span>.</li>
@@ -613,9 +662,32 @@ Solution - Exemple 3 (resultats)
 </div>
 </div>
 </div>
+<div id="cell-fig-histogramme-densite" class="cell" data-fig-height="4" data-fig-width="10" data-execution_count="2">
+<div class="cell-output cell-output-stderr">
+<pre><code>Font 'default' does not have a glyph for '\u274c' [U+274c], substituting with a dummy symbol.
+Font 'default' does not have a glyph for '\u2705' [U+2705], substituting with a dummy symbol.
+Font 'default' does not have a glyph for '\u274c' [U+274c], substituting with a dummy symbol.
+Font 'default' does not have a glyph for '\u2705' [U+2705], substituting with a dummy symbol.
+Font 'default' does not have a glyph for '\u274c' [U+274c], substituting with a dummy symbol.
+Font 'default' does not have a glyph for '\u2705' [U+2705], substituting with a dummy symbol.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-histogramme-densite" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-histogramme-densite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="univariate_files/figure-html/fig-histogramme-densite-output-2.png" class="quarto-figure quarto-figure-center figure-img" width="949" height="373">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histogramme-densite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Comparaison entre un histogramme <strong>incorrect</strong> (hauteur = fréquence) et un histogramme <strong>correct</strong> (hauteur = densité). Avec des amplitudes inégales, seule la densité garantit que l’aire de chaque barre est proportionnelle à la fréquence.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="fonction-de-repartition-empirique-en-classes" class="level3">
-<h3 class="anchored" data-anchor-id="fonction-de-repartition-empirique-en-classes">2. Fonction de repartition empirique en classes</h3>
+<h3 class="anchored" data-anchor-id="fonction-de-repartition-empirique-en-classes">Fonction de repartition empirique en classes</h3>
+<p>La fonction de repartition <span class="math inline">\(F\)</span> repond a la question : <em>« quelle proportion d’individus a une valeur strictement inferieure a <span class="math inline">\(x\)</span> ? »</em>. C’est l’analogue continu de la F.C.C. vue dans le cas discret.</p>
 <p>Sous l’hypothese d’equirepartition dans chaque classe, la fonction de repartition <span class="math inline">\(F\)</span> est :</p>
 <ul>
 <li>croissante,</li>
@@ -623,6 +695,7 @@ Solution - Exemple 3 (resultats)
 <li>affine par morceaux,</li>
 <li>telle que <span class="math inline">\(F(a_i)\)</span> vaut la frequence cumulee au bord <span class="math inline">\(a_i\)</span>.</li>
 </ul>
+<p>L’hypothese d’equirepartition suppose que les observations sont reparties uniformement a l’interieur de chaque classe. C’est une approximation : on ne connait pas la repartition exacte au sein de la classe, donc on suppose la plus simple possible. Cette hypothese justifie l’interpolation lineaire ci-dessous.</p>
 <p>Pour <span class="math inline">\(x\in[a_i,a_{i+1}[\)</span>, on obtient <span class="math inline">\(F(x)\)</span> par interpolation lineaire : <span class="math display">\[
 F(x)=F(a_i)+\frac{F(a_{i+1})-F(a_i)}{a_{i+1}-a_i}(x-a_i).
 \]</span></p>
@@ -640,7 +713,7 @@ Exemple 4 - Lecture de repartition
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -649,7 +722,7 @@ Solution - Exemple 4
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><span class="math inline">\(42\in[40,45[\)</span>.</li>
@@ -661,11 +734,26 @@ F(42)=0{,}44+\frac{0{,}72-0{,}44}{5}(2)=0{,}552.
 </div>
 </div>
 </div>
+<div id="cell-fig-repartition-empirique" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="fig-repartition-empirique" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-repartition-empirique-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="univariate_files/figure-html/fig-repartition-empirique-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="660" height="374">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-repartition-empirique-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Fonction de répartition empirique (affine par morceaux) de l’exemple 3. L’interpolation linéaire pour <span class="math inline">\(F(42) = 0{,}552\)</span> est mise en évidence.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <hr>
 </section>
 </section>
-<section id="iv---mediane-quartiles-et-dispersion" class="level2">
-<h2 class="anchored" data-anchor-id="iv---mediane-quartiles-et-dispersion">IV - Mediane, quartiles et dispersion</h2>
+<section id="mediane-quartiles-et-dispersion" class="level2">
+<h2 class="anchored" data-anchor-id="mediane-quartiles-et-dispersion">Mediane, quartiles et dispersion</h2>
+<p>Les indicateurs de position (moyenne, mediane) et de dispersion (ecart-type, IQR) permettent de resumer une serie par quelques nombres-cles. On commence ici par les indicateurs bases sur le <strong>rang</strong> : mediane et quartiles. Leur interet majeur est d’etre <strong>robustes</strong>, c’est-a-dire peu sensibles aux valeurs extremes.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -682,6 +770,20 @@ Definitions
 <li>On a <span class="math inline">\(Q_2 =\)</span> mediane.</li>
 <li>L’<strong>ecart interquartile</strong> vaut <span class="math display">\[IQR = Q_3-Q_1,\]</span> et mesure la dispersion centrale.</li>
 </ul>
+</div>
+</div>
+<p>Concretement, la mediane est la valeur « du milieu » : la moitie des individus se situe en dessous, l’autre moitie au-dessus. Le premier quartile <span class="math inline">\(Q_1\)</span> separe les 25 % les plus faibles du reste, et <span class="math inline">\(Q_3\)</span> les 75 % les plus faibles. L’IQR mesure donc l’etendue des 50 % centraux de la distribution, en ignorant les extremes.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Mediane ou moyenne ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La mediane est preferable lorsque la distribution est <strong>asymetrique</strong> ou contient des <strong>valeurs aberrantes</strong>. Par exemple, dans une serie de salaires, quelques tres hauts revenus tirent la moyenne vers le haut, mais n’affectent pas la mediane. En revanche, la moyenne utilise toute l’information numerique et se prete mieux aux calculs algebriques (transformations affines, decomposition de variance, etc.).</p>
 </div>
 </div>
 <p>Pour les series continues en classes, on determine les quantiles par lecture de la fonction de repartition (interpolation lineaire).</p>
@@ -722,7 +824,7 @@ Exemple 5 - Quantiles d’une serie discrete
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -731,17 +833,32 @@ Solution - Exemple 5 (resultats)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Rangs cumules : - valeur 5 : rangs 1 a 11, - valeur 10 : rangs 12 a 18, - valeur 15 : rangs 19 a 23, - valeur 20 : rangs 24 a 26.</p>
 <p>Donc : - mediane (entre rangs 13 et 14) = 10, - <span class="math inline">\(Q_1\)</span> (autour du rang 7) = 5, - <span class="math inline">\(Q_3\)</span> (autour du rang 20) = 15, - <span class="math inline">\(IQR = 15-5=10\)</span>.</p>
 </div>
 </div>
 </div>
+<div id="cell-fig-boite-moustaches" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div id="fig-boite-moustaches" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boite-moustaches-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="univariate_files/figure-html/fig-boite-moustaches-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="757" height="468">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boite-moustaches-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Boîte à moustaches de la série de l’exemple 5. Les quartiles <span class="math inline">\(Q_1\)</span>, la médiane <span class="math inline">\(Me\)</span> et <span class="math inline">\(Q_3\)</span> délimitent la boîte centrale ; l’écart interquartile <span class="math inline">\(\mathrm{IQR} = Q_3 - Q_1\)</span> mesure la dispersion des 50 % centraux.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <hr>
 </section>
-<section id="v---moyenne-variance-ecart-type" class="level2">
-<h2 class="anchored" data-anchor-id="v---moyenne-variance-ecart-type">V - Moyenne, variance, ecart-type</h2>
+<section id="moyenne-variance-ecart-type" class="level2">
+<h2 class="anchored" data-anchor-id="moyenne-variance-ecart-type">Moyenne, variance, ecart-type</h2>
+<p>Apres les indicateurs de rang (mediane, quartiles), on introduit les indicateurs bases sur les <strong>valeurs numeriques</strong> elles-memes. La moyenne, la variance et l’ecart-type forment le trio fondamental de la statistique descriptive : ils seront repris tout au long du cours, aussi bien en probabilites qu’en inference.</p>
 <p>Soit une serie quantitative discrete :</p>
 <table class="table">
 <thead>
@@ -788,6 +905,9 @@ Definitions - Indicateurs numeriques
 </ul>
 </div>
 </div>
+<p>La <strong>moyenne</strong> <span class="math inline">\(\bar x\)</span> est le « centre de gravite » de la serie : c’est la valeur autour de laquelle les observations se repartissent. Si l’on imaginait les effectifs comme des masses posees sur une regle, la moyenne serait le point d’equilibre.</p>
+<p>La <strong>variance</strong> mesure a quel point les valeurs s’ecartent de cette moyenne. On calcule l’ecart de chaque observation a la moyenne <span class="math inline">\((x_i - \bar x)\)</span>, on le met au carre (pour eviter que les ecarts positifs et negatifs ne s’annulent), puis on fait la moyenne ponderee de ces carres. Plus la variance est grande, plus les donnees sont dispersees.</p>
+<p>L’<strong>ecart-type</strong> <span class="math inline">\(\sigma(x)\)</span> est simplement la racine carree de la variance. Son avantage est d’etre exprime dans la <strong>meme unite</strong> que les donnees : si les observations sont en centimetres, l’ecart-type est aussi en centimetres (alors que la variance serait en <span class="math inline">\(\text{cm}^2\)</span>).</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -805,7 +925,8 @@ Formule de Konig-Huygens
 \]</span></p>
 </div>
 </div>
-<p>Pour une serie en classes, on applique les memes formules en remplacant <span class="math inline">\(x_i\)</span> par les centres <span class="math inline">\(c_i\)</span>.</p>
+<p>La formule de Konig-Huygens est un raccourci de calcul tres utile : au lieu de calculer chaque ecart <span class="math inline">\((x_i - \bar x)\)</span> puis de le mettre au carre, on calcule separement la moyenne des carres (<span class="math inline">\(\overline{x^2}\)</span>) et le carre de la moyenne (<span class="math inline">\((\bar x)^2\)</span>), puis on fait la difference. C’est souvent plus rapide, surtout a la main, car on evite de manipuler des nombres decimaux issus de <span class="math inline">\(\bar x\)</span>.</p>
+<p>Pour une serie en classes, on applique les memes formules en remplacant <span class="math inline">\(x_i\)</span> par les centres <span class="math inline">\(c_i\)</span>. C’est une approximation : on suppose que tous les individus d’une classe sont concentres au centre de cette classe. Les resultats seront d’autant plus proches de la realite que les classes sont etroites.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -817,10 +938,24 @@ Interpretation
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>La moyenne est un indicateur de <strong>position</strong>.</li>
-<li>La variance et l’ecart-type sont des indicateurs de <strong>dispersion</strong>.</li>
-<li>La moyenne est sensible aux valeurs extremes, contrairement a la mediane.</li>
+<li>La moyenne est un indicateur de <strong>position</strong> : elle situe le « centre » de la distribution.</li>
+<li>La variance et l’ecart-type sont des indicateurs de <strong>dispersion</strong> : ils mesurent l’etalement des observations autour de la moyenne.</li>
+<li>La moyenne est sensible aux valeurs extremes, contrairement a la mediane. En presence de valeurs aberrantes, ces deux indicateurs peuvent donner des images tres differentes de la serie.</li>
 </ul>
+</div>
+</div>
+<div id="cell-fig-dispersion-comparaison" class="cell" data-fig-height="4" data-fig-width="10" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div id="fig-dispersion-comparaison" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dispersion-comparaison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="univariate_files/figure-html/fig-dispersion-comparaison-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="951" height="374">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dispersion-comparaison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Deux séries de même moyenne (<span class="math inline">\(\bar{x} = 3\)</span>) mais de dispersions très différentes. La série B est plus étalée : sa variance et son écart-type sont plus grands.
+</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -856,7 +991,7 @@ Exemple 6 - Calcul numerique complet
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-21-contents" aria-controls="callout-21" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -865,7 +1000,7 @@ Solution - Exemple 6
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-21" class="callout-21-contents callout-collapse collapse">
+<div id="callout-20" class="callout-20-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Centres : <span class="math inline">\(c_1=1\)</span>, <span class="math inline">\(c_2=3\)</span>, <span class="math inline">\(c_3=5\)</span> ; effectif total <span class="math inline">\(n=20\)</span>.</p>
 <p>Moyenne : <span class="math display">\[
@@ -922,7 +1057,7 @@ Exercice 1 — Fréquentation d’une boutique
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -931,7 +1066,7 @@ Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-23" class="callout-23-contents callout-collapse collapse">
+<div id="callout-22" class="callout-22-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Considérer les 6 valeurs comme une série quantitative discrète simple : <span class="math display">\[\bar x=\frac{1}{n}\sum_{i=1}^n x_i, \qquad
 V=\frac{1}{n}\sum_{i=1}^n (x_i-\bar x)^2, \qquad
@@ -984,7 +1119,7 @@ Exercice 2 — Tirs réussis
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -993,7 +1128,7 @@ Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-25" class="callout-25-contents callout-collapse collapse">
+<div id="callout-24" class="callout-24-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>Effectif total : <span class="math inline">\(N=\sum n_i\)</span>.</li>
@@ -1045,7 +1180,7 @@ Exercice 3 — Exploitations agricoles
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-27-contents" aria-controls="callout-27" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1054,7 +1189,7 @@ Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-27" class="callout-27-contents callout-collapse collapse">
+<div id="callout-26" class="callout-26-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>Pour l’histogramme, tenir compte des amplitudes de classes inégales : hauteur <span class="math inline">\(= d_i = f_i/A_i\)</span>.</li>
@@ -1066,8 +1201,9 @@ Indication
 </div>
 <hr>
 </section>
-<section id="vi---transformations-affines" class="level2">
-<h2 class="anchored" data-anchor-id="vi---transformations-affines">VI - Transformations affines</h2>
+<section id="transformations-affines" class="level2">
+<h2 class="anchored" data-anchor-id="transformations-affines">Transformations affines</h2>
+<p>Il arrive souvent que l’on veuille changer d’unite ou simplifier les calculs en recentrant et redimensionnant les donnees. Par exemple, convertir des temperatures de Celsius en Fahrenheit (<span class="math inline">\(F = 1{,}8 \times C + 32\)</span>), ou encore ramener des salaires a des valeurs plus maniables en posant <span class="math inline">\(Y = (X - 35\,000)/1\,000\)</span>. La question est alors : comment les indicateurs (moyenne, variance, ecart-type) de la nouvelle serie se deduisent-ils de ceux de la serie d’origine ?</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1086,7 +1222,21 @@ Propriete (admise)
 </ul>
 </div>
 </div>
-<p>La translation (ajout de <span class="math inline">\(b\)</span>) deplace le centre mais ne change pas la dispersion ; le facteur <span class="math inline">\(a\)</span> dilate/contracte l’echelle.</p>
+<p>La translation (ajout de <span class="math inline">\(b\)</span>) deplace le centre mais ne change pas la dispersion ; le facteur <span class="math inline">\(a\)</span> dilate/contracte l’echelle. Remarquons que la variance depend de <span class="math inline">\(a^2\)</span> (et non de <span class="math inline">\(a\)</span>) : elle est donc toujours positive, que la transformation « inverse » ou non l’ordre des valeurs. De meme, ajouter une constante <span class="math inline">\(b\)</span> n’affecte ni la variance ni l’ecart-type, ce qui est logique puisque decaler toutes les valeurs d’un meme montant ne change pas leur dispersion relative.</p>
+<div id="cell-fig-transformation-affine" class="cell" data-fig-height="4" data-fig-width="10" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div id="fig-transformation-affine" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-transformation-affine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="univariate_files/figure-html/fig-transformation-affine-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="959" height="372">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-transformation-affine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Effet d’une transformation affine <span class="math inline">\(Y = 2X + 3\)</span> sur une série discrète. La translation (<span class="math inline">\(+3\)</span>) décale la distribution ; le facteur (<span class="math inline">\(\times 2\)</span>) étire l’échelle et augmente la dispersion.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1103,7 +1253,7 @@ Y=\frac{X-35\,000}{1\,000}.
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-30-contents" aria-controls="callout-30" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-29-contents" aria-controls="callout-29" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1112,7 +1262,7 @@ Solution - Exemple 7
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-30" class="callout-30-contents callout-collapse collapse">
+<div id="callout-29" class="callout-29-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Ici <span class="math inline">\(a=1/1000\)</span> et <span class="math inline">\(b=-35\)</span>.</p>
 <p><span class="math display">\[
@@ -1141,7 +1291,7 @@ Exercice 4 — Transformation d’une série salariale
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-32-contents" aria-controls="callout-32" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-31-contents" aria-controls="callout-31" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1150,7 +1300,7 @@ Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-32" class="callout-32-contents callout-collapse collapse">
+<div id="callout-31" class="callout-31-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Pour une transformation affine <span class="math inline">\(Y=aX+b\)</span> avec <span class="math inline">\(a=1/1000\)</span> et <span class="math inline">\(b=-35\)</span> : - <span class="math inline">\(\bar Y = a\bar X + b\)</span>, - <span class="math inline">\(\mathrm{Var}(Y)=a^2\mathrm{Var}(X)\)</span>, - <span class="math inline">\(\sigma_Y=|a|\sigma_X\)</span>.</p>
 </div>
@@ -1158,8 +1308,9 @@ Indication
 </div>
 <hr>
 </section>
-<section id="vii---methode-de-synthese-a-retenir" class="level2">
-<h2 class="anchored" data-anchor-id="vii---methode-de-synthese-a-retenir">VII - Methode de synthese (a retenir)</h2>
+<section id="methode-de-synthese-a-retenir" class="level2">
+<h2 class="anchored" data-anchor-id="methode-de-synthese-a-retenir">Methode de synthese (a retenir)</h2>
+<p>Face a un jeu de donnees, il est facile de se perdre dans les calculs. La procedure ci-dessous fournit une demarche systematique pour mener une etude univariee complete, de la lecture de l’enonce jusqu’a l’interpretation des resultats.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1171,20 +1322,20 @@ Procedure recommandee pour une etude univariee
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li>Identifier la population, la variable et son type.</li>
-<li>Construire le tableau statistique (effectifs, frequences, cumuls).</li>
-<li>Choisir une representation adaptee :
+<li><strong>Identifier</strong> la population, la variable et son type.</li>
+<li><strong>Construire</strong> le tableau statistique (effectifs, frequences, cumuls).</li>
+<li><strong>Choisir</strong> une representation adaptee :
 <ul>
 <li>batons pour discret,</li>
 <li>histogramme en densites pour classes.</li>
 </ul></li>
-<li>Calculer les indicateurs de position : mode, mediane, quartiles, moyenne.</li>
-<li>Calculer les indicateurs de dispersion : IQR, variance, ecart-type.</li>
-<li>Interpreter les resultats dans le contexte (asymetrie, valeurs extremes, stabilite).</li>
+<li><strong>Calculer</strong> les indicateurs de position : mode, mediane, quartiles, moyenne.</li>
+<li><strong>Calculer</strong> les indicateurs de dispersion : IQR, variance, ecart-type.</li>
+<li><strong>Interpreter</strong> les resultats dans le contexte (asymetrie, valeurs extremes, stabilite).</li>
 </ol>
 </div>
 </div>
-<p>Cette demarche permet de passer des donnees brutes a une lecture quantitative robuste, utile avant toute phase d’inference statistique.</p>
+<p>Cette demarche permet de passer des donnees brutes a une lecture quantitative robuste, utile avant toute phase d’inference statistique. En particulier, l’etape 6 est souvent negligee : les chiffres n’ont de sens que replaces dans leur contexte. Dire « l’ecart-type vaut 3{,}2 » ne signifie rien sans preciser l’unite et sans comparer cette dispersion a ce qui est attendu dans le domaine etudie.</p>
 
 
 </section>
