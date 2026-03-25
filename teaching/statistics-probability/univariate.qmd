@@ -1,27 +1,17 @@
 ---
 title: "Statistiques descriptives à une variable"
 abstract: |
-  Ce chapitre presente les bases de la **statistique descriptive univariee**,
-  avec l'objectif de decrire rigoureusement une population a partir d'un seul
-  caractere. On introduit d'abord le vocabulaire (population, individu,
-  variable, modalite), puis les outils de synthese pour les series
-  **discretes** (effectifs, frequences, cumuls, mode). Le chapitre traite
-  ensuite le cas des series **continues** regroupees en classes, en expliquant
-  l'usage correct de l'histogramme (densites) et de la fonction de repartition.
-  Les indicateurs de position et de dispersion sont ensuite developpes :
-  mediane, quartiles, intervalle interquartile, moyenne, variance, ecart-type,
-  avec les formules pratiques (dont Konig-Huygens) et les transformations
-  affines. Le chapitre se termine par une synthese methodologique complete pour
-  mener une etude statistique de bout en bout.
-date-modified: 2026-03-22
+  Ce chapitre presente les bases de la **statistique descriptive univariée**, avec l'objectif de décrire rigoureusement une population à partir d'un seul caractère. On introduit d'abord le vocabulaire (population, individu, variable, modalité), puis les outils de synthèse pour les séries **discrètes** (effectifs, fréquences, cumuls, mode). Le chapitre traite ensuite le cas des séries **continues** regroupées en classes, en expliquant
+  l'usage correct de l'histogramme (densités) et de la fonction de répartition. Les indicateurs de position et de dispersion sont ensuite developpés : médiane, quartiles, intervalle interquartile, moyenne, variance, écart-type,
+  avec les formules pratiques (dont Konig-Huygens) et les transformations affines. Le chapitre se termine par une synthese methodologique complète pour mener une étude statistique de bout en bout.
+date-modified: 2026-03-25
 ---
 
-> Dans tout ce chapitre, on etudie une serie statistique a **une variable** observee sur une population finie.
+> Dans tout ce chapitre, on étudie une serie statistique à **une variable** observée sur une population finie.
 
-## I - Vocabulaire de base
+## Vocabulaire de base
 
-::: {.callout-note}
-## Definitions
+### Définitions
 
 - La **population** $P$ est l'ensemble des individus etudies.
 - Les **individus** (ou unites statistiques) sont les elements de $P$.
@@ -29,10 +19,9 @@ date-modified: 2026-03-22
   $$x : P \to E,$$
   ou $E$ est l'ensemble des **modalites**.
 - Le couple $(P,x)$ est une **serie statistique** (ou distribution statistique).
-:::
 
-::: {.callout-note}
-## Types de variables
+
+### Types de variables
 
 - **Qualitative** : les modalites ne sont pas numeriques.
   - nominale : sans ordre naturel,
@@ -40,9 +29,34 @@ date-modified: 2026-03-22
 - **Quantitative** : les modalites sont numeriques.
   - discrete : ensemble de valeurs fini ou denombrable,
   - continue : ensemble de valeurs de type intervalle.
-:::
+
+Le schema ci-dessous resume cette classification :
+
+```{mermaid}
+%%| fig-align: center
+%%| label: fig-types-variables
+%%| fig-cap: "Classification des types de variables statistiques."
+flowchart TD
+    V["<b>Variable statistique</b>"]
+    V --> QUAL["<b>Qualitative</b><br><i>modalités non numériques</i>"]
+    V --> QUANT["<b>Quantitative</b><br><i>modalités numériques</i>"]
+    QUAL --> NOM["Nominale<br><small>pas d'ordre naturel</small><br><small>ex. : couleur, métier</small>"]
+    QUAL --> ORD["Ordinale<br><small>ordre naturel</small><br><small>ex. : mention, niveau</small>"]
+    QUANT --> DISC["Discrète<br><small>valeurs isolées</small><br><small>ex. : nb d'enfants</small>"]
+    QUANT --> CONT["Continue<br><small>valeurs dans un intervalle</small><br><small>ex. : taille, poids</small>"]
+
+    style V fill:#f5f5f5,stroke:#333,color:#333
+    style QUAL fill:#fff3e0,stroke:#e65100,color:#333
+    style QUANT fill:#e3f2fd,stroke:#1565c0,color:#333
+    style NOM fill:#fff3e0,stroke:#e65100,color:#333
+    style ORD fill:#fff3e0,stroke:#e65100,color:#333
+    style DISC fill:#e3f2fd,stroke:#1565c0,color:#333
+    style CONT fill:#e3f2fd,stroke:#1565c0,color:#333
+```
 
 Dans ce chapitre, on se concentre sur les variables quantitatives (discretes puis continues en classes).
+
+Avant tout calcul, il est essentiel de bien identifier ces elements : la population fixe le perimetre de l'etude (sur *qui* porte-t-elle ?), le caractere precise *ce que l'on mesure*, et la nature du caractere (qualitative, discrete, continue) determine les outils de representation et de calcul que l'on pourra utiliser. Une erreur a ce stade fausse toute l'analyse qui suit.
 
 ::: {.callout-caution}
 ## Exemple 1 - Identifier la nature d'un caractere
@@ -64,13 +78,15 @@ Pour chaque situation, preciser la population, le caractere et le type du caract
 
 ---
 
-## II - Distribution discrete finie
+## Distribution discrete finie
 
 Soit une variable quantitative discrete $x$ prenant les valeurs distinctes
 $$x_1 < x_2 < \cdots < x_r.$$
 On note $n$ l'effectif total, $n_i$ l'effectif de $x_i$, et
 $$f_i = \frac{n_i}{n}$$
 sa frequence.
+
+L'effectif $n_i$ compte simplement *combien* d'individus prennent la valeur $x_i$. La frequence $f_i$ exprime cette meme information en *proportion* du total : dire $f_i = 0{,}3$ signifie que 30 % des individus presentent la modalite $x_i$. Travailler en frequences permet de comparer des series de tailles differentes, car la somme des frequences vaut toujours 1.
 
 ::: {.callout-note}
 ## Definitions - Cumuls et mode
@@ -82,7 +98,11 @@ sa frequence.
 - **Mode** : toute modalite d'effectif maximal.
 :::
 
-Le diagramme de reference pour une serie discrete est le **diagramme en batons**.
+Les cumuls repondent a des questions du type *« combien d'individus prennent une valeur **inferieure ou egale** a $x_i$ ? »*. L'E.C.C. $N_i^+$ donne cette reponse en effectif, la F.C.C. $F_i^+$ en proportion. Par exemple, si $F_3^+ = 0{,}80$, cela signifie que 80 % de la population a une valeur inferieure ou egale a $x_3$.
+
+Quant au mode, c'est la valeur la plus frequemment observee. Il n'est pas forcement unique : une serie peut etre **bimodale** (deux modes) voire **multimodale**.
+
+Le diagramme de reference pour une serie discrete est le **diagramme en batons**. Contrairement a un diagramme en barres (qui utilise des rectangles), le diagramme en batons represente chaque valeur par un simple trait vertical dont la hauteur est proportionnelle a l'effectif. On utilise des batons et non des barres car la variable est discrete : chaque valeur est un point isole sur l'axe des abscisses, il n'y a pas de continuite entre les modalites.
 
 ::: {.callout-caution}
 ## Exemple 2 - Tableau statistique complet
@@ -109,12 +129,59 @@ Une etude porte sur le nombre d'enfants par foyer. Les resultats observes sont :
 - Mode : valeur 2 (effectif maximal 40).
 :::
 
+```{python}
+#| echo: false
+#| label: fig-batons-enfants
+#| fig-cap: "Diagramme en bâtons de la série « nombre d'enfants par foyer ». Le **mode** (valeur d'effectif maximal) est mis en évidence en rouge."
+#| fig-align: center
+
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor': 'none',
+    'axes.edgecolor': '#5a5a5a',
+    'axes.labelcolor': '#2c2c2c',
+    'xtick.color': '#5a5a5a',
+    'ytick.color': '#5a5a5a',
+    'text.color': '#2c2c2c',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+x_vals = [0, 1, 2, 3, 4]
+n_vals = [18, 34, 40, 20, 8]
+
+fig, ax = plt.subplots(figsize=(6, 4))
+
+colors = ['#1565C0'] * 5
+colors[2] = '#C62828'
+
+for xi, ni, c in zip(x_vals, n_vals, colors):
+    ax.vlines(xi, 0, ni, colors=c, linewidth=3)
+    ax.plot(xi, ni, 'o', color=c, markersize=8, zorder=5)
+
+ax.annotate('Mode ($x = 2$, $n = 40$)', xy=(2, 40), xytext=(3, 42),
+            fontsize=10, color='#C62828',
+            arrowprops=dict(arrowstyle='->', color='#C62828', lw=1.5))
+
+ax.set_xlabel("Nombre d'enfants $x_i$", fontsize=11)
+ax.set_ylabel('Effectif $n_i$', fontsize=11)
+ax.set_xticks(x_vals)
+ax.set_ylim(0, 48)
+plt.tight_layout()
+plt.show()
+```
+
 ---
 
-## III - Distribution continue en classes
+## Distribution continue en classes
 
 Quand les donnees sont nombreuses et presque toutes distinctes, on regroupe les observations en classes
 $$[a_i, a_{i+1}[, \quad i=1,\dots,r.$$
+
+En effet, si l'on mesurait par exemple la taille de 500 personnes au millimetre pres, on obtiendrait presque autant de valeurs distinctes que d'individus, et un diagramme en batons serait illisible. En regroupant les observations par intervalles (par exemple $[160, 165[$, $[165, 170[$, etc.), on obtient une vision synthetique de la distribution. Le choix du nombre de classes et de leurs bornes releve du jugement de l'analyste : trop peu de classes masquent les details, trop de classes dispersent l'information.
 
 ::: {.callout-note}
 ## Definitions - Classes
@@ -130,10 +197,14 @@ Pour la classe $[a_i,a_{i+1}[$ :
   $$d_i = \frac{f_i}{A_i}.$$
 :::
 
-### 1. Histogramme
+Le centre d'une classe sert d'approximation pour representer toutes les observations de cette classe par une seule valeur : il sera utilise plus tard dans le calcul de la moyenne et de la variance. La densite de frequence $d_i$, elle, permet de comparer equitablement des classes d'amplitudes differentes : une classe large peut contenir beaucoup d'individus simplement parce qu'elle couvre un grand intervalle, sans pour autant etre plus « dense ».
+
+### Histogramme
 
 Dans un histogramme correct, la **surface** de chaque rectangle est proportionnelle a la frequence de classe.
 Donc la **hauteur** doit etre proportionnelle a la densite $d_i$ (et non a $f_i$ si les amplitudes sont differentes).
+
+C'est un piege classique : si toutes les classes ont la meme amplitude, il n'y a pas de probleme, car hauteur proportionnelle a $f_i$ et hauteur proportionnelle a $d_i$ reviennent au meme (on divise par une constante). En revanche, des que les amplitudes different, utiliser $f_i$ en ordonnee donne une representation **trompeuse** : une classe large paraitra visuellement dominante alors qu'elle est peut-etre moins dense qu'une classe etroite.
 
 ::: {.callout-important}
 ## Point cle
@@ -166,7 +237,61 @@ On considere la distribution suivante :
 La deuxieme classe est plus dense que la premiere, bien qu'elle ait un effectif inferieur.
 :::
 
-### 2. Fonction de repartition empirique en classes
+```{python}
+#| echo: false
+#| label: fig-histogramme-densite
+#| fig-cap: "Comparaison entre un histogramme **incorrect** (hauteur = fréquence) et un histogramme **correct** (hauteur = densité). Avec des amplitudes inégales, seule la densité garantit que l'aire de chaque barre est proportionnelle à la fréquence."
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 4
+
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor': 'none',
+    'axes.edgecolor': '#5a5a5a',
+    'axes.labelcolor': '#2c2c2c',
+    'xtick.color': '#5a5a5a',
+    'ytick.color': '#5a5a5a',
+    'text.color': '#2c2c2c',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+classes = [(30, 40), (40, 45), (45, 50), (50, 65)]
+n = [11, 7, 5, 2]
+total = 25
+f = [ni / total for ni in n]
+A = [b - a for a, b in classes]
+d = [fi / ai for fi, ai in zip(f, A)]
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+for (a, b), fi in zip(classes, f):
+    ax1.bar(a, fi, width=b - a, align='edge', color='#C62828', alpha=0.6,
+            edgecolor='white', linewidth=1.5)
+ax1.set_title('❌  Hauteur = fréquence $f_i$', fontsize=12)
+ax1.set_xlabel('Valeur', fontsize=11)
+ax1.set_ylabel('$f_i$', fontsize=11)
+ax1.set_xlim(25, 70)
+
+for (a, b), di in zip(classes, d):
+    ax2.bar(a, di, width=b - a, align='edge', color='#1565C0', alpha=0.6,
+            edgecolor='white', linewidth=1.5)
+ax2.set_title('✅  Hauteur = densité $d_i = f_i / A_i$', fontsize=12)
+ax2.set_xlabel('Valeur', fontsize=11)
+ax2.set_ylabel('$d_i$', fontsize=11)
+ax2.set_xlim(25, 70)
+
+plt.tight_layout()
+plt.show()
+```
+
+### Fonction de repartition empirique en classes
+
+La fonction de repartition $F$ repond a la question : *« quelle proportion d'individus a une valeur strictement inferieure a $x$ ? »*. C'est l'analogue continu de la F.C.C. vue dans le cas discret.
 
 Sous l'hypothese d'equirepartition dans chaque classe, la fonction de repartition $F$ est :
 
@@ -174,6 +299,8 @@ Sous l'hypothese d'equirepartition dans chaque classe, la fonction de repartitio
 - continue,
 - affine par morceaux,
 - telle que $F(a_i)$ vaut la frequence cumulee au bord $a_i$.
+
+L'hypothese d'equirepartition suppose que les observations sont reparties uniformement a l'interieur de chaque classe. C'est une approximation : on ne connait pas la repartition exacte au sein de la classe, donc on suppose la plus simple possible. Cette hypothese justifie l'interpolation lineaire ci-dessous.
 
 Pour $x\in[a_i,a_{i+1}[$, on obtient $F(x)$ par interpolation lineaire :
 $$
@@ -197,9 +324,57 @@ F(42)=0{,}44+\frac{0{,}72-0{,}44}{5}(2)=0{,}552.
 $$
 :::
 
+```{python}
+#| echo: false
+#| label: fig-repartition-empirique
+#| fig-cap: "Fonction de répartition empirique (affine par morceaux) de l'exemple 3. L'interpolation linéaire pour $F(42) = 0{,}552$ est mise en évidence."
+#| fig-align: center
+
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor': 'none',
+    'axes.edgecolor': '#5a5a5a',
+    'axes.labelcolor': '#2c2c2c',
+    'xtick.color': '#5a5a5a',
+    'ytick.color': '#5a5a5a',
+    'text.color': '#2c2c2c',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+bounds = [30, 40, 45, 50, 65]
+F_cum = [0, 0.44, 0.72, 0.92, 1.0]
+
+fig, ax = plt.subplots(figsize=(7, 4))
+
+ax.plot(bounds, F_cum, '-o', color='#1565C0', linewidth=2.5, markersize=6,
+        zorder=4, label='$F(x)$')
+
+ax.plot([42, 42], [0, 0.552], '--', color='#C62828', linewidth=1.5)
+ax.plot([30, 42], [0.552, 0.552], '--', color='#C62828', linewidth=1.5)
+ax.plot(42, 0.552, 'o', color='#C62828', markersize=9, zorder=5)
+
+ax.annotate('$F(42) = 0{,}552$', xy=(42, 0.552), xytext=(50, 0.48),
+            fontsize=11, color='#C62828',
+            arrowprops=dict(arrowstyle='->', color='#C62828', lw=1.5))
+
+ax.set_xlabel('$x$', fontsize=12)
+ax.set_ylabel('$F(x)$', fontsize=12)
+ax.set_xlim(25, 70)
+ax.set_ylim(-0.05, 1.08)
+ax.legend(fontsize=11, loc='lower right')
+plt.tight_layout()
+plt.show()
+```
+
 ---
 
-## IV - Mediane, quartiles et dispersion
+## Mediane, quartiles et dispersion
+
+Les indicateurs de position (moyenne, mediane) et de dispersion (ecart-type, IQR) permettent de resumer une serie par quelques nombres-cles. On commence ici par les indicateurs bases sur le **rang** : mediane et quartiles. Leur interet majeur est d'etre **robustes**, c'est-a-dire peu sensibles aux valeurs extremes.
 
 ::: {.callout-note}
 ## Definitions
@@ -210,6 +385,14 @@ $$
 - L'**ecart interquartile** vaut
   $$IQR = Q_3-Q_1,$$
   et mesure la dispersion centrale.
+:::
+
+Concretement, la mediane est la valeur « du milieu » : la moitie des individus se situe en dessous, l'autre moitie au-dessus. Le premier quartile $Q_1$ separe les 25 % les plus faibles du reste, et $Q_3$ les 75 % les plus faibles. L'IQR mesure donc l'etendue des 50 % centraux de la distribution, en ignorant les extremes.
+
+::: {.callout-tip}
+## Mediane ou moyenne ?
+
+La mediane est preferable lorsque la distribution est **asymetrique** ou contient des **valeurs aberrantes**. Par exemple, dans une serie de salaires, quelques tres hauts revenus tirent la moyenne vers le haut, mais n'affectent pas la mediane. En revanche, la moyenne utilise toute l'information numerique et se prete mieux aux calculs algebriques (transformations affines, decomposition de variance, etc.).
 :::
 
 Pour les series continues en classes, on determine les quantiles par lecture de la fonction de repartition (interpolation lineaire).
@@ -242,9 +425,78 @@ Donc :
 - $IQR = 15-5=10$.
 :::
 
+```{python}
+#| echo: false
+#| label: fig-boite-moustaches
+#| fig-cap: "Boîte à moustaches de la série de l'exemple 5. Les quartiles $Q_1$, la médiane $Me$ et $Q_3$ délimitent la boîte centrale ; l'écart interquartile $\\mathrm{IQR} = Q_3 - Q_1$ mesure la dispersion des 50 % centraux."
+#| fig-align: center
+
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor': 'none',
+    'axes.edgecolor': '#5a5a5a',
+    'axes.labelcolor': '#2c2c2c',
+    'xtick.color': '#5a5a5a',
+    'ytick.color': '#5a5a5a',
+    'text.color': '#2c2c2c',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+values = [5]*11 + [10]*7 + [15]*5 + [20]*3
+
+fig, (ax_box, ax_bar) = plt.subplots(
+    2, 1, figsize=(8, 5), gridspec_kw={'height_ratios': [1, 2]},
+    sharex=True)
+
+bp = ax_box.boxplot(values, vert=False, patch_artist=True, widths=0.5)
+bp['boxes'][0].set(facecolor='#1565C0', alpha=0.35, edgecolor='#1565C0',
+                   linewidth=1.5)
+bp['medians'][0].set(color='#C62828', linewidth=2)
+for w in bp['whiskers'] + bp['caps']:
+    w.set(color='#1565C0', linewidth=1.5)
+
+ax_box.annotate('$Q_1 = 5$', xy=(5, 0.7), fontsize=10, ha='center',
+                color='#1565C0')
+ax_box.annotate('$Me = 10$', xy=(10, 0.7), fontsize=10, ha='center',
+                color='#C62828')
+ax_box.annotate('$Q_3 = 15$', xy=(15, 0.7), fontsize=10, ha='center',
+                color='#1565C0')
+ax_box.annotate('', xy=(5, 1.35), xytext=(15, 1.35),
+                arrowprops=dict(arrowstyle='<->', color='#2E7D32', lw=1.8))
+ax_box.text(10, 1.5, '$\\mathrm{IQR} = 10$', ha='center', fontsize=10,
+            color='#2E7D32')
+
+ax_box.set_yticks([])
+ax_box.set_ylim(0.4, 1.7)
+
+x_vals = [5, 10, 15, 20]
+n_vals = [11, 7, 5, 3]
+bar_colors = ['#1565C0'] * 4
+ax_bar.bar(x_vals, n_vals, width=2, color=bar_colors, alpha=0.55,
+           edgecolor='white', linewidth=1.5)
+ax_bar.axvline(5, color='#1565C0', linestyle='--', linewidth=1.2, alpha=0.7,
+               label='$Q_1$')
+ax_bar.axvline(10, color='#C62828', linestyle='--', linewidth=1.5,
+               label='$Me$')
+ax_bar.axvline(15, color='#1565C0', linestyle='--', linewidth=1.2, alpha=0.7,
+               label='$Q_3$')
+ax_bar.set_xlabel('Valeur $x_i$', fontsize=11)
+ax_bar.set_ylabel('Effectif $n_i$', fontsize=11)
+ax_bar.legend(fontsize=10, loc='upper right')
+
+plt.tight_layout()
+plt.show()
+```
+
 ---
 
-## V - Moyenne, variance, ecart-type
+## Moyenne, variance, ecart-type
+
+Apres les indicateurs de rang (mediane, quartiles), on introduit les indicateurs bases sur les **valeurs numeriques** elles-memes. La moyenne, la variance et l'ecart-type forment le trio fondamental de la statistique descriptive : ils seront repris tout au long du cours, aussi bien en probabilites qu'en inference.
 
 Soit une serie quantitative discrete :
 
@@ -266,6 +518,12 @@ avec $\sum n_i=n$ et $\sum f_i=1$.
   $$\sigma(x)=\sqrt{\mathrm{Var}(x)}.$$
 :::
 
+La **moyenne** $\bar x$ est le « centre de gravite » de la serie : c'est la valeur autour de laquelle les observations se repartissent. Si l'on imaginait les effectifs comme des masses posees sur une regle, la moyenne serait le point d'equilibre.
+
+La **variance** mesure a quel point les valeurs s'ecartent de cette moyenne. On calcule l'ecart de chaque observation a la moyenne $(x_i - \bar x)$, on le met au carre (pour eviter que les ecarts positifs et negatifs ne s'annulent), puis on fait la moyenne ponderee de ces carres. Plus la variance est grande, plus les donnees sont dispersees.
+
+L'**ecart-type** $\sigma(x)$ est simplement la racine carree de la variance. Son avantage est d'etre exprime dans la **meme unite** que les donnees : si les observations sont en centimetres, l'ecart-type est aussi en centimetres (alors que la variance serait en $\text{cm}^2$).
+
 ::: {.callout-tip}
 ## Formule de Konig-Huygens
 
@@ -276,15 +534,69 @@ $$
 $$
 :::
 
-Pour une serie en classes, on applique les memes formules en remplacant $x_i$ par les centres $c_i$.
+La formule de Konig-Huygens est un raccourci de calcul tres utile : au lieu de calculer chaque ecart $(x_i - \bar x)$ puis de le mettre au carre, on calcule separement la moyenne des carres ($\overline{x^2}$) et le carre de la moyenne ($(\bar x)^2$), puis on fait la difference. C'est souvent plus rapide, surtout a la main, car on evite de manipuler des nombres decimaux issus de $\bar x$.
+
+Pour une serie en classes, on applique les memes formules en remplacant $x_i$ par les centres $c_i$. C'est une approximation : on suppose que tous les individus d'une classe sont concentres au centre de cette classe. Les resultats seront d'autant plus proches de la realite que les classes sont etroites.
 
 ::: {.callout-important}
 ## Interpretation
 
-- La moyenne est un indicateur de **position**.
-- La variance et l'ecart-type sont des indicateurs de **dispersion**.
-- La moyenne est sensible aux valeurs extremes, contrairement a la mediane.
+- La moyenne est un indicateur de **position** : elle situe le « centre » de la distribution.
+- La variance et l'ecart-type sont des indicateurs de **dispersion** : ils mesurent l'etalement des observations autour de la moyenne.
+- La moyenne est sensible aux valeurs extremes, contrairement a la mediane. En presence de valeurs aberrantes, ces deux indicateurs peuvent donner des images tres differentes de la serie.
 :::
+
+```{python}
+#| echo: false
+#| label: fig-dispersion-comparaison
+#| fig-cap: "Deux séries de même moyenne ($\\bar{x} = 3$) mais de dispersions très différentes. La série B est plus étalée : sa variance et son écart-type sont plus grands."
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 4
+
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor': 'none',
+    'axes.edgecolor': '#5a5a5a',
+    'axes.labelcolor': '#2c2c2c',
+    'xtick.color': '#5a5a5a',
+    'ytick.color': '#5a5a5a',
+    'text.color': '#2c2c2c',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+x = [1, 2, 3, 4, 5]
+nA = [2, 8, 20, 8, 2]
+nB = [8, 6, 4, 6, 8]
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
+
+ax1.bar(x, nA, width=0.5, color='#1565C0', alpha=0.7, edgecolor='white',
+        linewidth=1.5)
+ax1.axvline(3, color='#C62828', linestyle='--', linewidth=2,
+            label='$\\bar{x} = 3$')
+ax1.set_title('Série A — faible dispersion', fontsize=12)
+ax1.set_xlabel('$x_i$', fontsize=11)
+ax1.set_ylabel('Effectif', fontsize=11)
+ax1.set_xticks(x)
+ax1.legend(fontsize=10)
+
+ax2.bar(x, nB, width=0.5, color='#E65100', alpha=0.7, edgecolor='white',
+        linewidth=1.5)
+ax2.axvline(3, color='#C62828', linestyle='--', linewidth=2,
+            label='$\\bar{x} = 3$')
+ax2.set_title('Série B — forte dispersion', fontsize=12)
+ax2.set_xlabel('$x_i$', fontsize=11)
+ax2.set_xticks(x)
+ax2.legend(fontsize=10)
+
+plt.tight_layout()
+plt.show()
+```
 
 ::: {.callout-caution}
 ## Exemple 6 - Calcul numerique complet
@@ -395,7 +707,9 @@ suivant (surface en hectares) :
 
 ---
 
-## VI - Transformations affines
+## Transformations affines
+
+Il arrive souvent que l'on veuille changer d'unite ou simplifier les calculs en recentrant et redimensionnant les donnees. Par exemple, convertir des temperatures de Celsius en Fahrenheit ($F = 1{,}8 \times C + 32$), ou encore ramener des salaires a des valeurs plus maniables en posant $Y = (X - 35\,000)/1\,000$. La question est alors : comment les indicateurs (moyenne, variance, ecart-type) de la nouvelle serie se deduisent-ils de ceux de la serie d'origine ?
 
 ::: {.callout-important}
 ## Propriete (admise)
@@ -410,7 +724,64 @@ Pour $y=ax+b$ avec $a\ne 0$:
   $$\sigma(y)=|a|\sigma(x).$$
 :::
 
-La translation (ajout de $b$) deplace le centre mais ne change pas la dispersion ; le facteur $a$ dilate/contracte l'echelle.
+La translation (ajout de $b$) deplace le centre mais ne change pas la dispersion ; le facteur $a$ dilate/contracte l'echelle. Remarquons que la variance depend de $a^2$ (et non de $a$) : elle est donc toujours positive, que la transformation « inverse » ou non l'ordre des valeurs. De meme, ajouter une constante $b$ n'affecte ni la variance ni l'ecart-type, ce qui est logique puisque decaler toutes les valeurs d'un meme montant ne change pas leur dispersion relative.
+
+```{python}
+#| echo: false
+#| label: fig-transformation-affine
+#| fig-cap: "Effet d'une transformation affine $Y = 2X + 3$ sur une série discrète. La translation ($+3$) décale la distribution ; le facteur ($\\times 2$) étire l'échelle et augmente la dispersion."
+#| fig-align: center
+#| fig-width: 10
+#| fig-height: 4
+
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor': 'none',
+    'axes.edgecolor': '#5a5a5a',
+    'axes.labelcolor': '#2c2c2c',
+    'xtick.color': '#5a5a5a',
+    'ytick.color': '#5a5a5a',
+    'text.color': '#2c2c2c',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+x = np.array([1, 2, 3, 4, 5])
+n = np.array([4, 8, 16, 8, 4])
+a, b = 2, 3
+y = a * x + b
+
+x_mean = np.average(x, weights=n)
+y_mean = a * x_mean + b
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+
+ax1.vlines(x, 0, n, colors='#1565C0', linewidth=3)
+ax1.plot(x, n, 'o', color='#1565C0', markersize=7, zorder=5)
+ax1.axvline(x_mean, color='#C62828', linestyle='--', linewidth=2,
+            label=f'$\\bar{{x}} = {x_mean:.0f}$')
+ax1.set_title('Série originale $X$', fontsize=12)
+ax1.set_xlabel('$x_i$', fontsize=11)
+ax1.set_ylabel('Effectif', fontsize=11)
+ax1.set_xlim(-1, 16)
+ax1.legend(fontsize=10)
+
+ax2.vlines(y, 0, n, colors='#2E7D32', linewidth=3)
+ax2.plot(y, n, 'o', color='#2E7D32', markersize=7, zorder=5)
+ax2.axvline(y_mean, color='#C62828', linestyle='--', linewidth=2,
+            label=f'$\\bar{{y}} = {y_mean:.0f}$')
+ax2.set_title('Série transformée $Y = 2X + 3$', fontsize=12)
+ax2.set_xlabel('$y_i$', fontsize=11)
+ax2.set_ylabel('Effectif', fontsize=11)
+ax2.set_xlim(-1, 16)
+ax2.legend(fontsize=10)
+
+plt.tight_layout()
+plt.show()
+```
 
 ::: {.callout-caution}
 ## Exemple 7 - Changement d'unite
@@ -461,19 +832,21 @@ Pour une transformation affine $Y=aX+b$ avec $a=1/1000$ et $b=-35$ :
 
 ---
 
-## VII - Methode de synthese (a retenir)
+## Methode de synthese (a retenir)
+
+Face a un jeu de donnees, il est facile de se perdre dans les calculs. La procedure ci-dessous fournit une demarche systematique pour mener une etude univariee complete, de la lecture de l'enonce jusqu'a l'interpretation des resultats.
 
 ::: {.callout-note}
 ## Procedure recommandee pour une etude univariee
 
-1. Identifier la population, la variable et son type.
-2. Construire le tableau statistique (effectifs, frequences, cumuls).
-3. Choisir une representation adaptee :
+1. **Identifier** la population, la variable et son type.
+2. **Construire** le tableau statistique (effectifs, frequences, cumuls).
+3. **Choisir** une representation adaptee :
    - batons pour discret,
    - histogramme en densites pour classes.
-4. Calculer les indicateurs de position : mode, mediane, quartiles, moyenne.
-5. Calculer les indicateurs de dispersion : IQR, variance, ecart-type.
-6. Interpreter les resultats dans le contexte (asymetrie, valeurs extremes, stabilite).
+4. **Calculer** les indicateurs de position : mode, mediane, quartiles, moyenne.
+5. **Calculer** les indicateurs de dispersion : IQR, variance, ecart-type.
+6. **Interpreter** les resultats dans le contexte (asymetrie, valeurs extremes, stabilite).
 :::
 
-Cette demarche permet de passer des donnees brutes a une lecture quantitative robuste, utile avant toute phase d'inference statistique.
+Cette demarche permet de passer des donnees brutes a une lecture quantitative robuste, utile avant toute phase d'inference statistique. En particulier, l'etape 6 est souvent negligee : les chiffres n'ont de sens que replaces dans leur contexte. Dire « l'ecart-type vaut 3{,}2 » ne signifie rien sans preciser l'unite et sans comparer cette dispersion a ce qui est attendu dans le domaine etudie.
