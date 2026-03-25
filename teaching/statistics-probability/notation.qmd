@@ -1,0 +1,329 @@
+---
+title: "Notations mathématiques en statistiques"
+abstract: |
+  Ce chapitre est un **guide de lecture** des notations mathématiques utilisées
+  tout au long du cours. Il n'introduit pas de résultats nouveaux : il explique
+  **pourquoi** il existe plusieurs symboles pour des concepts proches (moyenne,
+  variance, etc.) et **comment** les distinguer. Il est conçu pour être consulté
+  à tout moment comme référence.
+date-modified: 2026-03-25
+---
+
+> Ce chapitre peut se lire avant le premier cours puis servir de référence tout au long du semestre.
+
+## Les deux mondes des statistiques
+
+En statistiques, on travaille constamment à l'interface de deux mondes :
+
+| | Monde **théorique** (modèle) | Monde **observé** (données) |
+|---|---|---|
+| Ce qu'on manipule | Variables aléatoires | Valeurs numériques |
+| Ce qu'on connaît | La loi de probabilité (supposée) | Les résultats d'une expérience |
+| Objectif | Prédire le comportement moyen | Résumer et décrire les données |
+
+Chaque monde possède **ses propres notations**. La plupart des confusions viennent du fait qu'un même concept — par exemple la moyenne — a un nom et un symbole différent selon le monde dans lequel on se place.
+
+## Population et échantillon : $N$ et $n$
+
+::: {.callout-note}
+## Convention — Taille de la population et de l'échantillon
+
+- $N$ (majuscule) désigne la taille de la **population** entière.
+- $n$ (minuscule) désigne la taille de l'**échantillon** prélevé.
+
+On a toujours $n \leq N$, et en pratique $n \ll N$.
+:::
+
+En statistique descriptive (chapitres 1–2), on observe la population entière : $n$ désigne alors le nombre total d'individus. En statistique inférentielle (chapitres 7–8), on n'observe qu'un échantillon de taille $n$ extrait d'une population de taille $N$.
+
+::: {.callout-caution}
+## Exemple
+
+Un sondage interroge $n = 1\,000$ personnes dans un pays de $N = 67\,000\,000$ habitants. L'échantillon représente moins de $0{,}002\,\%$ de la population.
+:::
+
+## Variables : $X$ majuscule et $x$ minuscule
+
+::: {.callout-note}
+## Convention — Variable aléatoire et valeur observée
+
+- **Majuscule** $X$ : une **variable aléatoire**, dont la valeur n'est pas encore connue.
+- **Minuscule** $x$ : une **valeur observée** (réalisation), fixée et connue.
+:::
+
+Cette distinction est fondamentale. Avant de lancer un dé, le résultat est une variable aléatoire $X$ pouvant prendre les valeurs $1, 2, \ldots, 6$. Après le lancer, on observe $x = 4$ : c'est un nombre fixe.
+
+Le même principe s'applique aux échantillons :
+
+| Avant l'observation | Après l'observation |
+|---|---|
+| $(X_1, X_2, \ldots, X_n)$ | $(x_1, x_2, \ldots, x_n)$ |
+| Variables aléatoires (inconnues) | Valeurs numériques (connues) |
+
+::: {.callout-tip}
+## Règle mnémotechnique
+
+**Majuscule = aléatoire** (on ne sait pas encore). **Minuscule = observé** (on sait).
+:::
+
+## La notation sigma : $\sum$
+
+Le symbole $\sum$ (sigma majuscule) est un raccourci pour une somme. Il revient constamment dans le cours.
+
+$$
+\sum_{i=1}^{n} x_i = x_1 + x_2 + \cdots + x_n.
+$$
+
+La lettre $i$ est l'**indice** de sommation : elle prend successivement les valeurs $1, 2, \ldots, n$. On rencontre aussi des sommes pondérées :
+
+$$
+\sum_{i=1}^{r} n_i\,x_i = n_1\,x_1 + n_2\,x_2 + \cdots + n_r\,x_r.
+$$
+
+::: {.callout-caution}
+## Exemple
+
+Pour la série d'effectifs $n_1 = 8$, $n_2 = 15$, $n_3 = 14$, la somme des effectifs est
+$$
+\sum_{i=1}^{3} n_i = 8 + 15 + 14 = 37.
+$$
+:::
+
+## Effectifs et fréquences : $n_i$, $f_i$, $N_i^+$, $F_i^+$
+
+En statistique descriptive, les données sont résumées dans un tableau. Quatre familles de symboles apparaissent :
+
+| Symbole | Nom | Formule |
+|:---:|---|---|
+| $n_i$ | Effectif de la modalité $i$ | nombre d'individus dans la classe $i$ |
+| $f_i$ | Fréquence relative | $f_i = n_i \,/\, n$ |
+| $N_i^+$ | Effectif cumulé croissant | $N_i^+ = \sum_{j=1}^{i} n_j$ |
+| $F_i^+$ | Fréquence cumulée croissante | $F_i^+ = N_i^+ \,/\, n$ |
+
+::: {.callout-tip}
+## Pourquoi le $+$ en exposant ?
+
+Le $+$ dans $N_i^+$ et $F_i^+$ indique un cumul **croissant** (de gauche à droite). On pourrait aussi définir des cumuls décroissants $N_i^-$ et $F_i^-$, bien que ceux-ci soient moins utilisés.
+:::
+
+## Les trois visages de la moyenne
+
+C'est la source de confusion la plus fréquente : il existe **trois notations** pour la moyenne, selon le contexte.
+
+### La moyenne descriptive : $\bar{x}$
+
+En statistique descriptive, on observe des données et on calcule leur moyenne :
+
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^{r} n_i\,x_i.
+$$
+
+C'est un **nombre**, calculé à partir des données. On le note avec une **barre** sur un **$x$ minuscule**.
+
+### L'espérance théorique : $E(X)$ ou $m$
+
+En probabilités, la moyenne d'une variable aléatoire s'appelle **espérance** :
+
+$$
+E(X) = \int_{-\infty}^{+\infty} x\,f_X(x)\,dx.
+$$
+
+C'est un **paramètre du modèle**, souvent noté $m$ (ou $\mu$ dans d'autres ouvrages). On ne le calcule pas à partir de données : on le déduit de la loi de probabilité.
+
+::: {.callout-tip}
+## Remarque — $E$ ou $\mathbb{E}$ ?
+
+Les deux notations $E(X)$ et $\mathbb{E}(X)$ désignent la même chose. Ce cours utilise principalement $E(X)$.
+:::
+
+### La moyenne empirique : $\overline{X}_n$
+
+En statistique inférentielle, on considère la moyenne d'un échantillon **avant** d'observer les données :
+
+$$
+\overline{X}_n = \frac{1}{n}\sum_{i=1}^{n} X_i.
+$$
+
+C'est une **variable aléatoire** (majuscule $X$, indice $n$) : sa valeur change d'un échantillon à l'autre. Une fois les données recueillies, on calcule la réalisation $\bar{x}$.
+
+### Récapitulatif des moyennes
+
+| Notation | Nom | Nature | Chapitre |
+|:---:|---|---|---|
+| $\bar{x}$ | Moyenne descriptive | Nombre fixe (données) | Stat. descriptive |
+| $E(X)$ ou $m$ | Espérance | Paramètre (modèle) | Probabilités |
+| $\overline{X}_n$ | Moyenne empirique | Variable aléatoire | Stat. inférentielle |
+
+::: {.callout-important}
+## Lien fondamental
+
+La moyenne empirique $\overline{X}_n$ est un **estimateur** de l'espérance $m$ : en moyenne, elle vise juste ($E(\overline{X}_n) = m$), et sa précision augmente avec $n$.
+:::
+
+## Les quatre visages de la variance
+
+La situation est encore plus riche pour la variance. Quatre notations coexistent.
+
+### La variance descriptive : $\mathrm{Var}(x)$
+
+Sur des données observées, avec la formule de König-Huygens :
+
+$$
+\mathrm{Var}(x) = \overline{x^2} - \bar{x}^2
+\qquad\text{où}\qquad
+\overline{x^2} = \frac{1}{n}\sum_{i=1}^{r} n_i\,x_i^2.
+$$
+
+### La variance théorique : $\mathrm{Var}(X)$ ou $\sigma^2$
+
+Paramètre d'une loi de probabilité :
+
+$$
+\mathrm{Var}(X) = E(X^2) - [E(X)]^2 = \sigma^2.
+$$
+
+### La variance empirique non corrigée : $S_n'^2$
+
+Calculée sur un échantillon aléatoire, en divisant par $n$ :
+
+$$
+S_n'^2 = \frac{1}{n}\sum_{i=1}^{n}(X_i - \overline{X}_n)^2.
+$$
+
+Cette variance est **biaisée** : $E(S_n'^2) = \dfrac{n-1}{n}\,\sigma^2 \neq \sigma^2$.
+
+### La variance empirique corrigée : $S_n^2$
+
+En divisant par $n-1$ au lieu de $n$ (**correction de Bessel**), on obtient un estimateur sans biais :
+
+$$
+S_n^2 = \frac{1}{n-1}\sum_{i=1}^{n}(X_i - \overline{X}_n)^2 = \frac{n}{n-1}\,S_n'^2.
+$$
+
+On a alors $E(S_n^2) = \sigma^2$.
+
+### Récapitulatif des variances
+
+| Notation | Diviseur | Biais | Chapitre |
+|:---:|:---:|---|---|
+| $\mathrm{Var}(x)$ | $n$ | — (descriptif) | Stat. descriptive |
+| $\sigma^2 = \mathrm{Var}(X)$ | — | paramètre exact | Probabilités |
+| $S_n'^2$ | $n$ | biaisée | Échantillonnage |
+| $S_n^2$ | $n-1$ | sans biais | Échantillonnage |
+
+::: {.callout-warning}
+## Pourquoi $n-1$ ?
+
+Intuitivement, pour estimer la variance il faut d'abord estimer la moyenne. On « utilise » ainsi un degré de liberté, ce qui laisse $n-1$ informations indépendantes. Le facteur $\frac{1}{n-1}$ compense exactement le biais introduit par l'utilisation de $\overline{X}_n$ à la place de $m$.
+:::
+
+## Lettres grecques et paramètres
+
+En statistiques, les **paramètres du modèle** — c'est-à-dire les quantités inconnues que l'on cherche à estimer — sont traditionnellement notés avec des **lettres grecques**.
+
+| Lettre | Nom | Usage courant |
+|:---:|---|---|
+| $\mu$ ou $m$ | mu | Moyenne d'une population |
+| $\sigma$ | sigma | Écart-type d'une population |
+| $\sigma^2$ | sigma carré | Variance d'une population |
+| $\theta$ | thêta | Paramètre générique |
+| $\lambda$ | lambda | Paramètre d'une loi exponentielle $\mathcal{E}(\lambda)$ |
+| $p$ | — | Proportion (lettre latine, exception) |
+
+::: {.callout-tip}
+## Remarque — $m$ ou $\mu$ ?
+
+Ce cours note la moyenne théorique $m$ (lettre latine) par souci de lisibilité, mais de nombreux ouvrages utilisent $\mu$. Les deux conventions sont équivalentes.
+:::
+
+## Estimateurs : le chapeau $\hat{\phantom{x}}$
+
+Pour **estimer** un paramètre $\theta$ à partir de données, on construit un **estimateur** noté $\hat{\theta}_n$ (« thêta chapeau »). Le chapeau signale qu'il s'agit d'une approximation du vrai paramètre, construite à partir d'un échantillon de taille $n$.
+
+| Paramètre | Estimateur | Définition |
+|:---:|:---:|---|
+| $m$ | $\overline{X}_n$ | Moyenne empirique |
+| $\sigma^2$ | $S_n^2$ | Variance corrigée |
+| $p$ | $\hat{p}_n$ | Proportion empirique $\overline{X}_n$ |
+| $\lambda$ | $\hat{\lambda}_n$ | Par ex. $1/\overline{X}_n$ (méthode des moments) |
+
+::: {.callout-important}
+## Lecture d'un estimateur
+
+Quand on écrit $\hat{\theta}_n$, on veut dire : « la meilleure approximation de $\theta$ que l'on peut construire à partir de $n$ observations ». C'est une **variable aléatoire** — sa valeur dépend de l'échantillon tiré.
+:::
+
+## Notation des lois de probabilité
+
+Les lois de probabilité sont notées avec des **lettres calligraphiques** $\mathcal{L}$, suivies de leurs paramètres entre parenthèses.
+
+| Notation | Nom | Paramètres |
+|:---:|---|---|
+| $\mathcal{N}(m, \sigma^2)$ | Loi normale | moyenne $m$, variance $\sigma^2$ |
+| $\mathcal{N}(0, 1)$ | Loi normale centrée réduite | — |
+| $\mathcal{E}(\lambda)$ | Loi exponentielle | taux $\lambda > 0$ |
+| $\mathcal{U}([a,b])$ | Loi uniforme continue | bornes $a < b$ |
+| $\mathcal{B}(n, p)$ | Loi binomiale | taille $n$, probabilité $p$ |
+| $\chi^2_n$ | Loi du khi-deux | $n$ degrés de liberté |
+
+::: {.callout-warning}
+## Attention — $\mathcal{N}(m, \sigma^2)$ : le second paramètre est la **variance**
+
+On écrit $\mathcal{N}(120, 25)$ pour une loi normale de moyenne $120$ et de variance $25$ (donc d'écart-type $\sigma = 5$). C'est une source d'erreur fréquente : le second paramètre n'est **pas** l'écart-type.
+:::
+
+Le symbole $\sim$ se lit « suit la loi » :
+
+$$
+X \sim \mathcal{N}(0, 1)
+\quad\text{signifie}\quad
+\text{« la variable } X \text{ suit une loi normale centrée réduite ».}
+$$
+
+La fonction de répartition de $\mathcal{N}(0,1)$ est notée $\Phi$ :
+$$
+\Phi(x) = P(Z \leq x), \qquad Z \sim \mathcal{N}(0,1).
+$$
+
+## Tableau récapitulatif
+
+Le tableau ci-dessous rassemble les notations essentielles du cours, classées par thème.
+
+### Statistique descriptive
+
+| Symbole | Signification |
+|:---:|---|
+| $n$ | Nombre d'individus |
+| $x_i$ | Valeur de la modalité $i$ |
+| $n_i$, $f_i$ | Effectif, fréquence relative |
+| $N_i^+$, $F_i^+$ | Effectif cumulé, fréquence cumulée |
+| $\bar{x}$ | Moyenne |
+| $\overline{x^2}$ | Moyenne des carrés |
+| $\mathrm{Var}(x)$, $\sigma(x)$ | Variance, écart-type |
+| $Me$, $Q_1$, $Q_3$ | Médiane, quartiles |
+
+### Probabilités
+
+| Symbole | Signification |
+|:---:|---|
+| $X$ | Variable aléatoire |
+| $f_X$ | Densité de probabilité |
+| $F_X$ | Fonction de répartition |
+| $P(A)$ | Probabilité d'un événement |
+| $E(X)$, $m$ | Espérance |
+| $\mathrm{Var}(X)$, $\sigma^2$ | Variance |
+| $\sigma(X)$, $\sigma$ | Écart-type |
+| $X \sim \mathcal{L}$ | $X$ suit la loi $\mathcal{L}$ |
+| $\Phi$ | Fonction de répartition de $\mathcal{N}(0,1)$ |
+
+### Statistique inférentielle
+
+| Symbole | Signification |
+|:---:|---|
+| $N$ | Taille de la population |
+| $n$ | Taille de l'échantillon |
+| $(X_1, \ldots, X_n)$ | Échantillon aléatoire (v.a.) |
+| $(x_1, \ldots, x_n)$ | Échantillon observé (nombres) |
+| $\overline{X}_n$ | Moyenne empirique (v.a.) |
+| $S_n^2$ | Variance corrigée (v.a.) |
+| $\hat{\theta}_n$ | Estimateur de $\theta$ |
