@@ -14,9 +14,31 @@ abstract: |
 date-modified: 2026-03-22
 ---
 
+```{mermaid}
+flowchart LR
+  N["Notations"] --> U["Univariée"] --> P["Probabilités"] --> D["Densité"] --> NL["Normale"] --> B["Bivariée"] --> J["Couples"] --> C["Convergence"] --> S["Échantillonnage"] --> E["Estimation"]
+
+  classDef default fill:#1C2E22,color:#D2CCC0,stroke:#2F4636,stroke-width:1px
+  classDef active fill:#5BDB6D,color:#0D1610,stroke:#5BDB6D,stroke-width:2px
+
+  class B active
+
+  click N "notation.html"
+  click U "univariate.html"
+  click P "probability.html"
+  click D "density-function.html"
+  click NL "normal-distribution.html"
+  click B "bivariate.html"
+  click J "joint-continuous-random-variables.html"
+  click C "convergence-random-variables.html"
+  click S "sampling-distribution.html"
+  click E "point-estimation.html"
+```
 > Dans tout ce chapitre, on etudie deux variables observees sur une meme population finie de taille $n$.
 
 ## Distribution conjointe
+
+Lorsqu'on observe **deux variables simultanément** sur chaque individu d'une population, on ne peut pas les étudier séparément sans perdre l'information sur leur relation. La distribution conjointe capture précisément cette information : elle recense le nombre (ou la fréquence) d'individus pour chaque combinaison de modalités des deux variables. Son outil de représentation naturel est le **tableau de contingence**.
 
 Soit $P$ une population et $(x,y)$ un couple de variables, c'est-a-dire une application
 $$
@@ -83,6 +105,8 @@ $$
 
 ## Distributions marginales
 
+Une fois le tableau de contingence construit, on peut retrouver la distribution de chaque variable **individuellement** en faisant la somme sur l'autre variable. Ces distributions dites **marginales** correspondent aux totaux de lignes et de colonnes du tableau. Elles permettent de calculer les indicateurs habituels — moyenne, médiane, écart-type — pour chaque variable, indépendamment de l'autre.
+
 A partir de la distribution conjointe, on obtient les distributions de chaque variable prise separement.
 
 ::: {.callout-note}
@@ -123,6 +147,8 @@ ou $c_j$ est le centre de la classe $j$.
 
 ## Distributions conditionnelles
 
+Les distributions marginales décrivent chaque variable dans l'ensemble de la population. Mais que se passe-t-il **au sein d'un sous-groupe** ? La distribution conditionnelle répond à cette question : elle décrit la répartition d'une variable lorsqu'on **fixe la modalité de l'autre**. Comparer les distributions conditionnelles de $y$ pour différentes valeurs de $x$ est le premier outil pour détecter visuellement une association entre les deux variables.
+
 Une ligne (resp. colonne) du tableau de contingence decrit la repartition conditionnelle de $y$ sachant $x=x_i$ (resp. de $x$ sachant $y=y_j$).
 
 ::: {.callout-note}
@@ -157,6 +183,8 @@ La classe majoritaire est $[10000,20000[$.
 ---
 
 ## Independance de deux variables
+
+Deux variables sont **indépendantes** si connaître la modalité de l'une n'apporte aucune information sur la distribution de l'autre — autrement dit, si toutes les distributions conditionnelles sont identiques à la distribution marginale. En pratique, cette condition se traduit par une relation de **factorisation** des fréquences conjointes, ce qui permet de la vérifier cellule par cellule dans le tableau de contingence.
 
 ::: {.callout-note}
 ## Definition
@@ -203,6 +231,8 @@ Donc les variables ne sont pas independantes.
 ---
 
 ## Test du khi-deux d'independance
+
+L'inspection visuelle des distributions conditionnelles ne suffit pas : les écarts observés peuvent être dus au **hasard de l'échantillonnage**. Le test du $\chi^2$ d'indépendance fournit une procédure rigoureuse pour décider si les écarts entre effectifs observés et effectifs théoriques (ceux qu'on attendrait sous l'indépendance) sont suffisamment grands pour conclure à une dépendance réelle. Plus $\chi^2_{obs}$ est grand, plus les données s'éloignent de l'hypothèse d'indépendance.
 
 On teste :
 
@@ -352,6 +382,8 @@ d'age :
 ---
 
 ## Lecture et interpretation des resultats
+
+Obtenir une valeur de $\chi^2_{obs}$ et une décision (rejet ou non de $H_0$) n'est que le début de l'analyse. Une **bonne interprétation statistique** requiert de contextualiser la décision : un test significatif indique une dépendance, mais pas son intensité ni sa nature. Il faut ensuite examiner quelles cellules contribuent le plus à l'écart global et formuler une conclusion dans le langage du problème étudié.
 
 ::: {.callout-important}
 ## Bonnes pratiques d'analyse
