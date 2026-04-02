@@ -1,72 +1,75 @@
-// Custom Bootstrap dark theme
-// skekCoon 0.0.1
-// Based on Slate bootswatch theme
+// Retro Blackboard Theme
+// A dark theme inspired by classroom chalkboards and retro gaming terminals
 
 
 /*-- scss:defaults --*/
 
-// Slate color system
+// ─── Blackboard surface palette ───────────────────────────────────────
 
-$white:    #fff    !default;
-$gray-100: #f8f9fa !default;
-$gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
-$gray-400: #ced4da !default;
-$gray-500: #999    !default;
-$gray-600: #7a8288 !default;
-$gray-700: #52575c !default;
-$gray-800: #3a3f44 !default;
-$gray-900: #272b30 !default;
-$black:    #000    !default;
+$board-darkest:  #0D1610 !default;  // deepest shadow (navbar, footer)
+$board-dark:     #152119 !default;  // secondary panels
+$board:          #1C2E22 !default;  // main blackboard surface
+$board-light:    #253A2C !default;  // raised elements, code blocks
+$board-lighter:  #2F4636 !default;  // borders, subtle separators
 
-@function body-mix($weight) {
-  @return mix($gray-900, $gray-600, $weight);
-}
+// ─── Chalk text palette ──────────────────────────────────────────────
 
-$body-bg:    body-mix(100%) !default;
-$body-color: body-mix(0%)   !default;
+$chalk:          #D2CCC0 !default;  // main body text
+$chalk-bright:   #EAE6DC !default;  // headings, emphasis
+$chalk-dim:      #7E8F82 !default;  // muted/secondary text
 
-// Accent colors (matching light theme palette for consistency)
-$hunter-green:  #395941 !default;
-$black-forest:  #054009 !default;
-$pumpkin-spice: #F27329 !default;
+// ─── Retro accent colors ────────────────────────────────────────────
 
-$primary:   body-mix(66.7%) !default;
-$secondary: body-mix(0%)    !default;
-$success:   $hunter-green   !default;
-$warning:   $pumpkin-spice  !default;
+$phosphor-green: #5BDB6D !default;  // links, primary — terminal phosphor
+$pixel-amber:    #F5A623 !default;  // warnings — amber CRT glow
+$pixel-cyan:     #56CCF2 !default;  // info — retro cyan scanline
+$pixel-red:      #EB5757 !default;  // danger — classic arcade red
 
-$link-color:       $gray-200      !default;
-$link-hover-color: $hunter-green  !default;
+// ─── Bootstrap variable mappings ─────────────────────────────────────
 
-// Inline code
+$white:    #fff !default;
+$black:    #000 !default;
 
-$code-bg:    $gray-800        !default;
-$code-color: $gray-300        !default;
+$body-bg:    $board  !default;
+$body-color: $chalk  !default;
+
+$primary:   $phosphor-green !default;
+$secondary: $chalk-dim      !default;
+$success:   #4CAF50         !default;
+$info:      $pixel-cyan     !default;
+$warning:   $pixel-amber    !default;
+$danger:    $pixel-red      !default;
+
+$link-color:       $phosphor-green                  !default;
+$link-hover-color: lighten($phosphor-green, 15%)    !default;
+
+// Inline code — dark terminal look
+
+$code-bg:        $board-light    !default;
+$code-color:     #A8D8A0         !default;  // soft terminal green
+$code-block-bg:  $board-darkest  !default;  // code block background
 
 
 /*-- scss:rules --*/
-
-// Typography
 
 body {
   -webkit-font-smoothing: antialiased;
 }
 
-// Navbar
+// ─── Navbar — darkest strip, like the frame of a chalkboard ─────────
 
 .navbar {
-  background-color: $gray-900 !important;
-  border-bottom: 1px solid $gray-700;
+  background-color: $board-dark !important;
+  border-bottom: 2px solid $board-lighter;
 }
 
 .nav-link {
-  color: $gray-300 !important;
+  color: $chalk-bright !important;
   font-weight: 800;
 
   &:hover {
     background-color: transparent !important;
-    border-bottom: 4px dotted $hunter-green !important;
+    border-bottom: 4px dotted $phosphor-green !important;
   }
 }
 
@@ -74,19 +77,34 @@ body {
 
 .cr-section {
   background-color: $body-bg !important;
+
+  // Override closeread's hardcoded CSS variables
+  --cr-section-background-color:       #{$board};
+  --cr-narrative-text-color-sidebar:   #{$chalk};
+  --cr-narrative-text-color-overlay:   #{$chalk-bright};
+
+  // Override hardcoded black on line-block spans
+  .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb] {
+    color: rgba($chalk, 0.35) !important;
+  }
+
+  .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb].cr-hl,
+  .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb] span.cr-hl {
+    color: $chalk-bright !important;
+  }
 }
 
-// Chat widget
+// ─── Chat widget ─────────────────────────────────────────────────────
 
-$chat-accent: #4f46e5 !default;
-$chat-accent-hover: #4338ca !default;
+$chat-accent:       $phosphor-green              !default;
+$chat-accent-hover: darken($phosphor-green, 12%) !default;
 
 #chat-box {
   display: flex;
   flex-direction: column;
   border-radius: 0.75rem;
   overflow: hidden;
-  border: 1px solid var(--bs-border-color, #52575c);
+  border: 1px solid $board-lighter;
   margin-top: 2rem;
   font-family: inherit;
 }
@@ -99,7 +117,7 @@ $chat-accent-hover: #4338ca !default;
   flex-direction: column;
   gap: 0.5rem;
   scroll-behavior: smooth;
-  background: var(--bs-body-bg, #272b30);
+  background: $board-dark;
 }
 
 .chat-msg {
@@ -113,14 +131,14 @@ $chat-accent-hover: #4338ca !default;
   &.user {
     align-self: flex-end;
     background: $chat-accent;
-    color: #fff;
+    color: $board-darkest;
     border-bottom-right-radius: 0.15rem;
   }
 
   &.bot {
     align-self: flex-start;
-    background: var(--bs-secondary-bg, #3a3f44);
-    color: var(--bs-body-color, #999);
+    background: $board-light;
+    color: $chalk;
     border-bottom-left-radius: 0.15rem;
 
     &.typing { opacity: 0.6; font-style: italic; }
@@ -131,18 +149,18 @@ $chat-accent-hover: #4338ca !default;
   display: flex;
   gap: 0.4rem;
   padding: 0.6rem 0.75rem;
-  border-top: 1px solid var(--bs-border-color, #52575c);
-  background: var(--bs-body-bg, #272b30);
+  border-top: 1px solid $board-lighter;
+  background: $board-dark;
 }
 
 #chat-input {
   flex: 1;
-  border: 1px solid var(--bs-border-color, #52575c);
+  border: 1px solid $board-lighter;
   border-radius: 0.4rem;
   padding: 0.4rem 0.6rem;
   font-size: 0.875rem;
-  background: var(--bs-body-bg, #272b30);
-  color: var(--bs-body-color, #999);
+  background: $board;
+  color: $chalk;
   outline: none;
 
   &:focus { border-color: $chat-accent; }
@@ -150,7 +168,7 @@ $chat-accent-hover: #4338ca !default;
 
 #chat-send {
   background: $chat-accent;
-  color: #fff;
+  color: $board-darkest;
   border: none;
   border-radius: 0.4rem;
   padding: 0.4rem 0.75rem;
@@ -162,18 +180,171 @@ $chat-accent-hover: #4338ca !default;
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
-// Footer
+// ─── Code cells — retro terminal window ─────────────────────────────
+
+$terminal-font: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace !default;
+
+// Source code blocks — full terminal window
+div.sourceCode {
+  background-color: $board-darkest !important;
+  border: 1px solid $board-lighter;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin: 1.25rem 0;
+
+  // macOS-style traffic-light title bar
+  &::before {
+    content: "🔴 🟡 🟢";
+    display: block;
+    background-color: $board-dark;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.15rem;
+    border-bottom: 1px solid $board-lighter;
+  }
+
+  pre.sourceCode {
+    background: $board-darkest !important;
+    border: none;
+    margin: 0;
+    padding: 0.9rem 1.1rem;
+    font-family: $terminal-font;
+    font-size: 0.875rem;
+    line-height: 1.65;
+
+    code {
+      font-family: $terminal-font;
+      background: transparent !important;
+      color: $code-color;
+    }
+  }
+}
+
+// Neutralize Quarto's near-white span.re background
+code span.re {
+  background-color: transparent !important;
+}
+
+// Cell output — terminal response below source
+.cell-output pre,
+.cell-output-stdout pre {
+  background-color: $board-dark;
+  border: 1px solid $board-lighter;
+  border-top: 2px dashed $board-lighter;  // dashed separator: input → output
+  border-radius: 0 0 0.5rem 0.5rem;
+  padding: 0.75rem 1.1rem;
+  margin-top: -0.25rem;
+  margin-bottom: 1.25rem;
+  font-family: $terminal-font;
+  font-size: 0.85rem;
+  color: $chalk-dim;
+
+  code { color: $chalk-dim; background: transparent; }
+}
+
+// stderr — red-tinted
+.cell-output-stderr pre {
+  color: lighten($pixel-red, 10%);
+  border-color: rgba($pixel-red, 0.35);
+  background-color: mix($pixel-red, $board-darkest, 6%);
+}
+
+// Inline code
+code:not([class]) {
+  background-color: $board-light;
+  color: $code-color;
+  padding: 0.1em 0.4em;
+  border-radius: 0.25rem;
+  font-family: $terminal-font;
+  font-size: 0.875em;
+}
+
+// ─── Callouts — chalk-on-board with retro accent borders ────────────
+
+// Shared base: dark surface, chalk text, colored left edge
+.callout {
+  background-color: $board-dark;
+  border-left-width: 4px;
+  border-right: none;
+  border-top: none;
+  border-bottom: none;
+  color: $chalk;
+
+  .callout-header {
+    background-color: transparent;
+    font-weight: 700;
+    opacity: 1;
+  }
+
+  .callout-body {
+    color: $chalk;
+  }
+
+  // Hide default Bootstrap icon, replace with emoji
+  .callout-icon::before {
+    font-style: normal;
+    margin-right: 0.4rem;
+  }
+
+  i.callout-icon {
+    background-image: none !important;
+    height: auto;
+    width: auto;
+  }
+}
+
+// note — 📝 cyan scanline
+.callout-note {
+  border-left-color: $pixel-cyan;
+
+  .callout-header { color: $pixel-cyan; }
+  i.callout-icon::before { content: "📝"; }
+}
+
+// tip — 💡 phosphor green
+.callout-tip {
+  border-left-color: $phosphor-green;
+
+  .callout-header { color: $phosphor-green; }
+  i.callout-icon::before { content: "💡"; }
+}
+
+// caution — ⚠️ amber CRT glow
+.callout-caution {
+  border-left-color: $pixel-amber;
+
+  .callout-header { color: $pixel-amber; }
+  i.callout-icon::before { content: "⚠️"; }
+}
+
+// warning — 🚨 amber, slightly muted
+.callout-warning {
+  border-left-color: darken($pixel-amber, 10%);
+
+  .callout-header { color: darken($pixel-amber, 10%); }
+  i.callout-icon::before { content: "🚨"; }
+}
+
+// important — ❗ arcade red
+.callout-important {
+  border-left-color: $pixel-red;
+
+  .callout-header { color: $pixel-red; }
+  i.callout-icon::before { content: "❗"; }
+}
+
+// ─── Footer — matches navbar frame ──────────────────────────────────
 
 .page-footer {
-  background-color: $gray-900;
-  color: $gray-500;
+  background-color: $board-darkest;
+  color: $chalk-dim;
   font-size: 0.85rem;
 
   a {
-    color: $gray-300;
+    color: $chalk;
     text-decoration: none;
 
-    &:hover { color: $hunter-green; }
+    &:hover { color: $phosphor-green; }
   }
 
   .footer-social {

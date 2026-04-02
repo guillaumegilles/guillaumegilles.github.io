@@ -1,0 +1,18 @@
+---
+title: "Parsnip"
+---
+
+[parsnip](https://parsnip.tidymodels.org/index.html) package provides a tidy and unified interface to models that can be used to try a range of models without getting bogged down in the syntactical minutiae of the underlying packages.
+
+Modeling functions and methods across different R packages can have very different interfaces. If you would like to try different approaches, there is a lot of different syntaxes to remember and it quickly gets very confusing. For example, if you are fitting a random forest model and would like to adjust the number of trees in the forest, there are different argument names to remember:
+
+- [randomForest](https://cran.r-project.org/web/packages/randomForest/index.html) package, `randomForest::randomForest` uses `ntree`,
+- [ranger package](https://cran.r-project.org/web/packages/ranger/index.html), `ranger::ranger` uses `num.trees`,
+- Spark’s `sparklyr::ml_random_forest` uses `num_trees`.
+
+Rather than remembering these different parameters, parsnip offers a common interface, `trees`, and translates between the real parameters in each of the implementation:
+
+```r
+> library(parsnip)
+> rf_model <- rand_forest(trees = 2000)
+```

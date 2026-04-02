@@ -1,0 +1,640 @@
+---
+title: "Fundamental AI Papers"
+description: |
+  A curated chronological guide to the most influential papers in artificial
+  intelligence and deep learning, from McCulloch & Pitts (1943) to DeepSeek-R1 (2025).
+date-modified: 2026-04-01
+---
+
+There are thousands of deep learning papers — where to start? This page collects
+the greatest hits: a curated, chronological reading list of the papers that
+shaped modern artificial intelligence. Each entry highlights a guiding question,
+the key contribution, and connections to the broader arc of the field.
+
+::: {.callout-tip}
+## How to read this list
+
+Each entry opens with a motivating question in *italics*. Key concepts and
+architectures are marked in **bold**. Cross-references to related work are
+noted inline so you can trace ideas across decades.
+:::
+
+{{< video https://www.youtube.com/watch?v=kRv2ElPNAdY >}}
+
+## Origins of Neural Computation (1943–1969)
+
+The story begins with a fundamental question: can networks of simple units
+compute? The first two decades establish both the promise and the limits of
+artificial neural networks.
+
+**1943 · A Logical Calculus of the Ideas Immanent in Nervous Activity**\
+*Warren S. McCulloch and Walter Pitts*
+
+*Is a neural network a computing machine?* McCulloch and Pitts are the first to
+model neural networks as an abstract computational system. They find that under
+various assumptions, networks of neurons are as powerful as propositional logic,
+sparking widespread interest in neural models of computation.
+
+**1958 · The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain**\
+*Frank Rosenblatt*
+
+*Can an artificial neural network learn?* Rosenblatt proposes the
+**Perceptron Algorithm**, a method for iteratively adjusting variable weight
+connections between neurons to learn to solve a problem. He raises funds from the
+U.S. Navy to build a physical Perceptron machine. In press coverage, Rosenblatt
+anticipates walking, talking, self-conscious machines.
+
+**1959 · What the Frog's Eye Tells the Frog's Brain**\
+*Jerome Lettvin, Humberto Maturana, Warren McCulloch, and Walter Pitts*
+
+*Do nerves transmit ideas?* Lettvin provocatively proposes that the frog optic
+nerve signals the presence of meaningful patterns rather than just brightness,
+demonstrating that the eye is doing part of the computational work of vision.
+Lettvin is also known for his famous thought experiment that your brain might
+contain a **Grandmother Neuron** that you use to conceptualize your grandmother.
+
+**1959 · Receptive Fields of Single Neurones in the Cat's Striate Cortex**\
+*David H. Hubel and Torsten N. Wiesel*
+
+*How does biological vision work?* This paper and its 1962 extension kick off a
+25-year collaboration in which Hubel and Wiesel methodically analyze the
+processing of signals through mammalian visual systems, developing many specific
+insights about the operation of the **Visual Cortex** that later inspire and
+inform the design of convolutional neural networks. They win the Nobel Prize in
+1981.
+
+**1969 · Perceptrons: An Introduction to Computational Geometry**\
+*Marvin Minsky and Seymour Papert*
+
+*What cannot be learned by a perceptron?* During the early 1960s, while
+Rosenblatt argues that his neural networks could do almost anything, Minsky
+counters that they could do very little. This influential book lays out the
+negative argument, showing that many simple problems such as maze-solving or even
+XOR cannot be solved by a single-layer perceptron network. The sharp critique
+leads to one of the first **AI Winter** periods during which many researchers
+abandon neural networks.
+
+## Associative Memory & Distributed Representation (1972–1981)
+
+Even through the winter, foundational ideas about memory and representation take
+shape — ideas that will prove essential when the field reignites.
+
+**1972 · Correlation Matrix Memories**\
+*Teuvo Kohonen*
+
+*Can a neural network store memories?* Kohonen (and simultaneously Anderson)
+observe that a single-layer network can act as a matrix **Associative Memory** if
+keys and data are seen as vectors of neural activations, and if keys are linearly
+independent. Associative memory will become a major focus of neural network
+research in coming decades.
+
+**1981 · Implementing Semantic Networks in Parallel Hardware**\
+*Geoffrey E. Hinton*
+
+*How are concepts represented?* Writing in a book on associative memory with
+Anderson, Hinton proposes that concepts should not be represented as single
+units, but as vectors of activations, and he demonstrates a scheme that encodes
+complex relationships in a distributed fashion. **Distributed representation**
+becomes a core tenet of the Parallel Distributed Processing (PDP) framework,
+advanced in a subsequent book by Rumelhart, McClelland, and Hinton (1986), and a
+central dogma in the understanding of large neural networks.
+
+## The Backpropagation Revolution (1986–1991)
+
+The discovery — and rediscovery — of backpropagation reignites the field. In just
+five years, researchers establish the theoretical foundations, practical training
+methods, and modular software abstractions that still underpin deep learning
+today.
+
+**1986 · Learning Representations by Back-Propagating Errors**\
+*David E. Rumelhart, Geoffrey E. Hinton, and Ronald J. Williams*
+
+*How can a deep network learn?* Learning in multilayer networks was not widely
+understood until this paper's explanation of the **Backpropagation** method,
+which updates weights by efficiently computing gradients. While Griewank (2012)
+notes that reverse-mode auto-differentiation was discovered independently several
+times, notably by Seppo Linnainmaa (1970) and by Paul Werbos (1981), Rumelhart's
+letter to *Nature* demonstrating its power to learn nontrivial representations
+gains widespread attention and unleashes a new wave of innovation in neural
+networks.
+
+**1988 · Accelerated Learning in Layered Neural Networks**\
+*Sarah Solla, Esther Levin, and Michael Fleisher*
+
+*What should deep networks learn?* In three concurrent papers, Solla et al.,
+John Hopfield (1987), and Eric Baum and Frank Wilczek (1988) describe the insight
+that neural networks should often compute log probabilities rather than just
+arbitrary scales of numbers, and that the **Cross Entropy Objective** is
+frequently more natural and more effective than squared error minimization. (How
+effective remains an open area of research: see Hui 2021 and Golik 2013.)
+
+**1989 · Handwritten Digit Recognition with a Back-Propagation Network**\
+*Yann LeCun, B. Boser, J. S. Denker, D. Henderson, R. E. Howard, W. Hubbard, and L. D. Jackel*
+
+*Can a deep network learn to see?* In a technical tour-de-force, LeCun devises
+the **Convolutional Neural Network (CNN)** — inspired and informed by Hubel and
+Wiesel's biological studies — and demonstrates that backpropagation can train a
+CNN to accurately read handwritten digits on U.S. Postal Mail addresses. The work
+demonstrates the value of a good network architecture and proves that deep
+networks can solve real-world problems. Also see Fukushima (1980) for an early
+variant of this idea.
+
+**1989 · Approximation by Superpositions of a Sigmoidal Function**\
+*George Cybenko*
+
+*What functions can a deep network compute?* This paper proves that any
+continuous function can be closely approximated by a neural network to arbitrarily
+small error on a finite domain. Cybenko's reasoning is specific to the sigmoid
+nonlinearities popular at the time, but Hornik (1991) shows that the result can
+be generalized to essentially any ordinary nonlinearity, and that two layers is
+enough. Cybenko and Hornik's results show that networks with multiple layers are
+**Universal Approximators**, far more expressive than the single-layer
+perceptrons proposed in the 1950s and 1960s.
+
+**1990 · Finding Structure in Time**\
+*Jeffrey L. Elman*
+
+*Can a deep network learn language?* Adopting a three-layer **Recurrent Neural
+Network (RNN)** architecture devised by Michael Jordan (1986), Elman trains an
+RNN to model natural language text, starting from letters. Strikingly, he finds
+that the network learns to represent the structure of words, grammar, and
+elements of semantics.
+
+**1990 · A Framework for the Cooperation of Learning Algorithms**\
+*Léon Bottou and Patrick Gallinari*
+
+*What is the right notation for neural network architecture?* Bottou observes
+that the backpropagation algorithm allows an elegant graphical notation where
+instead of a graph of neurons, the network is written as a graph of
+**computation modules** that encapsulate vectorized forward and backward gradient
+computations. Bottou's modular idea is the basis for deep learning libraries
+such as Torch (Collobert 2002), Theano (Bergstra 2010), Caffe (Jia 2014),
+TensorFlow (Abadi 2016), JAX (Frostig 2018), and PyTorch (Paszke 2019).
+
+**1991 · Stochastic Gradient Learning in Neural Networks**\
+*Léon Bottou*
+
+*What optimization algorithm should be used?* In his PhD thesis, Bottou proposes
+that previously proposed learning algorithms such as perceptrons correspond to
+**Stochastic Gradient Descent (SGD)**, and he argues that SGD scales better than
+more complex higher-order optimization methods. Over the decades, Bottou is
+proved right, and variants of the simple SGD algorithm become the standard
+workhorse learning algorithm for neural networks. See Bottou (1998) and Bottou
+(2010) for newer discussions, and also see Zinkevich (2003) for an elegant
+generalizable proof of convergence.
+
+**1991 · A Simple Weight Decay Can Improve Generalization**\
+*Anders Krogh and John A. Hertz*
+
+*How can overfitting be avoided?* This paper analyzes and advocates **Weight
+Decay**, a simple regularizer originally proposed as Ridge Regression (Hoerl,
+1970) that imposes a penalty on the square of the weights of a model. Krogh
+analyzes this trick in neural networks, demonstrating generalization gains in
+single-layer and multilayer networks.
+
+## Recurrent Networks & Language (1997–2005)
+
+As training methods mature, researchers turn to harder problems — modeling
+sequences over time, scaling language models, and probing the biological brain
+for clues about how concepts are encoded.
+
+**1997 · Long Short-Term Memory**\
+*Sepp Hochreiter and Jürgen Schmidhuber*
+
+*How can long recurrences be stabilized?* Iterating an RNN many times will
+invariably lead to an explosion of gradients without special measures. This paper
+proposes the **Long Short-Term Memory (LSTM)** architecture, a gated but
+differentiable neural memory structure that can retain state over very long
+sequences while preventing the gradient from exploding. The LSTM architecture
+also inspires **Gated Recurrent Units (GRU)**, a simpler alternative devised by
+Cho (2014).
+
+**2003 · A Neural Probabilistic Language Model**\
+*Yoshua Bengio, Réjean Ducharme, Pascal Vincent, and Christian Jauvin*
+
+*Can a neural network model language at scale?* Bengio's team scales a
+nonrecurrent neural language model to a 15-million word training set, beating the
+state-of-the-art traditional language modeling methods by a large margin. Rather
+than using a fully recurrent network, Bengio processes a fixed window of *n*
+words and devotes a network layer to learn a position-independent **Word
+Embedding**.
+
+**2005 · Invariant Visual Representation by Single Neurons in the Human Brain**\
+*Rodrigo Quian Quiroga, Leila Reddy, Gabriel Kreiman, Christof Koch, and Itzhak Fried*
+
+*What do individual biological neurons do?* In a series of remarkable experiments
+probing single neurons of human epilepsy patients, several **Multimodal
+Neurons** are found: individual neurons that are selectively responsive to very
+different stimuli that evoke the same concept — for example, a neuron responsive
+to a written name, sketch, photo, or costumed figure of Halle Berry, while not
+responding to other people — suggesting a simple physical encoding for high-level
+concepts in the brain.
+
+**2005 · What Kind of Graphical Model is the Brain?**\
+*Geoffrey Hinton*
+
+*Can networks be deepened like a spin glass?* In the early 2000s, neural network
+research is focused on the problem of scaling networks deeper than three layers.
+A breakthrough comes from bidirectional-link models of neural networks inspired
+by spin-glass physics, like Hopfield Networks (Hopfield, 1982) and **Restricted
+Boltzmann Machines (RBM)** (Hinton, 1983). In 2005, Hinton shows that an RBM
+called a **Deep Belief Network** can train a stack of many layers efficiently,
+and in 2006, Hinton and Salakhutdinov show that layers of autoencoders can be
+stacked if initialized by RBMs.
+
+## Solving the Depth Problem (2010–2012)
+
+Between 2010 and 2012, a cascade of practical innovations — denoising, better
+initialization, ReLU activations, and GPU-powered training — finally cracks the
+depth problem and launches the deep learning era.
+
+**2010 · Stacked Denoising Autoencoders**\
+*Pascal Vincent, Hugo Larochelle, Isabelle Lajoie, Yoshua Bengio, and Pierre-Antoine Manzagol*
+
+*Can networks be deepened with unsupervised training?* The search for simpler
+deep network initialization methods continues. In 2010, Vincent finds an
+alternative to initialization by Boltzmann machines: train each layer as a
+**Denoising Autoencoder** that must learn to remove noise added to training data.
+That group also devises the **Contractive Autoencoder** (Rifai, 2011), in which a
+gradient penalty is incorporated into the loss.
+
+**2010 · Understanding the Difficulty of Training Deep Feedforward Neural Networks**\
+*Xavier Glorot and Yoshua Bengio*
+
+*Can networks be deepened with simple changes?* Glorot analyzes the problems with
+ordinary feed-forward training and proposes **Xavier Initialization**, a simple
+random initialization that is scaled to avoid vanishing or exploding gradients.
+In a second important development, Nair (2010) and Glorot (2011) experimentally
+find that **Rectified Linear Units (ReLU)** work much better than the sigmoid
+nonlinearities that had previously been ubiquitous. These simple-to-apply
+innovations eliminate the need for complex pretraining, so that deep feedforward
+networks can be trained directly, end-to-end, from scratch, using
+backpropagation.
+
+**2011 · Natural Language Processing (Almost) from Scratch**\
+*Ronan Collobert, Jason Weston, Léon Bottou, Michael Karlen, Koray Kavukcuoglu, and Pavel Kuksa*
+
+*Can a neural network solve language problems?* Previous work in natural language
+processing treats the problems of chunking, part-of-speech tagging, named entity
+recognition, and semantic role labeling separately. Collobert claims that a
+single neural network can do it all at once, using a **Multi-Task Objective** to
+learn a unified representation of language for all the tasks. They find that
+their network learns a satisfying word embedding that groups together
+meaningfully related words, but the performance claims are initially met with
+skepticism.
+
+**2012 · ImageNet Classification with Deep Convolutional Neural Networks**\
+*Alex Krizhevsky, Ilya Sutskever, and Geoffrey E. Hinton*
+
+*Can a neural network do state-of-the-art computer vision?* Krizhevsky shocks
+the computer vision community with a deep convolutional network that wins the
+annual ImageNet classification challenge (Deng, 2009) by a large margin.
+Krizhevsky's **AlexNet** is a deep eight-layer, 60-million-parameter
+convolutional network that combines the latest tricks such as ReLU and
+**Dropout** (Srivastava, 2014; Hinton, 2012), run on a pair of consumer
+**Graphical Processing Units (GPU)**. The superior performance on this
+high-profile benchmark sparks a sudden change in perspective towards neural
+networks in the ML community and an explosive resurgence of interest in deep
+network applications.
+
+**2012 · Distributed Representations of Words and Phrases and their Compositionality**\
+*Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg Corrado, and Jeffrey Dean*
+
+*Does massive data beat a complex network?* While excitement grows over the power
+of neural networks, Google researcher Mikolov finds that his simple (non-deep)
+skip-gram model (Mikolov, 2012a) can learn a good word embedding that
+outperforms other (deep) embeddings by a large margin if trained on a massive
+30-billion word data set. This **Word2Vec** model exhibits **Semantic Vector
+Composition** for the first time. Google also trains an unsupervised model on
+YouTube image data (Le, 2011) using a Topographic Independent Component Analysis
+loss (Hyvärinen, 2009) and observes the emergence of individual neurons for human
+faces and cats.
+
+## The Deep Learning Explosion (2013–2015)
+
+Deep learning is now undeniably powerful. In a three-year burst of creativity,
+researchers reinvent reinforcement learning, generative modeling, attention,
+optimization, normalization, and residual connections — building the toolkit that
+will enable everything that follows.
+
+**2013 · Playing Atari with Deep Reinforcement Learning**\
+*Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis Antonoglou, Daan Wierstra, and Martin Riedmiller*
+
+*Can a network learn to play a game from raw input?* DeepMind proposes **Deep
+Reinforcement Learning (DRL)**, applying neural networks directly to the
+Q-learning algorithm, and demonstrates that their **Deep Q-Network (DQN)**
+architecture directly predicts actions from state observations and can learn to
+play several Atari games better than humans. The work inspires many other DRL
+methods such as Deep Deterministic Policy Gradient (DDPG) (Lillicrap, 2016) and
+**Proximal Policy Optimization (PPO)** (Schulman, 2017), and touches off
+development of Atari-capable RL testing environments like OpenAI Gym.
+
+**2013 · Auto-Encoding Variational Bayes**\
+*Diederik P. Kingma and Max Welling*
+
+*What should an autoencoder reconstruct?* The **Variational Autoencoder (VAE)**
+casts the autoencoder as a variational inference problem, matching distributions
+rather than instances, by maximizing the **Evidence Lower Bound (ELBO)** of the
+likelihood of the data, minimizing information in the stochastic latent, and
+using a **Reparameterization Trick** to train a sampling process at the
+bottleneck (see the Doersch tutorial). VAEs take their inspiration from Hinton's
+1995 Wake-Sleep algorithm. Descendants such as Beta-VAE (Higgins, 2017) can learn
+disentangled representations, and VQ-VAE (van den Oord, 2017) can do
+state-of-the-art image generation.
+
+**2013 · Intriguing Properties of Neural Networks**\
+*Christian Szegedy, Wojciech Zaremba, Ilya Sutskever, Joan Bruna, Dumitru Erhan, Ian Goodfellow, and Rob Fergus*
+
+*Do artificial neural networks have bugs?* Using a simple optimization, Szegedy
+finds that it is easy to construct **Adversarial Examples**: inputs that are
+imperceptibly different from a natural input that fool a deep network into
+misclassifying an image. The observation touches off discoveries of further
+attacks (e.g., Papernot, 2017), defenses (Madry, 2018), and evaluations (Carlini,
+2017).
+
+**2014 · Rich Feature Hierarchies for Accurate Object Detection and Semantic Segmentation**\
+*Ross Girshick, Jeff Donahue, Trevor Darrell, and Jitendra Malik*
+
+*Can a CNN locate an object in a scene?* Computer vision is concerned with not
+just classifying but locating and understanding the arrangements of objects in a
+scene. By exploiting the spatial arrangement of CNN features, Girshick's
+**R-CNN** (and Faster R-CNN, Ren 2015) can identify not only the class of an
+object but the location of an object in a scene via both bounding-box estimation
+and semantic segmentation.
+
+**2014 · Generative Adversarial Nets**\
+*Ian J. Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, and Yoshua Bengio*
+
+*Can an adversarial objective be learned?* A **Generative Adversarial Network
+(GAN)** is trained to imitate a data set by learning to synthesize examples that
+fool a second adversarial model simultaneously trained to distinguish real from
+generated data. The elegant method sparks a wave of new theoretical work as well
+as a new category of highly-realistic image generation methods such as DCGAN
+(Radford, 2016), Wasserstein GAN (Arjovsky, 2017), BigGAN (Brock, 2019), and
+StyleGAN (Karras, 2019).
+
+**2014 · How Transferable are Features in Deep Neural Networks?**\
+*Jason Yosinski, Jeff Clune, Yoshua Bengio, and Hod Lipson*
+
+*Can network parameters be reused in another network?* **Transfer Learning**
+takes layers of a pretrained network to initialize a network that is trained to
+solve a different problem. Yosinski shows that such **Fine-Tuning** will
+outperform training a new network from scratch, and practitioners quickly
+recognize that initialization with a large **Pretrained Model (PTM)** is a way to
+get a high-performance network using only a small amount of training data.
+
+**2014 · Visualizing and Understanding Convolutional Networks**\
+*Matthew D. Zeiler and Rob Fergus*
+
+*Can people understand deep networks?* One of the critiques of deep learning is
+that its huge models are opaque to humans. Zeiler tackles this problem by
+reviewing and introducing several methods for **Deep Feature Visualization**,
+which depict individual signals within a network, and **Saliency Mapping**, which
+summarizes the parts of the input that most influence the outcome of the complex
+computation. Zeiler's goal of **Explainable AI (XAI)** is further developed in
+feature optimization methods (Olah, 2017), feature dissection (Bau, 2017), and
+saliency methods such as Grad-CAM (Selvaraju, 2016) and Integrated Gradients
+(Sundararajan, 2017).
+
+**2014 · Sequence to Sequence Learning with Neural Networks**\
+*Ilya Sutskever, Oriol Vinyals, and Quoc V. Le*
+
+*Can a neural network translate human languages?* Sutskever applies the LSTM
+architecture to English-to-French translation, combining an encoder phase with an
+autoregressive decoder phase. This demonstration of **Neural Machine
+Translation** does not beat state-of-the-art machine translation methods at the
+time, but its competitive performance establishes the feasibility of the neural
+approach to translation, one of the classical grand challenges of AI.
+
+**2015 · Neural Machine Translation by Jointly Learning to Align and Translate**\
+*Dzmitry Bahdanau, KyungHyun Cho, and Yoshua Bengio*
+
+*Can a network learn its own attention?* While CNNs compare adjacent pixels and
+RNNs examine adjacent words, sometimes the most important data dependencies are
+not adjacencies. Bahdanau proposes a learned **Attention** model that can
+estimate which parts of the input are relevant to each part of the output. This
+innovation dramatically improves performance of neural machine translation, and
+the idea of using learnable attention proves effective for many kinds of data
+including graphs (Veličković, 2018) and images (Zhang, 2019).
+
+**2015 · Adam: A Method for Stochastic Optimization**\
+*Diederik P. Kingma and Jimmy Lei Ba*
+
+*What learning rate should be used?* The **Adam Optimizer** adaptively chooses
+the step size by using smaller steps for parameters in regions with more gradient
+variation. Combining ideas from Momentum (Polyak, 1964), second-order
+optimization (Becker, 1989), Adagrad (Duchi, 2011), Adadelta (Zeiler, 2012), and
+RMSProp (Tieleman, 2012), the Adam optimizer proves very effective in practice,
+enabling optimization of huge models with little or no manual tuning.
+
+**2015 · Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift**\
+*Sergei Ioffe and Christian Szegedy*
+
+*How can training gradients be stabilized?* Even with clever initialization, in
+very deep ReLU networks signals will eventually get very large or very small.
+**Batch Normalization** solves this problem by normalizing each neuron to have
+zero mean and unit variance within every training batch. This practical step
+yields huge benefits, improving training speed, network performance, and
+stability, and enabling very large models to be trained.
+
+**2015 · Deep Residual Learning for Image Recognition**\
+*Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun*
+
+*Can backpropagation succeed with a huge number of layers?* Analyzing the
+propagation of gradients, He proposes the **Residual Network (ResNet)**
+architecture in which layers compute a vector to add to the signal, rather than
+transforming the signal at each layer. He also proposes **Kaiming
+Initialization**, a variant of Xavier initialization that takes into account
+nonlinearities. Together with BatchNorm, these methods solve the depth problem,
+allowing networks to achieve state-of-the-art results with more than 100 layers.
+
+**2015 · Show and Tell: A Neural Image Caption Generator**\
+*Oriol Vinyals, Alexander Toshev, Samy Bengio, and Dumitru Erhan*
+
+*Can language and vision be related?* This paper demonstrates that, despite the
+apparent disparities between modalities, neural representations for images and
+text can be directly connected. By simply attaching a vision network (a CNN) to a
+language network (an RNN), Vinyals demonstrates a system that can perform
+**Image Captioning**, generating accurate captions for a wide range of subjects
+after training on the MSCOCO dataset.
+
+**2015 · Deep Unsupervised Learning using Nonequilibrium Thermodynamics**\
+*Jascha Sohl-Dickstein, Eric A. Weiss, Niru Maheswaranathan, and Surya Ganguli*
+
+*Can a network learn by reversing the physics of diffusion?* Inspired by
+Kingma's VAEs and Hinton's Wake-Sleep method as well as the dynamics of
+diffusion, Sohl-Dickstein proposes **Diffusion Models**, a latent variable
+framework which transforms Gaussian noise into a meaningful distribution
+iteratively by learning to reverse a diffusion process in many small steps. Later
+this method is extended by Jonathan Ho (2020) to synthesize remarkably
+high-quality images superior to GANs, kicking off a wave of interest in using
+diffusion for image synthesis. See the tutorial paper from Calvin Luo (2022) for
+detailed discussion.
+
+## Transformers & the Modern Era (2016–2025)
+
+The Transformer architecture arrives and rewrites the rules. In under a decade,
+language models scale from translation tools to general-purpose reasoning engines,
+while deep learning transforms fields from structural biology to computer
+graphics.
+
+**2016 · Mastering the Game of Go with Deep Neural Networks and Tree Search**\
+*David Silver, Aja Huang, Chris J. Maddison, Arthur Guez, Laurent Sifre, George van den Driessche, Julian Schrittwieser, Ioannis Antonoglou, Veda Panneershelvam, Marc Lanctot, Sander Dieleman, Dominik Grewe, John Nham, Nal Kalchbrenner, Ilya Sutskever, Timothy Lillicrap, Madeleine Leach, Koray Kavukcuoglu, Thore Graepel, and Demis Hassabis*
+
+*Can AI master the most intuitive of board games?* Game-playing is one of the
+original domains used to demonstrate artificial intelligence capabilities. Yet
+while chess is conquered using traditional search methods in 1997, the game of Go
+is considered far more subtle — intuitive and impenetrable to brute-force
+computation. In this work by DeepMind, the **AlphaGo** system combines a CNN with
+traditional search methods to add the needed intuition through a powerful learned
+board evaluation function trained through self-play. The system achieves
+master-level play and bests the top-ranked human Go player Lee Sedol in a
+five-game match.
+
+**2017 · Attention Is All You Need**\
+*Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, and Illia Polosukhin*
+
+*Are recurrent networks necessary for sequence modeling?* While applying the
+attention ideas of Bahdanau to achieve state-of-the-art machine translation
+results, Vaswani discovers that the various mechanisms for supporting recurrent
+networks are unnecessary and can be replaced by attention. The resulting
+architecture, the **Transformer**, proves to be a scalable and versatile way of
+dealing with sequence data, leading to popular architectures such as **BERT**,
+**GPT**, and **T5**.
+
+**2017 · Image-to-Image Translation with Conditional Adversarial Networks**\
+*Phillip Isola, Jun-Yan Zhu, Tinghui Zhou, and Alexei A. Efros*
+
+*Can image processing be unified as translation?* A wide class of image
+processing methods can be framed as a transformation from one image to another.
+Isola demonstrates that a single **Pix2Pix** architecture can be used across the
+problems of segmentation, image restyling, and sketch-guided image generation, by
+applying a GAN adversarial network to create realistic images that match the
+target domain. While Pix2Pix relies on a paired dataset, it inspires
+**CycleGAN** (Zhu, 2017), which is able to learn image transformations from
+unpaired data.
+
+**2018 · Language Models are Unsupervised Multitask Learners**\
+*Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever*
+
+*Can a network learn to write simply by reading?* While the original Transformer
+architecture required paired language translation text in order to train, Radford
+discards the encoder portion of the network to obtain a simple autoregressive
+language model that can be trained on the simple task of predicting the next word
+in text. The resulting model, **GPT**, can be scaled to be trained on massive
+amounts of text, and the model and its scaled-up successors GPT-2 and GPT-3
+exhibit emergent behavior such as the ability to solve a variety of tasks simply
+by **Prompting** the model with a natural-language request. These **Large
+Language Models (LLMs)** form the basis for a succession of AI advances in coming
+years.
+
+**2019 · BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding**\
+*Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova*
+
+*Is there a universal encoding for language?* While the traditional approach is
+to design a custom network for solving particular language problems, this paper
+proposes the **BERT** architecture that learns to encode text in a universal way.
+BERT is trained on a denoising task — learning to fill in missing words in text —
+and also learning to distinguish adjacent sentence pairs from unrelated sentence
+pairs. This unsupervised training scheme allows BERT to be scaled up and trained
+on a huge amount of text, making it straightforward to create high-quality
+language processing models for specialized tasks with only a small amount of
+data, by starting with a pretrained BERT and **fine-tuning** it.
+
+**2020 · NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis**\
+*Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng*
+
+*Can a neural network model the physics of light transport?* While most neural
+models are inspired by functions of the human brain, neural networks can be
+applied to learn functions in other domains. Mildenhall demonstrates **Neural
+Radiance Fields (NeRF)**, a use of neural networks to learn to compute the full
+light transport within a 3D scene by following physical rules while learning to
+match the light observed in a handful of photographs. By modeling the amount of
+light at every location and direction in a volume, a NeRF model is able to solve
+difficult rendering problems such as depicting a photographed scene from a new
+viewpoint, or showing a scene with a new object added.
+
+**2020 · Improved Protein Structure Prediction Using Potentials from Deep Learning**\
+*Andrew W. Senior, Richard Evans, John Jumper, James Kirkpatrick, Laurent Sifre, Tim Green, Chongli Qin, Augustin Žídek, Alexander W. R. Nelson, Alex Bridgland, Hugo Penedones, Stig Petersen, Karen Simonyan, Steve Crossan, Pushmeet Kohli, David T. Jones, David Silver, Koray Kavukcuoglu, and Demis Hassabis*
+
+*Can a neural network model the physics of protein structure?* One of the grand
+challenges of computational chemistry is to predict the 3D structure of a protein
+from its amino acid sequence, because that structure is critical for
+understanding a protein's function. By training a convolutional neural network to
+predict residue distances on the 150,000 known protein conformations in the
+public Protein Data Bank, **AlphaFold** from DeepMind dramatically improves upon
+the state-of-the-art in protein structure prediction; the neural approach is
+combined with other chemistry algorithms to create full 3D predictions. The team
+applies their methods to all 200 million proteins in the UniProt database,
+contributing high-confidence predictions for essentially every protein known to
+biologists across a range of organisms — transforming the field of molecular
+biology. Together with AlphaFold 2 (Jumper et al., 2021) and AlphaFold 3
+(Abramson et al., 2024), the work is awarded the **Nobel Prize in Chemistry in
+2024**.
+
+**2021 · Learning Transferable Visual Models From Natural Language Supervision**\
+*Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, and Ilya Sutskever*
+
+*Will the best image training data always be manually labeled?* While huge text
+models such as BERT and GPT are trained without manual labels, the best training
+data in vision is still laboriously manually labeled. This work changes the
+situation, demonstrating an image representation supervised by automatically
+scraped open-text image caption data from the internet. **CLIP** applies
+**Contrastive Learning** on a massive 400-million captioned-image dataset to
+jointly learn aligned image and text encodings, approaching state-of-the-art
+classification on a zero-shot test without any fine-tuning. CLIP establishes a
+new state-of-the-art image representation and is also an essential part of
+OpenAI's DALL-E text-to-image synthesis system.
+
+**2022 · High-Resolution Image Synthesis With Latent Diffusion Models**\
+*Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Björn Ommer*
+
+*Can a neural network learn to draw?* A set of 2022 papers marks a remarkable
+advance in text-to-image synthesis. By applying diffusion models together with
+text supervision using CLIP representations, **DALL-E 2** (Ramesh et al., 2022)
+demonstrates an uncanny ability to create images from text descriptions that are
+obviously novel yet also realistic compositions. Then by incorporating improved
+text conditioning from classifier-free guidance (Ho and Salimans, 2022), stacking
+diffusion onto an efficient VAE image representation, and training the model on
+LAION (Schuhmann et al., 2022), **Latent Diffusion** — the architecture for the
+open pretrained **Stable Diffusion** model — sparks the rapid development of
+several commercial and open-source projects for text-guided image synthesis. The
+work raises new societal questions about the use of AI in art as well as
+misinformation.
+
+**2022 · Training Language Models to Follow Instructions with Human Feedback**\
+*Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano, Jan Leike, and Ryan Lowe*
+
+*Can a neural network converse like a human?* Since Alan Turing's 1950 imitation
+game, human dialog has been a benchmark for artificial intelligence. After
+Google's FLAN project (Wei et al., 2022) observes surprising generalization in an
+LLM fine-tuned to follow natural language, the OpenAI AI Safety team develops a
+scalable approach to fine-tuning by applying **RLHF — Reinforcement Learning
+from Human Feedback** (Christiano et al., 2017) — to train an LLM to conform to
+human preferences during dialog. The resulting product, released as **ChatGPT**,
+smashes the Turing test and transforms the world's perception of AI. Wei et al.
+(2022b) observe that **Chain-of-Thought** prompting strengthens reasoning
+further, and Microsoft researchers Bubeck et al. (2023) suggest the system shows
+"Sparks of AGI." ChatGPT inspires a rush of commercial competitors and
+variations on RLHF, including Constitutional RL (Bai, 2022) which uses LLMs to
+check consistency with human instructions, and **DPO — Direct Preference
+Optimization** (Rafailov et al., 2023) which proposes a much simpler training
+objective for fine-tuning LLMs.
+
+**2025 · DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning**\
+*DeepSeek AI, Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, Xiaokang Zhang, Xingkai Yu, Yu Wu, Z.F. Wu, Zhibin Gou, Zhihong Shao, Zhuoshu Li, Ziyi Gao, and over 100 additional authors*
+
+*Can a neural network reason?* By 2025, a vast amount of capital has poured into
+scaling up LLM training, with several companies competing to push benchmarks
+higher — and LLM training hits two barriers. First is the limit of imitation
+learning, after large-scale training has already incorporated most of the
+high-quality human-created data in the world. The second is the inability of a
+transformer LM to reason beyond the finite steps allowed by its fixed depth.
+**Reasoning Models** address both problems by introducing deep reinforcement
+learning objectives into LLM training that incentivize the LM to generate an
+internal **Chain-of-Thought** monologue that is not a copy of the training data.
+Hiding its methods behind a veil of secrecy, OpenAI releases GPT-4o1, the first
+reasoning LLM. Then one month later, DeepSeek releases **DeepSeek-R1** openly,
+publishing many key details about the training methods while also openly
+releasing its weights. DeepSeek is trained using **GRPO** (Shao, 2024), an RL
+training method inspired by PPO that eliminates the reward model.
