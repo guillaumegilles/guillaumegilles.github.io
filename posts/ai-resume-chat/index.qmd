@@ -1,0 +1,556 @@
+---
+title: "Adding an AI Chat Assistant to a Static Website"
+author:
+  - name: Guillaume Gilles
+  - name: Claude Sonnet 4.6
+    url: https://www.anthropic.com/claude/sonnet
+    roles:
+      - reviewing code
+      - writing - review & editing
+abstract: |
+  Most personal websites are one-way streets: you publish, visitors read.
+  What if they could *ask* instead? In this post I walk through adding a
+  small AI assistant — powered by OpenAI and Cloudflare Workers — that lets
+  anyone query my experience and résumé in plain English, with zero backend
+  server to maintain.
+date: 2026-03-08
+date-modified: 2026-04-07
+image: image.png
+categories: [AI, Cloudflare, Quarto, Web]
+page-layout: full
+execute:
+  echo: false
+
+filters:
+  - ../../_extensions/qmd-lab/closeread/closeread.lua
+format:
+  html:
+    css: ../../_extensions/qmd-lab/closeread/closeread.css
+---
+
+## Why bother?
+
+A PDF résumé is a frozen snapshot. Visitors have to skim it, guess what is
+relevant to them, and hope they find the right section. A recruiter looking
+for Python experience and a professor curious about your teaching history
+need very different things — but they both have to read the same document.
+
+An AI assistant changes that dynamic. Instead of making the visitor do the
+work, you let them ask in plain language: *"Does he have any experience with
+time-series forecasting?"* or *"What level does he teach at?"* and get a
+direct, personalised answer in seconds.
+
+The goal of this post is to build exactly that, in a way that is:
+
+- **Free (or nearly so)** — Cloudflare Workers has a generous free tier (100,000 requests/day); OpenAI costs fractions of a cent per conversation.
+- **Private** — your OpenAI key never touches the browser; only your Worker ever sees it.
+- **Maintenance-free** — no server to patch, no database, no uptime to worry about.
+- **Portable** — the approach works with any static site generator (Quarto, Hugo, Jekyll, plain HTML…).
+
+## The big picture
+
+Three moving parts, one simple flow:
+
+```
+Visitor's browser
+      │  1. types a question
+      ▼
+Chat widget (HTML/JS)
+      │  2. POST { message, history } to Worker URL
+      ▼
+Cloudflare Worker  ──►  OpenAI API
+      │                     │
+      │  3. system prompt   │  4. returns answer
+      │     + message       │
+      ◄─────────────────────┘
+      │  5. forwards { reply }
+      ▼
+Chat widget displays reply
+```
+
+**The widget** is an inline HTML+JS block in `index.qmd`. It captures the
+visitor's message and sends it to the Worker.
+
+**The Worker** is a tiny JavaScript function running on Cloudflare's global
+edge network. It prepends a *system prompt* containing your full background,
+then forwards the conversation to OpenAI using your secret API key.
+
+**The key insight** is that the browser never talks to OpenAI directly —
+your API key stays server-side, and you can add rate limits or filters later
+if you need them.
+
+---
+
+## Part 1 — The Cloudflare Worker
+
+[Wrangler](https://developers.cloudflare.com/workers/wrangler/) is the
+official Cloudflare CLI. Install it once, authenticate, and you're ready to
+deploy:
+
+```bash
+npm install -g wrangler
+wrangler login   # opens a browser window for OAuth
+```
+
+The project needs two files inside a `worker/` directory at your site root.
+`wrangler.toml` is the configuration:
+
+```toml
+name = "resume-chat"
+main = "index.js"
+compatibility_date = "2024-09-01"
+```
+
+`name` sets the subdomain (`resume-chat.<account>.workers.dev`); `main`
+points to the Worker entry-point. That's all the configuration needed.
+
+The real work happens in `index.js`. Scroll through the walkthrough below.
+
+:::{.cr-section}
+
+This is the complete `worker/index.js`. Every line has a job — let's go
+through them one by one. @cr-worker
+
+:::{#cr-worker}
+```js
+const SYSTEM_PROMPT = `You are an AI assistant representing Guillaume Gilles.
+Answer questions based strictly on the information below.
+Be concise, friendly, and professional.
+If asked about something not covered, say you don't have that information.
+
+--- PROFILE / EXPERIENCE / EDUCATION / SKILLS ---
+…`;
+
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "https://ggilles.dev",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export default {
+  async fetch(request, env) {
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: CORS_HEADERS });
+    }
+
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return new Response("Invalid JSON", { status: 400 });
+    }
+
+    const { message, history = [] } = body;
+
+    const messages = [
+      { role: "system", content: SYSTEM_PROMPT },
+      ...history.slice(-6),
+      { role: "user", content: message },
+    ];
+
+    const openaiRes = await fetch(
+      "https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages,
+          max_tokens: 400,
+          temperature: 0.4,
+        }),
+      }
+    );
+
+    const data = await openaiRes.json();
+    const reply = data.choices[0].message.content;
+
+    return new Response(JSON.stringify({ reply }), {
+      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+    });
+  },
+};
+```
+:::
+
+**The system prompt** is the most important part of the setup. It is
+prepended to *every* conversation before the visitor's message. The
+instruction *"based strictly on the information below"* keeps the model from
+hallucinating anything that isn't in your résumé. Keep this section updated
+whenever your situation changes. [@cr-worker]{highlight="1-7"}
+
+**CORS headers** tell the browser that your Worker accepts cross-origin
+requests. Your widget lives on `ggilles.dev`; the Worker lives on
+`workers.dev` — without these headers, the browser would silently block every
+fetch. Setting `https://ggilles.dev` restrict access to the worker only from
+your exact domain. [@cr-worker]{highlight="9-13"}
+
+**The OPTIONS preflight** is an automatic browser check sent before every
+cross-origin POST: *"Are you OK with this?"* The Worker must respond to it
+correctly, or the real request never goes through. [@cr-worker]{highlight="18-20"}
+
+**Parsing the body** is straightforward but worth wrapping in a try/catch.
+Cloudflare Workers are edge-deployed code — you want clear error responses
+rather than uncaught exceptions if something malformed hits the endpoint.
+[@cr-worker]{highlight="22-29"}
+
+**Building the messages array** is where context lives. The system prompt
+anchors every conversation. `history.slice(-6)` keeps the last three
+exchanges (six messages: three user, three assistant) so the model can handle
+follow-up questions without ballooning the token count.
+[@cr-worker]{highlight="31-35"}
+
+**Calling OpenAI** uses `gpt-4o-mini` — fast, cheap, and well-suited to
+short Q&A. `max_tokens: 400` caps reply length so the chat box doesn't
+overflow. `temperature: 0.4` keeps answers factual rather than creative.
+Crucially, `env.OPENAI_API_KEY` reads from Cloudflare's encrypted secret
+store — the key never appears in source code. [@cr-worker]{highlight="37-51"}
+
+**Returning the reply** strips out the OpenAI response envelope and sends
+the browser a clean `{ reply: "…" }` JSON object, with the same CORS headers
+attached so the browser actually accepts it. [@cr-worker]{highlight="53-58"}
+
+:::
+
+### Storing your key and deploying
+
+Never put secrets in code. Store the OpenAI key in Cloudflare's encrypted
+secret store, then deploy:
+
+```bash
+cd worker/
+wrangler secret put OPENAI_API_KEY   # paste your key when prompted
+wrangler deploy
+# → Deployed: https://resume-chat.resume-chat.workers.dev
+```
+
+Test it immediately from the terminal:
+
+```bash
+curl -X POST https://resume-chat.resume-chat.workers.dev \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is his current job?"}'
+# → {"reply":"Guillaume is currently a Regional Economist at the Banque de France…"}
+```
+
+---
+
+## Part 2 — The chat widget
+
+The widget is a raw HTML block embedded directly in `index.qmd` using
+Quarto's `{=html}` fence. It has two parts: markup and JavaScript.
+
+:::{.cr-section}
+
+The complete widget — HTML structure up top, self-contained JavaScript
+below. Let's walk through it. @cr-widget
+
+:::{#cr-widget}
+```html
+<div id="chat-box">
+  <div id="chat-messages">
+    <div class="chat-msg bot">
+      Hi! I'm an AI assistant. Ask me anything
+      about Guillaume's background. 👋
+    </div>
+  </div>
+  <div id="chat-input-row">
+    <input id="chat-input" type="text"
+           placeholder="e.g. What's his Python experience?"
+           autocomplete="off" />
+    <button id="chat-send">Send</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  const WORKER_URL = "https://resume-chat.resume-chat.workers.dev";
+
+  const msgs  = document.getElementById("chat-messages");
+  const input = document.getElementById("chat-input");
+  const send  = document.getElementById("chat-send");
+  let history = [];
+  let busy    = false;
+
+  send.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); sendMessage();
+    }
+  });
+
+  function appendMsg(text, role) {
+    const div = document.createElement("div");
+    div.className = `chat-msg ${role}`;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text || busy) return;
+    busy = true; send.disabled = true; input.value = "";
+
+    appendMsg(text, "user");
+    const thinking = appendMsg("Thinking…", "bot typing");
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, history }),
+      });
+      const data = await res.json();
+      const reply = data.reply || data.error || "Something went wrong.";
+      thinking.className = "chat-msg bot";
+      thinking.textContent = reply;
+      history.push({ role: "user",      content: text  });
+      history.push({ role: "assistant", content: reply });
+    } catch {
+      thinking.className = "chat-msg bot";
+      thinking.textContent = "⚠️ Could not reach the assistant.";
+    }
+
+    busy = false; send.disabled = false;
+    input.focus(); msgs.scrollTop = msgs.scrollHeight;
+  }
+})();
+</script>
+```
+:::
+
+**The HTML structure** is minimal on purpose. `#chat-box` is a flex column:
+`#chat-messages` scrolls vertically as the conversation grows; `#chat-input-row`
+stays pinned at the bottom. No toggles, no overlays — the box lives inline in
+the page, right below the landing page text. [@cr-widget]{highlight="1-14"}
+
+**`WORKER_URL`** is the only value you need to change when you adapt this for
+your own site. Everything else is generic. [@cr-widget]{highlight="18"}
+
+**DOM references and state** are grabbed once at startup and kept in
+closured variables. `history` accumulates the conversation; `busy` is a
+simple mutex that prevents double-sends while a fetch is in flight.
+[@cr-widget]{highlight="20-24"}
+
+**Event listeners** wire up two ways to submit: clicking Send and pressing
+Enter (but not Shift+Enter, which might be used for line breaks in other
+contexts). [@cr-widget]{highlight="26-31"}
+
+**`appendMsg`** is a small factory: it creates a `div`, stamps it with the
+right CSS class (`user` or `bot`), appends it to the message area, and
+scrolls to the bottom. It returns the element so the caller can mutate it
+later (e.g. replace "Thinking…" with the actual reply).
+[@cr-widget]{highlight="33-40"}
+
+**`sendMessage`** opens with a guard clause — if the input is empty or a
+fetch is already running, it exits immediately. Then it clears the input,
+renders the user bubble, and renders a "Thinking…" placeholder that will be
+replaced in-place once the response arrives. [@cr-widget]{highlight="42-48"}
+
+**The fetch** posts `{ message, history }` to the Worker. On success, the
+placeholder element is updated directly: its class changes from `bot typing`
+(italic, dimmed) to `bot`, and its text is replaced with the reply. Both
+sides of the exchange are then pushed into `history` for the next round.
+[@cr-widget]{highlight="50-61"}
+
+**Error handling and cleanup** cover the case where the Worker is unreachable
+(network error, Worker down). After either path, the busy flag is reset, the
+Send button re-enabled, and focus returned to the input so the visitor can
+keep typing without reaching for the mouse. [@cr-widget]{highlight="62-68"}
+
+:::
+
+### Styles
+
+The widget styles live in `assets/dark.scss` alongside the rest of the site
+theme, so they share the same SCSS palette variables and compile into the
+same stylesheet:
+
+```scss
+$chat-accent:       $phosphor-green;
+$chat-accent-hover: darken($phosphor-green, 12%);
+
+#chat-box {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid $board-lighter;
+  margin-top: 2rem;
+}
+
+#chat-messages {
+  height: 320px;
+  overflow-y: auto;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: $board-dark;
+}
+
+.chat-msg {
+  max-width: 85%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.6rem;
+
+  &.user  { align-self: flex-end;  background: $chat-accent; color: $board-darkest; }
+  &.bot   { align-self: flex-start; background: $board-light; color: $chalk; }
+  &.typing { opacity: 0.6; font-style: italic; }
+}
+
+#chat-input-row {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.6rem 0.75rem;
+  border-top: 1px solid $board-lighter;
+  background: $board-dark;
+}
+
+#chat-send {
+  background: $chat-accent;
+  color: $board-darkest;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  &:hover    { background: $chat-accent-hover; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+```
+
+Because colours are SCSS variables compiled into the theme, the widget
+inherits your palette automatically — no JavaScript needed for dark/light
+switching.
+
+---
+
+## Part 3 — Integrating with Quarto
+
+Quarto's `{=html}` raw block passes content through to the rendered page
+verbatim. Drop the widget anywhere in a `.qmd` file:
+
+````qmd
+```{=html}
+<div id="chat-box">
+  …
+</div>
+<script>
+(function () {
+  const WORKER_URL = "https://resume-chat.resume-chat.workers.dev";
+  …
+})();
+</script>
+```
+````
+
+Because the block is scoped to `index.qmd`, the widget only appears on the
+landing page — not on blog posts or teaching pages, where it would be out of
+place. If you later want it site-wide, Quarto's `include-after-body` option
+in `_quarto.yml` can inject an HTML file into every page instead.
+
+---
+
+## Putting it all together
+
+```bash
+# 1. Install Wrangler
+npm install -g wrangler
+
+# 2. Authenticate with Cloudflare (creates a free account if needed)
+wrangler login
+
+# 3. Deploy the Worker
+cd worker/
+wrangler deploy
+# Note the URL printed: https://resume-chat.<subdomain>.workers.dev
+
+# 4. Store your OpenAI API key
+wrangler secret put OPENAI_API_KEY
+# Paste your key when prompted
+
+# 5. Update the widget with your Worker URL
+# Open index.qmd and change:
+#   const WORKER_URL = "https://resume-chat.YOUR-SUBDOMAIN.workers.dev";
+# to your actual URL.
+
+# 6. Rebuild the landing page
+cd ..
+quarto render index.qmd
+
+# 7. Publish
+git add -A
+git commit -m "Add AI résumé chat assistant"
+git push
+```
+
+---
+
+## What to customise
+
+**Change the accent colour** — open `assets/dark.scss` and change the
+`$chat-accent` variable to any colour in your palette.
+
+**Update the résumé content** — open `worker/index.js` and edit the
+`SYSTEM_PROMPT` string. Then run `wrangler deploy` again to push the update.
+The website itself does not need to be rebuilt.
+
+**Show the widget on every page** — instead of embedding it in `index.qmd`,
+use Quarto's `include-after-body` option in `_quarto.yml`:
+
+```yaml
+format:
+  html:
+    include-after-body: _partials/chat-widget.html
+```
+
+Move the HTML+JS block to `_partials/chat-widget.html` and `quarto render`
+will inject it at the bottom of every page.
+
+**Tighten the CORS policy** — if you only want your own domain to call the
+Worker, change the header in `worker/index.js`:
+
+```js
+"Access-Control-Allow-Origin": "https://ggilles.dev",
+```
+
+**Swap the model** — replace `"gpt-4o-mini"` with `"gpt-4o"` for higher
+quality answers (at a higher cost), or try another OpenAI model depending on
+your needs.
+
+---
+
+## Closing thoughts
+
+The whole implementation is about 150 lines of code spread across three files
+(`worker/index.js`, `assets/dark.scss`, and the raw HTML block in `index.qmd`).
+Despite its small footprint, it covers several important concepts that show
+up in many real-world projects: serverless functions, CORS, secret management,
+prompt engineering, and progressive enhancement (the site works perfectly for
+visitors who never open the chat).
+
+If you replicate this on your own site, feel free to open a
+[GitHub issue](https://github.com/guillaumegilles/guillaumegilles.github.io)
+or reach out on [LinkedIn](https://www.linkedin.com/in/guillaumegilles) — I'd be happy to help you debug it.
+
+```{=html}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const toc = document.querySelector('#TOC, .sidebar.toc-left, nav[role="doc-toc"]');
+  const crSections = document.querySelectorAll('.cr-section');
+  if (!toc || !crSections.length) return;
+  const observer = new IntersectionObserver((entries) => {
+    const anyVisible = entries.some(e => e.isIntersecting);
+    toc.style.visibility = anyVisible ? 'hidden' : 'visible';
+    toc.style.opacity    = anyVisible ? '0'       : '1';
+    toc.style.transition = 'opacity 0.2s, visibility 0.2s';
+  }, { threshold: 0 });
+  crSections.forEach(s => observer.observe(s));
+});
+</script>
+```
