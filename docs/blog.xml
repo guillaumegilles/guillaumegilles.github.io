@@ -27,8 +27,7 @@
 <p>An AI assistant changes that dynamic. Instead of making the visitor do the work, you let them ask in plain language: <em>“Does he have any experience with time-series forecasting?”</em> or <em>“What level does he teach at?”</em> and get a direct, personalised answer in seconds.</p>
 <p>The goal of this post is to build exactly that, in a way that is:</p>
 <ul>
-<li><strong>Free (or nearly so)</strong> — Cloudflare Workers has a generous free tier (100,000 requests/day); OpenAI costs fractions of a cent per conversation.</li>
-<li><strong>Private</strong> — your OpenAI key never touches the browser; only your Worker ever sees it.</li>
+<li><strong>Free</strong> — Cloudflare Workers has a generous free tier (100,000 requests/day); Cloudflare Workers AI also runs on the free tier, so this stack costs nothing to operate.</li>
 <li><strong>Maintenance-free</strong> — no server to patch, no database, no uptime to worry about.</li>
 <li><strong>Portable</strong> — the approach works with any static site generator (Quarto, Hugo, Jekyll, plain HTML…).</li>
 </ul>
@@ -42,7 +41,7 @@
 Chat widget (HTML/JS)
       │  2. POST { message, history } to Worker URL
       ▼
-Cloudflare Worker  ──►  OpenAI API
+Cloudflare Worker  ──►  Cloudflare Workers AI
       │                     │
       │  3. system prompt   │  4. returns answer
       │     + message       │
@@ -51,8 +50,8 @@ Cloudflare Worker  ──►  OpenAI API
       ▼
 Chat widget displays reply</code></pre>
 <p><strong>The widget</strong> is an inline HTML+JS block in <code>index.qmd</code>. It captures the visitor’s message and sends it to the Worker.</p>
-<p><strong>The Worker</strong> is a tiny JavaScript function running on Cloudflare’s global edge network. It prepends a <em>system prompt</em> containing your full background, then forwards the conversation to OpenAI using your secret API key.</p>
-<p><strong>The key insight</strong> is that the browser never talks to OpenAI directly — your API key stays server-side, and you can add rate limits or filters later if you need them.</p>
+<p><strong>The Worker</strong> is a tiny JavaScript function running on Cloudflare’s global edge network. It prepends a <em>system prompt</em> containing your full background, then forwards the conversation to Cloudflare Workers AI using the <code>env.AI</code> binding — no external API key required.</p>
+<p><strong>The key insight</strong> is that the browser never talks to the AI model directly — everything goes through your Worker, where you can add rate limits or filters later if you need them.</p>
 <hr>
 </section>
 <section id="part-1-the-cloudflare-worker" class="level2">
@@ -68,108 +67,133 @@ background-color: null;
 font-style: inherit;">wrangler</span> login   <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># opens a browser window for OAuth</span></span></code></pre></div>
-<p>The project needs two files inside a <code>worker/</code> directory at your site root. <code>wrangler.toml</code> is the configuration:</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><span class="dt" style="color: #AD0000;
+<p>The project needs two files inside a <code>worker/</code> directory at your site root.</p>
+<pre><code>website/
+├── assets/
+│   └── dark.scss          # site theme — includes chat widget styles
+├── posts/
+│   └── ai-resume-chat/
+│       └── index.qmd      # this post
+├── worker/
+│   ├── index.js           # Cloudflare Worker — calls Workers AI, returns reply
+│   └── wrangler.toml      # Worker config — AI binding, model var, deployment
+├── _quarto.yml            # site-wide Quarto config
+└── index.qmd              # landing page — embeds the chat widget</code></pre>
+<p><code>wrangler.toml</code> is the configuration:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">name</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"resume-chat"</span></span>
-<span id="cb3-2"><span class="dt" style="color: #AD0000;
+<span id="cb4-2"><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">main</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"index.js"</span></span>
-<span id="cb3-3"><span class="dt" style="color: #AD0000;
+<span id="cb4-3"><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">compatibility_date</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"2024-09-01"</span></span></code></pre></div>
-<p><code>name</code> sets the subdomain (<code>resume-chat.&lt;account&gt;.workers.dev</code>); <code>main</code> points to the Worker entry-point. That’s all the configuration needed.</p>
+font-style: inherit;">"2024-09-01"</span></span>
+<span id="cb4-4"></span>
+<span id="cb4-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[ai]</span></span>
+<span id="cb4-6"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">binding</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AI"</span></span>
+<span id="cb4-7"></span>
+<span id="cb4-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[vars]</span></span>
+<span id="cb4-9"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">AI_MODEL</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"@cf/meta/llama-3.1-8b-instruct"</span></span></code></pre></div>
+<p><code>name</code> sets the subdomain (<code>resume-chat.&lt;account&gt;.workers.dev</code>); <code>main</code> points to the Worker entry-point. The <code>[ai]</code> binding gives the Worker access to <code>env.AI</code> — Cloudflare’s built-in AI runtime, no external API key needed. <code>AI_MODEL</code> in <code>[vars]</code> makes the model configurable: change it in <code>wrangler.toml</code> and redeploy without touching any code.</p>
 <p>The real work happens in <code>index.js</code>. Scroll through the walkthrough below.</p>
 <div class="cr-section cr-column-screen sidebar-left">
 <div class="narrative-col">
-<div class="trigger new-trigger" data-focus-on="cr-worker">
+<div class="trigger new-trigger" data-focus-on="cr-prompt">
 <div class="narrative">
 <p>This is the complete <code>worker/index.js</code>. Every line has a job — let’s go through them one by one.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="1-7">
+<div class="trigger new-trigger" data-focus-on="cr-prompt">
 <div class="narrative">
 <p><strong>The system prompt</strong> is the most important part of the setup. It is prepended to <em>every</em> conversation before the visitor’s message. The instruction <em>“based strictly on the information below”</em> keeps the model from hallucinating anything that isn’t in your résumé. Keep this section updated whenever your situation changes.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="9-13">
+<div class="trigger new-trigger" data-focus-on="cr-cors">
 <div class="narrative">
-<p><strong>CORS headers</strong> tell the browser that your Worker accepts cross-origin requests. Your widget lives on <code>ggilles.dev</code>; the Worker lives on <code>workers.dev</code> — without these headers, the browser would silently block every fetch. Setting <code>https://ggilles.dev</code> restrict access to the worker only from your exact domain.</p>
+<p><strong>CORS headers</strong> tell the browser that your Worker accepts cross-origin requests. Your widget lives on <code>ggilles.dev</code>; the Worker lives on <code>workers.dev</code> — without these headers, the browser would silently block every fetch. Setting <code>https://ggilles.dev</code> restricts access to the Worker only from your exact domain.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="18-20">
+<div class="trigger new-trigger" data-focus-on="cr-preflight">
 <div class="narrative">
-<p><strong>The OPTIONS preflight</strong> is an automatic browser check sent before every cross-origin POST: <em>“Are you OK with this?”</em> The Worker must respond to it correctly, or the real request never goes through.</p>
+<p><strong>The OPTIONS preflight</strong> is an automatic browser check sent before every cross-origin POST: <em>“Are you OK with this?”</em> The Worker must respond to it correctly, or the real request never goes through. Parsing the body is straightforward but worth wrapping in a try/catch — you want clear error responses rather than uncaught exceptions if something malformed hits the endpoint.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="22-29">
+<div class="trigger new-trigger" data-focus-on="cr-messages">
 <div class="narrative">
-<p><strong>Parsing the body</strong> is straightforward but worth wrapping in a try/catch. Cloudflare Workers are edge-deployed code — you want clear error responses rather than uncaught exceptions if something malformed hits the endpoint. </p>
+<p><strong>Building the messages array</strong> is where context lives. The system prompt anchors every conversation. <code>history.slice(-6)</code> keeps the last three exchanges (six messages: three user, three assistant) so the model can handle follow-up questions without ballooning the token count.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="31-35">
+<div class="trigger new-trigger" data-focus-on="cr-ai">
 <div class="narrative">
-<p><strong>Building the messages array</strong> is where context lives. The system prompt anchors every conversation. <code>history.slice(-6)</code> keeps the last three exchanges (six messages: three user, three assistant) so the model can handle follow-up questions without ballooning the token count. </p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="37-51">
-<div class="narrative">
-<p><strong>Calling OpenAI</strong> uses <code>gpt-4o-mini</code> — fast, cheap, and well-suited to short Q&amp;A. <code>max_tokens: 400</code> caps reply length so the chat box doesn’t overflow. <code>temperature: 0.4</code> keeps answers factual rather than creative. Crucially, <code>env.OPENAI_API_KEY</code> reads from Cloudflare’s encrypted secret store — the key never appears in source code.</p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="53-58">
-<div class="narrative">
-<p><strong>Returning the reply</strong> strips out the OpenAI response envelope and sends the browser a clean <code>{ reply: "…" }</code> JSON object, with the same CORS headers attached so the browser actually accepts it.</p>
+<p><strong>Calling Cloudflare Workers AI</strong> uses <code>env.AI.run()</code> with the model read from <code>env.AI_MODEL</code> (falling back to <code>@cf/meta/llama-3.1-8b-instruct</code> if the variable is unset). Keeping the model name in <code>wrangler.toml</code> means you can swap it without touching the Worker code — just edit <code>[vars]</code> and redeploy. <code>max_tokens: 400</code> caps reply length. The call is wrapped in a try/catch so failures return a clean, user-friendly error. On success, the Worker sends the browser a clean <code>{ reply: "…" }</code> JSON object with CORS headers attached so the browser actually accepts it.</p>
 </div>
 </div>
 </div>
 <div class="sticky-col">
 <div class="sticky-col-stack">
-<div id="cr-worker" class="sticky">
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+<div id="cr-prompt" class="sticky">
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> SYSTEM_PROMPT <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">`You are an AI assistant representing Guillaume Gilles.</span></span>
-<span id="cb4-2"><span class="vs" style="color: #20794D;
+<span id="cb5-2"><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">Answer questions based strictly on the information below.</span></span>
-<span id="cb4-3"><span class="vs" style="color: #20794D;
+<span id="cb5-3"><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">Be concise, friendly, and professional.</span></span>
-<span id="cb4-4"><span class="vs" style="color: #20794D;
+<span id="cb5-4"><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">If asked about something not covered, say you don't have that information.</span></span>
-<span id="cb4-5"></span>
-<span id="cb4-6"><span class="vs" style="color: #20794D;
+<span id="cb5-5"></span>
+<span id="cb5-6"><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">--- PROFILE / EXPERIENCE / EDUCATION / SKILLS ---</span></span>
-<span id="cb4-7"><span class="vs" style="color: #20794D;
+<span id="cb5-7"><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">…`</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb4-8"></span>
-<span id="cb4-9"><span class="kw" style="color: #003B4F;
+font-style: inherit;">;</span></span></code></pre></div>
+</div>
+<div id="cr-cors" class="sticky">
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> CORS_HEADERS <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
-<span id="cb4-10">  <span class="st" style="color: #20794D;
+<span id="cb6-2">  <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Access-Control-Allow-Origin"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -178,7 +202,7 @@ background-color: null;
 font-style: inherit;">"https://ggilles.dev"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb4-11">  <span class="st" style="color: #20794D;
+<span id="cb6-3">  <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Access-Control-Allow-Methods"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -187,7 +211,7 @@ background-color: null;
 font-style: inherit;">"POST, OPTIONS"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb4-12">  <span class="st" style="color: #20794D;
+<span id="cb6-4">  <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Access-Control-Allow-Headers"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -196,24 +220,25 @@ background-color: null;
 font-style: inherit;">"Content-Type"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb4-13">}<span class="op" style="color: #5E5E5E;
+<span id="cb6-5">}<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb4-14"></span>
-<span id="cb4-15"><span class="im" style="color: #00769E;
+font-style: inherit;">;</span></span></code></pre></div>
+</div>
+<div id="cr-preflight" class="sticky">
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">export</span> <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">default</span> {</span>
-<span id="cb4-16">  <span class="kw" style="color: #003B4F;
+<span id="cb7-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">async</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">fetch</span>(request<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> env) {</span>
-<span id="cb4-17"></span>
-<span id="cb4-18">    <span class="cf" style="color: #003B4F;
+<span id="cb7-3"></span>
+<span id="cb7-4">    <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">if</span> (request<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -224,7 +249,7 @@ background-color: null;
 font-style: inherit;">===</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"OPTIONS"</span>) {</span>
-<span id="cb4-19">      <span class="cf" style="color: #003B4F;
+<span id="cb7-5">      <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">return</span> <span class="kw" style="color: #003B4F;
 background-color: null;
@@ -241,17 +266,17 @@ background-color: null;
 font-style: inherit;">:</span> CORS_HEADERS })<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb4-20">    }</span>
-<span id="cb4-21"></span>
-<span id="cb4-22">    <span class="kw" style="color: #003B4F;
+<span id="cb7-6">    }</span>
+<span id="cb7-7"></span>
+<span id="cb7-8">    <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">let</span> body<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb4-23">    <span class="cf" style="color: #003B4F;
+<span id="cb7-9">    <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">try</span> {</span>
-<span id="cb4-24">      body <span class="op" style="color: #5E5E5E;
+<span id="cb7-10">      body <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -262,10 +287,10 @@ background-color: null;
 font-style: inherit;">json</span>()<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb4-25">    } <span class="cf" style="color: #003B4F;
+<span id="cb7-11">    } <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">catch</span> {</span>
-<span id="cb4-26">      <span class="cf" style="color: #003B4F;
+<span id="cb7-12">      <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">return</span> <span class="kw" style="color: #003B4F;
 background-color: null;
@@ -284,9 +309,9 @@ background-color: null;
 font-style: inherit;">400</span> })<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb4-27">    }</span>
-<span id="cb4-28"></span>
-<span id="cb4-29">    <span class="kw" style="color: #003B4F;
+<span id="cb7-13">    }</span>
+<span id="cb7-14"></span>
+<span id="cb7-15">    <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> { message<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -297,13 +322,20 @@ background-color: null;
 font-style: inherit;">=</span> body<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb4-30"></span>
-<span id="cb4-31">    <span class="kw" style="color: #003B4F;
+<span id="cb7-16">  }<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-17">}<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+</div>
+<div id="cr-messages" class="sticky">
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb8-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> messages <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
-<span id="cb4-32">      { <span class="dt" style="color: #AD0000;
+<span id="cb8-2">  { <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">role</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -318,7 +350,7 @@ background-color: null;
 font-style: inherit;">:</span> SYSTEM_PROMPT }<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb4-33">      <span class="op" style="color: #5E5E5E;
+<span id="cb8-3">  <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">...</span>history<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -331,7 +363,7 @@ background-color: null;
 font-style: inherit;">6</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb4-34">      { <span class="dt" style="color: #AD0000;
+<span id="cb8-4">  { <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">role</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -346,39 +378,104 @@ background-color: null;
 font-style: inherit;">:</span> message }<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb4-35">    ]<span class="op" style="color: #5E5E5E;
+<span id="cb8-5">]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+</div>
+<div id="cr-ai" class="sticky">
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb9-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> reply<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb4-36"></span>
-<span id="cb4-37">    <span class="kw" style="color: #003B4F;
+<span id="cb9-2"><span class="cf" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">const</span> openaiRes <span class="op" style="color: #5E5E5E;
+font-style: inherit;">try</span> {</span>
+<span id="cb9-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> aiRes <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">await</span> env<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">fetch</span>(</span>
-<span id="cb4-38">      <span class="st" style="color: #20794D;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">"https://api.openai.com/v1/chat/completions"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">AI</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">,</span> {</span>
-<span id="cb4-39">        <span class="dt" style="color: #AD0000;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">method</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">run</span>(</span>
+<span id="cb9-4">    env<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">AI_MODEL</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">??</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"@cf/meta/llama-3.1-8b-instruct"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb9-5">    { messages<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">max_tokens</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span> }</span>
+<span id="cb9-6">  )<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb9-7">  reply <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> aiRes<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">response</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb9-8">} <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">catch</span> (err) {</span>
+<span id="cb9-9">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Response</span>(</span>
+<span id="cb9-10">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">JSON</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stringify</span>({ <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">error</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"POST"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">"AI service unavailable. Please try again later."</span> })<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb4-40">        <span class="dt" style="color: #AD0000;
+<span id="cb9-11">    { <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">status</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">502</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">headers</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">:</span> {</span>
-<span id="cb4-41">          <span class="st" style="color: #20794D;
+font-style: inherit;">:</span> { <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Content-Type"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -386,114 +483,15 @@ font-style: inherit;">:</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"application/json"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb4-42">          <span class="dt" style="color: #AD0000;
+font-style: inherit;">,</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">Authorization</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span> <span class="vs" style="color: #20794D;
-background-color: null;
-font-style: inherit;">`Bearer </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">${</span>env<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">OPENAI_API_KEY</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="vs" style="color: #20794D;
-background-color: null;
-font-style: inherit;">`</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb4-43">        }<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb4-44">        <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">body</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">JSON</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">stringify</span>({</span>
-<span id="cb4-45">          <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">model</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"gpt-4o-mini"</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb4-46">          messages<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb4-47">          <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">max_tokens</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">400</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb4-48">          <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">temperature</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.4</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb4-49">        })<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb4-50">      }</span>
-<span id="cb4-51">    )<span class="op" style="color: #5E5E5E;
+font-style: inherit;">...</span>CORS_HEADERS } }</span>
+<span id="cb9-12">  )<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb4-52"></span>
-<span id="cb4-53">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">const</span> data <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">await</span> openaiRes<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">json</span>()<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb4-54">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">const</span> reply <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> data<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">choices</span>[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>]<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">message</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">content</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb4-55"></span>
-<span id="cb4-56">    <span class="cf" style="color: #003B4F;
+<span id="cb9-13">}</span>
+<span id="cb9-14"></span>
+<span id="cb9-15"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">return</span> <span class="kw" style="color: #003B4F;
 background-color: null;
@@ -508,7 +506,7 @@ background-color: null;
 font-style: inherit;">stringify</span>({ reply })<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> {</span>
-<span id="cb4-57">      <span class="dt" style="color: #AD0000;
+<span id="cb9-16">  <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">headers</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -525,57 +523,46 @@ background-color: null;
 font-style: inherit;">...</span>CORS_HEADERS }<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb4-58">    })<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb4-59">  }<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb4-60">}<span class="op" style="color: #5E5E5E;
+<span id="cb9-17">})<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </div>
 </div>
 </div>
 </div>
-<section id="storing-your-key-and-deploying" class="level3">
-<h3 class="anchored" data-anchor-id="storing-your-key-and-deploying">Storing your key and deploying</h3>
-<p>Never put secrets in code. Store the OpenAI key in Cloudflare’s encrypted secret store, then deploy:</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="bu" style="color: null;
+<section id="deploying" class="level3">
+<h3 class="anchored" data-anchor-id="deploying">Deploying</h3>
+<p>No secrets to manage — the AI binding is configured in <code>wrangler.toml</code> and Cloudflare handles everything else. Just deploy:</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">cd</span> worker/</span>
-<span id="cb5-2"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">wrangler</span> secret put OPENAI_API_KEY   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># paste your key when prompted</span></span>
-<span id="cb5-3"><span class="ex" style="color: null;
+<span id="cb10-2"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">wrangler</span> deploy</span>
-<span id="cb5-4"><span class="co" style="color: #5E5E5E;
+<span id="cb10-3"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># → Deployed: https://resume-chat.resume-chat.workers.dev</span></span></code></pre></div>
 <p>Test it immediately from the terminal:</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">curl</span> <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-X</span> POST https://resume-chat.resume-chat.workers.dev <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">\</span></span>
-<span id="cb6-2">  <span class="at" style="color: #657422;
+<span id="cb11-2">  <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-H</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Content-Type: application/json"</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">\</span></span>
-<span id="cb6-3">  <span class="at" style="color: #657422;
+<span id="cb11-3">  <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-d</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'{"message": "What is his current job?"}'</span></span>
-<span id="cb6-4"><span class="co" style="color: #5E5E5E;
+<span id="cb11-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># → {"reply":"Guillaume is currently a Regional Economist at the Banque de France…"}</span></span></code></pre></div>
 <hr>
@@ -586,56 +573,36 @@ font-style: inherit;"># → {"reply":"Guillaume is currently a Regional Economis
 <p>The widget is a raw HTML block embedded directly in <code>index.qmd</code> using Quarto’s <code>{=html}</code> fence. It has two parts: markup and JavaScript.</p>
 <div class="cr-section cr-column-screen sidebar-left">
 <div class="narrative-col">
-<div class="trigger new-trigger" data-focus-on="cr-widget">
+<div class="trigger new-trigger" data-focus-on="cr-html">
 <div class="narrative">
 <p>The complete widget — HTML structure up top, self-contained JavaScript below. Let’s walk through it.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="1-14">
+<div class="trigger new-trigger" data-focus-on="cr-html">
 <div class="narrative">
 <p><strong>The HTML structure</strong> is minimal on purpose. <code>#chat-box</code> is a flex column: <code>#chat-messages</code> scrolls vertically as the conversation grows; <code>#chat-input-row</code> stays pinned at the bottom. No toggles, no overlays — the box lives inline in the page, right below the landing page text.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="18">
+<div class="trigger new-trigger" data-focus-on="cr-state">
 <div class="narrative">
-<p><strong><code>WORKER_URL</code></strong> is the only value you need to change when you adapt this for your own site. Everything else is generic.</p>
+<p><strong><code>WORKER_URL</code></strong> is the only value you need to change when you adapt this for your own site. <code>history</code> accumulates the conversation turn by turn; <code>busy</code> is a simple mutex that prevents double-sends while a fetch is in flight.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="20-24">
+<div class="trigger new-trigger" data-focus-on="cr-append">
 <div class="narrative">
-<p><strong>DOM references and state</strong> are grabbed once at startup and kept in closured variables. <code>history</code> accumulates the conversation; <code>busy</code> is a simple mutex that prevents double-sends while a fetch is in flight. </p>
+<p><strong><code>appendMsg</code></strong> is a small factory: it creates a <code>div</code>, stamps it with the right CSS class (<code>user</code> or <code>bot</code>), appends it to the message area, and scrolls to the bottom. It returns the element so the caller can mutate it later — e.g.&nbsp;replace “Thinking…” with the actual reply in place.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="26-31">
+<div class="trigger new-trigger" data-focus-on="cr-send">
 <div class="narrative">
-<p><strong>Event listeners</strong> wire up two ways to submit: clicking Send and pressing Enter (but not Shift+Enter, which might be used for line breaks in other contexts).</p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="33-40">
-<div class="narrative">
-<p><strong><code>appendMsg</code></strong> is a small factory: it creates a <code>div</code>, stamps it with the right CSS class (<code>user</code> or <code>bot</code>), appends it to the message area, and scrolls to the bottom. It returns the element so the caller can mutate it later (e.g.&nbsp;replace “Thinking…” with the actual reply). </p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="42-48">
-<div class="narrative">
-<p><strong><code>sendMessage</code></strong> opens with a guard clause — if the input is empty or a fetch is already running, it exits immediately. Then it clears the input, renders the user bubble, and renders a “Thinking…” placeholder that will be replaced in-place once the response arrives.</p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="50-61">
-<div class="narrative">
-<p><strong>The fetch</strong> posts <code>{ message, history }</code> to the Worker. On success, the placeholder element is updated directly: its class changes from <code>bot typing</code> (italic, dimmed) to <code>bot</code>, and its text is replaced with the reply. Both sides of the exchange are then pushed into <code>history</code> for the next round. </p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="62-68">
-<div class="narrative">
-<p><strong>Error handling and cleanup</strong> cover the case where the Worker is unreachable (network error, Worker down). After either path, the busy flag is reset, the Send button re-enabled, and focus returned to the input so the visitor can keep typing without reaching for the mouse.</p>
+<p><strong><code>sendMessage</code></strong> opens with a guard clause — if the input is empty or a fetch is already running, it exits immediately. It then clears the input, renders the user bubble, and shows a “Thinking…” placeholder that gets replaced in-place once the response arrives. Both sides of the exchange are pushed into <code>history</code> for the next round. Error handling covers the case where the Worker is unreachable: after either path the busy flag is reset, the Send button re-enabled, and focus returned to the input.</p>
 </div>
 </div>
 </div>
 <div class="sticky-col">
 <div class="sticky-col-stack">
-<div id="cr-widget" class="sticky">
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb7-1"><span class="dt" style="color: #AD0000;
+<div id="cr-html" class="sticky">
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb12-1"><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -648,7 +615,7 @@ background-color: null;
 font-style: inherit;">"chat-box"</span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&gt;</span></span>
-<span id="cb7-2">  <span class="dt" style="color: #AD0000;
+<span id="cb12-2">  <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -661,7 +628,7 @@ background-color: null;
 font-style: inherit;">"chat-messages"</span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&gt;</span></span>
-<span id="cb7-3">    <span class="dt" style="color: #AD0000;
+<span id="cb12-3">    <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -674,23 +641,23 @@ background-color: null;
 font-style: inherit;">"chat-msg bot"</span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&gt;</span></span>
-<span id="cb7-4">      Hi! I'm an AI assistant. Ask me anything</span>
-<span id="cb7-5">      about Guillaume's background. 👋</span>
-<span id="cb7-6">    <span class="dt" style="color: #AD0000;
+<span id="cb12-4">      Hi! I'm an AI assistant. Ask me anything</span>
+<span id="cb12-5">      about Guillaume's background. 👋</span>
+<span id="cb12-6">    <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">div</span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&gt;</span></span>
-<span id="cb7-7">  <span class="dt" style="color: #AD0000;
+<span id="cb12-7">  <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">div</span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&gt;</span></span>
-<span id="cb7-8">  <span class="dt" style="color: #AD0000;
+<span id="cb12-8">  <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -703,7 +670,7 @@ background-color: null;
 font-style: inherit;">"chat-input-row"</span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&gt;</span></span>
-<span id="cb7-9">    <span class="dt" style="color: #AD0000;
+<span id="cb12-9">    <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -720,14 +687,14 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"text"</span></span>
-<span id="cb7-10"><span class="ot" style="color: #003B4F;
+<span id="cb12-10"><span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">           placeholder</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"e.g. What's his Python experience?"</span></span>
-<span id="cb7-11"><span class="ot" style="color: #003B4F;
+<span id="cb12-11"><span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">           autocomplete</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -738,7 +705,7 @@ background-color: null;
 font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">/&gt;</span></span>
-<span id="cb7-12">    <span class="dt" style="color: #AD0000;
+<span id="cb12-12">    <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -757,32 +724,26 @@ background-color: null;
 font-style: inherit;">button</span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&gt;</span></span>
-<span id="cb7-13">  <span class="dt" style="color: #AD0000;
+<span id="cb12-13">  <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">div</span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&gt;</span></span>
-<span id="cb7-14"><span class="dt" style="color: #AD0000;
+<span id="cb12-14"><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">div</span><span class="dt" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb7-15"></span>
-<span id="cb7-16"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb7-17">(<span class="kw" style="color: #003B4F;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+</div>
+<div id="cr-state" class="sticky">
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb13-1">(<span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">function</span> () {</span>
-<span id="cb7-18">  <span class="kw" style="color: #003B4F;
+<span id="cb13-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> WORKER_URL <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -791,8 +752,8 @@ background-color: null;
 font-style: inherit;">"https://resume-chat.resume-chat.workers.dev"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-19"></span>
-<span id="cb7-20">  <span class="kw" style="color: #003B4F;
+<span id="cb13-3"></span>
+<span id="cb13-4">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> msgs  <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -807,7 +768,7 @@ background-color: null;
 font-style: inherit;">"chat-messages"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-21">  <span class="kw" style="color: #003B4F;
+<span id="cb13-5">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> input <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -822,7 +783,7 @@ background-color: null;
 font-style: inherit;">"chat-input"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-22">  <span class="kw" style="color: #003B4F;
+<span id="cb13-6">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> send  <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -837,14 +798,14 @@ background-color: null;
 font-style: inherit;">"chat-send"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-23">  <span class="kw" style="color: #003B4F;
+<span id="cb13-7">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">let</span> history <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> []<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-24">  <span class="kw" style="color: #003B4F;
+<span id="cb13-8">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">let</span> busy    <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -853,8 +814,8 @@ background-color: null;
 font-style: inherit;">false</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-25"></span>
-<span id="cb7-26">  send<span class="op" style="color: #5E5E5E;
+<span id="cb13-9"></span>
+<span id="cb13-10">  send<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -865,7 +826,7 @@ background-color: null;
 font-style: inherit;">,</span> sendMessage)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-27">  input<span class="op" style="color: #5E5E5E;
+<span id="cb13-11">  input<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -876,7 +837,7 @@ background-color: null;
 font-style: inherit;">,</span> (e) <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">=&gt;</span> {</span>
-<span id="cb7-28">    <span class="cf" style="color: #003B4F;
+<span id="cb13-12">    <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">if</span> (e<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -895,7 +856,7 @@ background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">shiftKey</span>) {</span>
-<span id="cb7-29">      e<span class="op" style="color: #5E5E5E;
+<span id="cb13-13">      e<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -906,19 +867,23 @@ background-color: null;
 font-style: inherit;">sendMessage</span>()<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-30">    }</span>
-<span id="cb7-31">  })<span class="op" style="color: #5E5E5E;
+<span id="cb13-14">    }</span>
+<span id="cb13-15">  })<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-32"></span>
-<span id="cb7-33">  <span class="kw" style="color: #003B4F;
+<span id="cb13-16">})()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+</div>
+<div id="cr-append" class="sticky">
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb14-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">appendMsg</span>(text<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> role) {</span>
-<span id="cb7-34">    <span class="kw" style="color: #003B4F;
+<span id="cb14-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> div <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -933,7 +898,7 @@ background-color: null;
 font-style: inherit;">"div"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-35">    div<span class="op" style="color: #5E5E5E;
+<span id="cb14-3">  div<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
 background-color: null;
@@ -950,7 +915,7 @@ background-color: null;
 font-style: inherit;">`</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-36">    div<span class="op" style="color: #5E5E5E;
+<span id="cb14-4">  div<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
 background-color: null;
@@ -959,14 +924,14 @@ background-color: null;
 font-style: inherit;">=</span> text<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-37">    msgs<span class="op" style="color: #5E5E5E;
+<span id="cb14-5">  msgs<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">appendChild</span>(div)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-38">    msgs<span class="op" style="color: #5E5E5E;
+<span id="cb14-6">  msgs<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
 background-color: null;
@@ -979,21 +944,22 @@ background-color: null;
 font-style: inherit;">scrollHeight</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-39">    <span class="cf" style="color: #003B4F;
+<span id="cb14-7">  <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">return</span> div<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-40">  }</span>
-<span id="cb7-41"></span>
-<span id="cb7-42">  <span class="kw" style="color: #003B4F;
+<span id="cb14-8">}</span></code></pre></div>
+</div>
+<div id="cr-send" class="sticky">
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb15-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">async</span> <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sendMessage</span>() {</span>
-<span id="cb7-43">    <span class="kw" style="color: #003B4F;
+<span id="cb15-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> text <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1008,7 +974,7 @@ background-color: null;
 font-style: inherit;">trim</span>()<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-44">    <span class="cf" style="color: #003B4F;
+<span id="cb15-3">  <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">if</span> (<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1019,7 +985,7 @@ background-color: null;
 font-style: inherit;">return</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-45">    busy <span class="op" style="color: #5E5E5E;
+<span id="cb15-4">  busy <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
 background-color: null;
@@ -1046,8 +1012,8 @@ background-color: null;
 font-style: inherit;">""</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-46"></span>
-<span id="cb7-47">    <span class="fu" style="color: #4758AB;
+<span id="cb15-5"></span>
+<span id="cb15-6">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">appendMsg</span>(text<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1056,7 +1022,7 @@ background-color: null;
 font-style: inherit;">"user"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-48">    <span class="kw" style="color: #003B4F;
+<span id="cb15-7">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> thinking <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1071,11 +1037,11 @@ background-color: null;
 font-style: inherit;">"bot typing"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-49"></span>
-<span id="cb7-50">    <span class="cf" style="color: #003B4F;
+<span id="cb15-8"></span>
+<span id="cb15-9">  <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">try</span> {</span>
-<span id="cb7-51">      <span class="kw" style="color: #003B4F;
+<span id="cb15-10">    <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> res <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1086,7 +1052,7 @@ background-color: null;
 font-style: inherit;">fetch</span>(WORKER_URL<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> {</span>
-<span id="cb7-52">        <span class="dt" style="color: #AD0000;
+<span id="cb15-11">      <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">method</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1095,7 +1061,7 @@ background-color: null;
 font-style: inherit;">"POST"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb7-53">        <span class="dt" style="color: #AD0000;
+<span id="cb15-12">      <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">headers</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1108,7 +1074,7 @@ background-color: null;
 font-style: inherit;">"application/json"</span> }<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb7-54">        <span class="dt" style="color: #AD0000;
+<span id="cb15-13">      <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">body</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1127,10 +1093,10 @@ background-color: null;
 font-style: inherit;">,</span> history })<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb7-55">      })<span class="op" style="color: #5E5E5E;
+<span id="cb15-14">    })<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-56">      <span class="kw" style="color: #003B4F;
+<span id="cb15-15">    <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> data <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1143,7 +1109,7 @@ background-color: null;
 font-style: inherit;">json</span>()<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-57">      <span class="kw" style="color: #003B4F;
+<span id="cb15-16">    <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> reply <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1164,7 +1130,7 @@ background-color: null;
 font-style: inherit;">"Something went wrong."</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-58">      thinking<span class="op" style="color: #5E5E5E;
+<span id="cb15-17">    thinking<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
 background-color: null;
@@ -1175,7 +1141,7 @@ background-color: null;
 font-style: inherit;">"chat-msg bot"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-59">      thinking<span class="op" style="color: #5E5E5E;
+<span id="cb15-18">    thinking<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
 background-color: null;
@@ -1184,7 +1150,7 @@ background-color: null;
 font-style: inherit;">=</span> reply<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-60">      history<span class="op" style="color: #5E5E5E;
+<span id="cb15-19">    history<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1203,7 +1169,7 @@ background-color: null;
 font-style: inherit;">:</span> text  })<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-61">      history<span class="op" style="color: #5E5E5E;
+<span id="cb15-20">    history<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1222,10 +1188,10 @@ background-color: null;
 font-style: inherit;">:</span> reply })<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-62">    } <span class="cf" style="color: #003B4F;
+<span id="cb15-21">  } <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">catch</span> {</span>
-<span id="cb7-63">      thinking<span class="op" style="color: #5E5E5E;
+<span id="cb15-22">    thinking<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
 background-color: null;
@@ -1236,7 +1202,7 @@ background-color: null;
 font-style: inherit;">"chat-msg bot"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-64">      thinking<span class="op" style="color: #5E5E5E;
+<span id="cb15-23">    thinking<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
 background-color: null;
@@ -1247,9 +1213,9 @@ background-color: null;
 font-style: inherit;">"⚠️ Could not reach the assistant."</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-65">    }</span>
-<span id="cb7-66"></span>
-<span id="cb7-67">    busy <span class="op" style="color: #5E5E5E;
+<span id="cb15-24">  }</span>
+<span id="cb15-25"></span>
+<span id="cb15-26">  busy <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
 background-color: null;
@@ -1266,7 +1232,7 @@ background-color: null;
 font-style: inherit;">false</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-68">    input<span class="op" style="color: #5E5E5E;
+<span id="cb15-27">  input<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1285,405 +1251,12 @@ background-color: null;
 font-style: inherit;">scrollHeight</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb7-69">  }</span>
-<span id="cb7-70">})()<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb7-71"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span></code></pre></div>
+<span id="cb15-28">}</span></code></pre></div>
 </div>
 </div>
 </div>
 </div>
-<section id="styles" class="level3">
-<h3 class="anchored" data-anchor-id="styles">Styles</h3>
-<p>The widget styles live in <code>assets/dark.scss</code> alongside the rest of the site theme, so they share the same SCSS palette variables and compile into the same stylesheet:</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode scss code-with-copy"><code class="sourceCode scss"><span id="cb8-1"><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$chat-accent</span>:       <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$phosphor-green</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-2"><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$chat-accent-hover</span>: <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">darken(</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$phosphor-green</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">12</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">%</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-3"></span>
-<span id="cb8-4"><span class="pp" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">#chat-box</span> {</span>
-<span id="cb8-5">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">display</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">flex</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-6">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">flex-direction</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">column</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-7">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">border-radius</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.75</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-8">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">overflow</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">hidden</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-9">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">border</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">px</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">solid</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$board-lighter</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-10">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">margin-top</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-11">}</span>
-<span id="cb8-12"></span>
-<span id="cb8-13"><span class="pp" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">#chat-messages</span> {</span>
-<span id="cb8-14">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">height</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">320</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-15">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">overflow-y</span>: <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">auto</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-16">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">padding</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.75</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-17">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">display</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">flex</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-18">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">flex-direction</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">column</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-19">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">gap</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.5</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-20">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">background</span>: <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$board-dark</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-21">}</span>
-<span id="cb8-22"></span>
-<span id="cb8-23"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">.chat-msg</span> {</span>
-<span id="cb8-24">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">max-width</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">85</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">%</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-25">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">padding</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.5</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.75</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-26">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">border-radius</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.6</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-27"></span>
-<span id="cb8-28">  <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">.user</span>  { <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">align-self</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">flex-end</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span>  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">background</span>: <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$chat-accent</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">color</span>: <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$board-darkest</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> }</span>
-<span id="cb8-29">  <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">.bot</span>   { <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">align-self</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">flex-start</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">background</span>: <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$board-light</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">color</span>: <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$chalk</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> }</span>
-<span id="cb8-30">  <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">.typing</span> { <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">opacity</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.6</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">font-style</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">italic</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> }</span>
-<span id="cb8-31">}</span>
-<span id="cb8-32"></span>
-<span id="cb8-33"><span class="pp" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">#chat-input-row</span> {</span>
-<span id="cb8-34">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">display</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">flex</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-35">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">gap</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.4</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-36">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">padding</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.6</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.75</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-37">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">border-top</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">px</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">solid</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$board-lighter</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-38">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">background</span>: <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$board-dark</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-39">}</span>
-<span id="cb8-40"></span>
-<span id="cb8-41"><span class="pp" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">#chat-send</span> {</span>
-<span id="cb8-42">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">background</span>: <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$chat-accent</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-43">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">color</span>: <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$board-darkest</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-44">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">border</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">none</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-45">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">border-radius</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.4</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-46">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">padding</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.4</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.75</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">rem</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-47">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">cursor</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">pointer</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb8-48">  <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span><span class="in" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:hover</span>    { <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">background</span>: <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">$chat-accent-hover</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> }</span>
-<span id="cb8-49">  <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span><span class="in" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:disabled</span> { <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">opacity</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.5</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">cursor</span>: <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">not-allowed</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> }</span>
-<span id="cb8-50">}</span></code></pre></div>
-<p>Because colours are SCSS variables compiled into the theme, the widget inherits your palette automatically — no JavaScript needed for dark/light switching.</p>
 <hr>
-</section>
 </section>
 <section id="part-3-integrating-with-quarto" class="level2">
 <h2 class="anchored" data-anchor-id="part-3-integrating-with-quarto">Part 3 — Integrating with Quarto</h2>
@@ -1704,106 +1277,95 @@ font-style: inherit;">;</span> }</span>
 </section>
 <section id="putting-it-all-together" class="level2">
 <h2 class="anchored" data-anchor-id="putting-it-all-together">Putting it all together</h2>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="co" style="color: #5E5E5E;
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># 1. Install Wrangler</span></span>
-<span id="cb10-2"><span class="ex" style="color: null;
+<span id="cb17-2"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">npm</span> install <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-g</span> wrangler</span>
-<span id="cb10-3"></span>
-<span id="cb10-4"><span class="co" style="color: #5E5E5E;
+<span id="cb17-3"></span>
+<span id="cb17-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># 2. Authenticate with Cloudflare (creates a free account if needed)</span></span>
-<span id="cb10-5"><span class="ex" style="color: null;
+<span id="cb17-5"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">wrangler</span> login</span>
-<span id="cb10-6"></span>
-<span id="cb10-7"><span class="co" style="color: #5E5E5E;
+<span id="cb17-6"></span>
+<span id="cb17-7"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># 3. Deploy the Worker</span></span>
-<span id="cb10-8"><span class="bu" style="color: null;
+font-style: inherit;"># 3. Deploy the Worker (the [ai] binding in wrangler.toml is all you need)</span></span>
+<span id="cb17-8"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">cd</span> worker/</span>
-<span id="cb10-9"><span class="ex" style="color: null;
+<span id="cb17-9"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">wrangler</span> deploy</span>
-<span id="cb10-10"><span class="co" style="color: #5E5E5E;
+<span id="cb17-10"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Note the URL printed: https://resume-chat.&lt;subdomain&gt;.workers.dev</span></span>
-<span id="cb10-11"></span>
-<span id="cb10-12"><span class="co" style="color: #5E5E5E;
+<span id="cb17-11"></span>
+<span id="cb17-12"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># 4. Store your OpenAI API key</span></span>
-<span id="cb10-13"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">wrangler</span> secret put OPENAI_API_KEY</span>
-<span id="cb10-14"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Paste your key when prompted</span></span>
-<span id="cb10-15"></span>
-<span id="cb10-16"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 5. Update the widget with your Worker URL</span></span>
-<span id="cb10-17"><span class="co" style="color: #5E5E5E;
+font-style: inherit;"># 4. Update the widget with your Worker URL</span></span>
+<span id="cb17-13"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Open index.qmd and change:</span></span>
-<span id="cb10-18"><span class="co" style="color: #5E5E5E;
+<span id="cb17-14"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#   const WORKER_URL = "https://resume-chat.YOUR-SUBDOMAIN.workers.dev";</span></span>
-<span id="cb10-19"><span class="co" style="color: #5E5E5E;
+<span id="cb17-15"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># to your actual URL.</span></span>
-<span id="cb10-20"></span>
-<span id="cb10-21"><span class="co" style="color: #5E5E5E;
+<span id="cb17-16"></span>
+<span id="cb17-17"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># 6. Rebuild the landing page</span></span>
-<span id="cb10-22"><span class="bu" style="color: null;
+font-style: inherit;"># 5. Rebuild the landing page</span></span>
+<span id="cb17-18"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">cd</span> ..</span>
-<span id="cb10-23"><span class="ex" style="color: null;
+<span id="cb17-19"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">quarto</span> render index.qmd</span>
-<span id="cb10-24"></span>
-<span id="cb10-25"><span class="co" style="color: #5E5E5E;
+<span id="cb17-20"></span>
+<span id="cb17-21"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># 7. Publish</span></span>
-<span id="cb10-26"><span class="fu" style="color: #4758AB;
+font-style: inherit;"># 6. Publish</span></span>
+<span id="cb17-22"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> add <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-A</span></span>
-<span id="cb10-27"><span class="fu" style="color: #4758AB;
+<span id="cb17-23"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> commit <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-m</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Add AI résumé chat assistant"</span></span>
-<span id="cb10-28"><span class="fu" style="color: #4758AB;
+<span id="cb17-24"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> push</span></code></pre></div>
 <hr>
 </section>
 <section id="what-to-customise" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-customise">What to customise</h2>
-<p><strong>Change the accent colour</strong> — open <code>assets/dark.scss</code> and change the <code>$chat-accent</code> variable to any colour in your palette.</p>
 <p><strong>Update the résumé content</strong> — open <code>worker/index.js</code> and edit the <code>SYSTEM_PROMPT</code> string. Then run <code>wrangler deploy</code> again to push the update. The website itself does not need to be rebuilt.</p>
 <p><strong>Show the widget on every page</strong> — instead of embedding it in <code>index.qmd</code>, use Quarto’s <code>include-after-body</code> option in <code>_quarto.yml</code>:</p>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb18-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">format</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">:</span></span>
-<span id="cb11-2"><span class="at" style="color: #657422;
+<span id="cb18-2"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">html</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">:</span></span>
-<span id="cb11-3"><span class="at" style="color: #657422;
+<span id="cb18-3"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1814,7 +1376,7 @@ background-color: null;
 font-style: inherit;"> _partials/chat-widget.html</span></span></code></pre></div>
 <p>Move the HTML+JS block to <code>_partials/chat-widget.html</code> and <code>quarto render</code> will inject it at the bottom of every page.</p>
 <p><strong>Tighten the CORS policy</strong> — if you only want your own domain to call the Worker, change the header in <code>worker/index.js</code>:</p>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb12-1"><span class="st" style="color: #20794D;
+<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb19-1"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Access-Control-Allow-Origin"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1823,12 +1385,23 @@ background-color: null;
 font-style: inherit;">"https://ggilles.dev"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span></code></pre></div>
-<p><strong>Swap the model</strong> — replace <code>"gpt-4o-mini"</code> with <code>"gpt-4o"</code> for higher quality answers (at a higher cost), or try another OpenAI model depending on your needs.</p>
+<p><strong>Swap the model</strong> — edit <code>AI_MODEL</code> in <code>wrangler.toml</code> and run <code>wrangler deploy</code>. No code change needed:</p>
+<div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb20-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[vars]</span></span>
+<span id="cb20-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">AI_MODEL</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"@cf/mistral/mistral-7b-instruct-v0.1"</span></span></code></pre></div>
+<p>Browse the full catalogue at <a href="https://developers.cloudflare.com/workers-ai/models/">developers.cloudflare.com/workers-ai/models</a>.</p>
 <hr>
 </section>
 <section id="closing-thoughts" class="level2">
 <h2 class="anchored" data-anchor-id="closing-thoughts">Closing thoughts</h2>
-<p>The whole implementation is about 150 lines of code spread across three files (<code>worker/index.js</code>, <code>assets/dark.scss</code>, and the raw HTML block in <code>index.qmd</code>). Despite its small footprint, it covers several important concepts that show up in many real-world projects: serverless functions, CORS, secret management, prompt engineering, and progressive enhancement (the site works perfectly for visitors who never open the chat).</p>
+<p>The whole implementation is about 150 lines of code spread across three files (<code>worker/index.js</code>, <code>assets/dark.scss</code>, and the raw HTML block in <code>index.qmd</code>). Despite its small footprint, it covers several important concepts that show up in many real-world projects: serverless functions, CORS, prompt engineering, and progressive enhancement (the site works perfectly for visitors who never open the chat).</p>
 <p>If you replicate this on your own site, feel free to open a <a href="https://github.com/guillaumegilles/guillaumegilles.github.io">GitHub issue</a> or reach out on <a href="https://www.linkedin.com/in/guillaumegilles">LinkedIn</a> — I’d be happy to help you debug it.</p>
 <script>
 document.addEventListener('DOMContentLoaded', () => {

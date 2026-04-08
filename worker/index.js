@@ -86,30 +86,19 @@ export default {
       { role: "user", content: message },
     ];
 
-    const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
+    let reply;
+    try {
+      const aiRes = await env.AI.run(env.AI_MODEL ?? "@cf/meta/llama-3.1-8b-instruct", {
         messages,
         max_tokens: 400,
-        temperature: 0.4,
-      }),
-    });
-
-    if (!openaiRes.ok) {
-      const err = await openaiRes.text();
-      return new Response(JSON.stringify({ error: err }), {
+      });
+      reply = aiRes.response;
+    } catch (err) {
+      return new Response(JSON.stringify({ error: "AI service unavailable. Please try again later." }), {
         status: 502,
         headers: { "Content-Type": "application/json", ...CORS_HEADERS },
       });
     }
-
-    const data = await openaiRes.json();
-    const reply = data.choices[0].message.content;
 
     return new Response(JSON.stringify({ reply }), {
       headers: { "Content-Type": "application/json", ...CORS_HEADERS },

@@ -114,13 +114,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <link rel="stylesheet" href="../../site_libs/quarto-contrib/quarto-project/qmd-lab/closeread/closeread.css">
 <meta property="og:title" content="Guillaume Gilles - Adding an AI Chat Assistant to a Static Website">
-<meta property="og:description" content="Most personal websites are one-way streets: you publish, visitors read. What if they could ask instead? In this post I walk through adding a small AI assistant — powered by OpenAI and Cloudflare Workers — that lets anyone query my experience and résumé in plain English, with zero backend server to maintain.">
+<meta property="og:description" content="Most personal websites are one-way streets: you publish, visitors read. What if they could ask instead? In this post I walk through adding a small AI assistant — powered by Cloudflare Workers AI — that lets anyone query my experience and résumé in plain English, with zero backend server to maintain and zero API costs.">
 <meta property="og:image" content="https://ggilles.dev/posts/ai-resume-chat/image.png">
 <meta property="og:site_name" content="Guillaume Gilles">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
 <meta name="twitter:title" content="Guillaume Gilles - Adding an AI Chat Assistant to a Static Website">
-<meta name="twitter:description" content="Most personal websites are one-way streets: you publish, visitors read. What if they could ask instead? In this post I walk through adding a small AI assistant — powered by OpenAI and Cloudflare Workers — that lets anyone query my experience and résumé in plain English, with zero backend server to maintain.">
+<meta name="twitter:description" content="Most personal websites are one-way streets: you publish, visitors read. What if they could ask instead? In this post I walk through adding a small AI assistant — powered by Cloudflare Workers AI — that lets anyone query my experience and résumé in plain English, with zero backend server to maintain and zero API costs.">
 <meta name="twitter:image" content="https://ggilles.dev/posts/ai-resume-chat/image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="630">
@@ -181,12 +181,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-big-picture" id="toc-the-big-picture" class="nav-link" data-scroll-target="#the-big-picture">The big picture</a></li>
   <li><a href="#part-1-the-cloudflare-worker" id="toc-part-1-the-cloudflare-worker" class="nav-link" data-scroll-target="#part-1-the-cloudflare-worker">Part 1 — The Cloudflare Worker</a>
   <ul class="collapse">
-  <li><a href="#storing-your-key-and-deploying" id="toc-storing-your-key-and-deploying" class="nav-link" data-scroll-target="#storing-your-key-and-deploying">Storing your key and deploying</a></li>
+  <li><a href="#deploying" id="toc-deploying" class="nav-link" data-scroll-target="#deploying">Deploying</a></li>
   </ul></li>
-  <li><a href="#part-2-the-chat-widget" id="toc-part-2-the-chat-widget" class="nav-link" data-scroll-target="#part-2-the-chat-widget">Part 2 — The chat widget</a>
-  <ul class="collapse">
-  <li><a href="#styles" id="toc-styles" class="nav-link" data-scroll-target="#styles">Styles</a></li>
-  </ul></li>
+  <li><a href="#part-2-the-chat-widget" id="toc-part-2-the-chat-widget" class="nav-link" data-scroll-target="#part-2-the-chat-widget">Part 2 — The chat widget</a></li>
   <li><a href="#part-3-integrating-with-quarto" id="toc-part-3-integrating-with-quarto" class="nav-link" data-scroll-target="#part-3-integrating-with-quarto">Part 3 — Integrating with Quarto</a></li>
   <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together">Putting it all together</a></li>
   <li><a href="#what-to-customise" id="toc-what-to-customise" class="nav-link" data-scroll-target="#what-to-customise">What to customise</a></li>
@@ -230,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 7, 2026</p>
+      <p class="date-modified">April 8, 2026</p>
     </div>
   </div>
     
@@ -239,7 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div>
   <div class="abstract">
     <div class="block-title">Abstract</div>
-    <p>Most personal websites are one-way streets: you publish, visitors read. What if they could <em>ask</em> instead? In this post I walk through adding a small AI assistant — powered by OpenAI and Cloudflare Workers — that lets anyone query my experience and résumé in plain English, with zero backend server to maintain.</p>
+    <p>Most personal websites are one-way streets: you publish, visitors read. What if they could <em>ask</em> instead? In this post I walk through adding a small AI assistant — powered by Cloudflare Workers AI — that lets anyone query my experience and résumé in plain English, with zero backend server to maintain and zero API costs.</p>
   </div>
 </div>
 
@@ -253,8 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>An AI assistant changes that dynamic. Instead of making the visitor do the work, you let them ask in plain language: <em>“Does he have any experience with time-series forecasting?”</em> or <em>“What level does he teach at?”</em> and get a direct, personalised answer in seconds.</p>
 <p>The goal of this post is to build exactly that, in a way that is:</p>
 <ul>
-<li><strong>Free (or nearly so)</strong> — Cloudflare Workers has a generous free tier (100,000 requests/day); OpenAI costs fractions of a cent per conversation.</li>
-<li><strong>Private</strong> — your OpenAI key never touches the browser; only your Worker ever sees it.</li>
+<li><strong>Free</strong> — Cloudflare Workers has a generous free tier (100,000 requests/day); Cloudflare Workers AI also runs on the free tier, so this stack costs nothing to operate.</li>
 <li><strong>Maintenance-free</strong> — no server to patch, no database, no uptime to worry about.</li>
 <li><strong>Portable</strong> — the approach works with any static site generator (Quarto, Hugo, Jekyll, plain HTML…).</li>
 </ul>
@@ -268,7 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Chat widget (HTML/JS)
       │  2. POST { message, history } to Worker URL
       ▼
-Cloudflare Worker  ──►  OpenAI API
+Cloudflare Worker  ──►  Cloudflare Workers AI
       │                     │
       │  3. system prompt   │  4. returns answer
       │     + message       │
@@ -277,8 +273,8 @@ Cloudflare Worker  ──►  OpenAI API
       ▼
 Chat widget displays reply</code></pre>
 <p><strong>The widget</strong> is an inline HTML+JS block in <code>index.qmd</code>. It captures the visitor’s message and sends it to the Worker.</p>
-<p><strong>The Worker</strong> is a tiny JavaScript function running on Cloudflare’s global edge network. It prepends a <em>system prompt</em> containing your full background, then forwards the conversation to OpenAI using your secret API key.</p>
-<p><strong>The key insight</strong> is that the browser never talks to OpenAI directly — your API key stays server-side, and you can add rate limits or filters later if you need them.</p>
+<p><strong>The Worker</strong> is a tiny JavaScript function running on Cloudflare’s global edge network. It prepends a <em>system prompt</em> containing your full background, then forwards the conversation to Cloudflare Workers AI using the <code>env.AI</code> binding — no external API key required.</p>
+<p><strong>The key insight</strong> is that the browser never talks to the AI model directly — everything goes through your Worker, where you can add rate limits or filters later if you need them.</p>
 <hr>
 </section>
 <section id="part-1-the-cloudflare-worker" class="level2">
@@ -286,134 +282,140 @@ Chat widget displays reply</code></pre>
 <p><a href="https://developers.cloudflare.com/workers/wrangler/">Wrangler</a> is the official Cloudflare CLI. Install it once, authenticate, and you’re ready to deploy:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install <span class="at">-g</span> wrangler</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">wrangler</span> login   <span class="co"># opens a browser window for OAuth</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The project needs two files inside a <code>worker/</code> directory at your site root. <code>wrangler.toml</code> is the configuration:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"resume-chat"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">main</span> <span class="op">=</span> <span class="st">"index.js"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">compatibility_date</span> <span class="op">=</span> <span class="st">"2024-09-01"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>name</code> sets the subdomain (<code>resume-chat.&lt;account&gt;.workers.dev</code>); <code>main</code> points to the Worker entry-point. That’s all the configuration needed.</p>
+<p>The project needs two files inside a <code>worker/</code> directory at your site root.</p>
+<pre><code>website/
+├── assets/
+│   └── dark.scss          # site theme — includes chat widget styles
+├── posts/
+│   └── ai-resume-chat/
+│       └── index.qmd      # this post
+├── worker/
+│   ├── index.js           # Cloudflare Worker — calls Workers AI, returns reply
+│   └── wrangler.toml      # Worker config — AI binding, model var, deployment
+├── _quarto.yml            # site-wide Quarto config
+└── index.qmd              # landing page — embeds the chat widget</code></pre>
+<p><code>wrangler.toml</code> is the configuration:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"resume-chat"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">main</span> <span class="op">=</span> <span class="st">"index.js"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">compatibility_date</span> <span class="op">=</span> <span class="st">"2024-09-01"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">[ai]</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="dt">binding</span> <span class="op">=</span> <span class="st">"AI"</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">[vars]</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="dt">AI_MODEL</span> <span class="op">=</span> <span class="st">"@cf/meta/llama-3.1-8b-instruct"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>name</code> sets the subdomain (<code>resume-chat.&lt;account&gt;.workers.dev</code>); <code>main</code> points to the Worker entry-point. The <code>[ai]</code> binding gives the Worker access to <code>env.AI</code> — Cloudflare’s built-in AI runtime, no external API key needed. <code>AI_MODEL</code> in <code>[vars]</code> makes the model configurable: change it in <code>wrangler.toml</code> and redeploy without touching any code.</p>
 <p>The real work happens in <code>index.js</code>. Scroll through the walkthrough below.</p>
 <div class="cr-section cr-column-screen sidebar-left">
 <div class="narrative-col">
-<div class="trigger new-trigger" data-focus-on="cr-worker">
+<div class="trigger new-trigger" data-focus-on="cr-prompt">
 <div class="narrative">
 <p>This is the complete <code>worker/index.js</code>. Every line has a job — let’s go through them one by one.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="1-7">
+<div class="trigger new-trigger" data-focus-on="cr-prompt">
 <div class="narrative">
 <p><strong>The system prompt</strong> is the most important part of the setup. It is prepended to <em>every</em> conversation before the visitor’s message. The instruction <em>“based strictly on the information below”</em> keeps the model from hallucinating anything that isn’t in your résumé. Keep this section updated whenever your situation changes.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="9-13">
+<div class="trigger new-trigger" data-focus-on="cr-cors">
 <div class="narrative">
-<p><strong>CORS headers</strong> tell the browser that your Worker accepts cross-origin requests. Your widget lives on <code>ggilles.dev</code>; the Worker lives on <code>workers.dev</code> — without these headers, the browser would silently block every fetch. Setting <code>https://ggilles.dev</code> restrict access to the worker only from your exact domain.</p>
+<p><strong>CORS headers</strong> tell the browser that your Worker accepts cross-origin requests. Your widget lives on <code>ggilles.dev</code>; the Worker lives on <code>workers.dev</code> — without these headers, the browser would silently block every fetch. Setting <code>https://ggilles.dev</code> restricts access to the Worker only from your exact domain.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="18-20">
+<div class="trigger new-trigger" data-focus-on="cr-preflight">
 <div class="narrative">
-<p><strong>The OPTIONS preflight</strong> is an automatic browser check sent before every cross-origin POST: <em>“Are you OK with this?”</em> The Worker must respond to it correctly, or the real request never goes through.</p>
+<p><strong>The OPTIONS preflight</strong> is an automatic browser check sent before every cross-origin POST: <em>“Are you OK with this?”</em> The Worker must respond to it correctly, or the real request never goes through. Parsing the body is straightforward but worth wrapping in a try/catch — you want clear error responses rather than uncaught exceptions if something malformed hits the endpoint.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="22-29">
+<div class="trigger new-trigger" data-focus-on="cr-messages">
 <div class="narrative">
-<p><strong>Parsing the body</strong> is straightforward but worth wrapping in a try/catch. Cloudflare Workers are edge-deployed code — you want clear error responses rather than uncaught exceptions if something malformed hits the endpoint. </p>
+<p><strong>Building the messages array</strong> is where context lives. The system prompt anchors every conversation. <code>history.slice(-6)</code> keeps the last three exchanges (six messages: three user, three assistant) so the model can handle follow-up questions without ballooning the token count.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="31-35">
+<div class="trigger new-trigger" data-focus-on="cr-ai">
 <div class="narrative">
-<p><strong>Building the messages array</strong> is where context lives. The system prompt anchors every conversation. <code>history.slice(-6)</code> keeps the last three exchanges (six messages: three user, three assistant) so the model can handle follow-up questions without ballooning the token count. </p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="37-51">
-<div class="narrative">
-<p><strong>Calling OpenAI</strong> uses <code>gpt-4o-mini</code> — fast, cheap, and well-suited to short Q&amp;A. <code>max_tokens: 400</code> caps reply length so the chat box doesn’t overflow. <code>temperature: 0.4</code> keeps answers factual rather than creative. Crucially, <code>env.OPENAI_API_KEY</code> reads from Cloudflare’s encrypted secret store — the key never appears in source code.</p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-worker" data-highlight="53-58">
-<div class="narrative">
-<p><strong>Returning the reply</strong> strips out the OpenAI response envelope and sends the browser a clean <code>{ reply: "…" }</code> JSON object, with the same CORS headers attached so the browser actually accepts it.</p>
+<p><strong>Calling Cloudflare Workers AI</strong> uses <code>env.AI.run()</code> with the model read from <code>env.AI_MODEL</code> (falling back to <code>@cf/meta/llama-3.1-8b-instruct</code> if the variable is unset). Keeping the model name in <code>wrangler.toml</code> means you can swap it without touching the Worker code — just edit <code>[vars]</code> and redeploy. <code>max_tokens: 400</code> caps reply length. The call is wrapped in a try/catch so failures return a clean, user-friendly error. On success, the Worker sends the browser a clean <code>{ reply: "…" }</code> JSON object with CORS headers attached so the browser actually accepts it.</p>
 </div>
 </div>
 </div>
 <div class="sticky-col">
 <div class="sticky-col-stack">
-<div id="cr-worker" class="sticky">
-<div class="sourceCode" id="cb4"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> SYSTEM_PROMPT <span class="op">=</span> <span class="vs">`You are an AI assistant representing Guillaume Gilles.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="vs">Answer questions based strictly on the information below.</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="vs">Be concise, friendly, and professional.</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="vs">If asked about something not covered, say you don't have that information.</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="vs">--- PROFILE / EXPERIENCE / EDUCATION / SKILLS ---</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="vs">…`</span><span class="op">;</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> CORS_HEADERS <span class="op">=</span> {</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Access-Control-Allow-Origin"</span><span class="op">:</span> <span class="st">"https://ggilles.dev"</span><span class="op">,</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Access-Control-Allow-Methods"</span><span class="op">:</span> <span class="st">"POST, OPTIONS"</span><span class="op">,</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Access-Control-Allow-Headers"</span><span class="op">:</span> <span class="st">"Content-Type"</span><span class="op">,</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="im">default</span> {</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">async</span> <span class="fu">fetch</span>(request<span class="op">,</span> env) {</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (request<span class="op">.</span><span class="at">method</span> <span class="op">===</span> <span class="st">"OPTIONS"</span>) {</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">new</span> <span class="fu">Response</span>(<span class="kw">null</span><span class="op">,</span> { <span class="dt">headers</span><span class="op">:</span> CORS_HEADERS })<span class="op">;</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> body<span class="op">;</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span> {</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>      body <span class="op">=</span> <span class="cf">await</span> request<span class="op">.</span><span class="fu">json</span>()<span class="op">;</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">catch</span> {</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">new</span> <span class="fu">Response</span>(<span class="st">"Invalid JSON"</span><span class="op">,</span> { <span class="dt">status</span><span class="op">:</span> <span class="dv">400</span> })<span class="op">;</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> { message<span class="op">,</span> history <span class="op">=</span> [] } <span class="op">=</span> body<span class="op">;</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> messages <span class="op">=</span> [</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">role</span><span class="op">:</span> <span class="st">"system"</span><span class="op">,</span> <span class="dt">content</span><span class="op">:</span> SYSTEM_PROMPT }<span class="op">,</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>      <span class="op">...</span>history<span class="op">.</span><span class="fu">slice</span>(<span class="op">-</span><span class="dv">6</span>)<span class="op">,</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">role</span><span class="op">:</span> <span class="st">"user"</span><span class="op">,</span> <span class="dt">content</span><span class="op">:</span> message }<span class="op">,</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">;</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> openaiRes <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>      <span class="st">"https://api.openai.com/v1/chat/completions"</span><span class="op">,</span> {</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="dt">method</span><span class="op">:</span> <span class="st">"POST"</span><span class="op">,</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        <span class="dt">headers</span><span class="op">:</span> {</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Content-Type"</span><span class="op">:</span> <span class="st">"application/json"</span><span class="op">,</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>          <span class="dt">Authorization</span><span class="op">:</span> <span class="vs">`Bearer </span><span class="sc">${</span>env<span class="op">.</span><span class="at">OPENAI_API_KEY</span><span class="sc">}</span><span class="vs">`</span><span class="op">,</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        }<span class="op">,</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        <span class="dt">body</span><span class="op">:</span> <span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>          <span class="dt">model</span><span class="op">:</span> <span class="st">"gpt-4o-mini"</span><span class="op">,</span></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>          messages<span class="op">,</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>          <span class="dt">max_tokens</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>          <span class="dt">temperature</span><span class="op">:</span> <span class="fl">0.4</span><span class="op">,</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        })<span class="op">,</span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    )<span class="op">;</span></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> data <span class="op">=</span> <span class="cf">await</span> openaiRes<span class="op">.</span><span class="fu">json</span>()<span class="op">;</span></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> reply <span class="op">=</span> data<span class="op">.</span><span class="at">choices</span>[<span class="dv">0</span>]<span class="op">.</span><span class="at">message</span><span class="op">.</span><span class="at">content</span><span class="op">;</span></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">new</span> <span class="fu">Response</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({ reply })<span class="op">,</span> {</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>      <span class="dt">headers</span><span class="op">:</span> { <span class="st">"Content-Type"</span><span class="op">:</span> <span class="st">"application/json"</span><span class="op">,</span> <span class="op">...</span>CORS_HEADERS }<span class="op">,</span></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cr-prompt" class="sticky">
+<div class="sourceCode" id="cb5"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> SYSTEM_PROMPT <span class="op">=</span> <span class="vs">`You are an AI assistant representing Guillaume Gilles.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="vs">Answer questions based strictly on the information below.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="vs">Be concise, friendly, and professional.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="vs">If asked about something not covered, say you don't have that information.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="vs">--- PROFILE / EXPERIENCE / EDUCATION / SKILLS ---</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="vs">…`</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cr-cors" class="sticky">
+<div class="sourceCode" id="cb6"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> CORS_HEADERS <span class="op">=</span> {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Access-Control-Allow-Origin"</span><span class="op">:</span> <span class="st">"https://ggilles.dev"</span><span class="op">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Access-Control-Allow-Methods"</span><span class="op">:</span> <span class="st">"POST, OPTIONS"</span><span class="op">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Access-Control-Allow-Headers"</span><span class="op">:</span> <span class="st">"Content-Type"</span><span class="op">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cr-preflight" class="sticky">
+<div class="sourceCode" id="cb7"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="im">default</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">async</span> <span class="fu">fetch</span>(request<span class="op">,</span> env) {</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (request<span class="op">.</span><span class="at">method</span> <span class="op">===</span> <span class="st">"OPTIONS"</span>) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">new</span> <span class="fu">Response</span>(<span class="kw">null</span><span class="op">,</span> { <span class="dt">headers</span><span class="op">:</span> CORS_HEADERS })<span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> body<span class="op">;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span> {</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      body <span class="op">=</span> <span class="cf">await</span> request<span class="op">.</span><span class="fu">json</span>()<span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">catch</span> {</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">new</span> <span class="fu">Response</span>(<span class="st">"Invalid JSON"</span><span class="op">,</span> { <span class="dt">status</span><span class="op">:</span> <span class="dv">400</span> })<span class="op">;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> { message<span class="op">,</span> history <span class="op">=</span> [] } <span class="op">=</span> body<span class="op">;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cr-messages" class="sticky">
+<div class="sourceCode" id="cb8"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> messages <span class="op">=</span> [</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">role</span><span class="op">:</span> <span class="st">"system"</span><span class="op">,</span> <span class="dt">content</span><span class="op">:</span> SYSTEM_PROMPT }<span class="op">,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span>history<span class="op">.</span><span class="fu">slice</span>(<span class="op">-</span><span class="dv">6</span>)<span class="op">,</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">role</span><span class="op">:</span> <span class="st">"user"</span><span class="op">,</span> <span class="dt">content</span><span class="op">:</span> message }<span class="op">,</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>]<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cr-ai" class="sticky">
+<div class="sourceCode" id="cb9"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> reply<span class="op">;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> aiRes <span class="op">=</span> <span class="cf">await</span> env<span class="op">.</span><span class="at">AI</span><span class="op">.</span><span class="fu">run</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    env<span class="op">.</span><span class="at">AI_MODEL</span> <span class="op">??</span> <span class="st">"@cf/meta/llama-3.1-8b-instruct"</span><span class="op">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    { messages<span class="op">,</span> <span class="dt">max_tokens</span><span class="op">:</span> <span class="dv">400</span> }</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  reply <span class="op">=</span> aiRes<span class="op">.</span><span class="at">response</span><span class="op">;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>} <span class="cf">catch</span> (err) {</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">new</span> <span class="fu">Response</span>(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({ <span class="dt">error</span><span class="op">:</span> <span class="st">"AI service unavailable. Please try again later."</span> })<span class="op">,</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    { <span class="dt">status</span><span class="op">:</span> <span class="dv">502</span><span class="op">,</span> <span class="dt">headers</span><span class="op">:</span> { <span class="st">"Content-Type"</span><span class="op">:</span> <span class="st">"application/json"</span><span class="op">,</span> <span class="op">...</span>CORS_HEADERS } }</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="kw">new</span> <span class="fu">Response</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({ reply })<span class="op">,</span> {</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">headers</span><span class="op">:</span> { <span class="st">"Content-Type"</span><span class="op">:</span> <span class="st">"application/json"</span><span class="op">,</span> <span class="op">...</span>CORS_HEADERS }<span class="op">,</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
 </div>
-<section id="storing-your-key-and-deploying" class="level3">
-<h3 class="anchored" data-anchor-id="storing-your-key-and-deploying">Storing your key and deploying</h3>
-<p>Never put secrets in code. Store the OpenAI key in Cloudflare’s encrypted secret store, then deploy:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> worker/</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">wrangler</span> secret put OPENAI_API_KEY   <span class="co"># paste your key when prompted</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">wrangler</span> deploy</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># → Deployed: https://resume-chat.resume-chat.workers.dev</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="deploying" class="level3">
+<h3 class="anchored" data-anchor-id="deploying">Deploying</h3>
+<p>No secrets to manage — the AI binding is configured in <code>wrangler.toml</code> and Cloudflare handles everything else. Just deploy:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> worker/</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">wrangler</span> deploy</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># → Deployed: https://resume-chat.resume-chat.workers.dev</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Test it immediately from the terminal:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST https://resume-chat.resume-chat.workers.dev <span class="dt">\</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"message": "What is his current job?"}'</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># → {"reply":"Guillaume is currently a Regional Economist at the Banque de France…"}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST https://resume-chat.resume-chat.workers.dev <span class="dt">\</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"message": "What is his current job?"}'</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># → {"reply":"Guillaume is currently a Regional Economist at the Banque de France…"}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
@@ -422,186 +424,112 @@ Chat widget displays reply</code></pre>
 <p>The widget is a raw HTML block embedded directly in <code>index.qmd</code> using Quarto’s <code>{=html}</code> fence. It has two parts: markup and JavaScript.</p>
 <div class="cr-section cr-column-screen sidebar-left">
 <div class="narrative-col">
-<div class="trigger new-trigger" data-focus-on="cr-widget">
+<div class="trigger new-trigger" data-focus-on="cr-html">
 <div class="narrative">
 <p>The complete widget — HTML structure up top, self-contained JavaScript below. Let’s walk through it.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="1-14">
+<div class="trigger new-trigger" data-focus-on="cr-html">
 <div class="narrative">
 <p><strong>The HTML structure</strong> is minimal on purpose. <code>#chat-box</code> is a flex column: <code>#chat-messages</code> scrolls vertically as the conversation grows; <code>#chat-input-row</code> stays pinned at the bottom. No toggles, no overlays — the box lives inline in the page, right below the landing page text.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="18">
+<div class="trigger new-trigger" data-focus-on="cr-state">
 <div class="narrative">
-<p><strong><code>WORKER_URL</code></strong> is the only value you need to change when you adapt this for your own site. Everything else is generic.</p>
+<p><strong><code>WORKER_URL</code></strong> is the only value you need to change when you adapt this for your own site. <code>history</code> accumulates the conversation turn by turn; <code>busy</code> is a simple mutex that prevents double-sends while a fetch is in flight.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="20-24">
+<div class="trigger new-trigger" data-focus-on="cr-append">
 <div class="narrative">
-<p><strong>DOM references and state</strong> are grabbed once at startup and kept in closured variables. <code>history</code> accumulates the conversation; <code>busy</code> is a simple mutex that prevents double-sends while a fetch is in flight. </p>
+<p><strong><code>appendMsg</code></strong> is a small factory: it creates a <code>div</code>, stamps it with the right CSS class (<code>user</code> or <code>bot</code>), appends it to the message area, and scrolls to the bottom. It returns the element so the caller can mutate it later — e.g.&nbsp;replace “Thinking…” with the actual reply in place.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="26-31">
+<div class="trigger new-trigger" data-focus-on="cr-send">
 <div class="narrative">
-<p><strong>Event listeners</strong> wire up two ways to submit: clicking Send and pressing Enter (but not Shift+Enter, which might be used for line breaks in other contexts).</p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="33-40">
-<div class="narrative">
-<p><strong><code>appendMsg</code></strong> is a small factory: it creates a <code>div</code>, stamps it with the right CSS class (<code>user</code> or <code>bot</code>), appends it to the message area, and scrolls to the bottom. It returns the element so the caller can mutate it later (e.g.&nbsp;replace “Thinking…” with the actual reply). </p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="42-48">
-<div class="narrative">
-<p><strong><code>sendMessage</code></strong> opens with a guard clause — if the input is empty or a fetch is already running, it exits immediately. Then it clears the input, renders the user bubble, and renders a “Thinking…” placeholder that will be replaced in-place once the response arrives.</p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="50-61">
-<div class="narrative">
-<p><strong>The fetch</strong> posts <code>{ message, history }</code> to the Worker. On success, the placeholder element is updated directly: its class changes from <code>bot typing</code> (italic, dimmed) to <code>bot</code>, and its text is replaced with the reply. Both sides of the exchange are then pushed into <code>history</code> for the next round. </p>
-</div>
-</div>
-<div class="trigger new-trigger" data-focus-on="cr-widget" data-highlight="62-68">
-<div class="narrative">
-<p><strong>Error handling and cleanup</strong> cover the case where the Worker is unreachable (network error, Worker down). After either path, the busy flag is reset, the Send button re-enabled, and focus returned to the input so the visitor can keep typing without reaching for the mouse.</p>
+<p><strong><code>sendMessage</code></strong> opens with a guard clause — if the input is empty or a fetch is already running, it exits immediately. It then clears the input, renders the user bubble, and shows a “Thinking…” placeholder that gets replaced in-place once the response arrives. Both sides of the exchange are pushed into <code>history</code> for the next round. Error handling covers the case where the Worker is unreachable: after either path the busy flag is reset, the Send button re-enabled, and focus returned to the input.</p>
 </div>
 </div>
 </div>
 <div class="sticky-col">
 <div class="sticky-col-stack">
-<div id="cr-widget" class="sticky">
-<div class="sourceCode" id="cb7"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chat-box"</span><span class="dt">&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chat-messages"</span><span class="dt">&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"chat-msg bot"</span><span class="dt">&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      Hi! I'm an AI assistant. Ask me anything</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      about Guillaume's background. 👋</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chat-input-row"</span><span class="dt">&gt;</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chat-input"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ot">           placeholder</span><span class="op">=</span><span class="st">"e.g. What's his Python experience?"</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ot">           autocomplete</span><span class="op">=</span><span class="st">"off"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">button</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chat-send"</span><span class="dt">&gt;</span>Send<span class="dt">&lt;/</span><span class="kw">button</span><span class="dt">&gt;</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>(<span class="kw">function</span> () {</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> WORKER_URL <span class="op">=</span> <span class="st">"https://resume-chat.resume-chat.workers.dev"</span><span class="op">;</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> msgs  <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"chat-messages"</span>)<span class="op">;</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> input <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"chat-input"</span>)<span class="op">;</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> send  <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"chat-send"</span>)<span class="op">;</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> history <span class="op">=</span> []<span class="op">;</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> busy    <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  send<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"click"</span><span class="op">,</span> sendMessage)<span class="op">;</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"keydown"</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> {</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"Enter"</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>e<span class="op">.</span><span class="at">shiftKey</span>) {</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>      e<span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span> <span class="fu">sendMessage</span>()<span class="op">;</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">appendMsg</span>(text<span class="op">,</span> role) {</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> div <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">"div"</span>)<span class="op">;</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    div<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="vs">`chat-msg </span><span class="sc">${</span>role<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    div<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> text<span class="op">;</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    msgs<span class="op">.</span><span class="fu">appendChild</span>(div)<span class="op">;</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    msgs<span class="op">.</span><span class="at">scrollTop</span> <span class="op">=</span> msgs<span class="op">.</span><span class="at">scrollHeight</span><span class="op">;</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> div<span class="op">;</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">async</span> <span class="kw">function</span> <span class="fu">sendMessage</span>() {</span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> text <span class="op">=</span> input<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>text <span class="op">||</span> busy) <span class="cf">return</span><span class="op">;</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    busy <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> send<span class="op">.</span><span class="at">disabled</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> input<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">appendMsg</span>(text<span class="op">,</span> <span class="st">"user"</span>)<span class="op">;</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> thinking <span class="op">=</span> <span class="fu">appendMsg</span>(<span class="st">"Thinking…"</span><span class="op">,</span> <span class="st">"bot typing"</span>)<span class="op">;</span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span> {</span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> res <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(WORKER_URL<span class="op">,</span> {</span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>        <span class="dt">method</span><span class="op">:</span> <span class="st">"POST"</span><span class="op">,</span></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>        <span class="dt">headers</span><span class="op">:</span> { <span class="st">"Content-Type"</span><span class="op">:</span> <span class="st">"application/json"</span> }<span class="op">,</span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>        <span class="dt">body</span><span class="op">:</span> <span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({ <span class="dt">message</span><span class="op">:</span> text<span class="op">,</span> history })<span class="op">,</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> data <span class="op">=</span> <span class="cf">await</span> res<span class="op">.</span><span class="fu">json</span>()<span class="op">;</span></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> reply <span class="op">=</span> data<span class="op">.</span><span class="at">reply</span> <span class="op">||</span> data<span class="op">.</span><span class="at">error</span> <span class="op">||</span> <span class="st">"Something went wrong."</span><span class="op">;</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>      thinking<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="st">"chat-msg bot"</span><span class="op">;</span></span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>      thinking<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> reply<span class="op">;</span></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>      history<span class="op">.</span><span class="fu">push</span>({ <span class="dt">role</span><span class="op">:</span> <span class="st">"user"</span><span class="op">,</span>      <span class="dt">content</span><span class="op">:</span> text  })<span class="op">;</span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>      history<span class="op">.</span><span class="fu">push</span>({ <span class="dt">role</span><span class="op">:</span> <span class="st">"assistant"</span><span class="op">,</span> <span class="dt">content</span><span class="op">:</span> reply })<span class="op">;</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">catch</span> {</span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>      thinking<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="st">"chat-msg bot"</span><span class="op">;</span></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>      thinking<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">"⚠️ Could not reach the assistant."</span><span class="op">;</span></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>    busy <span class="op">=</span> <span class="kw">false</span><span class="op">;</span> send<span class="op">.</span><span class="at">disabled</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>    input<span class="op">.</span><span class="fu">focus</span>()<span class="op">;</span> msgs<span class="op">.</span><span class="at">scrollTop</span> <span class="op">=</span> msgs<span class="op">.</span><span class="at">scrollHeight</span><span class="op">;</span></span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>})()<span class="op">;</span></span>
-<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cr-html" class="sticky">
+<div class="sourceCode" id="cb12"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chat-box"</span><span class="dt">&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chat-messages"</span><span class="dt">&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"chat-msg bot"</span><span class="dt">&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      Hi! I'm an AI assistant. Ask me anything</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      about Guillaume's background. 👋</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chat-input-row"</span><span class="dt">&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chat-input"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ot">           placeholder</span><span class="op">=</span><span class="st">"e.g. What's his Python experience?"</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ot">           autocomplete</span><span class="op">=</span><span class="st">"off"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">button</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chat-send"</span><span class="dt">&gt;</span>Send<span class="dt">&lt;/</span><span class="kw">button</span><span class="dt">&gt;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cr-state" class="sticky">
+<div class="sourceCode" id="cb13"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">function</span> () {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> WORKER_URL <span class="op">=</span> <span class="st">"https://resume-chat.resume-chat.workers.dev"</span><span class="op">;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> msgs  <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"chat-messages"</span>)<span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> input <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"chat-input"</span>)<span class="op">;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> send  <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"chat-send"</span>)<span class="op">;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> history <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> busy    <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  send<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"click"</span><span class="op">,</span> sendMessage)<span class="op">;</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"keydown"</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> {</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (e<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"Enter"</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>e<span class="op">.</span><span class="at">shiftKey</span>) {</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      e<span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span> <span class="fu">sendMessage</span>()<span class="op">;</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>})()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cr-append" class="sticky">
+<div class="sourceCode" id="cb14"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">appendMsg</span>(text<span class="op">,</span> role) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> div <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">"div"</span>)<span class="op">;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  div<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="vs">`chat-msg </span><span class="sc">${</span>role<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  div<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> text<span class="op">;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  msgs<span class="op">.</span><span class="fu">appendChild</span>(div)<span class="op">;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  msgs<span class="op">.</span><span class="at">scrollTop</span> <span class="op">=</span> msgs<span class="op">.</span><span class="at">scrollHeight</span><span class="op">;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> div<span class="op">;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cr-send" class="sticky">
+<div class="sourceCode" id="cb15"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">async</span> <span class="kw">function</span> <span class="fu">sendMessage</span>() {</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> text <span class="op">=</span> input<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>text <span class="op">||</span> busy) <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  busy <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> send<span class="op">.</span><span class="at">disabled</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> input<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">appendMsg</span>(text<span class="op">,</span> <span class="st">"user"</span>)<span class="op">;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> thinking <span class="op">=</span> <span class="fu">appendMsg</span>(<span class="st">"Thinking…"</span><span class="op">,</span> <span class="st">"bot typing"</span>)<span class="op">;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> res <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(WORKER_URL<span class="op">,</span> {</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">method</span><span class="op">:</span> <span class="st">"POST"</span><span class="op">,</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">headers</span><span class="op">:</span> { <span class="st">"Content-Type"</span><span class="op">:</span> <span class="st">"application/json"</span> }<span class="op">,</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">body</span><span class="op">:</span> <span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({ <span class="dt">message</span><span class="op">:</span> text<span class="op">,</span> history })<span class="op">,</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> data <span class="op">=</span> <span class="cf">await</span> res<span class="op">.</span><span class="fu">json</span>()<span class="op">;</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> reply <span class="op">=</span> data<span class="op">.</span><span class="at">reply</span> <span class="op">||</span> data<span class="op">.</span><span class="at">error</span> <span class="op">||</span> <span class="st">"Something went wrong."</span><span class="op">;</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    thinking<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="st">"chat-msg bot"</span><span class="op">;</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    thinking<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> reply<span class="op">;</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    history<span class="op">.</span><span class="fu">push</span>({ <span class="dt">role</span><span class="op">:</span> <span class="st">"user"</span><span class="op">,</span>      <span class="dt">content</span><span class="op">:</span> text  })<span class="op">;</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    history<span class="op">.</span><span class="fu">push</span>({ <span class="dt">role</span><span class="op">:</span> <span class="st">"assistant"</span><span class="op">,</span> <span class="dt">content</span><span class="op">:</span> reply })<span class="op">;</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> {</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    thinking<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="st">"chat-msg bot"</span><span class="op">;</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    thinking<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> <span class="st">"⚠️ Could not reach the assistant."</span><span class="op">;</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>  busy <span class="op">=</span> <span class="kw">false</span><span class="op">;</span> send<span class="op">.</span><span class="at">disabled</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  input<span class="op">.</span><span class="fu">focus</span>()<span class="op">;</span> msgs<span class="op">.</span><span class="at">scrollTop</span> <span class="op">=</span> msgs<span class="op">.</span><span class="at">scrollHeight</span><span class="op">;</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
 </div>
-<section id="styles" class="level3">
-<h3 class="anchored" data-anchor-id="styles">Styles</h3>
-<p>The widget styles live in <code>assets/dark.scss</code> alongside the rest of the site theme, so they share the same SCSS palette variables and compile into the same stylesheet:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode scss code-with-copy"><code class="sourceCode scss"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">$chat-accent</span>:       <span class="va">$phosphor-green</span><span class="op">;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">$chat-accent-hover</span>: <span class="fu">darken(</span><span class="va">$phosphor-green</span><span class="op">,</span> <span class="dv">12</span><span class="dt">%</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#chat-box</span> {</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">display</span>: <span class="dv">flex</span><span class="op">;</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">flex-direction</span>: <span class="dv">column</span><span class="op">;</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span>: <span class="dv">0.75</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">overflow</span>: <span class="dv">hidden</span><span class="op">;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border</span>: <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="va">$board-lighter</span><span class="op">;</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin-top</span>: <span class="dv">2</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="pp">#chat-messages</span> {</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">height</span>: <span class="dv">320</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">overflow-y</span>: <span class="bu">auto</span><span class="op">;</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span>: <span class="dv">0.75</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">display</span>: <span class="dv">flex</span><span class="op">;</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">flex-direction</span>: <span class="dv">column</span><span class="op">;</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">gap</span>: <span class="dv">0.5</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span>: <span class="va">$board-dark</span><span class="op">;</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="fu">.chat-msg</span> {</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">max-width</span>: <span class="dv">85</span><span class="dt">%</span><span class="op">;</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span>: <span class="dv">0.5</span><span class="dt">rem</span> <span class="dv">0.75</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span>: <span class="dv">0.6</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="op">&amp;</span><span class="fu">.user</span>  { <span class="kw">align-self</span>: <span class="dv">flex-end</span><span class="op">;</span>  <span class="kw">background</span>: <span class="va">$chat-accent</span><span class="op">;</span> <span class="kw">color</span>: <span class="va">$board-darkest</span><span class="op">;</span> }</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="op">&amp;</span><span class="fu">.bot</span>   { <span class="kw">align-self</span>: <span class="dv">flex-start</span><span class="op">;</span> <span class="kw">background</span>: <span class="va">$board-light</span><span class="op">;</span> <span class="kw">color</span>: <span class="va">$chalk</span><span class="op">;</span> }</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="op">&amp;</span><span class="fu">.typing</span> { <span class="kw">opacity</span>: <span class="dv">0.6</span><span class="op">;</span> <span class="kw">font-style</span>: <span class="dv">italic</span><span class="op">;</span> }</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="pp">#chat-input-row</span> {</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">display</span>: <span class="dv">flex</span><span class="op">;</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">gap</span>: <span class="dv">0.4</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span>: <span class="dv">0.6</span><span class="dt">rem</span> <span class="dv">0.75</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-top</span>: <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="va">$board-lighter</span><span class="op">;</span></span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span>: <span class="va">$board-dark</span><span class="op">;</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="pp">#chat-send</span> {</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span>: <span class="va">$chat-accent</span><span class="op">;</span></span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span>: <span class="va">$board-darkest</span><span class="op">;</span></span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border</span>: <span class="dv">none</span><span class="op">;</span></span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span>: <span class="dv">0.4</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span>: <span class="dv">0.4</span><span class="dt">rem</span> <span class="dv">0.75</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  <span class="kw">cursor</span>: <span class="dv">pointer</span><span class="op">;</span></span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>  <span class="op">&amp;</span><span class="in">:hover</span>    { <span class="kw">background</span>: <span class="va">$chat-accent-hover</span><span class="op">;</span> }</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>  <span class="op">&amp;</span><span class="in">:disabled</span> { <span class="kw">opacity</span>: <span class="dv">0.5</span><span class="op">;</span> <span class="kw">cursor</span>: <span class="dv">not-allowed</span><span class="op">;</span> }</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Because colours are SCSS variables compiled into the theme, the widget inherits your palette automatically — no JavaScript needed for dark/light switching.</p>
 <hr>
-</section>
 </section>
 <section id="part-3-integrating-with-quarto" class="level2">
 <h2 class="anchored" data-anchor-id="part-3-integrating-with-quarto">Part 3 — Integrating with Quarto</h2>
@@ -622,53 +550,51 @@ Chat widget displays reply</code></pre>
 </section>
 <section id="putting-it-all-together" class="level2">
 <h2 class="anchored" data-anchor-id="putting-it-all-together">Putting it all together</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Install Wrangler</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install <span class="at">-g</span> wrangler</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Authenticate with Cloudflare (creates a free account if needed)</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">wrangler</span> login</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Deploy the Worker</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> worker/</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="ex">wrangler</span> deploy</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Note the URL printed: https://resume-chat.&lt;subdomain&gt;.workers.dev</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Store your OpenAI API key</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="ex">wrangler</span> secret put OPENAI_API_KEY</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Paste your key when prompted</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Update the widget with your Worker URL</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Open index.qmd and change:</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   const WORKER_URL = "https://resume-chat.YOUR-SUBDOMAIN.workers.dev";</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co"># to your actual URL.</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Rebuild the landing page</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render index.qmd</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Publish</span></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-A</span></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add AI résumé chat assistant"</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Install Wrangler</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install <span class="at">-g</span> wrangler</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Authenticate with Cloudflare (creates a free account if needed)</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="ex">wrangler</span> login</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Deploy the Worker (the [ai] binding in wrangler.toml is all you need)</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> worker/</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="ex">wrangler</span> deploy</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Note the URL printed: https://resume-chat.&lt;subdomain&gt;.workers.dev</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Update the widget with your Worker URL</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Open index.qmd and change:</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   const WORKER_URL = "https://resume-chat.YOUR-SUBDOMAIN.workers.dev";</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># to your actual URL.</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Rebuild the landing page</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render index.qmd</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Publish</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-A</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add AI résumé chat assistant"</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 <section id="what-to-customise" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-customise">What to customise</h2>
-<p><strong>Change the accent colour</strong> — open <code>assets/dark.scss</code> and change the <code>$chat-accent</code> variable to any colour in your palette.</p>
 <p><strong>Update the résumé content</strong> — open <code>worker/index.js</code> and edit the <code>SYSTEM_PROMPT</code> string. Then run <code>wrangler deploy</code> again to push the update. The website itself does not need to be rebuilt.</p>
 <p><strong>Show the widget on every page</strong> — instead of embedding it in <code>index.qmd</code>, use Quarto’s <code>include-after-body</code> option in <code>_quarto.yml</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-after-body</span><span class="kw">:</span><span class="at"> _partials/chat-widget.html</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-after-body</span><span class="kw">:</span><span class="at"> _partials/chat-widget.html</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Move the HTML+JS block to <code>_partials/chat-widget.html</code> and <code>quarto render</code> will inject it at the bottom of every page.</p>
 <p><strong>Tighten the CORS policy</strong> — if you only want your own domain to call the Worker, change the header in <code>worker/index.js</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="st">"Access-Control-Allow-Origin"</span><span class="op">:</span> <span class="st">"https://ggilles.dev"</span><span class="op">,</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Swap the model</strong> — replace <code>"gpt-4o-mini"</code> with <code>"gpt-4o"</code> for higher quality answers (at a higher cost), or try another OpenAI model depending on your needs.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="st">"Access-Control-Allow-Origin"</span><span class="op">:</span> <span class="st">"https://ggilles.dev"</span><span class="op">,</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Swap the model</strong> — edit <code>AI_MODEL</code> in <code>wrangler.toml</code> and run <code>wrangler deploy</code>. No code change needed:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[vars]</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="dt">AI_MODEL</span> <span class="op">=</span> <span class="st">"@cf/mistral/mistral-7b-instruct-v0.1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Browse the full catalogue at <a href="https://developers.cloudflare.com/workers-ai/models/">developers.cloudflare.com/workers-ai/models</a>.</p>
 <hr>
 </section>
 <section id="closing-thoughts" class="level2">
 <h2 class="anchored" data-anchor-id="closing-thoughts">Closing thoughts</h2>
-<p>The whole implementation is about 150 lines of code spread across three files (<code>worker/index.js</code>, <code>assets/dark.scss</code>, and the raw HTML block in <code>index.qmd</code>). Despite its small footprint, it covers several important concepts that show up in many real-world projects: serverless functions, CORS, secret management, prompt engineering, and progressive enhancement (the site works perfectly for visitors who never open the chat).</p>
+<p>The whole implementation is about 150 lines of code spread across three files (<code>worker/index.js</code>, <code>assets/dark.scss</code>, and the raw HTML block in <code>index.qmd</code>). Despite its small footprint, it covers several important concepts that show up in many real-world projects: serverless functions, CORS, prompt engineering, and progressive enhancement (the site works perfectly for visitors who never open the chat).</p>
 <p>If you replicate this on your own site, feel free to open a <a href="https://github.com/guillaumegilles/guillaumegilles.github.io">GitHub issue</a> or reach out on <a href="https://www.linkedin.com/in/guillaumegilles">LinkedIn</a> — I’d be happy to help you debug it.</p>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
