@@ -10,11 +10,11 @@ author:
 abstract: |
   Most personal websites are one-way streets: you publish, visitors read.
   What if they could *ask* instead? In this post I walk through adding a
-  small AI assistant — powered by OpenAI and Cloudflare Workers — that lets
+  small AI assistant — powered by Cloudflare Workers AI — that lets
   anyone query my experience and résumé in plain English, with zero backend
-  server to maintain.
+  server to maintain and zero API costs.
 date: 2026-03-08
-date-modified: 2026-04-07
+date-modified: 2026-04-08
 image: image.png
 categories: [AI, Cloudflare, Quarto, Web]
 page-layout: full
@@ -42,8 +42,7 @@ direct, personalised answer in seconds.
 
 The goal of this post is to build exactly that, in a way that is:
 
-- **Free (or nearly so)** — Cloudflare Workers has a generous free tier (100,000 requests/day); OpenAI costs fractions of a cent per conversation.
-- **Private** — your OpenAI key never touches the browser; only your Worker ever sees it.
+- **Free** — Cloudflare Workers has a generous free tier (100,000 requests/day); Cloudflare Workers AI also runs on the free tier, so this stack costs nothing to operate.
 - **Maintenance-free** — no server to patch, no database, no uptime to worry about.
 - **Portable** — the approach works with any static site generator (Quarto, Hugo, Jekyll, plain HTML…).
 
@@ -58,7 +57,7 @@ Visitor's browser
 Chat widget (HTML/JS)
       │  2. POST { message, history } to Worker URL
       ▼
-Cloudflare Worker  ──►  OpenAI API
+Cloudflare Worker  ──►  Cloudflare Workers AI
       │                     │
       │  3. system prompt   │  4. returns answer
       │     + message       │
@@ -73,11 +72,12 @@ visitor's message and sends it to the Worker.
 
 **The Worker** is a tiny JavaScript function running on Cloudflare's global
 edge network. It prepends a *system prompt* containing your full background,
-then forwards the conversation to OpenAI using your secret API key.
+then forwards the conversation to Cloudflare Workers AI using the `env.AI`
+binding — no external API key required.
 
-**The key insight** is that the browser never talks to OpenAI directly —
-your API key stays server-side, and you can add rate limits or filters later
-if you need them.
+**The key insight** is that the browser never talks to the AI model directly —
+everything goes through your Worker, where you can add rate limits or filters
+later if you need them.
 
 ---
 
@@ -93,25 +93,55 @@ wrangler login   # opens a browser window for OAuth
 ```
 
 The project needs two files inside a `worker/` directory at your site root.
+
+```
+website/
+├── assets/
+│   └── dark.scss          # site theme — includes chat widget styles
+├── posts/
+│   └── ai-resume-chat/
+│       └── index.qmd      # this post
+├── worker/
+│   ├── index.js           # Cloudflare Worker — calls Workers AI, returns reply
+│   └── wrangler.toml      # Worker config — AI binding, model var, deployment
+├── _quarto.yml            # site-wide Quarto config
+└── index.qmd              # landing page — embeds the chat widget
+```
+
 `wrangler.toml` is the configuration:
 
 ```toml
 name = "resume-chat"
 main = "index.js"
 compatibility_date = "2024-09-01"
+
+[ai]
+binding = "AI"
+
+[vars]
+AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
 ```
 
 `name` sets the subdomain (`resume-chat.<account>.workers.dev`); `main`
-points to the Worker entry-point. That's all the configuration needed.
+points to the Worker entry-point. The `[ai]` binding gives the Worker access
+to `env.AI` — Cloudflare's built-in AI runtime, no external API key needed.
+`AI_MODEL` in `[vars]` makes the model configurable: change it in
+`wrangler.toml` and redeploy without touching any code.
 
 The real work happens in `index.js`. Scroll through the walkthrough below.
 
 :::{.cr-section}
 
 This is the complete `worker/index.js`. Every line has a job — let's go
-through them one by one. @cr-worker
+through them one by one. @cr-prompt
 
-:::{#cr-worker}
+**The system prompt** is the most important part of the setup. It is
+prepended to *every* conversation before the visitor's message. The
+instruction *"based strictly on the information below"* keeps the model from
+hallucinating anything that isn't in your résumé. Keep this section updated
+whenever your situation changes. @cr-prompt
+
+:::{#cr-prompt}
 ```js
 const SYSTEM_PROMPT = `You are an AI assistant representing Guillaume Gilles.
 Answer questions based strictly on the information below.
@@ -120,13 +150,34 @@ If asked about something not covered, say you don't have that information.
 
 --- PROFILE / EXPERIENCE / EDUCATION / SKILLS ---
 …`;
+```
+:::
 
+**CORS headers** tell the browser that your Worker accepts cross-origin
+requests. Your widget lives on `ggilles.dev`; the Worker lives on
+`workers.dev` — without these headers, the browser would silently block every
+fetch. Setting `https://ggilles.dev` restricts access to the Worker only from
+your exact domain. @cr-cors
+
+:::{#cr-cors}
+```js
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "https://ggilles.dev",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
+```
+:::
 
+**The OPTIONS preflight** is an automatic browser check sent before every
+cross-origin POST: *"Are you OK with this?"* The Worker must respond to it
+correctly, or the real request never goes through. Parsing the body is
+straightforward but worth wrapping in a try/catch — you want clear error
+responses rather than uncaught exceptions if something malformed hits the
+endpoint. @cr-preflight
+
+:::{#cr-preflight}
+```js
 export default {
   async fetch(request, env) {
 
@@ -142,87 +193,66 @@ export default {
     }
 
     const { message, history = [] } = body;
-
-    const messages = [
-      { role: "system", content: SYSTEM_PROMPT },
-      ...history.slice(-6),
-      { role: "user", content: message },
-    ];
-
-    const openaiRes = await fetch(
-      "https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          messages,
-          max_tokens: 400,
-          temperature: 0.4,
-        }),
-      }
-    );
-
-    const data = await openaiRes.json();
-    const reply = data.choices[0].message.content;
-
-    return new Response(JSON.stringify({ reply }), {
-      headers: { "Content-Type": "application/json", ...CORS_HEADERS },
-    });
   },
 };
 ```
 :::
 
-**The system prompt** is the most important part of the setup. It is
-prepended to *every* conversation before the visitor's message. The
-instruction *"based strictly on the information below"* keeps the model from
-hallucinating anything that isn't in your résumé. Keep this section updated
-whenever your situation changes. [@cr-worker]{highlight="1-7"}
-
-**CORS headers** tell the browser that your Worker accepts cross-origin
-requests. Your widget lives on `ggilles.dev`; the Worker lives on
-`workers.dev` — without these headers, the browser would silently block every
-fetch. Setting `https://ggilles.dev` restrict access to the worker only from
-your exact domain. [@cr-worker]{highlight="9-13"}
-
-**The OPTIONS preflight** is an automatic browser check sent before every
-cross-origin POST: *"Are you OK with this?"* The Worker must respond to it
-correctly, or the real request never goes through. [@cr-worker]{highlight="18-20"}
-
-**Parsing the body** is straightforward but worth wrapping in a try/catch.
-Cloudflare Workers are edge-deployed code — you want clear error responses
-rather than uncaught exceptions if something malformed hits the endpoint.
-[@cr-worker]{highlight="22-29"}
-
 **Building the messages array** is where context lives. The system prompt
 anchors every conversation. `history.slice(-6)` keeps the last three
 exchanges (six messages: three user, three assistant) so the model can handle
-follow-up questions without ballooning the token count.
-[@cr-worker]{highlight="31-35"}
+follow-up questions without ballooning the token count. @cr-messages
 
-**Calling OpenAI** uses `gpt-4o-mini` — fast, cheap, and well-suited to
-short Q&A. `max_tokens: 400` caps reply length so the chat box doesn't
-overflow. `temperature: 0.4` keeps answers factual rather than creative.
-Crucially, `env.OPENAI_API_KEY` reads from Cloudflare's encrypted secret
-store — the key never appears in source code. [@cr-worker]{highlight="37-51"}
+:::{#cr-messages}
+```js
+const messages = [
+  { role: "system", content: SYSTEM_PROMPT },
+  ...history.slice(-6),
+  { role: "user", content: message },
+];
+```
+:::
 
-**Returning the reply** strips out the OpenAI response envelope and sends
-the browser a clean `{ reply: "…" }` JSON object, with the same CORS headers
-attached so the browser actually accepts it. [@cr-worker]{highlight="53-58"}
+**Calling Cloudflare Workers AI** uses `env.AI.run()` with the model read
+from `env.AI_MODEL` (falling back to `@cf/meta/llama-3.1-8b-instruct` if
+the variable is unset). Keeping the model name in `wrangler.toml` means you
+can swap it without touching the Worker code — just edit `[vars]` and
+redeploy. `max_tokens: 400` caps reply length. The call is wrapped in a
+try/catch so failures return a clean, user-friendly error. On success, the
+Worker sends the browser a clean `{ reply: "…" }` JSON object with CORS
+headers attached so the browser actually accepts it. @cr-ai
+
+:::{#cr-ai}
+```js
+let reply;
+try {
+  const aiRes = await env.AI.run(
+    env.AI_MODEL ?? "@cf/meta/llama-3.1-8b-instruct",
+    { messages, max_tokens: 400 }
+  );
+  reply = aiRes.response;
+} catch (err) {
+  return new Response(
+    JSON.stringify({ error: "AI service unavailable. Please try again later." }),
+    { status: 502, headers: { "Content-Type": "application/json", ...CORS_HEADERS } }
+  );
+}
+
+return new Response(JSON.stringify({ reply }), {
+  headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+});
+```
+:::
 
 :::
 
-### Storing your key and deploying
+### Deploying
 
-Never put secrets in code. Store the OpenAI key in Cloudflare's encrypted
-secret store, then deploy:
+No secrets to manage — the AI binding is configured in `wrangler.toml` and
+Cloudflare handles everything else. Just deploy:
 
 ```bash
 cd worker/
-wrangler secret put OPENAI_API_KEY   # paste your key when prompted
 wrangler deploy
 # → Deployed: https://resume-chat.resume-chat.workers.dev
 ```
@@ -246,9 +276,14 @@ Quarto's `{=html}` fence. It has two parts: markup and JavaScript.
 :::{.cr-section}
 
 The complete widget — HTML structure up top, self-contained JavaScript
-below. Let's walk through it. @cr-widget
+below. Let's walk through it. @cr-html
 
-:::{#cr-widget}
+**The HTML structure** is minimal on purpose. `#chat-box` is a flex column:
+`#chat-messages` scrolls vertically as the conversation grows; `#chat-input-row`
+stays pinned at the bottom. No toggles, no overlays — the box lives inline in
+the page, right below the landing page text. @cr-html
+
+:::{#cr-html}
 ```html
 <div id="chat-box">
   <div id="chat-messages">
@@ -264,8 +299,15 @@ below. Let's walk through it. @cr-widget
     <button id="chat-send">Send</button>
   </div>
 </div>
+```
+:::
 
-<script>
+**`WORKER_URL`** is the only value you need to change when you adapt this for
+your own site. `history` accumulates the conversation turn by turn; `busy` is
+a simple mutex that prevents double-sends while a fetch is in flight. @cr-state
+
+:::{#cr-state}
+```js
 (function () {
   const WORKER_URL = "https://resume-chat.resume-chat.workers.dev";
 
@@ -281,152 +323,70 @@ below. Let's walk through it. @cr-widget
       e.preventDefault(); sendMessage();
     }
   });
-
-  function appendMsg(text, role) {
-    const div = document.createElement("div");
-    div.className = `chat-msg ${role}`;
-    div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-    return div;
-  }
-
-  async function sendMessage() {
-    const text = input.value.trim();
-    if (!text || busy) return;
-    busy = true; send.disabled = true; input.value = "";
-
-    appendMsg(text, "user");
-    const thinking = appendMsg("Thinking…", "bot typing");
-
-    try {
-      const res = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history }),
-      });
-      const data = await res.json();
-      const reply = data.reply || data.error || "Something went wrong.";
-      thinking.className = "chat-msg bot";
-      thinking.textContent = reply;
-      history.push({ role: "user",      content: text  });
-      history.push({ role: "assistant", content: reply });
-    } catch {
-      thinking.className = "chat-msg bot";
-      thinking.textContent = "⚠️ Could not reach the assistant.";
-    }
-
-    busy = false; send.disabled = false;
-    input.focus(); msgs.scrollTop = msgs.scrollHeight;
-  }
 })();
-</script>
 ```
 :::
-
-**The HTML structure** is minimal on purpose. `#chat-box` is a flex column:
-`#chat-messages` scrolls vertically as the conversation grows; `#chat-input-row`
-stays pinned at the bottom. No toggles, no overlays — the box lives inline in
-the page, right below the landing page text. [@cr-widget]{highlight="1-14"}
-
-**`WORKER_URL`** is the only value you need to change when you adapt this for
-your own site. Everything else is generic. [@cr-widget]{highlight="18"}
-
-**DOM references and state** are grabbed once at startup and kept in
-closured variables. `history` accumulates the conversation; `busy` is a
-simple mutex that prevents double-sends while a fetch is in flight.
-[@cr-widget]{highlight="20-24"}
-
-**Event listeners** wire up two ways to submit: clicking Send and pressing
-Enter (but not Shift+Enter, which might be used for line breaks in other
-contexts). [@cr-widget]{highlight="26-31"}
 
 **`appendMsg`** is a small factory: it creates a `div`, stamps it with the
 right CSS class (`user` or `bot`), appends it to the message area, and
 scrolls to the bottom. It returns the element so the caller can mutate it
-later (e.g. replace "Thinking…" with the actual reply).
-[@cr-widget]{highlight="33-40"}
+later — e.g. replace "Thinking…" with the actual reply in place. @cr-append
 
-**`sendMessage`** opens with a guard clause — if the input is empty or a
-fetch is already running, it exits immediately. Then it clears the input,
-renders the user bubble, and renders a "Thinking…" placeholder that will be
-replaced in-place once the response arrives. [@cr-widget]{highlight="42-48"}
-
-**The fetch** posts `{ message, history }` to the Worker. On success, the
-placeholder element is updated directly: its class changes from `bot typing`
-(italic, dimmed) to `bot`, and its text is replaced with the reply. Both
-sides of the exchange are then pushed into `history` for the next round.
-[@cr-widget]{highlight="50-61"}
-
-**Error handling and cleanup** cover the case where the Worker is unreachable
-(network error, Worker down). After either path, the busy flag is reset, the
-Send button re-enabled, and focus returned to the input so the visitor can
-keep typing without reaching for the mouse. [@cr-widget]{highlight="62-68"}
-
-:::
-
-### Styles
-
-The widget styles live in `assets/dark.scss` alongside the rest of the site
-theme, so they share the same SCSS palette variables and compile into the
-same stylesheet:
-
-```scss
-$chat-accent:       $phosphor-green;
-$chat-accent-hover: darken($phosphor-green, 12%);
-
-#chat-box {
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  border: 1px solid $board-lighter;
-  margin-top: 2rem;
-}
-
-#chat-messages {
-  height: 320px;
-  overflow-y: auto;
-  padding: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  background: $board-dark;
-}
-
-.chat-msg {
-  max-width: 85%;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.6rem;
-
-  &.user  { align-self: flex-end;  background: $chat-accent; color: $board-darkest; }
-  &.bot   { align-self: flex-start; background: $board-light; color: $chalk; }
-  &.typing { opacity: 0.6; font-style: italic; }
-}
-
-#chat-input-row {
-  display: flex;
-  gap: 0.4rem;
-  padding: 0.6rem 0.75rem;
-  border-top: 1px solid $board-lighter;
-  background: $board-dark;
-}
-
-#chat-send {
-  background: $chat-accent;
-  color: $board-darkest;
-  border: none;
-  border-radius: 0.4rem;
-  padding: 0.4rem 0.75rem;
-  cursor: pointer;
-  &:hover    { background: $chat-accent-hover; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
+:::{#cr-append}
+```js
+function appendMsg(text, role) {
+  const div = document.createElement("div");
+  div.className = `chat-msg ${role}`;
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
 }
 ```
+:::
 
-Because colours are SCSS variables compiled into the theme, the widget
-inherits your palette automatically — no JavaScript needed for dark/light
-switching.
+**`sendMessage`** opens with a guard clause — if the input is empty or a
+fetch is already running, it exits immediately. It then clears the input,
+renders the user bubble, and shows a "Thinking…" placeholder that gets
+replaced in-place once the response arrives. Both sides of the exchange are
+pushed into `history` for the next round. Error handling covers the case
+where the Worker is unreachable: after either path the busy flag is reset,
+the Send button re-enabled, and focus returned to the input. @cr-send
+
+:::{#cr-send}
+```js
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text || busy) return;
+  busy = true; send.disabled = true; input.value = "";
+
+  appendMsg(text, "user");
+  const thinking = appendMsg("Thinking…", "bot typing");
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text, history }),
+    });
+    const data = await res.json();
+    const reply = data.reply || data.error || "Something went wrong.";
+    thinking.className = "chat-msg bot";
+    thinking.textContent = reply;
+    history.push({ role: "user",      content: text  });
+    history.push({ role: "assistant", content: reply });
+  } catch {
+    thinking.className = "chat-msg bot";
+    thinking.textContent = "⚠️ Could not reach the assistant.";
+  }
+
+  busy = false; send.disabled = false;
+  input.focus(); msgs.scrollTop = msgs.scrollHeight;
+}
+```
+:::
+
+:::
 
 ---
 
@@ -465,25 +425,21 @@ npm install -g wrangler
 # 2. Authenticate with Cloudflare (creates a free account if needed)
 wrangler login
 
-# 3. Deploy the Worker
+# 3. Deploy the Worker (the [ai] binding in wrangler.toml is all you need)
 cd worker/
 wrangler deploy
 # Note the URL printed: https://resume-chat.<subdomain>.workers.dev
 
-# 4. Store your OpenAI API key
-wrangler secret put OPENAI_API_KEY
-# Paste your key when prompted
-
-# 5. Update the widget with your Worker URL
+# 4. Update the widget with your Worker URL
 # Open index.qmd and change:
 #   const WORKER_URL = "https://resume-chat.YOUR-SUBDOMAIN.workers.dev";
 # to your actual URL.
 
-# 6. Rebuild the landing page
+# 5. Rebuild the landing page
 cd ..
 quarto render index.qmd
 
-# 7. Publish
+# 6. Publish
 git add -A
 git commit -m "Add AI résumé chat assistant"
 git push
@@ -492,9 +448,6 @@ git push
 ---
 
 ## What to customise
-
-**Change the accent colour** — open `assets/dark.scss` and change the
-`$chat-accent` variable to any colour in your palette.
 
 **Update the résumé content** — open `worker/index.js` and edit the
 `SYSTEM_PROMPT` string. Then run `wrangler deploy` again to push the update.
@@ -519,9 +472,16 @@ Worker, change the header in `worker/index.js`:
 "Access-Control-Allow-Origin": "https://ggilles.dev",
 ```
 
-**Swap the model** — replace `"gpt-4o-mini"` with `"gpt-4o"` for higher
-quality answers (at a higher cost), or try another OpenAI model depending on
-your needs.
+**Swap the model** — edit `AI_MODEL` in `wrangler.toml` and run
+`wrangler deploy`. No code change needed:
+
+```toml
+[vars]
+AI_MODEL = "@cf/mistral/mistral-7b-instruct-v0.1"
+```
+
+Browse the full catalogue at
+[developers.cloudflare.com/workers-ai/models](https://developers.cloudflare.com/workers-ai/models/).
 
 ---
 
@@ -530,7 +490,7 @@ your needs.
 The whole implementation is about 150 lines of code spread across three files
 (`worker/index.js`, `assets/dark.scss`, and the raw HTML block in `index.qmd`).
 Despite its small footprint, it covers several important concepts that show
-up in many real-world projects: serverless functions, CORS, secret management,
+up in many real-world projects: serverless functions, CORS,
 prompt engineering, and progressive enhancement (the site works perfectly for
 visitors who never open the chat).
 
