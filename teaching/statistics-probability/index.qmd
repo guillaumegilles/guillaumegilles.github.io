@@ -9,13 +9,13 @@ abstract: |
 date-modified: 2026-03-20
 ---
 
-# Syllabus
+## Syllabus
 
 > "Tous les modèles sont faux, mais certains sont utiles." — George E. P. Box
 
 Ce cours introduit les **probabilités et les statistiques** comme outils de modélisation de l'incertitude et d'analyse de données. Il s'articule autour de trois axes complémentaires : la théorie des **variables aléatoires continues** (densités, lois classiques), les **théorèmes de convergence** (loi des grands nombres, théorème central limite) et les **statistiques descriptives et inférentielles** (résumé de données, estimation, tests).
 
-## Objectifs pédagogiques
+### Objectifs pédagogiques
 
 À l'issue de ce module, l'étudiant sera capable de :
 
@@ -25,47 +25,219 @@ Ce cours introduit les **probabilités et les statistiques** comme outils de mod
 - Décrire et résumer des données uni- et bivariées à l'aide des outils de statistique descriptive.
 - Construire des estimateurs (méthode des moments, maximum de vraisemblance) et des intervalles de confiance.
 
+## Carte du cours
+
+Le cours se déroule en **cinq phases** — cliquez sur un chapitre pour y accéder.
+
+```{ojs}
+//| echo: false
+{
+  const COL_W = 155, GAP = 22, PAD = 16;
+  const HDR_H = 36, NODE_H = 40, NODE_GAP = 10;
+
+  const sections = [
+    {
+      label: "Fondations",
+      hue: "#64748B",
+      chapters: [
+        { label: "Notations", url: "notation.html" }
+      ]
+    },
+    {
+      label: "Une variable",
+      hue: "#2563EB",
+      chapters: [
+        { label: "Stats univariée",  url: "univariate.html" },
+        { label: "Probabilités",     url: "probability.html" },
+        { label: "Lois à densité",   url: "density-function.html" },
+        { label: "Loi normale",      url: "normal-distribution.html" }
+      ]
+    },
+    {
+      label: "Deux variables",
+      hue: "#16A34A",
+      chapters: [
+        { label: "Stats bivariée",    url: "bivariate.html" },
+        { label: "Couples à densité", url: "joint-continuous-random-variables.html" }
+      ]
+    },
+    {
+      label: "Convergence",
+      hue: "#EA580C",
+      chapters: [
+        { label: "Convergence", url: "convergence-random-variables.html" }
+      ]
+    },
+    {
+      label: "Inférence",
+      hue: "#9333EA",
+      chapters: [
+        { label: "Échantillonnage", url: "sampling-distribution.html" },
+        { label: "Estimation",      url: "point-estimation.html" }
+      ]
+    }
+  ];
+
+  const maxN = d3.max(sections, s => s.chapters.length);
+  const W = sections.length * COL_W + (sections.length - 1) * GAP + 2 * PAD;
+  const H = PAD + HDR_H + NODE_GAP + maxN * (NODE_H + NODE_GAP) + PAD;
+
+  function alpha(hex, a) {
+    const r = parseInt(hex.slice(1, 3), 16),
+          g = parseInt(hex.slice(3, 5), 16),
+          b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  const svg = d3.create("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("width", "100%")
+    .style("font-family", "system-ui,-apple-system,sans-serif")
+    .style("overflow", "visible");
+
+  // Single arrowhead marker (auto-orient: works for horizontal & vertical lines)
+  svg.append("defs").append("marker")
+    .attr("id", "arr")
+    .attr("viewBox", "0 -4 8 8")
+    .attr("refX", 7).attr("refY", 0)
+    .attr("markerWidth", 5).attr("markerHeight", 5)
+    .attr("orient", "auto")
+    .append("path")
+    .attr("d", "M0,-4L8,0L0,4")
+    .attr("fill", "#94A3B8");
+
+  sections.forEach((sec, i) => {
+    const sx = PAD + i * (COL_W + GAP);
+
+    // Column background
+    svg.append("rect")
+      .attr("x", sx).attr("y", PAD)
+      .attr("width", COL_W).attr("height", H - 2 * PAD)
+      .attr("rx", 8)
+      .attr("fill", alpha(sec.hue, 0.05))
+      .attr("stroke", alpha(sec.hue, 0.2))
+      .attr("stroke-width", 1.5);
+
+    // Header fill (rounded top, square bottom via overlap)
+    svg.append("rect")
+      .attr("x", sx).attr("y", PAD)
+      .attr("width", COL_W).attr("height", HDR_H)
+      .attr("rx", 8)
+      .attr("fill", alpha(sec.hue, 0.15));
+    svg.append("rect")
+      .attr("x", sx).attr("y", PAD + HDR_H - 8)
+      .attr("width", COL_W).attr("height", 8)
+      .attr("fill", alpha(sec.hue, 0.15));
+
+    // Header label
+    svg.append("text")
+      .attr("x", sx + COL_W / 2).attr("y", PAD + HDR_H / 2)
+      .attr("dy", "0.35em")
+      .attr("text-anchor", "middle")
+      .attr("fill", sec.hue)
+      .attr("font-size", "12px")
+      .attr("font-weight", "600")
+      .text(sec.label);
+
+    // Arrow to next section
+    if (i < sections.length - 1) {
+      svg.append("line")
+        .attr("x1", sx + COL_W + 3).attr("y1", PAD + HDR_H / 2)
+        .attr("x2", sx + COL_W + GAP - 3).attr("y2", PAD + HDR_H / 2)
+        .attr("stroke", "#CBD5E1")
+        .attr("stroke-width", 1.5)
+        .attr("marker-end", "url(#arr)");
+    }
+
+    // Chapter nodes
+    sec.chapters.forEach((ch, j) => {
+      const ny = PAD + HDR_H + NODE_GAP + j * (NODE_H + NODE_GAP);
+      const nw = COL_W - 20;
+
+      // Arrow between consecutive chapters within section
+      if (j > 0) {
+        svg.append("line")
+          .attr("x1", sx + COL_W / 2).attr("y1", ny - NODE_GAP + 1)
+          .attr("x2", sx + COL_W / 2).attr("y2", ny - 1)
+          .attr("stroke", alpha(sec.hue, 0.35))
+          .attr("stroke-width", 1)
+          .attr("marker-end", "url(#arr)");
+      }
+
+      const g = svg.append("a")
+        .attr("href", ch.url)
+        .style("cursor", "pointer");
+
+      g.on("mouseenter", function() {
+          d3.select(this).select("rect")
+            .attr("stroke-width", 2.5)
+            .style("filter", "drop-shadow(0 2px 6px rgba(0,0,0,0.18))");
+        })
+        .on("mouseleave", function() {
+          d3.select(this).select("rect")
+            .attr("stroke-width", 1.5)
+            .style("filter", null);
+        });
+
+      g.append("rect")
+        .attr("x", sx + 10).attr("y", ny)
+        .attr("width", nw).attr("height", NODE_H)
+        .attr("rx", 5)
+        .attr("fill", "white")
+        .attr("stroke", alpha(sec.hue, 0.45))
+        .attr("stroke-width", 1.5);
+
+      g.append("text")
+        .attr("x", sx + 10 + nw / 2).attr("y", ny + NODE_H / 2)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "middle")
+        .attr("fill", sec.hue)
+        .attr("font-size", "11px")
+        .attr("font-weight", "500")
+        .text(ch.label);
+    });
+  });
+
+  return svg.node();
+}
+```
+
 ## Contenu du cours
 
-### Probabilités — Variables aléatoires continues
+### Fondations
 
-| \# | Chapitre | Thèmes principaux | Exercices |
-|:--:|----------|-------------------|:---------:|
-| 1 | [Lois à densité](classes/density-function.qmd) | Intégrales généralisées · Densité et fonction de répartition · Loi uniforme $\mathcal{U}([a,b])$ · Loi exponentielle $\mathcal{E}(\lambda)$ · Espérance, variance, écart-type | [→](solutions/worksheet-density-function.qmd) |
-| 2 | [Loi normale](classes/normal-distribution.qmd) | Loi $\mathcal{N}(0,1)$ et table $\Phi$ · Standardisation · Loi $\mathcal{N}(m,\sigma^2)$ · Stabilité par somme · Loi log-normale · Loi du khi-deux $\chi^2_n$ | [→](worksheets/worksheet-normal-distribution.qmd) |
-| 3 | [Couples de variables à densité](classes/joint-continuous-variables.qmd) | Intégrales doubles (Fubini-Tonelli) · Densité conjointe · Lois marginales · Indépendance · Covariance et corrélation · Convolution | [→](worksheets/worksheet-couples-variables-densite.qmd) |
+[Notations mathématiques](notation.html) — Guide de lecture · Symboles probabilistes ($P$, $\mathbb{E}$, $\sigma$) vs statistiques ($\bar{x}$, $s$) · Conventions du cours
 
-### Théorèmes limites
+### Une variable
 
-| \# | Chapitre | Thèmes principaux | Exercices |
-|:--:|----------|-------------------|:---------:|
-| 4 | [Convergence de variables aléatoires](classes/convergence-va.qmd) | Inégalités de Markov et Bienaymé-Tchebychev · Convergences en probabilité, en loi, en moyenne quadratique · Loi faible des grands nombres · Théorème central limite · Approximation de la loi binomiale | [→](worksheets/worksheet-convergence-variables-aleatoires.qmd) |
+1. [Statistiques univariées](univariate.html) — Série discrète et continue · Histogramme (densité) · Fonction de répartition empirique · Médiane, quartiles, écart interquartile · Moyenne, variance, König-Huygens · Transformations affines
+2. [Probabilités discrètes](probability.html) — Variables aléatoires discrètes · Loi de probabilité · Espérance et variance · Lois de Bernoulli, binomiale, géométrique, Poisson · Approximation de la loi binomiale
+3. [Lois à densité](density-function.html) — Intégrales généralisées · Densité et fonction de répartition · Loi uniforme $\mathcal{U}([a,b])$ · Loi exponentielle $\mathcal{E}(\lambda)$ · Espérance, variance, écart-type
+4. [Loi normale](normal-distribution.html) — Loi $\mathcal{N}(0,1)$ et table $\Phi$ · Standardisation · Loi $\mathcal{N}(m,\sigma^2)$ · Stabilité par somme · Loi log-normale · Loi du khi-deux $\chi^2_n$
 
-### Statistiques descriptives
+### Deux variables
 
-| \# | Chapitre | Thèmes principaux | Exercices |
-|:--:|----------|-------------------|:---------:|
-| 5 | [Statistiques à une variable](classes/univariate-descriptive-statistics.qmd) | Série discrète et continue · Histogramme (densité) · Fonction de répartition empirique · Médiane, quartiles, écart interquartile · Moyenne, variance, König-Huygens · Transformations affines | [→](worksheets/worksheet-statistiques-une-variable.qmd) |
-| 6 | [Statistiques à deux variables](classes/bivariate-descriptive-statistics.qmd) | Tableau de contingence · Distributions marginales et conditionnelles · Indépendance statistique · Test du $\chi^2$ d'indépendance · Résidus standardisés | [→](worksheets/worksheet-statistiques-deux-variables.qmd) |
+5. [Statistiques bivariées](bivariate.html) — Tableau de contingence · Distributions marginales et conditionnelles · Indépendance statistique · Test du $\chi^2$ d'indépendance · Résidus standardisés
+6. [Couples de variables à densité](joint-continuous-random-variables.html) — Intégrales doubles (Fubini-Tonelli) · Densité conjointe · Lois marginales · Indépendance · Covariance et corrélation · Convolution
 
-### Statistiques inférentielles
+### Convergence
 
-| \# | Chapitre | Thèmes principaux | Exercices |
-|:--:|----------|-------------------|:---------:|
-| 7 | [Distribution d'échantillonnage](classes/sampling-distribution.qmd) | Échantillon i.i.d. · Statistique · Moyenne empirique (espérance, variance, loi) · Variance empirique corrigée et biais · Lois exactes en cas gaussien ($\mathcal{N}$, $\chi^2$) | [→](worksheets/worksheet-distribution-echantillonnage.qmd) |
-| 8 | [Estimation](classes/estimate.qmd) | Estimateur, biais, erreur quadratique · Méthode des moments · Maximum de vraisemblance · Intervalles de confiance pour une proportion, une moyenne, une variance | — |
+7. [Convergence de variables aléatoires](convergence-random-variables.html) — Inégalités de Markov et Bienaymé-Tchebychev · Convergences en probabilité, en loi, en moyenne quadratique · Loi faible des grands nombres · Théorème central limite · Approximation de la loi binomiale
+
+### Inférence
+
+8. [Distribution d'échantillonnage](sampling-distribution.html) — Échantillon i.i.d. · Statistique · Moyenne empirique (espérance, variance, loi) · Variance empirique corrigée et biais · Lois exactes en cas gaussien ($\mathcal{N}$, $\chi^2$)
+9. [Estimation](point-estimation.html) — Estimateur, biais, erreur quadratique · Méthode des moments · Maximum de vraisemblance · Intervalles de confiance pour une proportion, une moyenne, une variance
 
 ### Annexes
 
-| Ressource | Contenu |
-|-----------|---------|
-| [Tables statistiques](tables.qmd) | Table de la loi de Poisson · Quantiles du $\chi^2$ · Quantiles de la loi de Student |
+[Tables statistiques](tables.html) — Table de la loi de Poisson · Quantiles du $\chi^2$ · Quantiles de la loi de Student
 
-# Évaluation du module
+## Évaluation du module
 
 Ce cours s'appuie sur une approche d'**apprentissage actif** [@sheldon_multiplayer_2020] : les étudiants progressent au travers de missions, accumulent des **points d'expérience (XP)** et débloquent des niveaux au fil du semestre.
 
-## Niveaux
+### Niveaux
 
 | Niveau | Titre | XP requises |
 |:------:|-------|:-----------:|
@@ -74,7 +246,7 @@ Ce cours s'appuie sur une approche d'**apprentissage actif** [@sheldon_multiplay
 | 3 | Stratège Financier | ≥ 800 |
 | 4 | Expert en Stratégie Financière | ≥ 1 200 |
 
-## Activités notées
+### Activités notées
 
 Chaque activité du cours génère des XP selon son type :
 

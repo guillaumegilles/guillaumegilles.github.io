@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Guillaume Gilles - Dérivée d’une fonction univariée</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../teaching/mathematical-analysis/elasticity.html" rel="next">
+<link href="../../teaching/mathematical-analysis/index.html" rel="prev">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<meta name="shinylive:serviceworker_dir" content="../..">
+<script src="../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/shinylive.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Guillaume Gilles - Dérivée d’une fonction univariée">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://ggilles.dev/teaching/mathematical-analysis/assets/og-image.png">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Dérivée d’une fonction univariée">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://ggilles.dev/teaching/mathematical-analysis/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/mathematical-analysis/derivatives.html"><strong>Module 1 - Derivées et Élasticité</strong></a></li><li class="breadcrumb-item"><a href="../../teaching/mathematical-analysis/derivatives.html">Dérivée d’une fonction univariée</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text"><strong>Module 1 - Derivées et Élasticité</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-analysis/derivatives.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Dérivée d’une fonction univariée</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-analysis/elasticity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Élasticité d’une fonction univariée</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text"><strong>Module 2 - Optimisation univariée</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-analysis/intro-optimization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optimisation d’une fonction univariée</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text"><strong>Module 3 - Fonctions bivariées</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-analysis/bivariate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dérivée d’une fonction bivariée et Élasticité partielle</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text"><strong>Module 4 - Optimisation bivariée</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-analysis/matrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optimisation d’une fonction bivariée</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text"><strong>Module 5 - Recherche operationnelle</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-analysis/operations-research.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Module 5 - Introduction à la recherche opérationnelle</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text"><strong>Révisions</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-analysis/revision-midterm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Examen intermédiaire</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-analysis/revision-final.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Séance de révisions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-analysis/revision-final-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Séance de révisions 2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/mathematical-analysis/derivatives.html"><strong>Module 1 - Derivées et Élasticité</strong></a></li><li class="breadcrumb-item"><a href="../../teaching/mathematical-analysis/derivatives.html">Dérivée d’une fonction univariée</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Dérivée d’une fonction univariée</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Objectifs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Comprendre la <strong>dérivée d’une fonction univariée</strong></li>
+<li>Savoir <strong>calculer et interpréter</strong> une dérivée</li>
+<li>Étudier le <strong>sens de variation</strong> d’une fonction</li>
+<li>Comprendre et calculer l’<strong>élasticité</strong></li>
+</ul>
+</div>
+</div>
+<section id="introduction" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pourquoi apprendre les dérivées ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Imaginez que vous gérez une boulangerie. Votre chiffre d’affaires quotidien est <span class="math inline">\(R(p) = 200p - 5p^2\)</span>, ou <span class="math inline">\(p\)</span> est le prix d’une baguette en euros.</p>
+<p>Si vous augmentez <span class="math inline">\(p\)</span> de 1 centime, votre chiffre d’affaires augmente-t-il ou diminue-t-il ? De combien exactement ?</p>
+<p>C’est précisément ce que mesure la dérivée : <strong>la variation instantanée d’une grandeur par rapport à une autre</strong>. Dans cet exemple, <span class="math inline">\(R'(p)\)</span> indique le gain (ou la perte) de chiffre d’affaires pour une hausse de prix infinitésimale.</p>
+</div>
+</div>
+<p>Ce module présente les notions fondamentales de dérivation des fonctions univariées et leur interprétation économique.</p>
+<section id="exemple-économique" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="exemple-économique">Exemple économique</h3>
+<p>Le graphique ci-dessous illustre le cas de la boulangerie : à gauche le chiffre d’affaires <span class="math inline">\(R(p)\)</span>, à droite sa dérivée <span class="math inline">\(R'(p)\)</span> qui mesure le gain marginal.</p>
+<div id="cell-fig-boulangerie" class="cell page-columns page-full" data-execution_count="1">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-boulangerie" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-boulangerie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="derivatives_files/figure-html/fig-boulangerie-output-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boulangerie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Chiffre d’affaires R(p) = 200p − 5p² : la dérivée indique le gain marginal par euro de hausse de prix.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="définition-de-la-dérivée" class="level2">
+<h2 class="anchored" data-anchor-id="définition-de-la-dérivée">Définition de la dérivée</h2>
+<p>Une fonction <span class="math inline">\(f\)</span> est dite dérivable en <span class="math inline">\(x\)</span> si le taux d’accroissement <span class="math inline">\(\frac{f(x+h)-f(x)}{h}\)</span> admet une limite quand <span class="math inline">\(h \to 0\)</span>.</p>
+<p>On définit alors :</p>
+<p><span class="math display">\[
+f'(x) = \lim_{h \to 0} \frac{f(x+h)-f(x)}{h}
+\]</span></p>
+</section>
+<section id="intuition-du-taux-moyen-au-taux-instantané" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="intuition-du-taux-moyen-au-taux-instantané">Intuition : du taux moyen au taux instantané</h2>
+<p>Le quotient</p>
+<p><span class="math display">\[
+\frac{f(x+h)-f(x)}{h}
+\]</span></p>
+<p>mesure une <strong>variation moyenne</strong> de <span class="math inline">\(f\)</span> entre <span class="math inline">\(x\)</span> et <span class="math inline">\(x+h\)</span>. Quand <span class="math inline">\(h\)</span> devient très petit, on “zoome” autour de <span class="math inline">\(x\)</span> : cette variation moyenne tend vers une variation <strong>instantanée</strong>.</p>
+<p>C’est exactement ce que représente la dérivée <span class="math inline">\(f'(x)\)</span> :</p>
+<ul>
+<li>en géométrie : la pente de la tangente ;</li>
+<li>en économie : un effet marginal (coût marginal, recette marginale, etc.).</li>
+</ul>
+<section id="mini-lecture-numérique" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="mini-lecture-numérique">Mini-lecture numérique</h3>
+<p>Pour <span class="math inline">\(f(x)=x^2\)</span> au point <span class="math inline">\(x=3\)</span> :</p>
+<p><span class="math display">\[
+\frac{f(3+h)-f(3)}{h}=\frac{(3+h)^2-9}{h}=6+h
+\]</span></p>
+<p>Si <span class="math inline">\(h=1\)</span>, on obtient <span class="math inline">\(7\)</span> ; si <span class="math inline">\(h=0.1\)</span>, on obtient <span class="math inline">\(6.1\)</span> ; si <span class="math inline">\(h=0.01\)</span>, on obtient <span class="math inline">\(6.01\)</span>. La valeur se rapproche de <span class="math inline">\(6\)</span>, donc <span class="math inline">\(f'(3)=6\)</span>.</p>
+<div id="cell-fig-sécantes" class="cell page-columns page-full" data-execution_count="2">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-sécantes" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-sécantes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="derivatives_files/figure-html/fig-secantes-output-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sécantes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Droites sécantes pour h = 2, 1 et 0.1 : quand h tend vers 0, la sécante converge vers la tangente (pente = 6).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="à-retenir" class="level3">
+<h3 class="anchored" data-anchor-id="à-retenir">À retenir</h3>
+<ol type="1">
+<li>On calcule d’abord un taux moyen.</li>
+<li>On fait tendre <span class="math inline">\(h\)</span> vers 0.</li>
+<li>La limite obtenue est la dérivée (taux instantané).</li>
+</ol>
+</section>
+<section id="exercice-interactif-convergence-de-h-0" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-interactif-convergence-de-h-0">Exercice interactif — Convergence de h → 0</h3>
+<p>Utilisez le curseur pour faire varier <span class="math inline">\(h\)</span> et observez comment la pente de la sécante se rapproche de <span class="math inline">\(f'(3) = 6\)</span>.</p>
+<pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 510
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
+        .form-label {{ color: {FG} !important; }}
+        .form-range {{ accent-color: steelblue; width: 100%; }}
+        .info-box {{
+            background: #152119; border-radius: 6px; padding: 10px 14px;
+            margin: 8px 0; border-left: 3px solid steelblue;
+            font-family: monospace; font-size: 0.9em;
+        }}
+    """),
+    ui.h5("🎯 De la sécante à la tangente", style=f"color:{FG}"),
+    ui.p(
+        "Faites varier h pour voir comment la pente de la sécante se rapproche de f'(3) = 6 quand h → 0.",
+        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
+    ),
+    ui.input_slider("h", "Valeur de h :", min=0.05, max=3.0, value=2.0, step=0.05),
+    ui.output_ui("info"),
+    ui.output_plot("plot", height="340px"),
+)
+
+def server(input, output, session):
+    @output
+    @render.ui
+    def info():
+        h = input.h()
+        slope = ((3 + h) ** 2 - 9) / h
+        error = abs(slope - 6)
+        tick = "  ✅ Tres proche !" if error &lt; 0.15 else ""
+        color = "steelblue" if error &lt; 0.15 else "#e07a5f"
+        return ui.HTML(f"""
+            &lt;div class='info-box'&gt;
+                Pente = (f(3 + {h:.2f}) − f(3)) / {h:.2f}
+                = &lt;strong style='color:darkorange'&gt;{slope:.4f}&lt;/strong&gt;&lt;br&gt;
+                Ecart avec 6 : &lt;strong style='color:{color}'&gt;{error:.4f}&lt;/strong&gt;{tick}
+            &lt;/div&gt;
+        """)
+
+    @output
+    @render.plot
+    def plot():
+        h  = input.h()
+        x0, y0 = 3, 9
+        slope   = ((x0 + h) ** 2 - y0) / h
+        x = np.linspace(0.5, 6.5, 300)
+
+        fig, ax = plt.subplots(figsize=(7, 3.8))
+        fig.patch.set_facecolor(BG)
+        ax.set_facecolor(BG)
+        for spine in ax.spines.values():
+            spine.set_edgecolor(FG)
+        ax.tick_params(colors=FG)
+
+        ax.plot(x, x ** 2, color='steelblue', lw=2.2, label=r'$f(x)=x^2$')
+        ax.plot(x, y0 + slope * (x - x0), color='darkorange', lw=1.8,
+                linestyle='--', label=f'Sécante  h={h:.2f}  (pente={slope:.3f})')
+        ax.plot(x, y0 + 6 * (x - x0), color=FG, lw=2.0,
+                label=r"Tangente $h\to0$  (pente = 6)")
+        ax.scatter([x0, x0 + h], [y0, (x0 + h) ** 2],
+                   color='crimson', zorder=6, s=70)
+        ax.set_xlim(0.5, 6.5); ax.set_ylim(-5, 45)
+        ax.set_xlabel("$x$", color=FG); ax.set_ylabel("$f(x)$", color=FG)
+        ax.set_title(r"Sécante vs tangente en $x_0 = 3$", color=FG)
+        ax.legend(fontsize=8.5, facecolor=BG, edgecolor='none', labelcolor=FG)
+        ax.grid(alpha=0.15, color=FG)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)</code></pre>
+</section>
+<section id="exemple-détaillé-fxx2" class="level3">
+<h3 class="anchored" data-anchor-id="exemple-détaillé-fxx2">Exemple détaillé : <span class="math inline">\(f(x)=x^2\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{f(x+h)-f(x)}{h}
+&amp;= \frac{(x+h)^2-x^2}{h} \\
+&amp;= \frac{x^2+2xh+h^2-x^2}{h} \\
+&amp;= 2x+h
+\end{aligned}
+\]</span></p>
+<p>Donc :</p>
+<p><span class="math display">\[
+f'(x) = \lim_{h \to 0}(2x+h)=2x
+\]</span></p>
+</section>
+<section id="exemples-rapides" class="level3">
+<h3 class="anchored" data-anchor-id="exemples-rapides">Exemples rapides</h3>
+<ul>
+<li><span class="math inline">\(f(x)=\frac{1}{x} \Rightarrow f'(x)=-\frac{1}{x^2}\)</span></li>
+<li><span class="math inline">\(f(x)=\sqrt{x} \Rightarrow f'(x)=\frac{1}{2\sqrt{x}}, \; x&gt;0\)</span></li>
+</ul>
+</section>
+</section>
+<section id="dérivées-des-fonctions-usuelles" class="level2">
+<h2 class="anchored" data-anchor-id="dérivées-des-fonctions-usuelles">Dérivées des fonctions usuelles</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Fonction <span class="math inline">\(f(x)\)</span></th>
+<th>Dérivée <span class="math inline">\(f'(x)\)</span></th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(k\)</span></td>
+<td><span class="math inline">\(0\)</span></td>
+<td><span class="math inline">\(k\)</span> constante réelle</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(kx\)</span></td>
+<td><span class="math inline">\(k\)</span></td>
+<td><span class="math inline">\(k\)</span> constante réelle</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(x^n\)</span></td>
+<td><span class="math inline">\(nx^{n-1}\)</span></td>
+<td><span class="math inline">\(n \in \mathbb{N}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\frac{1}{x^n}\)</span></td>
+<td><span class="math inline">\(\frac{-n}{x^{n+1}}\)</span></td>
+<td><span class="math inline">\(x \neq 0\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\sqrt{x}\)</span></td>
+<td><span class="math inline">\(\frac{1}{2\sqrt{x}}\)</span></td>
+<td><span class="math inline">\(x &gt; 0\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(e^x\)</span></td>
+<td><span class="math inline">\(e^x\)</span></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\ln(x)\)</span></td>
+<td><span class="math inline">\(\frac{1}{x}\)</span></td>
+<td><span class="math inline">\(x&gt;0\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Comment lire ce tableau
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>La constante ne varie jamais : <span class="math inline">\(f(x)=5 \Rightarrow f'(x)=0\)</span>.</li>
+<li>La dérivée de <span class="math inline">\(kx\)</span> est la pente <span class="math inline">\(k\)</span> : une augmentation de 1 de <span class="math inline">\(x\)</span> fait varier <span class="math inline">\(f\)</span> de <span class="math inline">\(k\)</span> unités.</li>
+<li>La dérivée de <span class="math inline">\(x^n\)</span> “abaisse l’exposant d’un cran” : <span class="math inline">\(x^4 \to 4x^3\)</span>.</li>
+<li><span class="math inline">\(e^x\)</span> est sa propre dérivée : son taux de croissance instantané est égal à sa valeur — propriété remarquable exploitée en finance (actualisation).</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Domaine de définition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La dérivée n’est définie que là où la fonction est définie. Par exemple, <span class="math inline">\(\ln(x)\)</span> impose <span class="math inline">\(x &gt; 0\)</span>, donc <span class="math inline">\((\ln(x))' = \frac{1}{x}\)</span> est également valable uniquement pour <span class="math inline">\(x &gt; 0\)</span>.</p>
+<p><strong>Toujours préciser le domaine de définition</strong> avant de dériver.</p>
+</div>
+</div>
+</section>
+<section id="partie-2---fonctions-composées" class="level1">
+<h1>Partie 2 - Fonctions composées</h1>
+<section id="règles-de-dérivation" class="level2">
+<h2 class="anchored" data-anchor-id="règles-de-dérivation">Règles de dérivation</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Règle</th>
+<th>Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Somme</td>
+<td><span class="math inline">\((u+v)' = u' + v'\)</span></td>
+</tr>
+<tr class="even">
+<td>Produit</td>
+<td><span class="math inline">\((uv)' = u'v + uv'\)</span></td>
+</tr>
+<tr class="odd">
+<td>Quotient</td>
+<td><span class="math inline">\(\left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}\)</span></td>
+</tr>
+<tr class="even">
+<td>Exponentielle composée</td>
+<td><span class="math inline">\((e^{u(x)})' = u'(x)\,e^{u(x)}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Logarithme compose</td>
+<td><span class="math inline">\((\ln(u(x)))' = \dfrac{u'(x)}{u(x)}\)</span></td>
+</tr>
+<tr class="even">
+<td>Puissance composée</td>
+<td><span class="math inline">\((u(x)^n)' = n\,u'(x)\,u(x)^{n-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+La règle du produit en detail
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La règle <span class="math inline">\((uv)' = u'v + uv'\)</span> est souvent source d’erreurs. Pensez-y ainsi : quand le produit de deux quantités varie, <strong>chaque terme contribue tour à tour</strong> pendant que l’autre reste fixe. On additionne les deux contributions.</p>
+</div>
+</div>
+</section>
+<section id="exemples-pas-a-pas" class="level2">
+<h2 class="anchored" data-anchor-id="exemples-pas-a-pas">Exemples pas a pas</h2>
+<section id="règle-de-la-somme-fx-4x---ex" class="level3">
+<h3 class="anchored" data-anchor-id="règle-de-la-somme-fx-4x---ex">Règle de la somme : <span class="math inline">\(f(x) = 4x - e^x\)</span></h3>
+<p>On pose <span class="math inline">\(u(x)=4x\)</span> et <span class="math inline">\(v(x)=e^x\)</span>.</p>
+<p><span class="math display">\[
+u'(x)=4, \qquad v'(x)=e^x
+\]</span></p>
+<p><span class="math display">\[
+f'(x) = 4 - e^x
+\]</span></p>
+<hr>
+</section>
+<section id="règle-du-produit-fx-2x3ex" class="level3">
+<h3 class="anchored" data-anchor-id="règle-du-produit-fx-2x3ex">Règle du produit : <span class="math inline">\(f(x) = (2x+3)\,e^x\)</span></h3>
+<p>On pose <span class="math inline">\(u(x)=2x+3\)</span> et <span class="math inline">\(v(x)=e^x\)</span>.</p>
+<p><span class="math display">\[
+u'(x)=2, \qquad v'(x)=e^x
+\]</span></p>
+<p><span class="math display">\[
+f'(x) = u'v + uv' = 2\,e^x + (2x+3)\,e^x = e^x(2x+5)
+\]</span></p>
+<hr>
+</section>
+<section id="règle-du-quotient-fx-dfraclnx2x2" class="level3">
+<h3 class="anchored" data-anchor-id="règle-du-quotient-fx-dfraclnx2x2">Règle du quotient : <span class="math inline">\(f(x) = \dfrac{\ln(x)}{2x^2}\)</span></h3>
+<p>On pose <span class="math inline">\(u(x)=\ln(x)\)</span> et <span class="math inline">\(v(x)=2x^2\)</span>.</p>
+<p><span class="math display">\[
+u'(x)=\frac{1}{x}, \qquad v'(x)=4x
+\]</span></p>
+<p><span class="math display">\[
+f'(x) = \frac{\frac{1}{x}\cdot 2x^2 - \ln(x)\cdot 4x}{(2x^2)^2}
+       = \frac{2x - 4x\ln(x)}{4x^4}
+       = \frac{1 - 2\ln(x)}{2x^3}
+\]</span></p>
+<hr>
+</section>
+<section id="exponentielle-composée-fx-e2x23x" class="level3">
+<h3 class="anchored" data-anchor-id="exponentielle-composée-fx-e2x23x">Exponentielle composée : <span class="math inline">\(f(x) = e^{2x^2+3x}\)</span></h3>
+<p>On pose <span class="math inline">\(u(x)=2x^2+3x\)</span>.</p>
+<p><span class="math display">\[
+u'(x)=4x+3
+\]</span></p>
+<p><span class="math display">\[
+f'(x) = u'(x)\,e^{u(x)} = (4x+3)\,e^{2x^2+3x}
+\]</span></p>
+<hr>
+</section>
+<section id="logarithme-compose-fx-ln4x22" class="level3">
+<h3 class="anchored" data-anchor-id="logarithme-compose-fx-ln4x22">Logarithme compose : <span class="math inline">\(f(x) = \ln(4x^2+2)\)</span></h3>
+<p>On pose <span class="math inline">\(u(x)=4x^2+2\)</span>.</p>
+<p><span class="math display">\[
+u'(x)=8x
+\]</span></p>
+<p><span class="math display">\[
+f'(x) = \frac{u'(x)}{u(x)} = \frac{8x}{4x^2+2} = \frac{4x}{2x^2+1}
+\]</span></p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Erreur classique
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ne pas confondre <span class="math inline">\((\ln(x))' = \frac{1}{x}\)</span> et <span class="math inline">\((\ln(u(x)))' = \frac{u'(x)}{u(x)}\)</span>.</p>
+<p>Toujours verifier si l’argument du <span class="math inline">\(\ln\)</span> est une expression composée, et si oui, multiplier par sa dérivée.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="partie-3---interprétation-de-la-dérivée" class="level1 page-columns page-full">
+<h1>Partie 3 - Interprétation de la dérivée</h1>
+<section id="interprétation-géométrique" class="level2">
+<h2 class="anchored" data-anchor-id="interprétation-géométrique">Interprétation géométrique</h2>
+<p>La dérivée <span class="math inline">\(f'(a)\)</span> représente la pente de la tangente à la courbe de <span class="math inline">\(f\)</span> au point d’abscisse <span class="math inline">\(a\)</span>.</p>
+</section>
+<section id="approximation-locale-utile" class="level2">
+<h2 class="anchored" data-anchor-id="approximation-locale-utile">Approximation locale utile</h2>
+<p>Pres d’un point <span class="math inline">\(a\)</span>, on peut approximer :</p>
+<p><span class="math display">\[
+f(a+h) \approx f(a) + f'(a)h
+\]</span></p>
+<p>Cette formule donne une lecture pratique : <span class="math inline">\(f'(a)\)</span> indique la variation attendue de <span class="math inline">\(f\)</span> pour une petite variation de la variable.</p>
+</section>
+<section id="sens-de-variation" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sens-de-variation">Sens de variation</h2>
+<ul>
+<li>Si <span class="math inline">\(f'(x)&gt;0\)</span>, la fonction est croissante.</li>
+<li>Si <span class="math inline">\(f'(x)&lt;0\)</span>, la fonction est décroissante.</li>
+<li>Si <span class="math inline">\(f'(x)=0\)</span>, <span class="math inline">\(x\)</span> est un point critique.</li>
+</ul>
+<div id="cell-fig-signe-dérivée" class="cell page-columns page-full" data-execution_count="3">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-signe-dérivée" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-signe-dérivée-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="derivatives_files/figure-html/fig-signe-derivee-output-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-signe-dérivée-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: f(x) = x³ − 3x et sa dérivée f’(x) = 3x² − 3. Les zones bleues indiquent où f est croissante (f’ &gt; 0) ; les zones rouges où f est décroissante (f’ &lt; 0).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="exercice-interactif-explorer-le-sens-de-variation" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-interactif-explorer-le-sens-de-variation">Exercice interactif — Explorer le sens de variation</h3>
+<p>Choisissez une fonction et observez comment le signe de <span class="math inline">\(f'\)</span> détermine la croissance ou la décroissance de <span class="math inline">\(f\)</span>.</p>
+<pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 490
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+FUNCTIONS = {
+    "f(x) = x² − 4x  (profit)": {
+        "f":  lambda x: x**2 - 4*x,
+        "fp": lambda x: 2*x - 4,
+        "xlim": (-1.0, 6.0),
+        "title_f":  r"$f(x)=x^2-4x$",
+        "title_fp": r"$f'(x)=2x-4$",
+        "zeros": [2],
+    },
+    "f(x) = x³ − 3x  (cubique)": {
+        "f":  lambda x: x**3 - 3*x,
+        "fp": lambda x: 3*x**2 - 3,
+        "xlim": (-2.4, 2.4),
+        "title_f":  r"$f(x)=x^3-3x$",
+        "title_fp": r"$f'(x)=3x^2-3$",
+        "zeros": [-1, 1],
+    },
+    "f(x) = −x² + 6x  (recette max)": {
+        "f":  lambda x: -x**2 + 6*x,
+        "fp": lambda x: -2*x + 6,
+        "xlim": (-1.0, 8.0),
+        "title_f":  r"$f(x)=-x^2+6x$",
+        "title_fp": r"$f'(x)=-2x+6$",
+        "zeros": [3],
+    },
+}
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color:{BG}; color:{FG}; padding:12px;
+                font-family:sans-serif; margin:0; }}
+        .form-label {{ color:{FG} !important; }}
+        .form-select {{ background-color:#152119; color:{FG}; border-color:#2F4636; }}
+    """),
+    ui.h5("📈 Signe de f' et sens de variation", style=f"color:{FG}"),
+    ui.p(
+        "Sélectionnez une fonction et observez le lien entre le signe de f' "
+        "et la croissance / décroissance de f.",
+        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
+    ),
+    ui.input_select("func", "Fonction :", choices=list(FUNCTIONS.keys())),
+    ui.output_plot("plot", height="380px"),
+)
+
+def server(input, output, session):
+    @output
+    @render.plot
+    def plot():
+        cfg = FUNCTIONS[input.func()]
+        x  = np.linspace(*cfg["xlim"], 400)
+        f  = cfg["f"](x)
+        fp = cfg["fp"](x)
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.8))
+        fig.patch.set_facecolor(BG)
+        for ax in (ax1, ax2):
+            ax.set_facecolor(BG)
+            for spine in ax.spines.values():
+                spine.set_edgecolor(FG)
+            ax.tick_params(colors=FG)
+            ax.axhline(0, color='#5a5a5a', lw=0.8)
+            ax.axvline(0, color='#5a5a5a', lw=0.8)
+
+        ax1.plot(x, f, color='steelblue', lw=2.2)
+        ax1.fill_between(x, f, 0, where=(fp &gt; 0), alpha=0.28,
+                         color='steelblue', label="Croissante (f' &gt; 0)")
+        ax1.fill_between(x, f, 0, where=(fp &lt; 0), alpha=0.28,
+                         color='crimson',   label="Décroissante (f' &lt; 0)")
+        ax1.set_title(cfg["title_f"], color=FG)
+        ax1.set_xlabel("$x$", color=FG); ax1.set_ylabel("$f(x)$", color=FG)
+        ax1.legend(fontsize=8, facecolor=BG, edgecolor='none', labelcolor=FG)
+        ax1.grid(alpha=0.15, color=FG)
+
+        ax2.plot(x, fp, color='darkorange', lw=2.2)
+        ax2.fill_between(x, fp, 0, where=(fp &gt; 0), alpha=0.28, color='steelblue')
+        ax2.fill_between(x, fp, 0, where=(fp &lt; 0), alpha=0.28, color='crimson')
+        for z in cfg["zeros"]:
+            ax2.scatter([z], [0], color=FG, zorder=6, s=60)
+        ax2.set_title(cfg["title_fp"], color=FG)
+        ax2.set_xlabel("$x$", color=FG); ax2.set_ylabel("$f'(x)$", color=FG)
+        ax2.grid(alpha=0.15, color=FG)
+
+        plt.suptitle("Signe de f'  \u21d4  sens de variation de f", color=FG, fontsize=10)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)</code></pre>
+</section>
+</section>
+<section id="exercices" class="level2">
+<h2 class="anchored" data-anchor-id="exercices">Exercices</h2>
+<ol type="1">
+<li>Calculer les dérivées de <span class="math inline">\(3x^2\)</span>, <span class="math inline">\(5x^3-2x\)</span>, et <span class="math inline">\(\frac{1}{x}\)</span>.</li>
+<li>Étudier le sens de variation de <span class="math inline">\(f(x)=x^3-3x\)</span>.</li>
+<li>Calculer <span class="math inline">\(f'(2)\)</span> pour <span class="math inline">\(f(x)=4x^4-3x^2+7\)</span>.</li>
+</ol>
+</section>
+<section id="exercices-supplémentaires-issus-du-support" class="level2">
+<h2 class="anchored" data-anchor-id="exercices-supplémentaires-issus-du-support">Exercices supplémentaires (issus du support)</h2>
+<ol type="1">
+<li>Dériver et donner le domaine de définition :
+<ul>
+<li><span class="math inline">\(f(x)=5\)</span></li>
+<li><span class="math inline">\(g(x)=5x\)</span></li>
+<li><span class="math inline">\(h(x)=-7x+2\)</span></li>
+<li><span class="math inline">\(k(x)=5x^2+8x-3\)</span></li>
+</ul></li>
+<li>Dériver les fonctions composées :
+<ul>
+<li><span class="math inline">\(f(x)=(x-2)(2x+5)\)</span></li>
+<li><span class="math inline">\(g(x)=x(3x-2)\)</span></li>
+<li><span class="math inline">\(h(x)=\dfrac{\ln(x)}{2x^2}\)</span></li>
+</ul></li>
+<li>Étudier les variations de :
+<ul>
+<li><span class="math inline">\(u(x)=x^2-2x-3\)</span></li>
+<li><span class="math inline">\(v(x)=\dfrac{1}{x}\)</span></li>
+<li><span class="math inline">\(w(x)=e^{2x^2+3x}\)</span></li>
+</ul></li>
+</ol>
+</section>
+<section id="exercice-interactif-quiz-de-dérivation" class="level2">
+<h2 class="anchored" data-anchor-id="exercice-interactif-quiz-de-dérivation">Exercice interactif — Quiz de dérivation</h2>
+<p>Testez vos reflexes : une fonction s’affiche, choisissez la bonne dérivée et recevez un retour immédiat.</p>
+<pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 430
+
+from shiny import App, render, ui, reactive
+import random
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+QUESTIONS = [
+    {
+        "func":    "f(x) = 5",
+        "correct": "f'(x) = 0",
+        "choices": ["f'(x) = 0", "f'(x) = 5", "f'(x) = 1", "f'(x) = 5x"],
+        "hint":    "La dérivée d'une constante est toujours zéro.",
+        "rule":    "Constante",
+    },
+    {
+        "func":    "f(x) = 3x",
+        "correct": "f'(x) = 3",
+        "choices": ["f'(x) = 3x²", "f'(x) = 3", "f'(x) = x", "f'(x) = 1/3"],
+        "hint":    "La dérivée de kx est k : c'est la pente de la droite.",
+        "rule":    "Linéaire",
+    },
+    {
+        "func":    "f(x) = x⁴",
+        "correct": "f'(x) = 4x³",
+        "choices": ["f'(x) = 4x⁵", "f'(x) = x³", "f'(x) = 4x³", "f'(x) = 4"],
+        "hint":    "Règle puissance : (xⁿ)' = n·xⁿ⁻¹. Ici n=4.",
+        "rule":    "Puissance",
+    },
+    {
+        "func":    "f(x) = eˣ",
+        "correct": "f'(x) = eˣ",
+        "choices": ["f'(x) = eˣ⁻¹", "f'(x) = x·eˣ", "f'(x) = eˣ", "f'(x) = 1"],
+        "hint":    "L'exponentielle est sa propre dérivée : (eˣ)' = eˣ.",
+        "rule":    "Exponentielle",
+    },
+    {
+        "func":    "f(x) = ln(x)",
+        "correct": "f'(x) = 1/x",
+        "choices": ["f'(x) = 1/x", "f'(x) = x", "f'(x) = ln(x)/x", "f'(x) = eˣ"],
+        "hint":    "(ln x)' = 1/x, valable pour x &gt; 0.",
+        "rule":    "Logarithme",
+    },
+    {
+        "func":    "f(x) = e^(3x)",
+        "correct": "f'(x) = 3e^(3x)",
+        "choices": ["f'(x) = e^(3x)", "f'(x) = 3e^(3x)", "f'(x) = 3xe^(3x)", "f'(x) = e^(3)"],
+        "hint":    "Exponentielle composée : (e^u)' = u'·e^u. Ici u=3x donc u'=3.",
+        "rule":    "Exp. composée",
+    },
+    {
+        "func":    "f(x) = ln(2x² + 1)",
+        "correct": "f'(x) = 4x / (2x² + 1)",
+        "choices": [
+            "f'(x) = 1 / (2x² + 1)",
+            "f'(x) = 4x / (2x² + 1)",
+            "f'(x) = 4x · ln(2x² + 1)",
+            "f'(x) = 2x / (2x² + 1)",
+        ],
+        "hint":    "Log. compose : (ln u)' = u'/u. Ici u=2x²+1 donc u'=4x.",
+        "rule":    "Log. compose",
+    },
+    {
+        "func":    "f(x) = (2x + 3)·eˣ",
+        "correct": "f'(x) = (2x + 5)·eˣ",
+        "choices": [
+            "f'(x) = 2·eˣ",
+            "f'(x) = (2x + 3)·eˣ",
+            "f'(x) = (2x + 5)·eˣ",
+            "f'(x) = 2(x + 3)·eˣ",
+        ],
+        "hint":    "Règle du produit : (uv)' = u'v + uv'. Ici u=2x+3, v=eˣ.",
+        "rule":    "Produit",
+    },
+]
+
+# Randomise once at startup
+_order = list(range(len(QUESTIONS)))
+random.shuffle(_order)
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color:{BG}; color:{FG}; padding:14px;
+                font-family:sans-serif; margin:0; }}
+        .btn-choice {{
+            display:block; width:100%; margin:5px 0;
+            background:#152119; color:{FG};
+            border:1px solid #2F4636; border-radius:6px;
+            padding:8px 14px; cursor:pointer; font-size:0.9em;
+            text-align:left;
+        }}
+        .btn-choice:hover {{ background:#253A2C; }}
+        .feedback {{ border-radius:6px; padding:10px 14px; margin-top:10px;
+                     font-size:0.9em; }}
+        .correct  {{ background:#1a3a1a; border-left:4px solid #4caf50; }}
+        .wrong    {{ background:#3a1a1a; border-left:4px solid #e53935; }}
+        .score    {{ font-size:0.85em; color:#aaa; margin-bottom:6px; }}
+        .rule-tag {{ font-size:0.75em; color:#888; margin-bottom:8px; }}
+    """),
+    ui.h5("🧠 Quiz — Quelle est la dérivée ?", style=f"color:{FG}"),
+    ui.output_ui("score_line"),
+    ui.output_ui("question_ui"),
+    ui.output_ui("feedback_ui"),
+    ui.div(
+        ui.input_action_button("next_q", "Question suivante →",
+                               style="margin-top:10px; background:#253A2C; "
+                                     "color:#D2CCC0; border:1px solid #2F4636; "
+                                     "border-radius:6px; padding:7px 18px; cursor:pointer;"),
+    ),
+)
+
+def server(input, output, session):
+    idx        = reactive.Value(0)
+    answered   = reactive.Value(False)
+    chosen     = reactive.Value(None)
+    score      = reactive.Value(0)
+    total_done = reactive.Value(0)
+
+    def current_q():
+        return QUESTIONS[_order[idx() % len(_order)]]
+
+    @output
+    @render.ui
+    def score_line():
+        done = total_done()
+        if done == 0:
+            return ui.p("Répondez aux questions pour voir votre score.",
+                        class_="score")
+        pct = round(100 * score() / done)
+        return ui.HTML(
+            f"&lt;p class='score'&gt;Score : {score()} / {done} ({pct}%)&lt;/p&gt;"
+        )
+
+    @output
+    @render.ui
+    def question_ui():
+        q = current_q()
+        choices_html = "".join(
+            f"&lt;button class='btn-choice' onclick=\"Shiny.setInputValue('choice','{c}',{{priority:'event'}})\"&gt;{c}&lt;/button&gt;"
+            for c in q["choices"]
+        )
+        return ui.HTML(
+            f"&lt;p class='rule-tag'&gt;Règle : {q['rule']}&lt;/p&gt;"
+            f"&lt;p&gt;&lt;strong&gt;Donnez la dérivée de&lt;/strong&gt; &amp;nbsp; "
+            f"&lt;code style='font-size:1em;'&gt;{q['func']}&lt;/code&gt;&lt;/p&gt;"
+            + choices_html
+        )
+
+    @output
+    @render.ui
+    def feedback_ui():
+        if not answered():
+            return ui.HTML("")
+        q = current_q()
+        if chosen() == q["correct"]:
+            return ui.HTML(
+                f"&lt;div class='feedback correct'&gt;"
+                f"✅ &lt;strong&gt;Correct !&lt;/strong&gt;&lt;br&gt;{q['hint']}&lt;/div&gt;"
+            )
+        return ui.HTML(
+            f"&lt;div class='feedback wrong'&gt;"
+            f"❌ &lt;strong&gt;Incorrect.&lt;/strong&gt; Bonne réponse : "
+            f"&lt;em&gt;{q['correct']}&lt;/em&gt;&lt;br&gt;{q['hint']}&lt;/div&gt;"
+        )
+
+    @reactive.Effect
+    @reactive.event(input.choice)
+    def _on_choice():
+        if answered():
+            return
+        c = input.choice()
+        q = current_q()
+        answered.set(True)
+        chosen.set(c)
+        total_done.set(total_done() + 1)
+        if c == q["correct"]:
+            score.set(score() + 1)
+
+    @reactive.Effect
+    @reactive.event(input.next_q)
+    def _on_next():
+        idx.set(idx() + 1)
+        answered.set(False)
+        chosen.set(None)
+
+app = App(app_ui, server)</code></pre>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>La dérivée mesure une variation marginale. Elle constitue un outil central pour l’analyse économique, la modélisation et la décision.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../teaching/mathematical-analysis/index.html" class="pagination-link  aria-label=" syllabus"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Syllabus</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../teaching/mathematical-analysis/elasticity.html" class="pagination-link" aria-label="Élasticité d'une fonction univariée">
+        <span class="nav-page-text">Élasticité d’une fonction univariée</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a> · Source on <a href="https://github.com/guillaumegilles/guillaumegilles.github.io"><i class="bi bi-github"></i> GitHub</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>This site respects your privacy — no cookies, no tracking.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
