@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -75,6 +109,8 @@ ul.task-list li input[type="checkbox"] {
     document.body.classList.add('hypothesis-enabled');
   });
 </script>
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -360,21 +396,23 @@ window.Quarto = {
   <li><a href="#syllabus" id="toc-syllabus" class="nav-link active" data-scroll-target="#syllabus">Syllabus</a>
   <ul class="collapse">
   <li><a href="#objectifs-pédagogiques" id="toc-objectifs-pédagogiques" class="nav-link" data-scroll-target="#objectifs-pédagogiques">Objectifs pédagogiques</a></li>
+  </ul></li>
+  <li><a href="#carte-du-cours" id="toc-carte-du-cours" class="nav-link" data-scroll-target="#carte-du-cours">Carte du cours</a></li>
   <li><a href="#contenu-du-cours" id="toc-contenu-du-cours" class="nav-link" data-scroll-target="#contenu-du-cours">Contenu du cours</a>
   <ul class="collapse">
-  <li><a href="#probabilités-variables-aléatoires-continues" id="toc-probabilités-variables-aléatoires-continues" class="nav-link" data-scroll-target="#probabilités-variables-aléatoires-continues">Probabilités — Variables aléatoires continues</a></li>
-  <li><a href="#théorèmes-limites" id="toc-théorèmes-limites" class="nav-link" data-scroll-target="#théorèmes-limites">Théorèmes limites</a></li>
-  <li><a href="#statistiques-descriptives" id="toc-statistiques-descriptives" class="nav-link" data-scroll-target="#statistiques-descriptives">Statistiques descriptives</a></li>
-  <li><a href="#statistiques-inférentielles" id="toc-statistiques-inférentielles" class="nav-link" data-scroll-target="#statistiques-inférentielles">Statistiques inférentielles</a></li>
+  <li><a href="#fondations" id="toc-fondations" class="nav-link" data-scroll-target="#fondations">Fondations</a></li>
+  <li><a href="#une-variable" id="toc-une-variable" class="nav-link" data-scroll-target="#une-variable">Une variable</a></li>
+  <li><a href="#deux-variables" id="toc-deux-variables" class="nav-link" data-scroll-target="#deux-variables">Deux variables</a></li>
+  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence">Convergence</a></li>
+  <li><a href="#inférence" id="toc-inférence" class="nav-link" data-scroll-target="#inférence">Inférence</a></li>
   <li><a href="#annexes" id="toc-annexes" class="nav-link" data-scroll-target="#annexes">Annexes</a></li>
-  </ul></li>
   </ul></li>
   <li><a href="#évaluation-du-module" id="toc-évaluation-du-module" class="nav-link" data-scroll-target="#évaluation-du-module">Évaluation du module</a>
   <ul class="collapse">
   <li><a href="#niveaux" id="toc-niveaux" class="nav-link" data-scroll-target="#niveaux">Niveaux</a></li>
   <li><a href="#activités-notées" id="toc-activités-notées" class="nav-link" data-scroll-target="#activités-notées">Activités notées</a></li>
-  <li><a href="#utilisation-du-site-du-cours" id="toc-utilisation-du-site-du-cours" class="nav-link" data-scroll-target="#utilisation-du-site-du-cours">Utilisation du site du cours</a></li>
   </ul></li>
+  <li><a href="#utilisation-du-site-du-cours" id="toc-utilisation-du-site-du-cours" class="nav-link" data-scroll-target="#utilisation-du-site-du-cours">Utilisation du site du cours</a></li>
   </ul>
 </nav>
     </div>
@@ -418,14 +456,14 @@ window.Quarto = {
 </header>
 
 
-<section id="syllabus" class="level1">
-<h1>Syllabus</h1>
+<section id="syllabus" class="level2">
+<h2 class="anchored" data-anchor-id="syllabus">Syllabus</h2>
 <blockquote class="blockquote">
 <p>“Tous les modèles sont faux, mais certains sont utiles.” — George E. P. Box</p>
 </blockquote>
 <p>Ce cours introduit les <strong>probabilités et les statistiques</strong> comme outils de modélisation de l’incertitude et d’analyse de données. Il s’articule autour de trois axes complémentaires : la théorie des <strong>variables aléatoires continues</strong> (densités, lois classiques), les <strong>théorèmes de convergence</strong> (loi des grands nombres, théorème central limite) et les <strong>statistiques descriptives et inférentielles</strong> (résumé de données, estimation, tests).</p>
-<section id="objectifs-pédagogiques" class="level2">
-<h2 class="anchored" data-anchor-id="objectifs-pédagogiques">Objectifs pédagogiques</h2>
+<section id="objectifs-pédagogiques" class="level3">
+<h3 class="anchored" data-anchor-id="objectifs-pédagogiques">Objectifs pédagogiques</h3>
 <p>À l’issue de ce module, l’étudiant sera capable de :</p>
 <ul>
 <li>Calculer des probabilités pour des variables aléatoires à densité et maîtriser les lois classiques (uniforme, exponentielle, normale).</li>
@@ -435,140 +473,232 @@ window.Quarto = {
 <li>Construire des estimateurs (méthode des moments, maximum de vraisemblance) et des intervalles de confiance.</li>
 </ul>
 </section>
+</section>
+<section id="carte-du-cours" class="level2">
+<h2 class="anchored" data-anchor-id="carte-du-cours">Carte du cours</h2>
+<p>Le cours se déroule en <strong>cinq phases</strong> — cliquez sur un chapitre pour y accéder.</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="33" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 32;"><span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> COL_W <span class="op">=</span> <span class="dv">155</span><span class="op">,</span> GAP <span class="op">=</span> <span class="dv">22</span><span class="op">,</span> PAD <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> HDR_H <span class="op">=</span> <span class="dv">36</span><span class="op">,</span> NODE_H <span class="op">=</span> <span class="dv">40</span><span class="op">,</span> NODE_GAP <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sections <span class="op">=</span> [</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Fondations"</span><span class="op">,</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hue</span><span class="op">:</span> <span class="st">"#64748B"</span><span class="op">,</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>      <span class="dt">chapters</span><span class="op">:</span> [</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">label</span><span class="op">:</span> <span class="st">"Notations"</span><span class="op">,</span> <span class="dt">url</span><span class="op">:</span> <span class="st">"notation.html"</span> }</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>      ]</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Une variable"</span><span class="op">,</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hue</span><span class="op">:</span> <span class="st">"#2563EB"</span><span class="op">,</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>      <span class="dt">chapters</span><span class="op">:</span> [</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">label</span><span class="op">:</span> <span class="st">"Stats univariée"</span><span class="op">,</span>  <span class="dt">url</span><span class="op">:</span> <span class="st">"univariate.html"</span> }<span class="op">,</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">label</span><span class="op">:</span> <span class="st">"Probabilités"</span><span class="op">,</span>     <span class="dt">url</span><span class="op">:</span> <span class="st">"probability.html"</span> }<span class="op">,</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">label</span><span class="op">:</span> <span class="st">"Lois à densité"</span><span class="op">,</span>   <span class="dt">url</span><span class="op">:</span> <span class="st">"density-function.html"</span> }<span class="op">,</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">label</span><span class="op">:</span> <span class="st">"Loi normale"</span><span class="op">,</span>      <span class="dt">url</span><span class="op">:</span> <span class="st">"normal-distribution.html"</span> }</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>      ]</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Deux variables"</span><span class="op">,</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hue</span><span class="op">:</span> <span class="st">"#16A34A"</span><span class="op">,</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>      <span class="dt">chapters</span><span class="op">:</span> [</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">label</span><span class="op">:</span> <span class="st">"Stats bivariée"</span><span class="op">,</span>    <span class="dt">url</span><span class="op">:</span> <span class="st">"bivariate.html"</span> }<span class="op">,</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">label</span><span class="op">:</span> <span class="st">"Couples à densité"</span><span class="op">,</span> <span class="dt">url</span><span class="op">:</span> <span class="st">"joint-continuous-random-variables.html"</span> }</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>      ]</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Convergence"</span><span class="op">,</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hue</span><span class="op">:</span> <span class="st">"#EA580C"</span><span class="op">,</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>      <span class="dt">chapters</span><span class="op">:</span> [</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">label</span><span class="op">:</span> <span class="st">"Convergence"</span><span class="op">,</span> <span class="dt">url</span><span class="op">:</span> <span class="st">"convergence-random-variables.html"</span> }</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>      ]</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Inférence"</span><span class="op">,</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hue</span><span class="op">:</span> <span class="st">"#9333EA"</span><span class="op">,</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>      <span class="dt">chapters</span><span class="op">:</span> [</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">label</span><span class="op">:</span> <span class="st">"Échantillonnage"</span><span class="op">,</span> <span class="dt">url</span><span class="op">:</span> <span class="st">"sampling-distribution.html"</span> }<span class="op">,</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>        { <span class="dt">label</span><span class="op">:</span> <span class="st">"Estimation"</span><span class="op">,</span>      <span class="dt">url</span><span class="op">:</span> <span class="st">"point-estimation.html"</span> }</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>      ]</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> maxN <span class="op">=</span> d3<span class="op">.</span><span class="fu">max</span>(sections<span class="op">,</span> s <span class="kw">=&gt;</span> s<span class="op">.</span><span class="at">chapters</span><span class="op">.</span><span class="at">length</span>)<span class="op">;</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> W <span class="op">=</span> sections<span class="op">.</span><span class="at">length</span> <span class="op">*</span> COL_W <span class="op">+</span> (sections<span class="op">.</span><span class="at">length</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> GAP <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> PAD<span class="op">;</span></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> H <span class="op">=</span> PAD <span class="op">+</span> HDR_H <span class="op">+</span> NODE_GAP <span class="op">+</span> maxN <span class="op">*</span> (NODE_H <span class="op">+</span> NODE_GAP) <span class="op">+</span> PAD<span class="op">;</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">alpha</span>(hex<span class="op">,</span> a) {</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> r <span class="op">=</span> <span class="pp">parseInt</span>(hex<span class="op">.</span><span class="fu">slice</span>(<span class="dv">1</span><span class="op">,</span> <span class="dv">3</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">,</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>          g <span class="op">=</span> <span class="pp">parseInt</span>(hex<span class="op">.</span><span class="fu">slice</span>(<span class="dv">3</span><span class="op">,</span> <span class="dv">5</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">,</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>          b <span class="op">=</span> <span class="pp">parseInt</span>(hex<span class="op">.</span><span class="fu">slice</span>(<span class="dv">5</span><span class="op">,</span> <span class="dv">7</span>)<span class="op">,</span> <span class="dv">16</span>)<span class="op">;</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="vs">`rgba(</span><span class="sc">${</span>r<span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>g<span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>b<span class="sc">}</span><span class="vs">,</span><span class="sc">${</span>a<span class="sc">}</span><span class="vs">)`</span><span class="op">;</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">create</span>(<span class="st">"svg"</span>)</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="vs">`0 0 </span><span class="sc">${</span>W<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>H<span class="sc">}</span><span class="vs">`</span>)</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> <span class="st">"100%"</span>)</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"font-family"</span><span class="op">,</span> <span class="st">"system-ui,-apple-system,sans-serif"</span>)</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">style</span>(<span class="st">"overflow"</span><span class="op">,</span> <span class="st">"visible"</span>)<span class="op">;</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Single arrowhead marker (auto-orient: works for horizontal &amp; vertical lines)</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"defs"</span>)<span class="op">.</span><span class="fu">append</span>(<span class="st">"marker"</span>)</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"id"</span><span class="op">,</span> <span class="st">"arr"</span>)</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="st">"0 -4 8 8"</span>)</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"refX"</span><span class="op">,</span> <span class="dv">7</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"refY"</span><span class="op">,</span> <span class="dv">0</span>)</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"markerWidth"</span><span class="op">,</span> <span class="dv">5</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"markerHeight"</span><span class="op">,</span> <span class="dv">5</span>)</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"orient"</span><span class="op">,</span> <span class="st">"auto"</span>)</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">append</span>(<span class="st">"path"</span>)</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"d"</span><span class="op">,</span> <span class="st">"M0,-4L8,0L0,4"</span>)</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"#94A3B8"</span>)<span class="op">;</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>  sections<span class="op">.</span><span class="fu">forEach</span>((sec<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> sx <span class="op">=</span> PAD <span class="op">+</span> i <span class="op">*</span> (COL_W <span class="op">+</span> GAP)<span class="op">;</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Column background</span></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> sx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> PAD)</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> COL_W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> H <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> PAD)</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">8</span>)</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="fu">alpha</span>(sec<span class="op">.</span><span class="at">hue</span><span class="op">,</span> <span class="fl">0.05</span>))</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="fu">alpha</span>(sec<span class="op">.</span><span class="at">hue</span><span class="op">,</span> <span class="fl">0.2</span>))</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Header fill (rounded top, square bottom via overlap)</span></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> sx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> PAD)</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> COL_W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> HDR_H)</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">8</span>)</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="fu">alpha</span>(sec<span class="op">.</span><span class="at">hue</span><span class="op">,</span> <span class="fl">0.15</span>))<span class="op">;</span></span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> sx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> PAD <span class="op">+</span> HDR_H <span class="op">-</span> <span class="dv">8</span>)</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> COL_W)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> <span class="dv">8</span>)</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="fu">alpha</span>(sec<span class="op">.</span><span class="at">hue</span><span class="op">,</span> <span class="fl">0.15</span>))<span class="op">;</span></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Header label</span></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> sx <span class="op">+</span> COL_W <span class="op">/</span> <span class="dv">2</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> PAD <span class="op">+</span> HDR_H <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"dy"</span><span class="op">,</span> <span class="st">"0.35em"</span>)</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> sec<span class="op">.</span><span class="at">hue</span>)</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"12px"</span>)</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="st">"600"</span>)</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">text</span>(sec<span class="op">.</span><span class="at">label</span>)<span class="op">;</span></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Arrow to next section</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="op">&lt;</span> sections<span class="op">.</span><span class="at">length</span> <span class="op">-</span> <span class="dv">1</span>) {</span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>      svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> sx <span class="op">+</span> COL_W <span class="op">+</span> <span class="dv">3</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> PAD <span class="op">+</span> HDR_H <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> sx <span class="op">+</span> COL_W <span class="op">+</span> GAP <span class="op">-</span> <span class="dv">3</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> PAD <span class="op">+</span> HDR_H <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"#CBD5E1"</span>)</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"marker-end"</span><span class="op">,</span> <span class="st">"url(#arr)"</span>)<span class="op">;</span></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Chapter nodes</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>    sec<span class="op">.</span><span class="at">chapters</span><span class="op">.</span><span class="fu">forEach</span>((ch<span class="op">,</span> j) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> ny <span class="op">=</span> PAD <span class="op">+</span> HDR_H <span class="op">+</span> NODE_GAP <span class="op">+</span> j <span class="op">*</span> (NODE_H <span class="op">+</span> NODE_GAP)<span class="op">;</span></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> nw <span class="op">=</span> COL_W <span class="op">-</span> <span class="dv">20</span><span class="op">;</span></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Arrow between consecutive chapters within section</span></span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (j <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>        svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>          <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> sx <span class="op">+</span> COL_W <span class="op">/</span> <span class="dv">2</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> ny <span class="op">-</span> NODE_GAP <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>          <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> sx <span class="op">+</span> COL_W <span class="op">/</span> <span class="dv">2</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> ny <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>          <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="fu">alpha</span>(sec<span class="op">.</span><span class="at">hue</span><span class="op">,</span> <span class="fl">0.35</span>))</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>          <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="dv">1</span>)</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>          <span class="op">.</span><span class="fu">attr</span>(<span class="st">"marker-end"</span><span class="op">,</span> <span class="st">"url(#arr)"</span>)<span class="op">;</span></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> g <span class="op">=</span> svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"a"</span>)</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"href"</span><span class="op">,</span> ch<span class="op">.</span><span class="at">url</span>)</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">style</span>(<span class="st">"cursor"</span><span class="op">,</span> <span class="st">"pointer"</span>)<span class="op">;</span></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>      g<span class="op">.</span><span class="fu">on</span>(<span class="st">"mouseenter"</span><span class="op">,</span> <span class="kw">function</span>() {</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>          d3<span class="op">.</span><span class="fu">select</span>(<span class="kw">this</span>)<span class="op">.</span><span class="fu">select</span>(<span class="st">"rect"</span>)</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">2.5</span>)</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">style</span>(<span class="st">"filter"</span><span class="op">,</span> <span class="st">"drop-shadow(0 2px 6px rgba(0,0,0,0.18))"</span>)<span class="op">;</span></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">on</span>(<span class="st">"mouseleave"</span><span class="op">,</span> <span class="kw">function</span>() {</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>          d3<span class="op">.</span><span class="fu">select</span>(<span class="kw">this</span>)<span class="op">.</span><span class="fu">select</span>(<span class="st">"rect"</span>)</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">style</span>(<span class="st">"filter"</span><span class="op">,</span> <span class="kw">null</span>)<span class="op">;</span></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>        })<span class="op">;</span></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>      g<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> sx <span class="op">+</span> <span class="dv">10</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> ny)</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> nw)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> NODE_H)</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">5</span>)</span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"white"</span>)</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="fu">alpha</span>(sec<span class="op">.</span><span class="at">hue</span><span class="op">,</span> <span class="fl">0.45</span>))</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>      g<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> sx <span class="op">+</span> <span class="dv">10</span> <span class="op">+</span> nw <span class="op">/</span> <span class="dv">2</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> ny <span class="op">+</span> NODE_H <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"dy"</span><span class="op">,</span> <span class="st">"0.35em"</span>)</span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> sec<span class="op">.</span><span class="at">hue</span>)</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="st">"11px"</span>)</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="st">"500"</span>)</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">text</span>(ch<span class="op">.</span><span class="at">label</span>)<span class="op">;</span></span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> svg<span class="op">.</span><span class="fu">node</span>()<span class="op">;</span></span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
 <section id="contenu-du-cours" class="level2">
 <h2 class="anchored" data-anchor-id="contenu-du-cours">Contenu du cours</h2>
-<section id="probabilités-variables-aléatoires-continues" class="level3">
-<h3 class="anchored" data-anchor-id="probabilités-variables-aléatoires-continues">Probabilités — Variables aléatoires continues</h3>
-<table class="table">
-<thead>
-<tr class="header">
-<th style="text-align: center;">#</th>
-<th>Chapitre</th>
-<th>Thèmes principaux</th>
-<th style="text-align: center;">Exercices</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">1</td>
-<td><a href="classes/density-function.qmd">Lois à densité</a></td>
-<td>Intégrales généralisées · Densité et fonction de répartition · Loi uniforme <span class="math inline">\(\mathcal{U}([a,b])\)</span> · Loi exponentielle <span class="math inline">\(\mathcal{E}(\lambda)\)</span> · Espérance, variance, écart-type</td>
-<td style="text-align: center;"><a href="solutions/worksheet-density-function.qmd">→</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">2</td>
-<td><a href="classes/normal-distribution.qmd">Loi normale</a></td>
-<td>Loi <span class="math inline">\(\mathcal{N}(0,1)\)</span> et table <span class="math inline">\(\Phi\)</span> · Standardisation · Loi <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span> · Stabilité par somme · Loi log-normale · Loi du khi-deux <span class="math inline">\(\chi^2_n\)</span></td>
-<td style="text-align: center;"><a href="worksheets/worksheet-normal-distribution.qmd">→</a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">3</td>
-<td><a href="classes/joint-continuous-variables.qmd">Couples de variables à densité</a></td>
-<td>Intégrales doubles (Fubini-Tonelli) · Densité conjointe · Lois marginales · Indépendance · Covariance et corrélation · Convolution</td>
-<td style="text-align: center;"><a href="worksheets/worksheet-couples-variables-densite.qmd">→</a></td>
-</tr>
-</tbody>
-</table>
+<section id="fondations" class="level3">
+<h3 class="anchored" data-anchor-id="fondations">Fondations</h3>
+<p><a href="notation.html">Notations mathématiques</a> — Guide de lecture · Symboles probabilistes (<span class="math inline">\(P\)</span>, <span class="math inline">\(\mathbb{E}\)</span>, <span class="math inline">\(\sigma\)</span>) vs statistiques (<span class="math inline">\(\bar{x}\)</span>, <span class="math inline">\(s\)</span>) · Conventions du cours</p>
 </section>
-<section id="théorèmes-limites" class="level3">
-<h3 class="anchored" data-anchor-id="théorèmes-limites">Théorèmes limites</h3>
-<table class="table">
-<thead>
-<tr class="header">
-<th style="text-align: center;">#</th>
-<th>Chapitre</th>
-<th>Thèmes principaux</th>
-<th style="text-align: center;">Exercices</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">4</td>
-<td><a href="classes/convergence-va.qmd">Convergence de variables aléatoires</a></td>
-<td>Inégalités de Markov et Bienaymé-Tchebychev · Convergences en probabilité, en loi, en moyenne quadratique · Loi faible des grands nombres · Théorème central limite · Approximation de la loi binomiale</td>
-<td style="text-align: center;"><a href="worksheets/worksheet-convergence-variables-aleatoires.qmd">→</a></td>
-</tr>
-</tbody>
-</table>
+<section id="une-variable" class="level3">
+<h3 class="anchored" data-anchor-id="une-variable">Une variable</h3>
+<ol type="1">
+<li><a href="univariate.html">Statistiques univariées</a> — Série discrète et continue · Histogramme (densité) · Fonction de répartition empirique · Médiane, quartiles, écart interquartile · Moyenne, variance, König-Huygens · Transformations affines</li>
+<li><a href="probability.html">Probabilités discrètes</a> — Variables aléatoires discrètes · Loi de probabilité · Espérance et variance · Lois de Bernoulli, binomiale, géométrique, Poisson · Approximation de la loi binomiale</li>
+<li><a href="density-function.html">Lois à densité</a> — Intégrales généralisées · Densité et fonction de répartition · Loi uniforme <span class="math inline">\(\mathcal{U}([a,b])\)</span> · Loi exponentielle <span class="math inline">\(\mathcal{E}(\lambda)\)</span> · Espérance, variance, écart-type</li>
+<li><a href="normal-distribution.html">Loi normale</a> — Loi <span class="math inline">\(\mathcal{N}(0,1)\)</span> et table <span class="math inline">\(\Phi\)</span> · Standardisation · Loi <span class="math inline">\(\mathcal{N}(m,\sigma^2)\)</span> · Stabilité par somme · Loi log-normale · Loi du khi-deux <span class="math inline">\(\chi^2_n\)</span></li>
+</ol>
 </section>
-<section id="statistiques-descriptives" class="level3">
-<h3 class="anchored" data-anchor-id="statistiques-descriptives">Statistiques descriptives</h3>
-<table class="table">
-<thead>
-<tr class="header">
-<th style="text-align: center;">#</th>
-<th>Chapitre</th>
-<th>Thèmes principaux</th>
-<th style="text-align: center;">Exercices</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">5</td>
-<td><a href="classes/univariate-descriptive-statistics.qmd">Statistiques à une variable</a></td>
-<td>Série discrète et continue · Histogramme (densité) · Fonction de répartition empirique · Médiane, quartiles, écart interquartile · Moyenne, variance, König-Huygens · Transformations affines</td>
-<td style="text-align: center;"><a href="worksheets/worksheet-statistiques-une-variable.qmd">→</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">6</td>
-<td><a href="classes/bivariate-descriptive-statistics.qmd">Statistiques à deux variables</a></td>
-<td>Tableau de contingence · Distributions marginales et conditionnelles · Indépendance statistique · Test du <span class="math inline">\(\chi^2\)</span> d’indépendance · Résidus standardisés</td>
-<td style="text-align: center;"><a href="worksheets/worksheet-statistiques-deux-variables.qmd">→</a></td>
-</tr>
-</tbody>
-</table>
+<section id="deux-variables" class="level3">
+<h3 class="anchored" data-anchor-id="deux-variables">Deux variables</h3>
+<ol start="5" type="1">
+<li><a href="bivariate.html">Statistiques bivariées</a> — Tableau de contingence · Distributions marginales et conditionnelles · Indépendance statistique · Test du <span class="math inline">\(\chi^2\)</span> d’indépendance · Résidus standardisés</li>
+<li><a href="joint-continuous-random-variables.html">Couples de variables à densité</a> — Intégrales doubles (Fubini-Tonelli) · Densité conjointe · Lois marginales · Indépendance · Covariance et corrélation · Convolution</li>
+</ol>
 </section>
-<section id="statistiques-inférentielles" class="level3">
-<h3 class="anchored" data-anchor-id="statistiques-inférentielles">Statistiques inférentielles</h3>
-<table class="table">
-<thead>
-<tr class="header">
-<th style="text-align: center;">#</th>
-<th>Chapitre</th>
-<th>Thèmes principaux</th>
-<th style="text-align: center;">Exercices</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">7</td>
-<td><a href="classes/sampling-distribution.qmd">Distribution d’échantillonnage</a></td>
-<td>Échantillon i.i.d. · Statistique · Moyenne empirique (espérance, variance, loi) · Variance empirique corrigée et biais · Lois exactes en cas gaussien (<span class="math inline">\(\mathcal{N}\)</span>, <span class="math inline">\(\chi^2\)</span>)</td>
-<td style="text-align: center;"><a href="worksheets/worksheet-distribution-echantillonnage.qmd">→</a></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">8</td>
-<td><a href="classes/estimate.qmd">Estimation</a></td>
-<td>Estimateur, biais, erreur quadratique · Méthode des moments · Maximum de vraisemblance · Intervalles de confiance pour une proportion, une moyenne, une variance</td>
-<td style="text-align: center;">—</td>
-</tr>
-</tbody>
-</table>
+<section id="convergence" class="level3">
+<h3 class="anchored" data-anchor-id="convergence">Convergence</h3>
+<ol start="7" type="1">
+<li><a href="convergence-random-variables.html">Convergence de variables aléatoires</a> — Inégalités de Markov et Bienaymé-Tchebychev · Convergences en probabilité, en loi, en moyenne quadratique · Loi faible des grands nombres · Théorème central limite · Approximation de la loi binomiale</li>
+</ol>
+</section>
+<section id="inférence" class="level3">
+<h3 class="anchored" data-anchor-id="inférence">Inférence</h3>
+<ol start="8" type="1">
+<li><a href="sampling-distribution.html">Distribution d’échantillonnage</a> — Échantillon i.i.d. · Statistique · Moyenne empirique (espérance, variance, loi) · Variance empirique corrigée et biais · Lois exactes en cas gaussien (<span class="math inline">\(\mathcal{N}\)</span>, <span class="math inline">\(\chi^2\)</span>)</li>
+<li><a href="point-estimation.html">Estimation</a> — Estimateur, biais, erreur quadratique · Méthode des moments · Maximum de vraisemblance · Intervalles de confiance pour une proportion, une moyenne, une variance</li>
+</ol>
 </section>
 <section id="annexes" class="level3">
 <h3 class="anchored" data-anchor-id="annexes">Annexes</h3>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Ressource</th>
-<th>Contenu</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="../../teaching/statistics-probability/tables.html">Tables statistiques</a></td>
-<td>Table de la loi de Poisson · Quantiles du <span class="math inline">\(\chi^2\)</span> · Quantiles de la loi de Student</td>
-</tr>
-</tbody>
-</table>
+<p><a href="tables.html">Tables statistiques</a> — Table de la loi de Poisson · Quantiles du <span class="math inline">\(\chi^2\)</span> · Quantiles de la loi de Student</p>
 </section>
 </section>
-</section>
-<section id="évaluation-du-module" class="level1">
-<h1>Évaluation du module</h1>
+<section id="évaluation-du-module" class="level2">
+<h2 class="anchored" data-anchor-id="évaluation-du-module">Évaluation du module</h2>
 <p>Ce cours s’appuie sur une approche d’<strong>apprentissage actif</strong> <span class="citation" data-cites="sheldon_multiplayer_2020">[@sheldon_multiplayer_2020]</span> : les étudiants progressent au travers de missions, accumulent des <strong>points d’expérience (XP)</strong> et débloquent des niveaux au fil du semestre.</p>
-<section id="niveaux" class="level2">
-<h2 class="anchored" data-anchor-id="niveaux">Niveaux</h2>
+<section id="niveaux" class="level3">
+<h3 class="anchored" data-anchor-id="niveaux">Niveaux</h3>
 <table class="table">
 <thead>
 <tr class="header">
@@ -601,8 +731,8 @@ window.Quarto = {
 </tbody>
 </table>
 </section>
-<section id="activités-notées" class="level2">
-<h2 class="anchored" data-anchor-id="activités-notées">Activités notées</h2>
+<section id="activités-notées" class="level3">
+<h3 class="anchored" data-anchor-id="activités-notées">Activités notées</h3>
 <p>Chaque activité du cours génère des XP selon son type :</p>
 <table class="table">
 <colgroup>
@@ -641,6 +771,7 @@ window.Quarto = {
 </tbody>
 </table>
 </section>
+</section>
 <section id="utilisation-du-site-du-cours" class="level2">
 <h2 class="anchored" data-anchor-id="utilisation-du-site-du-cours">Utilisation du site du cours</h2>
 <p>Le site du cours est votre <strong>référence principale</strong> tout au long du semestre. Il est attendu que vous :</p>
@@ -653,9 +784,19 @@ window.Quarto = {
 
 
 </section>
-</section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IntcbiAgY29uc3QgQ09MX1cgPSAxNTUsIEdBUCA9IDIyLCBQQUQgPSAxNjtcbiAgY29uc3QgSERSX0ggPSAzNiwgTk9ERV9IID0gNDAsIE5PREVfR0FQID0gMTA7XG5cbiAgY29uc3Qgc2VjdGlvbnMgPSBbXG4gICAge1xuICAgICAgbGFiZWw6IFwiRm9uZGF0aW9uc1wiLFxuICAgICAgaHVlOiBcIiM2NDc0OEJcIixcbiAgICAgIGNoYXB0ZXJzOiBbXG4gICAgICAgIHsgbGFiZWw6IFwiTm90YXRpb25zXCIsIHVybDogXCJub3RhdGlvbi5odG1sXCIgfVxuICAgICAgXVxuICAgIH0sXG4gICAge1xuICAgICAgbGFiZWw6IFwiVW5lIHZhcmlhYmxlXCIsXG4gICAgICBodWU6IFwiIzI1NjNFQlwiLFxuICAgICAgY2hhcHRlcnM6IFtcbiAgICAgICAgeyBsYWJlbDogXCJTdGF0cyB1bml2YXJpw6llXCIsICB1cmw6IFwidW5pdmFyaWF0ZS5odG1sXCIgfSxcbiAgICAgICAgeyBsYWJlbDogXCJQcm9iYWJpbGl0w6lzXCIsICAgICB1cmw6IFwicHJvYmFiaWxpdHkuaHRtbFwiIH0sXG4gICAgICAgIHsgbGFiZWw6IFwiTG9pcyDDoCBkZW5zaXTDqVwiLCAgIHVybDogXCJkZW5zaXR5LWZ1bmN0aW9uLmh0bWxcIiB9LFxuICAgICAgICB7IGxhYmVsOiBcIkxvaSBub3JtYWxlXCIsICAgICAgdXJsOiBcIm5vcm1hbC1kaXN0cmlidXRpb24uaHRtbFwiIH1cbiAgICAgIF1cbiAgICB9LFxuICAgIHtcbiAgICAgIGxhYmVsOiBcIkRldXggdmFyaWFibGVzXCIsXG4gICAgICBodWU6IFwiIzE2QTM0QVwiLFxuICAgICAgY2hhcHRlcnM6IFtcbiAgICAgICAgeyBsYWJlbDogXCJTdGF0cyBiaXZhcmnDqWVcIiwgICAgdXJsOiBcImJpdmFyaWF0ZS5odG1sXCIgfSxcbiAgICAgICAgeyBsYWJlbDogXCJDb3VwbGVzIMOgIGRlbnNpdMOpXCIsIHVybDogXCJqb2ludC1jb250aW51b3VzLXJhbmRvbS12YXJpYWJsZXMuaHRtbFwiIH1cbiAgICAgIF1cbiAgICB9LFxuICAgIHtcbiAgICAgIGxhYmVsOiBcIkNvbnZlcmdlbmNlXCIsXG4gICAgICBodWU6IFwiI0VBNTgwQ1wiLFxuICAgICAgY2hhcHRlcnM6IFtcbiAgICAgICAgeyBsYWJlbDogXCJDb252ZXJnZW5jZVwiLCB1cmw6IFwiY29udmVyZ2VuY2UtcmFuZG9tLXZhcmlhYmxlcy5odG1sXCIgfVxuICAgICAgXVxuICAgIH0sXG4gICAge1xuICAgICAgbGFiZWw6IFwiSW5mw6lyZW5jZVwiLFxuICAgICAgaHVlOiBcIiM5MzMzRUFcIixcbiAgICAgIGNoYXB0ZXJzOiBbXG4gICAgICAgIHsgbGFiZWw6IFwiw4ljaGFudGlsbG9ubmFnZVwiLCB1cmw6IFwic2FtcGxpbmctZGlzdHJpYnV0aW9uLmh0bWxcIiB9LFxuICAgICAgICB7IGxhYmVsOiBcIkVzdGltYXRpb25cIiwgICAgICB1cmw6IFwicG9pbnQtZXN0aW1hdGlvbi5odG1sXCIgfVxuICAgICAgXVxuICAgIH1cbiAgXTtcblxuICBjb25zdCBtYXhOID0gZDMubWF4KHNlY3Rpb25zLCBzID0+IHMuY2hhcHRlcnMubGVuZ3RoKTtcbiAgY29uc3QgVyA9IHNlY3Rpb25zLmxlbmd0aCAqIENPTF9XICsgKHNlY3Rpb25zLmxlbmd0aCAtIDEpICogR0FQICsgMiAqIFBBRDtcbiAgY29uc3QgSCA9IFBBRCArIEhEUl9IICsgTk9ERV9HQVAgKyBtYXhOICogKE5PREVfSCArIE5PREVfR0FQKSArIFBBRDtcblxuICBmdW5jdGlvbiBhbHBoYShoZXgsIGEpIHtcbiAgICBjb25zdCByID0gcGFyc2VJbnQoaGV4LnNsaWNlKDEsIDMpLCAxNiksXG4gICAgICAgICAgZyA9IHBhcnNlSW50KGhleC5zbGljZSgzLCA1KSwgMTYpLFxuICAgICAgICAgIGIgPSBwYXJzZUludChoZXguc2xpY2UoNSwgNyksIDE2KTtcbiAgICByZXR1cm4gYHJnYmEoJHtyfSwke2d9LCR7Yn0sJHthfSlgO1xuICB9XG5cbiAgY29uc3Qgc3ZnID0gZDMuY3JlYXRlKFwic3ZnXCIpXG4gICAgLmF0dHIoXCJ2aWV3Qm94XCIsIGAwIDAgJHtXfSAke0h9YClcbiAgICAuYXR0cihcIndpZHRoXCIsIFwiMTAwJVwiKVxuICAgIC5zdHlsZShcImZvbnQtZmFtaWx5XCIsIFwic3lzdGVtLXVpLC1hcHBsZS1zeXN0ZW0sc2Fucy1zZXJpZlwiKVxuICAgIC5zdHlsZShcIm92ZXJmbG93XCIsIFwidmlzaWJsZVwiKTtcblxuICAvLyBTaW5nbGUgYXJyb3doZWFkIG1hcmtlciAoYXV0by1vcmllbnQ6IHdvcmtzIGZvciBob3Jpem9udGFsICYgdmVydGljYWwgbGluZXMpXG4gIHN2Zy5hcHBlbmQoXCJkZWZzXCIpLmFwcGVuZChcIm1hcmtlclwiKVxuICAgIC5hdHRyKFwiaWRcIiwgXCJhcnJcIilcbiAgICAuYXR0cihcInZpZXdCb3hcIiwgXCIwIC00IDggOFwiKVxuICAgIC5hdHRyKFwicmVmWFwiLCA3KS5hdHRyKFwicmVmWVwiLCAwKVxuICAgIC5hdHRyKFwibWFya2VyV2lkdGhcIiwgNSkuYXR0cihcIm1hcmtlckhlaWdodFwiLCA1KVxuICAgIC5hdHRyKFwib3JpZW50XCIsIFwiYXV0b1wiKVxuICAgIC5hcHBlbmQoXCJwYXRoXCIpXG4gICAgLmF0dHIoXCJkXCIsIFwiTTAsLTRMOCwwTDAsNFwiKVxuICAgIC5hdHRyKFwiZmlsbFwiLCBcIiM5NEEzQjhcIik7XG5cbiAgc2VjdGlvbnMuZm9yRWFjaCgoc2VjLCBpKSA9PiB7XG4gICAgY29uc3Qgc3ggPSBQQUQgKyBpICogKENPTF9XICsgR0FQKTtcblxuICAgIC8vIENvbHVtbiBiYWNrZ3JvdW5kXG4gICAgc3ZnLmFwcGVuZChcInJlY3RcIilcbiAgICAgIC5hdHRyKFwieFwiLCBzeCkuYXR0cihcInlcIiwgUEFEKVxuICAgICAgLmF0dHIoXCJ3aWR0aFwiLCBDT0xfVykuYXR0cihcImhlaWdodFwiLCBIIC0gMiAqIFBBRClcbiAgICAgIC5hdHRyKFwicnhcIiwgOClcbiAgICAgIC5hdHRyKFwiZmlsbFwiLCBhbHBoYShzZWMuaHVlLCAwLjA1KSlcbiAgICAgIC5hdHRyKFwic3Ryb2tlXCIsIGFscGhhKHNlYy5odWUsIDAuMikpXG4gICAgICAuYXR0cihcInN0cm9rZS13aWR0aFwiLCAxLjUpO1xuXG4gICAgLy8gSGVhZGVyIGZpbGwgKHJvdW5kZWQgdG9wLCBzcXVhcmUgYm90dG9tIHZpYSBvdmVybGFwKVxuICAgIHN2Zy5hcHBlbmQoXCJyZWN0XCIpXG4gICAgICAuYXR0cihcInhcIiwgc3gpLmF0dHIoXCJ5XCIsIFBBRClcbiAgICAgIC5hdHRyKFwid2lkdGhcIiwgQ09MX1cpLmF0dHIoXCJoZWlnaHRcIiwgSERSX0gpXG4gICAgICAuYXR0cihcInJ4XCIsIDgpXG4gICAgICAuYXR0cihcImZpbGxcIiwgYWxwaGEoc2VjLmh1ZSwgMC4xNSkpO1xuICAgIHN2Zy5hcHBlbmQoXCJyZWN0XCIpXG4gICAgICAuYXR0cihcInhcIiwgc3gpLmF0dHIoXCJ5XCIsIFBBRCArIEhEUl9IIC0gOClcbiAgICAgIC5hdHRyKFwid2lkdGhcIiwgQ09MX1cpLmF0dHIoXCJoZWlnaHRcIiwgOClcbiAgICAgIC5hdHRyKFwiZmlsbFwiLCBhbHBoYShzZWMuaHVlLCAwLjE1KSk7XG5cbiAgICAvLyBIZWFkZXIgbGFiZWxcbiAgICBzdmcuYXBwZW5kKFwidGV4dFwiKVxuICAgICAgLmF0dHIoXCJ4XCIsIHN4ICsgQ09MX1cgLyAyKS5hdHRyKFwieVwiLCBQQUQgKyBIRFJfSCAvIDIpXG4gICAgICAuYXR0cihcImR5XCIsIFwiMC4zNWVtXCIpXG4gICAgICAuYXR0cihcInRleHQtYW5jaG9yXCIsIFwibWlkZGxlXCIpXG4gICAgICAuYXR0cihcImZpbGxcIiwgc2VjLmh1ZSlcbiAgICAgIC5hdHRyKFwiZm9udC1zaXplXCIsIFwiMTJweFwiKVxuICAgICAgLmF0dHIoXCJmb250LXdlaWdodFwiLCBcIjYwMFwiKVxuICAgICAgLnRleHQoc2VjLmxhYmVsKTtcblxuICAgIC8vIEFycm93IHRvIG5leHQgc2VjdGlvblxuICAgIGlmIChpIDwgc2VjdGlvbnMubGVuZ3RoIC0gMSkge1xuICAgICAgc3ZnLmFwcGVuZChcImxpbmVcIilcbiAgICAgICAgLmF0dHIoXCJ4MVwiLCBzeCArIENPTF9XICsgMykuYXR0cihcInkxXCIsIFBBRCArIEhEUl9IIC8gMilcbiAgICAgICAgLmF0dHIoXCJ4MlwiLCBzeCArIENPTF9XICsgR0FQIC0gMykuYXR0cihcInkyXCIsIFBBRCArIEhEUl9IIC8gMilcbiAgICAgICAgLmF0dHIoXCJzdHJva2VcIiwgXCIjQ0JENUUxXCIpXG4gICAgICAgIC5hdHRyKFwic3Ryb2tlLXdpZHRoXCIsIDEuNSlcbiAgICAgICAgLmF0dHIoXCJtYXJrZXItZW5kXCIsIFwidXJsKCNhcnIpXCIpO1xuICAgIH1cblxuICAgIC8vIENoYXB0ZXIgbm9kZXNcbiAgICBzZWMuY2hhcHRlcnMuZm9yRWFjaCgoY2gsIGopID0+IHtcbiAgICAgIGNvbnN0IG55ID0gUEFEICsgSERSX0ggKyBOT0RFX0dBUCArIGogKiAoTk9ERV9IICsgTk9ERV9HQVApO1xuICAgICAgY29uc3QgbncgPSBDT0xfVyAtIDIwO1xuXG4gICAgICAvLyBBcnJvdyBiZXR3ZWVuIGNvbnNlY3V0aXZlIGNoYXB0ZXJzIHdpdGhpbiBzZWN0aW9uXG4gICAgICBpZiAoaiA+IDApIHtcbiAgICAgICAgc3ZnLmFwcGVuZChcImxpbmVcIilcbiAgICAgICAgICAuYXR0cihcIngxXCIsIHN4ICsgQ09MX1cgLyAyKS5hdHRyKFwieTFcIiwgbnkgLSBOT0RFX0dBUCArIDEpXG4gICAgICAgICAgLmF0dHIoXCJ4MlwiLCBzeCArIENPTF9XIC8gMikuYXR0cihcInkyXCIsIG55IC0gMSlcbiAgICAgICAgICAuYXR0cihcInN0cm9rZVwiLCBhbHBoYShzZWMuaHVlLCAwLjM1KSlcbiAgICAgICAgICAuYXR0cihcInN0cm9rZS13aWR0aFwiLCAxKVxuICAgICAgICAgIC5hdHRyKFwibWFya2VyLWVuZFwiLCBcInVybCgjYXJyKVwiKTtcbiAgICAgIH1cblxuICAgICAgY29uc3QgZyA9IHN2Zy5hcHBlbmQoXCJhXCIpXG4gICAgICAgIC5hdHRyKFwiaHJlZlwiLCBjaC51cmwpXG4gICAgICAgIC5zdHlsZShcImN1cnNvclwiLCBcInBvaW50ZXJcIik7XG5cbiAgICAgIGcub24oXCJtb3VzZWVudGVyXCIsIGZ1bmN0aW9uKCkge1xuICAgICAgICAgIGQzLnNlbGVjdCh0aGlzKS5zZWxlY3QoXCJyZWN0XCIpXG4gICAgICAgICAgICAuYXR0cihcInN0cm9rZS13aWR0aFwiLCAyLjUpXG4gICAgICAgICAgICAuc3R5bGUoXCJmaWx0ZXJcIiwgXCJkcm9wLXNoYWRvdygwIDJweCA2cHggcmdiYSgwLDAsMCwwLjE4KSlcIik7XG4gICAgICAgIH0pXG4gICAgICAgIC5vbihcIm1vdXNlbGVhdmVcIiwgZnVuY3Rpb24oKSB7XG4gICAgICAgICAgZDMuc2VsZWN0KHRoaXMpLnNlbGVjdChcInJlY3RcIilcbiAgICAgICAgICAgIC5hdHRyKFwic3Ryb2tlLXdpZHRoXCIsIDEuNSlcbiAgICAgICAgICAgIC5zdHlsZShcImZpbHRlclwiLCBudWxsKTtcbiAgICAgICAgfSk7XG5cbiAgICAgIGcuYXBwZW5kKFwicmVjdFwiKVxuICAgICAgICAuYXR0cihcInhcIiwgc3ggKyAxMCkuYXR0cihcInlcIiwgbnkpXG4gICAgICAgIC5hdHRyKFwid2lkdGhcIiwgbncpLmF0dHIoXCJoZWlnaHRcIiwgTk9ERV9IKVxuICAgICAgICAuYXR0cihcInJ4XCIsIDUpXG4gICAgICAgIC5hdHRyKFwiZmlsbFwiLCBcIndoaXRlXCIpXG4gICAgICAgIC5hdHRyKFwic3Ryb2tlXCIsIGFscGhhKHNlYy5odWUsIDAuNDUpKVxuICAgICAgICAuYXR0cihcInN0cm9rZS13aWR0aFwiLCAxLjUpO1xuXG4gICAgICBnLmFwcGVuZChcInRleHRcIilcbiAgICAgICAgLmF0dHIoXCJ4XCIsIHN4ICsgMTAgKyBudyAvIDIpLmF0dHIoXCJ5XCIsIG55ICsgTk9ERV9IIC8gMilcbiAgICAgICAgLmF0dHIoXCJkeVwiLCBcIjAuMzVlbVwiKVxuICAgICAgICAuYXR0cihcInRleHQtYW5jaG9yXCIsIFwibWlkZGxlXCIpXG4gICAgICAgIC5hdHRyKFwiZmlsbFwiLCBzZWMuaHVlKVxuICAgICAgICAuYXR0cihcImZvbnQtc2l6ZVwiLCBcIjExcHhcIilcbiAgICAgICAgLmF0dHIoXCJmb250LXdlaWdodFwiLCBcIjUwMFwiKVxuICAgICAgICAudGV4dChjaC5sYWJlbCk7XG4gICAgfSk7XG4gIH0pO1xuXG4gIHJldHVybiBzdmcubm9kZSgpO1xufVxuIn1dfQ==
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/statistics-probability";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
