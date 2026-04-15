@@ -132,7 +132,7 @@ The real work happens in `index.js`. Scroll through the walkthrough below.
 
 :::{.cr-section}
 
-This is the complete `worker/index.js`. Every line has a job — let's go
+Here is a walkthrough of `worker/index.js`. Every section has a job — let's go
 through them one by one. @cr-prompt
 
 **The system prompt** is the most important part of the setup. It is
@@ -254,13 +254,13 @@ Cloudflare handles everything else. Just deploy:
 ```bash
 cd worker/
 wrangler deploy
-# → Deployed: https://resume-chat.resume-chat.workers.dev
+# → Deployed: https://resume-chat.<account>.workers.dev
 ```
 
 Test it immediately from the terminal:
 
 ```bash
-curl -X POST https://resume-chat.resume-chat.workers.dev \
+curl -X POST https://resume-chat.<account>.workers.dev \
   -H "Content-Type: application/json" \
   -d '{"message": "What is his current job?"}'
 # → {"reply":"Guillaume is currently a Regional Economist at the Banque de France…"}
@@ -309,7 +309,7 @@ a simple mutex that prevents double-sends while a fetch is in flight. @cr-state
 :::{#cr-state}
 ```js
 (function () {
-  const WORKER_URL = "https://resume-chat.resume-chat.workers.dev";
+  const WORKER_URL = "https://resume-chat.<account>.workers.dev";
 
   const msgs  = document.getElementById("chat-messages");
   const input = document.getElementById("chat-input");
@@ -402,7 +402,7 @@ verbatim. Drop the widget anywhere in a `.qmd` file:
 </div>
 <script>
 (function () {
-  const WORKER_URL = "https://resume-chat.resume-chat.workers.dev";
+  const WORKER_URL = "https://resume-chat.<account>.workers.dev";
   …
 })();
 </script>
@@ -465,11 +465,12 @@ format:
 Move the HTML+JS block to `_partials/chat-widget.html` and `quarto render`
 will inject it at the bottom of every page.
 
-**Tighten the CORS policy** — if you only want your own domain to call the
-Worker, change the header in `worker/index.js`:
+**Update the CORS origin** — the Worker is already restricted to a single
+origin. When you adapt this for your own site, change `ggilles.dev` to your
+domain in `worker/index.js`:
 
 ```js
-"Access-Control-Allow-Origin": "https://ggilles.dev",
+"Access-Control-Allow-Origin": "https://your-domain.com",
 ```
 
 **Swap the model** — edit `AI_MODEL` in `wrangler.toml` and run
