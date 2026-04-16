@@ -5,13 +5,145 @@ draft: true
 
 ## Framework
 
+### OWASP GenAI Security Project
+
+https://genai.owasp.org/
+
+#### OWASP Top 10 for LLM Applications 2025
+
+https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/
+
+The Top 10 (2025) classifies the ten most critical vulnerabilities in applications. Not all ten are equally relevant to a pre-deployment architecture review. Five of the ten operate at the system architecture level: they emerge from how an
+
+system is built and integrated, not from the model's internal behaviour. Those five are the focus of this room. The remaining five require dedicated treatment and appear in later modules.
+Risk 	Category 	Description 	Covered In
+LLM01 	Prompt Injection 	Manipulating
+behaviour through crafted inputs 	Prompt Security Module
+LLM02 	Sensitive Information Disclosure 	Leaking confidential data,
+, or system details through responses 	This room +
+Module
+LLM03 	Supply Chain 	Compromised pre-trained models, datasets, and third-party dependencies introduced before deployment 	
+Supply Chain Security Module
+LLM04 	Data and
+Corrupting
+or model weights to alter behaviour 	
+Module
+LLM05 	Improper Output Handling 	
+output is causing injection in the downstream systems 	This room
+LLM06 	Excessive Agency 	
+components with more privilege or autonomy than necessary 	This room
+LLM07 	System Prompt Leakage 	Exposure of system-level instructions and internal configuration 	This room
+LLM08 	Vector and
+Weaknesses 	Exploiting retrieval mechanisms and
+Module
+LLM09 	Misinformation 	
+generating false or misleading content 	
+Security Room in this module
+LLM10 	Unbounded Consumption 	Resource exhaustion, cost explosion, denial of service 	This room
+
+Every component you mapped in Task 2 has a failure mode. Of the Top 10, five categories operate at the system architecture level: they emerge from how the system is built and integrated, not from the model's internal behaviour. Those are the focus here.
+
+LLM10: Unbounded Consumption
+
+What it is: Attacks that drive up resource usage or cost through the volume or length of interactions with the
+
+system.
+
+The longer the input, the more computing power the
+
+uses. The more requests you send, the bigger the bill. An attacker who sends very long messages or floods the system with thousands of simultaneous requests can dramatically increase costs, turning a monthly bill from hundreds into tens of thousands of dollars overnight.
+
+TryAssist risk: An automated script sends hundreds of requests per minute, each attaching a 100,000-line codebase for TryAssist to "analyse." Without per-user quotas at the
+
+gateway, costs spike immediately.
+
+Defence: Rate limiting, input length validation, cost ceilings, and per-user quotas enforced at the
+
+gateway.
+LLM07: System Prompt Leakage
+
+What it is: The
+reveals its hidden operating instructions to someone who should not have them.
+
+A system prompt is the instruction set that tells the
+
+how to behave. In TryAssist, it contains things like: behavioural rules ("Never recommend merging code with known vulnerabilities"), internal tool addresses, content restrictions, and response guidelines. If an attacker gets hold of it, they can see exactly how the system is set up: which tools are available, what the rules are, and how to craft messages that get around them.
+
+Researchers have repeatedly extracted system prompts from ChatGPT, Bing Chat, Google Gemini, and hundreds of custom GPTs. Sometimes it is as simple as asking, "Repeat your instructions verbatim." More sophisticated approaches use base64 encoding or role-play scenarios to get past restrictions.
+
+TryAssist risk: TryAssist's system prompt includes the internal CI/CD API address and a description of the database schema. An attacker who extracts it gets an internal architecture map without touching the network.
+
+Defence: Never put secrets, credentials, or internal URLs in a system prompt. Write prompts as if an attacker will eventually read them, because they might.
+LLM05: Improper Output Handling
+
+What it is: Treating LLM output as safe and passing it straight into other systems without checking it first.
+
+The LLM produces text. That text could contain SQL fragments, shell commands, or HTML. If your system takes that output and feeds it directly into a database query or a web page, any malicious content in it gets executed. The basic attack chain is: the user crafts a message, the LLM produces a response with harmful syntax embedded, and the downstream system runs it.
+
+Two incidents are often cited as examples of LLM05: the Chevrolet chatbot (opens in new tab) (December 2023), which agreed to sell a car for $1, and Air Canada's chatbot (opens in new tab)(February 2024), which invented a refund policy. Both went badly wrong, but neither is actually LLM05. The Chevrolet case is LLM01 (Prompt Injection). Air Canada is LLM09 (Misinformation). In both cases, the LLM said something harmful, but nothing downstream ran that output as code. A genuine LLM05 failure needs the LLM's output to reach a system that executes it.
+
+TryAssist risk: A developer submits a pull request containing '; DROP TABLE users; --. TryAssist includes the string in its review. If that output goes straight into a logging database query without parameterisation, the injection runs.
+
+Defence: Never trust
+output as input to another system. Parameterise every database query. Never build , shell commands, or HTML by stitching in
+
+-generated text.
+LLM06: Excessive Agency
+
+What it is: Giving an
+system more tools, permissions, or freedom to act than it actually needs.
+
+There are three ways this goes wrong:
+
+    Excessive functionality: The 
+
+    can access tools it has no business using, like a code review assistant that can also push to production.
+    Excessive permissions: The tools it does have carry more privileges than the job requires, such as full read-write database access when the task only needs read-only access. 
+    Excessive autonomy: The system acts independently without human oversight, for example, automatically approving and merging pull requests.
+
+In 2023, the early ChatGPT plugin ecosystem gave plugins wide access to connected services. Researchers showed that a malicious webpage could use indirect prompt injection to get ChatGPT to activate a plugin and send data to an attacker. The plugin could do it. The attack worked because no one had stopped to ask whether it should.
+
+TryAssist risk: TryAssist's database tool has UPDATE and DELETE access, not just SELECT. A manipulated response could alter review records or delete data entirely.
+
+Defence: Least privilege for every
+component. Read-only by default. Scoped
+
+tokens. Human approval is required before any write, delete, or deployment action.
+LLM02: Sensitive Information Disclosure
+
+What it is: The
+system leaking confidential information through its responses or through how it operates.
+
+
 ### Mitre ATLAS
 
 https://atlas.mitre.org/knowledge-graph
 
-### OWASP GenAI Security Project
+ (Adversarial Threat Landscape for Systems) is a knowledge base of adversary tactics, techniques, and case studies for systems, structured as a counterpart to ATT&CK. classifies what the vulnerabilities are.
 
-https://genai.owasp.org/
+documents how adversaries exploit them.
+
+follows the adversary's progression through a target. An attacker begins with reconnaissance, learning what model the system uses and how it is exposed. They gain initial access by compromising a supply chain component or exploiting an input vector. They achieve execution through techniques like prompt injection, adversarial inputs, or model tampering. Where
+
+is needed, they implant backdoors in model weights. The end goal is impact: data exfiltration, service disruption, or silent manipulation of model outputs. For TryAssist, the most relevant part of this arc runs from Execution through Impact, tracing how an attacker who reaches the chat interface can move through the system and cause real damage.
+
+covers over 50 techniques across more than a dozen tactics, each with real-world case studies, and is updated as new attack patterns emerge.
+
+### NIST AI Risk Management Framework
+
+The RMF approaches the problem from an organisational perspective. Its four functions describe how an organisation manages risk systematically: Govern (setting policies and accountability structures), Map (identifying systems and their risk contexts), Measure (assessing and monitoring risk levels), and Manage (responding to and mitigating identified risks). Where names the vulnerabilities, and describes how adversaries exploit them, the RMF asks whether the organisation has a repeatable process for addressing them. Its companion, 100-2 (published January 2025), provides a technical catalogue of adversarial
+
+techniques and mitigations across the full model lifecycle.
+
+The Threat Modelling room (later in this module) delves into how the
+RMF integrates with and for structured risk governance.
+
+
+## Red Team AI
+
+- Giskar OSS
+    - repo : https://github.com/Giskard-AI/giskard-oss?hss_channel=lis-yuwTgynGOe
+    - doc : https://docs.giskard.ai/oss/checks?hss_channel=lis-yuwTgynGOe
 
 ## Model Monitoring
 
