@@ -1,30 +1,30 @@
 ---
-title: "Couples de variables a densite"
+title: "Couples de variables à densité"
 abstract: |
-  Ce chapitre etend la theorie des lois a densite au cas de deux variables
-  aleatoires reelles. On introduit d'abord les integrales doubles sur
+  Ce chapitre étend la théorie des lois à densité au cas de deux variables
+  aléatoires réelles. On introduit d'abord les intégrales doubles sur
   $\mathbb{R}^2$ (cadre de Tonelli/Fubini), puis la **loi conjointe** d'un
   couple $(X,Y)$ absolument continu. On construit ensuite les **lois
-  marginales**, on caracterise l'**independance** par factorisation de la
-  densite, puis on generalise les notions d'**esperance** et de **covariance**.
-  Le chapitre se termine par une application centrale: la loi de la somme de
-  deux variables independantes via la **convolution** des densites.
+  marginales**, on caractérise l'**indépendance** par factorisation de la
+  densité, puis on généralise les notions d'**espérance** et de **covariance**.
+  Le chapitre se termine par une application centrale : la loi de la somme de
+  deux variables indépendantes via la **convolution** des densités.
 date-modified: 2026-03-24
 ---
 
 [📍 Retour à la carte du cours](index.html)
-> Dans tout ce chapitre, nous nous placons dans un espace probabilise quelconque $(\Omega, \mathcal{F}, P)$.
+> Dans tout ce chapitre, nous nous plaçons dans un espace probabilisé quelconque $(\Omega, \mathcal{F}, P)$.
 
-## Integrales sur $\mathbb{R}^2$
+## Intégrales sur $\mathbb{R}^2$
 
-Un prealable utile est la theorie des integrales multiples (integration sur des domaines du plan).
+Un préalable utile est la théorie des intégrales multiples (intégration sur des domaines du plan). Dans la suite du chapitre, on aura besoin de calculer des intégrales de la forme $\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy$. La question naturelle est : peut-on calculer une telle intégrale en effectuant deux intégrales simples successives, et dans quel ordre ? C'est précisément ce à quoi répondent les théorèmes de Tonelli et Fubini.
 
 ::: {.callout-note}
-### Theoreme de Tonelli (admis)
+### Théorème de Tonelli (admis)
 
 Soit $f : \mathbb{R}^2 \to \mathbb{R}$, continue par morceaux, positive.
 
-Alors:
+Alors :
 $$
 \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
 = \int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dy\right)dx
@@ -36,13 +36,17 @@ en autorisant la valeur $+\infty$.
 ::: {.callout-tip}
 ### Remarque
 
-Pour une fonction qui peut changer de signe, on utilise le theoreme de **Fubini** sous des hypotheses d'integrabilite adaptees.
+Pour une fonction qui peut changer de signe, on utilise le théorème de **Fubini** sous des hypothèses d'intégrabilité adaptées.
 :::
 
-::: {.callout-note}
-## Definition - Integrabilite sur $\mathbb{R}^2$
+L'intuition géométrique de Tonelli est simple : calculer l'intégrale de $f(x,y)$ sur $\mathbb{R}^2$ revient à mesurer le **volume** sous la surface $z = f(x,y)$. On peut le faire en additionnant des tranches verticales (couper le plan selon des valeurs fixes de $x$, puis intégrer en $y$) ou des tranches horizontales (couper selon des valeurs fixes de $y$, puis intégrer en $x$). La positivité de $f$ garantit que ces deux façons de découper donnent toujours le même résultat, même lorsque ce résultat est infini.
 
-Soit $f : \mathbb{R}^2 \to \mathbb{R}$ c.p.m. et positive. On dit que $f$ est integrable sur $\mathbb{R}^2$ si l'une (donc les deux) des quantites suivantes est finie:
+La positivité est essentielle. Si $f$ change de signe, des compensations entre parties positives et négatives peuvent rendre le résultat sensible à l'ordre d'intégration. C'est pourquoi Fubini impose que $|f|$ soit intégrable avant d'autoriser l'échange des ordres. En pratique, pour les densités de probabilité (qui sont positives par définition), on se trouve toujours dans le cadre de Tonelli.
+
+::: {.callout-note}
+## Définition — Intégrabilité sur $\mathbb{R}^2$
+
+Soit $f : \mathbb{R}^2 \to \mathbb{R}$ c.p.m. et positive. On dit que $f$ est intégrable sur $\mathbb{R}^2$ si l'une (donc les deux) des quantités suivantes est finie :
 
 $$
 \int_{-\infty}^{+\infty}\!\left(\int_{-\infty}^{+\infty} f(x,y)\,dy\right)dx,
@@ -52,7 +56,7 @@ $$
 :::
 
 ::: {.callout-caution}
-## Exemple 1 - Calculs d'integrales doubles
+## Exemple 1 — Calculs d'intégrales doubles
 
 1. Soit $D = \{(x,y)\in\mathbb{R}^2 : x\ge 0,\ y\ge 0,\ x+y\le 1\}$. Calculer:
    - $\displaystyle \iint_D (x^2+y^2)\,dx\,dy$,
@@ -70,23 +74,64 @@ Calculer $\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy$.
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution - Exemple 1 (resultats)
+## Solution — Exemple 1
 
-- $\displaystyle \iint_D (x^2+y^2)\,dx\,dy = \frac{1}{6}$.
-- $\displaystyle \iint_D xy(x+y)\,dx\,dy = \frac{1}{30}$.
-- $\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy = 1$.
+**1a.** Sur $D$, on a $x\in[0,1]$ et $y\in[0,1-x]$. On intègre d'abord en $y$ :
+$$
+\iint_D (x^2+y^2)\,dx\,dy
+=\int_0^1\int_0^{1-x}(x^2+y^2)\,dy\,dx
+=\int_0^1\left[x^2 y+\frac{y^3}{3}\right]_0^{1-x}dx
+=\int_0^1\left(x^2(1-x)+\frac{(1-x)^3}{3}\right)dx.
+$$
+On développe :
+$$
+x^2(1-x)=x^2-x^3,\qquad \frac{(1-x)^3}{3}=\frac{1-3x+3x^2-x^3}{3}.
+$$
+Donc l'intégrande est $\dfrac{1}{3}-x+2x^2-\dfrac{4x^3}{3}$, et :
+$$
+\int_0^1\left(\frac{1}{3}-x+2x^2-\frac{4x^3}{3}\right)dx
+=\frac{1}{3}-\frac{1}{2}+\frac{2}{3}-\frac{1}{3}=\frac{2}{3}-\frac{1}{2}=\boxed{\frac{1}{6}}.
+$$
 
-Ainsi, dans le second cas, $f$ est bien normalisee pour jouer le role d'une densite conjointe.
+**1b.** On intègre d'abord en $y$ :
+$$
+\iint_D xy(x+y)\,dx\,dy
+=\int_0^1\int_0^{1-x}(x^2y+xy^2)\,dy\,dx
+=\int_0^1\left[\frac{x^2y^2}{2}+\frac{xy^3}{3}\right]_0^{1-x}dx
+=\int_0^1\left(\frac{x^2(1-x)^2}{2}+\frac{x(1-x)^3}{3}\right)dx.
+$$
+On développe séparément :
+$$
+\int_0^1\frac{x^2(1-x)^2}{2}\,dx=\frac{1}{2}\int_0^1(x^2-2x^3+x^4)\,dx
+=\frac{1}{2}\!\left(\frac{1}{3}-\frac{1}{2}+\frac{1}{5}\right)=\frac{1}{2}\cdot\frac{1}{30}=\frac{1}{60},
+$$
+$$
+\int_0^1\frac{x(1-x)^3}{3}\,dx=\frac{1}{3}\int_0^1(x-3x^2+3x^3-x^4)\,dx
+=\frac{1}{3}\!\left(\frac{1}{2}-1+\frac{3}{4}-\frac{1}{5}\right)=\frac{1}{3}\cdot\frac{1}{20}=\frac{1}{60}.
+$$
+Total : $\dfrac{1}{60}+\dfrac{1}{60}=\boxed{\dfrac{1}{30}}$.
+
+**2.** Le domaine d'intégration est $\{0\le x\le y\}$ (i.e. $x\ge 0$ et $y\ge x$). On intègre d'abord en $y$ de $x$ à $+\infty$ :
+$$
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+=\int_0^{+\infty}\int_x^{+\infty}2e^{-(x+y)}\,dy\,dx
+=2\int_0^{+\infty}e^{-x}\Bigl[-e^{-y}\Bigr]_x^{+\infty}dx
+=2\int_0^{+\infty}e^{-x}\cdot e^{-x}\,dx
+=2\int_0^{+\infty}e^{-2x}\,dx=2\cdot\frac{1}{2}=\boxed{1}.
+$$
+Ainsi $f$ est bien normalisée pour jouer le rôle d'une densité conjointe.
 :::
 
 ---
 
-## Loi conjointe d'un couple de variables aleatoires continues
+Jusqu'ici, on a étudié les variables aléatoires une à une. Dans de nombreuses situations concrètes, on s'intéresse simultanément à plusieurs grandeurs liées : la taille et le poids d'un individu, la température et la pression atmosphérique, la durée de vie de deux composants d'un même système. Pour modéliser ces **dépendances**, il faut étudier la loi **conjointe** du couple $(X, Y)$, qui décrit non seulement le comportement individuel de chaque variable, mais aussi les liens statistiques entre elles. C'est ce que permet le cadre des couples de variables aléatoires à densité.
+
+## Loi conjointe d'un couple de variables aléatoires continues
 
 ::: {.callout-note}
-## Definition - Couple de variables aleatoires continues
+## Définition — Couple de variables aléatoires continues
 
-Un couple de variables aleatoires continues est une application
+Un couple de variables aléatoires continues est une application
 $$
 (X,Y):\Omega\to\mathbb{R}^2,
 \qquad
@@ -94,29 +139,98 @@ $$
 $$
 :::
 
-### Densite de probabilite sur $\mathbb{R}^2$
+### Densité de probabilité sur $\mathbb{R}^2$
 
 ::: {.callout-note}
-## Definition - Densite sur $\mathbb{R}^2$
+## Définition — Densité sur $\mathbb{R}^2$
 
-Une fonction $f : \mathbb{R}^2 \to \mathbb{R}$ est une densite de probabilite sur $\mathbb{R}^2$ si:
+Une fonction $f : \mathbb{R}^2 \to \mathbb{R}$ est une densité de probabilité sur $\mathbb{R}^2$ si :
 
 - $f(x,y)\ge 0$ pour tout $(x,y)$,
-- $f$ est integrable sur $\mathbb{R}^2$,
+- $f$ est intégrable sur $\mathbb{R}^2$,
 - $\displaystyle \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy = 1$.
 :::
 
-::: {.callout-note}
-## Definition - Couple absolument continu
+L'intuition géométrique est celle d'un **relief** : $f(x,y)$ représente la "hauteur" en chaque point du plan. La condition $\iint f = 1$ signifie que le **volume total** sous ce relief vaut exactement $1$. La probabilité que le couple $(X,Y)$ tombe dans une région $\mathcal{D}$ est $\iint_{\mathcal{D}} f(x,y)\,dx\,dy$, c'est-à-dire le volume du morceau de relief situé au-dessus de $\mathcal{D}$. Plus la densité est élevée en un point, plus ce point est probable — mais la probabilité d'une valeur exacte $(x_0, y_0)$ est toujours nulle, exactement comme dans le cas unidimensionnel.
 
-Le couple $(X,Y)$ est dit **absolument continu** s'il existe une densite conjointe $f$ telle que, pour tous intervalles $I,J\subset\mathbb{R}$,
+```{python}
+#| echo: false
+#| fig-align: center
+#| column: screen-inset
+#| label: fig-densite-conjointe-relief
+#| fig-cap: "**Gauche :** la probabilité que $(X,Y)$ tombe dans la région $\\mathcal{D}$ est le volume du relief $f$ au-dessus de $\\mathcal{D}$. **Droite :** le relief vu de dessus — les zones sombres correspondent aux régions de forte densité (événements plus probables)."
+
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib as mpl
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor':   'none',
+    'axes.edgecolor':   '#D2CCC0',
+    'axes.labelcolor':  '#D2CCC0',
+    'xtick.color':      '#D2CCC0',
+    'ytick.color':      '#D2CCC0',
+    'text.color':       '#D2CCC0',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+x = np.linspace(-3, 3, 300)
+y = np.linspace(-3, 3, 300)
+X, Y = np.meshgrid(x, y)
+Z = np.exp(-(X**2 + Y**2) / 2) / (2 * np.pi)
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# Left: probability region shaded
+ax = axes[0]
+ax.contourf(X, Y, Z, levels=20, cmap='Blues')
+ax.contour(X, Y, Z, levels=8, colors='white', alpha=0.3, linewidths=0.6)
+theta = np.linspace(0, 2 * np.pi, 200)
+xs, ys = 1.5 * np.cos(theta), 1.5 * np.sin(theta)
+ax.fill(xs, ys, alpha=0.45, color='#C62828', label=r'région $\mathcal{D}$', zorder=5)
+ax.plot(xs, ys, color='#C62828', lw=1.8, zorder=6)
+ax.text(0, -0.55, r'$P\!\left((X,Y)\in\mathcal{D}\right)=\iint_{\mathcal{D}} f(x,y)\,dx\,dy$',
+        ha='center', color='white', fontsize=9, fontweight='bold', zorder=7)
+ax.set_aspect('equal')
+ax.set_xlim(-3, 3); ax.set_ylim(-3, 3)
+ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+ax.set_title('Probabilité = volume au-dessus de $\\mathcal{D}$', color='#D2CCC0', fontsize=11)
+ax.legend(loc='upper right', fontsize=10)
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+
+# Right: colormap as height indicator
+ax2 = axes[1]
+cf2 = ax2.contourf(X, Y, Z, levels=20, cmap='YlOrRd')
+cbar = fig.colorbar(cf2, ax=ax2, fraction=0.046, pad=0.04)
+cbar.set_label('hauteur $f(x,y)$', fontsize=10, color='#D2CCC0')
+plt.setp(cbar.ax.yaxis.get_ticklabels(), color='#D2CCC0')
+cbar.ax.yaxis.set_tick_params(color='#D2CCC0')
+ax2.set_aspect('equal')
+ax2.set_xlim(-3, 3); ax2.set_ylim(-3, 3)
+ax2.set_xlabel('$x$'); ax2.set_ylabel('$y$')
+ax2.set_title('Le relief probabiliste vu de dessus', color='#D2CCC0', fontsize=11)
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
+
+plt.suptitle(r"Densité conjointe de $(X,Y)$ : deux variables normales standard indépendantes",
+             color='#D2CCC0', fontsize=12)
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-note}
+## Définition — Couple absolument continu
+
+Le couple $(X,Y)$ est dit **absolument continu** s'il existe une densité conjointe $f$ telle que, pour tous intervalles $I,J\subset\mathbb{R}$,
 $$
 P(X\in I,\ Y\in J) = \iint_{I\times J} f(x,y)\,dx\,dy.
 $$
 :::
 
 ::: {.callout-caution}
-## Exemple 2 - Densite exponentielle sur le quadrant
+## Exemple 2 — Densité exponentielle sur le quadrant
 
 Soit
 $$
@@ -126,27 +240,27 @@ e^{-(x+y)} & \text{si } x\ge 0,\ y\ge 0,\\
 0 & \text{sinon.}
 \end{cases}
 $$
-Montrer que $f$ est une densite sur $\mathbb{R}^2$.
+Montrer que $f$ est une densité sur $\mathbb{R}^2$.
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution - Exemple 2
+## Solution — Exemple 2
 
-La positivite est immediate. Ensuite:
+La positivité est immédiate. Ensuite :
 $$
 \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
 = \left(\int_0^{+\infty} e^{-x}\,dx\right)
 \left(\int_0^{+\infty} e^{-y}\,dy\right)=1\cdot 1=1.
 $$
-Donc $f$ est bien une densite.
+Donc $f$ est bien une densité.
 :::
 
-### Fonction de repartition conjointe
+### Fonction de répartition conjointe
 
 ::: {.callout-note}
-## Definition
+## Définition
 
-La fonction de repartition du couple $(X,Y)$ de densite $f$ est
+La fonction de répartition du couple $(X,Y)$ de densité $f$ est
 $$
 F(x,y)=P(X\le x,\ Y\le y)=\int_{-\infty}^{x}\int_{-\infty}^{y} f(u,v)\,dv\,du.
 $$
@@ -155,13 +269,15 @@ $$
 ::: {.callout-important}
 ## Proposition (admise)
 
-Aux points ou $f$ est continue,
+Aux points où $f$ est continue,
 $$
 f(x,y)=\frac{\partial^2 F}{\partial x\partial y}(x,y).
 $$
 
-La densite conjointe et la repartition conjointe caracterisent la loi du couple.
+La densité conjointe et la répartition conjointe caractérisent la loi du couple.
 :::
+
+La fonction de répartition conjointe $F(x,y)$ est l'analogue bidimensionnel de la répartition usuelle : elle cumule la probabilité d'être dans le "quadrant inférieur gauche" $(-\infty, x] \times (-\infty, y]$. La proposition ci-dessus établit le lien fondamental avec la densité : dériver $F$ successivement par rapport à $x$ puis par rapport à $y$ redonne $f$. C'est le pendant exact de la relation $F' = f$ du cas unidimensionnel, généralisée à la dimension deux.
 
 ---
 
@@ -170,7 +286,7 @@ La densite conjointe et la repartition conjointe caracterisent la loi du couple.
 ::: {.callout-important}
 ## Proposition
 
-Si $(X,Y)$ admet une densite conjointe $f$, alors $X$ et $Y$ sont des variables a densite de densites marginales:
+Si $(X,Y)$ admet une densité conjointe $f$, alors $X$ et $Y$ sont des variables à densité de densités marginales :
 $$
 f_X(x)=\int_{\mathbb{R}} f(x,y)\,dy,
 \qquad
@@ -178,52 +294,153 @@ f_Y(y)=\int_{\mathbb{R}} f(x,y)\,dx.
 $$
 :::
 
-Ces formules se lisent comme une "projection" de la densite conjointe sur chaque axe: on integre selon l'autre variable pour ne garder qu'une seule coordonnee.
+Ces formules se lisent comme une **projection** de la densité conjointe sur chaque axe : intégrer $f(x,y)$ par rapport à $y$ revient à accumuler toutes les probabilités associées aux différentes valeurs de $Y$, pour chaque $x$ fixé. On obtient ainsi la densité "totale" en $x$, indépendamment de ce que vaut $Y$. Géométriquement, $f_X(x)$ est l'**aire de la tranche verticale** du relief $f$ à l'abscisse $x$ : on "fond" la dimension $y$ en la sommant intégralement.
+
+Il est crucial de comprendre que les lois marginales ne déterminent **pas** la loi conjointe. Deux couples $(X,Y)$ peuvent partager exactement les mêmes marginales tout en ayant des lois conjointes très différentes. La loi conjointe contient une information supplémentaire — la **structure de dépendance** entre $X$ et $Y$ — que les marginales seules ne capturent pas. C'est précisément cette structure que l'on formalise dans la section suivante via la notion d'indépendance.
+
+```{python}
+#| echo: false
+#| fig-align: center
+#| column: screen-inset
+#| label: fig-marginales-projection
+#| fig-cap: "Les lois marginales s'obtiennent en **intégrant la densité conjointe selon l'autre variable** : $f_X(x) = \\int f(x,y)\\,dy$ (projection sur l'axe $x$) et $f_Y(y) = \\int f(x,y)\\,dx$ (projection sur l'axe $y$). Les marginales ne restituent pas la structure de dépendance présente dans la loi conjointe."
+
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib as mpl
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor':   'none',
+    'axes.edgecolor':   '#D2CCC0',
+    'axes.labelcolor':  '#D2CCC0',
+    'xtick.color':      '#D2CCC0',
+    'ytick.color':      '#D2CCC0',
+    'text.color':       '#D2CCC0',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+x = np.linspace(-3.5, 3.5, 400)
+y = np.linspace(-3.5, 3.5, 400)
+X, Y = np.meshgrid(x, y)
+# Bivariate normal with correlation rho=0.7
+rho = 0.7
+det = 1 - rho**2
+Z = np.exp(-(X**2 - 2*rho*X*Y + Y**2) / (2*det)) / (2*np.pi*np.sqrt(det))
+fX = np.exp(-x**2 / 2) / np.sqrt(2*np.pi)
+fY = np.exp(-y**2 / 2) / np.sqrt(2*np.pi)
+
+fig, axes = plt.subplots(1, 3, figsize=(14, 5))
+
+# Panel 1: joint density
+ax0 = axes[0]
+ax0.contourf(X, Y, Z, levels=18, cmap='Blues')
+ax0.contour(X, Y, Z, levels=8, colors='white', alpha=0.25, linewidths=0.6)
+ax0.set_aspect('equal')
+ax0.set_xlim(-3.5, 3.5); ax0.set_ylim(-3.5, 3.5)
+ax0.set_xlabel('$x$'); ax0.set_ylabel('$y$')
+ax0.set_title(f'Loi conjointe $f(x,y)$\n(corrélation $\\rho={rho}$)', color='#D2CCC0', fontsize=10)
+ax0.annotate('', xy=(0, -4.2), xytext=(0, -3.2),
+             arrowprops=dict(arrowstyle='->', color='#C62828', lw=2.2))
+ax0.text(0.35, -3.9, r'$\int \cdot\,dy$', color='#C62828', fontsize=10)
+ax0.annotate('', xy=(-4.2, 0), xytext=(-3.2, 0),
+             arrowprops=dict(arrowstyle='->', color='#2E7D32', lw=2.2))
+ax0.text(-4.1, 0.35, r'$\int \cdot\,dx$', color='#2E7D32', fontsize=9, ha='center')
+ax0.spines['top'].set_visible(False)
+ax0.spines['right'].set_visible(False)
+
+# Panel 2: marginal f_X
+ax1 = axes[1]
+ax1.plot(x, fX, color='#C62828', lw=2.5)
+ax1.fill_between(x, fX, alpha=0.3, color='#C62828')
+ax1.set_xlim(-3.5, 3.5)
+ax1.set_xlabel('$x$'); ax1.set_ylabel('$f_X(x)$')
+ax1.set_title(r'Marginale de $X$' + '\n' + r'$f_X(x)=\int f(x,y)\,dy = \mathcal{N}(0,1)$',
+              color='#D2CCC0', fontsize=10)
+ax1.text(0, 0.17, 'Identique quelle\nque soit la corrélation !', ha='center',
+         color='#C62828', fontsize=9, fontstyle='italic')
+ax1.spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False)
+
+# Panel 3: marginal f_Y
+ax2 = axes[2]
+ax2.plot(y, fY, color='#2E7D32', lw=2.5)
+ax2.fill_between(y, fY, alpha=0.3, color='#2E7D32')
+ax2.set_xlim(-3.5, 3.5)
+ax2.set_xlabel('$y$'); ax2.set_ylabel('$f_Y(y)$')
+ax2.set_title(r'Marginale de $Y$' + '\n' + r'$f_Y(y)=\int f(x,y)\,dx = \mathcal{N}(0,1)$',
+              color='#D2CCC0', fontsize=10)
+ax2.text(0, 0.17, 'Identique quelle\nque soit la corrélation !', ha='center',
+         color='#2E7D32', fontsize=9, fontstyle='italic')
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
+
+plt.suptitle("Marginalisation : la dépendance disparaît en projetant sur chaque axe",
+             color='#D2CCC0', fontsize=12)
+plt.tight_layout()
+plt.show()
+```
 
 ::: {.callout-caution}
-## Exemple 3 - Loi uniforme sur le disque unite
+## Exemple 3 — Loi uniforme sur le disque unité
 
 Soit $D=\{(x,y)\in\mathbb{R}^2 : x^2+y^2\le 1\}$ et
 $$
 f(x,y)=\frac{1}{\pi}\mathbf{1}_D(x,y).
 $$
 
-1. Verifier que $f$ est une densite.
-2. Determiner les densites marginales $f_X$ et $f_Y$.
-3. Verifier que $\int_{\mathbb{R}} f_X(x)\,dx=\int_{\mathbb{R}} f_Y(y)\,dy=1$.
+1. Vérifier que $f$ est une densité.
+2. Déterminer les densités marginales $f_X$ et $f_Y$.
+3. Vérifier que $\int_{\mathbb{R}} f_X(x)\,dx=\int_{\mathbb{R}} f_Y(y)\,dy=1$.
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution - Exemple 3 (resultat marginal)
+## Solution — Exemple 3
 
-Pour $|x|\le 1$:
+**1.** La fonction $f$ est positive. L'aire du disque $D$ de rayon $1$ vaut $\pi$, donc :
+$$
+\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+=\frac{1}{\pi}\iint_D dx\,dy
+=\frac{1}{\pi}\cdot\pi=1.
+$$
+Ainsi $f$ est une densité.
+
+**2.** Pour $|x|\le 1$, $y$ varie dans $\left[-\sqrt{1-x^2},\sqrt{1-x^2}\right]$ :
 $$
 f_X(x)=\int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}}\frac{1}{\pi}\,dy
-=\frac{2}{\pi}\sqrt{1-x^2},
+=\frac{2\sqrt{1-x^2}}{\pi},
 $$
-et $f_X(x)=0$ sinon.
+et $f_X(x)=0$ pour $|x|>1$.
 
-Par symetrie,
+Par symétrie en $x\leftrightarrow y$ :
 $$
-f_Y(y)=\frac{2}{\pi}\sqrt{1-y^2}\ \text{pour }|y|\le 1,
-\quad f_Y(y)=0\ \text{sinon.}
+f_Y(y)=\frac{2\sqrt{1-y^2}}{\pi}\ \text{pour }|y|\le 1,
+\qquad f_Y(y)=0\ \text{sinon.}
 $$
+
+**3.** On reconnaît l'intégrale d'un demi-cercle unitaire :
+$$
+\int_{-1}^{1} f_X(x)\,dx
+=\frac{2}{\pi}\int_{-1}^{1}\sqrt{1-x^2}\,dx
+=\frac{2}{\pi}\cdot\frac{\pi}{2}=1.
+$$
+(On a utilisé $\displaystyle\int_{-1}^{1}\sqrt{1-x^2}\,dx=\frac{\pi}{2}$, qui est l'aire d'un demi-disque de rayon $1$.) Par symétrie, $\displaystyle\int_{\mathbb{R}} f_Y(y)\,dy=1$ également.
 :::
 
 ::: {.callout-caution}
-## Exercice — Cible de tir a l'arc
+## Exercice — Cible de tir à l'arc
 
-Marc fait du tir a l'arc sur une cible circulaire de rayon $4$. Le point d'impact $M$ de la fleche, de coordonnees aleatoires $(X;Y)$, suit une loi uniformement distribuee sur la cible. On note $D=\{(x,y)\in\mathbb{R}^2 : x^2+y^2\le 16\}$.
+Marc fait du tir à l'arc sur une cible circulaire de rayon $4$. Le point d'impact $M$ de la flèche, de coordonnées aléatoires $(X;Y)$, suit une loi uniformément distribuée sur la cible. On note $D=\{(x,y)\in\mathbb{R}^2 : x^2+y^2\le 16\}$.
 
-1. Determiner la densite du couple $(X;Y)$.
-2. La zone centrale, permettant de marquer un maximum de points, est un cercle de rayon $1$ et de meme centre que la cible. Calculer la probabilite que Marc atteigne la zone centrale.
-3. Determiner les lois marginales de $X$ et de $Y$. Les variables $X$ et $Y$ sont-elles independantes ?
+1. Déterminer la densité du couple $(X;Y)$.
+2. La zone centrale, permettant de marquer un maximum de points, est un cercle de rayon $1$ et de même centre que la cible. Calculer la probabilité que Marc atteigne la zone centrale.
+3. Déterminer les lois marginales de $X$ et de $Y$. Les variables $X$ et $Y$ sont-elles indépendantes ?
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution — Exercice Cible de tir a l'arc
+## Solution — Exercice Cible de tir à l'arc
 
-**1.** La loi est uniforme sur $D$, d'aire $\pi\cdot 4^2=16\pi$. La densite est donc:
+**1.** La loi est uniforme sur $D$, d'aire $\pi\cdot 4^2=16\pi$. La densité est donc :
 $$
 f(x,y)=\frac{1}{16\pi}\,\mathbf{1}_D(x,y).
 $$
@@ -233,59 +450,150 @@ $$
 P(X^2+Y^2\le 1)=\frac{\pi}{16\pi}=\frac{1}{16}.
 $$
 
-**3.** Pour $|x|\le 4$, on integre $f$ par rapport a $y$ sur $[-\sqrt{16-x^2},\,\sqrt{16-x^2}]$:
+**3.** Pour $|x|\le 4$, on intègre $f$ par rapport à $y$ sur $[-\sqrt{16-x^2},\,\sqrt{16-x^2}]$:
 $$
 f_X(x)=\int_{-\sqrt{16-x^2}}^{\sqrt{16-x^2}}\frac{1}{16\pi}\,dy
 =\frac{2\sqrt{16-x^2}}{16\pi}=\frac{\sqrt{16-x^2}}{8\pi},
 $$
-et $f_X(x)=0$ pour $|x|>4$. Par symetrie, $f_Y(y)=\dfrac{\sqrt{16-y^2}}{8\pi}$ pour $|y|\le 4$.
+et $f_X(x)=0$ pour $|x|>4$. Par symétrie, $f_Y(y)=\dfrac{\sqrt{16-y^2}}{8\pi}$ pour $|y|\le 4$.
 
-Les variables $X$ et $Y$ ne sont **pas independantes** : le support de $f$ est le disque $D$, qui n'est pas un rectangle, donc on ne peut pas ecrire $f(x,y)=f_X(x)f_Y(y)$ sur tout $\mathbb{R}^2$.
+Les variables $X$ et $Y$ ne sont **pas indépendantes** : le support de $f$ est le disque $D$, qui n'est pas un rectangle, donc on ne peut pas écrire $f(x,y)=f_X(x)f_Y(y)$ sur tout $\mathbb{R}^2$.
 :::
 
 ---
 
-## Independance de deux variables continues
+L'indépendance est la notion fondamentale qui formalise l'idée que « connaître la valeur de $X$ n'apporte aucune information sur $Y$, et réciproquement ». Dans le cas discret, deux variables sont indépendantes si les probabilités conjointes sont les produits des probabilités marginales. La même idée s'étend au cas continu : l'indépendance se lit directement sur la **factorisation** de la densité conjointe en un produit de densités marginales.
+
+## Indépendance de deux variables continues
 
 ::: {.callout-note}
-## Definition
+## Définition
 
-Les variables continues $X$ et $Y$ sont independantes si, pour tous intervalles $I,J$,
+Les variables continues $X$ et $Y$ sont indépendantes si, pour tous intervalles $I,J$,
 $$
 P(X\in I,\ Y\in J)=P(X\in I)P(Y\in J).
 $$
 :::
 
 ::: {.callout-important}
-## Proposition - Caracterisations equivalentes
+## Proposition — Caractérisations équivalentes
 
-Soit $(X,Y)$ de densite conjointe $f$, de repartition conjointe $F$, et de marginales $(f_X,f_Y)$, $(F_X,F_Y)$. Les proprietes suivantes sont equivalentes:
+Soit $(X,Y)$ de densité conjointe $f$, de répartition conjointe $F$, et de marginales $(f_X,f_Y)$, $(F_X,F_Y)$. Les propriétés suivantes sont équivalentes :
 
-1. $X$ et $Y$ sont independantes.
+1. $X$ et $Y$ sont indépendantes.
 2. $F(x,y)=F_X(x)F_Y(y)$ pour tout $(x,y)$.
 3. $f(x,y)=f_X(x)f_Y(y)$ pour tout $(x,y)$.
 :::
 
-::: {.callout-caution}
-## Exemple 4 - Test d'independance
+La condition de factorisation $f(x,y) = f_X(x)\,f_Y(y)$ a une interprétation géométrique claire : le relief de $f$ doit être un **produit tensoriel**, c'est-à-dire une surface dont chaque tranche verticale et chaque tranche horizontale ont la même forme (à un facteur de normalisation près). En particulier, le **support** de $f$ (la région où $f > 0$) doit nécessairement être un **rectangle**, éventuellement infini. Tout support non rectangulaire rend la factorisation impossible : si $(x,y)$ est dans le support mais qu'il existe des valeurs $x'$ ou $y'$ telles que $(x', y)$ ou $(x, y')$ n'y sont pas, on ne peut pas écrire $f = f_X \cdot f_Y$ sur $\mathbb{R}^2$ tout entier. C'est pourquoi la loi uniforme sur le disque unité ne peut jamais correspondre à deux variables indépendantes — le support circulaire n'est pas un rectangle.
 
-On reprend la densite de l'exemple 2:
+```{python}
+#| echo: false
+#| fig-align: center
+#| column: screen-inset
+#| label: fig-independance-support
+#| fig-cap: "**Gauche :** variables indépendantes — le support est un rectangle (ici $[0,+\\infty)^2$) et la densité se factorise $f(x,y)=f_X(x)\\cdot f_Y(y)$. **Droite :** variables non indépendantes — le support est un disque, qui n'est pas un rectangle : la factorisation est impossible."
+
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib as mpl
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor':   'none',
+    'axes.edgecolor':   '#D2CCC0',
+    'axes.labelcolor':  '#D2CCC0',
+    'xtick.color':      '#D2CCC0',
+    'ytick.color':      '#D2CCC0',
+    'text.color':       '#D2CCC0',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# Left: independent — exponential on positive quadrant
+x1 = np.linspace(0, 4, 300)
+y1 = np.linspace(0, 4, 300)
+X1, Y1 = np.meshgrid(x1, y1)
+Z1 = np.exp(-(X1 + Y1))
+
+ax = axes[0]
+ax.contourf(X1, Y1, Z1, levels=18, cmap='Blues')
+ax.contour(X1, Y1, Z1, levels=8, colors='white', alpha=0.3, linewidths=0.6)
+# Rectangle highlighting the support
+rect = plt.Polygon([[0,0],[4,0],[4,4],[0,4]], fill=False,
+                   edgecolor='#90CAF9', lw=2, linestyle='--')
+ax.add_patch(rect)
+ax.set_xlim(0, 4); ax.set_ylim(0, 4)
+ax.set_aspect('equal')
+ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+ax.set_title('Variables INDÉPENDANTES\n' +
+             r'$f(x,y)=e^{-(x+y)}\mathbf{1}_{x\geq0,\,y\geq0}$',
+             color='#D2CCC0', fontsize=10)
+ax.text(2, 3.2, 'Support = $[0,+\\infty)^2$\n(rectangle ✓)',
+        ha='center', color='#90CAF9', fontsize=10, fontweight='bold')
+ax.text(2, 0.8, r'$f = f_X \cdot f_Y \;\checkmark$',
+        ha='center', color='#90CAF9', fontsize=13, fontweight='bold')
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+
+# Right: not independent — uniform on disk
+x2 = np.linspace(-1.2, 1.2, 400)
+y2 = np.linspace(-1.2, 1.2, 400)
+X2, Y2 = np.meshgrid(x2, y2)
+Z2 = np.where(X2**2 + Y2**2 <= 1, 1/np.pi, np.nan)
+
+ax2 = axes[1]
+ax2.contourf(X2, Y2, Z2, levels=3, cmap='Oranges')
+theta = np.linspace(0, 2*np.pi, 300)
+ax2.plot(np.cos(theta), np.sin(theta), color='#C62828', lw=2.5)
+# Show that a point on the boundary breaks factorization
+ax2.plot([0.9], [0], 'o', color='#C62828', ms=8, zorder=5)
+ax2.plot([0.9], [0.5], 'x', color='white', ms=10, mew=2.5, zorder=5,
+         label='hors du support')
+ax2.annotate('$(0.9,\\ 0)$ ∈ support\n$(0.9,\\ 0.5)$ ∉ support',
+             xy=(0.9, 0.25), xytext=(0.1, 0.7),
+             arrowprops=dict(arrowstyle='->', color='white', lw=1.2),
+             color='white', fontsize=8.5)
+ax2.set_xlim(-1.2, 1.2); ax2.set_ylim(-1.2, 1.2)
+ax2.set_aspect('equal')
+ax2.set_xlabel('$x$'); ax2.set_ylabel('$y$')
+ax2.set_title('Variables NON INDÉPENDANTES\n' +
+              r'$f(x,y)=\frac{1}{\pi}\mathbf{1}_{x^2+y^2\leq1}$',
+              color='#D2CCC0', fontsize=10)
+ax2.text(0, -0.55, 'Support = disque ✗\n(pas un rectangle)',
+         ha='center', color='#FFAB91', fontsize=10, fontweight='bold')
+ax2.text(0, 0.3, r'$f \neq f_X \cdot f_Y$',
+         ha='center', color='#FFAB91', fontsize=13, fontweight='bold')
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
+
+plt.suptitle("Indépendance : le support doit être un rectangle pour permettre la factorisation",
+             color='#D2CCC0', fontsize=11)
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-caution}
+## Exemple 4 — Test d'indépendance
+
+On reprend la densité de l'exemple 2 :
 $$
 f(x,y)=e^{-(x+y)}\mathbf{1}_{x\ge 0, y\ge 0}.
 $$
 
 1. Calculer $f_X$ et $f_Y$.
-2. Conclure sur l'independance de $X$ et $Y$.
+2. Conclure sur l'indépendance de $X$ et $Y$.
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution - Exemple 4
+## Solution — Exemple 4
 
 - $f_X(x)=e^{-x}\mathbf{1}_{x\ge 0}$,
 - $f_Y(y)=e^{-y}\mathbf{1}_{y\ge 0}$,
 - donc $f(x,y)=f_X(x)f_Y(y)$.
 
-Les variables $X$ et $Y$ sont independantes.
+Les variables $X$ et $Y$ sont indépendantes.
 :::
 
 ::: {.callout-caution}
@@ -294,63 +602,114 @@ Les variables $X$ et $Y$ sont independantes.
 Soit $\lambda>0$ et
 $$f(x,y)=\lambda^2e^{-\lambda x}\mathbf{1}_{\{0<y<x\}}.$$
 
-1. Verifier que $f$ est une densite sur $\mathbb{R}^2$.
-2. Determiner les lois marginales de $X$ et de $Y$.
-3. Les variables $X$ et $Y$ sont-elles independantes ?
+1. Vérifier que $f$ est une densité sur $\mathbb{R}^2$.
+2. Déterminer les lois marginales de $X$ et de $Y$.
+3. Les variables $X$ et $Y$ sont-elles indépendantes ?
 4. Calculer $P(X<Y)$, $P(Y<X)$ et $P\!\left(Y<\frac{X}{2}\right)$.
 :::
 
 ::: {.callout-tip collapse="true"}
-## Indication — Exercice 2
+## Solution — Exercice 2
 
-- Integrer d'abord en $y$ entre 0 et $x$.
-- Pour la loi de $Y$, fixer $y$ puis integrer en $x$ de $y$ a $+\infty$.
-- Sur le support, $y<x$ toujours, donc certaines probabilites sont immediates.
+**1.** $f\ge 0$. On intègre d'abord en $y$ de $0$ à $x$ (borne du support) :
+$$
+\iint_{\mathbb{R}^2} f\,dx\,dy
+=\lambda^2\int_0^{+\infty}\!\int_0^x e^{-\lambda x}\,dy\,dx
+=\lambda^2\int_0^{+\infty} x\,e^{-\lambda x}\,dx
+=\lambda^2\cdot\frac{1}{\lambda^2}=1.
+$$
+(On a utilisé $\displaystyle\int_0^{+\infty} x e^{-\lambda x}\,dx=\frac{1}{\lambda^2}$.) Donc $f$ est une densité.
+
+**2.** Pour $x>0$, on intègre $f$ en $y$ sur $[0,x]$ :
+$$
+f_X(x)=\int_0^x \lambda^2 e^{-\lambda x}\,dy=\lambda^2 x\,e^{-\lambda x},\quad x>0.
+$$
+C'est la densité d'une loi $\Gamma(2,\lambda)$.
+
+Pour $y>0$, on intègre $f$ en $x$ sur $[y,+\infty)$ :
+$$
+f_Y(y)=\int_y^{+\infty}\lambda^2 e^{-\lambda x}\,dx
+=\lambda^2\cdot\frac{e^{-\lambda y}}{\lambda}=\lambda e^{-\lambda y},\quad y>0.
+$$
+Ainsi $Y\sim\mathcal{E}(\lambda)$.
+
+**3.** Si $X$ et $Y$ étaient indépendantes, on aurait $f(x,y)=f_X(x)\,f_Y(y)=\lambda^3 x\,e^{-\lambda(x+y)}$ sur $\mathbb{R}_+^2$. Or $f(x,y)=\lambda^2 e^{-\lambda x}$ sur le triangle $\{0<y<x\}$, dont le support n'est pas un rectangle. Les deux expressions ne coïncident pas, donc $X$ et $Y$ ne sont **pas indépendantes**.
+
+**4.** Sur le support $\{0<y<x\}$, on a toujours $y<x$, donc $P(X<Y)=0$ et $P(Y<X)=1$.
+
+Pour $P\!\left(Y<\frac{X}{2}\right)$, on intègre sur $\left\{0<y<\frac{x}{2}\right\}\cap\{0<y<x\}=\left\{0<y<\frac{x}{2},\,x>0\right\}$ :
+$$
+P\!\left(Y<\frac{X}{2}\right)
+=\lambda^2\int_0^{+\infty}\!\int_0^{x/2} e^{-\lambda x}\,dy\,dx
+=\lambda^2\int_0^{+\infty}\frac{x}{2}e^{-\lambda x}\,dx
+=\frac{\lambda^2}{2}\cdot\frac{1}{\lambda^2}=\frac{1}{2}.
+$$
 :::
 
 ::: {.callout-caution}
 ## Exercice 3
 
-Soient $\lambda,\mu>0$ et $X_1, X_2$ independantes, avec
+Soient $\lambda,\mu>0$ et $X_1, X_2$ indépendantes, avec
 $$X_1\sim\mathcal{E}(\lambda),\qquad X_2\sim\mathcal{E}(\mu).$$
 
 1. Calculer $P(X_1=X_2)$ et $P(X_1<X_2)$.
-2. Determiner la loi de
+2. Déterminer la loi de
 $$Y=\min(X_1,X_2),\qquad Z=\max(X_1,X_2).$$
 :::
 
 ::: {.callout-tip collapse="true"}
-## Indication — Exercice 3
+## Solution — Exercice 3
 
-- Utiliser la continuite pour $P(X_1=X_2)$.
-- Pour $Y$ : $P(Y>t)=P(X_1>t, X_2>t)$.
-- Pour $Z$ : $P(Z\le t)=P(X_1\le t, X_2\le t)$.
+**1.** Le couple $(X_1,X_2)$ admet la densité conjointe $f(x_1,x_2)=\lambda e^{-\lambda x_1}\cdot\mu e^{-\mu x_2}$ sur $\mathbb{R}_+^2$ (par indépendance). Comme les variables sont continues, $P(X_1=X_2)=0$.
+
+$$
+P(X_1<X_2)=\int_0^{+\infty}\!\int_{x_1}^{+\infty}\lambda e^{-\lambda x_1}\mu e^{-\mu x_2}\,dx_2\,dx_1
+=\int_0^{+\infty}\lambda e^{-\lambda x_1}\,e^{-\mu x_1}\,dx_1
+=\lambda\int_0^{+\infty}e^{-(\lambda+\mu)x_1}\,dx_1
+=\frac{\lambda}{\lambda+\mu}.
+$$
+
+**2. Loi de $Y=\min(X_1,X_2)$.** Pour tout $t\ge 0$ :
+$$
+P(Y>t)=P(X_1>t,\,X_2>t)=e^{-\lambda t}\,e^{-\mu t}=e^{-(\lambda+\mu)t}.
+$$
+Donc $Y=\min(X_1,X_2)\sim\mathcal{E}(\lambda+\mu)$.
+
+**Loi de $Z=\max(X_1,X_2)$.** Pour tout $t\ge 0$ :
+$$
+P(Z\le t)=P(X_1\le t,\,X_2\le t)=(1-e^{-\lambda t})(1-e^{-\mu t}).
+$$
+En dérivant, la densité de $Z$ est :
+$$
+f_Z(t)=\lambda e^{-\lambda t}(1-e^{-\mu t})+\mu e^{-\mu t}(1-e^{-\lambda t})
+=\lambda e^{-\lambda t}+\mu e^{-\mu t}-(\lambda+\mu)e^{-(\lambda+\mu)t},\quad t>0.
+$$
 :::
 
 ::: {.callout-caution}
-## Exercice — Densite $ke^{-y}$
+## Exercice — Densité $ke^{-y}$
 
-Soit $k\in\mathbb{R}$ et $f$ la fonction definie sur $\mathbb{R}^2$ par
+Soit $k\in\mathbb{R}$ et $f$ la fonction définie sur $\mathbb{R}^2$ par
 $$
 f(x,y)=k\,e^{-y}\,\mathbf{1}_{\{0<x<y\}}(x,y).
 $$
 
-1. Pour quelle valeur de $k$ la fonction $f$ est-elle une densite ?
-2. Soit $(X,Y)$ un couple de v.a.r. a densite $f$.
-   a. Determiner les lois marginales de $X$ et de $Y$.
-   b. $X$ et $Y$ sont-elles independantes ?
+1. Pour quelle valeur de $k$ la fonction $f$ est-elle une densité ?
+2. Soit $(X,Y)$ un couple de v.a.r. à densité $f$.
+   a. Déterminer les lois marginales de $X$ et de $Y$.
+   b. $X$ et $Y$ sont-elles indépendantes ?
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution — Exercice Densite $ke^{-y}$
+## Solution — Exercice Densité $ke^{-y}$
 
-**1.** La fonction est positive si $k\ge 0$. On calcule:
+**1.** La fonction est positive si $k\ge 0$. On calcule :
 $$
 \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
 =k\int_0^{+\infty}\!\int_x^{+\infty} e^{-y}\,dy\,dx
 =k\int_0^{+\infty} e^{-x}\,dx=k.
 $$
-Donc $f$ est une densite si et seulement si $\boxed{k=1}$.
+Donc $f$ est une densité si et seulement si $\boxed{k=1}$.
 
 **2a. Loi marginale de $X$** ($x>0$):
 $$
@@ -364,33 +723,33 @@ f_Y(y)=\int_0^{y} e^{-y}\,dx=y\,e^{-y}.
 $$
 Ainsi $f_Y(y)=y\,e^{-y}\mathbf{1}_{y>0}$, soit $Y\sim\Gamma(2,1)$.
 
-**2b.** On compare $f(x,y)=e^{-y}\mathbf{1}_{0<x<y}$ et $f_X(x)f_Y(y)=e^{-x}\cdot y\,e^{-y}$. Ces deux expressions ne coincident pas (par exemple en $x=1, y=2$ : $e^{-2}\ne e^{-1}\cdot 2e^{-2}$). Donc $X$ et $Y$ ne sont **pas independantes**.
+**2b.** On compare $f(x,y)=e^{-y}\mathbf{1}_{0<x<y}$ et $f_X(x)f_Y(y)=e^{-x}\cdot y\,e^{-y}$. Ces deux expressions ne coïncident pas (par exemple en $x=1, y=2$ : $e^{-2}\ne e^{-1}\cdot 2e^{-2}$). Donc $X$ et $Y$ ne sont **pas indépendantes**.
 :::
 
 ::: {.callout-caution}
-## Exercice — Romeo et Juliette
+## Exercice — Roméo et Juliette
 
-Romeo et Juliette se donnent rendez-vous devant une salle de theatre entre 20h et 21h. Le temps ecoule depuis 20h avant les arrivees de Romeo et de Juliette sont deux variables aleatoires $R$ et $J$ independantes de loi uniforme sur $[0;1]$ (en heures).
+Roméo et Juliette se donnent rendez-vous devant une salle de théâtre entre 20h et 21h. Le temps écoulé depuis 20h avant les arrivées de Roméo et de Juliette sont deux variables aléatoires $R$ et $J$ indépendantes de loi uniforme sur $[0;1]$ (en heures).
 
-1. Determiner la loi du couple $(R;J)$.
+1. Déterminer la loi du couple $(R;J)$.
 2. Donner $E(RJ)$ sans la calculer directement.
 3. Montrer que $P(|J-R|<\tfrac{1}{4})=1-2P(J-R>\tfrac{1}{4})$.
-4. Chacun decide d'attendre au plus 15 minutes que l'autre arrive avant d'entrer dans la salle. Quelle est la probabilite qu'ils entrent ensemble ?
+4. Chacun décide d'attendre au plus 15 minutes que l'autre arrive avant d'entrer dans la salle. Quelle est la probabilité qu'ils entrent ensemble ?
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution — Exercice Romeo et Juliette
+## Solution — Exercice Roméo et Juliette
 
-**1.** $R$ et $J$ sont independantes et uniformes sur $[0,1]$, donc le couple $(R,J)$ est uniforme sur le carre $[0,1]^2$, de densite $f(r,j)=1$ sur $[0,1]^2$.
+**1.** $R$ et $J$ sont indépendantes et uniformes sur $[0,1]$, donc le couple $(R,J)$ est uniforme sur le carré $[0,1]^2$, de densité $f(r,j)=1$ sur $[0,1]^2$.
 
-**2.** Par independance : $E(RJ)=E(R)\,E(J)=\dfrac{1}{2}\cdot\dfrac{1}{2}=\dfrac{1}{4}$.
+**2.** Par indépendance : $E(RJ)=E(R)\,E(J)=\dfrac{1}{2}\cdot\dfrac{1}{2}=\dfrac{1}{4}$.
 
-**3.** Par symetrie du carre $[0,1]^2$, l'evenement $\{J-R>\tfrac{1}{4}\}$ a la meme probabilite que $\{R-J>\tfrac{1}{4}\}$. Ces deux evenements sont disjoints et leur reunion est le complementaire de $\{|J-R|\le\tfrac{1}{4}\}$. Donc:
+**3.** Par symétrie du carré $[0,1]^2$, l'événement $\{J-R>\tfrac{1}{4}\}$ a la même probabilité que $\{R-J>\tfrac{1}{4}\}$. Ces deux événements sont disjoints et leur réunion est le complémentaire de $\{|J-R|\le\tfrac{1}{4}\}$. Donc:
 $$
 P(|J-R|\le\tfrac{1}{4})=1-P(J-R>\tfrac{1}{4})-P(R-J>\tfrac{1}{4})=1-2P(J-R>\tfrac{1}{4}).
 $$
 
-**4.** Les deux entrent ensemble si et seulement si $|J-R|\le\tfrac{1}{4}$. La zone $\{J-R>\tfrac{1}{4}\}$ dans $[0,1]^2$ est un triangle rectangle de cote $\tfrac{3}{4}$, d'aire $\tfrac{1}{2}\left(\tfrac{3}{4}\right)^2=\tfrac{9}{32}$. Donc:
+**4.** Les deux entrent ensemble si et seulement si $|J-R|\le\tfrac{1}{4}$. La zone $\{J-R>\tfrac{1}{4}\}$ dans $[0,1]^2$ est un triangle rectangle de côté $\tfrac{3}{4}$, d'aire $\tfrac{1}{2}\left(\tfrac{3}{4}\right)^2=\tfrac{9}{32}$. Donc :
 $$
 P(|J-R|\le\tfrac{1}{4})=1-2\cdot\frac{9}{32}=1-\frac{9}{16}=\frac{7}{16}.
 $$
@@ -398,52 +757,188 @@ $$
 
 ---
 
-## Densite conditionnelle
+Connaître la loi de $Y$ sachant que $X$ a pris une valeur précise $x$ est l'objet de la **densité conditionnelle**. Dans le cas discret, la probabilité conditionnelle est le rapport $P(X=x,\,Y=y)/P(X=x)$. Dans le cas continu, $P(X=x) = 0$ pour tout $x$, donc ce rapport est de la forme $0/0$ et n'a pas de sens direct. On contourne cette difficulté en travaillant avec les densités : la densité conditionnelle est définie par la même formule de rapport, mais appliquée aux densités plutôt qu'aux probabilités ponctuelles. Elle peut se justifier rigoureusement comme la limite $f_{Y\mid X}(y\mid x) = \lim_{\varepsilon \to 0} f_{Y \mid X \in [x, x+\varepsilon]}(y)$, c'est-à-dire la loi de $Y$ lorsqu'on "sait que $X$ est très proche de $x$".
+
+## Densité conditionnelle
 
 ::: {.callout-note}
-## Definition - Densite conditionnelle
+## Définition — Densité conditionnelle
 
-Soit $(X,Y)$ un couple de v.a.r. de densite conjointe $f$, et soit $f_X$ la densite marginale de $X$. Pour tout $x$ tel que $f_X(x) > 0$, on definit la **densite conditionnelle** de $Y$ sachant $X = x$ par:
+Soit $(X,Y)$ un couple de v.a.r. de densité conjointe $f$, et soit $f_X$ la densité marginale de $X$. Pour tout $x$ tel que $f_X(x) > 0$, on définit la **densité conditionnelle** de $Y$ sachant $X = x$ par:
 $$
 f_{Y|X}(y \mid x) = \frac{f(x,y)}{f_X(x)}.
 $$
 
-De meme, pour tout $y$ tel que $f_Y(y) > 0$:
+De même, pour tout $y$ tel que $f_Y(y) > 0$ :
 $$
 f_{X|Y}(x \mid y) = \frac{f(x,y)}{f_Y(y)}.
 $$
 :::
 
 ::: {.callout-note}
-## Definition - Esperance conditionnelle
+## Définition — Espérance conditionnelle
 
-L'**esperance conditionnelle** de $Y$ sachant $X = x$ est:
+L'**espérance conditionnelle** de $Y$ sachant $X = x$ est:
 $$
 E(Y \mid X = x) = \int_{\mathbb{R}} y \, f_{Y|X}(y \mid x) \, dy.
 $$
 :::
 
 ::: {.callout-caution}
-## Exemple - Densite conditionnelle
+## Exemple — Densité conditionnelle
 
 Reprenons l'exercice avec $f(x,y)=e^{-y}\,\mathbf{1}_{\{0<x<y\}}$. On a vu que $f_X(x)=e^{-x}\mathbf{1}_{x>0}$ et $f_Y(y)=y\,e^{-y}\mathbf{1}_{y>0}$.
 
-La densite conditionnelle de $Y$ sachant $X = x$ ($x > 0$) est:
+La densité conditionnelle de $Y$ sachant $X = x$ ($x > 0$) est:
 $$
 f_{Y|X}(y \mid x) = \frac{e^{-y}\mathbf{1}_{0<x<y}}{e^{-x}} = e^{-(y-x)}\mathbf{1}_{y > x}.
 $$
 
-On reconnait une loi exponentielle $\mathcal{E}(1)$ **translatée** de $x$, soit $Y \mid X=x \sim x + \mathcal{E}(1)$.
+On reconnaît une loi exponentielle $\mathcal{E}(1)$ **translatée** de $x$, soit $Y \mid X=x \sim x + \mathcal{E}(1)$.
+:::
+
+La densité conditionnelle $f_{Y\mid X}(\cdot \mid x)$ est bien une densité de probabilité pour chaque $x$ fixé : elle est positive et d'intégrale $1$ (ce qui découle directement de la définition de $f_X(x) = \int f(x,y)\,dy$). Elle décrit la loi de $Y$ "restreinte" à la connaissance que $X = x$.
+
+Lorsque $X$ et $Y$ sont indépendantes, on a $f(x,y) = f_X(x)f_Y(y)$, donc $f_{Y\mid X}(y \mid x) = f_Y(y)$ : la connaissance de $X$ ne modifie pas la loi de $Y$. C'est la formalisation exacte de l'indépendance — l'information apportée par $X$ est nulle vis-à-vis de $Y$.
+
+```{python}
+#| echo: false
+#| fig-align: center
+#| column: screen-inset
+#| label: fig-densite-conditionnelle
+#| fig-cap: "**Gauche :** densité conjointe avec corrélation $\\rho = 0.7$. La ligne rouge marque la condition $X = x_0 = 1$. **Droite :** la densité conditionnelle $f_{Y|X}(y\\mid x_0)$ (rouge) est obtenue en coupant le relief à $X=x_0$ et en renormalisant — elle diffère de la marginale $f_Y$ (pointillés bleus) car $X$ et $Y$ sont corrélées."
+
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib as mpl
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor':   'none',
+    'axes.edgecolor':   '#D2CCC0',
+    'axes.labelcolor':  '#D2CCC0',
+    'xtick.color':      '#D2CCC0',
+    'ytick.color':      '#D2CCC0',
+    'text.color':       '#D2CCC0',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+rho = 0.7
+x0 = 1.0
+x = np.linspace(-3.5, 3.5, 400)
+y = np.linspace(-3.5, 3.5, 400)
+X, Y = np.meshgrid(x, y)
+det = 1 - rho**2
+Z = np.exp(-(X**2 - 2*rho*X*Y + Y**2) / (2*det)) / (2*np.pi*np.sqrt(det))
+
+# Conditional: Y|X=x0 ~ N(rho*x0, 1-rho^2)
+mu_c = rho * x0
+sig_c = np.sqrt(det)
+f_cond = np.exp(-(y - mu_c)**2 / (2*sig_c**2)) / (np.sqrt(2*np.pi) * sig_c)
+f_marg = np.exp(-y**2 / 2) / np.sqrt(2*np.pi)
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# Left: joint + vertical slice
+ax = axes[0]
+ax.contourf(X, Y, Z, levels=18, cmap='Blues')
+ax.contour(X, Y, Z, levels=8, colors='white', alpha=0.25, linewidths=0.6)
+ax.axvline(x0, color='#C62828', lw=2.5, zorder=5, label=f'$x_0 = {x0}$')
+# Shade the slice
+ax.fill_betweenx(y, x0 - 0.15, x0 + 0.15, alpha=0.35, color='#C62828', zorder=4)
+ax.set_aspect('equal')
+ax.set_xlim(-3.5, 3.5); ax.set_ylim(-3.5, 3.5)
+ax.set_xlabel('$x$'); ax.set_ylabel('$y$')
+ax.set_title(f'Densité conjointe (corrélation $\\rho={rho}$)\n'
+             f'et coupe verticale en $X = x_0 = {x0}$', color='#D2CCC0', fontsize=10)
+ax.legend(loc='upper left', fontsize=10)
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+
+# Right: conditional vs marginal
+ax2 = axes[1]
+ax2.plot(y, f_marg, color='#1565C0', lw=2.0, linestyle='--', alpha=0.9,
+         label='$f_Y(y)$ — marginale (sans condition)')
+ax2.plot(y, f_cond, color='#C62828', lw=2.5,
+         label=f'$f_{{Y|X}}(y\\mid x_0={x0})$ — conditionnelle')
+ax2.fill_between(y, f_cond, alpha=0.25, color='#C62828')
+ax2.axvline(mu_c, color='#C62828', lw=1.5, linestyle=':', alpha=0.8)
+ax2.axvline(0, color='#1565C0', lw=1.5, linestyle=':', alpha=0.5)
+ax2.annotate(f'$E[Y|X=x_0]=\\rho x_0={mu_c}$',
+             xy=(mu_c, 0.05), xytext=(mu_c + 0.4, 0.25),
+             arrowprops=dict(arrowstyle='->', color='#C62828', lw=1.2),
+             color='#C62828', fontsize=9)
+ax2.text(0.1, 0.05, '$E[Y]=0$', color='#1565C0', fontsize=9)
+ax2.set_xlabel('$y$'); ax2.set_ylabel('densité')
+ax2.set_title(f'Savoir que $X={x0}$ décale et réduit la loi de $Y$',
+              color='#D2CCC0', fontsize=10)
+ax2.legend(fontsize=9, loc='upper left')
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
+
+plt.suptitle("Densité conditionnelle : couper le relief à $X = x_0$ puis renormaliser",
+             color='#D2CCC0', fontsize=12)
+plt.tight_layout()
+plt.show()
+```
+
+::: {.callout-caution}
+## Exercice — Densité conditionnelle et espérance conditionnelle
+
+Soit $(X,Y)$ un couple de v.a.r. de densité conjointe
+$$
+f(x,y)=\frac{3}{2}(x^2+y^2)\,\mathbf{1}_{[0,1]^2}(x,y).
+$$
+
+1. Vérifier que $f$ est une densité.
+2. Déterminer les lois marginales $f_X$ et $f_Y$. $X$ et $Y$ sont-elles indépendantes ?
+3. Déterminer la densité conditionnelle $f_{Y\mid X}(y\mid x)$ pour $x\in(0,1)$.
+4. Calculer l'espérance conditionnelle $E(Y\mid X=x)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice Densité conditionnelle et espérance conditionnelle
+
+**1.** $f$ est positive. On intègre :
+$$
+\iint_{[0,1]^2}\frac{3}{2}(x^2+y^2)\,dx\,dy
+=\frac{3}{2}\!\left(\int_0^1 x^2\,dx+\int_0^1 y^2\,dy\right)
+=\frac{3}{2}\!\left(\frac{1}{3}+\frac{1}{3}\right)=1.
+$$
+Donc $f$ est une densité.
+
+**2.** Pour $x\in[0,1]$, on intègre en $y$ :
+$$
+f_X(x)=\int_0^1\frac{3}{2}(x^2+y^2)\,dy=\frac{3}{2}\!\left(x^2+\frac{1}{3}\right)=\frac{3x^2+1}{2}.
+$$
+Par symétrie en $x\leftrightarrow y$ : $\displaystyle f_Y(y)=\frac{3y^2+1}{2}$ pour $y\in[0,1]$.
+
+Si $X$ et $Y$ étaient indépendantes, on aurait $f(x,y)=f_X(x)f_Y(y)=\dfrac{(3x^2+1)(3y^2+1)}{4}$. Or en $(0,0)$ : $f_X(0)f_Y(0)=\tfrac{1}{4}$ mais $f(0,0)=0$. Donc $X$ et $Y$ ne sont **pas indépendantes**.
+
+**3.** Pour $x\in(0,1)$ fixé (on a $f_X(x)>0$) et $y\in[0,1]$ :
+$$
+f_{Y\mid X}(y\mid x)=\frac{f(x,y)}{f_X(x)}
+=\frac{\frac{3}{2}(x^2+y^2)}{\frac{3x^2+1}{2}}
+=\frac{3(x^2+y^2)}{3x^2+1}.
+$$
+
+**4.**
+$$
+E(Y\mid X=x)=\int_0^1 y\cdot\frac{3(x^2+y^2)}{3x^2+1}\,dy
+=\frac{3}{3x^2+1}\int_0^1(x^2 y+y^3)\,dy
+=\frac{3}{3x^2+1}\!\left(\frac{x^2}{2}+\frac{1}{4}\right)
+=\frac{3(2x^2+1)}{4(3x^2+1)}.
+$$
 :::
 
 ---
 
-## Esperance, covariance, correlation
+## Espérance, covariance, corrélation
 
 ::: {.callout-note}
-## Definitions
+## Définitions
 
-L'**esperance d'un couple** de v.a.r. continues et integrables est le couple des esperances:
+L'**espérance d'un couple** de v.a.r. continues et intégrables est le couple des espérances :
 $$
 E(X, Y) = \bigl(E(X),\, E(Y)\bigr),
 $$
@@ -454,7 +949,7 @@ E(X)=\int_{\mathbb{R}} x f_X(x)\,dx,
 E(Y)=\int_{\mathbb{R}} y f_Y(y)\,dy.
 $$
 
-Si $X$ et $Y$ sont de carre integrable, la covariance est
+Si $X$ et $Y$ sont de carré intégrable, la covariance est
 $$
 \operatorname{Cov}(X,Y)=E\!\left[(X-E(X))(Y-E(Y))\right]
 =E(XY)-E(X)E(Y),
@@ -468,7 +963,7 @@ $$
 ::: {.callout-tip}
 ## Remarques
 
-- On peut aussi ecrire:
+- On peut aussi écrire :
   - $\displaystyle E(X)=\iint_{\mathbb{R}^2} x f(x,y)\,dx\,dy$,
   - $\displaystyle E(Y)=\iint_{\mathbb{R}^2} y f(x,y)\,dx\,dy$.
 - $\operatorname{Cov}(X,X)=\operatorname{Var}(X)$.
@@ -477,51 +972,121 @@ $$
 ::: {.callout-important}
 ## Proposition
 
-Si $X$ et $Y$ sont independantes, alors
+Si $X$ et $Y$ sont indépendantes, alors
 $$
 \operatorname{Cov}(X,Y)=0.
 $$
-La reciproque est fausse en general.
+La réciproque est fausse en général.
 :::
 
+La covariance mesure la tendance de $X$ et $Y$ à varier **dans le même sens** ($\operatorname{Cov} > 0$), en **sens opposé** ($\operatorname{Cov} < 0$), ou de manière **non coordonnée** ($\operatorname{Cov} = 0$). Lorsque $X$ et $Y$ sont indépendantes, on a $E(XY) = E(X)E(Y)$, donc $\operatorname{Cov}(X,Y) = 0$.
+
+La **réciproque est fausse** : une covariance nulle signifie seulement l'absence de liaison **linéaire**, mais des dépendances non linéaires peuvent exister. Un contre-exemple classique : si $X \sim \mathcal{U}([-1,1])$ et $Y = X^2$, alors $E(XY) = E(X^3) = 0$ par symétrie, $E(X) = 0$, donc $\operatorname{Cov}(X,Y) = 0$ — pourtant $Y$ est entièrement déterminé par $X$. En résumé : **indépendance $\Rightarrow$ covariance nulle, mais pas réciproquement**.
+
+```{python}
+#| echo: false
+#| fig-align: center
+#| column: screen-inset
+#| label: fig-correlation-nuages
+#| fig-cap: "Quatre nuages de points illustrant les différentes situations. **De gauche à droite :** liaison linéaire positive ($\\rho\\approx0.9$), liaison linéaire négative ($\\rho\\approx-0.9$), variables indépendantes ($\\rho=0$), et dépendance non linéaire ($Y=X^2$) avec covariance nulle malgré une dépendance totale. Ce dernier cas montre que $\\rho=0$ n'implique pas l'indépendance."
+
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib as mpl
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor':   'none',
+    'axes.edgecolor':   '#D2CCC0',
+    'axes.labelcolor':  '#D2CCC0',
+    'xtick.color':      '#D2CCC0',
+    'ytick.color':      '#D2CCC0',
+    'text.color':       '#D2CCC0',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+rng = np.random.default_rng(42)
+n = 500
+
+cases = [
+    (0.9,  r'Liaison linéaire positive' + '\n' + r'$\rho \approx 0.9$',   '#1565C0'),
+    (-0.9, r'Liaison linéaire négative' + '\n' + r'$\rho \approx -0.9$',  '#C62828'),
+    (0.0,  r'Indépendantes' + '\n' + r'$\rho = 0$',                       '#2E7D32'),
+    (None, r'Dépendance non linéaire' + '\n' + r'$\rho = 0$, $Y = X^2$',  '#7B1FA2'),
+]
+
+fig, axes = plt.subplots(1, 4, figsize=(16, 4.5))
+
+for ax, (rho, title, color) in zip(axes, cases):
+    if rho is not None:
+        cov = [[1, rho], [rho, 1]]
+        data = rng.multivariate_normal([0, 0], cov, n)
+        Xd, Yd = data[:, 0], data[:, 1]
+        rho_emp = np.corrcoef(Xd, Yd)[0, 1]
+        rho_label = f'$\\hat{{\\rho}} = {rho_emp:.2f}$'
+    else:
+        Xd = rng.uniform(-2, 2, n)
+        Yd = Xd**2 + rng.normal(0, 0.08, n)
+        rho_emp = np.corrcoef(Xd, Yd)[0, 1]
+        rho_label = f'$\\hat{{\\rho}} = {rho_emp:.2f}$'
+
+    ax.scatter(Xd, Yd, s=7, alpha=0.45, color=color, rasterized=True)
+    ax.set_title(title, color='#D2CCC0', fontsize=9.5)
+    ax.set_xlabel('$X$'); ax.set_ylabel('$Y$')
+    ax.text(0.05, 0.93, rho_label, transform=ax.transAxes,
+            color=color, fontsize=10, fontweight='bold', va='top')
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+axes[3].text(0.5, 0.07,
+             r'$Y$ entièrement déterminé par $X$' + '\n' + r'mais $\mathrm{Cov}(X,Y)=0$ !',
+             transform=axes[3].transAxes, ha='center', color='#CE93D8',
+             fontsize=8.5, fontstyle='italic')
+
+plt.suptitle("Corrélation, covariance et dépendance — quatre situations à distinguer",
+             color='#D2CCC0', fontsize=12)
+plt.tight_layout()
+plt.show()
+```
+
 ::: {.callout-note}
-## Definition - Coefficient de correlation
+## Définition — Coefficient de corrélation
 
 Si $\sigma(X)>0$ et $\sigma(Y)>0$,
 $$
 \rho(X,Y)=\frac{\operatorname{Cov}(X,Y)}{\sigma(X)\sigma(Y)}.
 $$
-Ce coefficient mesure la force (lineaire) de la liaison entre $X$ et $Y$.
+Ce coefficient mesure la force (linéaire) de la liaison entre $X$ et $Y$.
 :::
 
 ::: {.callout-important}
-## Proposition - Proprietes du coefficient de correlation
+## Proposition — Propriétés du coefficient de corrélation
 
-Pour tout couple $(X, Y)$ de v.a.r. de carre integrable avec $\sigma(X) > 0$ et $\sigma(Y) > 0$:
+Pour tout couple $(X, Y)$ de v.a.r. de carré intégrable avec $\sigma(X) > 0$ et $\sigma(Y) > 0$ :
 
 1. $\rho(X,Y) \in [-1,\, 1]$.
 2. $|\rho(X,Y)| = 1$ si et seulement s'il existe $a \ne 0$ et $b \in \mathbb{R}$ tels que $Y = aX + b$ p.s.
 
 *Esquisse de preuve.*
 
-**1.** Par l'inegalite de Cauchy-Schwarz appliquee aux v.a. centrees:
+**1.** Par l'inégalité de Cauchy-Schwarz appliquée aux v.a. centrées :
 $$
 |\operatorname{Cov}(X,Y)| = \bigl|E\!\left[(X-E(X))(Y-E(Y))\right]\bigr|
 \le \sqrt{E\!\left[(X-E(X))^2\right]\,E\!\left[(Y-E(Y))^2\right]}
 = \sigma(X)\,\sigma(Y),
 $$
-d'ou $|\rho(X,Y)| \le 1$.
+d'où $|\rho(X,Y)| \le 1$.
 
-**2.** L'egalite dans Cauchy-Schwarz a lieu si et seulement si $Y - E(Y) = a(X - E(X))$ p.s. pour un certain $a \ne 0$, soit $Y = aX + b$ avec $b = E(Y) - aE(X)$.
+**2.** L'égalité dans Cauchy-Schwarz a lieu si et seulement si $Y - E(Y) = a(X - E(X))$ p.s. pour un certain $a \ne 0$, soit $Y = aX + b$ avec $b = E(Y) - aE(X)$.
 :::
 
 ::: {.callout-tip}
-## Remarque - Interpretation de $\rho$
+## Remarque — Interprétation de $\rho$
 
-- $\rho(X,Y) = 0$ : absence de liaison lineaire (variables **non correlees**).
-- $\rho(X,Y) > 0$ : liaison lineaire positive ($X$ et $Y$ varient dans le meme sens).
-- $\rho(X,Y) < 0$ : liaison lineaire negative ($X$ et $Y$ varient en sens oppose).
-- $|\rho(X,Y)| = 1$ : liaison lineaire parfaite (relation affine exacte).
+- $\rho(X,Y) = 0$ : absence de liaison linéaire (variables **non corrélées**).
+- $\rho(X,Y) > 0$ : liaison linéaire positive ($X$ et $Y$ varient dans le même sens).
+- $\rho(X,Y) < 0$ : liaison linéaire négative ($X$ et $Y$ varient en sens opposé).
+- $|\rho(X,Y)| = 1$ : liaison linéaire parfaite (relation affine exacte).
 :::
 
 ::: {.callout-caution}
@@ -530,30 +1095,65 @@ d'ou $|\rho(X,Y)| \le 1$.
 Soit la fonction
 $$f(x,y)=2\,\mathbf{1}_{\{0\le y\le x\le 1\}}.$$
 
-1. Montrer que $f$ est une densite sur $\mathbb{R}^2$.
-2. Soit $(X,Y)$ un couple de variables aleatoires de densite $f$.
+1. Montrer que $f$ est une densité sur $\mathbb{R}^2$.
+2. Soit $(X,Y)$ un couple de variables aléatoires de densité $f$.
    Calculer $P(X<Y)$ et $P(Y<X)$.
 3. Calculer $E(XY)$ puis $\operatorname{Cov}(X,Y)$.
 :::
 
 ::: {.callout-tip collapse="true"}
-## Indication — Exercice 1
+## Solution — Exercice 1
 
-- Le support est le triangle $0\le y\le x\le 1$.
-- $P(X<Y)$ correspond a une zone vide sur ce support.
-- Pour la covariance : $\operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y)$.
+**1.** Le support de $f$ est le triangle $T=\{0\le y\le x\le 1\}$. $f$ est positive. On calcule :
+$$
+\iint_{\mathbb{R}^2} f\,dx\,dy=2\int_0^1\!\int_0^x dy\,dx=2\int_0^1 x\,dx=2\cdot\frac{1}{2}=1.
+$$
+Donc $f$ est une densité.
+
+**2.** Sur le support $\{0\le y\le x\le 1\}$, on a toujours $y\le x$, donc l'événement $\{X<Y\}$ a probabilité nulle :
+$$
+P(X<Y)=0.
+$$
+Puisque $P(X=Y)=0$ (variables continues), on a $P(Y<X)=1$.
+
+**3.** Les lois marginales : pour $x\in[0,1]$,
+$$
+f_X(x)=\int_0^x 2\,dy=2x,
+$$
+et pour $y\in[0,1]$,
+$$
+f_Y(y)=\int_y^1 2\,dx=2(1-y).
+$$
+
+On calcule :
+$$
+E(X)=\int_0^1 x\cdot 2x\,dx=2\int_0^1 x^2\,dx=\frac{2}{3},
+\qquad
+E(Y)=\int_0^1 y\cdot 2(1-y)\,dy=2\!\left(\frac{1}{2}-\frac{1}{3}\right)=\frac{1}{3}.
+$$
+
+$$
+E(XY)=\iint_{\mathbb{R}^2}xy\cdot 2\,dx\,dy=2\int_0^1\!\int_0^x xy\,dy\,dx
+=2\int_0^1 x\cdot\frac{x^2}{2}\,dx=\int_0^1 x^3\,dx=\frac{1}{4}.
+$$
+
+$$
+\operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y)=\frac{1}{4}-\frac{2}{3}\cdot\frac{1}{3}=\frac{1}{4}-\frac{2}{9}=\frac{9-8}{36}=\frac{1}{36}.
+$$
 :::
 
 ---
 
-## Loi de la somme de deux variables independantes
+## Loi de la somme de deux variables indépendantes
 
-Soient $X$ et $Y$ independantes, de densites $f_X$ et $f_Y$, et posons $Z=X+Y$.
+Lorsque $Z = X + Y$ est la **somme de deux variables indépendantes**, on cherche à exprimer la densité de $Z$ en fonction de celles de $X$ et $Y$. L'idée clé est la suivante : pour que $Z$ vaille $z$, il faut que $X$ vaille $x$ **et** que $Y$ vaille $z - x$, pour un certain $x$. On intègre alors sur toutes les valeurs possibles de $x$, et on obtient la **formule de convolution**. L'indépendance est ici essentielle : elle permet d'écrire la densité conjointe de $(X,Y)$ comme le produit $f_X(x)\,f_Y(z-x)$.
+
+Soient $X$ et $Y$ indépendantes, de densités $f_X$ et $f_Y$, et posons $Z=X+Y$.
 
 ::: {.callout-important}
-## Proposition - Formule de convolution
+## Proposition — Formule de convolution
 
-La variable $Z$ admet la densite
+La variable $Z$ admet la densité
 $$
 f_Z(z)=\int_{\mathbb{R}} f_X(x)f_Y(z-x)\,dx.
 $$
@@ -561,23 +1161,105 @@ $$
 On dit que $f_Z$ est le **produit de convolution** de $f_X$ et $f_Y$.
 :::
 
+La formule $f_Z(z) = \int f_X(x)\,f_Y(z-x)\,dx$ se lit ainsi : pour chaque valeur $x$ que peut prendre $X$, la contribution à $f_Z(z)$ est le produit $f_X(x) \cdot f_Y(z-x)$ — le poids en $x$ pour $X$, multiplié par le poids en $z-x$ pour $Y$ (seul choix qui force leur somme à valoir $z$). On somme ensuite sur toutes les valeurs de $x$.
+
+On retrouve par cette formule la **stabilité** des grandes familles de lois : la somme de deux lois normales indépendantes est normale (Exercice 5), la somme de deux lois gamma de même paramètre est encore une loi gamma, etc. Ces résultats de stabilité sont l'un des intérêts majeurs de la convolution en probabilités.
+
+```{python}
+#| echo: false
+#| fig-align: center
+#| column: screen-inset
+#| label: fig-convolution-uniformes
+#| fig-cap: "**Gauche et centre :** $X$ et $Y$ suivent chacune une loi uniforme sur $[0,1]$. **Droite :** la densité de $Z=X+Y$, obtenue par convolution, est la **loi triangulaire** sur $[0,2]$. La forme triangulaire émerge naturellement du chevauchement glissant des deux densités uniformes."
+
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib as mpl
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor':   'none',
+    'axes.edgecolor':   '#D2CCC0',
+    'axes.labelcolor':  '#D2CCC0',
+    'xtick.color':      '#D2CCC0',
+    'ytick.color':      '#D2CCC0',
+    'text.color':       '#D2CCC0',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+fig, axes = plt.subplots(1, 3, figsize=(14, 4.5))
+
+t = np.linspace(-0.3, 1.3, 600)
+fU = np.where((t >= 0) & (t <= 1), 1.0, 0.0)
+
+# f_X
+ax0 = axes[0]
+ax0.plot(t, fU, color='#1565C0', lw=2.5)
+ax0.fill_between(t, fU, alpha=0.3, color='#1565C0')
+ax0.set_xlim(-0.3, 1.3); ax0.set_ylim(-0.15, 1.5)
+ax0.set_xlabel('$x$'); ax0.set_ylabel('$f_X(x)$')
+ax0.set_title('$X \\sim \\mathcal{U}([0,1])$', color='#D2CCC0', fontsize=11)
+ax0.axhline(0, color='gray', lw=0.8)
+ax0.spines['top'].set_visible(False)
+ax0.spines['right'].set_visible(False)
+
+# f_Y
+ax1 = axes[1]
+ax1.plot(t, fU, color='#C62828', lw=2.5)
+ax1.fill_between(t, fU, alpha=0.3, color='#C62828')
+ax1.set_xlim(-0.3, 1.3); ax1.set_ylim(-0.15, 1.5)
+ax1.set_xlabel('$y$'); ax1.set_ylabel('$f_Y(y)$')
+ax1.set_title('$Y \\sim \\mathcal{U}([0,1])$, indépendante de $X$', color='#D2CCC0', fontsize=11)
+ax1.axhline(0, color='gray', lw=0.8)
+ax1.spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False)
+
+# f_Z = triangle on [0,2]
+z = np.linspace(-0.3, 2.3, 600)
+fZ = np.where((z >= 0) & (z <= 1), z,
+     np.where((z > 1) & (z <= 2), 2 - z, 0.0))
+
+ax2 = axes[2]
+ax2.plot(z, fZ, color='#2E7D32', lw=2.5)
+ax2.fill_between(z, fZ, alpha=0.3, color='#2E7D32')
+ax2.set_xlim(-0.3, 2.3); ax2.set_ylim(-0.15, 1.5)
+ax2.set_xlabel('$z$'); ax2.set_ylabel('$f_Z(z)$')
+ax2.set_title('$Z = X+Y$ : loi triangulaire sur $[0,2]$', color='#D2CCC0', fontsize=11)
+ax2.text(0.4, 0.3, '$f_Z(z) = z$', ha='center', color='#2E7D32', fontsize=10)
+ax2.text(1.6, 0.3, '$f_Z(z) = 2-z$', ha='center', color='#2E7D32', fontsize=10)
+ax2.axhline(0, color='gray', lw=0.8)
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
+
+# Arrow between panels
+fig.text(0.37, 0.55, '$\\ast$', ha='center', va='center',
+         color='#D2CCC0', fontsize=22, fontweight='bold')
+fig.text(0.65, 0.55, '$=$', ha='center', va='center',
+         color='#D2CCC0', fontsize=22, fontweight='bold')
+
+plt.suptitle(r"Convolution : $f_Z = f_X * f_Y$ transforme deux uniformes en une loi triangulaire",
+             color='#D2CCC0', fontsize=11)
+plt.tight_layout()
+plt.show()
+```
+
 ::: {.callout-caution}
-## Exemple 5 - Somme de deux lois uniformes
+## Exemple 5 — Somme de deux lois uniformes
 
-Soient $X$ et $Y$ independantes, de loi uniforme sur $[0,1]$.
+Soient $X$ et $Y$ indépendantes, de loi uniforme sur $[0,1]$.
 
-1. Determiner la densite de $Z=X+Y$.
-2. Verifier qu'il s'agit d'une densite (positive et integree a 1).
+1. Déterminer la densité de $Z=X+Y$.
+2. Vérifier qu'il s'agit d'une densité (positive et intégrée à 1).
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution - Exemple 5
+## Solution — Exemple 5
 
 Ici $f_X=f_Y=\mathbf{1}_{[0,1]}$. Donc
 $$
 f_Z(z)=\int_{\mathbb{R}} \mathbf{1}_{[0,1]}(x)\mathbf{1}_{[0,1]}(z-x)\,dx,
 $$
-ce qui donne la densite triangulaire:
+ce qui donne la densité triangulaire :
 $$
 f_Z(z)=
 \begin{cases}
@@ -592,28 +1274,56 @@ Elle est positive et son aire totale vaut 1.
 ::: {.callout-caution}
 ## Exercice 4
 
-Soient $X$ et $Y$ independantes, de meme loi.
+Soient $X$ et $Y$ indépendantes, de même loi.
 On pose $Z=X+Y$.
 
-Determiner la densite de $Z$ dans les deux cas suivants :
+Déterminer la densité de $Z$ dans les deux cas suivants :
 
 1. $X,Y\sim\mathcal{U}([0,1])$.
 2. $X,Y\sim\mathcal{N}(0,1)$.
 :::
 
 ::: {.callout-tip collapse="true"}
-## Indication — Exercice 4
+## Solution — Exercice 4
 
-- Utiliser la formule de convolution :
-$$f_Z(z)=\int_{\mathbb{R}} f_X(x)f_Y(z-x)\,dx.$$
-- Cas uniforme : bien decrire l'intersection des intervalles.
-- Cas normal : on peut reconnaitre directement la stabilite de la loi normale.
+**1. $X,Y\sim\mathcal{U}([0,1])$, $Z=X+Y$.**
+
+Par la formule de convolution, avec $f_X=f_Y=\mathbf{1}_{[0,1]}$ :
+$$
+f_Z(z)=\int_{\mathbb{R}}\mathbf{1}_{[0,1]}(x)\,\mathbf{1}_{[0,1]}(z-x)\,dx.
+$$
+La condition $z-x\in[0,1]$ équivaut à $x\in[z-1,z]$. On croise avec $x\in[0,1]$ :
+
+- Si $0\le z\le 1$ : $x\in[0,z]$, longueur $z$, donc $f_Z(z)=z$.
+- Si $1<z\le 2$ : $x\in[z-1,1]$, longueur $2-z$, donc $f_Z(z)=2-z$.
+- Sinon : $f_Z(z)=0$.
+
+On obtient la **loi triangulaire** sur $[0,2]$.
+
+**2. $X,Y\sim\mathcal{N}(0,1)$, $Z=X+Y$.**
+
+Par la stabilité de la loi normale (démontrée dans l'exercice 5 avec $\sigma_1=\sigma_2=1$, $m_1=m_2=0$) :
+$$
+Z\sim\mathcal{N}(0,\,2),
+$$
+de densité $\displaystyle f_Z(z)=\frac{1}{2\sqrt{\pi}}\,e^{-z^2/4}$.
+
+On peut aussi le vérifier directement par convolution :
+$$
+f_Z(z)=\frac{1}{2\pi}\int_{\mathbb{R}}\exp\!\left(-\frac{x^2+(z-x)^2}{2}\right)dx.
+$$
+L'exposant est $x^2+(z-x)^2=2\bigl(x-\tfrac{z}{2}\bigr)^2+\tfrac{z^2}{2}$, donc :
+$$
+f_Z(z)=\frac{e^{-z^2/4}}{2\pi}\int_{\mathbb{R}}e^{-(x-z/2)^2}\,dx
+=\frac{e^{-z^2/4}}{2\pi}\cdot\sqrt{\pi}
+=\frac{1}{2\sqrt{\pi}}\,e^{-z^2/4}.
+$$
 :::
 
 ::: {.callout-caution}
 ## Exercice 5
 
-Soient $\sigma_1>0$, $\sigma_2>0$ et deux variables independantes
+Soient $\sigma_1>0$, $\sigma_2>0$ et deux variables indépendantes
 $$X\sim\mathcal{N}(0,\sigma_1^2),\qquad Y\sim\mathcal{N}(0,\sigma_2^2).$$
 On pose $Z=X+Y$.
 
@@ -621,64 +1331,64 @@ On pose $Z=X+Y$.
 $$\frac{x^2}{\sigma_1^2}+\frac{(t-x)^2}{\sigma_2^2}
 =\frac{\sigma^2}{\sigma_1^2\sigma_2^2}\left(x-\frac{\sigma_1^2}{\sigma^2}t\right)^2
 +\frac{t^2}{\sigma^2},$$
-ou $\sigma^2=\sigma_1^2+\sigma_2^2$.
-2. En deduire la loi de $Z$.
-3. Generaliser au cas
+où $\sigma^2=\sigma_1^2+\sigma_2^2$.
+2. En déduire la loi de $Z$.
+3. Généraliser au cas
 $$X\sim\mathcal{N}(m_1,\sigma_1^2),\qquad Y\sim\mathcal{N}(m_2,\sigma_2^2).$$
 :::
 
 ::: {.callout-tip collapse="true"}
 ## Solution — Exercice 5
 
-**1.** On developpe le membre de droite. Posons $\sigma^2 = \sigma_1^2 + \sigma_2^2$. Alors:
+**1.** On développe le membre de droite. Posons $\sigma^2 = \sigma_1^2 + \sigma_2^2$. Alors :
 $$
 \frac{\sigma^2}{\sigma_1^2\sigma_2^2}\left(x - \frac{\sigma_1^2}{\sigma^2}t\right)^2 + \frac{t^2}{\sigma^2}
 = \frac{\sigma^2}{\sigma_1^2\sigma_2^2}\left(x^2 - \frac{2\sigma_1^2}{\sigma^2}xt + \frac{\sigma_1^4}{\sigma^4}t^2\right) + \frac{t^2}{\sigma^2}.
 $$
 
-En developpant:
+En développant :
 $$
 = \frac{x^2}{\sigma_1^2} \cdot \frac{\sigma^2}{\sigma_2^2} \cdot \frac{1}{\frac{\sigma^2}{\sigma_1^2}} - \frac{2xt}{\sigma_2^2} + \frac{\sigma_1^2 t^2}{\sigma_2^2 \sigma^2} + \frac{t^2}{\sigma^2}.
 $$
 
-Apres simplification, on retrouve $\dfrac{x^2}{\sigma_1^2} + \dfrac{(t-x)^2}{\sigma_2^2}$, ce qui se verifie aussi directement en developpant $\dfrac{(t-x)^2}{\sigma_2^2} = \dfrac{t^2 - 2tx + x^2}{\sigma_2^2}$ et en regroupant les termes en $x^2$, $xt$ et $t^2$.
+Après simplification, on retrouve $\dfrac{x^2}{\sigma_1^2} + \dfrac{(t-x)^2}{\sigma_2^2}$, ce qui se vérifie aussi directement en développant $\dfrac{(t-x)^2}{\sigma_2^2} = \dfrac{t^2 - 2tx + x^2}{\sigma_2^2}$ et en regroupant les termes en $x^2$, $xt$ et $t^2$.
 
-**2.** Par la formule de convolution, la densite de $Z = X + Y$ est:
+**2.** Par la formule de convolution, la densité de $Z = X + Y$ est :
 $$
 f_Z(t) = \int_{\mathbb{R}} f_X(x)\,f_Y(t-x)\,dx
 = \int_{\mathbb{R}} \frac{1}{\sqrt{2\pi}\sigma_1}\,e^{-\frac{x^2}{2\sigma_1^2}}
 \cdot \frac{1}{\sqrt{2\pi}\sigma_2}\,e^{-\frac{(t-x)^2}{2\sigma_2^2}}\,dx.
 $$
 
-Soit:
+Soit :
 $$
 f_Z(t) = \frac{1}{2\pi\sigma_1\sigma_2}\int_{\mathbb{R}} \exp\!\left(-\frac{1}{2}\left[\frac{x^2}{\sigma_1^2}+\frac{(t-x)^2}{\sigma_2^2}\right]\right)dx.
 $$
 
-En utilisant l'identite de la question 1:
+En utilisant l'identité de la question 1 :
 $$
 f_Z(t) = \frac{1}{2\pi\sigma_1\sigma_2}\,e^{-\frac{t^2}{2\sigma^2}}
 \int_{\mathbb{R}} \exp\!\left(-\frac{\sigma^2}{2\sigma_1^2\sigma_2^2}\left(x-\frac{\sigma_1^2}{\sigma^2}t\right)^2\right)dx.
 $$
 
-L'integrale est celle d'une gaussienne en $x$. Par le changement de variable $u = \dfrac{\sigma}{\sigma_1\sigma_2}\!\left(x - \dfrac{\sigma_1^2}{\sigma^2}t\right)$, on reconnait $\displaystyle\int_{\mathbb{R}} e^{-u^2/2}\,du = \sqrt{2\pi}$, d'ou:
+L'intégrale est celle d'une gaussienne en $x$. Par le changement de variable $u = \dfrac{\sigma}{\sigma_1\sigma_2}\!\left(x - \dfrac{\sigma_1^2}{\sigma^2}t\right)$, on reconnaît $\displaystyle\int_{\mathbb{R}} e^{-u^2/2}\,du = \sqrt{2\pi}$, d'où :
 $$
 \int_{\mathbb{R}} \exp\!\left(-\frac{\sigma^2}{2\sigma_1^2\sigma_2^2}\left(x-\frac{\sigma_1^2}{\sigma^2}t\right)^2\right)dx
 = \frac{\sigma_1\sigma_2}{\sigma}\sqrt{2\pi}.
 $$
 
-Finalement:
+Finalement :
 $$
 f_Z(t) = \frac{1}{2\pi\sigma_1\sigma_2}\cdot\frac{\sigma_1\sigma_2}{\sigma}\sqrt{2\pi}\cdot e^{-\frac{t^2}{2\sigma^2}}
 = \frac{1}{\sqrt{2\pi}\,\sigma}\,e^{-\frac{t^2}{2\sigma^2}}.
 $$
 
-On reconnait la densite de $\mathcal{N}(0, \sigma^2)$ avec $\sigma^2 = \sigma_1^2 + \sigma_2^2$, donc:
+On reconnaît la densité de $\mathcal{N}(0, \sigma^2)$ avec $\sigma^2 = \sigma_1^2 + \sigma_2^2$, donc :
 $$
 \boxed{Z \sim \mathcal{N}(0,\, \sigma_1^2 + \sigma_2^2).}
 $$
 
-**3.** Si $X \sim \mathcal{N}(m_1, \sigma_1^2)$ et $Y \sim \mathcal{N}(m_2, \sigma_2^2)$ independantes, on ecrit $X = m_1 + X'$ et $Y = m_2 + Y'$ avec $X' \sim \mathcal{N}(0,\sigma_1^2)$ et $Y' \sim \mathcal{N}(0,\sigma_2^2)$ independantes. Alors:
+**3.** Si $X \sim \mathcal{N}(m_1, \sigma_1^2)$ et $Y \sim \mathcal{N}(m_2, \sigma_2^2)$ indépendantes, on écrit $X = m_1 + X'$ et $Y = m_2 + Y'$ avec $X' \sim \mathcal{N}(0,\sigma_1^2)$ et $Y' \sim \mathcal{N}(0,\sigma_2^2)$ indépendantes. Alors :
 $$
 Z = X + Y = (m_1 + m_2) + (X' + Y'),
 $$
@@ -687,10 +1397,14 @@ $$
 \boxed{Z \sim \mathcal{N}(m_1 + m_2,\, \sigma_1^2 + \sigma_2^2).}
 $$
 
-C'est la **stabilite de la loi normale** : la somme de deux normales independantes est normale.
+C'est la **stabilité de la loi normale** : la somme de deux normales indépendantes est normale.
 :::
 
 ## Changement de variables bidimensionnel
+
+Tout comme dans le cas unidimensionnel on effectuait un changement de variable pour se ramener à une intégrale connue, on peut transformer un couple $(X,Y)$ en un nouveau couple $(U,V) = G(X,Y)$ dont la loi est plus simple à exploiter. L'outil clé est le **jacobien** de la transformation inverse : c'est le facteur correctif qui compense la déformation locale des surfaces lors du changement de coordonnées.
+
+L'intuition est la suivante : si on "zoome" autour d'un point $(u,v)$ dans l'espace de $(U,V)$, un petit carré élémentaire $du\,dv$ correspond dans l'espace de $(X,Y)$ à un petit parallélogramme d'aire $|J_H(u,v)|\,du\,dv$. Pour que les probabilités soient conservées lors du changement de variables — c'est-à-dire que $P((U,V) \in \mathcal{D}') = P((X,Y) \in H(\mathcal{D}'))$ pour tout domaine $\mathcal{D}'$ — la densité doit être ajustée par ce facteur de déformation.
 
 ::: {.callout-important}
 ## Théorème — Changement de variables pour un couple de v.a.r.
@@ -711,6 +1425,10 @@ J_H(u,v) = \det\begin{pmatrix} \dfrac{\partial h_1}{\partial u} & \dfrac{\partia
 $$
 :::
 
+Le jacobien $|J_H(u,v)|$ mesure le **facteur d'expansion ou de contraction locale** de la transformation inverse $H$ en chaque point. Si $H$ dilate localement les surfaces d'un facteur $k$, la densité se trouve "comprimée" d'un facteur $k$ en ce point. C'est l'exact analogue de la formule unidimensionnelle $f_Y(y) = f_X\bigl(h(y)\bigr)\,|h'(y)|$ : le terme $|h'(y)|$ est précisément le jacobien scalaire du changement de variable.
+
+En **coordonnées polaires**, le jacobien vaut $r$ : à grand rayon, un même angle infinitésimal $d\theta$ correspond à un arc de longueur $r\,d\theta$ de plus en plus grand, donc à une surface annulaire $r\,dr\,d\theta$ qui grandit avec $r$. La densité doit être divisée par $r$ (ou multipliée par le jacobien $r$ de l'inverse) pour tenir compte de cet étirement.
+
 ::: {.callout-tip}
 ## Remarque
 
@@ -730,12 +1448,66 @@ f_{(R,\Theta)}(r, \theta) = \frac{r}{\pi}\,\mathbf{1}_{[0,1]}(r)\,\mathbf{1}_{[0
 $$
 :::
 
+::: {.callout-caution}
+## Exercice — Changement de variables et indépendance
+
+Soit $(X,Y)$ un couple de v.a.r. indépendantes, chacune de loi $\mathcal{E}(1)$. On pose
+$$
+U=X+Y,\qquad V=\frac{X}{X+Y}.
+$$
+
+1. Montrer que la transformation inverse de $(x,y)\mapsto(u,v)$ est $H(u,v)=(uv,\,u(1-v))$, et calculer le jacobien $|J_H(u,v)|$.
+2. Déterminer la densité conjointe $f_{(U,V)}(u,v)$ sur son domaine de définition.
+3. En déduire que $U$ et $V$ sont indépendants et identifier leurs lois.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice Changement de variables et indépendance
+
+**1.** De $U=X+Y$ et $V=X/(X+Y)$, on tire $X=UV$ et $Y=U-UV=U(1-V)$, d'où $H(u,v)=(uv,\,u(1-v))$.
+
+La matrice jacobienne de $H$ est :
+$$
+\frac{\partial(x,y)}{\partial(u,v)}=
+\begin{pmatrix}
+\dfrac{\partial(uv)}{\partial u} & \dfrac{\partial(uv)}{\partial v}\\[8pt]
+\dfrac{\partial(u(1-v))}{\partial u} & \dfrac{\partial(u(1-v))}{\partial v}
+\end{pmatrix}
+=\begin{pmatrix} v & u \\ 1-v & -u \end{pmatrix},
+$$
+de déterminant $-uv-u(1-v)=-u$. Donc $|J_H(u,v)|=u$.
+
+Le domaine $\{x>0,y>0\}$ se transforme en $\{u>0,\,0<v<1\}$ (car $v=x/(x+y)\in(0,1)$ dès que $x,y>0$).
+
+**2.** La densité conjointe de $(X,Y)$ est $f_{(X,Y)}(x,y)=e^{-x}e^{-y}=e^{-(x+y)}$ sur $\mathbb{R}_+^2$. Par le théorème de changement de variables :
+$$
+f_{(U,V)}(u,v)=f_{(X,Y)}\!\bigl(uv,\,u(1-v)\bigr)\cdot|J_H(u,v)|
+=e^{-(uv+u(1-v))}\cdot u
+=u\,e^{-u},
+$$
+pour $u>0$ et $v\in(0,1)$.
+
+**3.** On factorise :
+$$
+f_{(U,V)}(u,v)=\underbrace{u\,e^{-u}}_{f_U(u)}\cdot\underbrace{1}_{f_V(v)},
+\qquad u>0,\ v\in(0,1).
+$$
+La densité conjointe est le produit des marginales sur un domaine produit, donc $U$ et $V$ sont **indépendants**, avec :
+$$
+U\sim\Gamma(2,1)\quad\text{(densité }ue^{-u}\mathbf{1}_{u>0}\text{)},
+\qquad
+V\sim\mathcal{U}([0,1])\quad\text{(densité }1 \text{ sur }(0,1)\text{)}.
+$$
+
+Ce résultat est remarquable : la somme $X+Y$ et le rapport $X/(X+Y)$ sont indépendants, bien que tous deux soient des fonctions de $(X,Y)$.
+:::
+
 ---
 
 ## Exercice de synthèse
 
 ::: {.callout-caution}
-## Exercice 6 - Loi conjointe, marginales et covariance
+## Exercice 6 — Loi conjointe, marginales et covariance
 
 Soit le triangle
 $$
@@ -746,15 +1518,15 @@ $$
 f(x,y)=2\mathbf{1}_T(x,y).
 $$
 
-1. Verifier que $f$ est une densite conjointe.
-2. Determiner $f_X$ et $f_Y$.
+1. Vérifier que $f$ est une densité conjointe.
+2. Déterminer $f_X$ et $f_Y$.
 3. Calculer $E(X)$, $E(Y)$, puis $E(XY)$.
-4. En deduire $\operatorname{Cov}(X,Y)$.
-5. Les variables $X$ et $Y$ sont-elles independantes?
+4. En déduire $\operatorname{Cov}(X,Y)$.
+5. Les variables $X$ et $Y$ sont-elles indépendantes ?
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution - Exercice 6
+## Solution — Exercice 6
 
 1. Aire de $T=\frac{1}{2}$, donc
 $$
@@ -765,7 +1537,7 @@ $$
 $$
 f_X(x)=\int_0^{1-x}2\,dy=2(1-x),
 $$
-et sinon $0$. De meme,
+et sinon $0$. De même,
 $$
 f_Y(y)=2(1-y)\ \text{pour }0\le y\le 1,
 $$
@@ -787,39 +1559,39 @@ $$
 \operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y)=\frac{1}{12}-\frac{1}{9}=-\frac{1}{36}.
 $$
 
-5. Non: les variables ne sont pas independantes (le support triangulaire interdit deja la factorisation sur un rectangle, et la covariance est negative).
+5. Non : les variables ne sont pas indépendantes (le support triangulaire interdit déjà la factorisation sur un rectangle, et la covariance est négative).
 :::
 
 ::: {.callout-caution}
 ## Exercice — Aiguilles de Buffon
 
-On lance une aiguille de longueur $a$ sur un parquet constitue de lames paralleles de meme largeur $l$, et on veut determiner la probabilite que l'aiguille tombe a cheval sur une rainure du parquet.
+On lance une aiguille de longueur $a$ sur un parquet constitué de lames parallèles de même largeur $l$, et on veut déterminer la probabilité que l'aiguille tombe à cheval sur une rainure du parquet.
 
 On note $O$ le centre de l'aiguille, $Y$ la distance entre $O$ et la rainure la plus proche, et $\theta$ l'angle entre l'aiguille et la parallele aux rainures passant par $O$.
 
-On admet que $Y$ et $\theta$ sont independantes, que $Y\sim\mathcal{U}\!\left([0;\tfrac{l}{2}]\right)$ et que $\theta\sim\mathcal{U}\!\left([0;\tfrac{\pi}{2}]\right)$.
+On admet que $Y$ et $\theta$ sont indépendantes, que $Y\sim\mathcal{U}\!\left([0;\tfrac{l}{2}]\right)$ et que $\theta\sim\mathcal{U}\!\left([0;\tfrac{\pi}{2}]\right)$.
 
 1. Donner la loi du couple $(Y;\theta)$.
-2. On note $A$ l'evenement "l'aiguille tombe a cheval sur une rainure". Exprimer $A$ a l'aide de $Y$ et $\theta$.
+2. On note $A$ l'événement "l'aiguille tombe à cheval sur une rainure". Exprimer $A$ à l'aide de $Y$ et $\theta$.
 3. Calculer $P(A)$ dans le cas $a\le l$, puis dans le cas $a>l$.
 :::
 
 ::: {.callout-tip collapse="true"}
 ## Solution — Exercice Aiguilles de Buffon
 
-**1.** Par independance, la densite conjointe est le produit des densites marginales :
+**1.** Par indépendance, la densité conjointe est le produit des densités marginales :
 $$
 f(y,\theta)=\frac{2}{l}\cdot\frac{2}{\pi}=\frac{4}{l\pi}
 \quad\text{sur }\left[0,\frac{l}{2}\right]\times\left[0,\frac{\pi}{2}\right].
 $$
 
-**2.** L'aiguille touche une rainure si et seulement si la demi-longueur projetee $\frac{a}{2}\sin\theta$ depasse la distance $Y$ a la rainure :
+**2.** L'aiguille touche une rainure si et seulement si la demi-longueur projetée $\frac{a}{2}\sin\theta$ dépasse la distance $Y$ à la rainure :
 $$
 A=\left\{Y\le\frac{a}{2}\sin\theta\right\}.
 $$
 
 **3. Cas $a\le l$.**
-Pour tout $\theta\in[0,\tfrac{\pi}{2}]$, on a $\tfrac{a}{2}\sin\theta\le\tfrac{a}{2}\le\tfrac{l}{2}$, donc la contrainte $Y\le\tfrac{a}{2}\sin\theta$ ne sature pas la borne superieure de $Y$. On integre:
+Pour tout $\theta\in[0,\tfrac{\pi}{2}]$, on a $\tfrac{a}{2}\sin\theta\le\tfrac{a}{2}\le\tfrac{l}{2}$, donc la contrainte $Y\le\tfrac{a}{2}\sin\theta$ ne sature pas la borne supérieure de $Y$. On intègre :
 $$
 P(A)=\int_0^{\pi/2}\int_0^{(a/2)\sin\theta}\frac{4}{l\pi}\,dy\,d\theta
 =\frac{4}{l\pi}\int_0^{\pi/2}\frac{a}{2}\sin\theta\,d\theta
@@ -828,7 +1600,7 @@ P(A)=\int_0^{\pi/2}\int_0^{(a/2)\sin\theta}\frac{4}{l\pi}\,dy\,d\theta
 $$
 
 **Cas $a>l$.**
-Pour les angles $\theta$ petits, $\tfrac{a}{2}\sin\theta$ peut depasser $\tfrac{l}{2}$. On pose $\theta_0=\arcsin\!\bigl(\tfrac{l}{a}\bigr)$. On decoupe l'integrale :
+Pour les angles $\theta$ petits, $\tfrac{a}{2}\sin\theta$ peut dépasser $\tfrac{l}{2}$. On pose $\theta_0=\arcsin\!\bigl(\tfrac{l}{a}\bigr)$. On découpe l'intégrale :
 $$
 P(A)=\frac{4}{l\pi}\left[
 \int_0^{\theta_0}\frac{a}{2}\sin\theta\,d\theta

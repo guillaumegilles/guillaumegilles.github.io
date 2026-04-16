@@ -1,0 +1,76 @@
+---
+title: "AI System Architecture"
+draft: true
+---
+
+From Traditional to
+-Augmented
+
+Traditional web applications have well-understood architectures: requests flow from the UI to the
+to the database and back, and security teams know exactly where to place controls. When an
+
+component enters, the picture changes fundamentally: new components appear, and data flows through paths that existing security controls were never designed to monitor.
+Component 	Traditional App 	
+-Augmented App
+User input 	Structured forms,
+parameters 	Free-form natural language
+Processing 	Deterministic code 	Probabilistic model inference
+Data access 	Direct database queries 	Model-mediated retrieval (
+)
+Output 	Template-rendered responses 	Generated natural language
+Dependencies 	Libraries, frameworks 	Libraries + pre-trained models + embeddings
+
+The shift from structured to unstructured input is the most consequential change. A traditional input field expects a date, a number, or a selection from a dropdown. An
+
+system accepts any text the user chooses to type. That single change invalidates most existing input validation strategies.
+The TryAssist Architecture
+
+TryTrainMe's TryAssist system has nine components. Each one processes data differently, and each creates a potential point of failure.
+
+The Chat Box Iceberg
+
+The user sees a chat box at the front door. The security architect sees the foundation, the wiring, and everything behind.
+Component 	Function
+User Interface 	Developer-facing chat widget embedded in the code review platform
+Gateway 	Authentication, rate limiting, request routing
+Orchestration Layer 	Manages conversation state, routes requests, coordinates components
+Prompt Construction 	Combines the system prompt, user query, and retrieved context into the final prompt sent to the model
+The language model (hosted internally or accessed via
+) that generates responses
+Tool Layer 	Functions the
+can invoke: database queries, documentation search, /
+status checks
+Output Processing 	Response formatting, content filtering, length enforcement
+Logging and Monitoring 	Conversation storage, usage analytics, audit trail
+Vector Store 	Embedded representations of internal documentation for retrieval-augmented generation (
+)
+Trust Boundaries
+
+A trust boundary is where data moves from one security context to another, and every one is a potential attack surface. TryAssist has five:
+Boundary 	Data Crossing
+User-to-system 	Untrusted natural language enters the system
+System-to-
+Constructed prompt (system instructions + user input + context) sent to the model
+-to-tools 	Model output triggers database queries,
+calls, or file operations
+System-to-external-data 	Retrieved documents from vector store or external sources enter the prompt
+System-to-user 	Generated response delivered to the user
+Data Flow: A Single Request
+
+Let us trace a single request through TryAssist to see every boundary in action:
+
+    A developer types: "Does this pull request handle authentication correctly?"
+    The API gateway authenticates the request and applies rate limits
+    The orchestration layer retrieves conversation history and routes the request
+    The prompt construction layer combines the system prompt ("You are a secure code review assistant..."), the user's question, and relevant documentation retrieved from the vector store
+    The assembled prompt is sent to the LLM, which generates a response
+    The LLM's response may include a request to invoke a tool (e.g., "fetch the latest CI pipeline status for this PR")
+    The tool layer executes the action and returns the result to the 
+
+The
+
+    generates a final response incorporating the tool result
+    Output processing applies content filters and formats the response
+    The response is delivered to the developer and the entire exchange is written to the logging system
+
+Every numbered step crosses at least one trust boundary. The question is: which boundaries have security controls, and which are unprotected?
