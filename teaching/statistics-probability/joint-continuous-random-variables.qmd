@@ -10,6 +10,8 @@ abstract: |
   Le chapitre se termine par une application centrale : la loi de la somme de
   deux variables indépendantes via la **convolution** des densités.
 date-modified: 2026-03-24
+filters:
+  - shinylive
 ---
 
 [📍 Retour à la carte du cours](index.html)
@@ -20,7 +22,7 @@ date-modified: 2026-03-24
 Un préalable utile est la théorie des intégrales multiples (intégration sur des domaines du plan). Dans la suite du chapitre, on aura besoin de calculer des intégrales de la forme $\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy$. La question naturelle est : peut-on calculer une telle intégrale en effectuant deux intégrales simples successives, et dans quel ordre ? C'est précisément ce à quoi répondent les théorèmes de Tonelli et Fubini.
 
 ::: {.callout-note}
-### Théorème de Tonelli (admis)
+## Théorème de Tonelli (admis)
 
 Soit $f : \mathbb{R}^2 \to \mathbb{R}$, continue par morceaux, positive.
 
@@ -34,7 +36,7 @@ en autorisant la valeur $+\infty$.
 :::
 
 ::: {.callout-tip}
-### Remarque
+## Remarque
 
 Pour une fonction qui peut changer de signe, on utilise le théorème de **Fubini** sous des hypothèses d'intégrabilité adaptées.
 :::
@@ -122,8 +124,6 @@ $$
 Ainsi $f$ est bien normalisée pour jouer le rôle d'une densité conjointe.
 :::
 
----
-
 Jusqu'ici, on a étudié les variables aléatoires une à une. Dans de nombreuses situations concrètes, on s'intéresse simultanément à plusieurs grandeurs liées : la taille et le poids d'un individu, la température et la pression atmosphérique, la durée de vie de deux composants d'un même système. Pour modéliser ces **dépendances**, il faut étudier la loi **conjointe** du couple $(X, Y)$, qui décrit non seulement le comportement individuel de chaque variable, mais aussi les liens statistiques entre elles. C'est ce que permet le cadre des couples de variables aléatoires à densité.
 
 ## Loi conjointe d'un couple de variables aléatoires continues
@@ -137,6 +137,16 @@ $$
 \qquad
 \omega\mapsto (X(\omega),Y(\omega)).
 $$
+:::
+
+::: {.callout-tip}
+## Qu'est-ce qu'un couple de variables aléatoires ?
+
+Chaque résultat $\omega$ de l'expérience aléatoire produit **simultanément** deux valeurs $(X(\omega), Y(\omega))$. On peut penser à un individu tiré au hasard dans une population : $X(\omega)$ est sa taille, $Y(\omega)$ son poids. Le couple $(X, Y)$ décrit la distribution jointe de ces deux quantités dans la population.
+
+L'intérêt fondamental du couple est qu'il capture la **relation** entre $X$ et $Y$ — information que les lois individuelles de $X$ et $Y$ ne contiennent pas. Connaître séparément la loi de la taille et la loi du poids ne dit pas si, dans la population, les individus grands tendent aussi à être lourds. C'est la **loi conjointe** qui encode cette structure.
+
+Formellement, la loi du couple est une mesure de probabilité sur $\mathbb{R}^2$ : pour toute région $\mathcal{D}$ du plan, $P\bigl((X,Y) \in \mathcal{D}\bigr)$ est la probabilité que l'issue aléatoire tombe dans $\mathcal{D}$. Lorsque cette mesure admet une **densité** $f$, on dit que le couple est absolument continu, et toutes les probabilités se calculent par intégration de $f$ sur des régions du plan.
 :::
 
 ### Densité de probabilité sur $\mathbb{R}^2$
@@ -220,6 +230,121 @@ plt.tight_layout()
 plt.show()
 ```
 
+### Explorateur interactif — Corrélation et densité conjointe
+
+Faites varier le coefficient de corrélation $\rho$ pour observer l'effet sur la forme de la densité. Quand $\rho = 0$, les contours d'équiprobabilité sont des cercles et les variables sont **indépendantes**. À droite : la densité conditionnelle $f_{Y|X}(y\mid 1.5)$ se déplace avec $\rho$, illustrant que la loi de $Y$ sachant $X = 1.5$ dépend du coefficient de corrélation.
+
+```{shinylive-python}
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 430
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+def biv_normal_pdf(X, Y, rho):
+    c = max(1 - rho**2, 1e-8)
+    return np.exp(-(X**2 - 2*rho*X*Y + Y**2) / (2*c)) / (2*np.pi*np.sqrt(c))
+
+def normal_pdf(x, mu=0.0, sigma=1.0):
+    return np.exp(-0.5*((x - mu)/sigma)**2) / (sigma * np.sqrt(2*np.pi))
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 10px;
+                font-family: sans-serif; margin: 0; }}
+        .form-label {{ color: {FG} !important; }}
+        .form-range {{ accent-color: steelblue; width: 100%; }}
+        .badge {{ display: inline-block; padding: 4px 10px; border-radius: 4px;
+                  font-size: 0.88em; font-weight: bold; margin: 4px 0; }}
+    """),
+    ui.h5("🎲 Loi normale bivariée — faites varier ρ"),
+    ui.row(
+        ui.column(4,
+            ui.input_slider("rho", "Corrélation ρ :", min=-0.95, max=0.95, value=0.0, step=0.05),
+            ui.output_ui("badge"),
+            ui.hr(),
+            ui.tags.ul(
+                ui.tags.li("ρ = 0 → cercles → indépendance",
+                           style=f"color:{FG}; font-size:0.82em"),
+                ui.tags.li("ρ > 0 → ellipses penchées ↗",
+                           style=f"color:{FG}; font-size:0.82em"),
+                ui.tags.li("ρ < 0 → ellipses penchées ↘",
+                           style=f"color:{FG}; font-size:0.82em"),
+                ui.tags.li("Marginale f_Y(y) : toujours N(0,1), quel que soit ρ",
+                           style=f"color:{FG}; font-size:0.82em"),
+            ),
+        ),
+        ui.column(8,
+            ui.output_plot("plot", height="350px"),
+        ),
+    ),
+)
+
+def server(input, output, session):
+    @output
+    @render.ui
+    def badge():
+        rho = input.rho()
+        if abs(rho) < 0.05:
+            c, msg = "#1B5E20", "✅ ρ ≈ 0 → INDÉPENDANTES"
+        elif rho > 0:
+            c, msg = "#E65100", f"↗ ρ = {rho:.2f} → dépendance positive"
+        else:
+            c, msg = "#880E4F", f"↙ ρ = {rho:.2f} → dépendance négative"
+        return ui.HTML(f"<div class='badge' style='background:{c};color:white'>{msg}</div>")
+
+    @output
+    @render.plot
+    def plot():
+        rho = input.rho()
+        x = np.linspace(-3, 3, 200)
+        y = np.linspace(-3, 3, 200)
+        X, Y = np.meshgrid(x, y)
+        Z = biv_normal_pdf(X, Y, rho)
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.8))
+        fig.patch.set_facecolor(BG)
+        for ax in (ax1, ax2):
+            ax.set_facecolor(BG)
+            ax.tick_params(colors=FG)
+            for sp in ax.spines.values():
+                sp.set_edgecolor(FG)
+
+        ax1.contourf(X, Y, Z, levels=20, cmap='Blues')
+        ax1.contour(X, Y, Z, levels=7, colors='white', alpha=0.35, linewidths=0.7)
+        ax1.set_xlabel('$x$', color=FG)
+        ax1.set_ylabel('$y$', color=FG)
+        ax1.set_title(f'Densité conjointe (ρ = {rho:.2f})', color=FG, fontsize=10)
+        ax1.set_aspect('equal')
+
+        t = np.linspace(-3.5, 3.5, 400)
+        f_margY = normal_pdf(t)
+        cond_std = np.sqrt(max(1 - rho**2, 1e-4))
+        f_condY = normal_pdf(t, mu=rho * 1.5, sigma=cond_std)
+        ax2.plot(t, f_margY, color='#4FC3F7', lw=2, label='marginale $f_Y(y)$')
+        ax2.plot(t, f_condY, color='#FFA726', lw=2, linestyle='--',
+                 label='conditionnelle $f_{Y|X}(y|1.5)$')
+        ax2.set_xlabel('$y$', color=FG)
+        ax2.set_ylabel('densité', color=FG)
+        ax2.legend(fontsize=8, facecolor='#152119', edgecolor='none', labelcolor=FG)
+        ax2.set_title('Marginale vs conditionnelle (x = 1.5)', color=FG, fontsize=10)
+        ax2.set_xlim(-3.5, 3.5)
+        ax2.set_ylim(0, 1.5)
+
+        plt.suptitle('Loi normale bivariée standard', color=FG, fontsize=10)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)
+```
+
 ::: {.callout-note}
 ## Définition — Couple absolument continu
 
@@ -279,9 +404,9 @@ La densité conjointe et la répartition conjointe caractérisent la loi du coup
 
 La fonction de répartition conjointe $F(x,y)$ est l'analogue bidimensionnel de la répartition usuelle : elle cumule la probabilité d'être dans le "quadrant inférieur gauche" $(-\infty, x] \times (-\infty, y]$. La proposition ci-dessus établit le lien fondamental avec la densité : dériver $F$ successivement par rapport à $x$ puis par rapport à $y$ redonne $f$. C'est le pendant exact de la relation $F' = f$ du cas unidimensionnel, généralisée à la dimension deux.
 
----
-
 ## Lois marginales
+
+### Définition et calcul
 
 ::: {.callout-important}
 ## Proposition
@@ -460,11 +585,49 @@ et $f_X(x)=0$ pour $|x|>4$. Par symétrie, $f_Y(y)=\dfrac{\sqrt{16-y^2}}{8\pi}$ 
 Les variables $X$ et $Y$ ne sont **pas indépendantes** : le support de $f$ est le disque $D$, qui n'est pas un rectangle, donc on ne peut pas écrire $f(x,y)=f_X(x)f_Y(y)$ sur tout $\mathbb{R}^2$.
 :::
 
----
+## Dépendance entre deux variables aléatoires
 
-L'indépendance est la notion fondamentale qui formalise l'idée que « connaître la valeur de $X$ n'apporte aucune information sur $Y$, et réciproquement ». Dans le cas discret, deux variables sont indépendantes si les probabilités conjointes sont les produits des probabilités marginales. La même idée s'étend au cas continu : l'indépendance se lit directement sur la **factorisation** de la densité conjointe en un produit de densités marginales.
+Deux variables aléatoires $X$ et $Y$ sont **dépendantes** si la connaissance de la valeur prise par l'une modifie la distribution de l'autre. Dit autrement, savoir que $X = x$ change ce qu'on peut dire sur $Y$ — et ce changement est capturé par la **densité conditionnelle** $f_{Y\mid X}(\cdot\mid x)$.
+
+::: {.callout-tip}
+## Trois degrés de dépendance à distinguer
+
+Il est utile de distinguer trois situations de plus en plus fortes :
+
+| Situation | Signification | Exemple |
+|-----------|--------------|---------|
+| **Dépendance** | $f_{Y\mid X}(y\mid x) \ne f_Y(y)$ pour certains $(x,y)$ | Taille et poids d'un individu |
+| **Non-corrélation** | $\operatorname{Cov}(X,Y) = 0$ mais pas nécessairement indépendantes | $X \sim \mathcal{U}([-1,1])$, $Y = X^2$ |
+| **Indépendance** | $f(x,y) = f_X(x)\,f_Y(y)$ pour tout $(x,y)$ | Résultats de deux dés distincts |
+
+L'indépendance implique la non-corrélation, mais la réciproque est fausse en général.
+:::
+
+### Pourquoi la loi conjointe ne se déduit pas des lois marginales
+
+Les lois marginales $f_X$ et $f_Y$ décrivent le comportement individuel de chaque variable, mais elles **ne contiennent aucune information sur la relation** entre $X$ et $Y$. Deux couples $(X_1, Y_1)$ et $(X_2, Y_2)$ peuvent partager exactement les mêmes marginales tout en ayant des structures de dépendance radicalement différentes.
+
+**Exemple clé.** Considérons deux lois normales bivariées avec marginales $\mathcal{N}(0,1)$ pour $X$ et pour $Y$, mais de corrélations différentes. Quelle que soit la corrélation $\rho \in (-1, 1)$, la densité conjointe
+
+$$
+f_\rho(x,y) = \frac{1}{2\pi\sqrt{1-\rho^2}}\exp\!\left(-\frac{x^2 - 2\rho xy + y^2}{2(1-\rho^2)}\right)
+$$
+
+produit les mêmes marginales $f_X = f_Y = \mathcal{N}(0,1)$. Pourtant, pour $\rho = 0$ les variables sont indépendantes, pour $\rho = 0.9$ elles sont fortement positivement liées (grand $X$ prédit grand $Y$), et pour $\rho = -0.9$ elles varient en sens opposé. Les marginales ne font pas la différence : **c'est la loi conjointe — et elle seule — qui encode la dépendance**.
+
+### Mesurer la dépendance : covariance et limites
+
+La **covariance** $\operatorname{Cov}(X,Y) = E(XY) - E(X)E(Y)$ est une mesure scalaire de la dépendance *linéaire* :
+
+- $\operatorname{Cov}(X,Y) > 0$ : $X$ et $Y$ tendent à varier dans le même sens.
+- $\operatorname{Cov}(X,Y) < 0$ : $X$ et $Y$ tendent à varier en sens opposé.
+- $\operatorname{Cov}(X,Y) = 0$ : absence de liaison linéaire — mais pas nécessairement indépendance.
+
+La covariance ne capture que les liaisons **linéaires**. Si $Y = X^2$ avec $X$ symétrique autour de $0$, la covariance est nulle malgré une dépendance fonctionnelle totale. Le **coefficient de corrélation** $\rho(X,Y) = \operatorname{Cov}(X,Y)/(\sigma_X\sigma_Y)$ est la version normalisée, bornée dans $[-1, 1]$, et $|\rho| = 1$ si et seulement si la liaison est exactement affine.
 
 ## Indépendance de deux variables continues
+
+L'indépendance est la notion fondamentale qui formalise l'idée que « connaître la valeur de $X$ n'apporte aucune information sur $Y$, et réciproquement ». Dans le cas discret, deux variables sont indépendantes si les probabilités conjointes sont les produits des probabilités marginales. La même idée s'étend au cas continu : l'indépendance se lit directement sur la **factorisation** de la densité conjointe en un produit de densités marginales.
 
 ::: {.callout-note}
 ## Définition
@@ -485,7 +648,122 @@ Soit $(X,Y)$ de densité conjointe $f$, de répartition conjointe $F$, et de mar
 3. $f(x,y)=f_X(x)f_Y(y)$ pour tout $(x,y)$.
 :::
 
+### Indépendance : ce que ça signifie vraiment
+
+La définition formelle dit que les événements $\{X\in I\}$ et $\{Y\in J\}$ sont indépendants pour tous intervalles $I, J$. En pratique, la caractérisation la plus utile est la **factorisation de la densité** : $f(x,y) = f_X(x)\,f_Y(y)$.
+
+Voici comment lire cette condition dans les deux directions :
+
+- **Si $X$ et $Y$ sont indépendantes**, la densité conditionnelle est identique à la densité marginale :
+  $$f_{Y\mid X}(y\mid x) = \frac{f(x,y)}{f_X(x)} = \frac{f_X(x)\,f_Y(y)}{f_X(x)} = f_Y(y).$$
+  Savoir que $X = x$ ne change rien à la loi de $Y$ — quelle que soit la valeur observée de $X$, la distribution de $Y$ reste la même. **La connaissance de $X$ est inutile pour prédire $Y$.**
+
+- **Si $X$ et $Y$ sont dépendantes**, il existe au moins un $x$ tel que $f_{Y\mid X}(\cdot\mid x) \ne f_Y$. Connaître la valeur de $X$ **modifie** la distribution de $Y$, parfois radicalement.
+
+::: {.callout-tip}
+## Comparaison côte-à-côte : indépendant vs dépendant
+
+Prenons deux exemples avec des marginales exponentielles $f_X(x) = e^{-x}$, $f_Y(y) = e^{-y}$ sur $\mathbb{R}_+$.
+
+**Cas 1 — Indépendantes.** La densité conjointe est $f(x,y) = e^{-x}e^{-y} = e^{-(x+y)}$ sur $[0,+\infty)^2$.
+
+- Support : le quart de plan $[0,+\infty)^2$ — un rectangle ✓.
+- Factorisation : $f(x,y) = f_X(x) \cdot f_Y(y)$ ✓.
+- Conditionnelle : $f_{Y\mid X}(y\mid x) = e^{-y}$ — la loi de $Y$ ne dépend pas de $x$ ✓.
+- Interprétation : la durée de vie de deux composants fabriqués indépendamment.
+
+**Cas 2 — Dépendantes.** La densité conjointe est $f(x,y) = \lambda^2 e^{-\lambda x}\,\mathbf{1}_{0 < y < x}$ (Exercice 1).
+
+- Support : le triangle $\{0 < y < x\}$ — pas un rectangle ✗.
+- Factorisation : impossible ($f \ne f_X \cdot f_Y$) ✗.
+- Conditionnelle : $f_{Y\mid X}(y\mid x) = \frac{1}{x}\,\mathbf{1}_{0 < y < x}$ — la loi de $Y$ est uniforme sur $[0,x]$, donc dépend de $x$ ✗.
+- Interprétation : $Y$ est une fraction de $X$ — connaître $X$ restreint fortement les valeurs possibles de $Y$.
+
+La différence essentielle : dans le cas indépendant, **fixer $x$ ne change rien** à ce qu'on sait sur $Y$. Dans le cas dépendant, **fixer $x$ restreint** l'espace des valeurs possibles de $Y$.
+:::
+
+### Conséquences pratiques de l'indépendance
+
+Lorsque $X$ et $Y$ sont indépendantes, plusieurs calculs se simplifient considérablement :
+
+$$E(XY) = E(X)\,E(Y), \qquad \operatorname{Cov}(X,Y) = 0, \qquad \operatorname{Var}(X+Y) = \operatorname{Var}(X) + \operatorname{Var}(Y).$$
+
+Plus généralement, pour toutes fonctions mesurables $g$ et $h$ :
+$$E\bigl[g(X)\,h(Y)\bigr] = E\bigl[g(X)\bigr]\cdot E\bigl[h(Y)\bigr].$$
+
+Ces propriétés **ne se généralisent pas** au cas dépendant sans information supplémentaire sur la structure de dépendance.
+
+### Méthode pratique pour tester l'indépendance
+
+Face à une densité conjointe $f(x,y)$, voici le protocole en trois étapes :
+
+1. **Vérifier le support.** Si le support n'est pas un rectangle (éventuellement infini), les variables sont **nécessairement dépendantes** — inutile d'aller plus loin.
+
+2. **Calculer les marginales** $f_X(x) = \int f(x,y)\,dy$ et $f_Y(y) = \int f(x,y)\,dx$.
+
+3. **Comparer $f(x,y)$ à $f_X(x)\,f_Y(y)$.** Si les deux expressions sont égales pour tout $(x,y)$ dans le support, les variables sont **indépendantes**. S'il existe un seul point où elles diffèrent, elles sont **dépendantes**.
+
+::: {.callout-warning}
+## Piège fréquent : support rectangulaire ≠ indépendance
+
+Un support rectangulaire est une **condition nécessaire** mais pas suffisante pour l'indépendance. Par exemple, la densité
+$$f(x,y) = \frac{x+y}{8}\,\mathbf{1}_{[0,2]^2}(x,y)$$
+a un support $[0,2]^2$ qui est bien un rectangle, mais les marginales valent $f_X(x) = \frac{x+1}{4}$ et $f_Y(y) = \frac{y+1}{4}$, et on vérifie que $f_X(x)\,f_Y(y) = \frac{(x+1)(y+1)}{16} \ne \frac{x+y}{8}$ en général (par exemple en $(0,0)$ : $\frac{1}{16} \ne 0$). **Les variables sont dépendantes malgré le support rectangulaire.**
+
+La factorisation de la densité est la seule vérification fiable.
+:::
+
 La condition de factorisation $f(x,y) = f_X(x)\,f_Y(y)$ a une interprétation géométrique claire : le relief de $f$ doit être un **produit tensoriel**, c'est-à-dire une surface dont chaque tranche verticale et chaque tranche horizontale ont la même forme (à un facteur de normalisation près). En particulier, le **support** de $f$ (la région où $f > 0$) doit nécessairement être un **rectangle**, éventuellement infini. Tout support non rectangulaire rend la factorisation impossible : si $(x,y)$ est dans le support mais qu'il existe des valeurs $x'$ ou $y'$ telles que $(x', y)$ ou $(x, y')$ n'y sont pas, on ne peut pas écrire $f = f_X \cdot f_Y$ sur $\mathbb{R}^2$ tout entier. C'est pourquoi la loi uniforme sur le disque unité ne peut jamais correspondre à deux variables indépendantes — le support circulaire n'est pas un rectangle.
+
+### Le rôle du rectangle : explication détaillée
+
+#### Qu'est-ce qu'un « rectangle » dans ce contexte ?
+
+Un rectangle (au sens probabiliste) n'est pas nécessairement un carré ou une figure bornée : c'est un **produit cartésien** $A \times B$ où $A \subseteq \mathbb{R}$ et $B \subseteq \mathbb{R}$ sont deux ensembles quelconques. Autrement dit, l'ensemble des $x$ possibles et l'ensemble des $y$ possibles sont **indépendants l'un de l'autre** — les valeurs autorisées pour $y$ ne dépendent pas de la valeur prise par $x$.
+
+Exemples de supports rectangulaires :
+
+| Support | Forme | Rectangle ? |
+|---------|-------|-------------|
+| $[0,1] \times [0,1]$ | carré unité | ✓ oui |
+| $[0,+\infty) \times [0,+\infty)$ | quart de plan | ✓ oui |
+| $\mathbb{R} \times [0,+\infty)$ | demi-plan | ✓ oui |
+| $[a,b] \times [c,d]$ | rectangle quelconque | ✓ oui |
+| $\{(x,y) : 0 < y < x\}$ | triangle | ✗ non |
+| $\{(x,y) : x^2+y^2 \le 1\}$ | disque | ✗ non |
+| $\{(x,y) : 0 \le y \le x \le 1\}$ | triangle dans le carré | ✗ non |
+| $\{(x,y) : \lvert y \rvert \le x,\ x \ge 0\}$ | cône | ✗ non |
+
+La règle est simple : **le support est rectangulaire si et seulement si on peut l'écrire $\{(x,y) : x \in A,\ y \in B\}$ pour deux ensembles $A$ et $B$ qui ne dépendent pas l'un de l'autre.**
+
+#### Pourquoi un support non rectangulaire force la dépendance
+
+L'argument est algébrique et s'applique en un seul contre-exemple. Supposons que le support de $f$ ne soit pas un rectangle : il existe alors un point $(x_0, y_1)$ **hors du support** alors que :
+
+- $(x_0, y_0) \in \text{support}$ pour un certain $y_0$ (donc $f_X(x_0) > 0$),
+- $(x_1, y_1) \in \text{support}$ pour un certain $x_1$ (donc $f_Y(y_1) > 0$).
+
+On a donc :
+$$f(x_0, y_1) = 0, \quad \text{mais} \quad f_X(x_0)\,f_Y(y_1) > 0.$$
+
+La factorisation $f(x_0, y_1) = f_X(x_0)\,f_Y(y_1)$ est **impossible** : les deux membres ne peuvent pas être égaux. **Les variables sont nécessairement dépendantes.**
+
+L'intuition est immédiate : si $(x_0, y_1)$ est impossible mais que $x_0$ et $y_1$ sont chacun séparément possibles, alors la valeur de $X$ **contraint** les valeurs accessibles à $Y$. Savoir que $X = x_0$ élimine $y_1$ du champ des possibles pour $Y$ — c'est exactement ce que signifie la dépendance.
+
+::: {.callout-tip}
+## Visualiser la contrainte avec un exemple
+
+Prenons le support triangulaire $\{0 < y < x\}$. Pour tout $x_0 > 0$ fixé, $Y$ ne peut prendre que des valeurs dans $]0, x_0[$. Si $x_0 = 1$, $Y \in ]0, 1[$. Si $x_0 = 3$, $Y \in ]0, 3[$. La fourchette des valeurs possibles de $Y$ **change avec $x_0$** : c'est la signature de la dépendance.
+
+À l'inverse, sur le support rectangulaire $[0,+\infty)^2$, quelle que soit la valeur de $X$, $Y$ peut toujours prendre n'importe quelle valeur dans $[0,+\infty)$ — le domaine de $Y$ ne change pas. Aucune information sur $X$ ne restreint $Y$.
+:::
+
+#### Pourquoi la factorisation impose un support rectangulaire
+
+La réciproque se montre aussi directement. Si $f(x,y) = f_X(x)\,f_Y(y)$, alors :
+$$f(x,y) > 0 \iff f_X(x) > 0 \text{ et } f_Y(y) > 0.$$
+
+Le support de $f$ est donc exactement $\{x : f_X(x) > 0\} \times \{y : f_Y(y) > 0\}$, qui est par construction un **produit cartésien**, donc un rectangle. La factorisation *force* le support à être rectangulaire.
 
 ```{python}
 #| echo: false
@@ -574,6 +852,127 @@ plt.tight_layout()
 plt.show()
 ```
 
+### Explorateur interactif — Indépendance et support
+
+Sélectionnez l'une des trois densités pour observer le lien entre **forme du support**, **lois marginales** et **indépendance**. La densité ③ illustre le piège classique : un support rectangulaire ne garantit pas l'indépendance — seule la factorisation $f = f_X \cdot f_Y$ est décisive.
+
+```{shinylive-python}
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 430
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+CHOICES = {
+    "indep":    "① e^{−(x+y)} sur [0,∞)²  (indépendantes)",
+    "triangle": "② e^{−y}·1_{0<x<y}        (dépendantes, triangle)",
+    "rect_dep": "③ (x+y)/8 sur [0,2]²      (dépendantes, rectangle!)",
+}
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 10px;
+                font-family: sans-serif; margin: 0; }}
+        label {{ color: {FG} !important; }}
+        .info {{ background:#152119; border-radius:5px; padding:7px 12px;
+                 margin-top:6px; border-left:3px solid steelblue; font-size:0.85em; }}
+    """),
+    ui.h5("🔍 Indépendance — comparer trois densités"),
+    ui.row(
+        ui.column(4,
+            ui.input_radio_buttons("density", "Choisir la densité :",
+                choices=CHOICES, selected="indep"),
+            ui.output_ui("info"),
+        ),
+        ui.column(8,
+            ui.output_plot("plot", height="360px"),
+        ),
+    ),
+)
+
+def server(input, output, session):
+    @output
+    @render.ui
+    def info():
+        d = input.density()
+        data = {
+            "indep":    ("#1B5E20",
+                         "✅ Support rectangulaire<br>✅ Factorisation → <strong>INDÉPENDANTES</strong>"),
+            "triangle": ("#880E4F",
+                         "❌ Support triangulaire → <strong>DÉPENDANTES</strong><br>"
+                         "<em>Pas besoin de vérifier la factorisation.</em>"),
+            "rect_dep": ("#E65100",
+                         "✅ Support rectangulaire<br>❌ Factorisation échoue → "
+                         "<strong>DÉPENDANTES</strong><br><em>Piège classique !</em>"),
+        }
+        color, msg = data[d]
+        return ui.HTML(f"<div class='info' style='border-color:{color}'>{msg}</div>")
+
+    @output
+    @render.plot
+    def plot():
+        d = input.density()
+        fig, axes = plt.subplots(1, 3, figsize=(11, 3.8))
+        fig.patch.set_facecolor(BG)
+        for ax in axes:
+            ax.set_facecolor(BG)
+            ax.tick_params(colors=FG)
+            for sp in ax.spines.values():
+                sp.set_edgecolor(FG)
+
+        if d == "indep":
+            x = y = np.linspace(0, 4, 300)
+            X, Y = np.meshgrid(x, y)
+            Z = np.exp(-(X + Y))
+            fX, fY = np.exp(-x), np.exp(-y)
+            color = '#66BB6A'
+            suptitle = r'$f(x,y)=e^{-(x+y)}$ — variables INDÉPENDANTES'
+        elif d == "triangle":
+            x = y = np.linspace(0, 4, 300)
+            X, Y = np.meshgrid(x, y)
+            Z = np.where(X < Y, np.exp(-Y), np.nan)
+            fX, fY = np.exp(-x), y * np.exp(-y)
+            color = '#EF5350'
+            suptitle = r'$f(x,y)=e^{-y}\mathbf{1}_{0<x<y}$ — variables DÉPENDANTES'
+        else:
+            x = y = np.linspace(0, 2, 300)
+            X, Y = np.meshgrid(x, y)
+            Z = (X + Y) / 8
+            fX, fY = (x + 1) / 4, (y + 1) / 4
+            color = '#FFA726'
+            suptitle = r'$f(x,y)=(x+y)/8$ — DÉPENDANTES malgré le rectangle'
+
+        axes[0].contourf(X, Y, Z, levels=18, cmap='Blues')
+        axes[0].set_xlabel('$x$', color=FG)
+        axes[0].set_ylabel('$y$', color=FG)
+        axes[0].set_title('Densité conjointe', color=FG, fontsize=10)
+
+        axes[1].plot(x, fX, color='#4FC3F7', lw=2)
+        axes[1].fill_between(x, fX, alpha=0.25, color='#4FC3F7')
+        axes[1].set_xlabel('$x$', color=FG)
+        axes[1].set_ylabel('$f_X(x)$', color=FG)
+        axes[1].set_title('Marginale de $X$', color=FG, fontsize=10)
+
+        axes[2].plot(y, fY, color=color, lw=2)
+        axes[2].fill_between(y, fY, alpha=0.25, color=color)
+        axes[2].set_xlabel('$y$', color=FG)
+        axes[2].set_ylabel('$f_Y(y)$', color=FG)
+        axes[2].set_title('Marginale de $Y$', color=FG, fontsize=10)
+
+        plt.suptitle(suptitle, color=FG, fontsize=10)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)
+```
+
 ::: {.callout-caution}
 ## Exemple 4 — Test d'indépendance
 
@@ -597,7 +996,7 @@ Les variables $X$ et $Y$ sont indépendantes.
 :::
 
 ::: {.callout-caution}
-## Exercice 2
+## Exercice 1
 
 Soit $\lambda>0$ et
 $$f(x,y)=\lambda^2e^{-\lambda x}\mathbf{1}_{\{0<y<x\}}.$$
@@ -609,7 +1008,7 @@ $$f(x,y)=\lambda^2e^{-\lambda x}\mathbf{1}_{\{0<y<x\}}.$$
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution — Exercice 2
+## Solution — Exercice 1
 
 **1.** $f\ge 0$. On intègre d'abord en $y$ de $0$ à $x$ (borne du support) :
 $$
@@ -647,7 +1046,7 @@ $$
 :::
 
 ::: {.callout-caution}
-## Exercice 3
+## Exercice 2
 
 Soient $\lambda,\mu>0$ et $X_1, X_2$ indépendantes, avec
 $$X_1\sim\mathcal{E}(\lambda),\qquad X_2\sim\mathcal{E}(\mu).$$
@@ -658,7 +1057,7 @@ $$Y=\min(X_1,X_2),\qquad Z=\max(X_1,X_2).$$
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution — Exercice 3
+## Solution — Exercice 2
 
 **1.** Le couple $(X_1,X_2)$ admet la densité conjointe $f(x_1,x_2)=\lambda e^{-\lambda x_1}\cdot\mu e^{-\mu x_2}$ sur $\mathbb{R}_+^2$ (par indépendance). Comme les variables sont continues, $P(X_1=X_2)=0$.
 
@@ -755,11 +1154,11 @@ P(|J-R|\le\tfrac{1}{4})=1-2\cdot\frac{9}{32}=1-\frac{9}{16}=\frac{7}{16}.
 $$
 :::
 
----
+## Densité conditionnelle
 
 Connaître la loi de $Y$ sachant que $X$ a pris une valeur précise $x$ est l'objet de la **densité conditionnelle**. Dans le cas discret, la probabilité conditionnelle est le rapport $P(X=x,\,Y=y)/P(X=x)$. Dans le cas continu, $P(X=x) = 0$ pour tout $x$, donc ce rapport est de la forme $0/0$ et n'a pas de sens direct. On contourne cette difficulté en travaillant avec les densités : la densité conditionnelle est définie par la même formule de rapport, mais appliquée aux densités plutôt qu'aux probabilités ponctuelles. Elle peut se justifier rigoureusement comme la limite $f_{Y\mid X}(y\mid x) = \lim_{\varepsilon \to 0} f_{Y \mid X \in [x, x+\varepsilon]}(y)$, c'est-à-dire la loi de $Y$ lorsqu'on "sait que $X$ est très proche de $x$".
 
-## Densité conditionnelle
+### Définition
 
 ::: {.callout-note}
 ## Définition — Densité conditionnelle
@@ -796,6 +1195,132 @@ $$
 
 On reconnaît une loi exponentielle $\mathcal{E}(1)$ **translatée** de $x$, soit $Y \mid X=x \sim x + \mathcal{E}(1)$.
 :::
+
+### Explorateur interactif — Densité conditionnelle
+
+Déplacez $x_0$ pour observer comment la densité conditionnelle $f_{Y|X}(y \mid x_0)$ change. Pour les variables **indépendantes** (gauche), la courbe est identique quel que soit $x_0$. Pour les variables **dépendantes** (droite), elle se translate avec $x_0$ — c'est la marque de la dépendance.
+
+```{shinylive-python}
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 420
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 10px;
+                font-family: sans-serif; margin: 0; }}
+        label {{ color: {FG} !important; }}
+        .formula {{ background:#152119; border-radius:5px; padding:7px 12px; margin-top:6px;
+                    border-left:3px solid #FFA726; font-size:0.85em; font-family:monospace; }}
+    """),
+    ui.h5("📐 Densité conditionnelle — déplacer x₀"),
+    ui.row(
+        ui.column(4,
+            ui.input_radio_buttons("density", "Densité conjointe :",
+                choices={
+                    "indep": "f = e^{−(x+y)}  (indépendantes)",
+                    "dep":   "f = e^{−y}·1_{0<x<y}  (dépendantes)",
+                },
+                selected="indep"),
+            ui.input_slider("x0", "Valeur de x₀ :", min=0.2, max=3.0, value=1.0, step=0.1),
+            ui.output_ui("formula"),
+        ),
+        ui.column(8,
+            ui.output_plot("plot", height="340px"),
+        ),
+    ),
+)
+
+def server(input, output, session):
+    @output
+    @render.ui
+    def formula():
+        d = input.density()
+        x0 = input.x0()
+        if d == "indep":
+            text = (
+                f"f<sub>Y|X</sub>(y | x={x0:.1f}) = e<sup>−y</sup> · 1<sub>y≥0</sub><br>"
+                "<em style='color:#66BB6A'>Invariante en x₀ → indépendance !</em>"
+            )
+        else:
+            text = (
+                f"f<sub>Y|X</sub>(y | x={x0:.1f}) = "
+                f"e<sup>−(y−{x0:.1f})</sup> · 1<sub>y>{x0:.1f}</sub><br>"
+                "<em style='color:#EF5350'>Se décale avec x₀ → dépendance !</em>"
+            )
+        return ui.HTML(f"<div class='formula'>{text}</div>")
+
+    @output
+    @render.plot
+    def plot():
+        d = input.density()
+        x0 = input.x0()
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.6))
+        fig.patch.set_facecolor(BG)
+        for ax in (ax1, ax2):
+            ax.set_facecolor(BG)
+            ax.tick_params(colors=FG)
+            for sp in ax.spines.values():
+                sp.set_edgecolor(FG)
+
+        xs = np.linspace(0, 4, 300)
+        ys = np.linspace(0, 4, 300)
+        X, Y = np.meshgrid(xs, ys)
+
+        if d == "indep":
+            Z = np.exp(-(X + Y))
+            y_cond = np.linspace(0, 6, 400)
+            f_cond = np.exp(-y_cond)
+            mean_c = 1.0
+            color = '#66BB6A'
+            xlim = (0, 6)
+        else:
+            Z = np.where(X < Y, np.exp(-Y), np.nan)
+            y_cond = np.linspace(x0, x0 + 6, 400)
+            f_cond = np.exp(-(y_cond - x0))
+            mean_c = x0 + 1.0
+            color = '#EF5350'
+            xlim = (0, x0 + 6)
+
+        ax1.contourf(X, Y, Z, levels=18, cmap='Blues')
+        ax1.axvline(x0, color='#FFA726', lw=2, linestyle='--', label=f'$x_0={x0:.1f}$')
+        ax1.set_xlim(0, 4); ax1.set_ylim(0, 4)
+        ax1.set_xlabel('$x$', color=FG); ax1.set_ylabel('$y$', color=FG)
+        ax1.set_title('Densité conjointe $f(x,y)$', color=FG, fontsize=10)
+        ax1.legend(fontsize=9, facecolor='#152119', edgecolor='none', labelcolor=FG)
+
+        ax2.plot(y_cond, f_cond, color=color, lw=2.5, label='$f_{Y|X}(y|x_0)$')
+        ax2.fill_between(y_cond, f_cond, alpha=0.25, color=color)
+        if d == "dep":
+            ax2.plot([0, x0], [0, 0], color=color, lw=2.5)
+            ax2.axvline(x0, color='#FFA726', lw=1, linestyle=':', alpha=0.7,
+                        label=f'$x_0={x0:.1f}$')
+        ax2.axvline(mean_c, color='white', lw=1.2, linestyle=':', alpha=0.7,
+                    label=f'$E[Y|X=x_0]={mean_c:.1f}$')
+        ax2.set_xlabel('$y$', color=FG)
+        ax2.set_ylabel('densité conditionnelle', color=FG)
+        ax2.set_title('$f_{Y|X}(y \\mid x_0)$', color=FG, fontsize=10)
+        ax2.legend(fontsize=8, facecolor='#152119', edgecolor='none', labelcolor=FG)
+        ax2.set_xlim(*xlim)
+
+        plt.suptitle(r'Tranche verticale de $f(x,y)$ en $x=x_0$, normalisée',
+                     color=FG, fontsize=10)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)
+```
+
+### Lien avec l'indépendance
 
 La densité conditionnelle $f_{Y\mid X}(\cdot \mid x)$ est bien une densité de probabilité pour chaque $x$ fixé : elle est positive et d'intégrale $1$ (ce qui découle directement de la définition de $f_X(x) = \int f(x,y)\,dy$). Elle décrit la loi de $Y$ "restreinte" à la connaissance que $X = x$.
 
@@ -931,9 +1456,9 @@ E(Y\mid X=x)=\int_0^1 y\cdot\frac{3(x^2+y^2)}{3x^2+1}\,dy
 $$
 :::
 
----
-
 ## Espérance, covariance, corrélation
+
+### Espérance et covariance
 
 ::: {.callout-note}
 ## Définitions
@@ -1049,6 +1574,8 @@ plt.tight_layout()
 plt.show()
 ```
 
+### Coefficient de corrélation
+
 ::: {.callout-note}
 ## Définition — Coefficient de corrélation
 
@@ -1090,7 +1617,7 @@ d'où $|\rho(X,Y)| \le 1$.
 :::
 
 ::: {.callout-caution}
-## Exercice 1
+## Exercice 3
 
 Soit la fonction
 $$f(x,y)=2\,\mathbf{1}_{\{0\le y\le x\le 1\}}.$$
@@ -1102,7 +1629,7 @@ $$f(x,y)=2\,\mathbf{1}_{\{0\le y\le x\le 1\}}.$$
 :::
 
 ::: {.callout-tip collapse="true"}
-## Solution — Exercice 1
+## Solution — Exercice 3
 
 **1.** Le support de $f$ est le triangle $T=\{0\le y\le x\le 1\}$. $f$ est positive. On calcule :
 $$
@@ -1142,13 +1669,13 @@ $$
 $$
 :::
 
----
-
 ## Loi de la somme de deux variables indépendantes
 
 Lorsque $Z = X + Y$ est la **somme de deux variables indépendantes**, on cherche à exprimer la densité de $Z$ en fonction de celles de $X$ et $Y$. L'idée clé est la suivante : pour que $Z$ vaille $z$, il faut que $X$ vaille $x$ **et** que $Y$ vaille $z - x$, pour un certain $x$. On intègre alors sur toutes les valeurs possibles de $x$, et on obtient la **formule de convolution**. L'indépendance est ici essentielle : elle permet d'écrire la densité conjointe de $(X,Y)$ comme le produit $f_X(x)\,f_Y(z-x)$.
 
 Soient $X$ et $Y$ indépendantes, de densités $f_X$ et $f_Y$, et posons $Z=X+Y$.
+
+### Formule de convolution
 
 ::: {.callout-important}
 ## Proposition — Formule de convolution
@@ -1242,6 +1769,8 @@ plt.suptitle(r"Convolution : $f_Z = f_X * f_Y$ transforme deux uniformes en une 
 plt.tight_layout()
 plt.show()
 ```
+
+### Applications
 
 ::: {.callout-caution}
 ## Exemple 5 — Somme de deux lois uniformes
@@ -1406,6 +1935,8 @@ Tout comme dans le cas unidimensionnel on effectuait un changement de variable p
 
 L'intuition est la suivante : si on "zoome" autour d'un point $(u,v)$ dans l'espace de $(U,V)$, un petit carré élémentaire $du\,dv$ correspond dans l'espace de $(X,Y)$ à un petit parallélogramme d'aire $|J_H(u,v)|\,du\,dv$. Pour que les probabilités soient conservées lors du changement de variables — c'est-à-dire que $P((U,V) \in \mathcal{D}') = P((X,Y) \in H(\mathcal{D}'))$ pour tout domaine $\mathcal{D}'$ — la densité doit être ajustée par ce facteur de déformation.
 
+### Théorème
+
 ::: {.callout-important}
 ## Théorème — Changement de variables pour un couple de v.a.r.
 
@@ -1434,6 +1965,8 @@ En **coordonnées polaires**, le jacobien vaut $r$ : à grand rayon, un même an
 
 La formule de convolution (section VI) est un cas particulier de ce théorème, obtenu en posant $U = X + Y$ et $V = Y$ (changement de variables de jacobien $|J_H| = 1$).
 :::
+
+### Applications
 
 ::: {.callout-caution}
 ## Exemple — Passage en coordonnées polaires
@@ -1501,8 +2034,6 @@ $$
 
 Ce résultat est remarquable : la somme $X+Y$ et le rapport $X/(X+Y)$ sont indépendants, bien que tous deux soient des fonctions de $(X,Y)$.
 :::
-
----
 
 ## Exercice de synthèse
 
@@ -1613,4 +2144,3 @@ $$
 P(A)=\frac{2a}{l\pi}\left(1-\sqrt{1-\frac{l^2}{a^2}}\right)+1-\frac{2\theta_0}{\pi}.
 $$
 :::
-

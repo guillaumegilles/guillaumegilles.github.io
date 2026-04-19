@@ -10,7 +10,837 @@
 <atom:link href="https://ggilles.dev/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.4.537</generator>
-<lastBuildDate>Sat, 07 Mar 2026 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 23 Mar 2026 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>One Source, Two Targets: Auto-Syncing Your GitHub Profile README on Every Build</title>
+  <dc:creator>Guillaume Gilles</dc:creator>
+  <dc:creator>Claude Sonnet 4.6</dc:creator>
+  <link>https://ggilles.dev/posts/quarto-profile-readme/</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="the-drift-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-drift-problem">The drift problem</h2>
+<p>If you maintain a personal website <strong>and</strong> a <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme">GitHub profile README</a>, you know the drill: update your bio in one place, forget the other. Add a certification here, miss it there. Two files, two truths, one inevitable inconsistency.</p>
+<p>My website is built with <a href="https://quarto.org">Quarto</a>. The about page uses the <a href="https://quarto.org/docs/websites/website-about.html#templates">Trestles template</a> — a two-column hero layout with a circular profile image, social links in a sidebar, and rich HTML features (callout blocks, column divs, iframes) that simply do not translate to GitHub-Flavored Markdown (GFM). So the two versions naturally diverged.</p>
+<p>The fix: a single <code>about.qmd</code> that renders to <em>both</em> HTML and GFM, with a post-render Bash script that diffs and pushes the README to the profile repo on every build. One edit, two outputs, zero drift.</p>
+<p>Here is what the whole system looks like:</p>
+<pre><code>quarto render   (full site)
+      │
+      ├──► docs/about.html          ← website, Trestles layout
+      │
+      └──► post-render hook
+                │
+                ├──► quarto render about.qmd --to gfm  → /tmp/README.md
+                ├──► git clone guillaumegilles/guillaumegilles
+                ├──► diff README.md  (skip push if unchanged)
+                └──► git commit &amp;&amp; git push  → github.com profile</code></pre>
+</section>
+<section id="how-quartos-multi-format-pipeline-works" class="level2">
+<h2 class="anchored" data-anchor-id="how-quartos-multi-format-pipeline-works">How Quarto’s multi-format pipeline works</h2>
+<p>Quarto is built on top of <a href="https://pandoc.org/">Pandoc</a>. When you write a <code>.qmd</code> file, Quarto first executes any code cells (via Knitr or Jupyter), then passes the resulting Markdown to Pandoc for the final format conversion — HTML, PDF, GFM, etc.</p>
+<section id="format-families-and-.content-visible" class="level3">
+<h3 class="anchored" data-anchor-id="format-families-and-.content-visible">Format families and <code>.content-visible</code></h3>
+<p>The <code>.content-visible when-format="..."</code> div syntax uses Quarto’s <strong>format family</strong> concept, not the raw Pandoc output format. The mapping is crucial and easy to get wrong:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th><code>--to</code> argument</th>
+<th>Format family</th>
+<th><code>.content-visible</code> guard</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>html</code></td>
+<td><code>html</code></td>
+<td><code>when-format="html"</code> ✅</td>
+</tr>
+<tr class="even">
+<td><code>gfm</code></td>
+<td><code>markdown</code></td>
+<td><code>when-format="markdown"</code> ✅</td>
+</tr>
+<tr class="odd">
+<td><code>gfm</code></td>
+<td><del><code>gfm</code></del></td>
+<td><code>when-format="gfm"</code> ❌ silently fails</td>
+</tr>
+<tr class="even">
+<td><code>pdf</code></td>
+<td><code>latex</code></td>
+<td><code>when-format="latex"</code> ✅</td>
+</tr>
+<tr class="odd">
+<td><code>commonmark</code></td>
+<td><code>markdown</code></td>
+<td><code>when-format="markdown"</code> ✅</td>
+</tr>
+</tbody>
+</table>
+<p>GFM is a <em>dialect</em> of Markdown processed by the <code>commonmark</code> Pandoc writer. Quarto’s format resolution maps it to the <code>markdown</code> family — so <code>when-format="gfm"</code> always evaluates to <code>false</code> without any warning.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Verify the format family
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Run <code>quarto render about.qmd --to gfm --verbose</code> and look for the <code>format:</code> line in the output. It will show <code>markdown</code>, not <code>gfm</code>.</p>
+</div>
+</div>
+</section>
+<section id="the-freeze-cache-and-multi-format-renders" class="level3">
+<h3 class="anchored" data-anchor-id="the-freeze-cache-and-multi-format-renders">The <code>freeze</code> cache and multi-format renders</h3>
+<p>If your project uses <code>freeze: auto</code> in <code>_quarto.yml</code>, Quarto caches code execution results in <code>_freeze/</code>. When the post-render hook calls <code>quarto render about.qmd --to gfm</code>, Quarto re-uses the frozen execution cache, so the second render is fast even if the document contains expensive computations.</p>
+<p>One subtlety: the freeze hash is keyed on the <em>source content</em>, not the output format. Two renders of the same file to different formats share the same execution cache, which is correct — the code output should not change between HTML and GFM.</p>
+</section>
+</section>
+<section id="structuring-about.qmd" class="level2">
+<h2 class="anchored" data-anchor-id="structuring-about.qmd">Structuring <code>about.qmd</code></h2>
+<p>The file has three content zones:</p>
+<section id="zone-1-html-only-website" class="level3">
+<h3 class="anchored" data-anchor-id="zone-1-html-only-website">Zone 1 — HTML-only (website)</h3>
+<p>Wrap everything that uses Quarto-specific HTML features inside <code>.content-visible when-format="html"</code>. This includes the Trestles hero section, multi-column divs, callout blocks, and any raw HTML:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1">::: {.content-visible when-format="html"}</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">::: {#hero-heading}</span>
+<span id="cb2-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"># Your headline here</span></span>
+<span id="cb2-5"></span>
+<span id="cb2-6"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">&gt; Your tagline — one sharp sentence.</span></span>
+<span id="cb2-7"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">:::</span></span>
+<span id="cb2-8"></span>
+<span id="cb2-9">::::: {.columns}</span>
+<span id="cb2-10">:::: {.column width="60%"}</span>
+<span id="cb2-11">Your main content here.</span>
+<span id="cb2-12">::::</span>
+<span id="cb2-13">:::: {.column width="40%"}</span>
+<span id="cb2-14">::: {.callout-tip}</span>
+<span id="cb2-15"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">## Sidebar note</span></span>
+<span id="cb2-16">Something that complements the main text.</span>
+<span id="cb2-17">:::</span>
+<span id="cb2-18">::::</span>
+<span id="cb2-19">:::::</span>
+<span id="cb2-20"></span>
+<span id="cb2-21">:::</span></code></pre></div>
+<p>The <code>#hero-heading</code> id is <strong>required</strong> by Quarto’s Trestles template. Without it, the template does not know where to inject the profile image and social links sidebar, and the page renders as plain text.</p>
+</section>
+<section id="zone-2-gfm-only-github-profile" class="level3">
+<h3 class="anchored" data-anchor-id="zone-2-gfm-only-github-profile">Zone 2 — GFM-only (GitHub profile)</h3>
+<p>GitHub renders a special README from the repo <code>your-username/your-username</code>. It supports a useful subset of HTML — <code>&lt;div align="center"&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;p&gt;</code> — but not Quarto divs, callouts, or the <code>:::</code> fencing syntax. Use <code>when-format="markdown"</code> (not <code>"gfm"</code>):</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1">::: {.content-visible when-format="markdown"}</span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;!-- ⚠️ AUTO-GENERATED — do not edit directly.       --&gt;</span></span>
+<span id="cb3-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;!-- Source: github.com/your-username/your-username.github.io --&gt;</span></span>
+<span id="cb3-5"></span>
+<span id="cb3-6">&lt;div align="center"&gt;</span>
+<span id="cb3-7"></span>
+<span id="cb3-8">&lt;img src="https://yoursite.dev/assets/profile.png"</span>
+<span id="cb3-9">     width="150" alt="Your Name" style="border-radius: 50%;" /&gt;</span>
+<span id="cb3-10"></span>
+<span id="cb3-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">### Your Name</span></span>
+<span id="cb3-12"></span>
+<span id="cb3-13">**Your one-liner.**</span>
+<span id="cb3-14"></span>
+<span id="cb3-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="al" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">![Website](https://img.shields.io/badge/Website-yoursite.dev-blue?style=flat&amp;logo=safari&amp;logoColor=fff)</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">](https://yoursite.dev)</span></span>
+<span id="cb3-16"></span>
+<span id="cb3-17">&lt;/div&gt;</span>
+<span id="cb3-18"></span>
+<span id="cb3-19">---</span>
+<span id="cb3-20"></span>
+<span id="cb3-21">| Platform | Profile | Focus |</span>
+<span id="cb3-22">|---|---|---|</span>
+<span id="cb3-23">| **GitHub** | <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">your-username</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">](https://github.com/your-username)</span> | Open source |</span>
+<span id="cb3-24"></span>
+<span id="cb3-25">:::</span></code></pre></div>
+<p>The <code>&lt;!-- AUTO-GENERATED --&gt;</code> comment is important. Once you automate this, someone — including future you — <em>will</em> try to edit the GitHub file directly. The comment makes the source of truth explicit.</p>
+</section>
+<section id="zone-3-shared-content" class="level3">
+<h3 class="anchored" data-anchor-id="zone-3-shared-content">Zone 3 — Shared content</h3>
+<p>Everything outside <code>.content-visible</code> blocks renders in <strong>both</strong> formats. Keep this zone format-neutral: standard Markdown tables, bold/italic, headings, and links all work in both HTML and GFM.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;!-- No wrapper — renders in both HTML and GFM --&gt;</span></span>
+<span id="cb4-2"></span>
+<span id="cb4-3">I work at the intersection of data and security...</span>
+<span id="cb4-4"></span>
+<span id="cb4-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">## 🛠️ Tech Stack</span></span>
+<span id="cb4-6"></span>
+<span id="cb4-7">| Language | Use |</span>
+<span id="cb4-8">|---|---|</span>
+<span id="cb4-9">| Python | Data pipelines, scripting |</span>
+<span id="cb4-10">| R | Statistical modelling |</span>
+<span id="cb4-11"></span>
+<span id="cb4-12"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">## 💼 Experience</span></span>
+<span id="cb4-13"></span>
+<span id="cb4-14"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">- </span>**Your Org** — Your role (N+ years)</span>
+<span id="cb4-15"></span>
+<span id="cb4-16"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">## 🎓 Education</span></span>
+<span id="cb4-17"></span>
+<span id="cb4-18"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">- </span>**YYYY** — Your degree / certification</span></code></pre></div>
+</section>
+</section>
+<section id="the-post-render-script" class="level2">
+<h2 class="anchored" data-anchor-id="the-post-render-script">The post-render script</h2>
+<p>The script lives at <code>scripts/update-profile-readme.sh</code> and runs automatically after every <code>quarto render</code>. Here is a section-by-section walkthrough.</p>
+<section id="defensive-shell-settings" class="level3">
+<h3 class="anchored" data-anchor-id="defensive-shell-settings">Defensive shell settings</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>scripts/update-profile-readme.sh</strong></pre>
+</div>
+<div class="sourceCode" id="cb5" data-filename="scripts/update-profile-readme.sh" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#!/usr/bin/env bash</span></span>
+<span id="cb5-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-euo</span> pipefail</span></code></pre></div>
+</div>
+<p><code>set -euo pipefail</code> is the standard trio for defensive scripting:</p>
+<ul>
+<li><strong><code>-e</code></strong> — exit immediately if any command returns a non-zero status</li>
+<li><strong><code>-u</code></strong> — treat unset variables as errors (catches typos like <code>$TMDIR</code>)</li>
+<li><strong><code>-o pipefail</code></strong> — a pipeline fails if <em>any</em> command in it fails, not just the last one</li>
+</ul>
+</section>
+<section id="the-recursion-guard" class="level3">
+<h3 class="anchored" data-anchor-id="the-recursion-guard">The recursion guard</h3>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">[</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${PROFILE_README_RUNNING</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:-</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1"</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">then</span></span>
+<span id="cb6-2">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">exit</span> 0</span>
+<span id="cb6-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">fi</span></span>
+<span id="cb6-4"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">export</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PROFILE_README_RUNNING</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>1</span></code></pre></div>
+<p>This is the most non-obvious part of the setup. Without it, here is exactly what happens:</p>
+<ol type="1">
+<li>You run <code>quarto render</code>.</li>
+<li>The full site renders.</li>
+<li>The post-render hook fires and calls <code>quarto render about.qmd --to gfm</code>.</li>
+<li>Quarto detects a <code>_quarto.yml</code> in the project directory.</li>
+<li>Quarto treats this as a <em>project</em> render and re-renders the whole site.</li>
+<li>The post-render hook fires again. → Go to step 3. Infinite loop.</li>
+</ol>
+<p>The guard sets <code>PROFILE_README_RUNNING=1</code> before the first nested render. When Quarto fires the hook the second time, the variable is already set, the script exits immediately, and the loop terminates.</p>
+<p>The <code>:-</code> in <code>${PROFILE_README_RUNNING:-}</code> is a Bash default-value expansion: if the variable is unset, it expands to an empty string rather than triggering <code>-u</code>’s “unset variable” error.</p>
+</section>
+<section id="temporary-directory-with-cleanup-trap" class="level3">
+<h3 class="anchored" data-anchor-id="temporary-directory-with-cleanup-trap">Temporary directory with cleanup trap</h3>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">SCRIPT_DIR</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dirname</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$0</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&amp;&amp;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">pwd</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb7-2"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PROJECT_DIR</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dirname</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$SCRIPT_DIR</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb7-3"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">WORK</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mktemp</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-d</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb7-4"></span>
+<span id="cb7-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cleanup()</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">{</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rm</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-rf</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb7-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">trap</span> cleanup EXIT</span></code></pre></div>
+<p><code>mktemp -d</code> creates a unique directory under <code>/tmp</code>. The <code>trap cleanup EXIT</code> deletes it regardless of how the script exits — normal completion, error, or signal. Without the trap, a failed render leaves stale directories in <code>/tmp</code>.</p>
+<p><code>SCRIPT_DIR</code> uses <code>cd &amp;&amp; pwd</code> rather than just <code>dirname "$0"</code> because <code>$0</code> can be a relative path when called by Quarto. The <code>cd</code> + <code>pwd</code> combination always returns an absolute path.</p>
+</section>
+<section id="rendering-about.qmd-to-gfm" class="level3">
+<h3 class="anchored" data-anchor-id="rendering-about.qmd-to-gfm">Rendering <code>about.qmd</code> to GFM</h3>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"📄 Rendering about.qmd → GFM README.md …"</span></span>
+<span id="cb8-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">quarto</span> render <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$PROJECT_DIR</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/about.qmd"</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--to</span> gfm <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb8-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--output</span> README.md <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--output-dir</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>/dev/null</span>
+<span id="cb8-4"></span>
+<span id="cb8-5"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">[</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">!</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">-f</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/README.md"</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">then</span></span>
+<span id="cb8-6">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"❌ GFM render failed — README.md not produced."</span></span>
+<span id="cb8-7">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">exit</span> 1</span>
+<span id="cb8-8"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">fi</span></span></code></pre></div>
+<p><code>--to gfm</code> invokes Pandoc’s <code>commonmark_x</code> (GitHub-Flavored Markdown) writer. <code>--output README.md</code> renames the output (instead of the default <code>about.md</code>), and <code>--output-dir "$WORK"</code> places it in the temp directory. <code>2&gt;/dev/null</code> suppresses Quarto’s informational stderr to keep the post-render log clean.</p>
+<p>The existence check matters: <code>set -e</code> catches non-zero exit codes, but <code>quarto render</code> can exit <code>0</code> while still failing to produce output in some edge cases.</p>
+</section>
+<section id="cleaning-up-quartos-gfm-artifacts" class="level3">
+<h3 class="anchored" data-anchor-id="cleaning-up-quartos-gfm-artifacts">Cleaning up Quarto’s GFM artifacts</h3>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1. Remove the auto-injected "# About" title (first two lines)</span></span>
+<span id="cb9-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sed</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'1{/^# About$/d}'</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/README.md"</span></span>
+<span id="cb9-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sed</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'1{/^$/d}'</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/README.md"</span></span>
+<span id="cb9-4"></span>
+<span id="cb9-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2. Fix shields.io badge URLs where Quarto appended .png</span></span>
+<span id="cb9-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sed</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'s/logoColor=fff\.png/logoColor=fff/g'</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/README.md"</span></span></code></pre></div>
+<p>Two artifacts need fixing:</p>
+<p><strong>Title injection.</strong> Quarto reads the YAML <code>title:</code> field and prepends it as an <code># H1</code> heading in GFM output. The first <code>sed</code> command deletes that line only if it matches <code># About</code>; the second deletes the blank line that follows.</p>
+<p><strong>Image extension appending.</strong> Quarto’s GFM writer applies its <code>default-image-extension</code> heuristic to every URL it identifies as an image path. Shields.io badge URLs end in <code>...&amp;logoColor=fff</code> — Quarto mistakes the three-letter hex code for a file extension and appends <code>.png</code>, breaking the badge. The <code>sed</code> substitution strips the spurious extension.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A more general fix is to set <code>default-image-extension: ""</code> in <code>_quarto.yml</code>, but that changes behaviour for all GFM renders across the project. The targeted <code>sed</code> is safer and requires no project-wide configuration change.</p>
+</div>
+</div>
+</section>
+<section id="idempotent-push-only-if-the-content-changed" class="level3">
+<h3 class="anchored" data-anchor-id="idempotent-push-only-if-the-content-changed">Idempotent push — only if the content changed</h3>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"📦 Cloning </span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$REPO</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> …"</span></span>
+<span id="cb10-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">! </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> clone <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--depth</span> 1 <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"git@github.com:</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${REPO}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">.git"</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb10-3">     <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/profile-repo"</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>/dev/null<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">then</span></span>
+<span id="cb10-4">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"⚠️  Could not clone </span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$REPO</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> — skipping push."</span></span>
+<span id="cb10-5">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">trap</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-</span> EXIT   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># keep the temp dir so you can inspect the file</span></span>
+<span id="cb10-6">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">exit</span> 0</span>
+<span id="cb10-7"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">fi</span></span>
+<span id="cb10-8"></span>
+<span id="cb10-9"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">diff</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-q</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/README.md"</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/profile-repo/README.md"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;&gt;</span>/dev/null<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">then</span></span>
+<span id="cb10-10">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"✅ Profile README is already up-to-date — nothing to push."</span></span>
+<span id="cb10-11">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">exit</span> 0</span>
+<span id="cb10-12"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">fi</span></span>
+<span id="cb10-13"></span>
+<span id="cb10-14"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cp</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/README.md"</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/profile-repo/README.md"</span></span>
+<span id="cb10-15"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$WORK</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/profile-repo"</span></span>
+<span id="cb10-16"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> add README.md</span>
+<span id="cb10-17"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> commit <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-m</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"chore: sync profile README from ggilles.dev</span></span>
+<span id="cb10-18"></span>
+<span id="cb10-19"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Auto-generated from about.qmd by post-render script."</span></span>
+<span id="cb10-20"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> push</span>
+<span id="cb10-21"></span>
+<span id="cb10-22"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🚀 Profile README pushed to github.com/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${REPO}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span></code></pre></div>
+<p><code>--depth 1</code> requests a <em>shallow clone</em> — only the latest commit. This is significantly faster than a full clone for a profile repo that may have hundreds of commits; we only need the current <code>README.md</code> for the diff.</p>
+<p>The <code>diff -q</code> check makes the push <strong>idempotent</strong>: if nothing changed in <code>about.qmd</code> since the last build, no empty commit pollutes the profile repo’s history.</p>
+<p>If cloning fails (missing SSH key, network issue, wrong repo name), the script degrades gracefully: it disables the cleanup trap so the generated <code>README.md</code> survives in <code>/tmp</code> for manual inspection, then exits <code>0</code> so the overall <code>quarto render</code> does not fail.</p>
+</section>
+</section>
+<section id="wiring-it-into-_quarto.yml" class="level2">
+<h2 class="anchored" data-anchor-id="wiring-it-into-_quarto.yml">Wiring it into <code>_quarto.yml</code></h2>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>_quarto.yml</strong></pre>
+</div>
+<div class="sourceCode" id="cb11" data-filename="_quarto.yml" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">project</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb11-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">type</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> website</span></span>
+<span id="cb11-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">output-dir</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> docs</span></span>
+<span id="cb11-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">post-render</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb11-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> scripts/update-profile-readme.sh</span></span></code></pre></div>
+</div>
+<p>The <code>post-render</code> key accepts a list of scripts executed in order, from the project root, after all formats have rendered. Make the script executable before the first build:</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">chmod</span> +x scripts/update-profile-readme.sh</span></code></pre></div>
+<p>That is the entire integration. No plugins, no GitHub Actions, no external services — just a shell script that Quarto calls for you.</p>
+</section>
+<section id="authentication" class="level2">
+<h2 class="anchored" data-anchor-id="authentication">Authentication</h2>
+<p>The script uses <code>git@github.com:</code> (SSH). This requires:</p>
+<ol type="1">
+<li>An SSH key pair on the machine running <code>quarto render</code></li>
+<li>The public key added to GitHub under <strong>Settings → SSH and GPG keys</strong></li>
+</ol>
+<p>If you prefer HTTPS, swap the clone URL to <code>https://github.com/${REPO}.git</code> and configure a credential helper or a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens">personal access token</a>.</p>
+<p>For CI/CD on GitHub Actions, use a deploy key scoped to the profile repo, or rely on <code>GITHUB_TOKEN</code> with cross-repo write permissions:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/workflows/publish.yml</strong></pre>
+</div>
+<div class="sourceCode" id="cb13" data-filename=".github/workflows/publish.yml" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Render site and sync profile README</span></span>
+<span id="cb13-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">env</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb13-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">GITHUB_TOKEN</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> ${{ secrets.PROFILE_REPO_TOKEN }}</span></span>
+<span id="cb13-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">  run</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">: </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">|</span></span>
+<span id="cb13-5">    git config --global user.email "ci@yoursite.dev"</span>
+<span id="cb13-6">    git config --global user.name "CI Bot"</span>
+<span id="cb13-7">    quarto render</span></code></pre></div>
+</div>
+</section>
+<section id="debugging" class="level2">
+<h2 class="anchored" data-anchor-id="debugging">Debugging</h2>
+<p><strong>Nothing is being pushed.</strong> Run the script directly with xtrace mode enabled:</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bash</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-x</span> scripts/update-profile-readme.sh</span></code></pre></div>
+<p><code>-x</code> prints each command and its expanded arguments before executing it, making it easy to spot where the script diverges from expectations.</p>
+<p><strong>Shields.io badges show broken images.</strong> Check for unexpected <code>.png</code> suffixes in the generated file:</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grep</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"logoColor=.*\.png"</span> /tmp/README.md</span></code></pre></div>
+<p>Add additional <code>sed</code> rules for any other URL patterns Quarto mangles.</p>
+<p><strong>The recursion guard fires unexpectedly.</strong> If <code>PROFILE_README_RUNNING</code> is left set in your shell from a previous interrupted run, new renders will silently skip the README sync. Reset it with:</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">unset</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">PROFILE_README_RUNNING</span></span></code></pre></div>
+<p><strong>The diff always reports changes even when <code>about.qmd</code> hasn’t changed.</strong> Check whether your GFM zone contains timestamps, random values, or anything that changes on every render. Content that is non-deterministic between runs will produce a fresh push on every build.</p>
+</section>
+<section id="the-result" class="level2">
+<h2 class="anchored" data-anchor-id="the-result">The result</h2>
+<p>Every <code>quarto render</code> now does double duty:</p>
+<ol type="1">
+<li><strong>Website</strong> → <code>docs/about.html</code> — full Trestles layout with profile image sidebar, column divs, callout blocks, and social links.</li>
+<li><strong>GitHub profile README</strong> → auto-pushed to <code>your-username/your-username</code> with the centered GFM header, badge row, and all shared bio content.</li>
+</ol>
+<p>One source file. Two outputs. Zero drift. This is the <a href="https://indieweb.org/POSSE">POSSE</a> principle (<em>Publish on Own Site, Syndicate Elsewhere</em>) applied at the build-system level — your website is the canonical source; GitHub is one of its syndication targets.</p>
+<p>If you adapt this for your own site, feel free to open a <a href="https://github.com/guillaumegilles/guillaumegilles.github.io">GitHub issue</a> or reach out on <a href="https://www.linkedin.com/in/guillaumegilles">LinkedIn</a> — happy to help you debug it.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Quarto</category>
+  <category>GitHub</category>
+  <category>Dev Tools</category>
+  <category>Bash</category>
+  <guid>https://ggilles.dev/posts/quarto-profile-readme/</guid>
+  <pubDate>Mon, 23 Mar 2026 23:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Adding an AI Chat Assistant to a Static Website</title>
   <dc:creator>Guillaume Gilles</dc:creator>
