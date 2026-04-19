@@ -1,0 +1,471 @@
+---
+title: "A Map of Agentic AI Customization"
+author:
+  - name: Guillaume Gilles
+abstract: |
+  Every major AI platform now offers a way to customize how its agent behaves
+  in *your* project: instruction files, skill definitions, tool schemas, and
+  runtime protocols. The conventions are converging but not yet unified. This
+  post maps the landscape so you can find the right lever for the right job.
+date: 2026-04-19
+categories: [AI, Agentic AI, Developer Tools]
+draft: true
+---
+
+Agentic AI is no longer a research curiosity. GitHub Copilot can open pull
+requests, Claude can run multi-step research loops, and OpenAI's Agents SDK
+lets you wire a fleet of specialized models together with a few dozen lines of
+Python. But with that power comes a proliferation of configuration surfaces:
+`CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`, `skill.md`,
+`.agent/`, `copilot-setup-steps.yml`, MCP servers, tool schemas…
+
+If you have ever stared at a blank agent config wondering which file does what,
+this post is for you.
+
+## Three Layers of Customization
+
+It helps to think of agent customization in three layers. Each layer answers a
+different question:
+
+| Layer | Question answered | Typical form |
+|---|---|---|
+| **1. Static context** | *Who is this agent, and how should it behave?* | Markdown instruction files committed to the repo |
+| **2. Skills & tools** | *What can the agent do beyond text generation?* | Skill definitions, function schemas, tool implementations |
+| **3. Runtime protocol** | *How does the agent talk to external systems?* | MCP servers, API calls, multi-agent handoffs |
+
+These layers stack. A well-configured agent has all three: a clear identity set
+in an instruction file, a library of tools it can invoke, and a protocol for
+calling external services reliably.
+
+---
+
+## Layer 1 — Static Context: Instruction Files
+
+The simplest form of agent customization is a Markdown file that answers: *"Who
+are you, and what are the rules of this project?"* Every major platform has a
+convention for this, and they differ mostly in where the file lives.
+
+### `.github/copilot-instructions.md` — GitHub Copilot
+
+GitHub Copilot reads this file automatically and uses it to shape all Copilot
+Chat responses within your repository. Place it at the root of `.github/`.
+
+```markdown
+# Copilot Instructions
+
+## Stack
+This is a Python/FastAPI backend. Prefer async functions and type hints.
+
+## Style
+- Follow PEP 8. Max line length: 88 (Black default).
+- Write docstrings for every public function.
+
+## Restrictions
+- Do not suggest changes to `config/production.toml`.
+- Never hard-code credentials.
+```
+
+**When to use it:** Any repository where you want Copilot Chat to be
+project-aware without you repeating yourself in every conversation.
+
+→ [Official docs — Custom instructions for repositories](https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot)
+
+### `CLAUDE.md` — Anthropic Claude
+
+When Claude's coding agent (`claude` CLI or the API with computer use) opens
+your repository, it looks for `CLAUDE.md` at the project root. This file is
+the equivalent of a `README` written *for the agent*, not for humans.
+
+```markdown
+# CLAUDE.md
+
+## Project overview
+Data pipeline in Python (Polars + DuckDB). The entry point is `src/pipeline/run.py`.
+
+## Conventions
+- All new modules go in `src/`. Tests mirror the structure under `tests/`.
+- Use `uv` for package management, not pip.
+
+## What NOT to touch
+- `migrations/` — run `make migrate` instead of editing files directly.
+- `.env.prod` — production secrets, read-only.
+
+## Commands
+- `make test` — run the test suite
+- `make lint` — ruff + mypy
+```
+
+**When to use it:** Any project where you use `claude` as a coding assistant.
+The more context you give it here, the fewer clarifying questions it asks.
+
+→ [Official docs — CLAUDE.md](https://docs.anthropic.com/en/docs/claude-code/memory)
+
+### `AGENTS.md` — OpenAI Codex & general convention
+
+`AGENTS.md` is the convention adopted by OpenAI's Codex agent and is rapidly
+becoming an informal cross-platform standard. It describes *what agents are
+available* in a project and how to interact with them — useful in monorepos or
+multi-agent setups.
+
+```markdown
+# AGENTS.md
+
+## Available agents
+
+- **reviewer**: Reviews pull requests for security issues.
+- **documenter**: Generates or updates docstrings and README sections.
+- **tester**: Writes pytest test cases for a given module.
+
+## Adding a new agent
+1. Define its scope in `.agent/<name>/skill.md`.
+2. Register its entry point in `agents/config.yaml`.
+3. Document it here.
+```
+
+**When to use it:** Multi-agent projects, or any repo you want to be
+"agent-literate" regardless of which AI tool a contributor uses.
+
+→ [OpenAI Codex — AGENTS.md convention](https://platform.openai.com/docs/codex)
+
+### `copilot-setup-steps.yml` — GitHub Copilot coding agent
+
+The Copilot *coding agent* (the autonomous one that can open PRs) uses a
+special workflow file to bootstrap its environment before it starts working.
+Place it in `.github/workflows/`.
+
+```yaml
+# .github/workflows/copilot-setup-steps.yml
+name: "Copilot Setup Steps"
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+```
+
+This ensures the agent has a working environment before it writes or tests code.
+
+→ [Official docs — copilot-setup-steps](https://docs.github.com/en/copilot/using-github-copilot/using-github-copilot-for-pull-requests/using-copilot-to-help-you-work-on-a-pull-request)
+
+::: {.callout-tip}
+## Quick reference: which file for which platform?
+
+| File | Platform | Purpose |
+|---|---|---|
+| `.github/copilot-instructions.md` | GitHub Copilot | Chat behaviour & project context |
+| `CLAUDE.md` | Anthropic Claude | Coding agent context & conventions |
+| `AGENTS.md` | OpenAI Codex, general | Agent catalog & cross-platform docs |
+| `.github/workflows/copilot-setup-steps.yml` | GitHub Copilot agent | Environment bootstrap |
+
+:::
+
+---
+
+## Layer 2 — Skills & Tool Definitions
+
+Static instructions tell an agent *how to think*. Skills and tools tell it
+*what it can do*. This is where you extend the agent beyond pure text generation.
+
+### `skill.md` and the `.agent/` directory
+
+Several frameworks (and an emerging cross-framework convention) use a `.agent/`
+directory to house skill definitions. Each skill is documented in a Markdown
+file and can reference the code that implements it.
+
+```
+.agent/
+├── skill.md          # catalogue of all skills
+├── skills/
+│   ├── search.md     # skill: web search
+│   └── summarise.md  # skill: document summarisation
+└── tools/
+    ├── search.py
+    └── summarise.py
+```
+
+A `skill.md` entry describes the trigger, the expected inputs and outputs, and
+any limitations:
+
+```markdown
+## Skill: Summarise document
+
+**Trigger:** User uploads a file or provides a URL.
+**Goal:** Produce a 3-bullet executive summary.
+
+### Instructions
+1. Extract the main text.
+2. Identify the 3 most important claims.
+3. Return them as a bullet list, each ≤ 25 words.
+
+### Limitations
+- PDF only; does not handle scanned images.
+- Max 50 pages.
+```
+
+**When to use it:** When you are building a custom agent or documenting skills
+for a team, especially in a multi-agent system where different specialists need
+clear capability boundaries.
+
+### Function calling — OpenAI
+
+OpenAI's function-calling API lets you describe tools as JSON schemas. The
+model decides when to call one and returns structured arguments you execute
+in your own code.
+
+```python
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_stock_price",
+            "description": "Get the current price for a stock ticker.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "ticker": {"type": "string", "description": "e.g. AAPL"}
+                },
+                "required": ["ticker"]
+            }
+        }
+    }
+]
+```
+
+The model returns `{"name": "get_stock_price", "arguments": {"ticker": "AAPL"}}`;
+you call your real API and feed the result back.
+
+→ [OpenAI — Function calling guide](https://platform.openai.com/docs/guides/function-calling)
+
+### Tool use — Anthropic Claude
+
+Claude uses the same concept under the name *tool use*. The schema is slightly
+different but the mental model is identical: describe a tool, let the model
+decide when to invoke it, execute it yourself, return the result.
+
+```python
+tools = [
+    {
+        "name": "get_stock_price",
+        "description": "Returns the current price for a stock ticker.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "ticker": {"type": "string"}
+            },
+            "required": ["ticker"]
+        }
+    }
+]
+```
+
+→ [Anthropic — Tool use documentation](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview)
+
+::: {.callout-note}
+## The convergence pattern
+
+Both OpenAI and Anthropic tool definitions follow JSON Schema. If you abstract
+your tool registry behind a small adapter, the same tool implementation can be
+exposed to both platforms with a thin translation layer.
+:::
+
+---
+
+## Layer 3 — Runtime Protocol: MCP and Multi-Agent Orchestration
+
+Once your agent has instructions and tools, the next question is: *how does it
+talk to the world?* This is where protocols come in.
+
+### Model Context Protocol (MCP)
+
+MCP, open-sourced by Anthropic in late 2024 and now stewarded by the Linux
+Foundation's Agentic AI Foundation, is the closest thing the AI ecosystem has
+to a universal plug standard. Think of it as USB-C for AI integrations.
+
+**The architecture in one paragraph:** An MCP *server* exposes three kinds of
+objects — *resources* (data, like a file or a database row), *tools* (actions,
+like running a query), and *prompts* (templated workflows). An MCP *client*
+(your agent) connects to one or more servers, discovers what is available, and
+invokes resources and tools as needed. Communication uses JSON-RPC 2.0 over
+stdio (local) or HTTP + Server-Sent Events (remote).
+
+```
+Agent (MCP client)
+   │
+   ├── MCP Server: filesystem  (resources: files; tools: read, write)
+   ├── MCP Server: GitHub      (resources: repos, PRs; tools: create_pr, comment)
+   └── MCP Server: Postgres    (resources: tables; tools: run_query)
+```
+
+Claude, Cursor, and an expanding list of platforms support MCP out of the box.
+The [official MCP registry](https://mcp.so) lists hundreds of pre-built servers
+for GitHub, Slack, Google Drive, databases, and more.
+
+→ [MCP specification & SDK docs](https://modelcontextprotocol.io)  
+→ [MCP server registry](https://mcp.so)  
+→ [Anthropic — MCP quickstart](https://docs.anthropic.com/en/docs/agents-and-tools/mcp)
+
+### Multi-agent orchestration — OpenAI Agents SDK
+
+For applications that genuinely need multiple specialised agents, OpenAI's
+Agents SDK (the successor to the experimental Swarm framework) provides two
+main patterns:
+
+**Handoffs** — one agent transfers full control to another:
+
+```python
+from agents import Agent, Runner
+
+billing_agent = Agent(
+    name="Billing",
+    instructions="Handle billing questions only."
+)
+
+triage_agent = Agent(
+    name="Triage",
+    instructions="Route questions to the right specialist.",
+    handoffs=[billing_agent]
+)
+
+result = Runner.run_sync(triage_agent, "Why was I charged twice?")
+```
+
+**Agents-as-tools** — a manager agent calls specialists for sub-tasks and
+retains control of the final response. Choose this when you need to compose
+results from several specialists into a single answer.
+
+→ [OpenAI Agents SDK docs](https://openai.github.io/openai-agents-python/)  
+→ [Orchestration & handoffs guide](https://platform.openai.com/docs/agents/orchestration/handoffs)
+
+---
+
+## Choosing the Right Layer
+
+Not every project needs all three layers. Here is a rough decision guide:
+
+```
+You want the agent to...
+│
+├── ...understand your codebase conventions
+│     └── Layer 1: add an instruction file
+│           (copilot-instructions.md / CLAUDE.md / AGENTS.md)
+│
+├── ...call external APIs or run code
+│     └── Layer 2: define tools
+│           (function calling / tool use / skill.md)
+│
+├── ...connect to many external services reliably
+│     └── Layer 3: expose an MCP server
+│
+└── ...delegate to specialised sub-agents
+      └── Layer 3: use an agent SDK with handoffs
+```
+
+::: {.callout-important}
+## Start with Layer 1
+
+Instruction files are free, commit-tracked, and platform-portable. Before
+reaching for tools or protocols, ask whether a well-written `CLAUDE.md` or
+`copilot-instructions.md` already gives the agent enough context. In many
+projects it does.
+:::
+
+---
+
+## An Open Question: Is Configuration Enough?
+
+Everything covered so far operates *above* the model weights. You write files,
+define schemas, and wire up servers — but the underlying model is untouched. For
+many teams, that is the right call: fast to iterate, easy to version-control, no
+GPU budget required.
+
+But a provocative argument is gathering momentum. As frontier models flatten
+their general-purpose capability curves — the era of reliable 10× reasoning
+jumps per generation may be behind us — the remaining step-changes are
+increasingly found in **domain-specialised intelligence**: models whose weights
+encode an organisation's proprietary data, decision logic, and institutional
+vocabulary.
+
+This is the territory of **Layer 0**: fine-tuning, continued pre-training, and
+reinforcement learning on internal datasets. It is a fundamentally different kind
+of customisation — not shaping how an agent *uses* a model, but shaping the
+model itself.
+
+A Mistral AI analysis published in MIT Technology Review (March 2026) frames
+this shift as an architectural imperative, and proposes three organising
+principles worth sitting with as open questions:
+
+1. **Treat AI as infrastructure, not an experiment.** Ad hoc fine-tuning runs
+   produce brittle, one-off pipelines that break when base models are updated.
+   Durable customisation is version-controlled, reproducible, and decoupled from
+   the underlying weights — so the "adaptation logic" survives model upgrades.
+   *Open question: how do today's instruction files and skill definitions age
+   when the base model underneath them changes significantly?*
+
+2. **Retain control of your data and your model.** Vendor lock-in at the
+   configuration layer (API keys, hosted embeddings, proprietary tool registries)
+   is one risk; lock-in at the weight layer is another order of magnitude more
+   consequential. Organisations that control their training pipelines can enforce
+   data residency, dictate update cycles, and keep the "digital nervous system" in
+   house.
+   *Open question: does the current MCP / tool-use ecosystem reduce or increase
+   structural dependency on a small number of AI providers?*
+
+3. **Design for continuous adaptation.** A fine-tuned model is not a finished
+   artifact — it decays as the world changes. Competitive advantage compounds for
+   organisations that build ModelOps: automated drift detection, event-driven
+   retraining, incremental updates.
+   *Open question: what is the equivalent of ModelOps at the configuration layer?
+   How do you detect when an instruction file has gone stale?*
+
+::: {.callout-note}
+## Source transparency
+
+The article that prompted these questions —
+[*Shifting to AI Model Customization Is an Architectural Imperative*](https://www.technologyreview.com/2026/03/31/1134762/shifting-to-ai-model-customization-is-an-architectural-imperative/)
+(MIT Technology Review, March 2026) — is sponsored content produced by Mistral
+AI, not MIT Technology Review's editorial staff. The argument is substantive,
+but the source has commercial skin in the game: Mistral sells domain-specific
+fine-tuning through its Forge platform. Read it as a well-argued vendor
+perspective, not a neutral analysis.
+:::
+
+Whether weight-level customisation eventually subsumes configuration-level
+customisation, or whether the two layers remain complementary indefinitely, is
+genuinely open. For most teams today the practical answer is still: start with
+a good instruction file. But knowing the deeper layer exists — and understanding
+the trade-offs between controlling *behaviour* and controlling *weights* — is
+the difference between a tactical choice and a strategic one.
+
+---
+
+## API Documentation Reference
+
+| Platform | Resource | URL |
+|---|---|---|
+| GitHub Copilot | Custom instructions | [docs.github.com](https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot) |
+| GitHub Copilot | Coding agent setup | [docs.github.com](https://docs.github.com/en/copilot/using-github-copilot/using-github-copilot-for-pull-requests/using-copilot-to-help-you-work-on-a-pull-request) |
+| Anthropic Claude | CLAUDE.md & memory | [docs.anthropic.com](https://docs.anthropic.com/en/docs/claude-code/memory) |
+| Anthropic Claude | Tool use | [docs.anthropic.com](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview) |
+| Anthropic Claude | MCP quickstart | [docs.anthropic.com](https://docs.anthropic.com/en/docs/agents-and-tools/mcp) |
+| OpenAI | Function calling | [platform.openai.com](https://platform.openai.com/docs/guides/function-calling) |
+| OpenAI | Agents SDK | [openai.github.io](https://openai.github.io/openai-agents-python/) |
+| OpenAI | Orchestration & handoffs | [platform.openai.com](https://platform.openai.com/docs/agents/orchestration/handoffs) |
+| MCP | Specification & SDKs | [modelcontextprotocol.io](https://modelcontextprotocol.io) |
+| MCP | Server registry | [mcp.so](https://mcp.so) |
+
+---
+
+## Further Reading
+
+- [*Building effective agents*](https://www.anthropic.com/engineering/building-effective-agents) — Anthropic's engineering blog post on the patterns that actually work in production agentic systems.
+- [*How can we develop transformative tools for thought?*](https://numinous.productions/ttft/) — Matuschak & Nielsen on the broader question of what AI tooling should aspire to.
+- [OpenAI Swarm (archived)](https://github.com/openai/swarm) — The educational predecessor to the Agents SDK; the code is simple enough to read in an afternoon and clarifies the core handoff concept.
+- [LangGraph documentation](https://langchain-ai.github.io/langgraph/) — Graph-based agent orchestration from LangChain; especially useful when you need cyclic, stateful workflows.
+- [AutoGen documentation](https://microsoft.github.io/autogen/) — Microsoft Research's framework for conversational multi-agent systems.

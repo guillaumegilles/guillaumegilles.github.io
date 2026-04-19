@@ -1,98 +1,112 @@
 ---
-title: "One File, Two Outputs: Syncing Your Quarto About Page with Your GitHub Profile README"
+title: "One Source, Two Targets: Auto-Syncing Your GitHub Profile README on Every Build"
 author:
   - name: Guillaume Gilles
   - name: Claude Sonnet 4.6
-    url: https://www.anthropic.com/claude
+    url: https://www.anthropic.com/claude/sonnet
     roles:
-      - implementation
       - writing - review & editing
 abstract: |
-  A deep dive into how Quarto's multi-format rendering pipeline, Pandoc's
-  format family resolution, and a carefully guarded post-render Bash script
-  can keep a single `about.qmd` in sync with your GitHub profile README —
-  automatically, on every build, with zero duplication.
+  Every time I run `quarto render`, my GitHub profile README updates itself
+  automatically — no copy-pasting, no manual commit, no drift. This post
+  walks through the full mechanism: Quarto's multi-format pipeline, a
+  recursion-guarded post-render Bash script, and a handful of `sed` fixes for
+  Quarto's GFM quirks. The result is a single `about.qmd` that feeds both
+  your website and your GitHub profile, always in sync.
 date: 2026-03-24
-date-modified: 2026-04-01
+date-modified: 2026-04-19
 categories: [Quarto, GitHub, Dev Tools, Bash]
-draft: true
 ---
 
-## The Problem
+## The drift problem
 
-If you maintain a personal website **and** a [GitHub profile README](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme),
-you know the drift problem: update your bio in one place, forget the other.
-Add a certification here, miss it there. Two files, two truths, one inevitable inconsistency.
+If you maintain a personal website **and** a [GitHub profile
+README](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme),
+you know the drill: update your bio in one place, forget the other. Add a
+certification here, miss it there. Two files, two truths, one inevitable
+inconsistency.
 
-My website is built with [Quarto](https://quarto.org). The about page uses the
-[Trestles template](https://quarto.org/docs/websites/website-about.html#templates) —
-a two-column hero layout with a circular profile image, social links in a sidebar,
-and rich HTML features (callout blocks, column divs, iframes) that simply don't
-translate to GitHub-Flavored Markdown (GFM). So the two versions diverged.
+My website is built with [Quarto](https://quarto.org). The about page uses
+the [Trestles
+template](https://quarto.org/docs/websites/website-about.html#templates) — a
+two-column hero layout with a circular profile image, social links in a
+sidebar, and rich HTML features (callout blocks, column divs, iframes) that
+simply do not translate to GitHub-Flavored Markdown (GFM). So the two
+versions naturally diverged.
 
 The fix: a single `about.qmd` that renders to *both* HTML and GFM, with a
-post-render Bash script that diffs and pushes the README to the profile repo on
-every build. One edit, two outputs, zero drift.
+post-render Bash script that diffs and pushes the README to the profile repo
+on every build. One edit, two outputs, zero drift.
 
-## How Quarto's Multi-Format Pipeline Works
+Here is what the whole system looks like:
 
-Before writing any code, it helps to understand what actually happens inside
-`quarto render`.
+```
+quarto render   (full site)
+      │
+      ├──► docs/about.html          ← website, Trestles layout
+      │
+      └──► post-render hook
+                │
+                ├──► quarto render about.qmd --to gfm  → /tmp/README.md
+                ├──► git clone guillaumegilles/guillaumegilles
+                ├──► diff README.md  (skip push if unchanged)
+                └──► git commit && git push  → github.com profile
+```
 
-Quarto is built on top of [Pandoc](https://pandoc.org/). When you write a `.qmd`
-file, Quarto first executes any code cells (via Knitr or Jupyter), then passes
-the resulting Markdown to Pandoc for conversion. Pandoc is what handles the
-final format — HTML, PDF, GFM, etc.
+## How Quarto's multi-format pipeline works
+
+Quarto is built on top of [Pandoc](https://pandoc.org/). When you write a
+`.qmd` file, Quarto first executes any code cells (via Knitr or Jupyter),
+then passes the resulting Markdown to Pandoc for the final format conversion
+— HTML, PDF, GFM, etc.
 
 ### Format families and `.content-visible`
 
 The `.content-visible when-format="..."` div syntax uses Quarto's **format
-family** concept, not the raw Pandoc output format. The mapping matters:
+family** concept, not the raw Pandoc output format. The mapping is crucial
+and easy to get wrong:
 
-| `--to` argument | Format family | `.content-visible` value |
+| `--to` argument | Format family | `.content-visible` guard |
 |---|---|---|
-| `html` | `html` | `"html"` ✅ |
-| `gfm` | `markdown` | `"markdown"` ✅ |
-| `gfm` | ~~`gfm`~~ | `"gfm"` ❌ |
-| `pdf` | `latex` | `"latex"` ✅ |
-| `commonmark` | `markdown` | `"markdown"` ✅ |
+| `html` | `html` | `when-format="html"` ✅ |
+| `gfm` | `markdown` | `when-format="markdown"` ✅ |
+| `gfm` | ~~`gfm`~~ | `when-format="gfm"` ❌ silently fails |
+| `pdf` | `latex` | `when-format="latex"` ✅ |
+| `commonmark` | `markdown` | `when-format="markdown"` ✅ |
 
 GFM is a *dialect* of Markdown processed by the `commonmark` Pandoc writer.
 Quarto's format resolution maps it to the `markdown` family — so
-`when-format="gfm"` silently fails, always evaluating to `false`.
+`when-format="gfm"` always evaluates to `false` without any warning.
 
 ::: {.callout-tip}
 ## Verify the format family
 
-Run `quarto render about.qmd --to gfm --verbose` and look for the
-`format:` line in the output. It will show `markdown`, not `gfm`.
+Run `quarto render about.qmd --to gfm --verbose` and look for the `format:`
+line in the output. It will show `markdown`, not `gfm`.
 :::
 
 ### The `freeze` cache and multi-format renders
 
 If your project uses `freeze: auto` in `_quarto.yml`, Quarto caches code
-execution results in `_freeze/`. When you render `about.qmd` again with
-`--to gfm`, Quarto re-uses the frozen execution cache, so the script
-runs quickly even with expensive computations in the document.
+execution results in `_freeze/`. When the post-render hook calls `quarto
+render about.qmd --to gfm`, Quarto re-uses the frozen execution cache, so
+the second render is fast even if the document contains expensive
+computations.
 
 One subtlety: the freeze hash is keyed on the *source content*, not the
 output format. Two renders of the same file to different formats share the
-same execution cache, which is correct — the code output shouldn't change
+same execution cache, which is correct — the code output should not change
 between HTML and GFM.
 
 ## Structuring `about.qmd`
 
 The file has three content zones:
 
-### Zone 1 — HTML-only (Quarto website)
+### Zone 1 — HTML-only (website)
 
 Wrap everything that uses Quarto-specific HTML features inside
-`.content-visible when-format="html"`. This includes:
-
-- The Trestles hero section (`#hero-heading` anchor required by Quarto)
-- Multi-column divs (`.columns`, `.column`)
-- Callout blocks (`::: {.callout-*}`)
-- Iframes, Bootstrap cards, and any raw HTML
+`.content-visible when-format="html"`. This includes the Trestles hero
+section, multi-column divs, callout blocks, and any raw HTML:
 
 ```{.markdown}
 ::: {.content-visible when-format="html"}
@@ -120,23 +134,20 @@ Something that complements the main text.
 
 The `#hero-heading` id is **required** by Quarto's Trestles template. Without
 it, the template does not know where to inject the profile image and social
-links sidebar — your page renders as plain text.
+links sidebar, and the page renders as plain text.
 
 ### Zone 2 — GFM-only (GitHub profile)
 
 GitHub renders a special README from the repo `your-username/your-username`.
-It supports a useful subset of HTML — `<div align="center">`, `<img>`,
-`<p>` — but not Quarto divs, callouts, or the `:::` fencing syntax.
-
-The GFM zone typically contains: a centered header with a profile image,
-badge links (shields.io), a platform table, and a comment block warning
-against direct edits:
+It supports a useful subset of HTML — `<div align="center">`, `<img>`, `<p>`
+— but not Quarto divs, callouts, or the `:::` fencing syntax. Use
+`when-format="markdown"` (not `"gfm"`):
 
 ```{.markdown}
 ::: {.content-visible when-format="markdown"}
 
-<!-- ⚠️ AUTO-GENERATED — do not edit directly. -->
-<!-- Source: https://github.com/your-username/your-username.github.io -->
+<!-- ⚠️ AUTO-GENERATED — do not edit directly.       -->
+<!-- Source: github.com/your-username/your-username.github.io -->
 
 <div align="center">
 
@@ -147,7 +158,7 @@ against direct edits:
 
 **Your one-liner.**
 
-[![Website](https://img.shields.io/badge/Website-yoursite.dev-blue)](https://yoursite.dev)
+[![Website](https://img.shields.io/badge/Website-yoursite.dev-blue?style=flat&logo=safari&logoColor=fff)](https://yoursite.dev)
 
 </div>
 
@@ -155,23 +166,20 @@ against direct edits:
 
 | Platform | Profile | Focus |
 |---|---|---|
-| **HackTheBox** | [username](https://app.hackthebox.com/profile/...) | Pentesting |
-| **TryHackMe** | [username](https://tryhackme.com/p/...) | Cyber defense |
+| **GitHub** | [your-username](https://github.com/your-username) | Open source |
 
 :::
 ```
 
 The `<!-- AUTO-GENERATED -->` comment is important. Once you automate this,
-someone (including future you) *will* try to edit the GitHub file directly.
+someone — including future you — *will* try to edit the GitHub file directly.
 The comment makes the source of truth explicit.
 
 ### Zone 3 — Shared content
 
 Everything outside `.content-visible` blocks renders in **both** formats.
-This is the content worth maintaining: your actual bio, experience, education,
-tech stack. Keep the shared zone as format-neutral as possible — standard
-Markdown tables, bold/italic, headings, and standard links all work in both HTML
-and GFM.
+Keep this zone format-neutral: standard Markdown tables, bold/italic,
+headings, and links all work in both HTML and GFM.
 
 ```{.markdown}
 <!-- No wrapper — renders in both HTML and GFM -->
@@ -183,7 +191,7 @@ I work at the intersection of data and security...
 | Language | Use |
 |---|---|
 | Python | Data pipelines, scripting |
-| R | Statistical analysis |
+| R | Statistical modelling |
 
 ## 💼 Experience
 
@@ -194,24 +202,26 @@ I work at the intersection of data and security...
 - **YYYY** — Your degree / certification
 ```
 
-## The Post-Render Script — Deep Dive
+## The post-render script
 
-The script at `scripts/update-profile-readme.sh` runs after every
-`quarto render`. Here it is in full, with each section explained:
+The script lives at `scripts/update-profile-readme.sh` and runs automatically
+after every `quarto render`. Here is a section-by-section walkthrough.
+
+### Defensive shell settings
 
 ```{.bash filename="scripts/update-profile-readme.sh"}
 #!/usr/bin/env bash
-# post-render script: generate a GitHub profile README from about.qmd
-# and push it to the your-username/your-username repo.
 set -euo pipefail
 ```
 
-`set -euo pipefail` is defensive scripting:
+`set -euo pipefail` is the standard trio for defensive scripting:
 
-- `-e` — exit immediately if any command fails
-- `-u` — treat unset variables as errors (catches typos like `$TMDIR`)
-- `-o pipefail` — a pipeline fails if *any* command in it fails, not just
-  the last one
+- **`-e`** — exit immediately if any command returns a non-zero status
+- **`-u`** — treat unset variables as errors (catches typos like `$TMDIR`)
+- **`-o pipefail`** — a pipeline fails if *any* command in it fails, not
+  just the last one
+
+### The recursion guard
 
 ```{.bash}
 if [ "${PROFILE_README_RUNNING:-}" = "1" ]; then
@@ -220,116 +230,115 @@ fi
 export PROFILE_README_RUNNING=1
 ```
 
-### The recursion guard
+This is the most non-obvious part of the setup. Without it, here is exactly
+what happens:
 
-This is the most non-obvious part of the setup and the first thing that will
-silently break without explanation if you remove it.
-
-Here is exactly what happens without the guard:
-
-1. You run `quarto render` on your project.
-2. The full site renders successfully.
+1. You run `quarto render`.
+2. The full site renders.
 3. The post-render hook fires and calls `quarto render about.qmd --to gfm`.
-4. Quarto detects it is inside a project directory (`_quarto.yml` exists).
-5. Quarto treats this as a *project* render, re-renders the whole site.
-6. The post-render hook fires again. Go to step 3. Infinite loop.
+4. Quarto detects a `_quarto.yml` in the project directory.
+5. Quarto treats this as a *project* render and re-renders the whole site.
+6. The post-render hook fires again. → Go to step 3. Infinite loop.
 
 The guard sets `PROFILE_README_RUNNING=1` before the first nested render.
-When Quarto fires the hook the second time, the variable is already set,
-the script exits immediately at line 2, and the loop terminates.
+When Quarto fires the hook the second time, the variable is already set, the
+script exits immediately, and the loop terminates.
 
 The `:-` in `${PROFILE_README_RUNNING:-}` is a Bash default-value expansion:
-if the variable is unset, it expands to an empty string rather than triggering
-`-u`'s "unset variable" error.
+if the variable is unset, it expands to an empty string rather than
+triggering `-u`'s "unset variable" error.
+
+### Temporary directory with cleanup trap
 
 ```{.bash}
-REPO="your-username/your-username"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-TMPDIR="$(mktemp -d)"
+WORK="$(mktemp -d)"
 
-cleanup() { rm -rf "$TMPDIR"; }
+cleanup() { rm -rf "$WORK"; }
 trap cleanup EXIT
 ```
 
-`mktemp -d` creates a unique temporary directory under `/tmp`. The `trap cleanup EXIT`
-ensures it is deleted regardless of how the script exits — normal completion,
-error, or signal. Without the trap, a failed render leaves stale directories in `/tmp`.
+`mktemp -d` creates a unique directory under `/tmp`. The `trap cleanup EXIT`
+deletes it regardless of how the script exits — normal completion, error, or
+signal. Without the trap, a failed render leaves stale directories in `/tmp`.
 
-`SCRIPT_DIR` is resolved with `cd && pwd` rather than `dirname "$0"` alone
-because `$0` can be a relative path. The `cd` + `pwd` combination always
-returns an absolute path, which is necessary when Quarto's working directory
-during a post-render hook may differ from the project root.
+`SCRIPT_DIR` uses `cd && pwd` rather than just `dirname "$0"` because `$0`
+can be a relative path when called by Quarto. The `cd` + `pwd` combination
+always returns an absolute path.
+
+### Rendering `about.qmd` to GFM
 
 ```{.bash}
+echo "📄 Rendering about.qmd → GFM README.md …"
 quarto render "$PROJECT_DIR/about.qmd" --to gfm \
-  --output README.md --output-dir "$TMPDIR" 2>/dev/null
+  --output README.md --output-dir "$WORK" 2>/dev/null
 
-if [ ! -f "$TMPDIR/README.md" ]; then
+if [ ! -f "$WORK/README.md" ]; then
   echo "❌ GFM render failed — README.md not produced."
   exit 1
 fi
 ```
 
-We render `about.qmd` with `--to gfm` to produce GFM Markdown. The
-`--output README.md` flag names the output file (instead of `about.md`),
-and `--output-dir "$TMPDIR"` places it in the temp directory. The `2>/dev/null`
-suppresses Quarto's informational stderr output to keep the post-render log clean.
+`--to gfm` invokes Pandoc's `commonmark_x` (GitHub-Flavored Markdown) writer.
+`--output README.md` renames the output (instead of the default `about.md`),
+and `--output-dir "$WORK"` places it in the temp directory.
+`2>/dev/null` suppresses Quarto's informational stderr to keep the
+post-render log clean.
 
-The existence check after the render is important: `set -e` catches non-zero
-exit codes, but `quarto render` can exit `0` while still failing to produce
-output in certain error conditions.
+The existence check matters: `set -e` catches non-zero exit codes, but
+`quarto render` can exit `0` while still failing to produce output in some
+edge cases.
 
 ### Cleaning up Quarto's GFM artifacts
 
 ```{.bash}
-# 1. Remove the auto-generated "# About" title (first 2 lines)
-sed -i '1{/^# About$/d}' "$TMPDIR/README.md"
-sed -i '1{/^$/d}' "$TMPDIR/README.md"
+# 1. Remove the auto-injected "# About" title (first two lines)
+sed -i '1{/^# About$/d}' "$WORK/README.md"
+sed -i '1{/^$/d}' "$WORK/README.md"
 
 # 2. Fix shields.io badge URLs where Quarto appended .png
-sed -i 's/logoColor=fff\.png/logoColor=fff/g' "$TMPDIR/README.md"
+sed -i 's/logoColor=fff\.png/logoColor=fff/g' "$WORK/README.md"
 ```
 
 Two artifacts need fixing:
 
-**Title injection.** Quarto reads the YAML `title: "About"` field and injects
-`# About` as the first line of the GFM output, followed by a blank line. The
-two `sed` commands delete that first line only if it matches `# About`, then
-delete the now-leading blank line if one remains.
+**Title injection.** Quarto reads the YAML `title:` field and prepends it as
+an `# H1` heading in GFM output. The first `sed` command deletes that line
+only if it matches `# About`; the second deletes the blank line that follows.
 
-**Image extension appending.** Quarto's GFM writer applies the project-level
-`default-image-extension` setting (which defaults to empty, then falls back to
-`.png` in some versions) to every URL it identifies as an image path. Shields.io
-badge URLs end in `...&logoColor=fff` — Quarto misidentifies the last segment as
-an image path and appends `.png`, producing `...&logoColor=fff.png`, which
-breaks the badge. The `sed` substitution strips the spurious `.png`.
+**Image extension appending.** Quarto's GFM writer applies its
+`default-image-extension` heuristic to every URL it identifies as an image
+path. Shields.io badge URLs end in `...&logoColor=fff` — Quarto mistakes the
+three-letter hex code for a file extension and appends `.png`, breaking the
+badge. The `sed` substitution strips the spurious extension.
 
-This bug is specific to shields.io URL structure where the last query parameter
-ends in a three-letter hex color code that Quarto's heuristic mistakes for a file
-extension. A more robust fix would set `default-image-extension: ""` in `_quarto.yml`,
-but the `sed` approach is simpler and requires no project-wide configuration change.
+::: {.callout-note}
+A more general fix is to set `default-image-extension: ""` in `_quarto.yml`,
+but that changes behaviour for all GFM renders across the project. The
+targeted `sed` is safer and requires no project-wide configuration change.
+:::
 
-### Idempotent push — only if changed
+### Idempotent push — only if the content changed
 
 ```{.bash}
+echo "📦 Cloning $REPO …"
 if ! git clone --depth 1 "git@github.com:${REPO}.git" \
-     "$TMPDIR/profile-repo" 2>/dev/null; then
+     "$WORK/profile-repo" 2>/dev/null; then
   echo "⚠️  Could not clone $REPO — skipping push."
-  trap - EXIT   # prevent cleanup so you can inspect the file
+  trap - EXIT   # keep the temp dir so you can inspect the file
   exit 0
 fi
 
-if diff -q "$TMPDIR/README.md" \
-          "$TMPDIR/profile-repo/README.md" &>/dev/null; then
+if diff -q "$WORK/README.md" "$WORK/profile-repo/README.md" &>/dev/null; then
   echo "✅ Profile README is already up-to-date — nothing to push."
   exit 0
 fi
 
-cp "$TMPDIR/README.md" "$TMPDIR/profile-repo/README.md"
-cd "$TMPDIR/profile-repo"
+cp "$WORK/README.md" "$WORK/profile-repo/README.md"
+cd "$WORK/profile-repo"
 git add README.md
-git commit -m "chore: sync profile README from yoursite.dev
+git commit -m "chore: sync profile README from ggilles.dev
 
 Auto-generated from about.qmd by post-render script."
 git push
@@ -337,20 +346,20 @@ git push
 echo "🚀 Profile README pushed to github.com/${REPO}"
 ```
 
-`--depth 1` clones only the most recent commit (a *shallow clone*), which is
-significantly faster than a full clone for a profile repo that may have hundreds
-of commits. We only need the current `README.md` for the diff, not the full history.
+`--depth 1` requests a *shallow clone* — only the latest commit. This is
+significantly faster than a full clone for a profile repo that may have
+hundreds of commits; we only need the current `README.md` for the diff.
 
 The `diff -q` check makes the push **idempotent**: if nothing changed in
-`about.qmd` since the last render, no commit is made. This avoids polluting the
-profile repo's commit history with empty "no change" syncs on every build.
+`about.qmd` since the last build, no empty commit pollutes the profile
+repo's history.
 
-If cloning fails (no SSH key, network issue, wrong repo name), the script
-degrades gracefully: it disables the cleanup trap so the generated `README.md`
-survives in `/tmp` for manual inspection, then exits with code `0` so the
+If cloning fails (missing SSH key, network issue, wrong repo name), the
+script degrades gracefully: it disables the cleanup trap so the generated
+`README.md` survives in `/tmp` for manual inspection, then exits `0` so the
 overall `quarto render` does not fail.
 
-## Wiring It Into `_quarto.yml`
+## Wiring it into `_quarto.yml`
 
 ```{.yaml filename="_quarto.yml"}
 project:
@@ -360,77 +369,91 @@ project:
     - scripts/update-profile-readme.sh
 ```
 
-Post-render scripts run in the project root directory after all formats have
-been rendered. Multiple scripts can be listed — they execute in order.
-
-Make the script executable before the first render:
+The `post-render` key accepts a list of scripts executed in order, from the
+project root, after all formats have rendered. Make the script executable
+before the first build:
 
 ```{.bash}
 chmod +x scripts/update-profile-readme.sh
 ```
 
-## Authentication: SSH vs. HTTPS
+That is the entire integration. No plugins, no GitHub Actions, no external
+services — just a shell script that Quarto calls for you.
+
+## Authentication
 
 The script uses `git@github.com:` (SSH). This requires:
 
 1. An SSH key pair on the machine running `quarto render`
 2. The public key added to GitHub under **Settings → SSH and GPG keys**
 
-If you prefer HTTPS, replace `git@github.com:${REPO}.git` with
+If you prefer HTTPS, swap the clone URL to
 `https://github.com/${REPO}.git` and configure a credential helper or a
-[personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-via `git config credential.helper store`.
+[personal access
+token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
-For CI/CD (GitHub Actions), use a deploy key or `GITHUB_TOKEN` with
-appropriate repo permissions:
+For CI/CD on GitHub Actions, use a deploy key scoped to the profile repo,
+or rely on `GITHUB_TOKEN` with cross-repo write permissions:
 
 ```{.yaml filename=".github/workflows/publish.yml"}
-- name: Render and publish
+- name: Render site and sync profile README
   env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GITHUB_TOKEN: ${{ secrets.PROFILE_REPO_TOKEN }}
   run: |
     git config --global user.email "ci@yoursite.dev"
     git config --global user.name "CI Bot"
     quarto render
 ```
 
-## Debugging Tips
+## Debugging
 
-**The README is not being updated.** Run the script manually with `bash -x`:
+**Nothing is being pushed.** Run the script directly with xtrace mode enabled:
 
 ```{.bash}
 bash -x scripts/update-profile-readme.sh
 ```
 
-`-x` prints each command before executing it, making it easy to spot where
-the script diverges from expectations.
+`-x` prints each command and its expanded arguments before executing it,
+making it easy to spot where the script diverges from expectations.
 
-**Shields.io badges show broken images.** Check for unexpected `.png` suffixes
-in the generated file:
+**Shields.io badges show broken images.** Check for unexpected `.png`
+suffixes in the generated file:
 
 ```{.bash}
-grep "\.png" /tmp/$(ls -t /tmp | head -1)/README.md
+grep "logoColor=.*\.png" /tmp/README.md
 ```
 
 Add additional `sed` rules for any other URL patterns Quarto mangles.
 
-**The recursion guard triggers unexpectedly.** If `PROFILE_README_RUNNING` is
-set in your shell environment from a previous failed run, new renders will
-silently skip the README sync. Unset it:
+**The recursion guard fires unexpectedly.** If `PROFILE_README_RUNNING` is
+left set in your shell from a previous interrupted run, new renders will
+silently skip the README sync. Reset it with:
 
 ```{.bash}
 unset PROFILE_README_RUNNING
 ```
 
-## The Result
+**The diff always reports changes even when `about.qmd` hasn't changed.**
+Check whether your GFM zone contains timestamps, random values, or anything
+that changes on every render. Content that is non-deterministic between runs
+will produce a fresh push on every build.
+
+## The result
 
 Every `quarto render` now does double duty:
 
-1. **Website** → `docs/about.html` — full Trestles layout with the profile image
-   sidebar, column divs, callout blocks, and social links
-2. **GitHub profile README** → auto-pushed to `your-username/your-username` with
-   the centered GFM header, badge row, and all shared bio content
+1. **Website** → `docs/about.html` — full Trestles layout with profile image
+   sidebar, column divs, callout blocks, and social links.
+2. **GitHub profile README** → auto-pushed to `your-username/your-username`
+   with the centered GFM header, badge row, and all shared bio content.
 
-One source file. Two outputs. Zero drift. This is the [POSSE](https://indieweb.org/POSSE)
-principle (*Publish on Own Site, Syndicate Elsewhere*) applied at the build-system level —
-your website is the canonical source; GitHub is one of its syndication targets.
+One source file. Two outputs. Zero drift. This is the
+[POSSE](https://indieweb.org/POSSE) principle (*Publish on Own Site,
+Syndicate Elsewhere*) applied at the build-system level — your website is
+the canonical source; GitHub is one of its syndication targets.
+
+If you adapt this for your own site, feel free to open a [GitHub
+issue](https://github.com/guillaumegilles/guillaumegilles.github.io) or
+reach out on
+[LinkedIn](https://www.linkedin.com/in/guillaumegilles) — happy to help you
+debug it.

@@ -42,6 +42,11 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<meta name="shinylive:serviceworker_dir" content="../..">
+<script src="../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/shinylive.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -126,6 +131,9 @@ window.Quarto = {
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     <img src="../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Guillaume Gilles</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Recherche"></div>
@@ -362,14 +370,47 @@ window.Quarto = {
   <li><a href="#loi-conjointe-dun-couple-de-variables-aléatoires-continues" id="toc-loi-conjointe-dun-couple-de-variables-aléatoires-continues" class="nav-link" data-scroll-target="#loi-conjointe-dun-couple-de-variables-aléatoires-continues">Loi conjointe d’un couple de variables aléatoires continues</a>
   <ul class="collapse">
   <li><a href="#densité-de-probabilité-sur-mathbbr2" id="toc-densité-de-probabilité-sur-mathbbr2" class="nav-link" data-scroll-target="#densité-de-probabilité-sur-mathbbr2">Densité de probabilité sur <span class="math inline">\(\mathbb{R}^2\)</span></a></li>
+  <li><a href="#explorateur-interactif-corrélation-et-densité-conjointe" id="toc-explorateur-interactif-corrélation-et-densité-conjointe" class="nav-link" data-scroll-target="#explorateur-interactif-corrélation-et-densité-conjointe">Explorateur interactif — Corrélation et densité conjointe</a></li>
   <li><a href="#fonction-de-répartition-conjointe" id="toc-fonction-de-répartition-conjointe" class="nav-link" data-scroll-target="#fonction-de-répartition-conjointe">Fonction de répartition conjointe</a></li>
   </ul></li>
-  <li><a href="#lois-marginales" id="toc-lois-marginales" class="nav-link" data-scroll-target="#lois-marginales">Lois marginales</a></li>
-  <li><a href="#indépendance-de-deux-variables-continues" id="toc-indépendance-de-deux-variables-continues" class="nav-link" data-scroll-target="#indépendance-de-deux-variables-continues">Indépendance de deux variables continues</a></li>
-  <li><a href="#densité-conditionnelle" id="toc-densité-conditionnelle" class="nav-link" data-scroll-target="#densité-conditionnelle">Densité conditionnelle</a></li>
-  <li><a href="#espérance-covariance-corrélation" id="toc-espérance-covariance-corrélation" class="nav-link" data-scroll-target="#espérance-covariance-corrélation">Espérance, covariance, corrélation</a></li>
-  <li><a href="#loi-de-la-somme-de-deux-variables-indépendantes" id="toc-loi-de-la-somme-de-deux-variables-indépendantes" class="nav-link" data-scroll-target="#loi-de-la-somme-de-deux-variables-indépendantes">Loi de la somme de deux variables indépendantes</a></li>
-  <li><a href="#changement-de-variables-bidimensionnel" id="toc-changement-de-variables-bidimensionnel" class="nav-link" data-scroll-target="#changement-de-variables-bidimensionnel">Changement de variables bidimensionnel</a></li>
+  <li><a href="#lois-marginales" id="toc-lois-marginales" class="nav-link" data-scroll-target="#lois-marginales">Lois marginales</a>
+  <ul class="collapse">
+  <li><a href="#définition-et-calcul" id="toc-définition-et-calcul" class="nav-link" data-scroll-target="#définition-et-calcul">Définition et calcul</a></li>
+  </ul></li>
+  <li><a href="#dépendance-entre-deux-variables-aléatoires" id="toc-dépendance-entre-deux-variables-aléatoires" class="nav-link" data-scroll-target="#dépendance-entre-deux-variables-aléatoires">Dépendance entre deux variables aléatoires</a>
+  <ul class="collapse">
+  <li><a href="#pourquoi-la-loi-conjointe-ne-se-déduit-pas-des-lois-marginales" id="toc-pourquoi-la-loi-conjointe-ne-se-déduit-pas-des-lois-marginales" class="nav-link" data-scroll-target="#pourquoi-la-loi-conjointe-ne-se-déduit-pas-des-lois-marginales">Pourquoi la loi conjointe ne se déduit pas des lois marginales</a></li>
+  <li><a href="#mesurer-la-dépendance-covariance-et-limites" id="toc-mesurer-la-dépendance-covariance-et-limites" class="nav-link" data-scroll-target="#mesurer-la-dépendance-covariance-et-limites">Mesurer la dépendance : covariance et limites</a></li>
+  </ul></li>
+  <li><a href="#indépendance-de-deux-variables-continues" id="toc-indépendance-de-deux-variables-continues" class="nav-link" data-scroll-target="#indépendance-de-deux-variables-continues">Indépendance de deux variables continues</a>
+  <ul class="collapse">
+  <li><a href="#indépendance-ce-que-ça-signifie-vraiment" id="toc-indépendance-ce-que-ça-signifie-vraiment" class="nav-link" data-scroll-target="#indépendance-ce-que-ça-signifie-vraiment">Indépendance : ce que ça signifie vraiment</a></li>
+  <li><a href="#conséquences-pratiques-de-lindépendance" id="toc-conséquences-pratiques-de-lindépendance" class="nav-link" data-scroll-target="#conséquences-pratiques-de-lindépendance">Conséquences pratiques de l’indépendance</a></li>
+  <li><a href="#méthode-pratique-pour-tester-lindépendance" id="toc-méthode-pratique-pour-tester-lindépendance" class="nav-link" data-scroll-target="#méthode-pratique-pour-tester-lindépendance">Méthode pratique pour tester l’indépendance</a></li>
+  <li><a href="#le-rôle-du-rectangle-explication-détaillée" id="toc-le-rôle-du-rectangle-explication-détaillée" class="nav-link" data-scroll-target="#le-rôle-du-rectangle-explication-détaillée">Le rôle du rectangle : explication détaillée</a></li>
+  <li><a href="#explorateur-interactif-indépendance-et-support" id="toc-explorateur-interactif-indépendance-et-support" class="nav-link" data-scroll-target="#explorateur-interactif-indépendance-et-support">Explorateur interactif — Indépendance et support</a></li>
+  </ul></li>
+  <li><a href="#densité-conditionnelle" id="toc-densité-conditionnelle" class="nav-link" data-scroll-target="#densité-conditionnelle">Densité conditionnelle</a>
+  <ul class="collapse">
+  <li><a href="#définition-2" id="toc-définition-2" class="nav-link" data-scroll-target="#définition-2">Définition</a></li>
+  <li><a href="#explorateur-interactif-densité-conditionnelle" id="toc-explorateur-interactif-densité-conditionnelle" class="nav-link" data-scroll-target="#explorateur-interactif-densité-conditionnelle">Explorateur interactif — Densité conditionnelle</a></li>
+  <li><a href="#lien-avec-lindépendance" id="toc-lien-avec-lindépendance" class="nav-link" data-scroll-target="#lien-avec-lindépendance">Lien avec l’indépendance</a></li>
+  </ul></li>
+  <li><a href="#espérance-covariance-corrélation" id="toc-espérance-covariance-corrélation" class="nav-link" data-scroll-target="#espérance-covariance-corrélation">Espérance, covariance, corrélation</a>
+  <ul class="collapse">
+  <li><a href="#espérance-et-covariance" id="toc-espérance-et-covariance" class="nav-link" data-scroll-target="#espérance-et-covariance">Espérance et covariance</a></li>
+  <li><a href="#coefficient-de-corrélation" id="toc-coefficient-de-corrélation" class="nav-link" data-scroll-target="#coefficient-de-corrélation">Coefficient de corrélation</a></li>
+  </ul></li>
+  <li><a href="#loi-de-la-somme-de-deux-variables-indépendantes" id="toc-loi-de-la-somme-de-deux-variables-indépendantes" class="nav-link" data-scroll-target="#loi-de-la-somme-de-deux-variables-indépendantes">Loi de la somme de deux variables indépendantes</a>
+  <ul class="collapse">
+  <li><a href="#formule-de-convolution" id="toc-formule-de-convolution" class="nav-link" data-scroll-target="#formule-de-convolution">Formule de convolution</a></li>
+  <li><a href="#applications" id="toc-applications" class="nav-link" data-scroll-target="#applications">Applications</a></li>
+  </ul></li>
+  <li><a href="#changement-de-variables-bidimensionnel" id="toc-changement-de-variables-bidimensionnel" class="nav-link" data-scroll-target="#changement-de-variables-bidimensionnel">Changement de variables bidimensionnel</a>
+  <ul class="collapse">
+  <li><a href="#théorème" id="toc-théorème" class="nav-link" data-scroll-target="#théorème">Théorème</a></li>
+  <li><a href="#applications-1" id="toc-applications-1" class="nav-link" data-scroll-target="#applications-1">Applications</a></li>
+  </ul></li>
   <li><a href="#exercice-de-synthèse" id="toc-exercice-de-synthèse" class="nav-link" data-scroll-target="#exercice-de-synthèse">Exercice de synthèse</a></li>
   </ul>
 </nav>
@@ -540,7 +581,6 @@ x^2(1-x)=x^2-x^3,\qquad \frac{(1-x)^3}{3}=\frac{1-3x+3x^2-x^3}{3}.
 </div>
 </div>
 </div>
-<hr>
 <p>Jusqu’ici, on a étudié les variables aléatoires une à une. Dans de nombreuses situations concrètes, on s’intéresse simultanément à plusieurs grandeurs liées : la taille et le poids d’un individu, la température et la pression atmosphérique, la durée de vie de deux composants d’un même système. Pour modéliser ces <strong>dépendances</strong>, il faut étudier la loi <strong>conjointe</strong> du couple <span class="math inline">\((X, Y)\)</span>, qui décrit non seulement le comportement individuel de chaque variable, mais aussi les liens statistiques entre elles. C’est ce que permet le cadre des couples de variables aléatoires à densité.</p>
 </section>
 <section id="loi-conjointe-dun-couple-de-variables-aléatoires-continues" class="level2 page-columns page-full">
@@ -560,6 +600,21 @@ Définition — Couple de variables aléatoires continues
 \qquad
 \omega\mapsto (X(\omega),Y(\omega)).
 \]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Qu’est-ce qu’un couple de variables aléatoires ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Chaque résultat <span class="math inline">\(\omega\)</span> de l’expérience aléatoire produit <strong>simultanément</strong> deux valeurs <span class="math inline">\((X(\omega), Y(\omega))\)</span>. On peut penser à un individu tiré au hasard dans une population : <span class="math inline">\(X(\omega)\)</span> est sa taille, <span class="math inline">\(Y(\omega)\)</span> son poids. Le couple <span class="math inline">\((X, Y)\)</span> décrit la distribution jointe de ces deux quantités dans la population.</p>
+<p>L’intérêt fondamental du couple est qu’il capture la <strong>relation</strong> entre <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> — information que les lois individuelles de <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> ne contiennent pas. Connaître séparément la loi de la taille et la loi du poids ne dit pas si, dans la population, les individus grands tendent aussi à être lourds. C’est la <strong>loi conjointe</strong> qui encode cette structure.</p>
+<p>Formellement, la loi du couple est une mesure de probabilité sur <span class="math inline">\(\mathbb{R}^2\)</span> : pour toute région <span class="math inline">\(\mathcal{D}\)</span> du plan, <span class="math inline">\(P\bigl((X,Y) \in \mathcal{D}\bigr)\)</span> est la probabilité que l’issue aléatoire tombe dans <span class="math inline">\(\mathcal{D}\)</span>. Lorsque cette mesure admet une <strong>densité</strong> <span class="math inline">\(f\)</span>, on dit que le couple est absolument continu, et toutes les probabilités se calculent par intégration de <span class="math inline">\(f\)</span> sur des régions du plan.</p>
 </div>
 </div>
 <section id="densité-de-probabilité-sur-mathbbr2" class="level3 page-columns page-full">
@@ -588,7 +643,7 @@ Définition — Densité sur <span class="math inline">\(\mathbb{R}^2\)</span>
 <div id="fig-densite-conjointe-relief" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-densite-conjointe-relief-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<img src="joint-continuous-random-variables_files/figure-html/fig-densite-conjointe-relief-output-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset">
+<img src="joint-continuous-random-variables_files/figure-html/fig-densite-conjointe-relief-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="1084" height="473">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-densite-conjointe-relief-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: <strong>Gauche :</strong> la probabilité que <span class="math inline">\((X,Y)\)</span> tombe dans la région <span class="math inline">\(\mathcal{D}\)</span> est le volume du relief <span class="math inline">\(f\)</span> au-dessus de <span class="math inline">\(\mathcal{D}\)</span>. <strong>Droite :</strong> le relief vu de dessus — les zones sombres correspondent aux régions de forte densité (événements plus probables).
@@ -597,6 +652,121 @@ Figure&nbsp;1: <strong>Gauche :</strong> la probabilité que <span class="math i
 </div>
 </div>
 </div>
+</section>
+<section id="explorateur-interactif-corrélation-et-densité-conjointe" class="level3">
+<h3 class="anchored" data-anchor-id="explorateur-interactif-corrélation-et-densité-conjointe">Explorateur interactif — Corrélation et densité conjointe</h3>
+<p>Faites varier le coefficient de corrélation <span class="math inline">\(\rho\)</span> pour observer l’effet sur la forme de la densité. Quand <span class="math inline">\(\rho = 0\)</span>, les contours d’équiprobabilité sont des cercles et les variables sont <strong>indépendantes</strong>. À droite : la densité conditionnelle <span class="math inline">\(f_{Y|X}(y\mid 1.5)\)</span> se déplace avec <span class="math inline">\(\rho\)</span>, illustrant que la loi de <span class="math inline">\(Y\)</span> sachant <span class="math inline">\(X = 1.5\)</span> dépend du coefficient de corrélation.</p>
+<pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 430
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+def biv_normal_pdf(X, Y, rho):
+    c = max(1 - rho**2, 1e-8)
+    return np.exp(-(X**2 - 2*rho*X*Y + Y**2) / (2*c)) / (2*np.pi*np.sqrt(c))
+
+def normal_pdf(x, mu=0.0, sigma=1.0):
+    return np.exp(-0.5*((x - mu)/sigma)**2) / (sigma * np.sqrt(2*np.pi))
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 10px;
+                font-family: sans-serif; margin: 0; }}
+        .form-label {{ color: {FG} !important; }}
+        .form-range {{ accent-color: steelblue; width: 100%; }}
+        .badge {{ display: inline-block; padding: 4px 10px; border-radius: 4px;
+                  font-size: 0.88em; font-weight: bold; margin: 4px 0; }}
+    """),
+    ui.h5("🎲 Loi normale bivariée — faites varier ρ"),
+    ui.row(
+        ui.column(4,
+            ui.input_slider("rho", "Corrélation ρ :", min=-0.95, max=0.95, value=0.0, step=0.05),
+            ui.output_ui("badge"),
+            ui.hr(),
+            ui.tags.ul(
+                ui.tags.li("ρ = 0 → cercles → indépendance",
+                           style=f"color:{FG}; font-size:0.82em"),
+                ui.tags.li("ρ &gt; 0 → ellipses penchées ↗",
+                           style=f"color:{FG}; font-size:0.82em"),
+                ui.tags.li("ρ &lt; 0 → ellipses penchées ↘",
+                           style=f"color:{FG}; font-size:0.82em"),
+                ui.tags.li("Marginale f_Y(y) : toujours N(0,1), quel que soit ρ",
+                           style=f"color:{FG}; font-size:0.82em"),
+            ),
+        ),
+        ui.column(8,
+            ui.output_plot("plot", height="350px"),
+        ),
+    ),
+)
+
+def server(input, output, session):
+    @output
+    @render.ui
+    def badge():
+        rho = input.rho()
+        if abs(rho) &lt; 0.05:
+            c, msg = "#1B5E20", "✅ ρ ≈ 0 → INDÉPENDANTES"
+        elif rho &gt; 0:
+            c, msg = "#E65100", f"↗ ρ = {rho:.2f} → dépendance positive"
+        else:
+            c, msg = "#880E4F", f"↙ ρ = {rho:.2f} → dépendance négative"
+        return ui.HTML(f"&lt;div class='badge' style='background:{c};color:white'&gt;{msg}&lt;/div&gt;")
+
+    @output
+    @render.plot
+    def plot():
+        rho = input.rho()
+        x = np.linspace(-3, 3, 200)
+        y = np.linspace(-3, 3, 200)
+        X, Y = np.meshgrid(x, y)
+        Z = biv_normal_pdf(X, Y, rho)
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.8))
+        fig.patch.set_facecolor(BG)
+        for ax in (ax1, ax2):
+            ax.set_facecolor(BG)
+            ax.tick_params(colors=FG)
+            for sp in ax.spines.values():
+                sp.set_edgecolor(FG)
+
+        ax1.contourf(X, Y, Z, levels=20, cmap='Blues')
+        ax1.contour(X, Y, Z, levels=7, colors='white', alpha=0.35, linewidths=0.7)
+        ax1.set_xlabel('$x$', color=FG)
+        ax1.set_ylabel('$y$', color=FG)
+        ax1.set_title(f'Densité conjointe (ρ = {rho:.2f})', color=FG, fontsize=10)
+        ax1.set_aspect('equal')
+
+        t = np.linspace(-3.5, 3.5, 400)
+        f_margY = normal_pdf(t)
+        cond_std = np.sqrt(max(1 - rho**2, 1e-4))
+        f_condY = normal_pdf(t, mu=rho * 1.5, sigma=cond_std)
+        ax2.plot(t, f_margY, color='#4FC3F7', lw=2, label='marginale $f_Y(y)$')
+        ax2.plot(t, f_condY, color='#FFA726', lw=2, linestyle='--',
+                 label='conditionnelle $f_{Y|X}(y|1.5)$')
+        ax2.set_xlabel('$y$', color=FG)
+        ax2.set_ylabel('densité', color=FG)
+        ax2.legend(fontsize=8, facecolor='#152119', edgecolor='none', labelcolor=FG)
+        ax2.set_title('Marginale vs conditionnelle (x = 1.5)', color=FG, fontsize=10)
+        ax2.set_xlim(-3.5, 3.5)
+        ax2.set_ylim(0, 1.5)
+
+        plt.suptitle('Loi normale bivariée standard', color=FG, fontsize=10)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -632,7 +802,7 @@ e^{-(x+y)} &amp; \text{si } x\ge 0,\ y\ge 0,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -641,7 +811,7 @@ Solution — Exemple 2
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>La positivité est immédiate. Ensuite : <span class="math display">\[
 \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
@@ -686,11 +856,12 @@ f(x,y)=\frac{\partial^2 F}{\partial x\partial y}(x,y).
 </div>
 </div>
 <p>La fonction de répartition conjointe <span class="math inline">\(F(x,y)\)</span> est l’analogue bidimensionnel de la répartition usuelle : elle cumule la probabilité d’être dans le “quadrant inférieur gauche” <span class="math inline">\((-\infty, x] \times (-\infty, y]\)</span>. La proposition ci-dessus établit le lien fondamental avec la densité : dériver <span class="math inline">\(F\)</span> successivement par rapport à <span class="math inline">\(x\)</span> puis par rapport à <span class="math inline">\(y\)</span> redonne <span class="math inline">\(f\)</span>. C’est le pendant exact de la relation <span class="math inline">\(F' = f\)</span> du cas unidimensionnel, généralisée à la dimension deux.</p>
-<hr>
 </section>
 </section>
 <section id="lois-marginales" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="lois-marginales">Lois marginales</h2>
+<section id="définition-et-calcul" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="définition-et-calcul">Définition et calcul</h3>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -715,7 +886,7 @@ f_Y(y)=\int_{\mathbb{R}} f(x,y)\,dx.
 <div id="fig-marginales-projection" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-marginales-projection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<img src="joint-continuous-random-variables_files/figure-html/fig-marginales-projection-output-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset">
+<img src="joint-continuous-random-variables_files/figure-html/fig-marginales-projection-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="1312" height="472">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-marginales-projection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Les lois marginales s’obtiennent en <strong>intégrant la densité conjointe selon l’autre variable</strong> : <span class="math inline">\(f_X(x) = \int f(x,y)\,dy\)</span> (projection sur l’axe <span class="math inline">\(x\)</span>) et <span class="math inline">\(f_Y(y) = \int f(x,y)\,dx\)</span> (projection sur l’axe <span class="math inline">\(y\)</span>). Les marginales ne restituent pas la structure de dépendance présente dans la loi conjointe.
@@ -745,7 +916,7 @@ f(x,y)=\frac{1}{\pi}\mathbf{1}_D(x,y).
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -754,7 +925,7 @@ Solution — Exemple 3
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> La fonction <span class="math inline">\(f\)</span> est positive. L’aire du disque <span class="math inline">\(D\)</span> de rayon <span class="math inline">\(1\)</span> vaut <span class="math inline">\(\pi\)</span>, donc : <span class="math display">\[
 \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
@@ -796,7 +967,7 @@ Exercice — Cible de tir à l’arc
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -805,7 +976,7 @@ Solution — Exercice Cible de tir à l’arc
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> La loi est uniforme sur <span class="math inline">\(D\)</span>, d’aire <span class="math inline">\(\pi\cdot 4^2=16\pi\)</span>. La densité est donc : <span class="math display">\[
 f(x,y)=\frac{1}{16\pi}\,\mathbf{1}_D(x,y).
@@ -821,11 +992,79 @@ f_X(x)=\int_{-\sqrt{16-x^2}}^{\sqrt{16-x^2}}\frac{1}{16\pi}\,dy
 </div>
 </div>
 </div>
-<hr>
-<p>L’indépendance est la notion fondamentale qui formalise l’idée que « connaître la valeur de <span class="math inline">\(X\)</span> n’apporte aucune information sur <span class="math inline">\(Y\)</span>, et réciproquement ». Dans le cas discret, deux variables sont indépendantes si les probabilités conjointes sont les produits des probabilités marginales. La même idée s’étend au cas continu : l’indépendance se lit directement sur la <strong>factorisation</strong> de la densité conjointe en un produit de densités marginales.</p>
+</section>
+</section>
+<section id="dépendance-entre-deux-variables-aléatoires" class="level2">
+<h2 class="anchored" data-anchor-id="dépendance-entre-deux-variables-aléatoires">Dépendance entre deux variables aléatoires</h2>
+<p>Deux variables aléatoires <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont <strong>dépendantes</strong> si la connaissance de la valeur prise par l’une modifie la distribution de l’autre. Dit autrement, savoir que <span class="math inline">\(X = x\)</span> change ce qu’on peut dire sur <span class="math inline">\(Y\)</span> — et ce changement est capturé par la <strong>densité conditionnelle</strong> <span class="math inline">\(f_{Y\mid X}(\cdot\mid x)\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Trois degrés de dépendance à distinguer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Il est utile de distinguer trois situations de plus en plus fortes :</p>
+<table class="table">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 41%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Situation</th>
+<th>Signification</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Dépendance</strong></td>
+<td><span class="math inline">\(f_{Y\mid X}(y\mid x) \ne f_Y(y)\)</span> pour certains <span class="math inline">\((x,y)\)</span></td>
+<td>Taille et poids d’un individu</td>
+</tr>
+<tr class="even">
+<td><strong>Non-corrélation</strong></td>
+<td><span class="math inline">\(\operatorname{Cov}(X,Y) = 0\)</span> mais pas nécessairement indépendantes</td>
+<td><span class="math inline">\(X \sim \mathcal{U}([-1,1])\)</span>, <span class="math inline">\(Y = X^2\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Indépendance</strong></td>
+<td><span class="math inline">\(f(x,y) = f_X(x)\,f_Y(y)\)</span> pour tout <span class="math inline">\((x,y)\)</span></td>
+<td>Résultats de deux dés distincts</td>
+</tr>
+</tbody>
+</table>
+<p>L’indépendance implique la non-corrélation, mais la réciproque est fausse en général.</p>
+</div>
+</div>
+<section id="pourquoi-la-loi-conjointe-ne-se-déduit-pas-des-lois-marginales" class="level3">
+<h3 class="anchored" data-anchor-id="pourquoi-la-loi-conjointe-ne-se-déduit-pas-des-lois-marginales">Pourquoi la loi conjointe ne se déduit pas des lois marginales</h3>
+<p>Les lois marginales <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span> décrivent le comportement individuel de chaque variable, mais elles <strong>ne contiennent aucune information sur la relation</strong> entre <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span>. Deux couples <span class="math inline">\((X_1, Y_1)\)</span> et <span class="math inline">\((X_2, Y_2)\)</span> peuvent partager exactement les mêmes marginales tout en ayant des structures de dépendance radicalement différentes.</p>
+<p><strong>Exemple clé.</strong> Considérons deux lois normales bivariées avec marginales <span class="math inline">\(\mathcal{N}(0,1)\)</span> pour <span class="math inline">\(X\)</span> et pour <span class="math inline">\(Y\)</span>, mais de corrélations différentes. Quelle que soit la corrélation <span class="math inline">\(\rho \in (-1, 1)\)</span>, la densité conjointe</p>
+<p><span class="math display">\[
+f_\rho(x,y) = \frac{1}{2\pi\sqrt{1-\rho^2}}\exp\!\left(-\frac{x^2 - 2\rho xy + y^2}{2(1-\rho^2)}\right)
+\]</span></p>
+<p>produit les mêmes marginales <span class="math inline">\(f_X = f_Y = \mathcal{N}(0,1)\)</span>. Pourtant, pour <span class="math inline">\(\rho = 0\)</span> les variables sont indépendantes, pour <span class="math inline">\(\rho = 0.9\)</span> elles sont fortement positivement liées (grand <span class="math inline">\(X\)</span> prédit grand <span class="math inline">\(Y\)</span>), et pour <span class="math inline">\(\rho = -0.9\)</span> elles varient en sens opposé. Les marginales ne font pas la différence : <strong>c’est la loi conjointe — et elle seule — qui encode la dépendance</strong>.</p>
+</section>
+<section id="mesurer-la-dépendance-covariance-et-limites" class="level3">
+<h3 class="anchored" data-anchor-id="mesurer-la-dépendance-covariance-et-limites">Mesurer la dépendance : covariance et limites</h3>
+<p>La <strong>covariance</strong> <span class="math inline">\(\operatorname{Cov}(X,Y) = E(XY) - E(X)E(Y)\)</span> est une mesure scalaire de la dépendance <em>linéaire</em> :</p>
+<ul>
+<li><span class="math inline">\(\operatorname{Cov}(X,Y) &gt; 0\)</span> : <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> tendent à varier dans le même sens.</li>
+<li><span class="math inline">\(\operatorname{Cov}(X,Y) &lt; 0\)</span> : <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> tendent à varier en sens opposé.</li>
+<li><span class="math inline">\(\operatorname{Cov}(X,Y) = 0\)</span> : absence de liaison linéaire — mais pas nécessairement indépendance.</li>
+</ul>
+<p>La covariance ne capture que les liaisons <strong>linéaires</strong>. Si <span class="math inline">\(Y = X^2\)</span> avec <span class="math inline">\(X\)</span> symétrique autour de <span class="math inline">\(0\)</span>, la covariance est nulle malgré une dépendance fonctionnelle totale. Le <strong>coefficient de corrélation</strong> <span class="math inline">\(\rho(X,Y) = \operatorname{Cov}(X,Y)/(\sigma_X\sigma_Y)\)</span> est la version normalisée, bornée dans <span class="math inline">\([-1, 1]\)</span>, et <span class="math inline">\(|\rho| = 1\)</span> si et seulement si la liaison est exactement affine.</p>
+</section>
 </section>
 <section id="indépendance-de-deux-variables-continues" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="indépendance-de-deux-variables-continues">Indépendance de deux variables continues</h2>
+<p>L’indépendance est la notion fondamentale qui formalise l’idée que « connaître la valeur de <span class="math inline">\(X\)</span> n’apporte aucune information sur <span class="math inline">\(Y\)</span>, et réciproquement ». Dans le cas discret, deux variables sont indépendantes si les probabilités conjointes sont les produits des probabilités marginales. La même idée s’étend au cas continu : l’indépendance se lit directement sur la <strong>factorisation</strong> de la densité conjointe en un produit de densités marginales.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -859,13 +1098,168 @@ Proposition — Caractérisations équivalentes
 </ol>
 </div>
 </div>
+<section id="indépendance-ce-que-ça-signifie-vraiment" class="level3">
+<h3 class="anchored" data-anchor-id="indépendance-ce-que-ça-signifie-vraiment">Indépendance : ce que ça signifie vraiment</h3>
+<p>La définition formelle dit que les événements <span class="math inline">\(\{X\in I\}\)</span> et <span class="math inline">\(\{Y\in J\}\)</span> sont indépendants pour tous intervalles <span class="math inline">\(I, J\)</span>. En pratique, la caractérisation la plus utile est la <strong>factorisation de la densité</strong> : <span class="math inline">\(f(x,y) = f_X(x)\,f_Y(y)\)</span>.</p>
+<p>Voici comment lire cette condition dans les deux directions :</p>
+<ul>
+<li><p><strong>Si <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont indépendantes</strong>, la densité conditionnelle est identique à la densité marginale : <span class="math display">\[f_{Y\mid X}(y\mid x) = \frac{f(x,y)}{f_X(x)} = \frac{f_X(x)\,f_Y(y)}{f_X(x)} = f_Y(y).\]</span> Savoir que <span class="math inline">\(X = x\)</span> ne change rien à la loi de <span class="math inline">\(Y\)</span> — quelle que soit la valeur observée de <span class="math inline">\(X\)</span>, la distribution de <span class="math inline">\(Y\)</span> reste la même. <strong>La connaissance de <span class="math inline">\(X\)</span> est inutile pour prédire <span class="math inline">\(Y\)</span>.</strong></p></li>
+<li><p><strong>Si <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont dépendantes</strong>, il existe au moins un <span class="math inline">\(x\)</span> tel que <span class="math inline">\(f_{Y\mid X}(\cdot\mid x) \ne f_Y\)</span>. Connaître la valeur de <span class="math inline">\(X\)</span> <strong>modifie</strong> la distribution de <span class="math inline">\(Y\)</span>, parfois radicalement.</p></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Comparaison côte-à-côte : indépendant vs dépendant
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prenons deux exemples avec des marginales exponentielles <span class="math inline">\(f_X(x) = e^{-x}\)</span>, <span class="math inline">\(f_Y(y) = e^{-y}\)</span> sur <span class="math inline">\(\mathbb{R}_+\)</span>.</p>
+<p><strong>Cas 1 — Indépendantes.</strong> La densité conjointe est <span class="math inline">\(f(x,y) = e^{-x}e^{-y} = e^{-(x+y)}\)</span> sur <span class="math inline">\([0,+\infty)^2\)</span>.</p>
+<ul>
+<li>Support : le quart de plan <span class="math inline">\([0,+\infty)^2\)</span> — un rectangle ✓.</li>
+<li>Factorisation : <span class="math inline">\(f(x,y) = f_X(x) \cdot f_Y(y)\)</span> ✓.</li>
+<li>Conditionnelle : <span class="math inline">\(f_{Y\mid X}(y\mid x) = e^{-y}\)</span> — la loi de <span class="math inline">\(Y\)</span> ne dépend pas de <span class="math inline">\(x\)</span> ✓.</li>
+<li>Interprétation : la durée de vie de deux composants fabriqués indépendamment.</li>
+</ul>
+<p><strong>Cas 2 — Dépendantes.</strong> La densité conjointe est <span class="math inline">\(f(x,y) = \lambda^2 e^{-\lambda x}\,\mathbf{1}_{0 &lt; y &lt; x}\)</span> (Exercice 1).</p>
+<ul>
+<li>Support : le triangle <span class="math inline">\(\{0 &lt; y &lt; x\}\)</span> — pas un rectangle ✗.</li>
+<li>Factorisation : impossible (<span class="math inline">\(f \ne f_X \cdot f_Y\)</span>) ✗.</li>
+<li>Conditionnelle : <span class="math inline">\(f_{Y\mid X}(y\mid x) = \frac{1}{x}\,\mathbf{1}_{0 &lt; y &lt; x}\)</span> — la loi de <span class="math inline">\(Y\)</span> est uniforme sur <span class="math inline">\([0,x]\)</span>, donc dépend de <span class="math inline">\(x\)</span> ✗.</li>
+<li>Interprétation : <span class="math inline">\(Y\)</span> est une fraction de <span class="math inline">\(X\)</span> — connaître <span class="math inline">\(X\)</span> restreint fortement les valeurs possibles de <span class="math inline">\(Y\)</span>.</li>
+</ul>
+<p>La différence essentielle : dans le cas indépendant, <strong>fixer <span class="math inline">\(x\)</span> ne change rien</strong> à ce qu’on sait sur <span class="math inline">\(Y\)</span>. Dans le cas dépendant, <strong>fixer <span class="math inline">\(x\)</span> restreint</strong> l’espace des valeurs possibles de <span class="math inline">\(Y\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="conséquences-pratiques-de-lindépendance" class="level3">
+<h3 class="anchored" data-anchor-id="conséquences-pratiques-de-lindépendance">Conséquences pratiques de l’indépendance</h3>
+<p>Lorsque <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont indépendantes, plusieurs calculs se simplifient considérablement :</p>
+<p><span class="math display">\[E(XY) = E(X)\,E(Y), \qquad \operatorname{Cov}(X,Y) = 0, \qquad \operatorname{Var}(X+Y) = \operatorname{Var}(X) + \operatorname{Var}(Y).\]</span></p>
+<p>Plus généralement, pour toutes fonctions mesurables <span class="math inline">\(g\)</span> et <span class="math inline">\(h\)</span> : <span class="math display">\[E\bigl[g(X)\,h(Y)\bigr] = E\bigl[g(X)\bigr]\cdot E\bigl[h(Y)\bigr].\]</span></p>
+<p>Ces propriétés <strong>ne se généralisent pas</strong> au cas dépendant sans information supplémentaire sur la structure de dépendance.</p>
+</section>
+<section id="méthode-pratique-pour-tester-lindépendance" class="level3">
+<h3 class="anchored" data-anchor-id="méthode-pratique-pour-tester-lindépendance">Méthode pratique pour tester l’indépendance</h3>
+<p>Face à une densité conjointe <span class="math inline">\(f(x,y)\)</span>, voici le protocole en trois étapes :</p>
+<ol type="1">
+<li><p><strong>Vérifier le support.</strong> Si le support n’est pas un rectangle (éventuellement infini), les variables sont <strong>nécessairement dépendantes</strong> — inutile d’aller plus loin.</p></li>
+<li><p><strong>Calculer les marginales</strong> <span class="math inline">\(f_X(x) = \int f(x,y)\,dy\)</span> et <span class="math inline">\(f_Y(y) = \int f(x,y)\,dx\)</span>.</p></li>
+<li><p><strong>Comparer <span class="math inline">\(f(x,y)\)</span> à <span class="math inline">\(f_X(x)\,f_Y(y)\)</span>.</strong> Si les deux expressions sont égales pour tout <span class="math inline">\((x,y)\)</span> dans le support, les variables sont <strong>indépendantes</strong>. S’il existe un seul point où elles diffèrent, elles sont <strong>dépendantes</strong>.</p></li>
+</ol>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Piège fréquent : support rectangulaire ≠ indépendance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un support rectangulaire est une <strong>condition nécessaire</strong> mais pas suffisante pour l’indépendance. Par exemple, la densité <span class="math display">\[f(x,y) = \frac{x+y}{8}\,\mathbf{1}_{[0,2]^2}(x,y)\]</span> a un support <span class="math inline">\([0,2]^2\)</span> qui est bien un rectangle, mais les marginales valent <span class="math inline">\(f_X(x) = \frac{x+1}{4}\)</span> et <span class="math inline">\(f_Y(y) = \frac{y+1}{4}\)</span>, et on vérifie que <span class="math inline">\(f_X(x)\,f_Y(y) = \frac{(x+1)(y+1)}{16} \ne \frac{x+y}{8}\)</span> en général (par exemple en <span class="math inline">\((0,0)\)</span> : <span class="math inline">\(\frac{1}{16} \ne 0\)</span>). <strong>Les variables sont dépendantes malgré le support rectangulaire.</strong></p>
+<p>La factorisation de la densité est la seule vérification fiable.</p>
+</div>
+</div>
 <p>La condition de factorisation <span class="math inline">\(f(x,y) = f_X(x)\,f_Y(y)\)</span> a une interprétation géométrique claire : le relief de <span class="math inline">\(f\)</span> doit être un <strong>produit tensoriel</strong>, c’est-à-dire une surface dont chaque tranche verticale et chaque tranche horizontale ont la même forme (à un facteur de normalisation près). En particulier, le <strong>support</strong> de <span class="math inline">\(f\)</span> (la région où <span class="math inline">\(f &gt; 0\)</span>) doit nécessairement être un <strong>rectangle</strong>, éventuellement infini. Tout support non rectangulaire rend la factorisation impossible : si <span class="math inline">\((x,y)\)</span> est dans le support mais qu’il existe des valeurs <span class="math inline">\(x'\)</span> ou <span class="math inline">\(y'\)</span> telles que <span class="math inline">\((x', y)\)</span> ou <span class="math inline">\((x, y')\)</span> n’y sont pas, on ne peut pas écrire <span class="math inline">\(f = f_X \cdot f_Y\)</span> sur <span class="math inline">\(\mathbb{R}^2\)</span> tout entier. C’est pourquoi la loi uniforme sur le disque unité ne peut jamais correspondre à deux variables indépendantes — le support circulaire n’est pas un rectangle.</p>
+</section>
+<section id="le-rôle-du-rectangle-explication-détaillée" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="le-rôle-du-rectangle-explication-détaillée">Le rôle du rectangle : explication détaillée</h3>
+<section id="quest-ce-quun-rectangle-dans-ce-contexte" class="level4">
+<h4 class="anchored" data-anchor-id="quest-ce-quun-rectangle-dans-ce-contexte">Qu’est-ce qu’un « rectangle » dans ce contexte ?</h4>
+<p>Un rectangle (au sens probabiliste) n’est pas nécessairement un carré ou une figure bornée : c’est un <strong>produit cartésien</strong> <span class="math inline">\(A \times B\)</span> où <span class="math inline">\(A \subseteq \mathbb{R}\)</span> et <span class="math inline">\(B \subseteq \mathbb{R}\)</span> sont deux ensembles quelconques. Autrement dit, l’ensemble des <span class="math inline">\(x\)</span> possibles et l’ensemble des <span class="math inline">\(y\)</span> possibles sont <strong>indépendants l’un de l’autre</strong> — les valeurs autorisées pour <span class="math inline">\(y\)</span> ne dépendent pas de la valeur prise par <span class="math inline">\(x\)</span>.</p>
+<p>Exemples de supports rectangulaires :</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Support</th>
+<th>Forme</th>
+<th>Rectangle ?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\([0,1] \times [0,1]\)</span></td>
+<td>carré unité</td>
+<td>✓ oui</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\([0,+\infty) \times [0,+\infty)\)</span></td>
+<td>quart de plan</td>
+<td>✓ oui</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\mathbb{R} \times [0,+\infty)\)</span></td>
+<td>demi-plan</td>
+<td>✓ oui</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\([a,b] \times [c,d]\)</span></td>
+<td>rectangle quelconque</td>
+<td>✓ oui</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\{(x,y) : 0 &lt; y &lt; x\}\)</span></td>
+<td>triangle</td>
+<td>✗ non</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\{(x,y) : x^2+y^2 \le 1\}\)</span></td>
+<td>disque</td>
+<td>✗ non</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\{(x,y) : 0 \le y \le x \le 1\}\)</span></td>
+<td>triangle dans le carré</td>
+<td>✗ non</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\{(x,y) : \lvert y \rvert \le x,\ x \ge 0\}\)</span></td>
+<td>cône</td>
+<td>✗ non</td>
+</tr>
+</tbody>
+</table>
+<p>La règle est simple : <strong>le support est rectangulaire si et seulement si on peut l’écrire <span class="math inline">\(\{(x,y) : x \in A,\ y \in B\}\)</span> pour deux ensembles <span class="math inline">\(A\)</span> et <span class="math inline">\(B\)</span> qui ne dépendent pas l’un de l’autre.</strong></p>
+</section>
+<section id="pourquoi-un-support-non-rectangulaire-force-la-dépendance" class="level4">
+<h4 class="anchored" data-anchor-id="pourquoi-un-support-non-rectangulaire-force-la-dépendance">Pourquoi un support non rectangulaire force la dépendance</h4>
+<p>L’argument est algébrique et s’applique en un seul contre-exemple. Supposons que le support de <span class="math inline">\(f\)</span> ne soit pas un rectangle : il existe alors un point <span class="math inline">\((x_0, y_1)\)</span> <strong>hors du support</strong> alors que :</p>
+<ul>
+<li><span class="math inline">\((x_0, y_0) \in \text{support}\)</span> pour un certain <span class="math inline">\(y_0\)</span> (donc <span class="math inline">\(f_X(x_0) &gt; 0\)</span>),</li>
+<li><span class="math inline">\((x_1, y_1) \in \text{support}\)</span> pour un certain <span class="math inline">\(x_1\)</span> (donc <span class="math inline">\(f_Y(y_1) &gt; 0\)</span>).</li>
+</ul>
+<p>On a donc : <span class="math display">\[f(x_0, y_1) = 0, \quad \text{mais} \quad f_X(x_0)\,f_Y(y_1) &gt; 0.\]</span></p>
+<p>La factorisation <span class="math inline">\(f(x_0, y_1) = f_X(x_0)\,f_Y(y_1)\)</span> est <strong>impossible</strong> : les deux membres ne peuvent pas être égaux. <strong>Les variables sont nécessairement dépendantes.</strong></p>
+<p>L’intuition est immédiate : si <span class="math inline">\((x_0, y_1)\)</span> est impossible mais que <span class="math inline">\(x_0\)</span> et <span class="math inline">\(y_1\)</span> sont chacun séparément possibles, alors la valeur de <span class="math inline">\(X\)</span> <strong>contraint</strong> les valeurs accessibles à <span class="math inline">\(Y\)</span>. Savoir que <span class="math inline">\(X = x_0\)</span> élimine <span class="math inline">\(y_1\)</span> du champ des possibles pour <span class="math inline">\(Y\)</span> — c’est exactement ce que signifie la dépendance.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Visualiser la contrainte avec un exemple
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prenons le support triangulaire <span class="math inline">\(\{0 &lt; y &lt; x\}\)</span>. Pour tout <span class="math inline">\(x_0 &gt; 0\)</span> fixé, <span class="math inline">\(Y\)</span> ne peut prendre que des valeurs dans <span class="math inline">\(]0, x_0[\)</span>. Si <span class="math inline">\(x_0 = 1\)</span>, <span class="math inline">\(Y \in ]0, 1[\)</span>. Si <span class="math inline">\(x_0 = 3\)</span>, <span class="math inline">\(Y \in ]0, 3[\)</span>. La fourchette des valeurs possibles de <span class="math inline">\(Y\)</span> <strong>change avec <span class="math inline">\(x_0\)</span></strong> : c’est la signature de la dépendance.</p>
+<p>À l’inverse, sur le support rectangulaire <span class="math inline">\([0,+\infty)^2\)</span>, quelle que soit la valeur de <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span> peut toujours prendre n’importe quelle valeur dans <span class="math inline">\([0,+\infty)\)</span> — le domaine de <span class="math inline">\(Y\)</span> ne change pas. Aucune information sur <span class="math inline">\(X\)</span> ne restreint <span class="math inline">\(Y\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="pourquoi-la-factorisation-impose-un-support-rectangulaire" class="level4 page-columns page-full">
+<h4 class="anchored" data-anchor-id="pourquoi-la-factorisation-impose-un-support-rectangulaire">Pourquoi la factorisation impose un support rectangulaire</h4>
+<p>La réciproque se montre aussi directement. Si <span class="math inline">\(f(x,y) = f_X(x)\,f_Y(y)\)</span>, alors : <span class="math display">\[f(x,y) &gt; 0 \iff f_X(x) &gt; 0 \text{ et } f_Y(y) &gt; 0.\]</span></p>
+<p>Le support de <span class="math inline">\(f\)</span> est donc exactement <span class="math inline">\(\{x : f_X(x) &gt; 0\} \times \{y : f_Y(y) &gt; 0\}\)</span>, qui est par construction un <strong>produit cartésien</strong>, donc un rectangle. La factorisation <em>force</em> le support à être rectangulaire.</p>
 <div id="cell-fig-independance-support" class="cell page-columns page-full" data-execution_count="3">
 <div class="cell-output cell-output-display page-columns page-full">
 <div id="fig-independance-support" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-independance-support-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<img src="joint-continuous-random-variables_files/figure-html/fig-independance-support-output-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset">
+<img src="joint-continuous-random-variables_files/figure-html/fig-independance-support-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="978" height="473">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-independance-support-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: <strong>Gauche :</strong> variables indépendantes — le support est un rectangle (ici <span class="math inline">\([0,+\infty)^2\)</span>) et la densité se factorise <span class="math inline">\(f(x,y)=f_X(x)\cdot f_Y(y)\)</span>. <strong>Droite :</strong> variables non indépendantes — le support est un disque, qui n’est pas un rectangle : la factorisation est impossible.
@@ -874,6 +1268,128 @@ Figure&nbsp;3: <strong>Gauche :</strong> variables indépendantes — le support
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="explorateur-interactif-indépendance-et-support" class="level3">
+<h3 class="anchored" data-anchor-id="explorateur-interactif-indépendance-et-support">Explorateur interactif — Indépendance et support</h3>
+<p>Sélectionnez l’une des trois densités pour observer le lien entre <strong>forme du support</strong>, <strong>lois marginales</strong> et <strong>indépendance</strong>. La densité ③ illustre le piège classique : un support rectangulaire ne garantit pas l’indépendance — seule la factorisation <span class="math inline">\(f = f_X \cdot f_Y\)</span> est décisive.</p>
+<pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 430
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+CHOICES = {
+    "indep":    "① e^{−(x+y)} sur [0,∞)²  (indépendantes)",
+    "triangle": "② e^{−y}·1_{0&lt;x&lt;y}        (dépendantes, triangle)",
+    "rect_dep": "③ (x+y)/8 sur [0,2]²      (dépendantes, rectangle!)",
+}
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 10px;
+                font-family: sans-serif; margin: 0; }}
+        label {{ color: {FG} !important; }}
+        .info {{ background:#152119; border-radius:5px; padding:7px 12px;
+                 margin-top:6px; border-left:3px solid steelblue; font-size:0.85em; }}
+    """),
+    ui.h5("🔍 Indépendance — comparer trois densités"),
+    ui.row(
+        ui.column(4,
+            ui.input_radio_buttons("density", "Choisir la densité :",
+                choices=CHOICES, selected="indep"),
+            ui.output_ui("info"),
+        ),
+        ui.column(8,
+            ui.output_plot("plot", height="360px"),
+        ),
+    ),
+)
+
+def server(input, output, session):
+    @output
+    @render.ui
+    def info():
+        d = input.density()
+        data = {
+            "indep":    ("#1B5E20",
+                         "✅ Support rectangulaire&lt;br&gt;✅ Factorisation → &lt;strong&gt;INDÉPENDANTES&lt;/strong&gt;"),
+            "triangle": ("#880E4F",
+                         "❌ Support triangulaire → &lt;strong&gt;DÉPENDANTES&lt;/strong&gt;&lt;br&gt;"
+                         "&lt;em&gt;Pas besoin de vérifier la factorisation.&lt;/em&gt;"),
+            "rect_dep": ("#E65100",
+                         "✅ Support rectangulaire&lt;br&gt;❌ Factorisation échoue → "
+                         "&lt;strong&gt;DÉPENDANTES&lt;/strong&gt;&lt;br&gt;&lt;em&gt;Piège classique !&lt;/em&gt;"),
+        }
+        color, msg = data[d]
+        return ui.HTML(f"&lt;div class='info' style='border-color:{color}'&gt;{msg}&lt;/div&gt;")
+
+    @output
+    @render.plot
+    def plot():
+        d = input.density()
+        fig, axes = plt.subplots(1, 3, figsize=(11, 3.8))
+        fig.patch.set_facecolor(BG)
+        for ax in axes:
+            ax.set_facecolor(BG)
+            ax.tick_params(colors=FG)
+            for sp in ax.spines.values():
+                sp.set_edgecolor(FG)
+
+        if d == "indep":
+            x = y = np.linspace(0, 4, 300)
+            X, Y = np.meshgrid(x, y)
+            Z = np.exp(-(X + Y))
+            fX, fY = np.exp(-x), np.exp(-y)
+            color = '#66BB6A'
+            suptitle = r'$f(x,y)=e^{-(x+y)}$ — variables INDÉPENDANTES'
+        elif d == "triangle":
+            x = y = np.linspace(0, 4, 300)
+            X, Y = np.meshgrid(x, y)
+            Z = np.where(X &lt; Y, np.exp(-Y), np.nan)
+            fX, fY = np.exp(-x), y * np.exp(-y)
+            color = '#EF5350'
+            suptitle = r'$f(x,y)=e^{-y}\mathbf{1}_{0&lt;x&lt;y}$ — variables DÉPENDANTES'
+        else:
+            x = y = np.linspace(0, 2, 300)
+            X, Y = np.meshgrid(x, y)
+            Z = (X + Y) / 8
+            fX, fY = (x + 1) / 4, (y + 1) / 4
+            color = '#FFA726'
+            suptitle = r'$f(x,y)=(x+y)/8$ — DÉPENDANTES malgré le rectangle'
+
+        axes[0].contourf(X, Y, Z, levels=18, cmap='Blues')
+        axes[0].set_xlabel('$x$', color=FG)
+        axes[0].set_ylabel('$y$', color=FG)
+        axes[0].set_title('Densité conjointe', color=FG, fontsize=10)
+
+        axes[1].plot(x, fX, color='#4FC3F7', lw=2)
+        axes[1].fill_between(x, fX, alpha=0.25, color='#4FC3F7')
+        axes[1].set_xlabel('$x$', color=FG)
+        axes[1].set_ylabel('$f_X(x)$', color=FG)
+        axes[1].set_title('Marginale de $X$', color=FG, fontsize=10)
+
+        axes[2].plot(y, fY, color=color, lw=2)
+        axes[2].fill_between(y, fY, alpha=0.25, color=color)
+        axes[2].set_xlabel('$y$', color=FG)
+        axes[2].set_ylabel('$f_Y(y)$', color=FG)
+        axes[2].set_title('Marginale de $Y$', color=FG, fontsize=10)
+
+        plt.suptitle(suptitle, color=FG, fontsize=10)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)</code></pre>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -894,7 +1410,7 @@ f(x,y)=e^{-(x+y)}\mathbf{1}_{x\ge 0, y\ge 0}.
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-21-contents" aria-controls="callout-21" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -903,7 +1419,7 @@ Solution — Exemple 4
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-21" class="callout-21-contents callout-collapse collapse">
+<div id="callout-26" class="callout-26-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><span class="math inline">\(f_X(x)=e^{-x}\mathbf{1}_{x\ge 0}\)</span>,</li>
@@ -920,7 +1436,7 @@ Solution — Exemple 4
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 2
+Exercice 1
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -934,16 +1450,16 @@ Exercice 2
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-28-contents" aria-controls="callout-28" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exercice 2
+Solution — Exercice 1
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-23" class="callout-23-contents callout-collapse collapse">
+<div id="callout-28" class="callout-28-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> <span class="math inline">\(f\ge 0\)</span>. On intègre d’abord en <span class="math inline">\(y\)</span> de <span class="math inline">\(0\)</span> à <span class="math inline">\(x\)</span> (borne du support) : <span class="math display">\[
 \iint_{\mathbb{R}^2} f\,dx\,dy
@@ -975,7 +1491,7 @@ P\!\left(Y&lt;\frac{X}{2}\right)
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 3
+Exercice 2
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -987,16 +1503,16 @@ Exercice 3
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-30-contents" aria-controls="callout-30" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exercice 3
+Solution — Exercice 2
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-25" class="callout-25-contents callout-collapse collapse">
+<div id="callout-30" class="callout-30-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> Le couple <span class="math inline">\((X_1,X_2)\)</span> admet la densité conjointe <span class="math inline">\(f(x_1,x_2)=\lambda e^{-\lambda x_1}\cdot\mu e^{-\mu x_2}\)</span> sur <span class="math inline">\(\mathbb{R}_+^2\)</span> (par indépendance). Comme les variables sont continues, <span class="math inline">\(P(X_1=X_2)=0\)</span>.</p>
 <p><span class="math display">\[
@@ -1041,7 +1557,7 @@ f(x,y)=k\,e^{-y}\,\mathbf{1}_{\{0&lt;x&lt;y\}}(x,y).
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-27-contents" aria-controls="callout-27" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-32-contents" aria-controls="callout-32" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1050,7 +1566,7 @@ Solution — Exercice Densité <span class="math inline">\(ke^{-y}\)</span>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-27" class="callout-27-contents callout-collapse collapse">
+<div id="callout-32" class="callout-32-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> La fonction est positive si <span class="math inline">\(k\ge 0\)</span>. On calcule : <span class="math display">\[
 \iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
@@ -1087,7 +1603,7 @@ Exercice — Roméo et Juliette
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-29-contents" aria-controls="callout-29" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-34-contents" aria-controls="callout-34" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1096,7 +1612,7 @@ Solution — Exercice Roméo et Juliette
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-29" class="callout-29-contents callout-collapse collapse">
+<div id="callout-34" class="callout-34-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> <span class="math inline">\(R\)</span> et <span class="math inline">\(J\)</span> sont indépendantes et uniformes sur <span class="math inline">\([0,1]\)</span>, donc le couple <span class="math inline">\((R,J)\)</span> est uniforme sur le carré <span class="math inline">\([0,1]^2\)</span>, de densité <span class="math inline">\(f(r,j)=1\)</span> sur <span class="math inline">\([0,1]^2\)</span>.</p>
 <p><strong>2.</strong> Par indépendance : <span class="math inline">\(E(RJ)=E(R)\,E(J)=\dfrac{1}{2}\cdot\dfrac{1}{2}=\dfrac{1}{4}\)</span>.</p>
@@ -1109,11 +1625,13 @@ P(|J-R|\le\tfrac{1}{4})=1-2\cdot\frac{9}{32}=1-\frac{9}{16}=\frac{7}{16}.
 </div>
 </div>
 </div>
-<hr>
-<p>Connaître la loi de <span class="math inline">\(Y\)</span> sachant que <span class="math inline">\(X\)</span> a pris une valeur précise <span class="math inline">\(x\)</span> est l’objet de la <strong>densité conditionnelle</strong>. Dans le cas discret, la probabilité conditionnelle est le rapport <span class="math inline">\(P(X=x,\,Y=y)/P(X=x)\)</span>. Dans le cas continu, <span class="math inline">\(P(X=x) = 0\)</span> pour tout <span class="math inline">\(x\)</span>, donc ce rapport est de la forme <span class="math inline">\(0/0\)</span> et n’a pas de sens direct. On contourne cette difficulté en travaillant avec les densités : la densité conditionnelle est définie par la même formule de rapport, mais appliquée aux densités plutôt qu’aux probabilités ponctuelles. Elle peut se justifier rigoureusement comme la limite <span class="math inline">\(f_{Y\mid X}(y\mid x) = \lim_{\varepsilon \to 0} f_{Y \mid X \in [x, x+\varepsilon]}(y)\)</span>, c’est-à-dire la loi de <span class="math inline">\(Y\)</span> lorsqu’on “sait que <span class="math inline">\(X\)</span> est très proche de <span class="math inline">\(x\)</span>”.</p>
+</section>
 </section>
 <section id="densité-conditionnelle" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="densité-conditionnelle">Densité conditionnelle</h2>
+<p>Connaître la loi de <span class="math inline">\(Y\)</span> sachant que <span class="math inline">\(X\)</span> a pris une valeur précise <span class="math inline">\(x\)</span> est l’objet de la <strong>densité conditionnelle</strong>. Dans le cas discret, la probabilité conditionnelle est le rapport <span class="math inline">\(P(X=x,\,Y=y)/P(X=x)\)</span>. Dans le cas continu, <span class="math inline">\(P(X=x) = 0\)</span> pour tout <span class="math inline">\(x\)</span>, donc ce rapport est de la forme <span class="math inline">\(0/0\)</span> et n’a pas de sens direct. On contourne cette difficulté en travaillant avec les densités : la densité conditionnelle est définie par la même formule de rapport, mais appliquée aux densités plutôt qu’aux probabilités ponctuelles. Elle peut se justifier rigoureusement comme la limite <span class="math inline">\(f_{Y\mid X}(y\mid x) = \lim_{\varepsilon \to 0} f_{Y \mid X \in [x, x+\varepsilon]}(y)\)</span>, c’est-à-dire la loi de <span class="math inline">\(Y\)</span> lorsqu’on “sait que <span class="math inline">\(X\)</span> est très proche de <span class="math inline">\(x\)</span>”.</p>
+<section id="définition-2" class="level3">
+<h3 class="anchored" data-anchor-id="définition-2">Définition</h3>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1164,6 +1682,133 @@ f_{Y|X}(y \mid x) = \frac{e^{-y}\mathbf{1}_{0&lt;x&lt;y}}{e^{-x}} = e^{-(y-x)}\m
 <p>On reconnaît une loi exponentielle <span class="math inline">\(\mathcal{E}(1)\)</span> <strong>translatée</strong> de <span class="math inline">\(x\)</span>, soit <span class="math inline">\(Y \mid X=x \sim x + \mathcal{E}(1)\)</span>.</p>
 </div>
 </div>
+</section>
+<section id="explorateur-interactif-densité-conditionnelle" class="level3">
+<h3 class="anchored" data-anchor-id="explorateur-interactif-densité-conditionnelle">Explorateur interactif — Densité conditionnelle</h3>
+<p>Déplacez <span class="math inline">\(x_0\)</span> pour observer comment la densité conditionnelle <span class="math inline">\(f_{Y|X}(y \mid x_0)\)</span> change. Pour les variables <strong>indépendantes</strong> (gauche), la courbe est identique quel que soit <span class="math inline">\(x_0\)</span>. Pour les variables <strong>dépendantes</strong> (droite), elle se translate avec <span class="math inline">\(x_0\)</span> — c’est la marque de la dépendance.</p>
+<pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 420
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 10px;
+                font-family: sans-serif; margin: 0; }}
+        label {{ color: {FG} !important; }}
+        .formula {{ background:#152119; border-radius:5px; padding:7px 12px; margin-top:6px;
+                    border-left:3px solid #FFA726; font-size:0.85em; font-family:monospace; }}
+    """),
+    ui.h5("📐 Densité conditionnelle — déplacer x₀"),
+    ui.row(
+        ui.column(4,
+            ui.input_radio_buttons("density", "Densité conjointe :",
+                choices={
+                    "indep": "f = e^{−(x+y)}  (indépendantes)",
+                    "dep":   "f = e^{−y}·1_{0&lt;x&lt;y}  (dépendantes)",
+                },
+                selected="indep"),
+            ui.input_slider("x0", "Valeur de x₀ :", min=0.2, max=3.0, value=1.0, step=0.1),
+            ui.output_ui("formula"),
+        ),
+        ui.column(8,
+            ui.output_plot("plot", height="340px"),
+        ),
+    ),
+)
+
+def server(input, output, session):
+    @output
+    @render.ui
+    def formula():
+        d = input.density()
+        x0 = input.x0()
+        if d == "indep":
+            text = (
+                f"f&lt;sub&gt;Y|X&lt;/sub&gt;(y | x={x0:.1f}) = e&lt;sup&gt;−y&lt;/sup&gt; · 1&lt;sub&gt;y≥0&lt;/sub&gt;&lt;br&gt;"
+                "&lt;em style='color:#66BB6A'&gt;Invariante en x₀ → indépendance !&lt;/em&gt;"
+            )
+        else:
+            text = (
+                f"f&lt;sub&gt;Y|X&lt;/sub&gt;(y | x={x0:.1f}) = "
+                f"e&lt;sup&gt;−(y−{x0:.1f})&lt;/sup&gt; · 1&lt;sub&gt;y&gt;{x0:.1f}&lt;/sub&gt;&lt;br&gt;"
+                "&lt;em style='color:#EF5350'&gt;Se décale avec x₀ → dépendance !&lt;/em&gt;"
+            )
+        return ui.HTML(f"&lt;div class='formula'&gt;{text}&lt;/div&gt;")
+
+    @output
+    @render.plot
+    def plot():
+        d = input.density()
+        x0 = input.x0()
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.6))
+        fig.patch.set_facecolor(BG)
+        for ax in (ax1, ax2):
+            ax.set_facecolor(BG)
+            ax.tick_params(colors=FG)
+            for sp in ax.spines.values():
+                sp.set_edgecolor(FG)
+
+        xs = np.linspace(0, 4, 300)
+        ys = np.linspace(0, 4, 300)
+        X, Y = np.meshgrid(xs, ys)
+
+        if d == "indep":
+            Z = np.exp(-(X + Y))
+            y_cond = np.linspace(0, 6, 400)
+            f_cond = np.exp(-y_cond)
+            mean_c = 1.0
+            color = '#66BB6A'
+            xlim = (0, 6)
+        else:
+            Z = np.where(X &lt; Y, np.exp(-Y), np.nan)
+            y_cond = np.linspace(x0, x0 + 6, 400)
+            f_cond = np.exp(-(y_cond - x0))
+            mean_c = x0 + 1.0
+            color = '#EF5350'
+            xlim = (0, x0 + 6)
+
+        ax1.contourf(X, Y, Z, levels=18, cmap='Blues')
+        ax1.axvline(x0, color='#FFA726', lw=2, linestyle='--', label=f'$x_0={x0:.1f}$')
+        ax1.set_xlim(0, 4); ax1.set_ylim(0, 4)
+        ax1.set_xlabel('$x$', color=FG); ax1.set_ylabel('$y$', color=FG)
+        ax1.set_title('Densité conjointe $f(x,y)$', color=FG, fontsize=10)
+        ax1.legend(fontsize=9, facecolor='#152119', edgecolor='none', labelcolor=FG)
+
+        ax2.plot(y_cond, f_cond, color=color, lw=2.5, label='$f_{Y|X}(y|x_0)$')
+        ax2.fill_between(y_cond, f_cond, alpha=0.25, color=color)
+        if d == "dep":
+            ax2.plot([0, x0], [0, 0], color=color, lw=2.5)
+            ax2.axvline(x0, color='#FFA726', lw=1, linestyle=':', alpha=0.7,
+                        label=f'$x_0={x0:.1f}$')
+        ax2.axvline(mean_c, color='white', lw=1.2, linestyle=':', alpha=0.7,
+                    label=f'$E[Y|X=x_0]={mean_c:.1f}$')
+        ax2.set_xlabel('$y$', color=FG)
+        ax2.set_ylabel('densité conditionnelle', color=FG)
+        ax2.set_title('$f_{Y|X}(y \\mid x_0)$', color=FG, fontsize=10)
+        ax2.legend(fontsize=8, facecolor='#152119', edgecolor='none', labelcolor=FG)
+        ax2.set_xlim(*xlim)
+
+        plt.suptitle(r'Tranche verticale de $f(x,y)$ en $x=x_0$, normalisée',
+                     color=FG, fontsize=10)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)</code></pre>
+</section>
+<section id="lien-avec-lindépendance" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="lien-avec-lindépendance">Lien avec l’indépendance</h3>
 <p>La densité conditionnelle <span class="math inline">\(f_{Y\mid X}(\cdot \mid x)\)</span> est bien une densité de probabilité pour chaque <span class="math inline">\(x\)</span> fixé : elle est positive et d’intégrale <span class="math inline">\(1\)</span> (ce qui découle directement de la définition de <span class="math inline">\(f_X(x) = \int f(x,y)\,dy\)</span>). Elle décrit la loi de <span class="math inline">\(Y\)</span> “restreinte” à la connaissance que <span class="math inline">\(X = x\)</span>.</p>
 <p>Lorsque <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont indépendantes, on a <span class="math inline">\(f(x,y) = f_X(x)f_Y(y)\)</span>, donc <span class="math inline">\(f_{Y\mid X}(y \mid x) = f_Y(y)\)</span> : la connaissance de <span class="math inline">\(X\)</span> ne modifie pas la loi de <span class="math inline">\(Y\)</span>. C’est la formalisation exacte de l’indépendance — l’information apportée par <span class="math inline">\(X\)</span> est nulle vis-à-vis de <span class="math inline">\(Y\)</span>.</p>
 <div id="cell-fig-densite-conditionnelle" class="cell page-columns page-full" data-execution_count="4">
@@ -1171,7 +1816,7 @@ f_{Y|X}(y \mid x) = \frac{e^{-y}\mathbf{1}_{0&lt;x&lt;y}}{e^{-x}} = e^{-(y-x)}\m
 <div id="fig-densite-conditionnelle" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-densite-conditionnelle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<img src="joint-continuous-random-variables_files/figure-html/fig-densite-conditionnelle-output-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset">
+<img src="joint-continuous-random-variables_files/figure-html/fig-densite-conditionnelle-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="1062" height="472">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-densite-conditionnelle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: <strong>Gauche :</strong> densité conjointe avec corrélation <span class="math inline">\(\rho = 0.7\)</span>. La ligne rouge marque la condition <span class="math inline">\(X = x_0 = 1\)</span>. <strong>Droite :</strong> la densité conditionnelle <span class="math inline">\(f_{Y|X}(y\mid x_0)\)</span> (rouge) est obtenue en coupant le relief à <span class="math inline">\(X=x_0\)</span> et en renormalisant — elle diffère de la marginale <span class="math inline">\(f_Y\)</span> (pointillés bleus) car <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> sont corrélées.
@@ -1202,7 +1847,7 @@ f(x,y)=\frac{3}{2}(x^2+y^2)\,\mathbf{1}_{[0,1]^2}(x,y).
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-34-contents" aria-controls="callout-34" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-39-contents" aria-controls="callout-39" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1211,7 +1856,7 @@ Solution — Exercice Densité conditionnelle et espérance conditionnelle
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-34" class="callout-34-contents callout-collapse collapse">
+<div id="callout-39" class="callout-39-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> <span class="math inline">\(f\)</span> est positive. On intègre : <span class="math display">\[
 \iint_{[0,1]^2}\frac{3}{2}(x^2+y^2)\,dx\,dy
@@ -1236,10 +1881,12 @@ E(Y\mid X=x)=\int_0^1 y\cdot\frac{3(x^2+y^2)}{3x^2+1}\,dy
 </div>
 </div>
 </div>
-<hr>
+</section>
 </section>
 <section id="espérance-covariance-corrélation" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="espérance-covariance-corrélation">Espérance, covariance, corrélation</h2>
+<section id="espérance-et-covariance" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="espérance-et-covariance">Espérance et covariance</h3>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1307,7 +1954,7 @@ Proposition
 <div id="fig-correlation-nuages" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-correlation-nuages-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<img src="joint-continuous-random-variables_files/figure-html/fig-correlation-nuages-output-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset">
+<img src="joint-continuous-random-variables_files/figure-html/fig-correlation-nuages-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="1525" height="426">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-correlation-nuages-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: Quatre nuages de points illustrant les différentes situations. <strong>De gauche à droite :</strong> liaison linéaire positive (<span class="math inline">\(\rho\approx0.9\)</span>), liaison linéaire négative (<span class="math inline">\(\rho\approx-0.9\)</span>), variables indépendantes (<span class="math inline">\(\rho=0\)</span>), et dépendance non linéaire (<span class="math inline">\(Y=X^2\)</span>) avec covariance nulle malgré une dépendance totale. Ce dernier cas montre que <span class="math inline">\(\rho=0\)</span> n’implique pas l’indépendance.
@@ -1316,6 +1963,9 @@ Figure&nbsp;5: Quatre nuages de points illustrant les différentes situations. <
 </div>
 </div>
 </div>
+</section>
+<section id="coefficient-de-corrélation" class="level3">
+<h3 class="anchored" data-anchor-id="coefficient-de-corrélation">Coefficient de corrélation</h3>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1379,7 +2029,7 @@ Remarque — Interprétation de <span class="math inline">\(\rho\)</span>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 1
+Exercice 3
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1392,16 +2042,16 @@ Exercice 1
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-42-contents" aria-controls="callout-42" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-47-contents" aria-controls="callout-47" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exercice 1
+Solution — Exercice 3
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-42" class="callout-42-contents callout-collapse collapse">
+<div id="callout-47" class="callout-47-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> Le support de <span class="math inline">\(f\)</span> est le triangle <span class="math inline">\(T=\{0\le y\le x\le 1\}\)</span>. <span class="math inline">\(f\)</span> est positive. On calcule : <span class="math display">\[
 \iint_{\mathbb{R}^2} f\,dx\,dy=2\int_0^1\!\int_0^x dy\,dx=2\int_0^1 x\,dx=2\cdot\frac{1}{2}=1.
@@ -1429,12 +2079,14 @@ E(XY)=\iint_{\mathbb{R}^2}xy\cdot 2\,dx\,dy=2\int_0^1\!\int_0^x xy\,dy\,dx
 </div>
 </div>
 </div>
-<hr>
+</section>
 </section>
 <section id="loi-de-la-somme-de-deux-variables-indépendantes" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="loi-de-la-somme-de-deux-variables-indépendantes">Loi de la somme de deux variables indépendantes</h2>
 <p>Lorsque <span class="math inline">\(Z = X + Y\)</span> est la <strong>somme de deux variables indépendantes</strong>, on cherche à exprimer la densité de <span class="math inline">\(Z\)</span> en fonction de celles de <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span>. L’idée clé est la suivante : pour que <span class="math inline">\(Z\)</span> vaille <span class="math inline">\(z\)</span>, il faut que <span class="math inline">\(X\)</span> vaille <span class="math inline">\(x\)</span> <strong>et</strong> que <span class="math inline">\(Y\)</span> vaille <span class="math inline">\(z - x\)</span>, pour un certain <span class="math inline">\(x\)</span>. On intègre alors sur toutes les valeurs possibles de <span class="math inline">\(x\)</span>, et on obtient la <strong>formule de convolution</strong>. L’indépendance est ici essentielle : elle permet d’écrire la densité conjointe de <span class="math inline">\((X,Y)\)</span> comme le produit <span class="math inline">\(f_X(x)\,f_Y(z-x)\)</span>.</p>
 <p>Soient <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> indépendantes, de densités <span class="math inline">\(f_X\)</span> et <span class="math inline">\(f_Y\)</span>, et posons <span class="math inline">\(Z=X+Y\)</span>.</p>
+<section id="formule-de-convolution" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="formule-de-convolution">Formule de convolution</h3>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1458,7 +2110,7 @@ f_Z(z)=\int_{\mathbb{R}} f_X(x)f_Y(z-x)\,dx.
 <div id="fig-convolution-uniformes" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-convolution-uniformes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
-<img src="joint-continuous-random-variables_files/figure-html/fig-convolution-uniformes-output-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset">
+<img src="joint-continuous-random-variables_files/figure-html/fig-convolution-uniformes-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="1331" height="425">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-convolution-uniformes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6: <strong>Gauche et centre :</strong> <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span> suivent chacune une loi uniforme sur <span class="math inline">\([0,1]\)</span>. <strong>Droite :</strong> la densité de <span class="math inline">\(Z=X+Y\)</span>, obtenue par convolution, est la <strong>loi triangulaire</strong> sur <span class="math inline">\([0,2]\)</span>. La forme triangulaire émerge naturellement du chevauchement glissant des deux densités uniformes.
@@ -1467,6 +2119,9 @@ Figure&nbsp;6: <strong>Gauche et centre :</strong> <span class="math inline">\(X
 </div>
 </div>
 </div>
+</section>
+<section id="applications" class="level3">
+<h3 class="anchored" data-anchor-id="applications">Applications</h3>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1485,7 +2140,7 @@ Exemple 5 — Somme de deux lois uniformes
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-45-contents" aria-controls="callout-45" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-50-contents" aria-controls="callout-50" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1494,7 +2149,7 @@ Solution — Exemple 5
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-45" class="callout-45-contents callout-collapse collapse">
+<div id="callout-50" class="callout-50-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Ici <span class="math inline">\(f_X=f_Y=\mathbf{1}_{[0,1]}\)</span>. Donc <span class="math display">\[
 f_Z(z)=\int_{\mathbb{R}} \mathbf{1}_{[0,1]}(x)\mathbf{1}_{[0,1]}(z-x)\,dx,
@@ -1528,7 +2183,7 @@ Exercice 4
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-47-contents" aria-controls="callout-47" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-52-contents" aria-controls="callout-52" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1537,7 +2192,7 @@ Solution — Exercice 4
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-47" class="callout-47-contents callout-collapse collapse">
+<div id="callout-52" class="callout-52-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1. <span class="math inline">\(X,Y\sim\mathcal{U}([0,1])\)</span>, <span class="math inline">\(Z=X+Y\)</span>.</strong></p>
 <p>Par la formule de convolution, avec <span class="math inline">\(f_X=f_Y=\mathbf{1}_{[0,1]}\)</span> : <span class="math display">\[
@@ -1584,7 +2239,7 @@ Exercice 5
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-49-contents" aria-controls="callout-49" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-54-contents" aria-controls="callout-54" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1593,7 +2248,7 @@ Solution — Exercice 5
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-49" class="callout-49-contents callout-collapse collapse">
+<div id="callout-54" class="callout-54-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> On développe le membre de droite. Posons <span class="math inline">\(\sigma^2 = \sigma_1^2 + \sigma_2^2\)</span>. Alors : <span class="math display">\[
 \frac{\sigma^2}{\sigma_1^2\sigma_2^2}\left(x - \frac{\sigma_1^2}{\sigma^2}t\right)^2 + \frac{t^2}{\sigma^2}
@@ -1636,10 +2291,13 @@ Z = X + Y = (m_1 + m_2) + (X' + Y'),
 </div>
 </div>
 </section>
+</section>
 <section id="changement-de-variables-bidimensionnel" class="level2">
 <h2 class="anchored" data-anchor-id="changement-de-variables-bidimensionnel">Changement de variables bidimensionnel</h2>
 <p>Tout comme dans le cas unidimensionnel on effectuait un changement de variable pour se ramener à une intégrale connue, on peut transformer un couple <span class="math inline">\((X,Y)\)</span> en un nouveau couple <span class="math inline">\((U,V) = G(X,Y)\)</span> dont la loi est plus simple à exploiter. L’outil clé est le <strong>jacobien</strong> de la transformation inverse : c’est le facteur correctif qui compense la déformation locale des surfaces lors du changement de coordonnées.</p>
 <p>L’intuition est la suivante : si on “zoome” autour d’un point <span class="math inline">\((u,v)\)</span> dans l’espace de <span class="math inline">\((U,V)\)</span>, un petit carré élémentaire <span class="math inline">\(du\,dv\)</span> correspond dans l’espace de <span class="math inline">\((X,Y)\)</span> à un petit parallélogramme d’aire <span class="math inline">\(|J_H(u,v)|\,du\,dv\)</span>. Pour que les probabilités soient conservées lors du changement de variables — c’est-à-dire que <span class="math inline">\(P((U,V) \in \mathcal{D}') = P((X,Y) \in H(\mathcal{D}'))\)</span> pour tout domaine <span class="math inline">\(\mathcal{D}'\)</span> — la densité doit être ajustée par ce facteur de déformation.</p>
+<section id="théorème" class="level3">
+<h3 class="anchored" data-anchor-id="théorème">Théorème</h3>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1676,6 +2334,9 @@ Remarque
 <p>La formule de convolution (section VI) est un cas particulier de ce théorème, obtenu en posant <span class="math inline">\(U = X + Y\)</span> et <span class="math inline">\(V = Y\)</span> (changement de variables de jacobien <span class="math inline">\(|J_H| = 1\)</span>).</p>
 </div>
 </div>
+</section>
+<section id="applications-1" class="level3">
+<h3 class="anchored" data-anchor-id="applications-1">Applications</h3>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1714,7 +2375,7 @@ U=X+Y,\qquad V=\frac{X}{X+Y}.
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-54-contents" aria-controls="callout-54" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-59-contents" aria-controls="callout-59" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1723,7 +2384,7 @@ Solution — Exercice Changement de variables et indépendance
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-54" class="callout-54-contents callout-collapse collapse">
+<div id="callout-59" class="callout-59-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> De <span class="math inline">\(U=X+Y\)</span> et <span class="math inline">\(V=X/(X+Y)\)</span>, on tire <span class="math inline">\(X=UV\)</span> et <span class="math inline">\(Y=U-UV=U(1-V)\)</span>, d’où <span class="math inline">\(H(u,v)=(uv,\,u(1-v))\)</span>.</p>
 <p>La matrice jacobienne de <span class="math inline">\(H\)</span> est : <span class="math display">\[
@@ -1752,7 +2413,7 @@ V\sim\mathcal{U}([0,1])\quad\text{(densité }1 \text{ sur }(0,1)\text{)}.
 </div>
 </div>
 </div>
-<hr>
+</section>
 </section>
 <section id="exercice-de-synthèse" class="level2">
 <h2 class="anchored" data-anchor-id="exercice-de-synthèse">Exercice de synthèse</h2>
@@ -1781,7 +2442,7 @@ f(x,y)=2\mathbf{1}_T(x,y).
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-56-contents" aria-controls="callout-56" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-61-contents" aria-controls="callout-61" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1790,7 +2451,7 @@ Solution — Exercice 6
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-56" class="callout-56-contents callout-collapse collapse">
+<div id="callout-61" class="callout-61-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ol type="1">
 <li><p>Aire de <span class="math inline">\(T=\frac{1}{2}\)</span>, donc <span class="math display">\[
@@ -1837,7 +2498,7 @@ Exercice — Aiguilles de Buffon
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-58-contents" aria-controls="callout-58" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-63-contents" aria-controls="callout-63" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1846,7 +2507,7 @@ Solution — Exercice Aiguilles de Buffon
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-58" class="callout-58-contents callout-collapse collapse">
+<div id="callout-63" class="callout-63-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> Par indépendance, la densité conjointe est le produit des densités marginales : <span class="math display">\[
 f(y,\theta)=\frac{2}{l}\cdot\frac{2}{\pi}=\frac{4}{l\pi}

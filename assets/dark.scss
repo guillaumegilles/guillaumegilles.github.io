@@ -4,6 +4,9 @@
 
 /*-- scss:defaults --*/
 
+// ─── Pixel / retro display font ──────────────────────────────────────
+$pixel-font: 'Press Start 2P', monospace !default;
+
 // ─── Blackboard surface palette ───────────────────────────────────────
 
 $board-darkest:  #0D1610 !default;  // deepest shadow (navbar, footer)
@@ -52,11 +55,59 @@ $code-block-bg:  $board-darkest  !default;  // code block background
 
 /*-- scss:rules --*/
 
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 body {
   -webkit-font-smoothing: antialiased;
+  image-rendering: pixelated;  // crisp pixel art / favicon
 }
 
-// ─── Navbar — darkest strip, like the frame of a chalkboard ─────────
+// ─── Pixel font — navbar brand & page h1 ─────────────────────────────
+
+.navbar-brand {
+  font-family: $pixel-font;
+  font-size: 0.7rem;
+  color: $phosphor-green !important;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 8px rgba($phosphor-green, 0.5);
+}
+
+h1, .title {
+  font-family: $pixel-font;
+  font-size: 1.35rem;
+  line-height: 1.65;
+  letter-spacing: 0.04em;
+  color: $chalk-bright;
+}
+
+// ─── Abstract — framed chalkboard inset ──────────────────────────────
+
+.abstract {
+  background-color: $board-dark;
+  border: 1px solid $board-lighter;
+  border-left: 4px solid $pixel-amber;
+  border-radius: 0.4rem;
+  padding: 1.1rem 1.4rem;
+  margin: 1.5rem 0 2rem;
+
+  .block-title {
+    font-family: $pixel-font;
+    font-size: 0.6rem;
+    color: $pixel-amber;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.85rem;
+    text-transform: uppercase;
+  }
+
+  p {
+    color: $chalk;
+    font-style: italic;
+    margin-bottom: 0;
+    line-height: 1.7;
+  }
+}
+
+
 
 .navbar {
   background-color: $board-dark !important;
@@ -64,6 +115,8 @@ body {
 }
 
 .nav-link {
+  font-family: $pixel-font;
+  font-size: 0.6rem;
   color: $chalk-bright !important;
   font-weight: 800;
 
@@ -264,32 +317,34 @@ code:not([class]) {
 // Shared base: dark surface, chalk text, colored left edge
 .callout {
   background-color: $board-dark;
-  border-left-width: 4px;
-  border-right: none;
-  border-top: none;
-  border-bottom: none;
+  border: 1px solid $board-lighter;
+  border-left: 4px solid;         // accent color set per type below
+  border-radius: 0.4rem;
+  overflow: hidden;
+  margin: 1.25rem 0;
   color: $chalk;
 
   .callout-header {
-    background-color: transparent;
+    background-color: rgba($board-darkest, 0.5);
+    border-bottom: 1px dashed $board-lighter;
     font-weight: 700;
     opacity: 1;
+    padding: 0.55rem 1rem;
+  }
+
+  .callout-body-container {
+    padding: 0.75rem 1rem;
   }
 
   .callout-body {
     color: $chalk;
   }
 
-  // Hide default Bootstrap icon, replace with emoji
-  .callout-icon::before {
-    font-style: normal;
-    margin-right: 0.4rem;
-  }
-
-  i.callout-icon {
+  i.callout-icon::before {
     background-image: none !important;
-    height: auto;
-    width: auto;
+    font-style: normal;
+    margin-right: 0.5rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -298,7 +353,7 @@ code:not([class]) {
   border-left-color: $pixel-cyan;
 
   .callout-header { color: $pixel-cyan; }
-  i.callout-icon::before { content: "📝"; }
+  i.callout-icon::before { content: "📝" !important; }
 }
 
 // tip — 💡 phosphor green
@@ -306,7 +361,7 @@ code:not([class]) {
   border-left-color: $phosphor-green;
 
   .callout-header { color: $phosphor-green; }
-  i.callout-icon::before { content: "💡"; }
+  i.callout-icon::before { content: "💡" !important; }
 }
 
 // caution — ⚠️ amber CRT glow
@@ -314,7 +369,7 @@ code:not([class]) {
   border-left-color: $pixel-amber;
 
   .callout-header { color: $pixel-amber; }
-  i.callout-icon::before { content: "⚠️"; }
+  i.callout-icon::before { content: "⚠️" !important; }
 }
 
 // warning — 🚨 amber, slightly muted
@@ -322,7 +377,7 @@ code:not([class]) {
   border-left-color: darken($pixel-amber, 10%);
 
   .callout-header { color: darken($pixel-amber, 10%); }
-  i.callout-icon::before { content: "🚨"; }
+  i.callout-icon::before { content: "🚨" !important; }
 }
 
 // important — ❗ arcade red
@@ -330,7 +385,7 @@ code:not([class]) {
   border-left-color: $pixel-red;
 
   .callout-header { color: $pixel-red; }
-  i.callout-icon::before { content: "❗"; }
+  i.callout-icon::before { content: "❗" !important; }
 }
 
 // ─── Footer — matches navbar frame ──────────────────────────────────
