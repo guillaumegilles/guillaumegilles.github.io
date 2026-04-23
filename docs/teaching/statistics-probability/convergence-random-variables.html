@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.537">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Guillaume Gilles - Convergence de variables aléatoires</title>
+<title>Convergence de variables aléatoires – Guillaume Gilles</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -33,15 +36,16 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../teaching/statistics-probability/sampling-distribution.html" rel="next">
 <link href="../../teaching/statistics-probability/joint-continuous-random-variables.html" rel="prev">
 <link href="../../assets/favicon.png" rel="icon" type="image/png">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-acebb5f24679ac2f633996cbf56b9a25.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,8 +81,8 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -91,7 +95,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -107,17 +111,17 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="Guillaume Gilles - Convergence de variables aléatoires">
+<meta property="og:title" content="Convergence de variables aléatoires – Guillaume Gilles">
 <meta property="og:description" content="Ce chapitre étudie les différentes notions de convergence pour des suites de variables aléatoires. On présente d’abord les inégalités de concentration (Markov, Bienaymé-Tchebychev) qui permettent de contrôler les déviations d’une variable par rapport à son espérance. On introduit ensuite la convergence en probabilité et la convergence en moyenne quadratique, et on établit la loi faible des grands nombres. On présente la convergence presque sûre, la loi forte des grands nombres et la méthode de Monte-Carlo. Le chapitre se poursuit par la convergence en loi et le théorème limite central, puis se termine par les résultats de continuité et le théorème de Slutsky.">
 <meta property="og:image" content="https://ggilles.dev/teaching/statistics-probability/assets/og-image.png">
 <meta property="og:site_name" content="Guillaume Gilles">
-<meta name="twitter:title" content="Guillaume Gilles - Convergence de variables aléatoires">
+<meta name="twitter:title" content="Convergence de variables aléatoires – Guillaume Gilles">
 <meta name="twitter:description" content="Ce chapitre étudie les différentes notions de convergence pour des suites de variables aléatoires. On présente d’abord les inégalités de concentration (Markov, Bienaymé-Tchebychev) qui permettent de contrôler les déviations d’une variable par rapport à son espérance. On introduit ensuite la convergence en probabilité et la convergence en moyenne quadratique, et on établit la loi faible des grands nombres. On présente la convergence presque sûre, la loi forte des grands nombres et la méthode de Monte-Carlo. Le chapitre se poursuit par la convergence en loi et le théorème limite central, puis se termine par les résultats de continuité et le théorème de Slutsky.">
 <meta name="twitter:image" content="https://ggilles.dev/teaching/statistics-probability/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -125,14 +129,15 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../assets/favicon.png" alt="" class="navbar-logo">
+    <img src="../../assets/favicon.png" alt="" class="navbar-logo light-content">
+    <img src="../../assets/favicon.png" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Guillaume Gilles</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Recherche"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -151,7 +156,7 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Basculer en mode lecteur">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -162,11 +167,11 @@ window.Quarto = {
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/convergence-random-variables.html">Convergence et théorèmes limites</a></li><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/convergence-random-variables.html">Convergence de variables aléatoires</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -191,9 +196,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Une variable</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -226,9 +231,9 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Deux variables</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -249,9 +254,9 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">Convergence et théorèmes limites</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -266,9 +271,9 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">Statistique inférentielle</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -289,9 +294,9 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Examens</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -324,9 +329,9 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
  <span class="menu-text">Ressources</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -430,15 +435,17 @@ window.Quarto = {
 <p><a href="index.html">📍 Retour à la carte du cours</a> &gt; Dans tout ce chapitre, les variables aléatoires réelles considérées sont définies sur un même espace probabilisé <span class="math inline">\((\Omega, \mathcal{F}, P)\)</span>.</p>
 <section id="inégalités-de-concentration" class="level2">
 <h2 class="anchored" data-anchor-id="inégalités-de-concentration">Inégalités de concentration</h2>
+<p>Cette première partie répond à une question simple : <strong>à quel point une variable aléatoire peut-elle s’écarter d’une valeur centrale</strong> (son espérance) ? Les inégalités de concentration fournissent des bornes générales, utiles même quand on ne connaît pas la loi exacte de la variable.</p>
 <section id="inégalité-de-markov" class="level3">
 <h3 class="anchored" data-anchor-id="inégalité-de-markov">Inégalité de Markov</h3>
+<p>L’inégalité de Markov est l’outil de base : elle transforme une information sur la moyenne en un contrôle de probabilité de dépassement d’un seuil.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition — Inégalité de Markov
+<span class="screen-reader-only">Important</span>Proposition — Inégalité de Markov
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -446,12 +453,12 @@ Proposition — Inégalité de Markov
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Démonstration
+<span class="screen-reader-only">Astuce</span>Démonstration
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -468,7 +475,7 @@ Démonstration
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 1 — Salaire moyen en France
+<span class="screen-reader-only">Mise en garde</span>Exemple 1 — Salaire moyen en France
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -476,12 +483,12 @@ Exemple 1 — Salaire moyen en France
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exemple 1
+<span class="screen-reader-only">Astuce</span>Solution — Exemple 1
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -495,13 +502,14 @@ Solution — Exemple 1
 </section>
 <section id="inégalité-de-bienaymé-tchebychev" class="level3">
 <h3 class="anchored" data-anchor-id="inégalité-de-bienaymé-tchebychev">Inégalité de Bienaymé-Tchebychev</h3>
+<p>L’inégalité de Bienaymé-Tchebychev affine l’idée de Markov en tenant compte de la <strong>dispersion</strong> via la variance : elle borne la probabilité de s’éloigner de l’espérance de plus de <span class="math inline">\(\varepsilon\)</span>.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition — Inégalité de Bienaymé-Tchebychev
+<span class="screen-reader-only">Important</span>Proposition — Inégalité de Bienaymé-Tchebychev
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -509,12 +517,12 @@ Proposition — Inégalité de Bienaymé-Tchebychev
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Démonstration
+<span class="screen-reader-only">Astuce</span>Démonstration
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -530,7 +538,7 @@ Démonstration
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Remarques
+<span class="screen-reader-only">Astuce</span>Remarques
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -546,7 +554,7 @@ Remarques
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 2 — Paniers par match
+<span class="screen-reader-only">Mise en garde</span>Exemple 2 — Paniers par match
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -554,12 +562,12 @@ Exemple 2 — Paniers par match
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exemple 2
+<span class="screen-reader-only">Astuce</span>Solution — Exemple 2
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -576,7 +584,7 @@ Solution — Exemple 2
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 1 — Précision d’un sondage
+<span class="screen-reader-only">Mise en garde</span>Exercice 1 — Précision d’un sondage
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -594,12 +602,12 @@ Commenter le réalisme de la seconde situation.</li>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Indication
+<span class="screen-reader-only">Astuce</span>Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -619,15 +627,17 @@ Indication
 </section>
 <section id="convergence-en-probabilité-et-loi-faible-des-grands-nombres" class="level2">
 <h2 class="anchored" data-anchor-id="convergence-en-probabilité-et-loi-faible-des-grands-nombres">Convergence en probabilité et loi faible des grands nombres</h2>
+<p>Dans cette partie, on formalise l’idée de « stabilisation » d’une suite de variables aléatoires. L’objectif est de comprendre dans quel sens une moyenne empirique devient proche de la vraie moyenne lorsque la taille d’échantillon augmente.</p>
 <section id="définitions-de-convergence" class="level3">
 <h3 class="anchored" data-anchor-id="définitions-de-convergence">Définitions de convergence</h3>
+<p>Toutes les convergences n’ont pas la même force. Ici, on introduit d’abord la convergence en probabilité, puis la convergence en moyenne quadratique, et on compare leurs implications.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Définition — Convergence en probabilité
+<span class="screen-reader-only">Note</span>Définition — Convergence en probabilité
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -640,7 +650,7 @@ Définition — Convergence en probabilité
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 3 — Convergence en probabilité et lois uniformes
+<span class="screen-reader-only">Mise en garde</span>Exemple 3 — Convergence en probabilité et lois uniformes
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -649,12 +659,12 @@ Exemple 3 — Convergence en probabilité et lois uniformes
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exemple 3
+<span class="screen-reader-only">Astuce</span>Solution — Exemple 3
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -674,7 +684,7 @@ Solution — Exemple 3
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Définition — Convergence en moyenne quadratique
+<span class="screen-reader-only">Note</span>Définition — Convergence en moyenne quadratique
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -687,7 +697,7 @@ Définition — Convergence en moyenne quadratique
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition
+<span class="screen-reader-only">Important</span>Proposition
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -695,12 +705,12 @@ Proposition
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Démonstration
+<span class="screen-reader-only">Astuce</span>Démonstration
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -716,7 +726,7 @@ Démonstration
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 2 — Contre-exemple : convergence en probabilité sans convergence <span class="math inline">\(L^2\)</span>
+<span class="screen-reader-only">Mise en garde</span>Exercice 2 — Contre-exemple : convergence en probabilité sans convergence <span class="math inline">\(L^2\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -728,12 +738,12 @@ Exercice 2 — Contre-exemple : convergence en probabilité sans convergence <sp
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Indication
+<span class="screen-reader-only">Astuce</span>Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -753,7 +763,7 @@ Indication
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition (admise) — Caractérisation de la convergence <span class="math inline">\(L^2\)</span>
+<span class="screen-reader-only">Important</span>Proposition (admise) — Caractérisation de la convergence <span class="math inline">\(L^2\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -768,6 +778,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </section>
 <section id="loi-faible-des-grands-nombres" class="level3">
 <h3 class="anchored" data-anchor-id="loi-faible-des-grands-nombres">Loi faible des grands nombres</h3>
+<p>La loi faible des grands nombres justifie mathématiquement une intuition statistique centrale : <strong>moyenner beaucoup d’observations réduit les erreurs aléatoires</strong> et rapproche la moyenne observée de la moyenne théorique.</p>
 <p>Soit <span class="math inline">\((X_n)\)</span> une suite de v.a.r. i.i.d. de carré intégrable, d’espérance <span class="math inline">\(m\)</span> et de variance <span class="math inline">\(\sigma^2\)</span>. La <strong>moyenne empirique</strong> est : <span class="math display">\[\overline{X}_n = \frac{1}{n}\sum_{i=1}^n X_i.\]</span></p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -775,7 +786,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition — Loi faible des grands nombres
+<span class="screen-reader-only">Important</span>Proposition — Loi faible des grands nombres
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -785,12 +796,12 @@ Proposition — Loi faible des grands nombres
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Démonstration
+<span class="screen-reader-only">Astuce</span>Démonstration
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -807,7 +818,7 @@ Démonstration
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 4 — Population de daltoniens
+<span class="screen-reader-only">Mise en garde</span>Exemple 4 — Population de daltoniens
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -816,12 +827,12 @@ Exemple 4 — Population de daltoniens
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exemple 4
+<span class="screen-reader-only">Astuce</span>Solution — Exemple 4
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -840,7 +851,7 @@ Solution — Exemple 4
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition (admise) — Convergence de la variance empirique
+<span class="screen-reader-only">Important</span>Proposition (admise) — Convergence de la variance empirique
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -855,7 +866,7 @@ Proposition (admise) — Convergence de la variance empirique
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 3 — Dé équilibré et trois types de convergence
+<span class="screen-reader-only">Mise en garde</span>Exercice 3 — Dé équilibré et trois types de convergence
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -873,12 +884,12 @@ Exercice 3 — Dé équilibré et trois types de convergence
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-27-contents" aria-controls="callout-27" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-27-contents" aria-controls="callout-27" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Indication
+<span class="screen-reader-only">Astuce</span>Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -897,15 +908,17 @@ Indication
 </section>
 <section id="convergence-presque-sûre-et-loi-forte-des-grands-nombres" class="level2">
 <h2 class="anchored" data-anchor-id="convergence-presque-sûre-et-loi-forte-des-grands-nombres">Convergence presque sûre et loi forte des grands nombres</h2>
+<p>On passe ici à une notion de convergence plus exigeante : au lieu d’un contrôle global en probabilité, on regarde ce qui se passe <strong>trajectoire par trajectoire</strong> (pour presque tout <span class="math inline">\(\omega\)</span>).</p>
 <section id="convergence-presque-sûre" class="level3">
 <h3 class="anchored" data-anchor-id="convergence-presque-sûre">Convergence presque sûre</h3>
+<p>La convergence presque sûre exprime qu’à partir d’un certain rang, la suite <span class="math inline">\(X_n(\omega)\)</span> se comporte comme une suite numérique classique convergente, pour tous les scénarios sauf un ensemble négligeable.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Définition — Convergence presque sûre
+<span class="screen-reader-only">Note</span>Définition — Convergence presque sûre
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -918,7 +931,7 @@ Définition — Convergence presque sûre
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Remarques
+<span class="screen-reader-only">Astuce</span>Remarques
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -934,7 +947,7 @@ Remarques
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition (admise)
+<span class="screen-reader-only">Important</span>Proposition (admise)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -945,13 +958,14 @@ Proposition (admise)
 </section>
 <section id="loi-forte-des-grands-nombres" class="level3">
 <h3 class="anchored" data-anchor-id="loi-forte-des-grands-nombres">Loi forte des grands nombres</h3>
+<p>La loi forte renforce la loi faible : elle affirme que la moyenne empirique converge presque sûrement vers l’espérance. C’est le fondement théorique de la stabilité observée en pratique quand on répète une expérience aléatoire.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Théorème (admis) — Loi forte des grands nombres
+<span class="screen-reader-only">Important</span>Théorème (admis) — Loi forte des grands nombres
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -964,7 +978,7 @@ Théorème (admis) — Loi forte des grands nombres
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Remarque — Comparaison avec la loi faible
+<span class="screen-reader-only">Astuce</span>Remarque — Comparaison avec la loi faible
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -978,13 +992,14 @@ Remarque — Comparaison avec la loi faible
 </section>
 <section id="méthode-de-monte-carlo" class="level3">
 <h3 class="anchored" data-anchor-id="méthode-de-monte-carlo">Méthode de Monte-Carlo</h3>
+<p>La méthode de Monte-Carlo est une application directe des lois des grands nombres : on remplace une intégrale parfois difficile à calculer exactement par une moyenne empirique obtenue par simulation.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition — Méthode de Monte-Carlo
+<span class="screen-reader-only">Important</span>Proposition — Méthode de Monte-Carlo
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -998,7 +1013,7 @@ Proposition — Méthode de Monte-Carlo
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Remarque
+<span class="screen-reader-only">Astuce</span>Remarque
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1011,7 +1026,7 @@ Remarque
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 7 — Estimation d’une intégrale par Monte-Carlo
+<span class="screen-reader-only">Mise en garde</span>Exemple 7 — Estimation d’une intégrale par Monte-Carlo
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1024,13 +1039,14 @@ Exemple 7 — Estimation d’une intégrale par Monte-Carlo
 </section>
 <section id="convergence-en-loi-et-théorème-limite-central" class="level2">
 <h2 class="anchored" data-anchor-id="convergence-en-loi-et-théorème-limite-central">Convergence en loi et théorème limite central</h2>
+<p>La convergence en loi décrit le comportement asymptotique des distributions, même lorsque les variables ne convergent pas point par point. Elle est essentielle pour construire des approximations probabilistes en statistique.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Définition — Convergence en loi
+<span class="screen-reader-only">Note</span>Définition — Convergence en loi
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1043,7 +1059,7 @@ Définition — Convergence en loi
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Remarque
+<span class="screen-reader-only">Astuce</span>Remarque
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1056,7 +1072,7 @@ Remarque
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition (admise) — Lien entre convergence en probabilité et en loi
+<span class="screen-reader-only">Important</span>Proposition (admise) — Lien entre convergence en probabilité et en loi
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1070,7 +1086,7 @@ Proposition (admise) — Lien entre convergence en probabilité et en loi
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 5
+<span class="screen-reader-only">Mise en garde</span>Exemple 5
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1078,12 +1094,12 @@ Exemple 5
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-40-contents" aria-controls="callout-40" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-40-contents" aria-controls="callout-40" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exemple 5
+<span class="screen-reader-only">Astuce</span>Solution — Exemple 5
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1099,7 +1115,7 @@ Solution — Exemple 5
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 4 — Suites de lois exponentielles
+<span class="screen-reader-only">Mise en garde</span>Exercice 4 — Suites de lois exponentielles
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1115,12 +1131,12 @@ Exercice 4 — Suites de lois exponentielles
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-42-contents" aria-controls="callout-42" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-42-contents" aria-controls="callout-42" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Indication
+<span class="screen-reader-only">Astuce</span>Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1142,7 +1158,7 @@ Indication
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition (admise) — Théorème limite central
+<span class="screen-reader-only">Important</span>Proposition (admise) — Théorème limite central
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1152,13 +1168,14 @@ Proposition (admise) — Théorème limite central
 </div>
 </div>
 <p>Lorsque <span class="math inline">\(n \to +\infty\)</span>, <span class="math inline">\(\overline{X}_n\)</span> se comporte en loi comme <span class="math inline">\(\mathcal{N}\!\left(m, \dfrac{\sigma^2}{n}\right)\)</span>, et ce <strong>quelle que soit la loi des <span class="math inline">\(X_i\)</span></strong> : c’est le caractère universel du théorème limite central.</p>
+<p>En pratique, le TCL permet de remplacer une loi compliquée (de somme ou de moyenne) par une loi normale dès que l’échantillon est assez grand. C’est ce qui justifie la plupart des intervalles de confiance et tests approximatifs.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition — Approximation normale de la loi binomiale
+<span class="screen-reader-only">Important</span>Proposition — Approximation normale de la loi binomiale
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1172,7 +1189,7 @@ Proposition — Approximation normale de la loi binomiale
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Remarque — Approximation de Poisson
+<span class="screen-reader-only">Astuce</span>Remarque — Approximation de Poisson
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1186,7 +1203,7 @@ Remarque — Approximation de Poisson
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exemple 6 — Daltoniens dans un grand échantillon
+<span class="screen-reader-only">Mise en garde</span>Exemple 6 — Daltoniens dans un grand échantillon
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1195,12 +1212,12 @@ Exemple 6 — Daltoniens dans un grand échantillon
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-47-contents" aria-controls="callout-47" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-47-contents" aria-controls="callout-47" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exemple 6
+<span class="screen-reader-only">Astuce</span>Solution — Exemple 6
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1223,7 +1240,7 @@ Solution — Exemple 6
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 5 — Contrôle de pannes d’ordinateurs
+<span class="screen-reader-only">Mise en garde</span>Exercice 5 — Contrôle de pannes d’ordinateurs
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1237,12 +1254,12 @@ Exercice 5 — Contrôle de pannes d’ordinateurs
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-49-contents" aria-controls="callout-49" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-49-contents" aria-controls="callout-49" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Indication
+<span class="screen-reader-only">Astuce</span>Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1262,7 +1279,7 @@ Indication
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 6 — Restaurant scolaire
+<span class="screen-reader-only">Mise en garde</span>Exercice 6 — Restaurant scolaire
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1271,12 +1288,12 @@ Exercice 6 — Restaurant scolaire
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-51-contents" aria-controls="callout-51" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-51-contents" aria-controls="callout-51" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Indication
+<span class="screen-reader-only">Astuce</span>Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1297,7 +1314,7 @@ Indication
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 7 — Répartition de passagers entre deux avions
+<span class="screen-reader-only">Mise en garde</span>Exercice 7 — Répartition de passagers entre deux avions
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1310,12 +1327,12 @@ Exercice 7 — Répartition de passagers entre deux avions
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-53-contents" aria-controls="callout-53" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-53-contents" aria-controls="callout-53" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Indication
+<span class="screen-reader-only">Astuce</span>Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1334,15 +1351,17 @@ Indication
 </section>
 <section id="résultats-de-continuité" class="level2">
 <h2 class="anchored" data-anchor-id="résultats-de-continuité">Résultats de continuité</h2>
+<p>Cette dernière partie donne des règles de calcul sur les convergences : que devient la convergence quand on applique une fonction continue, quand on additionne/multiplie des suites, ou quand un terme converge vers une constante.</p>
 <section id="théorème-de-continuité" class="level3">
 <h3 class="anchored" data-anchor-id="théorème-de-continuité">Théorème de continuité</h3>
+<p>L’idée est simple : une fonction continue préserve les limites. Ce principe, valable pour les suites numériques, reste vrai dans les principaux modes de convergence probabilistes.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition — Continuité et convergence
+<span class="screen-reader-only">Important</span>Proposition — Continuité et convergence
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1357,13 +1376,14 @@ Proposition — Continuité et convergence
 </section>
 <section id="opérations-algébriques-et-convergence" class="level3">
 <h3 class="anchored" data-anchor-id="opérations-algébriques-et-convergence">Opérations algébriques et convergence</h3>
+<p>Cette section regroupe les règles pratiques pour combiner des suites convergentes : sommes, produits et quotients (quand le dénominateur ne s’annule pas).</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition — Opérations sur les convergences
+<span class="screen-reader-only">Important</span>Proposition — Opérations sur les convergences
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1378,13 +1398,14 @@ Proposition — Opérations sur les convergences
 </section>
 <section id="théorème-de-slutsky" class="level3">
 <h3 class="anchored" data-anchor-id="théorème-de-slutsky">Théorème de Slutsky</h3>
+<p>Le théorème de Slutsky est un outil central en statistique asymptotique : il permet de remplacer un terme aléatoire par sa limite constante à l’intérieur d’expressions plus complexes sans changer la loi limite.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Théorème (admis) — Théorème de Slutsky
+<span class="screen-reader-only">Important</span>Théorème (admis) — Théorème de Slutsky
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1401,7 +1422,7 @@ Théorème (admis) — Théorème de Slutsky
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proposition — Convergence vers une constante
+<span class="screen-reader-only">Important</span>Proposition — Convergence vers une constante
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1414,7 +1435,7 @@ Proposition — Convergence vers une constante
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Remarque — Hiérarchie des convergences
+<span class="screen-reader-only">Astuce</span>Remarque — Hiérarchie des convergences
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1433,7 +1454,7 @@ Remarque — Hiérarchie des convergences
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 8 — Convergence de <span class="math inline">\(V_n\)</span> vers <span class="math inline">\(\sigma^2\)</span>
+<span class="screen-reader-only">Mise en garde</span>Exercice 8 — Convergence de <span class="math inline">\(V_n\)</span> vers <span class="math inline">\(\sigma^2\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1447,12 +1468,12 @@ Exercice 8 — Convergence de <span class="math inline">\(V_n\)</span> vers <spa
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-60-contents" aria-controls="callout-60" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-60-contents" aria-controls="callout-60" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exercice 8
+<span class="screen-reader-only">Astuce</span>Solution — Exercice 8
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1479,7 +1500,7 @@ Solution — Exercice 8
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercice 9 — Convergence de la variance empirique <span class="math inline">\(S_n'^2\)</span>
+<span class="screen-reader-only">Mise en garde</span>Exercice 9 — Convergence de la variance empirique <span class="math inline">\(S_n'^2\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1494,12 +1515,12 @@ S_n^2 = \frac{1}{n-1}\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2.\]</span><
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-62-contents" aria-controls="callout-62" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-62-contents" aria-controls="callout-62" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution — Exercice 9
+<span class="screen-reader-only">Astuce</span>Solution — Exercice 9
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1526,7 +1547,7 @@ Solution — Exercice 9
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-À retenir
+<span class="screen-reader-only">Astuce</span>À retenir
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1548,43 +1569,58 @@ Solution — Exercice 9
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copié");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copié");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
@@ -1592,157 +1628,184 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
       return codeEl.innerText;
     }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copié");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copié");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
     }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ggilles\.dev");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        return container.innerHTML
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      return note.innerHTML;
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -1750,188 +1813,164 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../teaching/statistics-probability/joint-continuous-random-variables.html" class="pagination-link  aria-label=" couples="" de="" variables="" à="" densité"="">
+      <a href="../../teaching/statistics-probability/joint-continuous-random-variables.html" class="pagination-link" aria-label="Couples de variables à densité">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Couples de variables à densité</span>
       </a>          
   </div>

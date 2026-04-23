@@ -1,0 +1,188 @@
+---
+title: "Projet intégrateur — Statistiques et Probabilités"
+abstract: |
+  Ce projet de fin de module permet de mobiliser l'ensemble des notions du
+  cours sur un cas appliqué unique : modéliser, simuler, estimer et interpréter
+  la qualité d'un service à partir de données.
+date-modified: 2026-04-23
+---
+
+[📍 Retour à la carte du cours](index.html)
+
+## Objectif du projet
+
+Vous réalisez une étude complète de données avec une double approche :
+
+1. **Descriptive et probabiliste** : comprendre le phénomène et proposer des modèles de lois adaptés.
+2. **Inférentielle et asymptotique** : quantifier l'incertitude, justifier les approximations et conclure avec un niveau de confiance explicite.
+
+Le projet doit montrer que vous savez relier les concepts théoriques du cours à des décisions concrètes.
+
+## Contexte proposé
+
+Vous êtes consultant junior pour une plateforme de livraison locale.
+L'entreprise veut améliorer sa qualité de service et vous confie un jeu de données contenant, pour chaque commande :
+
+- délai de préparation (minutes),
+- délai de livraison (minutes),
+- montant de la commande (euros),
+- distance (km),
+- indicateur de retard (1 si la commande dépasse 45 minutes, 0 sinon),
+- satisfaction client (note de 1 à 5).
+
+## Jeu de données
+
+### Option 1 — Utiliser le dataset proposé (recommandé)
+
+Un jeu de données fictif **reproductible** est fourni :
+
+- **Fichier CSV** : `delivery_data.csv` (400 observations, 8 colonnes)
+- **Script générateur** : `generate_delivery_data.py` (Python 3, numpy, pandas)
+
+**Télécharger directement :**
+- [delivery_data.csv](delivery_data.csv)
+- [generate_delivery_data.py](generate_delivery_data.py)
+
+**Ou régénérer les données :**
+
+```bash
+python generate_delivery_data.py
+```
+
+**Propriétés du dataset :**
+
+- Variables quantitatives : `distance_km`, `montant_euros`, `delai_prep_min`, `delai_livr_min`, `delai_total_min`
+- Variable binaire : `est_retard` (1 = commande > 45 min, 0 sinon)
+- Variable ordinale : `satisfaction` (1–5, majorité 4–5)
+- Dépendances réalistes : montant lié à la distance, délai de livraison lié à la distance, satisfaction affectée par les retards
+- Taille : exactement 400 observations
+- Reproductible : seed=42 (identique à chaque exécution)
+
+**Statistiques du dataset**
+
+| Statistique | distance_km | montant_euros | delai_total_min | est_retard | satisfaction |
+|---|---|---|---|---|---|
+| moyenne | 12.61 | 33.40 | 48.19 | 62.0% | 4.26 |
+| écart-type | 7.20 | 17.65 | 22.80 | — | 0.58 |
+| min | 0.62 | 4.99 | 13 | — | 3 |
+| max | 24.77 | 88.59 | 140 | — | 5 |
+
+### Option 2 — Utiliser vos propres données
+
+Vous pouvez aussi :
+
+- Utiliser un jeu de données réel (si disponible auprès de votre entreprise/institution).
+- Générer des données selon vos propres hypothèses (en explicitant le modèle de simulation).
+
+**Contrainte minimale** : au minimum 200 observations, avec au moins une variable discrète et une variable continue.
+
+## Consignes générales
+
+- Travail en binôme (ou trinôme avec validation de l'enseignant).
+- Code reproductible obligatoire (Python ou R).
+- Toutes les figures et tous les résultats numériques doivent être générés automatiquement.
+- Chaque conclusion doit être reliée à un résultat chiffré (estimateur, intervalle, probabilité, test, approximation).
+
+## Par où commencer ?
+
+1. **Téléchargez** `delivery_data.csv` et `quickstart_project.py`.
+2. **Exécutez** le script quickstart pour explorer les données (10 min).
+3. **Lisez** la Partie A de la feuille de route et lancez vos premiers calculs.
+4. **Itérez** : chaque partie s'appuie sur la précédente. Fixez-vous une deadline par partie.
+
+## Feuille de route (toutes les parties sont obligatoires)
+
+### Partie A — Statistiques descriptives univariées et bivariées
+
+1. Décrire les variables quantitatives (moyenne, médiane, variance, quartiles, histogrammes, boxplots).
+2. Étudier au moins une relation bivariée pertinente (distance vs délai, montant vs satisfaction, etc.).
+3. Produire une première lecture métier : quels sont les signaux de risque de retard ?
+
+### Partie B — Modélisation probabiliste
+
+1. Proposer une loi pour une variable discrète (ex. retard : Bernoulli/Binomiale ; nombre de retards par journée : Poisson).
+2. Proposer une loi pour une variable continue (ex. délai : exponentielle, normale ou autre loi justifiée).
+3. Vérifier la cohérence des hypothèses par graphiques et indicateurs (ordre de grandeur, forme, dispersion).
+
+### Partie C — Inégalités de concentration
+
+1. Utiliser l'inégalité de Markov sur une variable positive du projet.
+2. Utiliser l'inégalité de Bienayme-Tchebychev pour majorer une probabilité de déviation.
+3. Comparer ces majorations avec une probabilité empirique observée sur les données et commenter l'écart.
+
+### Partie D — Convergences et simulation
+
+1. Simuler des échantillons i.i.d. et illustrer la loi faible des grands nombres sur une moyenne empirique.
+2. Montrer numériquement la convergence de la variance empirique.
+3. Donner un exemple de convergence en probabilité et un exemple de convergence en loi dans votre contexte.
+
+### Partie E — Echantillonnage, estimation, intervalles
+
+1. Estimer au moins deux paramètres d'intérêt (ex. proportion de retards, délai moyen).
+2. Construire les intervalles de confiance associés et expliquer leur interprétation correcte.
+3. Discuter l'effet de la taille d'échantillon sur la précision.
+
+### Partie F — Theoreme central limite et approximation
+
+1. Choisir une somme ou une moyenne d'interet et justifier l'usage du TCL.
+2. Realiser une approximation normale (avec standardisation explicite).
+3. Evaluer la qualite de l'approximation (comparaison empirique ou simulation).
+
+### Partie G — Monte-Carlo
+
+1. Definir une quantite d'interet ecrite comme une esperance ou une integrale.
+2. L'estimer par Monte-Carlo avec plusieurs tailles d'echantillon.
+3. Montrer numeriquement le comportement en ordre $1/\sqrt{n}$ de l'erreur (ou de l'ecart-type empirique).
+
+### Partie H — Continuite et Slutsky
+
+1. Appliquer un resultat de continuite a une transformation de statistique (carre, logarithme, ratio, etc.).
+2. Donner un exemple concret d'utilisation de Slutsky pour obtenir une loi limite exploitable.
+3. Expliquer en une phrase pourquoi ce resultat simplifie l'inference dans votre projet.
+
+## Livrables
+
+1. **Rapport** (8 a 12 pages) :
+   - contexte et question metier,
+   - methodologie,
+   - resultats,
+   - limites,
+   - recommandations operationnelles.
+2. **Notebook ou script reproductible** : import, nettoyage, calculs, figures, simulation.
+3. **Presentation orale** (8 minutes + 4 minutes de questions).
+
+## Bareme propose (sur 100)
+
+- Rigueur mathematique et justification des modeles : 25
+- Qualite statistique des analyses et des estimations : 25
+- Mobilisation complete des notions du cours : 25
+- Qualite du code, visualisations et reproductibilite : 15
+- Clarte de la communication (rapport + oral) : 10
+
+## Checklist de couverture du cours
+
+Votre rendu doit explicitement contenir :
+
+- statistiques univariees et bivariees,
+- au moins une variable discrete et une variable continue modelisees,
+- inegalites de Markov et de Bienayme-Tchebychev,
+- convergence en probabilite et en loi,
+- loi faible des grands nombres,
+- estimation ponctuelle + intervalle de confiance,
+- une utilisation du TCL,
+- une simulation Monte-Carlo,
+- une application d'un resultat de continuite,
+- une application de Slutsky.
+
+## Bonus (facultatif)
+
+- Comparer deux quartiers/zones de livraison avec une analyse conditionnelle.
+- Ajouter une etude de sensibilite (que se passe-t-il si la variabilite augmente de 20 % ?).
+- Proposer une politique operationnelle (nombre minimal de livreurs pour garantir un risque de retard inferieur a un seuil).
+
+## Conseils de methode
+
+- Commencez par des questions metier simples, puis traduisez-les en objets probabilistes.
+- Evitez les conclusions sans quantification de l'incertitude.
+- Faites apparaitre clairement les hypotheses sous chaque resultat.
+- Distinguez ce qui est observe (donnees), estime (statistique) et theorique (modele).

@@ -8,7 +8,7 @@ author:
       - writing - review & editing
 abstract: |
   Every time I run `quarto render`, my GitHub profile README updates itself
-  automatically — no copy-pasting, no manual commit, no drift. This post
+  automaticall, no copy-pasting, no manual commit, no drift. This post
   walks through the full mechanism: Quarto's multi-format pipeline, a
   recursion-guarded post-render Bash script, and a handful of `sed` fixes for
   Quarto's GFM quirks. The result is a single `about.qmd` that feeds both
@@ -16,6 +16,12 @@ abstract: |
 date: 2026-03-24
 date-modified: 2026-04-19
 categories: [Quarto, GitHub, Dev Tools, Bash]
+
+filters:
+  - ../../_extensions/qmd-lab/closeread/closeread.lua
+format:
+  html:
+    css: ../../_extensions/qmd-lab/closeread/closeread.css
 ---
 
 ## The drift problem
@@ -28,7 +34,7 @@ inconsistency.
 
 My website is built with [Quarto](https://quarto.org). The about page uses
 the [Trestles
-template](https://quarto.org/docs/websites/website-about.html#templates) — a
+template](https://quarto.org/docs/websites/website-about.html#templates, a
 two-column hero layout with a circular profile image, social links in a
 sidebar, and rich HTML features (callout blocks, column divs, iframes) that
 simply do not translate to GitHub-Flavored Markdown (GFM). So the two
@@ -57,8 +63,8 @@ quarto render   (full site)
 
 Quarto is built on top of [Pandoc](https://pandoc.org/). When you write a
 `.qmd` file, Quarto first executes any code cells (via Knitr or Jupyter),
-then passes the resulting Markdown to Pandoc for the final format conversion
-— HTML, PDF, GFM, etc.
+then passes the resulting Markdown to Pandoc for the final format conversion,
+ HTML, PDF, GFM, etc.
 
 ### Format families and `.content-visible`
 
@@ -74,8 +80,8 @@ and easy to get wrong:
 | `pdf` | `latex` | `when-format="latex"` ✅ |
 | `commonmark` | `markdown` | `when-format="markdown"` ✅ |
 
-GFM is a *dialect* of Markdown processed by the `commonmark` Pandoc writer.
-Quarto's format resolution maps it to the `markdown` family — so
+GFM is a *dialect* of Markdown processed by the `CommonmMrk` Pandoc writer.
+Quarto's format resolution maps it to the `markdown` family, so
 `when-format="gfm"` always evaluates to `false` without any warning.
 
 ::: {.callout-tip}
@@ -451,6 +457,78 @@ One source file. Two outputs. Zero drift. This is the
 [POSSE](https://indieweb.org/POSSE) principle (*Publish on Own Site,
 Syndicate Elsewhere*) applied at the build-system level — your website is
 the canonical source; GitHub is one of its syndication targets.
+
+## Step-by-step implementation (close read)
+
+If you want the shortest path from idea to a working automation, read this
+block line by line. It is the minimal flow: prevent recursion, render GFM,
+skip unchanged output, then commit and push. @cr-flow
+
+:::{.cr-section}
+
+:::{#cr-flow}
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "${PROFILE_README_RUNNING:-}" = "1" ]; then
+  exit 0
+fi
+export PROFILE_README_RUNNING=1
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+WORK="$(mktemp -d)"
+trap 'rm -rf "$WORK"' EXIT
+
+quarto render "$PROJECT_DIR/about.qmd" --to gfm \
+  --output README.md --output-dir "$WORK" 2>/dev/null
+
+git clone --depth 1 "git@github.com:${REPO}.git" "$WORK/profile-repo" 2>/dev/null
+
+if diff -q "$WORK/README.md" "$WORK/profile-repo/README.md" >/dev/null; then
+  exit 0
+fi
+
+cp "$WORK/README.md" "$WORK/profile-repo/README.md"
+cd "$WORK/profile-repo"
+git add README.md
+git commit -m "chore: sync profile README from ggilles.dev"
+git push
+```
+:::
+
+1. **Fail fast and stay deterministic.**
+`set -euo pipefail` stops on command errors, unset variables, and hidden
+pipeline failures so a broken render never produces a bad push.
+[@cr-flow]{highlight="2"}
+
+2. **Block recursive post-render calls.**
+The `PROFILE_README_RUNNING` guard prevents the nested
+`quarto render ... --to gfm` call from retriggering the same script forever.
+[@cr-flow]{highlight="4-7"}
+
+3. **Use isolated temp workspace + guaranteed cleanup.**
+`mktemp -d` avoids polluting the repo, and `trap ... EXIT` removes temporary
+files on both success and failure.
+[@cr-flow]{highlight="9-12"}
+
+4. **Render one source (`about.qmd`) into GFM README output.**
+This is the core transformation step. Everything else in the script is just
+transport and safety around this command.
+[@cr-flow]{highlight="14-15"}
+
+5. **Fetch target repo quickly and compare before writing.**
+`--depth 1` keeps clone time low, and `diff -q` gives idempotency: no content
+change means no commit, no push, no noisy history.
+[@cr-flow]{highlight="17-21"}
+
+6. **Publish only when the content actually changed.**
+Copy, stage, commit, push. This keeps `your-username/your-username` synced
+with your website as the single source of truth.
+[@cr-flow]{highlight="23-27"}
+
+:::
 
 If you adapt this for your own site, feel free to open a [GitHub
 issue](https://github.com/guillaumegilles/guillaumegilles.github.io) or
