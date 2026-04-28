@@ -2,16 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.4.537">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Convergence de variables aléatoires – Guillaume Gilles</title>
+<title>Guillaume Gilles - Convergence de variables aléatoires</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -34,18 +31,17 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../teaching/statistics-probability/sampling-distribution.html" rel="next">
-<link href="../../teaching/statistics-probability/double-integrals-over-r2.html" rel="prev">
+<link href="../../teaching/statistics-probability/pair-continuous-rv-marginal-distribution.html" rel="prev">
 <link href="../../assets/favicon.png" rel="icon" type="image/png">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-acebb5f24679ac2f633996cbf56b9a25.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -81,8 +77,8 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -95,7 +91,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+      if (mathElements[i].tagName == "SPAN") {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -111,17 +107,17 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="Convergence de variables aléatoires – Guillaume Gilles">
+<meta property="og:title" content="Guillaume Gilles - Convergence de variables aléatoires">
 <meta property="og:description" content="Ce chapitre étudie les différentes notions de convergence pour des suites de variables aléatoires. On présente d’abord les inégalités de concentration (Markov, Bienaymé-Tchebychev) qui permettent de contrôler les déviations d’une variable par rapport à son espérance. On introduit ensuite la convergence en probabilité et la convergence en moyenne quadratique, et on établit la loi faible des grands nombres. On présente la convergence presque sûre, la loi forte des grands nombres et la méthode de Monte-Carlo. Le chapitre se poursuit par la convergence en loi et le théorème limite central, puis se termine par les résultats de continuité et le théorème de Slutsky.">
 <meta property="og:image" content="https://ggilles.dev/teaching/statistics-probability/assets/og-image.png">
 <meta property="og:site_name" content="Guillaume Gilles">
-<meta name="twitter:title" content="Convergence de variables aléatoires – Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Convergence de variables aléatoires">
 <meta name="twitter:description" content="Ce chapitre étudie les différentes notions de convergence pour des suites de variables aléatoires. On présente d’abord les inégalités de concentration (Markov, Bienaymé-Tchebychev) qui permettent de contrôler les déviations d’une variable par rapport à son espérance. On introduit ensuite la convergence en probabilité et la convergence en moyenne quadratique, et on établit la loi faible des grands nombres. On présente la convergence presque sûre, la loi forte des grands nombres et la méthode de Monte-Carlo. Le chapitre se poursuit par la convergence en loi et le théorème limite central, puis se termine par les résultats de continuité et le théorème de Slutsky.">
 <meta name="twitter:image" content="https://ggilles.dev/teaching/statistics-probability/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light">
+<body class="nav-sidebar floating nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -129,15 +125,14 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../assets/favicon.png" alt="" class="navbar-logo light-content">
-    <img src="../../assets/favicon.png" alt="" class="navbar-logo dark-content">
+    <img src="../../assets/favicon.png" alt="" class="navbar-logo">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Guillaume Gilles</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Recherche"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -156,7 +151,7 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
+          <div class="quarto-navbar-tools">
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Basculer en mode lecteur">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -167,11 +162,11 @@ window.Quarto = {
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/convergence-random-variables.html">Convergence et théorèmes limites</a></li><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/convergence-random-variables.html">Convergence de variables aléatoires</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -196,9 +191,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
  <span class="menu-text">Une variable</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -231,9 +226,9 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
  <span class="menu-text">Deux variables</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -256,13 +251,25 @@ window.Quarto = {
  <span class="menu-text">Intégrales sur <span class="math inline">\(\mathbb{R}^2\)</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/pair-continuous-rv-joint-distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loi conjointe d’un couple de variables aléatoires continues</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/pair-continuous-rv-marginal-distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lois marginales</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
  <span class="menu-text">Convergence et théorèmes limites</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -277,9 +284,9 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">Statistique inférentielle</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -300,9 +307,9 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
  <span class="menu-text">Examens</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -335,9 +342,9 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
  <span class="menu-text">Ressources</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Basculer la section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Basculer la section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -369,7 +376,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/convergence-random-variables.html">Convergence et théorèmes limites</a></li><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/convergence-random-variables.html">Convergence de variables aléatoires</a></li></ol></nav>
 <div class="quarto-title">
@@ -421,7 +428,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition — Inégalité de Markov
+Proposition — Inégalité de Markov
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -429,29 +436,37 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Démonstration
+Démonstration
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>On écrit <span class="math inline">\(X \geq a\,\mathbf{1}_{\{X \geq a\}}\)</span> (car <span class="math inline">\(X \geq 0\)</span>), puis on prend l’espérance : <span class="math display">\[E(X) \geq a\,P(X \geq a),\]</span> d’où le résultat.</p>
+<p><strong>Étape 1 — Une inégalité trajectorielle.</strong> Montrons que, pour tout <span class="math inline">\(\omega \in \Omega\)</span> : <span class="math display">\[X(\omega) \geq a\,\mathbf{1}_{\{X \geq a\}}(\omega).\]</span></p>
+<ul>
+<li>Si <span class="math inline">\(X(\omega) \geq a\)</span> : l’indicatrice vaut 1, donc le membre droit vaut <span class="math inline">\(a \leq X(\omega)\)</span>. ✓</li>
+<li>Si <span class="math inline">\(X(\omega) &lt; a\)</span> : l’indicatrice vaut 0, donc le membre droit vaut <span class="math inline">\(0 \leq X(\omega)\)</span> (car <span class="math inline">\(X \geq 0\)</span>). ✓</li>
+</ul>
+<p><strong>Étape 2 — On prend l’espérance.</strong> L’espérance étant <strong>croissante</strong> (si <span class="math inline">\(U \leq V\)</span> p.s. alors <span class="math inline">\(E(U) \leq E(V)\)</span>), on obtient : <span class="math display">\[E(X) \geq E\!\left(a\,\mathbf{1}_{\{X \geq a\}}\right).\]</span></p>
+<p><strong>Étape 3 — On simplifie le membre droit.</strong> Par linéarité de l’espérance et définition de l’indicatrice : <span class="math display">\[E\!\left(a\,\mathbf{1}_{\{X \geq a\}}\right) = a\,E\!\left(\mathbf{1}_{\{X \geq a\}}\right) = a\,P(X \geq a).\]</span></p>
+<p><strong>Conclusion.</strong> On a donc <span class="math inline">\(E(X) \geq a\,P(X \geq a)\)</span>. Comme <span class="math inline">\(a &gt; 0\)</span>, on divise des deux côtés par <span class="math inline">\(a\)</span> : <span class="math display">\[P(X \geq a) \leq \frac{E(X)}{a}.\]</span></p>
 </div>
 </div>
 </div>
 <p>Cette inégalité ne suppose aucune connaissance de la loi de <span class="math inline">\(X\)</span> au-delà de son espérance. Elle devient sans intérêt dès que <span class="math inline">\(a &lt; E(X)\)</span>, car le majorant dépasse alors 1.</p>
+<p>L’idée clé est la suivante : <strong>une grande moyenne force une certaine masse de probabilité vers les grandes valeurs</strong>, mais ne dit rien de précis sur la forme de la loi. Markov fournit donc une borne très générale, souvent grossière, mais applicable dans des situations où l’on connaît très peu d’information.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exemple 1 — Salaire moyen en France
+Exemple 1 — Salaire moyen en France
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -459,12 +474,12 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution — Exemple 1
+Solution — Exemple 1
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -472,6 +487,20 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>Soit <span class="math inline">\(X\)</span> le salaire brut mensuel. On a <span class="math inline">\(E(X) = 2988\)</span> et <span class="math inline">\(X \geq 0\)</span>. Par l’inégalité de Markov : <span class="math display">\[P(X \geq 8964) \leq \frac{2988}{8964} = \frac{1}{3} \approx 0{,}333.\]</span></p>
 <p>Moins d’un tiers des salariés gagnent plus de 8 964 € bruts par mois.</p>
+</div>
+</div>
+</div>
+<div id="cell-fig-markov" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div id="fig-markov" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-markov-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="convergence-random-variables_files/figure-html/fig-markov-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="740" height="372">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-markov-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Inégalité de Markov : dans le modèle exponentiel illustratif de moyenne <span class="math inline">\(2\,988\)</span>, la borne <span class="math inline">\(E(X)/a = 1/3\)</span> (≈ 0,333) est bien supérieure à la probabilité <span class="math inline">\(P(X \geq a) = e^{-3} \approx 0{,}050\)</span>, ce qui illustre le caractère conservateur de la borne.
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -485,7 +514,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition — Inégalité de Bienaymé-Tchebychev
+Proposition — Inégalité de Bienaymé-Tchebychev
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -493,18 +522,21 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Démonstration
+Démonstration
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>La variable <span class="math inline">\(Y = (X - E(X))^2\)</span> est positive et <span class="math inline">\(E(Y) = \mathrm{Var}(X)\)</span>. On applique l’inégalité de Markov à <span class="math inline">\(Y\)</span> avec le seuil <span class="math inline">\(a = \varepsilon^2\)</span> : <span class="math display">\[P\!\left((X - E(X))^2 \geq \varepsilon^2\right) \leq \frac{\mathrm{Var}(X)}{\varepsilon^2}.\]</span> Or <span class="math inline">\(\{(X - E(X))^2 \geq \varepsilon^2\} = \{|X - E(X)| \geq \varepsilon\}\)</span>.</p>
+<p><strong>Étape 1 — Poser une variable auxiliaire positive.</strong> On pose <span class="math inline">\(Y = (X - E(X))^2\)</span>. Alors <span class="math inline">\(Y \geq 0\)</span> (c’est un carré) et : <span class="math display">\[E(Y) = E\!\left[(X - E(X))^2\right] = \mathrm{Var}(X).\]</span></p>
+<p><strong>Étape 2 — Appliquer l’inégalité de Markov à <span class="math inline">\(Y\)</span>.</strong> Avec le seuil <span class="math inline">\(a = \varepsilon^2 &gt; 0\)</span>, l’inégalité de Markov appliquée à <span class="math inline">\(Y\)</span> donne : <span class="math display">\[P\!\left(Y \geq \varepsilon^2\right) \leq \frac{E(Y)}{\varepsilon^2} = \frac{\mathrm{Var}(X)}{\varepsilon^2}.\]</span></p>
+<p><strong>Étape 3 — Identifier l’événement.</strong> Pour tout réel <span class="math inline">\(t\)</span>, on a <span class="math inline">\(t^2 \geq \varepsilon^2 \iff |t| \geq \varepsilon\)</span> (car <span class="math inline">\(\varepsilon &gt; 0\)</span>). Donc : <span class="math display">\[\left\{Y \geq \varepsilon^2\right\} = \left\{(X - E(X))^2 \geq \varepsilon^2\right\} = \left\{|X - E(X)| \geq \varepsilon\right\}.\]</span></p>
+<p><strong>Conclusion.</strong> <span class="math display">\[P\!\left(|X - E(X)| \geq \varepsilon\right) \leq \frac{\mathrm{Var}(X)}{\varepsilon^2}.\]</span></p>
 </div>
 </div>
 </div>
@@ -514,7 +546,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Remarques
+Remarques
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -524,13 +556,14 @@ window.Quarto = {
 </ul>
 </div>
 </div>
+<p>Autrement dit, Tchebychev complète Markov en ajoutant une information essentielle : non seulement on connaît le <strong>niveau moyen</strong> de la variable, mais on sait aussi à quel point elle est <strong>dispersée</strong> autour de ce niveau. Plus la variance est petite, plus la variable a tendance à rester proche de son espérance.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exemple 2 — Paniers par match
+Exemple 2 — Paniers par match
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -538,12 +571,12 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution — Exemple 2
+Solution — Exemple 2
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -560,11 +593,12 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exercice 1 — Précision d’un sondage
+Exercice 1 — Précision d’un sondage
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Dans une ville de 20 000 habitants, 75 % des personnes interrogées sont favorables à la rénovation du théâtre municipal.</p>
+<p>On modélise les réponses par des tirages <strong>avec remise</strong> (ou, de manière équivalente ici, par des variables indépendantes de même loi).</p>
 <p>Pour <span class="math inline">\(1\le k\le n\)</span>, on note <span class="math inline">\(X_k=1\)</span> si la <span class="math inline">\(k\)</span>-ième personne est favorable, <span class="math inline">\(X_k=0\)</span> sinon.</p>
 <ol type="1">
 <li>Donner la loi de <span class="math inline">\(X_k\)</span>, son espérance <span class="math inline">\(m\)</span> et sa variance <span class="math inline">\(\sigma^2\)</span>.</li>
@@ -578,24 +612,65 @@ Commenter le réalisme de la seconde situation.</li>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Indication
+Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li><span class="math inline">\(X_k\sim\mathcal{B}(p)\)</span> avec <span class="math inline">\(p=0{,}75\)</span>.</li>
+<li>Sous cette modélisation, <span class="math inline">\(X_k\sim\mathcal{B}(p)\)</span> avec <span class="math inline">\(p=0{,}75\)</span>.</li>
 <li>Utiliser l’inégalité de Bienaymé-Tchebychev : <span class="math display">\[P(|M_n-m|\ge \varepsilon)\le \frac{\mathrm{Var}(M_n)}{\varepsilon^2}
 =\frac{p(1-p)}{n\varepsilon^2}.\]</span></li>
 <li>Pour la précision 0,05 avec risque 0,1 : <span class="math inline">\(n \geq \dfrac{p(1-p)}{\varepsilon^2 \cdot \alpha} = \dfrac{0{,}75 \times 0{,}25}{(0{,}05)^2 \times 0{,}1} = 750\)</span>.</li>
 <li>Pour la précision 0,01 avec risque 0,05 : <span class="math inline">\(n \geq \dfrac{0{,}75 \times 0{,}25}{(0{,}01)^2 \times 0{,}05} = 37\,500\)</span>. Ce chiffre dépasse largement la taille de la ville (20 000 hab.), ce qui rend le sondage irréalisable.</li>
 </ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Correction — Exercice 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Question 1 — Loi, espérance et variance de <span class="math inline">\(X_k\)</span></strong></p>
+<p>Sous l’hypothèse de tirages avec remise, chaque personne interrogée est soit favorable (<span class="math inline">\(X_k=1\)</span>) soit défavorable (<span class="math inline">\(X_k=0\)</span>), avec une probabilité <span class="math inline">\(p=0{,}75\)</span> d’être favorable. Les <span class="math inline">\(X_k\)</span> suivent donc une loi de Bernoulli : <span class="math display">\[X_k \sim \mathcal{B}(p), \quad p = 0{,}75.\]</span></p>
+<p>Les paramètres sont : <span class="math display">\[m = E(X_k) = p = 0{,}75, \qquad \sigma^2 = \mathrm{Var}(X_k) = p(1-p) = 0{,}75 \times 0{,}25 = \frac{3}{16}.\]</span></p>
+<hr>
+<p><strong>Question 2 — Taille d’échantillon par l’inégalité de Bienaymé-Tchebychev</strong></p>
+<p>Les <span class="math inline">\(X_1,\ldots,X_n\)</span> sont supposés indépendants et de même loi <span class="math inline">\(\mathcal{B}(p)\)</span>. La moyenne empirique <span class="math display">\[M_n = \frac{1}{n}\sum_{k=1}^n X_k\]</span> vérifie : <span class="math display">\[E(M_n) = m, \qquad \mathrm{Var}(M_n) = \frac{\sigma^2}{n} = \frac{p(1-p)}{n}.\]</span></p>
+<p>L’inégalité de Bienaymé-Tchebychev donne alors : <span class="math display">\[P(|M_n - m| \ge \varepsilon) \le \frac{\mathrm{Var}(M_n)}{\varepsilon^2} = \frac{p(1-p)}{n\varepsilon^2}.\]</span></p>
+<p>Pour garantir <span class="math inline">\(P(|M_n - m| \ge \varepsilon) \le \alpha\)</span>, il suffit d’imposer : <span class="math display">\[\frac{p(1-p)}{n\varepsilon^2} \le \alpha \iff n \ge \frac{p(1-p)}{\varepsilon^2\,\alpha}.\]</span></p>
+<p><strong>Cas 1 — précision <span class="math inline">\(\varepsilon = 0{,}05\)</span>, risque <span class="math inline">\(\alpha = 0{,}1\)</span> :</strong> <span class="math display">\[n \ge \frac{0{,}75 \times 0{,}25}{(0{,}05)^2 \times 0{,}1} = \frac{0{,}1875}{0{,}00025} = 750.\]</span></p>
+<p>Un échantillon de <strong>750 personnes</strong> suffit.</p>
+<p><strong>Cas 2 — précision <span class="math inline">\(\varepsilon = 0{,}01\)</span>, risque <span class="math inline">\(\alpha = 0{,}05\)</span> :</strong> <span class="math display">\[n \ge \frac{0{,}75 \times 0{,}25}{(0{,}01)^2 \times 0{,}05} = \frac{0{,}1875}{0{,}000005} = 37\,500.\]</span></p>
+<p>Un échantillon de <strong>37 500 personnes</strong> serait nécessaire.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Commentaire sur le réalisme
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La ville ne compte que 20 000 habitants. Il faudrait interroger 37 500 personnes, soit <strong>davantage que la totalité de la population</strong> — ce qui est évidemment impossible.</p>
+<p>Ce paradoxe illustre une <strong>limite de l’inégalité de Bienaymé-Tchebychev</strong> : la borne <span class="math inline">\(p(1-p)/(n\varepsilon^2)\)</span> est très pessimiste. En pratique, on utilise le <strong>théorème central limite</strong> (TCL) qui donne une borne bien plus précise : <span class="math display">\[P(|M_n - m| \ge \varepsilon) \approx 2\left(1 - \Phi\!\left(\frac{\varepsilon\sqrt{n}}{\sigma}\right)\right),\]</span> et la condition <span class="math inline">\(n \ge z_{\alpha/2}^2\,p(1-p)/\varepsilon^2\)</span> conduit pour <span class="math inline">\(\alpha=0{,}05\)</span> à : <span class="math display">\[n \ge \frac{(1{,}96)^2 \times 0{,}1875}{(0{,}01)^2} \approx 7\,203,\]</span> soit environ 7 200 personnes — un résultat bien plus réaliste, qui reste toutefois important pour un sondage municipal.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -613,20 +688,21 @@ Commenter le réalisme de la seconde situation.</li>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Définition — Convergence en probabilité
+Définition — Convergence en probabilité
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>On dit qu’une suite de v.a.r. <span class="math inline">\((X_n)\)</span> <strong>converge en probabilité</strong> vers une v.a.r. <span class="math inline">\(X\)</span>, et on note <span class="math inline">\(X_n \xrightarrow[n\to+\infty]{P} X\)</span>, si et seulement si : <span class="math display">\[\forall \varepsilon &gt; 0,\quad \lim_{n\to+\infty} P(|X_n - X| &gt; \varepsilon) = 0.\]</span></p>
 </div>
 </div>
+<p>Cette définition se lit ainsi : si l’on fixe une <strong>marge d’erreur</strong> <span class="math inline">\(\varepsilon\)</span>, aussi petite soit-elle, la probabilité que <span class="math inline">\(X_n\)</span> sorte de la zone <span class="math inline">\([X-\varepsilon, X+\varepsilon]\)</span> devient négligeable quand <span class="math inline">\(n\)</span> grandit. On ne demande donc pas que toutes les réalisations se rapprochent de <span class="math inline">\(X\)</span>, mais que les <strong>écarts visibles deviennent de plus en plus rares</strong>.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exemple 3 — Convergence en probabilité et lois uniformes
+Exemple 3 — Convergence en probabilité et lois uniformes
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -635,16 +711,16 @@ Commenter le réalisme de la seconde situation.</li>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution — Exemple 3
+Solution — Exemple 3
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Pour tout <span class="math inline">\(\varepsilon \in (0,1)\)</span>, par indépendance des <span class="math inline">\(U_i\)</span> : <span class="math display">\[P(|X_n - 0| &gt; \varepsilon) = P(X_n &gt; \varepsilon)
 = P(U_1 &gt; \varepsilon, \ldots, U_n &gt; \varepsilon)
@@ -660,37 +736,39 @@ Commenter le réalisme de la seconde situation.</li>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Définition — Convergence en moyenne quadratique
+Définition — Convergence en moyenne quadratique
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>On dit que <span class="math inline">\((X_n)\)</span> <strong>converge en moyenne quadratique</strong> vers <span class="math inline">\(X\)</span>, et on note <span class="math inline">\(X_n \xrightarrow[n\to+\infty]{L^2} X\)</span>, si et seulement si : <span class="math display">\[\lim_{n\to+\infty} E\!\left[(X_n - X)^2\right] = 0.\]</span></p>
 </div>
 </div>
+<p>Ici, on mesure l’erreur par son <strong>carré moyen</strong>. Cette manière de quantifier la distance est plus exigeante que la convergence en probabilité, car elle pénalise fortement les écarts de grande amplitude : des erreurs rares mais très grandes peuvent empêcher la convergence <span class="math inline">\(L^2\)</span>.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition
+Proposition
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p><span class="math display">\[X_n \xrightarrow{L^2} X \implies X_n \xrightarrow{P} X.\]</span></p>
 </div>
 </div>
+<p>On peut donc retenir que la convergence <span class="math inline">\(L^2\)</span> est une convergence <strong>plus forte</strong> que la convergence en probabilité : elle contrôle non seulement la fréquence des écarts, mais aussi leur taille moyenne au carré.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Démonstration
+Démonstration
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Par Bienaymé-Tchebychev appliqué à <span class="math inline">\(X_n - X\)</span> : <span class="math display">\[P(|X_n - X| &gt; \varepsilon) \leq \frac{E\!\left[(X_n - X)^2\right]}{\varepsilon^2} \xrightarrow[n\to+\infty]{} 0.\]</span></p>
 </div>
@@ -702,7 +780,7 @@ Commenter le réalisme de la seconde situation.</li>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exercice 2 — Contre-exemple : convergence en probabilité sans convergence <span class="math inline">\(L^2\)</span>
+Exercice 2 — Contre-exemple : convergence en probabilité sans convergence <span class="math inline">\(L^2\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -714,16 +792,16 @@ Commenter le réalisme de la seconde situation.</li>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-21-contents" aria-controls="callout-21" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Indication
+Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-19" class="callout-19-contents callout-collapse collapse">
+<div id="callout-21" class="callout-21-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>Pour tout <span class="math inline">\(\varepsilon&gt;0\)</span>, dès que <span class="math inline">\(n&gt;\varepsilon\)</span> : <span class="math display">\[P(|X_n|&gt;\varepsilon)=P(X_n=n)=\frac{1}{n} \to 0.\]</span></li>
@@ -733,13 +811,49 @@ Commenter le réalisme de la seconde situation.</li>
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Correction — Exercice 2
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-23" class="callout-23-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Question 1 — Convergence en probabilité</strong></p>
+<p>Pour tout <span class="math inline">\(\varepsilon &gt; 0\)</span>, les seules valeurs que <span class="math inline">\(X_n\)</span> peut prendre sont <span class="math inline">\(0\)</span> et <span class="math inline">\(n\)</span>. Dès que <span class="math inline">\(n &gt; \varepsilon\)</span> (ce qui est vrai à partir d’un certain rang), la valeur <span class="math inline">\(n\)</span> est strictement supérieure à <span class="math inline">\(\varepsilon\)</span>, donc : <span class="math display">\[P(|X_n| &gt; \varepsilon) = P(X_n = n) = \frac{1}{n} \xrightarrow[n\to+\infty]{} 0.\]</span></p>
+<p>Ainsi <span class="math inline">\(X_n \xrightarrow{P} 0\)</span>.</p>
+<hr>
+<p><strong>Question 2 — Absence de convergence en moyenne quadratique</strong></p>
+<p>On calcule l’espérance et le moment d’ordre 2 de <span class="math inline">\(X_n\)</span> : <span class="math display">\[E(X_n) = n \cdot \frac{1}{n} + 0 \cdot \left(1 - \frac{1}{n}\right) = 1.\]</span> <span class="math display">\[E(X_n^2) = n^2 \cdot \frac{1}{n} + 0^2 \cdot \left(1 - \frac{1}{n}\right) = n \xrightarrow[n\to+\infty]{} +\infty.\]</span></p>
+<p>Pour la convergence <span class="math inline">\(L^2\)</span> vers 0, il faudrait <span class="math inline">\(E\!\left[(X_n - 0)^2\right] = E(X_n^2) = n \to 0\)</span>. Or <span class="math inline">\(n \to +\infty\)</span>, donc <strong><span class="math inline">\(X_n \not\xrightarrow{L^2} 0\)</span></strong>.</p>
+<p>On peut également vérifier via la variance : <span class="math display">\[\mathrm{Var}(X_n) = E(X_n^2) - \left(E(X_n)\right)^2 = n - 1 \xrightarrow[n\to+\infty]{} +\infty.\]</span></p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ce que montre cet exemple
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La convergence en probabilité <strong>n’implique pas</strong> la convergence en moyenne quadratique. L’intuition est que <span class="math inline">\(X_n\)</span> prend la valeur <span class="math inline">\(n\)</span> (très grande) avec probabilité <span class="math inline">\(1/n\)</span> (très petite), mais cette queue lourde contribue suffisamment à <span class="math inline">\(E(X_n^2) = n\)</span> pour empêcher la convergence <span class="math inline">\(L^2\)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition (admise) — Caractérisation de la convergence <span class="math inline">\(L^2\)</span>
+Proposition (admise) — Caractérisation de la convergence <span class="math inline">\(L^2\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -751,18 +865,20 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <p>En particulier, dans ce cas, <span class="math inline">\(X_n \xrightarrow{P} m\)</span>.</p>
 </div>
 </div>
+<p>Cette caractérisation est très utile lorsqu’on converge vers une <strong>constante</strong> : pour montrer <span class="math inline">\(X_n \to m\)</span> dans <span class="math inline">\(L^2\)</span>, il suffit de vérifier deux idées simples : la moyenne de <span class="math inline">\(X_n\)</span> se rapproche de <span class="math inline">\(m\)</span>, et les fluctuations autour de cette moyenne s’éteignent.</p>
 </section>
 <section id="loi-faible-des-grands-nombres" class="level3">
 <h3 class="anchored" data-anchor-id="loi-faible-des-grands-nombres">Loi faible des grands nombres</h3>
 <p>La loi faible des grands nombres justifie mathématiquement une intuition statistique centrale : <strong>moyenner beaucoup d’observations réduit les erreurs aléatoires</strong> et rapproche la moyenne observée de la moyenne théorique.</p>
 <p>Soit <span class="math inline">\((X_n)\)</span> une suite de v.a.r. i.i.d. de carré intégrable, d’espérance <span class="math inline">\(m\)</span> et de variance <span class="math inline">\(\sigma^2\)</span>. La <strong>moyenne empirique</strong> est : <span class="math display">\[\overline{X}_n = \frac{1}{n}\sum_{i=1}^n X_i.\]</span></p>
+<p>Le message statistique est central : même si chaque observation individuelle est bruitée, la moyenne de beaucoup d’observations agit comme un <strong>mécanisme de lissage</strong>. Le bruit aléatoire ne disparaît pas complètement, mais son influence relative décroît quand on moyenne davantage.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition — Loi faible des grands nombres
+Proposition — Loi faible des grands nombres
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -772,19 +888,36 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Démonstration
+Démonstration
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-22" class="callout-22-contents callout-collapse collapse">
+<div id="callout-26" class="callout-26-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>On vérifie la convergence <span class="math inline">\(L^2\)</span> : <span class="math display">\[E(\overline{X}_n) = m, \qquad \mathrm{Var}(\overline{X}_n) = \frac{\sigma^2}{n} \xrightarrow[n\to+\infty]{} 0.\]</span></p>
-<p>Donc <span class="math inline">\(\overline{X}_n \xrightarrow{L^2} m\)</span>, ce qui implique <span class="math inline">\(\overline{X}_n \xrightarrow{P} m\)</span>. L’inégalité découle alors directement de Bienaymé-Tchebychev : <span class="math display">\[P\!\left(|\overline{X}_n - m| \geq \varepsilon\right) \leq \frac{\mathrm{Var}(\overline{X}_n)}{\varepsilon^2} = \frac{\sigma^2}{n\varepsilon^2}.\]</span></p>
+<p>On vérifie la convergence <span class="math inline">\(L^2\)</span> en calculant explicitement l’espérance et la variance de <span class="math inline">\(\overline{X}_n\)</span>.</p>
+<p><strong>Espérance.</strong> Par linéarité de <span class="math inline">\(E\)</span> et puisque toutes les <span class="math inline">\(X_i\)</span> ont même espérance <span class="math inline">\(m\)</span> : <span class="math display">\[E(\overline{X}_n) = \frac{1}{n}\sum_{i=1}^n E(X_i) = \frac{1}{n} \cdot nm = m.\]</span></p>
+<p><strong>Variance.</strong> Les <span class="math inline">\(X_i\)</span> étant <strong>indépendants</strong>, la variance d’une somme se décompose en somme des variances. Comme elles ont toutes la même variance <span class="math inline">\(\sigma^2\)</span> : <span class="math display">\[\mathrm{Var}(\overline{X}_n) = \mathrm{Var}\!\left(\frac{1}{n}\sum_{i=1}^n X_i\right) = \frac{1}{n^2}\sum_{i=1}^n \mathrm{Var}(X_i) = \frac{1}{n^2} \cdot n\sigma^2 = \frac{\sigma^2}{n}.\]</span></p>
+<p>Puisque <span class="math inline">\(E(\overline{X}_n) = m\)</span> (constant) et <span class="math inline">\(\mathrm{Var}(\overline{X}_n) = \sigma^2/n \xrightarrow[n\to+\infty]{} 0\)</span>, la caractérisation de la convergence <span class="math inline">\(L^2\)</span> donne <span class="math inline">\(\overline{X}_n \xrightarrow{L^2} m\)</span>, ce qui implique <span class="math inline">\(\overline{X}_n \xrightarrow{P} m\)</span>.</p>
+<p>L’inégalité découle directement de Bienaymé-Tchebychev : <span class="math display">\[P\!\left(|\overline{X}_n - m| \geq \varepsilon\right) \leq \frac{\mathrm{Var}(\overline{X}_n)}{\varepsilon^2} = \frac{\sigma^2}{n\varepsilon^2}.\]</span></p>
+</div>
+</div>
+</div>
+<div id="cell-fig-lfgn-concentration" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="fig-lfgn-concentration" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lfgn-concentration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="convergence-random-variables_files/figure-html/fig-lfgn-concentration-output-1.png" class="quarto-figure quarto-figure-center figure-img" width="757" height="419">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lfgn-concentration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Loi faible des grands nombres : la distribution de <span class="math inline">\(\overline{X}_n\)</span> se concentre autour de <span class="math inline">\(m = 3{,}5\)</span> quand <span class="math inline">\(n\)</span> augmente (dé équilibré, approximation normale).
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -794,7 +927,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exemple 4 — Population de daltoniens
+Exemple 4 — Population de daltoniens
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -803,16 +936,16 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-28-contents" aria-controls="callout-28" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution — Exemple 4
+Solution — Exemple 4
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-24" class="callout-24-contents callout-collapse collapse">
+<div id="callout-28" class="callout-28-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Soit <span class="math inline">\(X_i = 1\)</span> si la personne <span class="math inline">\(i\)</span> est daltonienne, 0 sinon. Les <span class="math inline">\(X_i\)</span> sont i.i.d. de loi <span class="math inline">\(\mathcal{B}(p)\)</span> avec <span class="math inline">\(p = 0{,}03\)</span>, et <span class="math inline">\(\mathrm{Var}(X_i) = p(1-p) = 0{,}03 \times 0{,}97\)</span>.</p>
 <p>On cherche <span class="math inline">\(n\)</span> tel que <span class="math inline">\(P(|\overline{X}_n - 0{,}03| &lt; 0{,}005) \geq 0{,}95\)</span>, soit : <span class="math display">\[P\!\left(|\overline{X}_n - 0{,}03| \geq 0{,}005\right) \leq 0{,}05.\]</span></p>
@@ -827,7 +960,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition (admise) — Convergence de la variance empirique
+Proposition (admise) — Convergence de la variance empirique
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -842,7 +975,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exercice 3 — Dé équilibré et trois types de convergence
+Exercice 3 — Dé équilibré et trois types de convergence
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -860,16 +993,16 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-27-contents" aria-controls="callout-27" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-31-contents" aria-controls="callout-31" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Indication
+Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-27" class="callout-27-contents callout-collapse collapse">
+<div id="callout-31" class="callout-31-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>Les lancers sont i.i.d. de loi uniforme sur <span class="math inline">\(\{1,\ldots,6\}\)</span>, donc <span class="math inline">\(m = E(X_1) = 3{,}5\)</span> et <span class="math inline">\(\mathrm{Var}(X_1) = \dfrac{35}{12}\)</span>.</li>
@@ -880,9 +1013,37 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-32-contents" aria-controls="callout-32" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Correction — Exercice 3
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-32" class="callout-32-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Question 1 — Loi d’un lancer, espérance et variance</strong></p>
+<p>Chaque lancer <span class="math inline">\(D_i\)</span> suit une loi uniforme sur <span class="math inline">\(\{1, 2, 3, 4, 5, 6\}\)</span>. On a : <span class="math display">\[E(D_i) = \frac{1+2+3+4+5+6}{6} = \frac{21}{6} = \frac{7}{2} = 3{,}5.\]</span> <span class="math display">\[E(D_i^2) = \frac{1^2+2^2+3^2+4^2+5^2+6^2}{6} = \frac{91}{6}.\]</span> <span class="math display">\[\mathrm{Var}(D_i) = E(D_i^2) - \left(E(D_i)\right)^2 = \frac{91}{6} - \frac{49}{4} = \frac{182 - 147}{12} = \frac{35}{12}.\]</span></p>
+<p>La moyenne des <span class="math inline">\(n\)</span> premiers lancers est <span class="math inline">\(X_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n D_i\)</span>, donc par linéarité et indépendance des <span class="math inline">\(D_i\)</span> : <span class="math display">\[E(X_n) = m = \frac{7}{2} = 3{,}5, \qquad \mathrm{Var}(X_n) = \frac{\mathrm{Var}(D_1)}{n} = \frac{35}{12n}.\]</span></p>
+<hr>
+<p><strong>Question 2 — Taille d’échantillon par Bienaymé-Tchebychev</strong></p>
+<p>L’inégalité de Bienaymé-Tchebychev donne : <span class="math display">\[P(|X_n - 3{,}5| \geq 0{,}1) \leq \frac{\mathrm{Var}(X_n)}{(0{,}1)^2} = \frac{35}{12n \times 0{,}01} = \frac{35}{0{,}12\,n}.\]</span></p>
+<p>On veut <span class="math inline">\(P(3{,}4 \leq X_n \leq 3{,}6) \geq 0{,}8\)</span>, soit <span class="math inline">\(P(|X_n - 3{,}5| \geq 0{,}1) \leq 0{,}2\)</span>. Il suffit donc d’imposer : <span class="math display">\[\frac{35}{0{,}12\,n} \leq 0{,}2 \iff n \geq \frac{35}{0{,}12 \times 0{,}2} = \frac{35}{0{,}024} \approx 1458{,}3.\]</span></p>
+<p>Un échantillon de <strong><span class="math inline">\(n \geq 1459\)</span> lancers</strong> est nécessaire.</p>
+<hr>
+<p><strong>Question 3 — Trois types de convergence vers <span class="math inline">\(m = 3{,}5\)</span></strong></p>
+<p><strong>Convergence en probabilité.</strong> Les <span class="math inline">\(D_i\)</span> sont i.i.d. de carré intégrable. La loi faible des grands nombres (LFGN) donne directement : <span class="math display">\[X_n \xrightarrow[n\to+\infty]{P} m = 3{,}5.\]</span></p>
+<p><strong>Convergence en moyenne quadratique.</strong> On vérifie les deux conditions de la caractérisation <span class="math inline">\(L^2\)</span> : <span class="math display">\[E(X_n) = m = 3{,}5 \xrightarrow[n\to+\infty]{} 3{,}5 \quad \text{(constant),}\]</span> <span class="math display">\[\mathrm{Var}(X_n) = \frac{35}{12n} \xrightarrow[n\to+\infty]{} 0.\]</span> Donc <span class="math inline">\(X_n \xrightarrow{L^2} m = 3{,}5\)</span>.</p>
+<p><strong>Convergence en loi.</strong> La convergence en probabilité implique la convergence en loi : <span class="math display">\[X_n \xrightarrow{P} 3{,}5 \implies X_n \xrightarrow{\mathcal{L}} 3{,}5,\]</span> c’est-à-dire que la loi de <span class="math inline">\(X_n\)</span> converge vers la masse de Dirac en <span class="math inline">\(3{,}5\)</span>.</p>
+</div>
+</div>
+</div>
 </section>
 </section>
-<section id="convergence-presque-sûre-et-loi-forte-des-grands-nombres" class="level2">
+<section id="convergence-presque-sûre-et-loi-forte-des-grands-nombres" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="convergence-presque-sûre-et-loi-forte-des-grands-nombres">Convergence presque sûre et loi forte des grands nombres</h2>
 <p>On passe ici à une notion de convergence plus exigeante : au lieu d’un contrôle global en probabilité, on regarde ce qui se passe <strong>trajectoire par trajectoire</strong> (pour presque tout <span class="math inline">\(\omega\)</span>).</p>
 <section id="convergence-presque-sûre" class="level3">
@@ -894,20 +1055,21 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Définition — Convergence presque sûre
+Définition — Convergence presque sûre
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>On dit qu’une suite de v.a.r. <span class="math inline">\((X_n)\)</span> <strong>converge presque sûrement</strong> (p.s.) vers une v.a.r. <span class="math inline">\(X\)</span>, et on note <span class="math inline">\(X_n \xrightarrow[n\to+\infty]{p.s.} X\)</span>, si et seulement si : <span class="math display">\[P\!\left(\left\{\omega \in \Omega \mid X_n(\omega) \xrightarrow[n\to+\infty]{} X(\omega)\right\}\right) = 1.\]</span></p>
 </div>
 </div>
+<p>Cette fois, la logique est différente : on ne parle plus seulement de probabilités d’erreur à chaque rang <span class="math inline">\(n\)</span>, mais du comportement de la <strong>suite entière</strong> pour presque chaque scénario <span class="math inline">\(\omega\)</span>. C’est donc une notion plus fine, car elle décrit ce que l’on voit le long d’une trajectoire concrète.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Remarques
+Remarques
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -917,13 +1079,14 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </ul>
 </div>
 </div>
+<p>En pratique, on peut voir la convergence presque sûre comme la traduction probabiliste de l’affirmation : <strong>“si je réalise l’expérience une fois pour toutes, alors presque sûrement la suite observée finit par se stabiliser”</strong>.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition (admise)
+Proposition (admise)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -932,7 +1095,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 </section>
-<section id="loi-forte-des-grands-nombres" class="level3">
+<section id="loi-forte-des-grands-nombres" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="loi-forte-des-grands-nombres">Loi forte des grands nombres</h3>
 <p>La loi forte renforce la loi faible : elle affirme que la moyenne empirique converge presque sûrement vers l’espérance. C’est le fondement théorique de la stabilité observée en pratique quand on répète une expérience aléatoire.</p>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -941,20 +1104,21 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Théorème (admis) — Loi forte des grands nombres
+Théorème (admis) — Loi forte des grands nombres
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Soit <span class="math inline">\((X_n)\)</span> une suite de v.a.r. i.i.d. <strong>intégrables</strong>, d’espérance commune <span class="math inline">\(m\)</span>. Alors : <span class="math display">\[\overline{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow[n\to+\infty]{p.s.} m.\]</span></p>
 </div>
 </div>
+<p>Ce résultat donne un fondement rigoureux à une intuition empirique très forte : si l’on répète une même expérience dans des conditions stables, la moyenne observée finit presque sûrement par révéler la <strong>valeur théorique cachée</strong> <span class="math inline">\(m\)</span>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Remarque — Comparaison avec la loi faible
+Remarque — Comparaison avec la loi faible
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -963,6 +1127,20 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <li>La <strong>loi forte</strong> donne un résultat plus puissant (convergence p.s.) sous une hypothèse plus faible (simple intégrabilité, pas besoin de variance finie).</li>
 <li>La loi forte implique la loi faible, mais la réciproque est fausse.</li>
 </ul>
+</div>
+</div>
+<div id="cell-fig-ps-trajectoires" class="cell page-columns page-full" data-execution_count="3">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-ps-trajectoires" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-ps-trajectoires-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="convergence-random-variables_files/figure-html/fig-ps-trajectoires-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="948" height="371">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ps-trajectoires-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Convergence presque sûre : 8 trajectoires indépendantes de <span class="math inline">\(\overline{X}_n(\omega)\)</span> (lancers de dé). Chaque trajectoire converge vers <span class="math inline">\(m = 3{,}5\)</span>, sauf éventuellement sur un ensemble de probabilité nulle.
+</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -975,12 +1153,26 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition — Méthode de Monte-Carlo
+Proposition — Méthode de Monte-Carlo
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Soit <span class="math inline">\((X_n)\)</span> une suite de v.a.r. i.i.d. de densité <span class="math inline">\(p\)</span> sur <span class="math inline">\(\mathbb{R}\)</span>, et <span class="math inline">\(h : \mathbb{R} \to \mathbb{R}\)</span> une fonction continue par morceaux telle que <span class="math inline">\(h(X_1)\)</span> soit intégrable. Alors : <span class="math display">\[I_n = \frac{1}{n}\sum_{i=1}^n h(X_i) \xrightarrow[n\to+\infty]{p.s.} E(h(X_1)) = \int_{\mathbb{R}} h(x)\,p(x)\,dx.\]</span></p>
 <p>Si de plus <span class="math inline">\(h(X_1)\)</span> est de carré intégrable, en posant <span class="math inline">\(\sigma^2 = \mathrm{Var}(h(X_1))\)</span>, la vitesse de convergence est de l’ordre de <span class="math inline">\(\sigma / \sqrt{n}\)</span>.</p>
+</div>
+</div>
+<p>Le point important est que l’on transforme un <strong>problème d’analyse</strong> (calculer une intégrale) en un <strong>problème probabiliste</strong> (calculer une moyenne). Cette idée est très puissante : dès qu’on sait simuler la loi de <span class="math inline">\(X\)</span>, on sait construire une approximation numérique de l’intégrale cherchée.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Remarque
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La méthode de Monte-Carlo permet d’<strong>estimer numériquement</strong> une intégrale <span class="math inline">\(\int_{\mathbb{R}} h(x)\,p(x)\,dx\)</span> en simulant un grand nombre de réalisations de <span class="math inline">\(X\)</span> et en calculant la moyenne empirique de <span class="math inline">\(h(X_i)\)</span>.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -989,11 +1181,29 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Remarque
+Algorithme — Méthode de Monte-Carlo
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>La méthode de Monte-Carlo permet d’<strong>estimer numériquement</strong> une intégrale <span class="math inline">\(\int_{\mathbb{R}} h(x)\,p(x)\,dx\)</span> en simulant un grand nombre de réalisations de <span class="math inline">\(X\)</span> et en calculant la moyenne empirique de <span class="math inline">\(h(X_i)\)</span>.</p>
+<p>Pour estimer <span class="math inline">\(I = \displaystyle\int_{\mathbb{R}} h(x)\,p(x)\,dx\)</span> :</p>
+<ol type="1">
+<li><strong>Simuler</strong> <span class="math inline">\(n\)</span> réalisations <span class="math inline">\(x_1, \ldots, x_n\)</span> i.i.d. selon la loi de densité <span class="math inline">\(p\)</span>.</li>
+<li><strong>Calculer</strong> la moyenne empirique <span class="math inline">\(\displaystyle I_n = \frac{1}{n}\sum_{i=1}^n h(x_i)\)</span>.</li>
+<li><strong>Évaluer l’erreur</strong> : par le TCL, l’erreur typique (écart-type) est <span class="math inline">\(\approx \sigma/\sqrt{n}\)</span> où <span class="math inline">\(\sigma^2 = \mathrm{Var}(h(X_1))\)</span>.</li>
+</ol>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Convergence lente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour diviser l’erreur par 10, il faut <strong>multiplier <span class="math inline">\(n\)</span> par 100</strong>. Monte-Carlo converge en <span class="math inline">\(O(1/\sqrt{n})\)</span>, indépendamment de la dimension du problème — c’est son avantage pour les intégrales en grande dimension.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -1002,7 +1212,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exemple 7 — Estimation d’une intégrale par Monte-Carlo
+Exemple 5 — Estimation d’une intégrale par Monte-Carlo
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1013,7 +1223,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </section>
 </section>
-<section id="convergence-en-loi-et-théorème-limite-central" class="level2">
+<section id="convergence-en-loi-et-théorème-limite-central" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="convergence-en-loi-et-théorème-limite-central">Convergence en loi et théorème limite central</h2>
 <p>La convergence en loi décrit le comportement asymptotique des distributions, même lorsque les variables ne convergent pas point par point. Elle est essentielle pour construire des approximations probabilistes en statistique.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -1022,33 +1232,35 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Définition — Convergence en loi
+Définition — Convergence en loi
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Soit <span class="math inline">\((X_n)\)</span> une suite de v.a.r. de fonctions de répartition <span class="math inline">\(F_{X_n}\)</span>, et <span class="math inline">\(X\)</span> une v.a.r. de fonction de répartition <span class="math inline">\(F_X\)</span>. On dit que <span class="math inline">\((X_n)\)</span> <strong>converge en loi</strong> vers <span class="math inline">\(X\)</span>, et on note <span class="math inline">\(X_n \xrightarrow[n\to+\infty]{\mathcal{L}} X\)</span>, si et seulement si, en tout point de continuité de <span class="math inline">\(F_X\)</span> : <span class="math display">\[\lim_{n\to+\infty} F_{X_n}(x) = F_X(x).\]</span></p>
 </div>
 </div>
+<p>La convergence en loi ne suit pas les valeurs exactes prises par <span class="math inline">\(X_n\)</span> sur chaque trajectoire : elle regarde seulement la <strong>forme globale des distributions</strong>. Deux suites peuvent donc avoir le même comportement en loi sans être proches trajectoire par trajectoire.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Remarque
+Remarque
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Pour une suite de v.a.r. <strong>discrètes</strong> : <span class="math inline">\(X_n \xrightarrow{\mathcal{L}} X \iff \forall k \in \mathbb{N},\; P(X_n = k) \to P(X = k)\)</span>.</p>
 </div>
 </div>
+<p>La convergence en loi est particulièrement adaptée aux problèmes asymptotiques : quand une suite de variables ne converge pas vers une valeur déterministe, on peut encore espérer décrire sa <strong>loi limite</strong>, c’est-à-dire la distribution qui gouverne ses fluctuations à grande échelle.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition (admise) — Lien entre convergence en probabilité et en loi
+Proposition (admise) — Lien entre convergence en probabilité et en loi
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1062,7 +1274,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exemple 5
+Exemple 6 — Une convergence en loi obtenue par convergence en probabilité
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1070,16 +1282,16 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-40-contents" aria-controls="callout-40" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-47-contents" aria-controls="callout-47" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution — Exemple 5
+Solution — Exemple 6
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-40" class="callout-40-contents callout-collapse collapse">
+<div id="callout-47" class="callout-47-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>On a montré dans l’exemple 3 que <span class="math inline">\(X_n \xrightarrow{P} 0\)</span>. Puisque la convergence en probabilité implique la convergence en loi, on conclut <span class="math inline">\(X_n \xrightarrow{\mathcal{L}} 0\)</span>.</p>
 </div>
@@ -1091,7 +1303,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exercice 4 — Suites de lois exponentielles
+Exercice 4 — Suites de lois exponentielles
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1107,16 +1319,16 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-42-contents" aria-controls="callout-42" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-49-contents" aria-controls="callout-49" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Indication
+Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-42" class="callout-42-contents callout-collapse collapse">
+<div id="callout-49" class="callout-49-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>La fonction de répartition de <span class="math inline">\(X_n\)</span> est <span class="math inline">\(F_n(x)=1-e^{-\lambda_n x}\)</span> pour <span class="math inline">\(x\ge 0\)</span>.</li>
@@ -1128,13 +1340,37 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-50-contents" aria-controls="callout-50" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Correction — Exercice 4
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-50" class="callout-50-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Question 1 — Convergence en loi selon la valeur de <span class="math inline">\(\lambda\)</span></strong></p>
+<p>La fonction de répartition de <span class="math inline">\(X_n \sim \mathcal{E}(\lambda_n)\)</span> est : <span class="math display">\[F_n(x) = \begin{cases} 0 &amp; \text{si } x &lt; 0, \\ 1 - e^{-\lambda_n x} &amp; \text{si } x \geq 0. \end{cases}\]</span></p>
+<p><strong>Cas <span class="math inline">\(\lambda_n \to \lambda \in (0, +\infty)\)</span> :</strong> Pour tout <span class="math inline">\(x \geq 0\)</span>, <span class="math display">\[F_n(x) = 1 - e^{-\lambda_n x} \xrightarrow[n\to+\infty]{} 1 - e^{-\lambda x} = F_{\mathcal{E}(\lambda)}(x).\]</span> Pour <span class="math inline">\(x &lt; 0\)</span>, <span class="math inline">\(F_n(x) = 0 \to 0\)</span>. En tout point de continuité de <span class="math inline">\(F_{\mathcal{E}(\lambda)}\)</span>, la convergence a lieu, donc : <span class="math display">\[\boxed{X_n \xrightarrow{\mathcal{L}} \mathcal{E}(\lambda).}\]</span></p>
+<p><strong>Cas <span class="math inline">\(\lambda_n \to +\infty\)</span> :</strong> Pour tout <span class="math inline">\(x &gt; 0\)</span>, <span class="math inline">\(e^{-\lambda_n x} \to 0\)</span>, donc <span class="math inline">\(F_n(x) \to 1\)</span>. Pour <span class="math inline">\(x &lt; 0\)</span>, <span class="math inline">\(F_n(x) = 0 \to 0\)</span>. La limite est la fonction de répartition de la masse de Dirac en <span class="math inline">\(0\)</span> (qui vaut <span class="math inline">\(0\)</span> pour <span class="math inline">\(x &lt; 0\)</span> et <span class="math inline">\(1\)</span> pour <span class="math inline">\(x &gt; 0\)</span>, et dont les seuls points de discontinuité sont <span class="math inline">\(x = 0\)</span>). Donc : <span class="math display">\[\boxed{X_n \xrightarrow{\mathcal{L}} 0.}\]</span></p>
+<hr>
+<p><strong>Question 2 — Convergences en probabilité et <span class="math inline">\(L^2\)</span> vers <span class="math inline">\(0\)</span> (cas <span class="math inline">\(\lambda = +\infty\)</span>)</strong></p>
+<p><strong>Convergence en probabilité.</strong> Pour tout <span class="math inline">\(\varepsilon &gt; 0\)</span> : <span class="math display">\[P(|X_n - 0| &gt; \varepsilon) = P(X_n &gt; \varepsilon) = e^{-\lambda_n \varepsilon} \xrightarrow[n\to+\infty]{} 0,\]</span> car <span class="math inline">\(\lambda_n \to +\infty\)</span>. Donc <span class="math inline">\(X_n \xrightarrow{P} 0\)</span>.</p>
+<p><strong>Convergence en moyenne quadratique.</strong> Pour <span class="math inline">\(X_n \sim \mathcal{E}(\lambda_n)\)</span> : <span class="math display">\[E(X_n) = \frac{1}{\lambda_n} \to 0, \qquad E(X_n^2) = \frac{2}{\lambda_n^2} \to 0.\]</span> Donc : <span class="math display">\[E\!\left[(X_n - 0)^2\right] = E(X_n^2) = \frac{2}{\lambda_n^2} \xrightarrow[n\to+\infty]{} 0,\]</span> ce qui donne <span class="math inline">\(X_n \xrightarrow{L^2} 0\)</span>.</p>
+<p>On retrouve bien le diagramme d’implications : <span class="math inline">\(L^2 \implies P \implies \mathcal{L}\)</span>, avec les trois convergences vers <span class="math inline">\(0\)</span> vérifiées ici.</p>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition (admise) — Théorème limite central
+Proposition (admise) — Théorème limite central
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1143,7 +1379,22 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <p>Autrement dit, <span class="math inline">\(F_{Z_n}(t) \to \Phi(t)\)</span> pour tout <span class="math inline">\(t\)</span>, où <span class="math inline">\(\Phi\)</span> désigne la fonction de répartition de <span class="math inline">\(\mathcal{N}(0,1)\)</span>.</p>
 </div>
 </div>
-<p>Lorsque <span class="math inline">\(n \to +\infty\)</span>, <span class="math inline">\(\overline{X}_n\)</span> se comporte en loi comme <span class="math inline">\(\mathcal{N}\!\left(m, \dfrac{\sigma^2}{n}\right)\)</span>, et ce <strong>quelle que soit la loi des <span class="math inline">\(X_i\)</span></strong> : c’est le caractère universel du théorème limite central.</p>
+<p>Sous les hypothèses du TCL (v.a.r. i.i.d. de variance finie), lorsque <span class="math inline">\(n\)</span> est grand, <span class="math inline">\(\overline{X}_n\)</span> se comporte <strong>approximativement</strong> en loi comme <span class="math inline">\(\mathcal{N}\!\left(m, \dfrac{\sigma^2}{n}\right)\)</span>, même si la loi commune des <span class="math inline">\(X_i\)</span> n’est pas normale : c’est le caractère universel du théorème limite central.</p>
+<p>L’idée du TCL est la suivante : la moyenne empirique converge déjà vers <span class="math inline">\(m\)</span>, donc si l’on ne fait rien, sa loi finit par se concentrer en un point. Pour observer une limite non triviale, on <strong>centre</strong> par <span class="math inline">\(m\)</span> et on <strong>renormalise</strong> par <span class="math inline">\(\sigma/\sqrt{n}\)</span> : on grossit ainsi les fluctuations résiduelles pour faire apparaître leur forme universelle, la loi normale.</p>
+<div id="cell-fig-tcl" class="cell page-columns page-full" data-execution_count="4">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-tcl" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-tcl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="convergence-random-variables_files/figure-html/fig-tcl-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="1142" height="324">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tcl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Théorème limite central : histogramme de <span class="math inline">\(Z_n = (\overline{X}_n - m)\,\sqrt{n}/\sigma\)</span> pour une loi exponentielle (très asymétrique). La courbe en tirets blancs est la densité <span class="math inline">\(\mathcal{N}(0,1)\)</span>. Dès <span class="math inline">\(n = 30\)</span>, l’approximation est excellente.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <p>En pratique, le TCL permet de remplacer une loi compliquée (de somme ou de moyenne) par une loi normale dès que l’échantillon est assez grand. C’est ce qui justifie la plupart des intervalles de confiance et tests approximatifs.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1151,21 +1402,99 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition — Approximation normale de la loi binomiale
+Proposition — Intervalle de confiance asymptotique pour <span class="math inline">\(m\)</span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sous les hypothèses du TCL, pour <span class="math inline">\(n\)</span> grand, un <strong>intervalle de confiance asymptotique</strong> de niveau approché <span class="math inline">\(1 - \alpha\)</span> pour la moyenne <span class="math inline">\(m\)</span> est : <span class="math display">\[IC_{1-\alpha}(m) = \left[\overline{X}_n - z_{\alpha/2}\,\frac{\sigma}{\sqrt{n}},\quad \overline{X}_n + z_{\alpha/2}\,\frac{\sigma}{\sqrt{n}}\right],\]</span> où <span class="math inline">\(z_{\alpha/2}\)</span> est le quantile d’ordre <span class="math inline">\(1-\alpha/2\)</span> de <span class="math inline">\(\mathcal{N}(0,1)\)</span>, défini par <span class="math inline">\(P(Z &gt; z_{\alpha/2}) = \alpha/2\)</span>.</p>
+<p><strong>Valeurs usuelles :</strong> <span class="math inline">\(z_{0{,}025} \approx 1{,}96\)</span> (niveau 95 %), <span class="math inline">\(z_{0{,}005} \approx 2{,}576\)</span> (niveau 99 %).</p>
+</div>
+</div>
+<p>Cet intervalle doit se lire comme une <strong>marge d’incertitude</strong> autour de la moyenne observée. Plus on veut un niveau de confiance élevé, plus l’intervalle doit être large ; à l’inverse, plus l’échantillon est grand, plus l’intervalle se resserre.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-53-contents" aria-controls="callout-53" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Justification
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-53" class="callout-53-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Le TCL donne <span class="math inline">\(Z_n = \dfrac{\overline{X}_n - m}{\sigma/\sqrt{n}} \xrightarrow{\mathcal{L}} \mathcal{N}(0,1)\)</span>. Donc pour <span class="math inline">\(n\)</span> grand : <span class="math display">\[P\!\left(-z_{\alpha/2} \leq \frac{\overline{X}_n - m}{\sigma/\sqrt{n}} \leq z_{\alpha/2}\right) \approx P(-z_{\alpha/2} \leq Z \leq z_{\alpha/2}) = 1 - \alpha.\]</span> En isolant <span class="math inline">\(m\)</span> dans les inégalités (en multipliant par <span class="math inline">\(\sigma/\sqrt{n}\)</span> et en recentrant autour de <span class="math inline">\(\overline{X}_n\)</span>), on obtient l’intervalle de confiance asymptotique ci-dessus.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exemple 7 — Résistance de matériaux
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On mesure la résistance (en MPa) de <span class="math inline">\(n = 100\)</span> éprouvettes d’acier. On obtient <span class="math inline">\(\overline{X}_{100} = 412\)</span> MPa. D’après des données historiques, l’écart-type de la résistance est <span class="math inline">\(\sigma = 15\)</span> MPa.</p>
+<p>Construire un intervalle de confiance asymptotique à 95 % pour la résistance moyenne <span class="math inline">\(m\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-56-contents" aria-controls="callout-56" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution — Exemple 7
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-56" class="callout-56-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Par le TCL avec <span class="math inline">\(n = 100\)</span>, <span class="math inline">\(\sigma = 15\)</span> et <span class="math inline">\(z_{0{,}025} \approx 1{,}96\)</span> : <span class="math display">\[IC_{0{,}95}(m) = \left[412 - 1{,}96 \times \frac{15}{\sqrt{100}},\quad 412 + 1{,}96 \times \frac{15}{\sqrt{100}}\right]
+= \left[412 - 2{,}94,\quad 412 + 2{,}94\right] = [409{,}1\,;\,414{,}9].\]</span></p>
+<p>Avec un niveau de confiance approché de 95 %, la résistance moyenne est comprise entre 409 MPa et 415 MPa.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cas pratique — <span class="math inline">\(\sigma\)</span> inconnue
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En pratique, <span class="math inline">\(\sigma\)</span> est rarement connu a priori. On le remplace par l’écart-type empirique <span class="math inline">\(S_n\)</span> : par le théorème de Slutsky (<span class="math inline">\(S_n \xrightarrow{P} \sigma\)</span>), l’intervalle de confiance reste valide asymptotiquement.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Proposition — Approximation normale de la loi binomiale
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Soit <span class="math inline">\((X_n)\)</span> une suite de v.a.r. i.i.d. de loi <span class="math inline">\(\mathcal{B}(p)\)</span>. Alors <span class="math inline">\(S_n = \sum_{i=1}^n X_i \sim \mathcal{B}(n,p)\)</span> et : <span class="math display">\[\frac{S_n - np}{\sqrt{np(1-p)}} \xrightarrow[n\to+\infty]{\mathcal{L}} \mathcal{N}(0,1),\]</span> soit <span class="math inline">\(S_n \overset{\mathcal{L}}{\approx} \mathcal{N}\!\left(np,\; np(1-p)\right)\)</span>.</p>
 <p><strong>Conditions pratiques :</strong> <span class="math inline">\(n \geq 30\)</span>, <span class="math inline">\(np \geq 5\)</span> et <span class="math inline">\(n(1-p) \geq 5\)</span>.</p>
+<p>Pour approcher des probabilités portant sur des valeurs entières (par exemple <span class="math inline">\(P(S_n \leq k)\)</span> ou <span class="math inline">\(P(a \leq S_n \leq b)\)</span>), on améliore souvent l’approximation en appliquant une <strong>correction de continuité</strong>.</p>
 </div>
 </div>
+<p>Cette approximation normale est naturelle : dans une loi binomiale, le nombre de succès fluctue autour de sa moyenne <span class="math inline">\(np\)</span> avec un écart typique de l’ordre de <span class="math inline">\(\sqrt{np(1-p)}\)</span>. Le TCL dit précisément que, après centrage et normalisation, ces fluctuations deviennent presque gaussiennes.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Remarque — Approximation de Poisson
+Remarque — Approximation de Poisson
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1179,7 +1508,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exemple 6 — Daltoniens dans un grand échantillon
+Exemple 8 — Daltoniens dans un grand échantillon
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1188,25 +1517,26 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-47-contents" aria-controls="callout-47" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-60-contents" aria-controls="callout-60" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution — Exemple 6
+Solution — Exemple 8
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-47" class="callout-47-contents callout-collapse collapse">
+<div id="callout-60" class="callout-60-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Soit <span class="math inline">\(X\)</span> le nombre de daltoniens. On a <span class="math inline">\(X \sim \mathcal{B}(1000, 0{,}03)\)</span>.</p>
 <p><strong>Vérification :</strong> <span class="math inline">\(n = 1000 \geq 30\)</span>, <span class="math inline">\(np = 30 \geq 5\)</span>, <span class="math inline">\(n(1-p) = 970 \geq 5\)</span>. ✓</p>
-<p>On approche <span class="math inline">\(X \approx \mathcal{N}(30,\; 30 \times 0{,}97) = \mathcal{N}(30,\; 29{,}1)\)</span>.</p>
+<p>On approche <span class="math inline">\(X\)</span> par une variable normale <span class="math inline">\(Y \sim \mathcal{N}(30,\; 29{,}1)\)</span>. Comme <span class="math inline">\(X\)</span> est discrète, on applique une <strong>correction de continuité</strong> : <span class="math display">\[P(X &gt; 25) = P(X \geq 26) \approx P(Y &gt; 25{,}5).\]</span></p>
 <p><span class="math display">\[P(X &gt; 25)
-= P\!\left(\frac{X - 30}{\sqrt{29{,}1}} &gt; \frac{25 - 30}{\sqrt{29{,}1}}\right)
-= P(Z &gt; -0{,}93)
-= \Phi(0{,}93) \approx 0{,}824.\]</span></p>
-<p>Il y a donc environ 82 % de chances qu’il y ait plus de 25 daltoniens dans l’échantillon.</p>
+= P(Y &gt; 25{,}5)
+= P\!\left(\frac{Y - 30}{\sqrt{29{,}1}} &gt; \frac{25{,}5 - 30}{\sqrt{29{,}1}}\right)
+= P(Z &gt; -0{,}83)
+= \Phi(0{,}83) \approx 0{,}798.\]</span></p>
+<p>Il y a donc environ 80 % de chances qu’il y ait plus de 25 daltoniens dans l’échantillon.</p>
 </div>
 </div>
 </div>
@@ -1216,7 +1546,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exercice 5 — Contrôle de pannes d’ordinateurs
+Exercice 5 — Contrôle de pannes d’ordinateurs
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1230,22 +1560,61 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-49-contents" aria-controls="callout-49" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-62-contents" aria-controls="callout-62" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Indication
+Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-49" class="callout-49-contents callout-collapse collapse">
+<div id="callout-62" class="callout-62-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><span class="math inline">\(S_n\sim\mathcal{B}(1000,0{,}01)\)</span> ; <span class="math inline">\(\overline{X}_n\)</span> est la proportion de pannes.</li>
 <li><span class="math inline">\(E(X_1)=0{,}01\)</span> et <span class="math inline">\(\mathrm{Var}(X_1)=0{,}01\times 0{,}99=0{,}0099\)</span>.</li>
-<li>Standardiser : <span class="math inline">\(Z=\dfrac{\overline{X}_n - 0{,}01}{\sqrt{0{,}0099/1000}}\)</span> et utiliser <span class="math inline">\(P(-1{,}6\le Z\le 1{,}6)\approx 89{,}0\%\)</span>.</li>
+<li>Écrire d’abord l’événement sur <span class="math inline">\(S_{1000}\)</span> : <span class="math inline">\(0{,}005\le \overline{X}_{1000}\le 0{,}015 \iff 5\le S_{1000}\le 15\)</span>.</li>
+<li>Avec la correction de continuité : <span class="math display">\[P(5\le S_{1000}\le 15)\approx P(4{,}5\le Y\le 15{,}5),\quad Y\sim\mathcal{N}(10,9{,}9).\]</span></li>
+<li>Standardiser puis utiliser <span class="math inline">\(P(-1{,}75\le Z\le 1{,}75)\approx 92{,}0\%\)</span>.</li>
 </ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-63-contents" aria-controls="callout-63" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Correction — Exercice 5
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-63" class="callout-63-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Question 1 — Interprétation et loi de <span class="math inline">\(S_n\)</span></strong></p>
+<p>Chaque <span class="math inline">\(X_i = \mathbf{1}_{\{\text{panne}\}}\)</span> vaut 1 si l’ordinateur <span class="math inline">\(i\)</span> tombe en panne (probabilité <span class="math inline">\(p = 0{,}01\)</span>), 0 sinon. Les <span class="math inline">\(X_i\)</span> sont i.i.d. de loi <span class="math inline">\(\mathcal{B}(0{,}01)\)</span>.</p>
+<ul>
+<li><span class="math inline">\(S_n = \displaystyle\sum_{i=1}^n X_i\)</span> est le <strong>nombre total de pannes</strong> parmi les 1000 ordinateurs.</li>
+<li><span class="math inline">\(\overline{X}_n = S_n/n\)</span> est la <strong>proportion empirique de pannes</strong>.</li>
+</ul>
+<p>Par stabilité de la loi binomiale : <span class="math display">\[S_{1000} \sim \mathcal{B}(1000,\; 0{,}01).\]</span></p>
+<hr>
+<p><strong>Question 2 — Espérance et variance</strong></p>
+<p><span class="math display">\[E(X_1) = p = 0{,}01, \qquad \mathrm{Var}(X_1) = p(1-p) = 0{,}01 \times 0{,}99 = 0{,}0099.\]</span></p>
+<hr>
+<p><strong>Question 3 — Approximation par le TCL</strong></p>
+<p>Le TCL s’applique (<span class="math inline">\(n = 1000\)</span> grand, <span class="math inline">\(X_i\)</span> i.i.d. de carré intégrable). Comme <span class="math display">\[0{,}005\le \overline{X}_{1000}\le 0{,}015 \iff 5\le S_{1000}\le 15,\]</span> il est plus naturel d’approcher la loi de <span class="math inline">\(S_{1000}\)</span> : <span class="math display">\[Y \sim \mathcal{N}(10,\;9{,}9).\]</span></p>
+<p>Avec la correction de continuité : <span class="math display">\[P(5\le S_{1000}\le 15)\approx P(4{,}5\le Y\le 15{,}5).\]</span></p>
+<p>On standardise avec <span class="math inline">\(\sigma = \sqrt{9{,}9} \approx 3{,}146\)</span> : <span class="math display">\[\frac{4{,}5 - 10}{3{,}146} \approx -1{,}75, \qquad
+\frac{15{,}5 - 10}{3{,}146} \approx +1{,}75.\]</span></p>
+<p>Ainsi : <span class="math display">\[P(0{,}005 \leq \overline{X}_{1000} \leq 0{,}015)
+\approx P(-1{,}75 \leq Z \leq 1{,}75)
+= 2\Phi(1{,}75) - 1
+\approx 2 \times 0{,}9599 - 1
+\approx \mathbf{92{,}0\%}.\]</span></p>
+<p>Il y a donc environ <strong>92 % de chances</strong> que la proportion de pannes observée soit comprise entre 0,5 % et 1,5 %.</p>
 </div>
 </div>
 </div>
@@ -1255,7 +1624,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exercice 6 — Restaurant scolaire
+Exercice 6 — Restaurant scolaire
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1264,23 +1633,49 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-51-contents" aria-controls="callout-51" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-65-contents" aria-controls="callout-65" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Indication
+Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-51" class="callout-51-contents callout-collapse collapse">
+<div id="callout-65" class="callout-65-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>Modéliser le nombre de présents par <span class="math inline">\(S\sim\mathcal{B}(2000,0{,}6)\)</span>.</li>
 <li><span class="math inline">\(E(S)=1200\)</span> et <span class="math inline">\(\mathrm{Var}(S)=2000\times 0{,}6\times 0{,}4=480\)</span>.</li>
-<li>On cherche <span class="math inline">\(n\)</span> tel que <span class="math inline">\(P(S&gt;n)\le 0{,}0028\)</span>, soit <span class="math inline">\(P\!\left(Z&gt;\dfrac{n-1200}{\sqrt{480}}\right)\le 0{,}0028\)</span>.</li>
-<li>Le quantile <span class="math inline">\(z_{0{,}0028}\approx 2{,}77\)</span>, donc <span class="math inline">\(n\ge 1200+2{,}77\sqrt{480}\approx 1261\)</span>.</li>
+<li>Avec la correction de continuité, on approche <span class="math inline">\(P(S&gt;n)\)</span> par <span class="math display">\[P\!\left(Z&gt;\dfrac{n+0{,}5-1200}{\sqrt{480}}\right).\]</span></li>
+<li>Le quantile <span class="math inline">\(z_{0{,}0028}\approx 2{,}77\)</span>, donc <span class="math display">\[n\ge 1199{,}5+2{,}77\sqrt{480}\approx 1260{,}2,\]</span> soit au minimum <strong>1261</strong> repas.</li>
 </ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-66-contents" aria-controls="callout-66" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Correction — Exercice 6
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-66" class="callout-66-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Modélisation</strong></p>
+<p>Soit <span class="math inline">\(S\)</span> le nombre d’élèves présents au restaurant. Les 2000 élèves se présentent indépendamment avec probabilité <span class="math inline">\(p = 0{,}6\)</span>, donc : <span class="math display">\[S \sim \mathcal{B}(2000,\; 0{,}6), \qquad E(S) = 1200, \qquad \mathrm{Var}(S) = 2000 \times 0{,}6 \times 0{,}4 = 480.\]</span></p>
+<p><strong>Condition à satisfaire</strong></p>
+<p>On cherche <span class="math inline">\(n\)</span> (nombre de repas préparés) tel que la probabilité de manquer de repas soit inférieure à <span class="math inline">\(0{,}28\%\)</span> : <span class="math display">\[P(S &gt; n) \leq 0{,}0028.\]</span></p>
+<p><strong>Application du TCL</strong></p>
+<p>Puisque <span class="math inline">\(2000\)</span> est grand, par le TCL : <span class="math display">\[Z = \frac{S - 1200}{\sqrt{480}} \approx \mathcal{N}(0,1).\]</span> Donc : <span class="math display">\[P(S &gt; n) = P(S \geq n+1) \approx P\!\left(Z &gt; \frac{n+0{,}5 - 1200}{\sqrt{480}}\right) \leq 0{,}0028.\]</span></p>
+<p>On cherche le quantile <span class="math inline">\(z\)</span> tel que <span class="math inline">\(P(Z &gt; z) = 0{,}0028\)</span>, soit <span class="math inline">\(\Phi(z) = 1 - 0{,}0028 = 0{,}9972\)</span>. D’après les tables : <span class="math inline">\(z \approx 2{,}77\)</span>.</p>
+<p><strong>Calcul de <span class="math inline">\(n\)</span></strong></p>
+<p><span class="math display">\[\frac{n+0{,}5 - 1200}{\sqrt{480}} \geq 2{,}77 \implies n \geq 1199{,}5 + 2{,}77\sqrt{480}.\]</span></p>
+<p>Or <span class="math inline">\(\sqrt{480} \approx 21{,}91\)</span>, donc : <span class="math display">\[n \geq 1199{,}5 + 2{,}77 \times 21{,}91 \approx 1199{,}5 + 60{,}7 \approx 1260{,}2.\]</span></p>
+<p>Il faut préparer <strong>au moins 1 261 repas</strong> pour garantir une probabilité de manque inférieure à <span class="math inline">\(0{,}28\%\)</span>.</p>
 </div>
 </div>
 </div>
@@ -1290,7 +1685,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exercice 7 — Répartition de passagers entre deux avions
+Exercice 7 — Répartition de passagers entre deux avions
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1303,24 +1698,52 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-53-contents" aria-controls="callout-53" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-68-contents" aria-controls="callout-68" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Indication
+Indication
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-53" class="callout-53-contents callout-collapse collapse">
+<div id="callout-68" class="callout-68-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><span class="math inline">\(X\sim\mathcal{B}(400,0{,}5)\)</span> et <span class="math inline">\(Y=400-X\)</span>, donc <span class="math inline">\(E(X)=200\)</span> et <span class="math inline">\(\mathrm{Var}(X)=100\)</span>.</li>
-<li>On approche <span class="math inline">\(X\approx\mathcal{N}(200,100)\)</span>.</li>
+<li>On approche <span class="math inline">\(X\)</span> par <span class="math inline">\(Y\sim\mathcal{N}(200,100)\)</span> et on applique une correction de continuité.</li>
 <li>« Un voyageur sans place » signifie <span class="math inline">\(X&gt;n\)</span> ou <span class="math inline">\(Y&gt;n\)</span>, soit <span class="math inline">\(X&gt;n\)</span> ou <span class="math inline">\(X&lt;400-n\)</span>.</li>
 <li>Par symétrie : <span class="math inline">\(P(X&gt;n\text{ ou }X&lt;400-n)=2P(X&gt;n)\le 10^{-3}\)</span>, donc <span class="math inline">\(P(X&gt;n)\le 5\times 10^{-4}\)</span>.</li>
-<li>On cherche <span class="math inline">\(z\)</span> tel que <span class="math inline">\(P(Z&gt;z)=5\times 10^{-4}\)</span>, i.e.&nbsp;<span class="math inline">\(z\approx 3{,}29\)</span>, puis <span class="math inline">\(n\ge 200+3{,}29\times 10\approx 233\)</span>.</li>
+<li>On cherche <span class="math inline">\(z\)</span> tel que <span class="math inline">\(P(Z&gt;z)=5\times 10^{-4}\)</span>, i.e.&nbsp;<span class="math inline">\(z\approx 3{,}29\)</span>, puis <span class="math display">\[\frac{n+0{,}5-200}{10}\ge 3{,}29,\]</span> ce qui conduit à <span class="math inline">\(n\ge 232{,}4\)</span>, donc au minimum <strong>233</strong> places.</li>
 </ul>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-69-contents" aria-controls="callout-69" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Correction — Exercice 7
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-69" class="callout-69-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Question 1 — Loi de <span class="math inline">\(X\)</span> et approximation normale</strong></p>
+<p>Chaque passager est affecté indépendamment à l’avion 1 avec probabilité <span class="math inline">\(\frac{1}{2}\)</span>. Donc <span class="math inline">\(X \sim \mathcal{B}(400,\; 0{,}5)\)</span> et <span class="math inline">\(Y = 400 - X \sim \mathcal{B}(400,\; 0{,}5)\)</span>.</p>
+<p><span class="math display">\[E(X) = 400 \times 0{,}5 = 200, \qquad \mathrm{Var}(X) = 400 \times 0{,}5 \times 0{,}5 = 100, \qquad \sigma_X = 10.\]</span></p>
+<p><strong>Vérification des conditions :</strong> <span class="math inline">\(n = 400 \geq 30\)</span>, <span class="math inline">\(np = 200 \geq 5\)</span>, <span class="math inline">\(n(1-p) = 200 \geq 5\)</span>. ✓</p>
+<p>On approche donc <span class="math inline">\(X\)</span> par une variable normale <span class="math inline">\(Y \sim \mathcal{N}(200,\; 100)\)</span>.</p>
+<hr>
+<p><strong>Question 2 — Nombre minimal de places <span class="math inline">\(n\)</span></strong></p>
+<p>Un passager est sans place si et seulement si l’avion qui lui est assigné est surchargé. Cela se produit si <span class="math inline">\(X &gt; n\)</span> (avion 1 plein) <strong>ou</strong> <span class="math inline">\(Y &gt; n\)</span> (avion 2 plein), soit : <span class="math display">\[X &gt; n \quad \text{ou} \quad 400 - X &gt; n \iff X &gt; n \quad \text{ou} \quad X &lt; 400 - n.\]</span></p>
+<p>Par symétrie de <span class="math inline">\(X\)</span> autour de <span class="math inline">\(200\)</span> (car <span class="math inline">\(p = 0{,}5\)</span>), on a <span class="math inline">\(P(X &gt; n) = P(X &lt; 400 - n)\)</span> pour <span class="math inline">\(n \geq 200\)</span>, donc les deux événements sont équiprobables et disjoints (si <span class="math inline">\(n \geq 200\)</span>). Ainsi : <span class="math display">\[P(\text{un passager sans place}) = 2\,P(X &gt; n) \leq 10^{-3},\]</span> soit <span class="math inline">\(P(X &gt; n) \leq 5 \times 10^{-4}\)</span>.</p>
+<p>Avec la correction de continuité : <span class="math display">\[P(X &gt; n) = P(X \geq n+1) \approx P(Y &gt; n+0{,}5).\]</span> En standardisant, <span class="math display">\[P(X &gt; n) \approx P\!\left(Z &gt; \frac{n+0{,}5 - 200}{10}\right) \leq 5 \times 10^{-4}.\]</span></p>
+<p>On cherche <span class="math inline">\(z\)</span> tel que <span class="math inline">\(P(Z &gt; z) = 5 \times 10^{-4}\)</span>, soit <span class="math inline">\(\Phi(z) = 0{,}9995\)</span>. D’après les tables : <span class="math inline">\(z \approx 3{,}29\)</span>.</p>
+<p>Donc : <span class="math display">\[\frac{n+0{,}5 - 200}{10} \geq 3{,}29 \implies n \geq 199{,}5 + 32{,}9 = 232{,}4.\]</span></p>
+<p>Chaque avion doit avoir <strong>au moins <span class="math inline">\(n = 233\)</span> places</strong> pour que la probabilité qu’un passager soit sans siège soit inférieure à <span class="math inline">\(10^{-3}\)</span>.</p>
 </div>
 </div>
 </div>
@@ -1337,7 +1760,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition — Continuité et convergence
+Proposition — Continuité et convergence
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1349,6 +1772,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </ul>
 </div>
 </div>
+<p>En pratique, cela permet de transporter les résultats de convergence vers des quantités dérivées : si <span class="math inline">\(X_n\)</span> converge, alors <span class="math inline">\(X_n^2\)</span>, <span class="math inline">\(\exp(X_n)\)</span>, <span class="math inline">\(\sin(X_n)\)</span>, etc., convergent aussi, dès lors que la fonction appliquée est continue.</p>
 </section>
 <section id="opérations-algébriques-et-convergence" class="level3">
 <h3 class="anchored" data-anchor-id="opérations-algébriques-et-convergence">Opérations algébriques et convergence</h3>
@@ -1359,7 +1783,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition — Opérations sur les convergences
+Proposition — Opérations sur les convergences
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1371,6 +1795,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </ul>
 </div>
 </div>
+<p>Ces règles prolongent exactement les règles habituelles sur les limites de suites numériques. La seule précaution supplémentaire concerne le quotient : il faut éviter que le dénominateur limite puisse s’annuler avec probabilité positive.</p>
 </section>
 <section id="théorème-de-slutsky" class="level3">
 <h3 class="anchored" data-anchor-id="théorème-de-slutsky">Théorème de Slutsky</h3>
@@ -1381,7 +1806,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Théorème (admis) — Théorème de Slutsky
+Théorème (admis) — Théorème de Slutsky
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1392,26 +1817,28 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </ul>
 </div>
 </div>
+<p>Le cas typique en statistique est le suivant : un paramètre inconnu est remplacé par un estimateur qui converge vers une constante. Slutsky garantit alors que ce remplacement ne modifie pas la loi limite principale.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Proposition — Convergence vers une constante
+Proposition — Convergence vers une constante
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Soit <span class="math inline">\(a \in \mathbb{R}\)</span> et <span class="math inline">\((X_n)\)</span> une suite de v.a.r. Alors : <span class="math display">\[X_n \xrightarrow{P} a \iff X_n \xrightarrow{\mathcal{L}} a.\]</span></p>
 </div>
 </div>
+<p>Cette équivalence est très particulière : elle n’est vraie que lorsque la limite est <strong>déterministe</strong>. Elle est extrêmement utile en statistique, car beaucoup d’estimateurs convergent justement vers une constante.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Remarque — Hiérarchie des convergences
+Remarque — Hiérarchie des convergences
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1430,7 +1857,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exercice 8 — Convergence de <span class="math inline">\(V_n\)</span> vers <span class="math inline">\(\sigma^2\)</span>
+Exercice 8 — Convergence de <span class="math inline">\(V_n\)</span> vers <span class="math inline">\(\sigma^2\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1444,16 +1871,16 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-60-contents" aria-controls="callout-60" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-76-contents" aria-controls="callout-76" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution — Exercice 8
+Solution — Exercice 8
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-60" class="callout-60-contents callout-collapse collapse">
+<div id="callout-76" class="callout-76-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> On pose <span class="math inline">\(Y_i = (X_i - m)^2\)</span>. Les <span class="math inline">\(Y_i\)</span> sont i.i.d. et intégrables avec : <span class="math display">\[E(Y_i) = E\!\left((X_i - m)^2\right) = \sigma^2.\]</span></p>
 <p>On a <span class="math inline">\(V_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n Y_i = \overline{Y}_n\)</span>.</p>
@@ -1476,7 +1903,7 @@ E(X_n) \xrightarrow[n\to+\infty]{} m,\\
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Mise en garde</span>Exercice 9 — Convergence de la variance empirique <span class="math inline">\(S_n'^2\)</span>
+Exercice 9 — Convergence de la variance empirique <span class="math inline">\(S_n'^2\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1491,16 +1918,16 @@ S_n^2 = \frac{1}{n-1}\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2.\]</span><
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-62-contents" aria-controls="callout-62" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-78-contents" aria-controls="callout-78" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>Solution — Exercice 9
+Solution — Exercice 9
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-62" class="callout-62-contents callout-collapse collapse">
+<div id="callout-78" class="callout-78-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> On développe : <span class="math display">\[\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2
 = \sum_{i=1}^n \left[(X_i - m) - (\overline{X}_n - m)\right]^2\]</span> <span class="math display">\[= \sum_{i=1}^n (X_i - m)^2 - 2(\overline{X}_n - m)\sum_{i=1}^n (X_i - m) + n(\overline{X}_n - m)^2.\]</span></p>
@@ -1523,7 +1950,7 @@ S_n^2 = \frac{1}{n-1}\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2.\]</span><
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Astuce</span>À retenir
+À retenir
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1545,58 +1972,43 @@ S_n^2 = \frac{1}{n-1}\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2.\]</span><
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-  window.document.addEventListener("DOMContentLoaded", function (event) {
-    const icon = "";
-    const anchorJS = new window.AnchorJS();
-    anchorJS.options = {
-      placement: 'right',
-      icon: icon
-    };
-    anchorJS.add('.anchored');
-    const isCodeAnnotation = (el) => {
-      for (const clz of el.classList) {
-        if (clz.startsWith('code-annotation-')) {                     
-          return true;
-        }
-      }
-      return false;
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
     }
-    const onCopySuccess = function(e) {
-      // button target
-      const button = e.trigger;
-      // don't keep focus
-      button.blur();
-      // flash "checked"
-      button.classList.add('code-copy-button-checked');
-      var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copié");
-      let tooltip;
-      if (window.bootstrap) {
-        button.setAttribute("data-bs-toggle", "tooltip");
-        button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copié");
-        tooltip = new bootstrap.Tooltip(button, 
-          { trigger: "manual", 
-            customClass: "code-copy-button-tooltip",
-            offset: [0, -8]});
-        tooltip.show();    
-      }
-      setTimeout(function() {
-        if (tooltip) {
-          tooltip.hide();
-          button.removeAttribute("data-bs-title");
-          button.removeAttribute("data-bs-toggle");
-          button.removeAttribute("data-bs-placement");
-        }
-        button.setAttribute("title", currentTitle);
-        button.classList.remove('code-copy-button-checked');
-      }, 1000);
-      // clear code selection
-      e.clearSelection();
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
     }
-    const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
@@ -1604,184 +2016,157 @@ S_n^2 = \frac{1}{n-1}\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2.\]</span><
       }
       return codeEl.innerText;
     }
-    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-      text: getTextToCopy
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copié");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copié");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
     });
-    clipboard.on('success', onCopySuccess);
-    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-        text: getTextToCopy,
-        container: window.document.getElementById('quarto-embedded-source-code-modal')
-      });
-      clipboardModal.on('success', onCopySuccess);
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
     }
-      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/ggilles\.dev");
-      var isInternal = (href) => {
-          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-      }
-      // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-      for (var i=0; i<links.length; i++) {
-        const link = links[i];
-        if (!isInternal(link.href)) {
-          // undo the damage that might have been done by quarto-nav.js in the case of
-          // links that we want to consider external
-          if (link.dataset.originalHref !== undefined) {
-            link.href = link.dataset.originalHref;
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
           }
         }
-      }
-    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-      const config = {
-        allowHTML: true,
-        maxWidth: 500,
-        delay: 100,
-        arrow: false,
-        appendTo: function(el) {
-            return el.parentElement;
-        },
-        interactive: true,
-        interactiveBorder: 10,
-        theme: 'quarto',
-        placement: 'bottom-start',
-      };
-      if (contentFn) {
-        config.content = contentFn;
-      }
-      if (onTriggerFn) {
-        config.onTrigger = onTriggerFn;
-      }
-      if (onUntriggerFn) {
-        config.onUntrigger = onUntriggerFn;
-      }
-      window.tippy(el, config); 
-    }
-    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-    for (var i=0; i<noterefs.length; i++) {
-      const ref = noterefs[i];
-      tippyHover(ref, function() {
-        // use id or data attribute instead here
-        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-        try { href = new URL(href).hash; } catch {}
-        const id = href.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note) {
-          return note.innerHTML;
-        } else {
-          return "";
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
         }
-      });
-    }
-    const xrefs = window.document.querySelectorAll('a.quarto-xref');
-    const processXRef = (id, note) => {
-      // Strip column container classes
-      const stripColumnClz = (el) => {
-        el.classList.remove("page-full", "page-columns");
-        if (el.children) {
-          for (const child of el.children) {
-            stripColumnClz(child);
-          }
-        }
-      }
-      stripColumnClz(note)
-      if (id === null || id.startsWith('sec-')) {
-        // Special case sections, only their first couple elements
-        const container = document.createElement("div");
-        if (note.children && note.children.length > 2) {
-          container.appendChild(note.children[0].cloneNode(true));
-          for (let i = 1; i < note.children.length; i++) {
-            const child = note.children[i];
-            if (child.tagName === "P" && child.innerText === "") {
-              continue;
-            } else {
-              container.appendChild(child.cloneNode(true));
-              break;
-            }
-          }
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(container);
-          }
-          return container.innerHTML
-        } else {
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(note);
-          }
-          return note.innerHTML;
-        }
+        return container.innerHTML
       } else {
-        // Remove any anchor links if they are present
-        const anchorLink = note.querySelector('a.anchorjs-link');
-        if (anchorLink) {
-          anchorLink.remove();
-        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        if (note.classList.contains("callout")) {
-          return note.outerHTML;
-        } else {
-          return note.innerHTML;
-        }
+        return note.innerHTML;
       }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
     }
-    for (var i=0; i<xrefs.length; i++) {
-      const xref = xrefs[i];
-      tippyHover(xref, undefined, function(instance) {
-        instance.disable();
-        let url = xref.getAttribute('href');
-        let hash = undefined; 
-        if (url.startsWith('#')) {
-          hash = url;
-        } else {
-          try { hash = new URL(url).hash; } catch {}
-        }
-        if (hash) {
-          const id = hash.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note !== null) {
-            try {
-              const html = processXRef(id, note.cloneNode(true));
-              instance.setContent(html);
-            } finally {
-              instance.enable();
-              instance.show();
-            }
-          } else {
-            // See if we can fetch this
-            fetch(url.split('#')[0])
-            .then(res => res.text())
-            .then(html => {
-              const parser = new DOMParser();
-              const htmlDoc = parser.parseFromString(html, "text/html");
-              const note = htmlDoc.getElementById(id);
-              if (note !== null) {
-                const html = processXRef(id, note);
-                instance.setContent(html);
-              } 
-            }).finally(() => {
-              instance.enable();
-              instance.show();
-            });
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
           }
         } else {
-          // See if we can fetch a full url (with no hash to target)
-          // This is a special case and we should probably do some content thinning / targeting
-          fetch(url)
+          // See if we can fetch this
+          fetch(url.split('#')[0])
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.querySelector('main.content');
+            const note = htmlDoc.getElementById(id);
             if (note !== null) {
-              // This should only happen for chapter cross references
-              // (since there is no id in the URL)
-              // remove the first header
-              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-                note.children[0].remove();
-              }
-              const html = processXRef(null, note);
+              const html = processXRef(id, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -1789,165 +2174,189 @@ S_n^2 = \frac{1}{n-1}\sum_{i=1}^n \left(X_i - \overline{X}_n\right)^2.\]</span><
             instance.show();
           });
         }
-      }, function(instance) {
-      });
-    }
-        let selectedAnnoteEl;
-        const selectorForAnnotation = ( cell, annotation) => {
-          let cellAttr = 'data-code-cell="' + cell + '"';
-          let lineAttr = 'data-code-annotation="' +  annotation + '"';
-          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-          return selector;
-        }
-        const selectCodeLines = (annoteEl) => {
-          const doc = window.document;
-          const targetCell = annoteEl.getAttribute("data-target-cell");
-          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-          const lineIds = lines.map((line) => {
-            return targetCell + "-" + line;
-          })
-          let top = null;
-          let height = null;
-          let parent = null;
-          if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
-            }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
-            }
-            selectedAnnoteEl = annoteEl;
-          }
-        };
-        const unselectCodeLines = () => {
-          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-          elementsIds.forEach((elId) => {
-            const div = window.document.getElementById(elId);
-            if (div) {
-              div.remove();
-            }
-          });
-          selectedAnnoteEl = undefined;
-        };
-          // Handle positioning of the toggle
-      window.addEventListener(
-        "resize",
-        throttle(() => {
-          elRect = undefined;
-          if (selectedAnnoteEl) {
-            selectCodeLines(selectedAnnoteEl);
-          }
-        }, 10)
-      );
-      function throttle(fn, ms) {
-      let throttle = false;
-      let timer;
-        return (...args) => {
-          if(!throttle) { // first call gets through
-              fn.apply(this, args);
-              throttle = true;
-          } else { // all the others get throttled
-              if(timer) clearTimeout(timer); // cancel #2
-              timer = setTimeout(() => {
-                fn.apply(this, args);
-                timer = throttle = false;
-              }, ms);
-          }
-        };
-      }
-        // Attach click handler to the DT
-        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-        for (const annoteDlNode of annoteDls) {
-          annoteDlNode.addEventListener('click', (event) => {
-            const clickedEl = event.target;
-            if (clickedEl !== selectedAnnoteEl) {
-              unselectCodeLines();
-              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-              if (activeEl) {
-                activeEl.classList.remove('code-annotation-active');
-              }
-              selectCodeLines(clickedEl);
-              clickedEl.classList.add('code-annotation-active');
-            } else {
-              // Unselect the line
-              unselectCodeLines();
-              clickedEl.classList.remove('code-annotation-active');
-            }
-          });
-        }
-    const findCites = (el) => {
-      const parentEl = el.parentElement;
-      if (parentEl) {
-        const cites = parentEl.dataset.cites;
-        if (cites) {
-          return {
-            el,
-            cites: cites.split(' ')
-          };
-        } else {
-          return findCites(el.parentElement)
-        }
       } else {
-        return undefined;
-      }
-    };
-    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-    for (var i=0; i<bibliorefs.length; i++) {
-      const ref = bibliorefs[i];
-      const citeInfo = findCites(ref);
-      if (citeInfo) {
-        tippyHover(citeInfo.el, function() {
-          var popup = window.document.createElement('div');
-          citeInfo.cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
             }
-            popup.appendChild(citeDiv);
-          });
-          return popup.innerHTML;
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
         });
       }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
     }
-  });
-  </script>
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../teaching/statistics-probability/joint-continuous-random-variables.html" class="pagination-link" aria-label="Couples de variables à densité">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Couples de variables à densité</span>
+      <a href="../../teaching/statistics-probability/pair-continuous-rv-marginal-distribution.html" class="pagination-link  aria-label=" lois="" marginales"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lois marginales</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
