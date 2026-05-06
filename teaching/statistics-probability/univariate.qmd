@@ -7,7 +7,6 @@ abstract: |
 date-modified: 2026-03-25
 ---
 
-[📍 Retour à la carte du cours](index.html)
 > Dans tout ce chapitre, on étudie une serie statistique à **une variable** observée sur une population finie.
 
 ## Vocabulaire de base
@@ -21,7 +20,6 @@ date-modified: 2026-03-25
   ou $E$ est l'ensemble des **modalites**.
 - Le couple $(P,x)$ est une **serie statistique** (ou distribution statistique).
 
-
 ### Types de variables
 
 - **Qualitative** : les modalites ne sont pas numeriques.
@@ -32,10 +30,6 @@ date-modified: 2026-03-25
   - continue : ensemble de valeurs de type intervalle.
 
 Le schema ci-dessous resume cette classification :
-
-[📍 Retour à la carte du cours](index.html)
-
-Dans ce chapitre, on se concentre sur les variables quantitatives (discretes puis continues en classes).
 
 Avant tout calcul, il est essentiel de bien identifier ces elements : la population fixe le perimetre de l'etude (sur *qui* porte-t-elle ?), le caractere precise *ce que l'on mesure*, et la nature du caractere (qualitative, discrete, continue) determine les outils de representation et de calcul que l'on pourra utiliser. Une erreur a ce stade fausse toute l'analyse qui suit.
 
@@ -57,220 +51,19 @@ Pour chaque situation, preciser la population, le caractere et le type du caract
 3. Taille : variable quantitative continue.
 :::
 
----
 
-## Distribution discrete finie
 
-Soit une variable quantitative discrete $x$ prenant les valeurs distinctes
-$$x_1 < x_2 < \cdots < x_r.$$
-On note $n$ l'effectif total, $n_i$ l'effectif de $x_i$, et
-$$f_i = \frac{n_i}{n}$$
-sa frequence.
 
-L'effectif $n_i$ compte simplement *combien* d'individus prennent la valeur $x_i$. La frequence $f_i$ exprime cette meme information en *proportion* du total : dire $f_i = 0{,}3$ signifie que 30 % des individus presentent la modalite $x_i$. Travailler en frequences permet de comparer des series de tailles differentes, car la somme des frequences vaut toujours 1.
 
-::: {.callout-note}
-## Definitions - Cumuls et mode
 
-- Effectif cumule croissant (E.C.C.) :
-  $$N_i^+ = \sum_{k=1}^i n_k.$$
-- Frequence cumulee croissante (F.C.C.) :
-  $$F_i^+ = \sum_{k=1}^i f_k = \frac{N_i^+}{n}.$$
-- **Mode** : toute modalite d'effectif maximal.
-:::
 
-Les cumuls repondent a des questions du type *« combien d'individus prennent une valeur **inferieure ou egale** a $x_i$ ? »*. L'E.C.C. $N_i^+$ donne cette reponse en effectif, la F.C.C. $F_i^+$ en proportion. Par exemple, si $F_3^+ = 0{,}80$, cela signifie que 80 % de la population a une valeur inferieure ou egale a $x_3$.
 
-Quant au mode, c'est la valeur la plus frequemment observee. Il n'est pas forcement unique : une serie peut etre **bimodale** (deux modes) voire **multimodale**.
 
-Le diagramme de reference pour une serie discrete est le **diagramme en batons**. Contrairement a un diagramme en barres (qui utilise des rectangles), le diagramme en batons represente chaque valeur par un simple trait vertical dont la hauteur est proportionnelle a l'effectif. On utilise des batons et non des barres car la variable est discrete : chaque valeur est un point isole sur l'axe des abscisses, il n'y a pas de continuite entre les modalites.
 
-::: {.callout-caution}
-## Exemple 2 - Tableau statistique complet
 
-Une etude porte sur le nombre d'enfants par foyer. Les resultats observes sont :
 
-| Valeur $x_i$ | 0 | 1 | 2 | 3 | 4 | Total |
-|---|---:|---:|---:|---:|---:|---:|
-| Effectif $n_i$ | 18 | 34 | 40 | 20 | 8 | 120 |
 
-1. Calculer les frequences $f_i$.
-2. Calculer les E.C.C. et F.C.C.
-3. Determiner la frequence de foyers ayant au plus 2 enfants.
-4. Donner le (ou les) mode(s).
-:::
 
-::: {.callout-tip collapse="true"}
-## Solution - Exemple 2 (resultats)
-
-- $f_i = n_i/120$.
-- E.C.C. : $18, 52, 92, 112, 120$.
-- F.C.C. : $0{,}15, 0{,}433, 0{,}767, 0{,}933, 1$.
-- Frequence de foyers avec au plus 2 enfants : $F_2^+ = 92/120 \approx 0{,}767$.
-- Mode : valeur 2 (effectif maximal 40).
-:::
-
-```{python}
-#| echo: false
-#| label: fig-batons-enfants
-#| fig-cap: "Diagramme en bâtons de la série « nombre d'enfants par foyer ». Le **mode** (valeur d'effectif maximal) est mis en évidence en rouge."
-#| fig-align: center
-#| column: screen-inset
-
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-mpl.rcParams.update({
-    'figure.facecolor': 'none',
-    'axes.facecolor': 'none',
-    'axes.edgecolor': '#D2CCC0',
-    'axes.labelcolor': '#D2CCC0',
-    'xtick.color': '#D2CCC0',
-    'ytick.color': '#D2CCC0',
-    'text.color': '#D2CCC0',
-    'legend.framealpha': 0.0,
-    'legend.edgecolor': 'none',
-})
-
-x_vals = [0, 1, 2, 3, 4]
-n_vals = [18, 34, 40, 20, 8]
-
-fig, ax = plt.subplots(figsize=(6, 4))
-
-colors = ['#1565C0'] * 5
-colors[2] = '#C62828'
-
-for xi, ni, c in zip(x_vals, n_vals, colors):
-    ax.vlines(xi, 0, ni, colors=c, linewidth=3)
-    ax.plot(xi, ni, 'o', color=c, markersize=8, zorder=5)
-
-ax.annotate('Mode ($x = 2$, $n = 40$)', xy=(2, 40), xytext=(3, 42),
-            fontsize=10, color='#C62828',
-            arrowprops=dict(arrowstyle='->', color='#C62828', lw=1.5))
-
-ax.set_xlabel("Nombre d'enfants $x_i$", fontsize=11)
-ax.set_ylabel('Effectif $n_i$', fontsize=11)
-ax.set_xticks(x_vals)
-ax.set_ylim(0, 48)
-plt.tight_layout()
-plt.show()
-```
-
----
-
-## Distribution continue en classes
-
-Quand les donnees sont nombreuses et presque toutes distinctes, on regroupe les observations en classes
-$$[a_i, a_{i+1}[, \quad i=1,\dots,r.$$
-
-En effet, si l'on mesurait par exemple la taille de 500 personnes au millimetre pres, on obtiendrait presque autant de valeurs distinctes que d'individus, et un diagramme en batons serait illisible. En regroupant les observations par intervalles (par exemple $[160, 165[$, $[165, 170[$, etc.), on obtient une vision synthetique de la distribution. Le choix du nombre de classes et de leurs bornes releve du jugement de l'analyste : trop peu de classes masquent les details, trop de classes dispersent l'information.
-
-::: {.callout-note}
-## Definitions - Classes
-
-Pour la classe $[a_i,a_{i+1}[$ :
-
-- amplitude :
-  $$A_i = a_{i+1}-a_i,$$
-- centre :
-  $$c_i = \frac{a_i+a_{i+1}}{2},$$
-- effectif : $n_i$, frequence : $f_i = n_i/n$,
-- densite de frequence :
-  $$d_i = \frac{f_i}{A_i}.$$
-:::
-
-Le centre d'une classe sert d'approximation pour representer toutes les observations de cette classe par une seule valeur : il sera utilise plus tard dans le calcul de la moyenne et de la variance. La densite de frequence $d_i$, elle, permet de comparer equitablement des classes d'amplitudes differentes : une classe large peut contenir beaucoup d'individus simplement parce qu'elle couvre un grand intervalle, sans pour autant etre plus « dense ».
-
-### Histogramme
-
-Dans un histogramme correct, la **surface** de chaque rectangle est proportionnelle a la frequence de classe.
-Donc la **hauteur** doit etre proportionnelle a la densite $d_i$ (et non a $f_i$ si les amplitudes sont differentes).
-
-C'est un piege classique : si toutes les classes ont la meme amplitude, il n'y a pas de probleme, car hauteur proportionnelle a $f_i$ et hauteur proportionnelle a $d_i$ reviennent au meme (on divise par une constante). En revanche, des que les amplitudes different, utiliser $f_i$ en ordonnee donne une representation **trompeuse** : une classe large paraitra visuellement dominante alors qu'elle est peut-etre moins dense qu'une classe etroite.
-
-::: {.callout-important}
-## Point cle
-
-Si les amplitudes sont differentes, comparer seulement les hauteurs des barres peut induire en erreur.
-La grandeur pertinente est la surface (hauteur x largeur).
-:::
-
-::: {.callout-caution}
-## Exemple 3 - Densites et hauteurs corrigees
-
-On considere la distribution suivante :
-
-| Classe | $[30,40[$ | $[40,45[$ | $[45,50[$ | $[50,65[$ | Total |
-|---|---:|---:|---:|---:|---:|
-| Effectif $n_i$ | 11 | 7 | 5 | 2 | 25 |
-
-1. Calculer les frequences $f_i$.
-2. Calculer les amplitudes $A_i$.
-3. Calculer les densites $d_i = f_i/A_i$.
-:::
-
-::: {.callout-tip collapse="true"}
-## Solution - Exemple 3 (resultats)
-
-- $f_i = (0{,}44, 0{,}28, 0{,}20, 0{,}08)$.
-- $A_i = (10, 5, 5, 15)$.
-- $d_i = (0{,}044, 0{,}056, 0{,}040, 0{,}0053)$.
-
-La deuxieme classe est plus dense que la premiere, bien qu'elle ait un effectif inferieur.
-:::
-
-```{python}
-#| echo: false
-#| label: fig-histogramme-densite
-#| fig-cap: "Comparaison entre un histogramme **incorrect** (hauteur = fréquence) et un histogramme **correct** (hauteur = densité). Avec des amplitudes inégales, seule la densité garantit que l'aire de chaque barre est proportionnelle à la fréquence."
-#| fig-align: center
-#| column: screen-inset
-#| fig-width: 10
-#| fig-height: 4
-
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-mpl.rcParams.update({
-    'figure.facecolor': 'none',
-    'axes.facecolor': 'none',
-    'axes.edgecolor': '#D2CCC0',
-    'axes.labelcolor': '#D2CCC0',
-    'xtick.color': '#D2CCC0',
-    'ytick.color': '#D2CCC0',
-    'text.color': '#D2CCC0',
-    'legend.framealpha': 0.0,
-    'legend.edgecolor': 'none',
-})
-
-classes = [(30, 40), (40, 45), (45, 50), (50, 65)]
-n = [11, 7, 5, 2]
-total = 25
-f = [ni / total for ni in n]
-A = [b - a for a, b in classes]
-d = [fi / ai for fi, ai in zip(f, A)]
-
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
-
-for (a, b), fi in zip(classes, f):
-    ax1.bar(a, fi, width=b - a, align='edge', color='#C62828', alpha=0.6,
-            edgecolor='white', linewidth=1.5)
-ax1.set_title('❌  Hauteur = fréquence $f_i$', fontsize=12)
-ax1.set_xlabel('Valeur', fontsize=11)
-ax1.set_ylabel('$f_i$', fontsize=11)
-ax1.set_xlim(25, 70)
-
-for (a, b), di in zip(classes, d):
-    ax2.bar(a, di, width=b - a, align='edge', color='#1565C0', alpha=0.6,
-            edgecolor='white', linewidth=1.5)
-ax2.set_title('✅  Hauteur = densité $d_i = f_i / A_i$', fontsize=12)
-ax2.set_xlabel('Valeur', fontsize=11)
-ax2.set_ylabel('$d_i$', fontsize=11)
-ax2.set_xlim(25, 70)
-
-plt.tight_layout()
-plt.show()
-```
 
 ### Fonction de repartition empirique en classes
 
