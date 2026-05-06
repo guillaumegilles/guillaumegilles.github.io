@@ -7,7 +7,7 @@ abstract: |
   indépendance, covariance, corrélation et convolution. Chaque exercice est
   suivi d'un **corrigé repliable** pour permettre un vrai temps de recherche
   avant la vérification.
-date-modified: 2026-05-05
+date-modified: 2026-05-06
 ---
 
 [📍 Retour à la carte du cours](index.html) · [📘 Revenir à la fiche de révision](revision-two-variables.html)
@@ -195,12 +195,14 @@ $$
 D=\{(x,y)\in\mathbb{R}^2 : 0\le y\le x\le 2\}.
 $$
 
-1. Décrire $D$ en inversant l'ordre d'intégration.
-2. Calculer
+Autrement dit, $D$ est le triangle délimité par la droite $y=0$, la droite $y=x$ et la droite $x=2$.
+
+1. Réécrire $D$ en **inversant l'ordre d'intégration**, c'est-à-dire sous la forme : « d'abord $y$ varie entre deux bornes fixes, puis $x$ varie entre deux bornes dépendant de $y$ ».
+2. En déduire le calcul de
    $$
    I=\iint_D (x+y)\,dx\,dy.
    $$
-3. Un point est choisi uniformément dans $D$. Calculer la probabilité de l'événement $\{Y\le 1\}$.
+3. Un point est choisi uniformément dans $D$. Traduire alors l'événement $\{Y\le 1\}$ sur le dessin, puis calculer sa probabilité en utilisant un **rapport d'aires**.
 :::
 
 **Temps conseillé avant de consulter le corrigé : 15 à 20 min**
@@ -215,7 +217,18 @@ $$
 0\le y\le x\le 2.
 $$
 
-Si l'on fixe $y$, alors $y\le x\le 2$ et $y$ varie de $0$ à $2$. Donc
+Géométriquement, $D$ est le triangle situé :
+
+- au-dessus de l'axe des abscisses ($y=0$) ;
+- sous la droite $y=x$ ;
+- à gauche de la droite $x=2$.
+
+Si l'on fixe maintenant la valeur de $y$, alors :
+
+- $y$ peut aller de $0$ à $2$ ;
+- une fois $y$ fixé, $x$ commence sur la droite $x=y$ et va jusqu'à $x=2$.
+
+Donc
 $$
 D=\{(x,y)\in\mathbb{R}^2 : 0\le y\le 2,\ y\le x\le 2\}.
 $$
@@ -244,15 +257,36 @@ $$
 
 **3. Probabilité de $\{Y\le 1\}$ sous la loi uniforme sur $D$**
 
+Comme le point est choisi **uniformément** dans $D$, cela signifie que la densité est **constante** sur tout le domaine $D$ :
+les zones de même aire ont donc la même probabilité.
+
+Autrement dit, pour toute sous-région $A\subset D$,
+$$
+P\bigl((X,Y)\in A\bigr)=\frac{\text{aire de }A}{\text{aire de }D}.
+$$
+
+Ici, on prendra $A=\{(x,y)\in D : y\le 1\}$.
+
 L'aire de $D$ vaut
 $$
 \mathcal{A}(D)=\int_0^2 x\,dx=2.
 $$
 
+Pourquoi ? Pour chaque abscisse $x\in[0,2]$, la tranche verticale du triangle va de $y=0$ à $y=x$ :
+sa hauteur vaut donc $x$. On additionne ces hauteurs de $x=0$ à $x=2$, d'où
+$$
+\mathcal{A}(D)=\int_0^2 x\,dx.
+$$
+
+On peut aussi le voir directement : $D$ est un triangle rectangle de base $2$ et de hauteur $2$, donc
+$$
+\mathcal{A}(D)=\frac{2\times 2}{2}=2.
+$$
+
 La région $\{(x,y)\in D : y\le 1\}$ se décompose en :
 
-- pour $0\le x\le 1$, tout le segment $0\le y\le x$ ;
-- pour $1\le x\le 2$, le segment $0\le y\le 1$.
+- pour $0\le x\le 1$, la condition $y\le 1$ ne change rien, car on a déjà $y\le x\le 1$, donc toute la tranche $0\le y\le x$ est conservée ;
+- pour $1\le x\le 2$, la tranche complète irait jusqu'à $y=x$, mais la condition $y\le 1$ coupe cette tranche à la hauteur $1$, donc il ne reste que $0\le y\le 1$.
 
 Son aire vaut donc
 $$
@@ -260,6 +294,8 @@ $$
 =\frac{1}{2}+1
 =\frac{3}{2}.
 $$
+
+Le premier terme correspond au petit triangle situé à gauche de la droite $x=1$ ; le second correspond au rectangle situé entre $x=1$ et $x=2$, sous la droite $y=1$.
 
 La probabilité demandée est
 $$
@@ -272,7 +308,7 @@ $$
 ::: {.callout-caution}
 ## Exercice 4
 
-Soit $(X,Y)$ un couple de variables continues de densité
+Soit $(X,Y)$ un couple de variables aléatoires continues de densité
 $$
 f(x,y)=c(x+y)\,\mathbf{1}_{[0,1]^2}(x,y).
 $$
@@ -345,13 +381,18 @@ $$
 
 **4. Indépendance**
 
-Les marginales valent
+Les densités marginales valent
 $$
-f_X(x)=\int_0^1 (x+y)\,dy = x+\frac{1}{2},
+f_X(x)=\left(x+\frac{1}{2}\right)\mathbf{1}_{[0,1]}(x),
 \qquad
-f_Y(y)=\int_0^1 (x+y)\,dx = y+\frac{1}{2},
+f_Y(y)=\left(y+\frac{1}{2}\right)\mathbf{1}_{[0,1]}(y),
 $$
-pour $x,y\in[0,1]$.
+car, sur $[0,1]$, on a
+$$
+\int_0^1 (x+y)\,dy = x+\frac{1}{2},
+\qquad
+\int_0^1 (x+y)\,dx = y+\frac{1}{2}.
+$$
 
 Le produit
 $$
@@ -629,7 +670,7 @@ $$
 ::: {.callout-tip collapse="true"}
 ## Solution — Exercice 8
 
-Comme $X$ et $Y$ sont indépendantes et de densité
+Comme $X$ et $Y$ sont indépendantes et ont pour densité
 $$
 f_X(x)=f_Y(x)=\mathbf{1}_{[0,1]}(x),
 $$
