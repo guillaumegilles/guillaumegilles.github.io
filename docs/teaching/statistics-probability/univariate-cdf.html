@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../teaching/statistics-probability/univariate-cdf.html" rel="next">
-<link href="../../teaching/statistics-probability/univariate.html" rel="prev">
+<link href="../../teaching/statistics-probability/univariate-central-tendency.html" rel="next">
+<link href="../../teaching/statistics-probability/univariate-data-analysis.html" rel="prev">
 <link href="../../assets/favicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -165,7 +165,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/univariate.html">Statistiques descriptives à une variable</a></li><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/univariate-data-analysis.html">Distribution</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/univariate.html">Statistiques descriptives à une variable</a></li><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/univariate-cdf.html">Fonction de répartition</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -194,14 +194,20 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/statistics-probability/univariate-data-analysis.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../teaching/statistics-probability/univariate-data-analysis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Distribution</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/statistics-probability/univariate-cdf.html" class="sidebar-item-text sidebar-link">
+  <a href="../../teaching/statistics-probability/univariate-cdf.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Fonction de répartition</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/statistics-probability/univariate-central-tendency.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">univariate-central-tendency.html</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -391,18 +397,17 @@ window.Quarto = {
     <h2 id="toc-title">Sur cette page</h2>
    
   <ul class="collapse">
-  <li><a href="#distribution-discrète-finie" id="toc-distribution-discrète-finie" class="nav-link active" data-scroll-target="#distribution-discrète-finie">Distribution discrète finie</a></li>
-  <li><a href="#distribution-continue-en-classes" id="toc-distribution-continue-en-classes" class="nav-link" data-scroll-target="#distribution-continue-en-classes">Distribution continue en classes</a></li>
-  <li><a href="#exercice-de-synthèse" id="toc-exercice-de-synthèse" class="nav-link" data-scroll-target="#exercice-de-synthèse">Exercice de synthèse</a></li>
+  <li><a href="#fonction-de-repartition-empirique-en-classes" id="toc-fonction-de-repartition-empirique-en-classes" class="nav-link active" data-scroll-target="#fonction-de-repartition-empirique-en-classes">Fonction de repartition empirique en classes</a></li>
+  <li><a href="#lecture-graphique" id="toc-lecture-graphique" class="nav-link" data-scroll-target="#lecture-graphique">Lecture graphique</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/univariate.html">Statistiques descriptives à une variable</a></li><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/univariate-data-analysis.html">Distribution</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/univariate.html">Statistiques descriptives à une variable</a></li><li class="breadcrumb-item"><a href="../../teaching/statistics-probability/univariate-cdf.html">Fonction de répartition</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Distribution</h1>
+<h1 class="title">Fonction de répartition</h1>
 </div>
 
 
@@ -419,141 +424,23 @@ window.Quarto = {
 </header>
 
 
-<section id="distribution-discrète-finie" class="level2">
-<h2 class="anchored" data-anchor-id="distribution-discrète-finie">Distribution discrète finie</h2>
-<p>Soit une variable quantitative discrete <span class="math inline">\(x\)</span> prenant les valeurs distinctes <span class="math display">\[
-x_1 &lt; x_2 &lt; \cdots &lt; x_r
-\]</span></p>
-<p>On note <span class="math inline">\(n\)</span> l’effectif total, <span class="math inline">\(n_i\)</span> l’effectif de <span class="math inline">\(x_i\)</span>, et sa frequence :</p>
-<p><span class="math display">\[
-f_i = \frac{n_i}{n}
-\]</span></p>
-<p>L’effectif <span class="math inline">\(n_i\)</span> compte simplement <em>combien</em> d’individus prennent la valeur <span class="math inline">\(x_i\)</span>. La frequence <span class="math inline">\(f_i\)</span> exprime cette meme information en <em>proportion</em> du total : dire <span class="math inline">\(f_i = 0{,}3\)</span> signifie que 30 % des individus presentent la modalite <span class="math inline">\(x_i\)</span>. Travailler en frequences permet de comparer des series de tailles differentes, car la somme des fréquences vaut toujours <span class="math inline">\(1\)</span>.</p>
-<section id="effectif-cumulé-croissant---e.c.c." class="level3">
-<h3 class="anchored" data-anchor-id="effectif-cumulé-croissant---e.c.c.">Effectif cumulé croissant - E.C.C.</h3>
-<p><span class="math display">\[
-N_i^+ = \sum_{k=1}^i n_k
-\]</span></p>
-<p>L’effectif cumulé croissant permet de répondre à la question, <em>« combien d’individus prennent une valeur <strong>inferieure ou egale</strong> à <span class="math inline">\(x_i\)</span> ? »</em></p>
-</section>
-<section id="frequence-cumulee-croissante-f.c.c." class="level3">
-<h3 class="anchored" data-anchor-id="frequence-cumulee-croissante-f.c.c.">Frequence cumulee croissante F.C.C.</h3>
-<p><span class="math display">\[
-F_i^+ = \sum_{k=1}^i f_k = \frac{N_i^+}{n}
-\]</span> :::</p>
-<p>La fréquence cumulée croissante permet de répondre à la question, <em>« quelle proportion d’individus prennent une valeur <strong>inferieure ou egale</strong> à <span class="math inline">\(x_i\)</span> ? »</em> Par exemple, si <span class="math inline">\(F_3^+ = 0{,}80\)</span> celà signifie que 80 % de la population a une valeur inférieure ou égale a <span class="math inline">\(x_3\)</span>.</p>
-</section>
-<section id="mode" class="level3">
-<h3 class="anchored" data-anchor-id="mode">Mode</h3>
-<p>Quant au mode, c’est la valeur la plus fréquemment observée. Il n’est pas forcement unique : une série peut etre <strong>bimodale</strong> (deux modes) voire <strong>multimodale</strong>.</p>
-</section>
-<section id="exemple---tableau-statistique-complet" class="level3">
-<h3 class="anchored" data-anchor-id="exemple---tableau-statistique-complet">Exemple - Tableau statistique complet</h3>
-<p>Une etude porte sur le nombre d’enfants par foyer. Les resultats observes sont :</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Valeur <span class="math inline">\(x_i\)</span></th>
-<th style="text-align: right;">0</th>
-<th style="text-align: right;">1</th>
-<th style="text-align: right;">2</th>
-<th style="text-align: right;">3</th>
-<th style="text-align: right;">4</th>
-<th style="text-align: right;">Total</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Effectif <span class="math inline">\(n_i\)</span></td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">34</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">120</td>
-</tr>
-</tbody>
-</table>
-<ol type="1">
-<li>Calculer les frequences <span class="math inline">\(f_i\)</span>.</li>
-<li>Calculer les E.C.C. et F.C.C.</li>
-<li>Determiner la frequence de foyers ayant au plus 2 enfants.</li>
-<li>Donner le (ou les) mode(s).</li>
-</ol>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<section id="fonction-de-repartition-empirique-en-classes" class="level2">
+<h2 class="anchored" data-anchor-id="fonction-de-repartition-empirique-en-classes">Fonction de repartition empirique en classes</h2>
+<p>La fonction de répartition <span class="math inline">\(F\)</span> répond à la question, <em>« quelle proportion d’individus à une valeur strictement inférieure à <span class="math inline">\(x\)</span> ? »</em>. On peut faire une analogie directe entre la fonction de répartition et la <a href="../../teaching/statistics-probability/univariate-data-analysis.html">fréquence cumulé croissante</a> des variables discrètes.</p>
+<p>Sous l’hypothese d’équirépartition dans chaque classe, la fonction de répartition <span class="math inline">\(F\)</span> est :</p>
 <ul>
-<li><span class="math inline">\(f_i = n_i/120\)</span>.</li>
-<li>E.C.C. : <span class="math inline">\(18, 52, 92, 112, 120\)</span>.</li>
-<li>F.C.C. : <span class="math inline">\(0{,}15, 0{,}433, 0{,}767, 0{,}933, 1\)</span>.</li>
-<li>Fréquence de foyers avec au plus 2 enfants : <span class="math inline">\(F_2^+ = 92/120 \approx 0{,}767\)</span>.</li>
-<li>Mode : valeur 2 (effectif maximal 40).</li>
+<li>croissante,</li>
+<li>continue,</li>
+<li>affine par morceaux,</li>
+<li>telle que <span class="math inline">\(F(a_i)\)</span> vaut la frequence cumulée au bord <span class="math inline">\(a_i\)</span>.</li>
 </ul>
-</div>
-</div>
-</div>
-</section>
-<section id="représentation-graphique" class="level3">
-<h3 class="anchored" data-anchor-id="représentation-graphique">Représentation graphique</h3>
-<p>Le diagramme de réference pour une série discrète est le <strong>diagramme en batons</strong>. Contrairement a un diagramme en barres (qui utilise des rectangles), le diagramme en batons représente chaque valeur par un simple trait vertical dont la hauteur est proportionnelle a l’effectif. On utilise des batons et non des barres car la variable est discrète : chaque valeur est un point isolé sur l’axe des abscisses, il n’y a pas de continuité entre les modalités.</p>
-<div id="cell-fig-batons-enfants" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<div id="fig-batons-enfants" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-batons-enfants-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="univariate-data-analysis_files/figure-html/fig-batons-enfants-output-1.png" width="661" height="468" class="figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-batons-enfants-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Diagramme en bâtons de la série « nombre d’enfants par foyer ». Le <strong>mode</strong> (valeur d’effectif maximal) est mis en évidence en rouge.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="distribution-continue-en-classes" class="level2">
-<h2 class="anchored" data-anchor-id="distribution-continue-en-classes">Distribution continue en classes</h2>
-<p>Quand les données sont nombreuses et presque toutes distinctes, on regroupe les observations en classes :</p>
+<p>L’hypothèse d’équirépartition suppose que les observations sont reparties uniformement a l’intérieur de chaque classe. C’est une approximation forte car on ne connaît pas la répartition exacte au sein des classes. Cette hypothese justifie l’interpolation linéaire ci-dessous.</p>
+<p>Pour <span class="math inline">\(x\in[a_i,a_{i+1}[\)</span>, on obtient <span class="math inline">\(F(x)\)</span> par interpolation linéaire :</p>
 <p><span class="math display">\[
-[a_i, a_{i+1}[, \quad i=1,\dots,r
+F(x)=F(a_i)+\frac{F(a_{i+1})-F(a_i)}{a_{i+1}-a_i}(x-a_i).
 \]</span></p>
-<p>En effet, si l’on mesurait par exemple la taille de 500 personnes au millimètre près, on obtiendrait presque autant de valeurs distinctes que d’individus, et un diagramme en batons serait illisible. En regroupant les observations par intervalles (par exemple <span class="math inline">\([160, 165[\)</span>, <span class="math inline">\([165, 170[\)</span>, etc.), on obtient une vision synthetique de la distribution.</p>
-<p>Le choix du nombre de classes et de leurs bornes relève du jugement de l’analyste : trop peu de classes masquent les détails, trop de classes dispersent l’information.</p>
-<p>Pour une classe <span class="math inline">\([a_i,a_{i+1}[\)</span> :</p>
-<section id="amplitude" class="level3">
-<h3 class="anchored" data-anchor-id="amplitude">Amplitude</h3>
-<p><span class="math display">\[
-A_i = a_{i+1}-a_i
-\]</span></p>
-<p>L’amplitude mesure la largeur d’une classe. Elle joue un rôle clé dans l’histogramme : deux classes d’effectifs identiques mais d’amplitudes différentes ne doivent pas avoir la même hauteur de barre. C’est pourquoi on raisonne toujours sur la <strong>surface</strong> (hauteur × largeur) et non sur la hauteur seule.</p>
-</section>
-<section id="centre" class="level3">
-<h3 class="anchored" data-anchor-id="centre">Centre</h3>
-<p><span class="math display">\[
-c_i = \frac{a_i+a_{i+1}}{2}
-\]</span></p>
-<p>Le centre d’une classe sert d’approximation pour représenter toutes les observations de cette classe par une seule valeur : il sera utilisé plus tard dans le calcul de la moyenne et de la variance.</p>
-</section>
-<section id="densité-de-fréquence" class="level3">
-<h3 class="anchored" data-anchor-id="densité-de-fréquence">Densité de fréquence</h3>
-<p><span class="math display">\[
-d_i = \frac{f_i}{A_i}
-\]</span></p>
-<p>La densité de fréquence <span class="math inline">\(d_i\)</span> permet de comparer équitablement des classes d’amplitudes différentes : une classe large peut contenir beaucoup d’individus simplement parce qu’elle couvre un grand intervalle, sans pour autant être plus « dense ».</p>
-</section>
-<section id="exemple---densités-et-hauteurs-corrigées" class="level3">
-<h3 class="anchored" data-anchor-id="exemple---densités-et-hauteurs-corrigées">Exemple - Densités et hauteurs corrigées</h3>
+<section id="exemple---lecture-de-répartition" class="level3">
+<h3 class="anchored" data-anchor-id="exemple---lecture-de-répartition">Exemple - Lecture de répartition</h3>
 <p>On considère la distribution suivante :</p>
 <table class="table">
 <thead>
@@ -577,13 +464,9 @@ d_i = \frac{f_i}{A_i}
 </tr>
 </tbody>
 </table>
-<ol type="1">
-<li>Calculer les fréquences <span class="math inline">\(f_i\)</span>.</li>
-<li>Calculer les amplitudes <span class="math inline">\(A_i\)</span>.</li>
-<li>Calculer les densités <span class="math inline">\(d_i = f_i/A_i\)</span>.</li>
-</ol>
+<p>Calculer <span class="math inline">\(F(42)\)</span>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -592,168 +475,73 @@ Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li><span class="math inline">\(f_i = (0{,}44, 0{,}28, 0{,}20, 0{,}08)\)</span>.</li>
-<li><span class="math inline">\(A_i = (10, 5, 5, 15)\)</span>.</li>
-<li><span class="math inline">\(d_i = (0{,}044, 0{,}056, 0{,}040, 0{,}0053)\)</span>.</li>
+<li><span class="math inline">\(42\in[40,45[\)</span>.</li>
+<li><span class="math inline">\(F(40)=0{,}44\)</span> et <span class="math inline">\(F(45)=0{,}72\)</span>.</li>
+<li>Donc :</li>
 </ul>
-<p>La deuxieme classe est plus dense que la premiere, bien qu’elle ait un effectif inferieur.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="représentation-graphique-1" class="level3">
-<h3 class="anchored" data-anchor-id="représentation-graphique-1">Représentation graphique</h3>
-<p>Le diagramme de référence pour les variables continues en classes, est l’histogramme. La <strong>surface</strong> de chaque rectangle est proportionnelle à la fréquence de classe. Donc la <strong>hauteur</strong> doit être proportionnelle à la densité <span class="math inline">\(d_i\)</span> (et non a <span class="math inline">\(f_i\)</span> si les amplitudes sont differentes).</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Piège classique
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Si toutes les classes ont la même amplitude, <span class="math inline">\(A_i\)</span>, il n’y a pas de probleme, car les hauteurs proportionnelles à <span class="math inline">\(f_i\)</span> et celles proportionnelle à <span class="math inline">\(d_i\)</span> reviennent au même.</p>
-<p>En revanche, dès que les amplitudes diffèrent, utiliser <span class="math inline">\(f_i\)</span> en ordonnée donne une representation <strong>trompeuse</strong> : une classe large paraîtra visuellement dominante alors qu’elle est peut-être moins dense qu’une classe étroite.</p>
-<p>Aussi, <strong>si les amplitudes sont différentes</strong>, comparer seulement les hauteurs des barres peut induire en erreur. La grandeur pertinente est donc <strong>la surface</strong> (hauteur <span class="math inline">\(x\)</span> largeur).</p>
-</div>
-</div>
-<div id="cell-fig-histogramme-densite" class="cell" data-execution_count="2">
+<p><span class="math display">\[
+F(42)=0{,}44+\frac{0{,}72-0{,}44}{5}(2)=0{,}552.
+\]</span></p>
+<div id="cell-fig-repartition-empirique" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
-<div id="fig-histogramme-densite" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-repartition-empirique" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-histogramme-densite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="univariate-data-analysis_files/figure-html/fig-histogramme-densite-output-1.png" width="949" height="373" class="figure-img">
+<div aria-describedby="fig-repartition-empirique-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="univariate-cdf_files/figure-html/fig-repartition-empirique-output-1.png" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histogramme-densite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Comparaison entre un histogramme <strong>incorrect</strong> (hauteur = fréquence) et un histogramme <strong>correct</strong> (hauteur = densité). Avec des amplitudes inégales, seule la densité garantit que l’aire de chaque barre est proportionnelle à la fréquence.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-repartition-empirique-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Fonction de répartition empirique (affine par morceaux) de l’exemple 3. L’interpolation linéaire pour <span class="math inline">\(F(42) = 0{,}552\)</span> est mise en évidence.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
 </section>
 </section>
-<section id="exercice-de-synthèse" class="level2">
-<h2 class="anchored" data-anchor-id="exercice-de-synthèse">Exercice de synthèse</h2>
-<p>Un établissement relève les notes obtenues par 40 élèves à un devoir de mathématiques. Les résultats (sur 20) sont regroupés dans le tableau suivant :</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Classe</th>
-<th style="text-align: right;"><span class="math inline">\([0,5[\)</span></th>
-<th style="text-align: right;"><span class="math inline">\([5,10[\)</span></th>
-<th style="text-align: right;"><span class="math inline">\([10,14[\)</span></th>
-<th style="text-align: right;"><span class="math inline">\([14,20]\)</span></th>
-<th style="text-align: right;">Total</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Effectif <span class="math inline">\(n_i\)</span></td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">40</td>
-</tr>
-</tbody>
-</table>
+<section id="lecture-graphique" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-graphique">Lecture graphique</h2>
+<p>Trois informations sont directement lisibles sur le graphe de <span class="math inline">\(F\)</span>.</p>
 <ol type="1">
-<li>Calculer les fréquences <span class="math inline">\(f_i\)</span>.</li>
-<li>Calculer les amplitudes <span class="math inline">\(A_i\)</span> et les centres <span class="math inline">\(c_i\)</span> de chaque classe.</li>
-<li>Calculer les densités de fréquence <span class="math inline">\(d_i\)</span>.</li>
-<li>Établir les E.C.C. et les F.C.C.</li>
-<li>Quelle proportion d’élèves a obtenu une note <strong>strictement inférieure à 10</strong> ?</li>
-<li>Identifier la <strong>classe modale</strong> et justifier votre réponse.</li>
+<li><p><strong>Lecture directe</strong> — Pour estimer <span class="math inline">\(F(x_0)\)</span>, on monte verticalement depuis <span class="math inline">\(x_0\)</span> jusqu’à la courbe, puis on lit la valeur sur l’axe des ordonnées : c’est la proportion d’individus ayant une valeur strictement inférieure à <span class="math inline">\(x_0\)</span>.</p></li>
+<li><p><strong>Lecture inverse — quantile</strong> — Pour trouver la valeur <span class="math inline">\(x_p\)</span> telle que <span class="math inline">\(F(x_p) = p\)</span>, on part de <span class="math inline">\(p\)</span> sur l’axe des ordonnées, on avance horizontalement jusqu’à la courbe, puis on descend sur l’axe des abscisses. On appelle <span class="math inline">\(x_p\)</span> le <strong>quantile d’ordre <span class="math inline">\(p\)</span></strong>. Le cas <span class="math inline">\(p = 0{,}5\)</span> donne la <strong>médiane</strong> <span class="math inline">\(m\)</span> :</p></li>
 </ol>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p><strong>1. Fréquences</strong></p>
 <p><span class="math display">\[
-f_i = \frac{n_i}{40} \;\Rightarrow\; (0{,}10 ;\; 0{,}30 ;\; 0{,}40 ;\; 0{,}20)
+F(m) = 0{,}5.
 \]</span></p>
-<p><strong>2. Amplitudes et centres</strong></p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Classe</th>
-<th style="text-align: right;"><span class="math inline">\([0,5[\)</span></th>
-<th style="text-align: right;"><span class="math inline">\([5,10[\)</span></th>
-<th style="text-align: right;"><span class="math inline">\([10,14[\)</span></th>
-<th style="text-align: right;"><span class="math inline">\([14,20]\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Amplitude <span class="math inline">\(A_i\)</span></td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="even">
-<td>Centre <span class="math inline">\(c_i\)</span></td>
-<td style="text-align: right;">2,5</td>
-<td style="text-align: right;">7,5</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">17</td>
-</tr>
-</tbody>
-</table>
-<p><strong>3. Densités de fréquence</strong></p>
+<p>La médiane partage la population en deux moitiés égales : 50 % des individus ont une valeur inférieure à <span class="math inline">\(m\)</span>, et 50 % une valeur supérieure.</p>
+<ol start="3" type="1">
+<li><strong>Pente et densité</strong> — Sur chaque intervalle <span class="math inline">\([a_i, a_{i+1}[\)</span>, la courbe est une droite de pente :</li>
+</ol>
 <p><span class="math display">\[
-d_i = \frac{f_i}{A_i} \;\Rightarrow\; (0{,}020 ;\; 0{,}060 ;\; 0{,}100 ;\; 0{,}033)
+\frac{F(a_{i+1}) - F(a_i)}{a_{i+1} - a_i} = \frac{f_i}{A_i} = d_i.
 \]</span></p>
-<p><strong>4. E.C.C. et F.C.C.</strong></p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Classe</th>
-<th style="text-align: right;"><span class="math inline">\([0,5[\)</span></th>
-<th style="text-align: right;"><span class="math inline">\([5,10[\)</span></th>
-<th style="text-align: right;"><span class="math inline">\([10,14[\)</span></th>
-<th style="text-align: right;"><span class="math inline">\([14,20]\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>E.C.C. <span class="math inline">\(N_i^+\)</span></td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">40</td>
-</tr>
-<tr class="even">
-<td>F.C.C. <span class="math inline">\(F_i^+\)</span></td>
-<td style="text-align: right;">0,10</td>
-<td style="text-align: right;">0,40</td>
-<td style="text-align: right;">0,80</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
-<p><strong>5. Proportion d’élèves ayant une note strictement inférieure à 10</strong></p>
-<p>La F.C.C. de la classe <span class="math inline">\([5,10[\)</span> donne <span class="math inline">\(F_2^+ = 16/40 = 0{,}40\)</span>. <strong>40 % des élèves</strong> ont donc obtenu une note strictement inférieure à 10.</p>
-<p><strong>6. Classe modale</strong></p>
-<p>Pour une distribution continue, la classe modale est celle dont la <strong>densité est maximale</strong> (et non l’effectif, pour ne pas avantager les classes larges). Ici <span class="math inline">\(d_3 = 0{,}100\)</span> est la valeur maximale : la classe modale est <span class="math inline">\([10,14[\)</span>.</p>
+<p>Un segment <strong>raide</strong> correspond à une classe <strong>dense</strong> alors qu’un segment <strong>quasi plat</strong> correspond à une classe peu peuplée relativement à son amplitude. La courbe de répartition et l’histogramme portent donc la même information, sous deux formes complémentaires.</p>
+<div id="cell-fig-mediane" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="fig-mediane" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mediane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="univariate-cdf_files/figure-html/fig-mediane-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mediane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Lecture inverse sur la fonction de répartition : la médiane <span class="math inline">\(m \approx 41{,}1\)</span> est l’abscisse du point d’ordonnée <span class="math inline">\(0{,}5\)</span>.
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
+<p>On cherche <span class="math inline">\(m\)</span> tel que <span class="math inline">\(F(m) = 0{,}5\)</span>. Comme <span class="math inline">\(F(40) = 0{,}44 &lt; 0{,}5 &lt; 0{,}72 = F(45)\)</span>, la médiane est dans <span class="math inline">\([40,45[\)</span>.</p>
+<p>Par interpolation linéaire :</p>
+<p><span class="math display">\[
+m = 40 + \frac{0{,}5 - 0{,}44}{0{,}72 - 0{,}44} \times 5
+  = 40 + \frac{0{,}06}{0{,}28} \times 5 \approx 41{,}1.
+\]</span></p>
 
 
 </section>
@@ -1143,13 +931,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../teaching/statistics-probability/univariate.html" class="pagination-link  aria-label=" statistiques="" descriptives="" à="" une="" variable"="">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Statistiques descriptives à une variable</span>
+      <a href="../../teaching/statistics-probability/univariate-data-analysis.html" class="pagination-link  aria-label=" distribution"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Distribution</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../teaching/statistics-probability/univariate-cdf.html" class="pagination-link" aria-label="Fonction de répartition">
-        <span class="nav-page-text">Fonction de répartition</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../teaching/statistics-probability/univariate-central-tendency.html" class="pagination-link" aria-label="univariate-central-tendency.html">
+        <span class="nav-page-text">univariate-central-tendency.html</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

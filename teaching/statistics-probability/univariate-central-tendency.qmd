@@ -1,0 +1,125 @@
+# Indicateur de tendance centrale
+
+
+
+
+## Mediane, quartiles et dispersion
+
+Les indicateurs de position (moyenne, mediane) et de dispersion (ecart-type, IQR) permettent de resumer une serie par quelques nombres-cles. On commence ici par les indicateurs bases sur le **rang** : mediane et quartiles. Leur interet majeur est d'etre **robustes**, c'est-a-dire peu sensibles aux valeurs extremes.
+
+::: {.callout-note}
+## Definitions
+
+- La **mediane** est une valeur qui partage la population en deux moities (50 % / 50 %).
+- Les **quartiles** $Q_1, Q_2, Q_3$ partagent en quatre parts de 25 %.
+- On a $Q_2 =$ mediane.
+- L'**ecart interquartile** vaut
+  $$IQR = Q_3-Q_1,$$
+  et mesure la dispersion centrale.
+:::
+
+Concretement, la mediane est la valeur « du milieu » : la moitie des individus se situe en dessous, l'autre moitie au-dessus. Le premier quartile $Q_1$ separe les 25 % les plus faibles du reste, et $Q_3$ les 75 % les plus faibles. L'IQR mesure donc l'etendue des 50 % centraux de la distribution, en ignorant les extremes.
+
+::: {.callout-tip}
+## Mediane ou moyenne ?
+
+La mediane est preferable lorsque la distribution est **asymetrique** ou contient des **valeurs aberrantes**. Par exemple, dans une serie de salaires, quelques tres hauts revenus tirent la moyenne vers le haut, mais n'affectent pas la mediane. En revanche, la moyenne utilise toute l'information numerique et se prete mieux aux calculs algebriques (transformations affines, decomposition de variance, etc.).
+:::
+
+Pour les series continues en classes, on determine les quantiles par lecture de la fonction de repartition (interpolation lineaire).
+
+::: {.callout-caution}
+## Exemple 5 - Quantiles d'une serie discrete
+
+Soit la serie :
+
+| Valeur $x_i$ | 5 | 10 | 15 | 20 | Total |
+|---|---:|---:|---:|---:|---:|
+| Effectif $n_i$ | 11 | 7 | 5 | 3 | 26 |
+
+Determiner la mediane, $Q_1$, $Q_3$ et l'ecart interquartile.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution - Exemple 5 (resultats)
+
+Rangs cumules :
+- valeur 5 : rangs 1 a 11,
+- valeur 10 : rangs 12 a 18,
+- valeur 15 : rangs 19 a 23,
+- valeur 20 : rangs 24 a 26.
+
+Donc :
+- mediane (entre rangs 13 et 14) = 10,
+- $Q_1$ (autour du rang 7) = 5,
+- $Q_3$ (autour du rang 20) = 15,
+- $IQR = 15-5=10$.
+:::
+
+```{python}
+#| echo: false
+#| label: fig-boite-moustaches
+#| fig-cap: "Boîte à moustaches de la série de l'exemple 5. Les quartiles $Q_1$, la médiane $Me$ et $Q_3$ délimitent la boîte centrale ; l'écart interquartile $\\mathrm{IQR} = Q_3 - Q_1$ mesure la dispersion des 50 % centraux."
+#| fig-align: center
+#| column: screen-inset
+
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.rcParams.update({
+    'figure.facecolor': 'none',
+    'axes.facecolor': 'none',
+    'axes.edgecolor': '#D2CCC0',
+    'axes.labelcolor': '#D2CCC0',
+    'xtick.color': '#D2CCC0',
+    'ytick.color': '#D2CCC0',
+    'text.color': '#D2CCC0',
+    'legend.framealpha': 0.0,
+    'legend.edgecolor': 'none',
+})
+
+values = [5]*11 + [10]*7 + [15]*5 + [20]*3
+
+fig, (ax_box, ax_bar) = plt.subplots(
+    2, 1, figsize=(8, 5), gridspec_kw={'height_ratios': [1, 2]},
+    sharex=True)
+
+bp = ax_box.boxplot(values, vert=False, patch_artist=True, widths=0.5)
+bp['boxes'][0].set(facecolor='#1565C0', alpha=0.35, edgecolor='#1565C0',
+                   linewidth=1.5)
+bp['medians'][0].set(color='#C62828', linewidth=2)
+for w in bp['whiskers'] + bp['caps']:
+    w.set(color='#1565C0', linewidth=1.5)
+
+ax_box.annotate('$Q_1 = 5$', xy=(5, 0.7), fontsize=10, ha='center',
+                color='#1565C0')
+ax_box.annotate('$Me = 10$', xy=(10, 0.7), fontsize=10, ha='center',
+                color='#C62828')
+ax_box.annotate('$Q_3 = 15$', xy=(15, 0.7), fontsize=10, ha='center',
+                color='#1565C0')
+ax_box.annotate('', xy=(5, 1.35), xytext=(15, 1.35),
+                arrowprops=dict(arrowstyle='<->', color='#2E7D32', lw=1.8))
+ax_box.text(10, 1.5, '$\\mathrm{IQR} = 10$', ha='center', fontsize=10,
+            color='#2E7D32')
+
+ax_box.set_yticks([])
+ax_box.set_ylim(0.4, 1.7)
+
+x_vals = [5, 10, 15, 20]
+n_vals = [11, 7, 5, 3]
+bar_colors = ['#1565C0'] * 4
+ax_bar.bar(x_vals, n_vals, width=2, color=bar_colors, alpha=0.55,
+           edgecolor='white', linewidth=1.5)
+ax_bar.axvline(5, color='#1565C0', linestyle='--', linewidth=1.2, alpha=0.7,
+               label='$Q_1$')
+ax_bar.axvline(10, color='#C62828', linestyle='--', linewidth=1.5,
+               label='$Me$')
+ax_bar.axvline(15, color='#1565C0', linestyle='--', linewidth=1.2, alpha=0.7,
+               label='$Q_3$')
+ax_bar.set_xlabel('Valeur $x_i$', fontsize=11)
+ax_bar.set_ylabel('Effectif $n_i$', fontsize=11)
+ax_bar.legend(fontsize=10, loc='upper right')
+
+plt.tight_layout()
+plt.show()
+```
