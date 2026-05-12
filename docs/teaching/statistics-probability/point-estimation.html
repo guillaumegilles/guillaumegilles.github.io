@@ -417,12 +417,6 @@ window.Quarto = {
 
     
   
-    <div>
-    <div class="quarto-title-meta-heading">Modifié</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date-modified">11 mai 2026</p>
-    </div>
-  </div>
     
   </div>
   
@@ -437,31 +431,8 @@ window.Quarto = {
 </header>
 
 
-<p><a href="index.html">📍 Retour à la carte du cours</a> Soit <span class="math inline">\((X_1, \ldots, X_n)\)</span> un échantillon de loi <span class="math inline">\(\mathcal{L}\)</span> dépendant d’un paramètre inconnu <span class="math inline">\(\theta\)</span>. <strong>L’estimation ponctuelle</strong> consiste à approcher <span class="math inline">\(\theta\)</span> par une fonction des réalisations <span class="math inline">\((x_1, \ldots, x_n)\)</span> de cet échantillon.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Pourquoi l’estimation est indispensable en ingénierie
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>En pratique, l’ingénieur doit prendre une décision à partir d’un nombre limité de mesures :</p>
-<ul>
-<li>régler une machine à partir d’essais de calibration ;</li>
-<li>estimer un taux de panne à partir d’un retour d’expérience partiel ;</li>
-<li>certifier une performance moyenne à partir d’une campagne de tests ;</li>
-<li>quantifier l’incertitude avant de passer à la production ou à l’exploitation.</li>
-</ul>
-<p>L’estimation fournit donc deux sorties complémentaires :</p>
-<ol type="1">
-<li>une <strong>valeur centrale</strong> plausible du paramètre inconnu ;</li>
-<li>une <strong>mesure d’incertitude</strong> qui indique la précision réellement acquise.</li>
-</ol>
-</div>
-</div>
+<p>En pratique, l’ingénieur doit prendre une décision à partir d’un nombre limité de mesures : régler une machine à partir d’essais de calibration, estimer un taux de panne à partir d’un retour d’expérience partiel, certifier une performance moyenne à partir d’une campagne de tests, ou quantifier l’incertitude avant de passer à la production. L’estimation fournit deux sorties complémentaires : une <strong>valeur centrale</strong> plausible du paramètre inconnu, et une <strong>mesure d’incertitude</strong> qui indique la précision réellement acquise.</p>
+<p>Ce chapitre suit trois étapes. On commence par établir les critères pour évaluer un estimateur (biais, erreur quadratique, convergence). On présente ensuite deux méthodes pour construire de bons estimateurs : la méthode des moments et le maximum de vraisemblance, avec l’information de Fisher comme critère d’optimalité. Enfin, on traduit l’incertitude en intervalles de confiance pour une proportion, une moyenne et une variance.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -477,7 +448,7 @@ Exemple 1 — Estimation d’une proportion
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -486,19 +457,13 @@ Solution — Exemple 1
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Si <span class="math inline">\(K\)</span> désigne le nombre de boules rouges observées en 10 tirages, alors <span class="math display">\[
-K\sim\mathcal{B}(10,p).
-\]</span></p>
+<p>Si <span class="math inline">\(K\)</span> désigne le nombre de boules rouges observées en 10 tirages, alors <span class="math display">\[K\sim\mathcal{B}(10,p).\]</span></p>
 <p>L’idée la plus naturelle est d’estimer la proportion inconnue <span class="math inline">\(p\)</span> par la <strong>fréquence observée</strong> : <span class="math display">\[
 \hat{p}=\frac{K}{10}.
 \]</span></p>
-<p>Autrement dit, on remplace la proportion théorique de boules rouges dans l’urne par la proportion effectivement observée dans l’échantillon.</p>
-<p>Par exemple, si l’on observe <span class="math inline">\(k=7\)</span> boules rouges, on obtient <span class="math display">\[
-\hat{p}=\frac{7}{10}=0{,}7.
-\]</span></p>
-<p>Cette logique sera généralisée dans tout le chapitre : <strong>un paramètre inconnu est approché par une statistique calculée sur les données observées</strong>.</p>
+<p>Par exemple, si l’on observe <span class="math inline">\(k=7\)</span> boules rouges, on obtient <span class="math inline">\(\hat{p}=7/10=0{,}7\)</span>. Cette logique sera généralisée dans tout le chapitre : <strong>un paramètre inconnu est approché par une statistique calculée sur les données observées</strong>.</p>
 </div>
 </div>
 </div>
@@ -506,6 +471,7 @@ K\sim\mathcal{B}(10,p).
 <h2 class="anchored" data-anchor-id="estimateurs-et-leurs-propriétés">Estimateurs et leurs propriétés</h2>
 <section id="définitions" class="level3">
 <h3 class="anchored" data-anchor-id="définitions">Définitions</h3>
+<p>Soit <span class="math inline">\((X_1, \ldots, X_n)\)</span> un échantillon de loi dépendant d’un paramètre inconnu <span class="math inline">\(\theta\)</span>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -516,34 +482,20 @@ Définition — Estimateur et estimation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Soit <span class="math inline">\((X_1, \ldots, X_n)\)</span> un échantillon de loi dépendant d’un paramètre <span class="math inline">\(\theta\)</span>.</p>
 <ul>
 <li>Un <strong>estimateur</strong> de <span class="math inline">\(\theta\)</span> est une statistique <span class="math inline">\(\hat{\theta}_n = T_n(X_1, \ldots, X_n)\)</span> ne dépendant pas de <span class="math inline">\(\theta\)</span>.</li>
 <li>Une <strong>estimation</strong> est une réalisation de l’estimateur, c’est-à-dire la valeur <span class="math inline">\(T_n(x_1, \ldots, x_n)\)</span> calculée sur un échantillon observé.</li>
 </ul>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Réflexe essentiel
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Un <strong>estimateur</strong> est une formule aléatoire définie avant l’observation des données ; une <strong>estimation</strong> est le nombre obtenu après calcul sur l’échantillon.</p>
-<p>Par exemple, <span class="math inline">\(\overline{X}_n\)</span> est un estimateur de <span class="math inline">\(m\)</span>, alors que <span class="math inline">\(\overline{x}_n = 12{,}4\)</span> est une estimation de <span class="math inline">\(m\)</span>.</p>
-</div>
-</div>
+<p>Il importe de distinguer ces deux notions : un <strong>estimateur</strong> est une formule aléatoire définie avant l’observation des données, tandis qu’une <strong>estimation</strong> est le nombre obtenu après calcul sur l’échantillon. Par exemple, <span class="math inline">\(\overline{X}_n\)</span> est un estimateur de <span class="math inline">\(m\)</span>, alors que <span class="math inline">\(\overline{x}_n = 12{,}4\)</span> est une estimation de <span class="math inline">\(m\)</span>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Définition — Biais et erreur quadratique
+Définition — Biais et erreur quadratique moyenne
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -557,6 +509,7 @@ Définition — Biais et erreur quadratique
 <p>Un estimateur <span class="math inline">\(\hat{\theta}'_n\)</span> est dit <strong>meilleur</strong> que <span class="math inline">\(\hat{\theta}_n\)</span> au sens de l’EQM s’il existe <span class="math inline">\(N\)</span> tel que, pour tout <span class="math inline">\(n \geq N\)</span>, <span class="math inline">\(R(\hat{\theta}'_n) \leq R(\hat{\theta}_n)\)</span>.</p>
 </div>
 </div>
+<p>L’erreur d’un estimateur a deux sources indépendantes : sa dispersion d’un échantillon à l’autre, et son décalage systématique par rapport à la vraie valeur. Ces deux sources se combinent dans la décomposition suivante.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -570,55 +523,10 @@ Proposition — Décomposition biais–variance
 <p><span class="math display">\[R(\hat{\theta}_n) = \mathrm{Var}(\hat{\theta}_n) + b_n(\theta)^2.\]</span></p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Lecture littérale
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Cette identité dit que l’erreur d’un estimateur a <strong>deux sources</strong> :</p>
-<ol type="1">
-<li>sa <strong>dispersion</strong> d’un échantillon à l’autre ;</li>
-<li>son <strong>décalage systématique</strong> par rapport à la vraie valeur.</li>
-</ol>
-<p>Un estimateur peut donc être mauvais soit parce qu’il fluctue trop, soit parce qu’il vise systématiquement trop haut ou trop bas.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Démonstration
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>On pose <span class="math inline">\(b = b_n(\theta) = E(\hat{\theta}_n) - \theta\)</span>. Alors : <span class="math display">\[E\!\left[(\hat{\theta}_n - \theta)^2\right]
+<p><em>Démonstration.</em> On pose <span class="math inline">\(b = b_n(\theta) = E(\hat{\theta}_n) - \theta\)</span>. Alors : <span class="math display">\[E\!\left[(\hat{\theta}_n - \theta)^2\right]
 = E\!\left[(\hat{\theta}_n - E(\hat{\theta}_n) + b)^2\right]
-= \mathrm{Var}(\hat{\theta}_n) + 2b\,\underbrace{E(\hat{\theta}_n - E(\hat{\theta}_n))}_{=\,0} + b^2.\]</span></p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Remarque — Efficacité
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Pour des estimateurs <strong>sans biais</strong> (<span class="math inline">\(b_n(\theta) = 0\)</span>), l’EQM se réduit à la variance : <span class="math inline">\(R(\hat{\theta}_n) = \mathrm{Var}(\hat{\theta}_n)\)</span>. Plus la variance est petite, plus l’estimateur est dit <strong>efficace</strong>.</p>
-</div>
-</div>
+= \mathrm{Var}(\hat{\theta}_n) + 2b\,\underbrace{E(\hat{\theta}_n - E(\hat{\theta}_n))}_{=\,0} + b^2.\qquad\square\]</span></p>
+<p>Un estimateur peut donc être mauvais soit parce qu’il fluctue trop (grande variance), soit parce qu’il vise systématiquement trop haut ou trop bas (grand biais). Pour des estimateurs <strong>sans biais</strong>, l’EQM se réduit à la variance : <span class="math inline">\(R(\hat{\theta}_n) = \mathrm{Var}(\hat{\theta}_n)\)</span> ; on dit alors qu’un estimateur sans biais est <strong>efficace</strong> s’il a la plus petite variance possible.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -641,7 +549,7 @@ Exemple — Comparer deux estimateurs d’une moyenne
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -650,23 +558,19 @@ Solution — Exemple
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>On a <span class="math display">\[
 E(\hat{m}_1)=E(\overline{X}_n)=m,
 \qquad
 E(\hat{m}_2)=E(X_1)=m.
 \]</span></p>
-<p>Les deux estimateurs sont donc sans biais.</p>
-<p>Comme ils sont sans biais, leur EQM est leur variance : <span class="math display">\[
+<p>Les deux estimateurs sont donc sans biais. Comme ils sont sans biais, leur EQM est leur variance : <span class="math display">\[
 R(\hat{m}_1)=\mathrm{Var}(\overline{X}_n)=\frac{\sigma^2}{n},
 \qquad
 R(\hat{m}_2)=\mathrm{Var}(X_1)=\sigma^2.
 \]</span></p>
-<p>Pour tout <span class="math inline">\(n&gt;1\)</span>, <span class="math display">\[
-\frac{\sigma^2}{n}&lt;\sigma^2.
-\]</span></p>
-<p>L’estimateur <span class="math inline">\(\overline{X}_n\)</span> est donc meilleur : il exploite toute l’information de l’échantillon, alors que <span class="math inline">\(X_1\)</span> n’utilise qu’une seule mesure.</p>
+<p>Pour tout <span class="math inline">\(n&gt;1\)</span>, <span class="math inline">\(\sigma^2/n&lt;\sigma^2\)</span>. L’estimateur <span class="math inline">\(\overline{X}_n\)</span> est donc meilleur : il exploite toute l’information de l’échantillon, alors que <span class="math inline">\(X_1\)</span> n’utilise qu’une seule mesure.</p>
 </div>
 </div>
 </div>
@@ -690,43 +594,8 @@ Définition — Convergence d’un estimateur
 </ul>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Remarque — Critère pratique de convergence
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>D’après le chapitre sur la convergence des variables aléatoires :</p>
-<ul>
-<li><span class="math inline">\(\hat{\theta}_n\)</span> est convergent en moyenne quadratique si et seulement si <span class="math inline">\(\hat{\theta}_n\)</span> est (asymptotiquement) sans biais <strong>et</strong> <span class="math inline">\(\mathrm{Var}(\hat{\theta}_n) \to 0\)</span>.</li>
-<li>La convergence en moyenne quadratique implique la convergence en probabilité (la réciproque est fausse en général).</li>
-</ul>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Méthode pratique pour évaluer un estimateur
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Pour analyser un estimateur <span class="math inline">\(\hat{\theta}_n\)</span>, on suit presque toujours le même plan :</p>
-<ol type="1">
-<li>calculer ou identifier <span class="math inline">\(E(\hat{\theta}_n)\)</span> pour étudier le biais ;</li>
-<li>calculer <span class="math inline">\(\mathrm{Var}(\hat{\theta}_n)\)</span> ou au moins son ordre de grandeur ;</li>
-<li>en déduire l’EQM via <span class="math inline">\(R=\mathrm{Var}+b^2\)</span> ;</li>
-<li>faire tendre <span class="math inline">\(n\)</span> vers l’infini pour conclure sur la convergence ;</li>
-<li>interpréter le résultat dans le contexte métier : coût des mesures, précision, risque.</li>
-</ol>
-</div>
-</div>
+<p>D’après les résultats sur la convergence des variables aléatoires, <span class="math inline">\(\hat{\theta}_n\)</span> est convergent en moyenne quadratique si et seulement s’il est (asymptotiquement) sans biais <strong>et</strong> <span class="math inline">\(\mathrm{Var}(\hat{\theta}_n) \to 0\)</span>. La convergence en moyenne quadratique implique la convergence en probabilité (la réciproque est fausse en général).</p>
+<p>Pour analyser un estimateur donné, on suit presque toujours le même plan : 1. calculer <span class="math inline">\(E(\hat{\theta}_n)\)</span> pour étudier le biais ; 2. calculer <span class="math inline">\(\mathrm{Var}(\hat{\theta}_n)\)</span> ou au moins son ordre de grandeur ; 3. en déduire l’EQM via <span class="math inline">\(R=\mathrm{Var}+b^2\)</span> ; 4. faire tendre <span class="math inline">\(n\)</span> vers l’infini pour conclure sur la convergence ; 5. interpréter dans le contexte : coût des mesures, précision requise, risque.</p>
 </section>
 <section id="estimateurs-de-la-moyenne-et-de-la-variance" class="level3">
 <h3 class="anchored" data-anchor-id="estimateurs-de-la-moyenne-et-de-la-variance">Estimateurs de la moyenne et de la variance</h3>
@@ -752,7 +621,7 @@ S^2_n = \frac{1}{n-1}\sum_{i=1}^n (X_i - \overline{X}_n)^2.\]</span></p>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -761,7 +630,7 @@ Solution — Exemple 2
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1. Moyenne empirique <span class="math inline">\(\overline{X}_n\)</span>.</strong></p>
 <p>Par linéarité : <span class="math inline">\(E(\overline{X}_n) = m\)</span>, donc <span class="math inline">\(\overline{X}_n\)</span> est sans biais.</p>
@@ -778,6 +647,7 @@ E\!\left[n\overline{X}_n^2\right] = n\!\left(m^2+\frac{\sigma^2}{n}\right)
 </div>
 </div>
 </div>
+<p>On dispose maintenant des outils pour évaluer un estimateur. La question suivante est : comment en construire un systématiquement ? Les deux méthodes qui suivent répondent à cette question.</p>
 </section>
 </section>
 <section id="méthodes-de-construction-destimateurs" class="level2">
@@ -798,25 +668,7 @@ Définition — Estimateur par la méthode des moments
 <p>Si le paramètre vérifie <span class="math inline">\(\varphi(\theta) = E[f(X)]\)</span> pour des fonctions connues <span class="math inline">\(\varphi\)</span> et <span class="math inline">\(f\)</span>, l’EMM de <span class="math inline">\(\theta\)</span> est : <span class="math display">\[\hat{\theta}_n = \varphi^{-1}\!\left(\frac{1}{n}\sum_{i=1}^n f(X_i)\right).\]</span></p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Lecture littérale de l’EMM
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>La logique est simple :</p>
-<ul>
-<li>le modèle théorique dit à quoi devrait ressembler un moment, par exemple une moyenne ou une variance ;</li>
-<li>les données fournissent une version observée de ce moment ;</li>
-<li>on <strong>force la théorie à coïncider avec l’observation</strong> pour retrouver le paramètre inconnu.</li>
-</ul>
-<p>Autrement dit, l’EMM remplace une quantité théorique inconnue par son analogue empirique.</p>
-</div>
-</div>
+<p>La logique est simple : le modèle théorique indique à quoi devrait ressembler un moment ; les données en fournissent une version observée ; on force la théorie à coïncider avec l’observation pour retrouver le paramètre inconnu. La méthode des moments est souvent le premier réflexe lorsque l’espérance ou la variance s’écrivent simplement, que l’on cherche une formule rapide à calculer à la main, ou que l’on veut initialiser un algorithme numérique. Elle privilégie la simplicité ; en contrepartie, elle n’est pas toujours optimale en précision.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -828,26 +680,6 @@ Proposition (admise) — Propriétés de l’EMM
 </div>
 <div class="callout-body-container callout-body">
 <p>L’EMM <span class="math inline">\(\hat{\theta}_n\)</span> est un estimateur <strong>asymptotiquement sans biais</strong> et <strong>convergent</strong> de <span class="math inline">\(\theta\)</span>.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Quand la méthode des moments est un bon réflexe
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>La méthode des moments est souvent le meilleur point d’entrée lorsque :</p>
-<ul>
-<li>l’espérance ou la variance théorique s’écrivent simplement ;</li>
-<li>on cherche une formule rapide à calculer à la main ;</li>
-<li>on veut obtenir une première estimation avant un traitement plus fin ;</li>
-<li>on souhaite initialiser un algorithme numérique.</li>
-</ul>
-<p>Elle privilégie la simplicité de calcul ; en contrepartie, elle n’est pas toujours optimale en précision.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -870,7 +702,7 @@ Exemple 3 — EMM pour des lois classiques
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -879,7 +711,7 @@ Solution — Exemple 3
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-23" class="callout-23-contents callout-collapse collapse">
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> <span class="math inline">\(E(X_i) = p\)</span>, donc <span class="math inline">\(\hat{p}_n = \overline{X}_n\)</span>.</p>
 <p><strong>2.</strong> <span class="math inline">\(E(X_i) = m\)</span>, donc <span class="math inline">\(\hat{m}_n = \overline{X}_n\)</span>.</p>
@@ -910,7 +742,7 @@ Exercice 1 — EMM dans deux cas particuliers
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -919,7 +751,7 @@ Indication et solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-25" class="callout-25-contents callout-collapse collapse">
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> <span class="math inline">\(E(X) = 0 \cdot \dfrac{a}{a+1} + 1 \cdot \dfrac{1}{a+1} = \dfrac{1}{a+1}\)</span>.</p>
 <p>Donc <span class="math inline">\(a = \dfrac{1}{E(X)} - 1\)</span> et l’EMM est <span class="math inline">\(\hat{a}_n = \dfrac{1}{\overline{X}_n} - 1\)</span>.</p>
@@ -949,23 +781,7 @@ Définition — Vraisemblance
 </ul>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Lecture littérale de la vraisemblance
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>La vraisemblance répond à la question :</p>
-<blockquote class="blockquote">
-<p><strong>“Pour quelle valeur du paramètre les données observées paraissent-elles le plus plausibles ?”</strong></p>
-</blockquote>
-<p>Plus <span class="math inline">\(L\)</span> est grande, plus le paramètre rend l’échantillon observé cohérent avec le modèle choisi.</p>
-</div>
-</div>
+<p>La vraisemblance répond à la question : <em>pour quelle valeur du paramètre les données observées paraissent-elles le plus plausibles ?</em> Plus <span class="math inline">\(L\)</span> est grande, plus le paramètre rend l’échantillon cohérent avec le modèle.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1027,7 +843,7 @@ Exemple 4 — Vraisemblance d’un tirage dans une urne
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-29-contents" aria-controls="callout-29" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1036,7 +852,7 @@ Solution — Exemple 4
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-29" class="callout-29-contents callout-collapse collapse">
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> Le nombre de boules rouges suit <span class="math inline">\(\mathcal{B}(15, p)\)</span>, donc : <span class="math display">\[L(5;\, p) = \binom{15}{5} p^5 (1-p)^{10}.\]</span></p>
 <p><strong>2.</strong> D’après le tableau, <span class="math inline">\(L\)</span> est maximale pour <span class="math inline">\(p = 0{,}3\)</span> (valeur 0,21 parmi celles testées). La valeur exacte de l’EMV est <span class="math inline">\(\hat{p} = 5/15 = 1/3 \approx 0{,}333\)</span>.</p>
@@ -1084,7 +900,7 @@ Proposition (admise) — Calcul pratique de l’EMV
 <p>En pratique, on maximise la <strong>log-vraisemblance</strong> <span class="math inline">\(\ell(\theta) = \ln L(x_1, \ldots, x_n;\, \theta)\)</span>, qui admet les mêmes extrema.</p>
 </div>
 </div>
-<p>Cette règle se lit ainsi : <strong>au lieu de comparer directement des produits de probabilités souvent très petits, on compare leurs logarithmes</strong>, ce qui simplifie les calculs sans changer le paramètre optimal.</p>
+<p>Au lieu de comparer directement des produits de probabilités souvent très petits, on compare leurs logarithmes : la log-vraisemblance transforme un produit en somme, ce qui simplifie le calcul sans changer le paramètre optimal.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1105,7 +921,7 @@ Exemple 5 — EMV pour des lois classiques
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-34-contents" aria-controls="callout-34" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1114,7 +930,7 @@ Solution — Exemple 5
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-34" class="callout-34-contents callout-collapse collapse">
+<div id="callout-24" class="callout-24-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1. Loi de Bernoulli.</strong> <span class="math display">\[\ell(p) = \Bigl(\sum x_i\Bigr)\ln p + \Bigl(n - \sum x_i\Bigr)\ln(1-p).\]</span> <span class="math display">\[\ell'(p) = \frac{\sum x_i}{p} - \frac{n - \sum x_i}{1-p} = 0
 \implies \hat{p}_n = \overline{X}_n.\]</span></p>
@@ -1143,17 +959,41 @@ Définition — Information de Fisher
 <p>L’information de Fisher mesure la <strong>quantité d’information</strong> que l’échantillon contient sur le paramètre <span class="math inline">\(\theta\)</span> : plus <span class="math inline">\(I_n(\theta)\)</span> est grande, plus l’échantillon est informatif sur <span class="math inline">\(\theta\)</span>.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
+<p>Pour un <span class="math inline">\(n\)</span>-échantillon i.i.d. de densité (ou probabilité) <span class="math inline">\(f(x;\theta)\)</span>, on a <span class="math inline">\(I_n(\theta) = n \cdot I_1(\theta)\)</span>, où <span class="math display">\[I_1(\theta) = E\!\left(-\frac{\partial^2 \ln f(X;\,\theta)}{\partial \theta^2}\right)\]</span> est l’information de Fisher d’une seule observation : l’information est donc proportionnelle à la taille de l’échantillon.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Remarque — Information de Fisher pour un échantillon i.i.d.
+Exemple — Calcul de l’information de Fisher pour <span class="math inline">\(\mathcal{B}(p)\)</span>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Pour un <span class="math inline">\(n\)</span>-échantillon i.i.d. de densité (ou probabilité) <span class="math inline">\(f(x;\theta)\)</span>, on a <span class="math inline">\(I_n(\theta) = n \cdot I_1(\theta)\)</span>, où <span class="math display">\[I_1(\theta) = E\!\left(-\frac{\partial^2 \ln f(X;\,\theta)}{\partial \theta^2}\right)\]</span> est l’information de Fisher d’une seule observation.</p>
+<p>Soit <span class="math inline">\(X \sim \mathcal{B}(p)\)</span>, de probabilité <span class="math inline">\(f(x;\,p) = p^x(1-p)^{1-x}\)</span> pour <span class="math inline">\(x \in \{0,1\}\)</span>. Calculer <span class="math inline">\(I_1(p)\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-27-contents" aria-controls="callout-27" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-27" class="callout-27-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[\ln f(x;\,p) = x\ln p + (1-x)\ln(1-p).\]</span> <span class="math display">\[\frac{\partial \ln f}{\partial p} = \frac{x}{p} - \frac{1-x}{1-p}, \qquad
+\frac{\partial^2 \ln f}{\partial p^2} = -\frac{x}{p^2} - \frac{1-x}{(1-p)^2}.\]</span></p>
+<p><span class="math display">\[I_1(p) = E\!\left(-\frac{\partial^2 \ln f}{\partial p^2}\right)
+= \frac{E(X)}{p^2} + \frac{1-E(X)}{(1-p)^2}
+= \frac{p}{p^2} + \frac{1-p}{(1-p)^2}
+= \frac{1}{p} + \frac{1}{1-p} = \frac{1}{p(1-p)}.\]</span></p>
+<p>Pour un <span class="math inline">\(n\)</span>-échantillon i.i.d. : <span class="math inline">\(I_n(p) = \dfrac{n}{p(1-p)}\)</span>.</p>
+<p>La borne FDCR est <span class="math inline">\(BF(p) = \dfrac{p(1-p)}{n}\)</span>, qui est exactement la variance de <span class="math inline">\(\hat{p}_n = \overline{X}_n\)</span> : cet estimateur est donc <strong>efficace</strong>, ce qui sera vérifié formellement à l’Exercice 5.</p>
+</div>
 </div>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -1182,23 +1022,7 @@ Définition — Estimateur efficace
 <p>Un estimateur <span class="math inline">\(\hat{\theta}_n\)</span> sans biais est dit <strong>efficace</strong> si sa variance atteint la borne FDCR : <span class="math display">\[\mathrm{Var}(\hat{\theta}_n) = \frac{1}{I_n(\theta)} = BF(\theta).\]</span></p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Remarques — Efficacité et EMV
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>S’il existe un estimateur efficace, il est le <strong>meilleur</strong> parmi tous les estimateurs sans biais (variance minimale).</li>
-<li>L’inverse est faux : un estimateur ayant la plus petite variance parmi les sans biais (estimateur optimal) n’est pas nécessairement efficace.</li>
-<li>Il peut <strong>ne pas exister</strong> d’estimateur efficace.</li>
-</ul>
-</div>
-</div>
+<p>S’il existe un estimateur efficace, il est le <strong>meilleur</strong> parmi tous les estimateurs sans biais (variance minimale). L’inverse est faux : un estimateur de variance minimale parmi les sans biais n’est pas nécessairement efficace, et un estimateur efficace peut ne pas exister.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1231,16 +1055,7 @@ Proposition (admise) — Propriétés asymptotiques de l’EMV
 </ul>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-EMM ou EMV ?
-</div>
-</div>
-<div class="callout-body-container callout-body">
+<p><strong>EMM ou EMV ?</strong> Les deux méthodes ne s’opposent pas ; elles se complètent.</p>
 <table class="table">
 <colgroup>
 <col style="width: 25%">
@@ -1272,8 +1087,6 @@ EMM ou EMV ?
 </tbody>
 </table>
 <p>En pratique, l’EMM est souvent un bon outil de démarrage, tandis que l’EMV est la méthode de référence dès que le modèle probabiliste est bien spécifié.</p>
-</div>
-</div>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1293,7 +1106,7 @@ Exercice 2 — EMV pour la hauteur des crues d’un fleuve
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-44-contents" aria-controls="callout-44" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-33-contents" aria-controls="callout-33" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1302,7 +1115,7 @@ Indication et solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-44" class="callout-44-contents callout-collapse collapse">
+<div id="callout-33" class="callout-33-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> La log-vraisemblance est : <span class="math display">\[\ell(a) = \sum_{i=1}^n \ln x_i - n\ln a - \frac{1}{2a}\sum_{i=1}^n x_i^2.\]</span> <span class="math display">\[\ell'(a) = -\frac{n}{a} + \frac{\sum x_i^2}{2a^2} = 0
 \implies \hat{a}_n = \frac{1}{2n}\sum_{i=1}^n X_i^2 = \frac{\overline{X^2_n}}{2}.\]</span> On vérifie <span class="math inline">\(\ell''(\hat{a}_n) &lt; 0\)</span> : c’est bien un maximum. ✓</p>
@@ -1331,48 +1144,24 @@ Définition — Intervalle de confiance
 <p>Soient <span class="math inline">\((X_1, \ldots, X_n)\)</span> un échantillon de loi <span class="math inline">\(\mathcal{L}(\theta)\)</span> et <span class="math inline">\(\alpha \in ]0,1[\)</span>. On appelle <strong>intervalle de confiance</strong> pour <span class="math inline">\(\theta\)</span> au <strong>niveau de confiance</strong> <span class="math inline">\(1-\alpha\)</span> tout intervalle <span class="math display">\[I_\alpha = [a(X_1, \ldots, X_n);\; b(X_1, \ldots, X_n)]\]</span> où <span class="math inline">\(a\)</span> et <span class="math inline">\(b\)</span> sont des fonctions de l’échantillon indépendantes de <span class="math inline">\(\theta\)</span>, vérifiant <span class="math inline">\(P(\theta \in I_\alpha) \geq 1-\alpha\)</span>.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
+<p>Un intervalle de confiance est une fourchette calculée à partir des données. Plus <span class="math inline">\(1-\alpha\)</span> est grand (plus de confiance), plus <span class="math inline">\(I_\alpha\)</span> est large. La construction de <span class="math inline">\(a\)</span> et <span class="math inline">\(b\)</span> repose sur la loi de l’estimateur de <span class="math inline">\(\theta\)</span> : si la loi est symétrique on choisit un intervalle symétrique (loi normale) ; si elle est unilatérale l’intervalle peut être asymétrique (loi du <span class="math inline">\(\chi^2\)</span>).</p>
+<p>Le paramètre <span class="math inline">\(\theta\)</span> est <strong>fixe</strong> mais inconnu ; c’est l’intervalle <span class="math inline">\(I_\alpha\)</span> qui est aléatoire car il dépend de l’échantillon. Dire qu’un IC est “au niveau 95 %” signifie donc que, si l’on répétait la procédure d’échantillonnage un grand nombre de fois, environ 95 % des intervalles construits contiendraient la vraie valeur du paramètre.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Lecture littérale
+Piège à éviter — Mauvaise interprétation d’un IC
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Un intervalle de confiance est <strong>une fourchette calculée à partir des données</strong>. Cette fourchette n’est pas une estimation exacte du paramètre, mais une zone jugée crédible compte tenu de la variabilité d’échantillonnage.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Remarques
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Plus <span class="math inline">\(1-\alpha\)</span> est grand (plus de confiance), plus <span class="math inline">\(I_\alpha\)</span> est large.</li>
-<li>La construction de <span class="math inline">\(a\)</span> et <span class="math inline">\(b\)</span> repose sur la loi de l’estimateur de <span class="math inline">\(\theta\)</span>.</li>
-<li>Si la loi est symétrique, on choisit un intervalle symétrique (loi normale) ; si elle est unilatérale, on peut choisir un intervalle asymétrique (loi du <span class="math inline">\(\chi^2\)</span>).</li>
-</ul>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Interprétation correcte d’un intervalle de confiance
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Le paramètre <span class="math inline">\(\theta\)</span> est <strong>fixe</strong> mais inconnu ; c’est l’intervalle <span class="math inline">\(I_\alpha\)</span> qui est aléatoire car il dépend de l’échantillon.</p>
-<p>Dire qu’un IC est “au niveau 95 %” signifie donc que, si l’on répétait la procédure d’échantillonnage un grand nombre de fois, environ 95 % des intervalles construits contiendraient la vraie valeur du paramètre.</p>
+<p>Une fois l’intervalle <span class="math inline">\([a, b]\)</span> calculé sur les données, il est <strong>faux</strong> d’écrire :</p>
+<blockquote class="blockquote">
+<p>“Il y a 95 % de probabilité que <span class="math inline">\(\theta \in [a, b]\)</span>.”</p>
+</blockquote>
+<p>Le paramètre <span class="math inline">\(\theta\)</span> est une <strong>constante</strong> : il est dans <span class="math inline">\([a, b]\)</span> ou il n’y est pas. La probabilité porte sur la <strong>procédure</strong>, pas sur un intervalle particulier déjà calculé.</p>
+<p><strong>Formulation correcte :</strong> “L’intervalle <span class="math inline">\([a, b]\)</span> a été construit par une méthode qui, répétée sur de nombreux échantillons, produirait un intervalle contenant <span class="math inline">\(\theta\)</span> dans 95 % des cas.”</p>
 </div>
 </div>
 <section id="intervalle-de-confiance-pour-une-proportion" class="level3">
@@ -1394,29 +1183,8 @@ Définition — IC pour une proportion
 <p><strong>Valeurs usuelles :</strong> <span class="math inline">\(t_{0{,}05} = 1{,}96\)</span> (niveau 95 %), <span class="math inline">\(t_{0{,}01} = 2{,}576\)</span> (niveau 99 %).</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Comment lire la formule
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>L’intervalle de confiance pour une proportion a toujours la même structure :</p>
-<p><span class="math display">\[
-\text{estimation} \ \pm \ \text{marge d'erreur}.
-\]</span></p>
-<p>Ici :</p>
-<ul>
-<li>l’estimation centrale est <span class="math inline">\(\hat{p}_n\)</span> ;</li>
-<li>la marge d’erreur est <span class="math inline">\(t_\alpha\sqrt{\hat{p}_n(1-\hat{p}_n)/n}\)</span> ;</li>
-<li>plus <span class="math inline">\(n\)</span> augmente, plus cette marge diminue ;</li>
-<li>plus on veut de confiance, plus <span class="math inline">\(t_\alpha\)</span> augmente, donc plus l’intervalle s’élargit.</li>
-</ul>
-</div>
-</div>
+<p>L’intervalle a toujours la structure <span class="math inline">\(\text{estimation} \pm \text{marge
+d'erreur}\)</span> : l’estimation centrale est <span class="math inline">\(\hat{p}_n\)</span> et la marge d’erreur est <span class="math inline">\(t_\alpha\sqrt{\hat{p}_n(1-\hat{p}_n)/n}\)</span>. Plus <span class="math inline">\(n\)</span> augmente, plus cette marge diminue ; plus on exige de confiance, plus <span class="math inline">\(t_\alpha\)</span> augmente et plus l’intervalle s’élargit.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1431,7 +1199,7 @@ Exemple 6 — Prévalence du cholestérol
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-52-contents" aria-controls="callout-52" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-38-contents" aria-controls="callout-38" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1440,7 +1208,7 @@ Solution — Exemple 6
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-52" class="callout-52-contents callout-collapse collapse">
+<div id="callout-38" class="callout-38-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><span class="math inline">\(n = 1000\)</span>, <span class="math inline">\(\hat{p} = 0{,}08\)</span>, <span class="math inline">\(1-\alpha = 0{,}95\)</span>, <span class="math inline">\(t_\alpha = 1{,}96\)</span>.</p>
 <p><strong>Vérification :</strong> <span class="math inline">\(n = 1000 \geq 30\)</span> ✓, <span class="math inline">\(n\hat{p} = 80 \geq 5\)</span> ✓, <span class="math inline">\(n(1-\hat{p}) = 920 \geq 5\)</span> ✓, <span class="math inline">\(n\hat{p}(1-\hat{p}) = 73{,}6 \geq 3\)</span> ✓.</p>
@@ -1452,26 +1220,40 @@ Solution — Exemple 6
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
+<p><strong>Dimensionner l’échantillon.</strong> Si l’on veut une marge d’erreur au plus égale à <span class="math inline">\(e\)</span>, on impose <span class="math inline">\(t_\alpha\sqrt{p(1-p)/n} \leq e\)</span>, d’où <span class="math inline">\(n \geq t_\alpha^2\,p(1-p)/e^2\)</span>. Si <span class="math inline">\(p\)</span> est inconnu à l’avance, on prend le cas le plus défavorable <span class="math inline">\(p(1-p) \leq 1/4\)</span>, d’où <span class="math display">\[
+n\ge \frac{t_\alpha^2}{4e^2}.
+\]</span> Cette formule est très utile pour préparer un plan d’essais ou une campagne de mesures.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Dimensionner un échantillon pour une précision cible
+Exemple — Dimensionner une campagne de contrôle qualité
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Si l’on veut une marge d’erreur au plus égale à <span class="math inline">\(e\)</span> pour une proportion, on impose <span class="math display">\[
-t_\alpha\sqrt{\frac{p(1-p)}{n}}\le e.
-\]</span></p>
-<p>On en déduit <span class="math display">\[
-n\ge \frac{t_\alpha^2\,p(1-p)}{e^2}.
-\]</span></p>
-<p>Si <span class="math inline">\(p\)</span> est inconnu à l’avance, on prend le cas le plus défavorable <span class="math inline">\(p(1-p)\le 1/4\)</span>, d’où <span class="math display">\[
-n\ge \frac{t_\alpha^2}{4e^2}.
-\]</span></p>
-<p>Cette formule est très utile pour préparer un plan d’essais ou une campagne de mesures.</p>
+<p>Un ingénieur Qualité souhaite estimer le taux de pièces défectueuses <span class="math inline">\(p\)</span> avec une marge d’erreur de <strong>2 %</strong> au niveau de confiance <strong>95 %</strong>. Combien de pièces doit-il contrôler ?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-40-contents" aria-controls="callout-40" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-40" class="callout-40-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>On pose <span class="math inline">\(e = 0{,}02\)</span> et <span class="math inline">\(t_\alpha = 1{,}96\)</span> (niveau 95 %).</p>
+<p><span class="math inline">\(p\)</span> étant inconnu, on utilise le cas le plus défavorable <span class="math inline">\(p(1-p) \leq 1/4\)</span> : <span class="math display">\[n \geq \frac{(1{,}96)^2}{4 \times (0{,}02)^2} = \frac{3{,}8416}{0{,}0016} = 2401.\]</span></p>
+<p>Il faut contrôler <strong>au moins 2 401 pièces</strong> pour garantir une précision de <span class="math inline">\(\pm 2\,\%\)</span> à 95 % de confiance.</p>
+<p><strong>Impact du niveau de confiance :</strong> pour un niveau 99 % (<span class="math inline">\(t_\alpha = 2{,}576\)</span>) : <span class="math display">\[n \geq \frac{(2{,}576)^2}{4 \times (0{,}02)^2} \approx 4148.\]</span></p>
+<p>Passer de 95 % à 99 % de confiance exige presque <strong>1 750 mesures supplémentaires</strong> — c’est le coût de la confiance accrue.</p>
+</div>
 </div>
 </div>
 </section>
@@ -1492,23 +1274,9 @@ Définition — IC pour une moyenne (<span class="math inline">\(\sigma\)</span>
 \overline{X}_n + t_\alpha\,\frac{\sigma}{\sqrt{n}}\right],\]</span> où <span class="math inline">\(t_\alpha = \Phi^{-1}(1-\alpha/2)\)</span>. Si <span class="math inline">\(n \geq 30\)</span> et <span class="math inline">\(\sigma\)</span> est inconnu, on le remplace par l’écart-type empirique corrigé <span class="math inline">\(S_n = \sqrt{S^2_n}\)</span>.</p>
 </div>
 </div>
-<p>Cette formule se lit exactement comme pour une proportion : <strong>moyenne observée plus ou moins un multiple de l’erreur-type</strong>. Le terme <span class="math inline">\(\sigma/\sqrt{n}\)</span> mesure la précision de la moyenne empirique.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Cas <span class="math inline">\(n &lt; 30\)</span> et <span class="math inline">\(\sigma^2\)</span> inconnu — Loi de Student
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Si l’échantillon suit <span class="math inline">\(\mathcal{N}(m, \sigma^2)\)</span> avec <span class="math inline">\(\sigma^2\)</span> inconnu et <span class="math inline">\(n &lt; 30\)</span>, on utilise la statistique de Student : <span class="math display">\[T_{n-1} = \frac{\overline{X}_n - m}{S_n/\sqrt{n}} \sim \mathcal{T}(n-1).\]</span></p>
-<p>L’IC pour <span class="math inline">\(m\)</span> au niveau <span class="math inline">\(1-\alpha\)</span> est : <span class="math display">\[I_\alpha = \left[\overline{X}_n - t\,\frac{S_n}{\sqrt{n}};\;
-\overline{X}_n + t\,\frac{S_n}{\sqrt{n}}\right],\]</span> où <span class="math inline">\(t\)</span> est le fractile d’ordre <span class="math inline">\(1-\alpha/2\)</span> de la loi <span class="math inline">\(\mathcal{T}(n-1)\)</span>.</p>
-</div>
-</div>
-<p>Ici, on remplace la loi normale par la loi de Student parce que <strong>l’incertitude porte à la fois sur la moyenne et sur l’écart-type</strong>. La loi de Student élargit donc l’intervalle pour refléter ce supplément d’incertitude.</p>
+<p>Cette formule a la même structure que pour une proportion : <strong>moyenne observée plus ou moins un multiple de l’erreur-type</strong> <span class="math inline">\(\sigma/\sqrt{n}\)</span>. Le terme <span class="math inline">\(\sigma/\sqrt{n}\)</span> mesure la précision de la moyenne empirique.</p>
+<p>Lorsque <span class="math inline">\(n &lt; 30\)</span> et <span class="math inline">\(\sigma^2\)</span> est inconnu, on ne peut plus utiliser l’approximation normale. On utilise alors la statistique de Student : <span class="math display">\[T_{n-1} = \frac{\overline{X}_n - m}{S_n/\sqrt{n}} \sim \mathcal{T}(n-1),\]</span> et l’IC pour <span class="math inline">\(m\)</span> au niveau <span class="math inline">\(1-\alpha\)</span> devient <span class="math display">\[I_\alpha = \left[\overline{X}_n - t\,\frac{S_n}{\sqrt{n}};\;
+\overline{X}_n + t\,\frac{S_n}{\sqrt{n}}\right],\]</span> où <span class="math inline">\(t\)</span> est le fractile d’ordre <span class="math inline">\(1-\alpha/2\)</span> de la loi <span class="math inline">\(\mathcal{T}(n-1)\)</span>. On remplace la loi normale par la loi de Student parce que <strong>l’incertitude porte à la fois sur la moyenne et sur l’écart-type</strong> : la loi de Student élargit l’intervalle pour refléter ce supplément d’incertitude.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1523,7 +1291,7 @@ Exemple — Calibration d’un capteur avec petit échantillon
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-57-contents" aria-controls="callout-57" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-43-contents" aria-controls="callout-43" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1532,7 +1300,7 @@ Solution — Exemple
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-57" class="callout-57-contents callout-collapse collapse">
+<div id="callout-43" class="callout-43-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Ici, <span class="math inline">\(n&lt;30\)</span> et <span class="math inline">\(\sigma\)</span> est inconnu : on utilise la loi de Student à <span class="math inline">\(8\)</span> degrés de liberté. Au niveau 95 %, on prend <span class="math inline">\(t \approx 2{,}306\)</span>.</p>
 <p>La demi-largeur vaut <span class="math display">\[
@@ -1563,7 +1331,7 @@ Exemple 7 — Notes au baccalauréat
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-59-contents" aria-controls="callout-59" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-45-contents" aria-controls="callout-45" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1572,7 +1340,7 @@ Solution — Exemple 7
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-59" class="callout-59-contents callout-collapse collapse">
+<div id="callout-45" class="callout-45-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><span class="math inline">\(n = 1000 \geq 30\)</span>, <span class="math inline">\(\overline{x} = 12{,}15\)</span>, <span class="math inline">\(s = 2\)</span>, <span class="math inline">\(t_\alpha = 1{,}96\)</span>.</p>
 <p>On remplace <span class="math inline">\(\sigma\)</span> par <span class="math inline">\(s = 2\)</span> : <span class="math display">\[\frac{s}{\sqrt{n}} = \frac{2}{\sqrt{1000}} \approx 0{,}0632.\]</span></p>
@@ -1585,7 +1353,7 @@ Solution — Exemple 7
 </section>
 <section id="intervalle-de-confiance-pour-une-variance" class="level3">
 <h3 class="anchored" data-anchor-id="intervalle-de-confiance-pour-une-variance">Intervalle de confiance pour une variance</h3>
-<p>Soit <span class="math inline">\((X_1, \ldots, X_n)\)</span> un <span class="math inline">\(n\)</span>-échantillon de loi <span class="math inline">\(\mathcal{N}(m, \sigma^2)\)</span>.</p>
+<p>Soit <span class="math inline">\((X_1, \ldots, X_n)\)</span> un <span class="math inline">\(n\)</span>-échantillon de loi <span class="math inline">\(\mathcal{N}(m, \sigma^2)\)</span>. La construction repose sur des lois du <span class="math inline">\(\chi^2\)</span> :</p>
 <ul>
 <li><strong>Si <span class="math inline">\(m\)</span> est connu :</strong> on utilise <span class="math inline">\(\hat{\sigma}^2_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n(X_i-m)^2\)</span> et <span class="math inline">\(\dfrac{n\hat{\sigma}^2_n}{\sigma^2} \sim \chi^2(n)\)</span>.</li>
 <li><strong>Si <span class="math inline">\(m\)</span> est inconnu :</strong> on utilise <span class="math inline">\(S^2_n = \dfrac{1}{n-1}\displaystyle\sum_{i=1}^n(X_i-\overline{X}_n)^2\)</span> et <span class="math inline">\(\dfrac{(n-1)S^2_n}{\sigma^2} \sim \chi^2(n-1)\)</span>.</li>
@@ -1604,19 +1372,6 @@ Définition — IC pour une variance (<span class="math inline">\(m\)</span> inc
 <p>Un intervalle de confiance pour <span class="math inline">\(\sigma^2\)</span> au niveau <span class="math inline">\(1-\alpha\)</span> est : <span class="math display">\[I_\alpha = \left[\frac{(n-1)S^2_n}{t_2};\; \frac{(n-1)S^2_n}{t_1}\right],\]</span> où <span class="math inline">\(t_1 = \chi^2_{n-1,\,\alpha/2}\)</span> et <span class="math inline">\(t_2 = \chi^2_{n-1,\,1-\alpha/2}\)</span> sont les fractiles de la loi <span class="math inline">\(\chi^2(n-1)\)</span>.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Lecture littérale de l’IC de variance
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Cet intervalle n’est pas symétrique autour de <span class="math inline">\(S_n^2\)</span> : c’est normal. La variance est une grandeur positive, et sa loi d’échantillonnage est pilotée par une loi du <span class="math inline">\(\chi^2\)</span>, qui est asymétrique. On obtient donc naturellement une borne basse et une borne haute de formes différentes.</p>
-</div>
-</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1631,19 +1386,7 @@ Définition — IC pour une variance (<span class="math inline">\(m\)</span> con
 <p>Un intervalle de confiance pour <span class="math inline">\(\sigma^2\)</span> au niveau <span class="math inline">\(1-\alpha\)</span> est : <span class="math display">\[I_\alpha = \left[\frac{n\hat{\sigma}^2_n}{t_2};\; \frac{n\hat{\sigma}^2_n}{t_1}\right],\]</span> où <span class="math inline">\(t_1 = \chi^2_{n,\,\alpha/2}\)</span> et <span class="math inline">\(t_2 = \chi^2_{n,\,1-\alpha/2}\)</span> sont les fractiles de la loi <span class="math inline">\(\chi^2(n)\)</span>.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Point d’attention pour la variance
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Les intervalles de confiance pour une variance sont naturellement <strong>asymétriques</strong>, et leur validité repose fortement sur l’hypothèse de normalité. En ingénierie, si cette hypothèse est douteuse, il faut la discuter avant d’interpréter l’IC comme une garantie fiable sur la dispersion.</p>
-</div>
-</div>
+<p>Cet intervalle n’est pas symétrique autour de <span class="math inline">\(S_n^2\)</span>, ce qui est naturel : la variance est une grandeur positive dont la loi d’échantillonnage est pilotée par le <span class="math inline">\(\chi^2\)</span>, une loi asymétrique. La validité de ces IC repose fortement sur l’hypothèse de normalité ; en ingénierie, si cette hypothèse est douteuse, elle doit être vérifiée avant d’interpréter l’IC comme une garantie fiable sur la dispersion.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1658,7 +1401,7 @@ Exemple 8 — Variance des notes à un examen de certification
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-65-contents" aria-controls="callout-65" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-49-contents" aria-controls="callout-49" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1667,7 +1410,7 @@ Solution — Exemple 8
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-65" class="callout-65-contents callout-collapse collapse">
+<div id="callout-49" class="callout-49-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><span class="math inline">\(n = 1000\)</span>, <span class="math inline">\(S^2_n = 9\)</span>, <span class="math inline">\(\alpha = 0{,}05\)</span>.</p>
 <p>On cherche <span class="math inline">\(t_1 = \chi^2_{999,\,0{,}025}\)</span> et <span class="math inline">\(t_2 = \chi^2_{999,\,0{,}975}\)</span>. Pour <span class="math inline">\(n\)</span> grand, on utilise l’approximation <span class="math inline">\(\chi^2_\nu \approx \mathcal{N}(\nu, 2\nu)\)</span> : <span class="math display">\[t_1 \approx 999 - 1{,}96\sqrt{2\times 999} \approx 911{,}3, \qquad
@@ -1724,7 +1467,7 @@ Exercice 3 — Estimation du paramètre d’une loi de Poisson
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-67-contents" aria-controls="callout-67" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-51-contents" aria-controls="callout-51" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1733,7 +1476,7 @@ Solution — Exercice 3
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-67" class="callout-67-contents callout-collapse collapse">
+<div id="callout-51" class="callout-51-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> Les <span class="math inline">\(X_i\)</span> sont i.i.d. de loi <span class="math inline">\(\mathcal{P}(\lambda)\)</span> : <span class="math inline">\(P(X_i = x_i) = e^{-\lambda}\dfrac{\lambda^{x_i}}{x_i!}\)</span>.</p>
 <p><strong>Vraisemblance :</strong> <span class="math display">\[L(x_1,\ldots,x_n;\,\lambda) = \prod_{i=1}^n e^{-\lambda}\frac{\lambda^{x_i}}{x_i!}
@@ -1779,7 +1522,7 @@ Exercice 4 — Estimateurs de la moyenne et de la variance d’une population
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-69-contents" aria-controls="callout-69" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-53-contents" aria-controls="callout-53" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1788,7 +1531,7 @@ Solution — Exercice 4
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-69" class="callout-69-contents callout-collapse collapse">
+<div id="callout-53" class="callout-53-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1a.</strong> <span class="math inline">\(\overline{X}_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n X_i\)</span> est sans biais (<span class="math inline">\(E(\overline{X}_n)=m\)</span>) et convergent (<span class="math inline">\(\mathrm{Var}(\overline{X}_n)=\sigma^2/n \to 0\)</span>).</p>
 <p><strong>1b.</strong> <span class="math inline">\(S^2_n = \dfrac{1}{n-1}\displaystyle\sum_{i=1}^n (X_i-\overline{X}_n)^2\)</span> est sans biais (<span class="math inline">\(E(S^2_n) = \sigma^2\)</span>) et convergent (<span class="math inline">\(\mathrm{Var}(S^2_n) \to 0\)</span>).</p>
@@ -1826,7 +1569,7 @@ Exercice 5 — Estimateur d’une proportion
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-71-contents" aria-controls="callout-71" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-55-contents" aria-controls="callout-55" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1835,7 +1578,7 @@ Solution — Exercice 5
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-71" class="callout-71-contents callout-collapse collapse">
+<div id="callout-55" class="callout-55-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> Les <span class="math inline">\(X_i\)</span> sont i.i.d. de loi <span class="math inline">\(\mathcal{B}(p)\)</span> :</p>
 <p><span class="math display">\[L(x_1,\ldots,x_n;\,p) = \prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}
@@ -1873,7 +1616,7 @@ Exercice 6 — Estimation pour une loi inconnue
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-73-contents" aria-controls="callout-73" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-57-contents" aria-controls="callout-57" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1882,7 +1625,7 @@ Solution — Exercice 6
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-73" class="callout-73-contents callout-collapse collapse">
+<div id="callout-57" class="callout-57-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1.</strong> <span class="math inline">\(n = 10\)</span>.</p>
 <p><strong>Moyenne :</strong> la moyenne empirique <span class="math inline">\(\overline{x} = \dfrac{\sum x_i}{n}
@@ -1897,16 +1640,7 @@ Solution — Exercice 6
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Stratégie de travail en estimation
-</div>
-</div>
-<div class="callout-body-container callout-body">
+<p><strong>Stratégie de travail en estimation.</strong> Le tableau suivant résume le bon enchaînement : modéliser, choisir l’estimateur, identifier sa loi, puis interpréter le résultat dans le contexte opérationnel.</p>
 <table class="table">
 <colgroup>
 <col style="width: 25%">
@@ -1949,9 +1683,6 @@ Stratégie de travail en estimation
 </tr>
 </tbody>
 </table>
-<p>Cette table résume le bon enchaînement : <strong>modéliser</strong>, <strong>choisir l’estimateur</strong>, <strong>identifier sa loi</strong>, puis <strong>interpréter le résultat</strong> dans le contexte opérationnel.</p>
-</div>
-</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

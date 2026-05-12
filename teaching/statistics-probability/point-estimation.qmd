@@ -9,31 +9,23 @@ abstract: |
   moyenne et une variance, en mettant l'accent sur la comparaison
   d'estimateurs, le choix d'une méthode de construction et l'interprétation
   pratique des marges d'erreur dans un contexte d'ingénierie.
-date-modified: 2026-05-11
 ---
 
-[📍 Retour à la carte du cours](index.html)
-Soit $(X_1, \ldots, X_n)$ un échantillon de loi $\mathcal{L}$ dépendant d'un
-paramètre inconnu $\theta$. **L'estimation ponctuelle** consiste à approcher
-$\theta$ par une fonction des réalisations $(x_1, \ldots, x_n)$ de cet
-échantillon.
-
-::: {.callout-important}
-## Pourquoi l'estimation est indispensable en ingénierie
-
 En pratique, l'ingénieur doit prendre une décision à partir d'un nombre limité
-de mesures :
+de mesures : régler une machine à partir d'essais de calibration, estimer un
+taux de panne à partir d'un retour d'expérience partiel, certifier une
+performance moyenne à partir d'une campagne de tests, ou quantifier
+l'incertitude avant de passer à la production. L'estimation fournit deux
+sorties complémentaires : une **valeur centrale** plausible du paramètre
+inconnu, et une **mesure d'incertitude** qui indique la précision réellement
+acquise.
 
-- régler une machine à partir d'essais de calibration ;
-- estimer un taux de panne à partir d'un retour d'expérience partiel ;
-- certifier une performance moyenne à partir d'une campagne de tests ;
-- quantifier l'incertitude avant de passer à la production ou à l'exploitation.
-
-L'estimation fournit donc deux sorties complémentaires :
-
-1. une **valeur centrale** plausible du paramètre inconnu ;
-2. une **mesure d'incertitude** qui indique la précision réellement acquise.
-:::
+Ce chapitre suit trois étapes. On commence par établir les critères pour
+évaluer un estimateur (biais, erreur quadratique, convergence). On présente
+ensuite deux méthodes pour construire de bons estimateurs : la méthode des
+moments et le maximum de vraisemblance, avec l'information de Fisher comme
+critère d'optimalité. Enfin, on traduit l'incertitude en intervalles de
+confiance pour une proportion, une moyenne et une variance.
 
 ::: {.callout-caution}
 ## Exemple 1 — Estimation d'une proportion
@@ -50,9 +42,7 @@ où $k$ est le nombre de boules rouges obtenues.
 ## Solution — Exemple 1
 
 Si $K$ désigne le nombre de boules rouges observées en 10 tirages, alors
-$$
-K\sim\mathcal{B}(10,p).
-$$
+$$K\sim\mathcal{B}(10,p).$$
 
 L'idée la plus naturelle est d'estimer la proportion inconnue $p$ par la
 **fréquence observée** :
@@ -60,26 +50,21 @@ $$
 \hat{p}=\frac{K}{10}.
 $$
 
-Autrement dit, on remplace la proportion théorique de boules rouges dans l'urne
-par la proportion effectivement observée dans l'échantillon.
-
 Par exemple, si l'on observe $k=7$ boules rouges, on obtient
-$$
-\hat{p}=\frac{7}{10}=0{,}7.
-$$
-
-Cette logique sera généralisée dans tout le chapitre : **un paramètre inconnu
-est approché par une statistique calculée sur les données observées**.
+$\hat{p}=7/10=0{,}7$. Cette logique sera généralisée dans tout le chapitre :
+**un paramètre inconnu est approché par une statistique calculée sur les
+données observées**.
 :::
 
 ## Estimateurs et leurs propriétés
 
 ### Définitions
 
+Soit $(X_1, \ldots, X_n)$ un échantillon de loi dépendant d'un paramètre
+inconnu $\theta$.
+
 ::: {.callout-note}
 ## Définition — Estimateur et estimation
-
-Soit $(X_1, \ldots, X_n)$ un échantillon de loi dépendant d'un paramètre $\theta$.
 
 - Un **estimateur** de $\theta$ est une statistique $\hat{\theta}_n = T_n(X_1, \ldots, X_n)$
   ne dépendant pas de $\theta$.
@@ -87,18 +72,14 @@ Soit $(X_1, \ldots, X_n)$ un échantillon de loi dépendant d'un paramètre $\th
   $T_n(x_1, \ldots, x_n)$ calculée sur un échantillon observé.
 :::
 
-::: {.callout-tip}
-## Réflexe essentiel
-
-Un **estimateur** est une formule aléatoire définie avant l'observation des
-données ; une **estimation** est le nombre obtenu après calcul sur l'échantillon.
-
-Par exemple, $\overline{X}_n$ est un estimateur de $m$, alors que
-$\overline{x}_n = 12{,}4$ est une estimation de $m$.
-:::
+Il importe de distinguer ces deux notions : un **estimateur** est une formule
+aléatoire définie avant l'observation des données, tandis qu'une **estimation**
+est le nombre obtenu après calcul sur l'échantillon. Par exemple,
+$\overline{X}_n$ est un estimateur de $m$, alors que $\overline{x}_n = 12{,}4$
+est une estimation de $m$.
 
 ::: {.callout-note}
-## Définition — Biais et erreur quadratique
+## Définition — Biais et erreur quadratique moyenne
 
 Soit $\hat{\theta}_n$ un estimateur de $\theta$.
 
@@ -109,9 +90,14 @@ Soit $\hat{\theta}_n$ un estimateur de $\theta$.
 - L'**erreur quadratique moyenne** (EQM) de $\hat{\theta}_n$ est
   $$R(\hat{\theta}_n) = E\!\left[(\hat{\theta}_n - \theta)^2\right].$$
 
-Un estimateur $\hat{\theta}'_n$ est dit **meilleur** que $\hat{\theta}_n$ au sens de l'EQM
-s'il existe $N$ tel que, pour tout $n \geq N$, $R(\hat{\theta}'_n) \leq R(\hat{\theta}_n)$.
+Un estimateur $\hat{\theta}'_n$ est dit **meilleur** que $\hat{\theta}_n$ au
+sens de l'EQM s'il existe $N$ tel que, pour tout $n \geq N$,
+$R(\hat{\theta}'_n) \leq R(\hat{\theta}_n)$.
 :::
+
+L'erreur d'un estimateur a deux sources indépendantes : sa dispersion d'un
+échantillon à l'autre, et son décalage systématique par rapport à la vraie
+valeur. Ces deux sources se combinent dans la décomposition suivante.
 
 ::: {.callout-important}
 ## Proposition — Décomposition biais–variance
@@ -119,34 +105,16 @@ s'il existe $N$ tel que, pour tout $n \geq N$, $R(\hat{\theta}'_n) \leq R(\hat{\
 $$R(\hat{\theta}_n) = \mathrm{Var}(\hat{\theta}_n) + b_n(\theta)^2.$$
 :::
 
-::: {.callout-tip}
-## Lecture littérale
-
-Cette identité dit que l'erreur d'un estimateur a **deux sources** :
-
-1. sa **dispersion** d'un échantillon à l'autre ;
-2. son **décalage systématique** par rapport à la vraie valeur.
-
-Un estimateur peut donc être mauvais soit parce qu'il fluctue trop, soit parce
-qu'il vise systématiquement trop haut ou trop bas.
-:::
-
-::: {.callout-tip collapse="true"}
-## Démonstration
-
-On pose $b = b_n(\theta) = E(\hat{\theta}_n) - \theta$. Alors :
+*Démonstration.* On pose $b = b_n(\theta) = E(\hat{\theta}_n) - \theta$. Alors :
 $$E\!\left[(\hat{\theta}_n - \theta)^2\right]
 = E\!\left[(\hat{\theta}_n - E(\hat{\theta}_n) + b)^2\right]
-= \mathrm{Var}(\hat{\theta}_n) + 2b\,\underbrace{E(\hat{\theta}_n - E(\hat{\theta}_n))}_{=\,0} + b^2.$$
-:::
+= \mathrm{Var}(\hat{\theta}_n) + 2b\,\underbrace{E(\hat{\theta}_n - E(\hat{\theta}_n))}_{=\,0} + b^2.\qquad\square$$
 
-::: {.callout-tip}
-## Remarque — Efficacité
-
-Pour des estimateurs **sans biais** ($b_n(\theta) = 0$), l'EQM se réduit à la
-variance : $R(\hat{\theta}_n) = \mathrm{Var}(\hat{\theta}_n)$. Plus la variance est
-petite, plus l'estimateur est dit **efficace**.
-:::
+Un estimateur peut donc être mauvais soit parce qu'il fluctue trop (grande
+variance), soit parce qu'il vise systématiquement trop haut ou trop bas (grand
+biais). Pour des estimateurs **sans biais**, l'EQM se réduit à la variance :
+$R(\hat{\theta}_n) = \mathrm{Var}(\hat{\theta}_n)$ ; on dit alors qu'un
+estimateur sans biais est **efficace** s'il a la plus petite variance possible.
 
 ::: {.callout-caution}
 ## Exemple — Comparer deux estimateurs d'une moyenne
@@ -173,22 +141,17 @@ E(\hat{m}_1)=E(\overline{X}_n)=m,
 E(\hat{m}_2)=E(X_1)=m.
 $$
 
-Les deux estimateurs sont donc sans biais.
-
-Comme ils sont sans biais, leur EQM est leur variance :
+Les deux estimateurs sont donc sans biais. Comme ils sont sans biais, leur EQM
+est leur variance :
 $$
 R(\hat{m}_1)=\mathrm{Var}(\overline{X}_n)=\frac{\sigma^2}{n},
 \qquad
 R(\hat{m}_2)=\mathrm{Var}(X_1)=\sigma^2.
 $$
 
-Pour tout $n>1$,
-$$
-\frac{\sigma^2}{n}<\sigma^2.
-$$
-
-L'estimateur $\overline{X}_n$ est donc meilleur : il exploite toute
-l'information de l'échantillon, alors que $X_1$ n'utilise qu'une seule mesure.
+Pour tout $n>1$, $\sigma^2/n<\sigma^2$. L'estimateur $\overline{X}_n$ est donc
+meilleur : il exploite toute l'information de l'échantillon, alors que $X_1$
+n'utilise qu'une seule mesure.
 :::
 
 ### Convergence
@@ -205,30 +168,18 @@ Soit $\hat{\theta}_n$ un estimateur de $\theta$.
   $R(\hat{\theta}_n) \xrightarrow[n\to+\infty]{} 0$.
 :::
 
-::: {.callout-tip}
-## Remarque — Critère pratique de convergence
+D'après les résultats sur la convergence des variables aléatoires,
+$\hat{\theta}_n$ est convergent en moyenne quadratique si et seulement s'il
+est (asymptotiquement) sans biais **et** $\mathrm{Var}(\hat{\theta}_n) \to 0$.
+La convergence en moyenne quadratique implique la convergence en probabilité
+(la réciproque est fausse en général).
 
-D'après le chapitre sur la convergence des variables aléatoires :
-
-- $\hat{\theta}_n$ est convergent en moyenne quadratique si et seulement si
-  $\hat{\theta}_n$ est (asymptotiquement) sans biais **et**
-  $\mathrm{Var}(\hat{\theta}_n) \to 0$.
-- La convergence en moyenne quadratique implique la convergence en probabilité
-  (la réciproque est fausse en général).
-:::
-
-::: {.callout-note}
-## Méthode pratique pour évaluer un estimateur
-
-Pour analyser un estimateur $\hat{\theta}_n$, on suit presque toujours le même
-plan :
-
-1. calculer ou identifier $E(\hat{\theta}_n)$ pour étudier le biais ;
+Pour analyser un estimateur donné, on suit presque toujours le même plan :
+1. calculer $E(\hat{\theta}_n)$ pour étudier le biais ;
 2. calculer $\mathrm{Var}(\hat{\theta}_n)$ ou au moins son ordre de grandeur ;
 3. en déduire l'EQM via $R=\mathrm{Var}+b^2$ ;
 4. faire tendre $n$ vers l'infini pour conclure sur la convergence ;
-5. interpréter le résultat dans le contexte métier : coût des mesures, précision, risque.
-:::
+5. interpréter dans le contexte : coût des mesures, précision requise, risque.
 
 ### Estimateurs de la moyenne et de la variance
 
@@ -279,6 +230,10 @@ Convergence : $\mathrm{Var}(S^2_n) \to 0$ (admis) et $E(S^2_n) = \sigma^2$, donc
 $S^2_n \xrightarrow{L^2} \sigma^2$.
 :::
 
+On dispose maintenant des outils pour évaluer un estimateur. La question
+suivante est : comment en construire un systématiquement ? Les deux méthodes
+qui suivent répondent à cette question.
+
 ## Méthodes de construction d'estimateurs
 
 ### Méthode des moments (EMM)
@@ -295,40 +250,20 @@ $\varphi$ et $f$, l'EMM de $\theta$ est :
 $$\hat{\theta}_n = \varphi^{-1}\!\left(\frac{1}{n}\sum_{i=1}^n f(X_i)\right).$$
 :::
 
-::: {.callout-tip}
-## Lecture littérale de l'EMM
-
-La logique est simple :
-
-- le modèle théorique dit à quoi devrait ressembler un moment, par exemple une
-  moyenne ou une variance ;
-- les données fournissent une version observée de ce moment ;
-- on **force la théorie à coïncider avec l'observation** pour retrouver le
-  paramètre inconnu.
-
-Autrement dit, l'EMM remplace une quantité théorique inconnue par son analogue
-empirique.
-:::
+La logique est simple : le modèle théorique indique à quoi devrait ressembler
+un moment ; les données en fournissent une version observée ; on force la
+théorie à coïncider avec l'observation pour retrouver le paramètre inconnu.
+La méthode des moments est souvent le premier réflexe lorsque l'espérance ou
+la variance s'écrivent simplement, que l'on cherche une formule rapide à
+calculer à la main, ou que l'on veut initialiser un algorithme numérique.
+Elle privilégie la simplicité ; en contrepartie, elle n'est pas toujours
+optimale en précision.
 
 ::: {.callout-important}
 ## Proposition (admise) — Propriétés de l'EMM
 
 L'EMM $\hat{\theta}_n$ est un estimateur **asymptotiquement sans biais** et
 **convergent** de $\theta$.
-:::
-
-::: {.callout-tip}
-## Quand la méthode des moments est un bon réflexe
-
-La méthode des moments est souvent le meilleur point d'entrée lorsque :
-
-- l'espérance ou la variance théorique s'écrivent simplement ;
-- on cherche une formule rapide à calculer à la main ;
-- on veut obtenir une première estimation avant un traitement plus fin ;
-- on souhaite initialiser un algorithme numérique.
-
-Elle privilégie la simplicité de calcul ; en contrepartie, elle n'est pas
-toujours optimale en précision.
 :::
 
 ::: {.callout-caution}
@@ -401,16 +336,9 @@ La **vraisemblance** de l'échantillon est la fonction $L$ définie par :
 - **Cas continu** (densité $f$) : $L(x_1, \ldots, x_n;\, \theta) = f(x_1) \times \cdots \times f(x_n)$.
 :::
 
-::: {.callout-tip}
-## Lecture littérale de la vraisemblance
-
-La vraisemblance répond à la question :
-
-> **"Pour quelle valeur du paramètre les données observées paraissent-elles le plus plausibles ?"**
-
-Plus $L$ est grande, plus le paramètre rend l'échantillon observé cohérent avec
-le modèle choisi.
-:::
+La vraisemblance répond à la question : *pour quelle valeur du paramètre les
+données observées paraissent-elles le plus plausibles ?* Plus $L$ est grande,
+plus le paramètre rend l'échantillon cohérent avec le modèle.
 
 ::: {.callout-caution}
 ## Exemple 4 — Vraisemblance d'un tirage dans une urne
@@ -466,9 +394,9 @@ En pratique, on maximise la **log-vraisemblance**
 $\ell(\theta) = \ln L(x_1, \ldots, x_n;\, \theta)$, qui admet les mêmes extrema.
 :::
 
-Cette règle se lit ainsi : **au lieu de comparer directement des produits de
-probabilités souvent très petits, on compare leurs logarithmes**, ce qui simplifie
-les calculs sans changer le paramètre optimal.
+Au lieu de comparer directement des produits de probabilités souvent très
+petits, on compare leurs logarithmes : la log-vraisemblance transforme un
+produit en somme, ce qui simplifie le calcul sans changer le paramètre optimal.
 
 ::: {.callout-caution}
 ## Exemple 5 — EMV pour des lois classiques
@@ -520,13 +448,36 @@ contient sur le paramètre $\theta$ : plus $I_n(\theta)$ est grande, plus
 l'échantillon est informatif sur $\theta$.
 :::
 
-::: {.callout-tip}
-## Remarque — Information de Fisher pour un échantillon i.i.d.
-
 Pour un $n$-échantillon i.i.d. de densité (ou probabilité) $f(x;\theta)$,
 on a $I_n(\theta) = n \cdot I_1(\theta)$, où
 $$I_1(\theta) = E\!\left(-\frac{\partial^2 \ln f(X;\,\theta)}{\partial \theta^2}\right)$$
-est l'information de Fisher d'une seule observation.
+est l'information de Fisher d'une seule observation : l'information est donc
+proportionnelle à la taille de l'échantillon.
+
+::: {.callout-caution}
+## Exemple — Calcul de l'information de Fisher pour $\mathcal{B}(p)$
+
+Soit $X \sim \mathcal{B}(p)$, de probabilité $f(x;\,p) = p^x(1-p)^{1-x}$ pour
+$x \in \{0,1\}$. Calculer $I_1(p)$.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+$$\ln f(x;\,p) = x\ln p + (1-x)\ln(1-p).$$
+$$\frac{\partial \ln f}{\partial p} = \frac{x}{p} - \frac{1-x}{1-p}, \qquad
+\frac{\partial^2 \ln f}{\partial p^2} = -\frac{x}{p^2} - \frac{1-x}{(1-p)^2}.$$
+
+$$I_1(p) = E\!\left(-\frac{\partial^2 \ln f}{\partial p^2}\right)
+= \frac{E(X)}{p^2} + \frac{1-E(X)}{(1-p)^2}
+= \frac{p}{p^2} + \frac{1-p}{(1-p)^2}
+= \frac{1}{p} + \frac{1}{1-p} = \frac{1}{p(1-p)}.$$
+
+Pour un $n$-échantillon i.i.d. : $I_n(p) = \dfrac{n}{p(1-p)}$.
+
+La borne FDCR est $BF(p) = \dfrac{p(1-p)}{n}$, qui est exactement la variance
+de $\hat{p}_n = \overline{X}_n$ : cet estimateur est donc **efficace**, ce qui
+sera vérifié formellement à l'Exercice 5.
 :::
 
 ::: {.callout-important}
@@ -547,15 +498,10 @@ atteint la borne FDCR :
 $$\mathrm{Var}(\hat{\theta}_n) = \frac{1}{I_n(\theta)} = BF(\theta).$$
 :::
 
-::: {.callout-tip}
-## Remarques — Efficacité et EMV
-
-- S'il existe un estimateur efficace, il est le **meilleur** parmi tous les
-  estimateurs sans biais (variance minimale).
-- L'inverse est faux : un estimateur ayant la plus petite variance parmi les
-  sans biais (estimateur optimal) n'est pas nécessairement efficace.
-- Il peut **ne pas exister** d'estimateur efficace.
-:::
+S'il existe un estimateur efficace, il est le **meilleur** parmi tous les
+estimateurs sans biais (variance minimale). L'inverse est faux : un estimateur
+de variance minimale parmi les sans biais n'est pas nécessairement efficace,
+et un estimateur efficace peut ne pas exister.
 
 ::: {.callout-important}
 ## Théorème — Lien entre efficacité et EMV
@@ -581,8 +527,7 @@ L'EMV $\hat{\theta}_n$ possède les propriétés suivantes :
   lorsque $n \to +\infty$.
 :::
 
-::: {.callout-note}
-## EMM ou EMV ?
+**EMM ou EMV ?** Les deux méthodes ne s'opposent pas ; elles se complètent.
 
 | Méthode | Idée directrice | Atout principal | Limite principale |
 |---|---|---|---|
@@ -591,7 +536,6 @@ L'EMV $\hat{\theta}_n$ possède les propriétés suivantes :
 
 En pratique, l'EMM est souvent un bon outil de démarrage, tandis que l'EMV est
 la méthode de référence dès que le modèle probabiliste est bien spécifié.
-:::
 
 ::: {.callout-caution}
 ## Exercice 2 — EMV pour la hauteur des crues d'un fleuve
@@ -645,32 +589,32 @@ où $a$ et $b$ sont des fonctions de l'échantillon indépendantes de $\theta$,
 vérifiant $P(\theta \in I_\alpha) \geq 1-\alpha$.
 :::
 
-::: {.callout-tip}
-## Lecture littérale
-
-Un intervalle de confiance est **une fourchette calculée à partir des données**.
-Cette fourchette n'est pas une estimation exacte du paramètre, mais une zone
-jugée crédible compte tenu de la variabilité d'échantillonnage.
-:::
-
-::: {.callout-tip}
-## Remarques
-
-- Plus $1-\alpha$ est grand (plus de confiance), plus $I_\alpha$ est large.
-- La construction de $a$ et $b$ repose sur la loi de l'estimateur de $\theta$.
-- Si la loi est symétrique, on choisit un intervalle symétrique (loi normale) ;
-  si elle est unilatérale, on peut choisir un intervalle asymétrique (loi du $\chi^2$).
-:::
-
-::: {.callout-tip}
-## Interprétation correcte d'un intervalle de confiance
+Un intervalle de confiance est une fourchette calculée à partir des données.
+Plus $1-\alpha$ est grand (plus de confiance), plus $I_\alpha$ est large.
+La construction de $a$ et $b$ repose sur la loi de l'estimateur de $\theta$ :
+si la loi est symétrique on choisit un intervalle symétrique (loi normale) ;
+si elle est unilatérale l'intervalle peut être asymétrique (loi du $\chi^2$).
 
 Le paramètre $\theta$ est **fixe** mais inconnu ; c'est l'intervalle $I_\alpha$
-qui est aléatoire car il dépend de l'échantillon.
+qui est aléatoire car il dépend de l'échantillon. Dire qu'un IC est "au niveau
+95 %" signifie donc que, si l'on répétait la procédure d'échantillonnage un
+grand nombre de fois, environ 95 % des intervalles construits contiendraient
+la vraie valeur du paramètre.
 
-Dire qu'un IC est "au niveau 95 %" signifie donc que, si l'on répétait la
-procédure d'échantillonnage un grand nombre de fois, environ 95 % des
-intervalles construits contiendraient la vraie valeur du paramètre.
+::: {.callout-warning}
+## Piège à éviter — Mauvaise interprétation d'un IC
+
+Une fois l'intervalle $[a, b]$ calculé sur les données, il est **faux** d'écrire :
+
+> "Il y a 95 % de probabilité que $\theta \in [a, b]$."
+
+Le paramètre $\theta$ est une **constante** : il est dans $[a, b]$ ou il n'y
+est pas. La probabilité porte sur la **procédure**, pas sur un intervalle
+particulier déjà calculé.
+
+**Formulation correcte :** "L'intervalle $[a, b]$ a été construit par une
+méthode qui, répétée sur de nombreux échantillons, produirait un intervalle
+contenant $\theta$ dans 95 % des cas."
 :::
 
 ### Intervalle de confiance pour une proportion
@@ -697,24 +641,11 @@ où $t_\alpha = \Phi^{-1}(1-\alpha/2)$ est le quantile de la loi $\mathcal{N}(0,
 $t_{0{,}01} = 2{,}576$ (niveau 99 %).
 :::
 
-::: {.callout-tip}
-## Comment lire la formule
-
-L'intervalle de confiance pour une proportion a toujours la même structure :
-
-$$
-\text{estimation} \ \pm \ \text{marge d'erreur}.
-$$
-
-Ici :
-
-- l'estimation centrale est $\hat{p}_n$ ;
-- la marge d'erreur est
-  $t_\alpha\sqrt{\hat{p}_n(1-\hat{p}_n)/n}$ ;
-- plus $n$ augmente, plus cette marge diminue ;
-- plus on veut de confiance, plus $t_\alpha$ augmente, donc plus l'intervalle
-  s'élargit.
-:::
+L'intervalle a toujours la structure $\text{estimation} \pm \text{marge
+d'erreur}$ : l'estimation centrale est $\hat{p}_n$ et la marge d'erreur est
+$t_\alpha\sqrt{\hat{p}_n(1-\hat{p}_n)/n}$. Plus $n$ augmente, plus cette marge
+diminue ; plus on exige de confiance, plus $t_\alpha$ augmente et plus
+l'intervalle s'élargit.
 
 ::: {.callout-caution}
 ## Exemple 6 — Prévalence du cholestérol
@@ -742,28 +673,40 @@ On peut affirmer avec 95 % de confiance que la proportion de personnes
 touchées par le cholestérol dans la population est comprise entre **6,3 %** et **9,7 %**.
 :::
 
-::: {.callout-note}
-## Dimensionner un échantillon pour une précision cible
-
-Si l'on veut une marge d'erreur au plus égale à $e$ pour une proportion, on
-impose
-$$
-t_\alpha\sqrt{\frac{p(1-p)}{n}}\le e.
-$$
-
-On en déduit
-$$
-n\ge \frac{t_\alpha^2\,p(1-p)}{e^2}.
-$$
-
-Si $p$ est inconnu à l'avance, on prend le cas le plus défavorable
-$p(1-p)\le 1/4$, d'où
+**Dimensionner l'échantillon.** Si l'on veut une marge d'erreur au plus égale
+à $e$, on impose $t_\alpha\sqrt{p(1-p)/n} \leq e$, d'où
+$n \geq t_\alpha^2\,p(1-p)/e^2$. Si $p$ est inconnu à l'avance, on prend le
+cas le plus défavorable $p(1-p) \leq 1/4$, d'où
 $$
 n\ge \frac{t_\alpha^2}{4e^2}.
 $$
-
 Cette formule est très utile pour préparer un plan d'essais ou une campagne de
 mesures.
+
+::: {.callout-caution}
+## Exemple — Dimensionner une campagne de contrôle qualité
+
+Un ingénieur Qualité souhaite estimer le taux de pièces défectueuses $p$ avec
+une marge d'erreur de **2 %** au niveau de confiance **95 %**. Combien de
+pièces doit-il contrôler ?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+On pose $e = 0{,}02$ et $t_\alpha = 1{,}96$ (niveau 95 %).
+
+$p$ étant inconnu, on utilise le cas le plus défavorable $p(1-p) \leq 1/4$ :
+$$n \geq \frac{(1{,}96)^2}{4 \times (0{,}02)^2} = \frac{3{,}8416}{0{,}0016} = 2401.$$
+
+Il faut contrôler **au moins 2 401 pièces** pour garantir une précision de
+$\pm 2\,\%$ à 95 % de confiance.
+
+**Impact du niveau de confiance :** pour un niveau 99 % ($t_\alpha = 2{,}576$) :
+$$n \geq \frac{(2{,}576)^2}{4 \times (0{,}02)^2} \approx 4148.$$
+
+Passer de 95 % à 99 % de confiance exige presque **1 750 mesures supplémentaires**
+— c'est le coût de la confiance accrue.
 :::
 
 ### Intervalle de confiance pour une moyenne
@@ -783,26 +726,20 @@ où $t_\alpha = \Phi^{-1}(1-\alpha/2)$. Si $n \geq 30$ et $\sigma$ est inconnu,
 on le remplace par l'écart-type empirique corrigé $S_n = \sqrt{S^2_n}$.
 :::
 
-Cette formule se lit exactement comme pour une proportion : **moyenne observée
-plus ou moins un multiple de l'erreur-type**. Le terme $\sigma/\sqrt{n}$ mesure
-la précision de la moyenne empirique.
+Cette formule a la même structure que pour une proportion : **moyenne observée
+plus ou moins un multiple de l'erreur-type** $\sigma/\sqrt{n}$. Le terme
+$\sigma/\sqrt{n}$ mesure la précision de la moyenne empirique.
 
-::: {.callout-tip}
-## Cas $n < 30$ et $\sigma^2$ inconnu — Loi de Student
-
-Si l'échantillon suit $\mathcal{N}(m, \sigma^2)$ avec $\sigma^2$ inconnu et $n < 30$,
-on utilise la statistique de Student :
-$$T_{n-1} = \frac{\overline{X}_n - m}{S_n/\sqrt{n}} \sim \mathcal{T}(n-1).$$
-
-L'IC pour $m$ au niveau $1-\alpha$ est :
+Lorsque $n < 30$ et $\sigma^2$ est inconnu, on ne peut plus utiliser
+l'approximation normale. On utilise alors la statistique de Student :
+$$T_{n-1} = \frac{\overline{X}_n - m}{S_n/\sqrt{n}} \sim \mathcal{T}(n-1),$$
+et l'IC pour $m$ au niveau $1-\alpha$ devient
 $$I_\alpha = \left[\overline{X}_n - t\,\frac{S_n}{\sqrt{n}};\;
 \overline{X}_n + t\,\frac{S_n}{\sqrt{n}}\right],$$
 où $t$ est le fractile d'ordre $1-\alpha/2$ de la loi $\mathcal{T}(n-1)$.
-:::
-
-Ici, on remplace la loi normale par la loi de Student parce que **l'incertitude
-porte à la fois sur la moyenne et sur l'écart-type**. La loi de Student élargit
-donc l'intervalle pour refléter ce supplément d'incertitude.
+On remplace la loi normale par la loi de Student parce que **l'incertitude
+porte à la fois sur la moyenne et sur l'écart-type** : la loi de Student
+élargit l'intervalle pour refléter ce supplément d'incertitude.
 
 ::: {.callout-caution}
 ## Exemple — Calibration d'un capteur avec petit échantillon
@@ -862,6 +799,7 @@ entre **12,03** et **12,27**.
 ### Intervalle de confiance pour une variance
 
 Soit $(X_1, \ldots, X_n)$ un $n$-échantillon de loi $\mathcal{N}(m, \sigma^2)$.
+La construction repose sur des lois du $\chi^2$ :
 
 - **Si $m$ est connu :** on utilise $\hat{\sigma}^2_n = \dfrac{1}{n}\displaystyle\sum_{i=1}^n(X_i-m)^2$
   et $\dfrac{n\hat{\sigma}^2_n}{\sigma^2} \sim \chi^2(n)$.
@@ -880,15 +818,6 @@ où $t_1 = \chi^2_{n-1,\,\alpha/2}$ et $t_2 = \chi^2_{n-1,\,1-\alpha/2}$ sont
 les fractiles de la loi $\chi^2(n-1)$.
 :::
 
-::: {.callout-tip}
-## Lecture littérale de l'IC de variance
-
-Cet intervalle n'est pas symétrique autour de $S_n^2$ : c'est normal. La
-variance est une grandeur positive, et sa loi d'échantillonnage est pilotée par
-une loi du $\chi^2$, qui est asymétrique. On obtient donc naturellement une
-borne basse et une borne haute de formes différentes.
-:::
-
 ::: {.callout-note}
 ## Définition — IC pour une variance ($m$ connu)
 
@@ -903,14 +832,12 @@ où $t_1 = \chi^2_{n,\,\alpha/2}$ et $t_2 = \chi^2_{n,\,1-\alpha/2}$ sont
 les fractiles de la loi $\chi^2(n)$.
 :::
 
-::: {.callout-tip}
-## Point d'attention pour la variance
-
-Les intervalles de confiance pour une variance sont naturellement
-**asymétriques**, et leur validité repose fortement sur l'hypothèse de
-normalité. En ingénierie, si cette hypothèse est douteuse, il faut la discuter
-avant d'interpréter l'IC comme une garantie fiable sur la dispersion.
-:::
+Cet intervalle n'est pas symétrique autour de $S_n^2$, ce qui est naturel :
+la variance est une grandeur positive dont la loi d'échantillonnage est pilotée
+par le $\chi^2$, une loi asymétrique. La validité de ces IC repose fortement
+sur l'hypothèse de normalité ; en ingénierie, si cette hypothèse est douteuse,
+elle doit être vérifiée avant d'interpréter l'IC comme une garantie fiable sur
+la dispersion.
 
 ::: {.callout-caution}
 ## Exemple 8 — Variance des notes à un examen de certification
@@ -1132,8 +1059,9 @@ Cet estimateur est sans biais car $E(\hat{p}) = \dfrac{E(\overline{X}_n)}{2}
 = \dfrac{2p}{2} = p$. ✓
 :::
 
-::: {.callout-note}
-## Stratégie de travail en estimation
+**Stratégie de travail en estimation.** Le tableau suivant résume le bon
+enchaînement : modéliser, choisir l'estimateur, identifier sa loi, puis
+interpréter le résultat dans le contexte opérationnel.
 
 | Situation | Estimateur naturel | Loi / outil à mobiliser | Question métier typique |
 |---|---|---|---|
@@ -1141,11 +1069,6 @@ Cet estimateur est sans biais car $E(\hat{p}) = \dfrac{E(\overline{X}_n)}{2}
 | moyenne inconnue | $\overline{X}_n$ | normale, TCL, Student | quelle performance moyenne garantir ? |
 | variance inconnue | $S_n^2$ | loi du $\chi^2$ | quelle variabilité ou quelle stabilité du procédé ? |
 | paramètre d'une loi paramétrique | EMM ou EMV | moment(s), vraisemblance, Fisher | quel paramètre rend le modèle crédible ? |
-
-Cette table résume le bon enchaînement : **modéliser**, **choisir l'estimateur**,
-**identifier sa loi**, puis **interpréter le résultat** dans le contexte
-opérationnel.
-:::
 
 ::: {.callout-tip}
 ## À retenir
