@@ -1,0 +1,172 @@
+---
+title: "Get Started with Spec-Driven Development"
+draft: true
+---
+
+No better than tinkering around to understand concept. The following example follow
+[module 9](https://microsoftlearning.github.io/mslearn-github-copilot-dev/Instructions/Labs/LAB_AK_13_get-started-spec-driven-development.html) of [Microsof Learn introduction to SDD](https://learn.microsoft.com/en-us/training/modules/spec-driven-development-github-spec-kit-greenfield-intro/9-exercise-create-greenfield-application-github-spec-kit).
+
+With the help of custom made [github codespace]() you can jump in:
+- create the codespace
+- follow these instruction
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/guillaumegilles/get-started-spec-driven-development)
+
+## Exercise scenario
+
+You’re a software developer working for a consulting firm. Your firm is moving
+to a spec-driven development methodology using GitHub Spec Kit and GitHub
+Copilot in Visual Studio Code. You’re asked to start using SDD and GitHub Spec
+Kit as soon as possible.
+
+One of your clients, Contoso Corporation, needs you to develop an initial MVP
+version for an RSS feed reader app. Contoso stakeholders documented the project
+goals, initial features, and technical requirements for the app. You’ll use the
+stakeholder documents to generate the constitution, spec, plan, and tasks
+documents, then implement the initial MVP version of the application. Contoso
+has indicated that additional features will be requested after initial sign-off.
+
+Implementing the SDD methodology with GitHub Spec Kit ensures that the MVP app
+is delivered quickly, that it meets stakeholder requirements, and that new
+features can be rolled out seamlessly when needed.
+
+This exercise includes the following tasks:
+
+- Create a project folder and initialize GitHub Spec Kit.
+- Generate the constitution using stakeholder documentation.
+- Generate the `spec.md` file using stakeholder documentation.
+- Generate the `plan.md` file using stakeholder documentation and `spec.md`.
+- Generate the `tasks.md` file using the `spec.md`, `plan.md`, and `constitution.md`.
+- Implement the tasks required for an MVP application.
+
+### Initialize GitHub Spec Kit
+
+The Specify CLI is used to initialize GitHub Spec Kit in a project folder.
+GitHub Spec Kit uses the project folder to store configuration files, templates,
+scripts, and agents that support the spec-driven development workflows.
+
+ ON MacOS or Linux
+
+```sh
+specify init --here --integration copilot --script sh
+```
+
+This command specifies the following parameters:
+
+- `--here`: initializes GitHub Spec Kit in the current directory.
+- `--integration copilot`: configures the project to use GitHub Copilot
+  as the AI assistant.
+- `--script sh` - Specifies that Bash / Zsh scripts will be used.
+
+::: {.callout-tip}
+On Windows you must replace `--script sh` by `--script ps` for PowerShell scripts.
+:::
+
+```sh
+        ███████╗██████╗ ███████╗ ██████╗██╗███████╗██╗   ██╗
+        ██╔════╝██╔══██╗██╔════╝██╔════╝██║██╔════╝╚██╗ ██╔╝
+        ███████╗██████╔╝█████╗  ██║     ██║█████╗   ╚████╔╝
+        ╚════██║██╔═══╝ ██╔══╝  ██║     ██║██╔══╝    ╚██╔╝
+        ███████║██║     ███████╗╚██████╗██║██║        ██║
+        ╚══════╝╚═╝     ╚══════╝ ╚═════╝╚═╝╚═╝        ╚═╝  
+        GitHub Spec Kit - Spec-Driven Development Toolkit                             
+
+Warning: Current directory is not empty (4 items)
+Template files will be merged with existing content and may overwrite existing 
+files. 
+Do you want to continue? [y/N]:
+
+[...]
+
+Selected coding agent integration: copilot
+Selected script type: sh
+Initialize Specify Project
+├── ● Check required tools (ok)
+├── ● Select coding agent integration (copilot)
+├── ● Select script type (sh)
+├── ● Install integration (GitHub Copilot)
+├── ● Install shared infrastructure (scripts (sh) + templates)
+├── ● Ensure scripts executable (5 updated)
+├── ● Constitution setup (copied from template)
+├── ● Install git extension (existing repo detected; extension installed)
+├── ● Install bundled workflow (speckit installed)
+└── ● Finalize (project ready)
+
+Project ready.
+```
+
+This is normal since the codespace already `devcontainer.json`, README and
+LICENSE files. once answered **y** for _yes_ The `specify init` command
+generates 66 new artifacts and completes the following actions:
+
+- Creates agent prompt files in the .github/agents/ and .github/prompts/ directories.
+- Creates template files in the .specify/memory/ and .specify/templates/ directories.
+- Creates script files in the .specify/scripts/powershell/ directory.
+- Creates a settings.json file in the .vscode/ directory.
+- Displays a success message (“Project ready”).
+- Suggests some optional next steps.
+
+```sh
+ .                        (root)
+ ├── .github/
+ │   ├── agents/          (executable workflows that can be triggered via commands)
+ │   └── prompts/         (prompt files that provide detailed instructions for each of the agent workflows)
+ ├── .specify/            (configuration)
+ │   ├── memory/          (stores the project constitution)
+ │   ├── scripts/bash/    (uses automation utilities (scripts) for creating features, setting up plans, and managing the specification workflow)
+ │   └── templates/       (provides standardized markdown formats for specs, plans, tasks, and checklists to ensure consistent documentation across all features)
+ └── .vscode/             (Visual Studio Code configuration)
+```
+
+Inside Copilot chat panel, type `/specify` and you should see autocomplete
+suggestions that show the available commands:
+
+- `/speckit.analyze`: Analyze the project and generate a specification.
+- `/speckit.checklist`: Validate specification completeness.
+- `/speckit.clarify`: Refine specifications through question and answer process.
+- `/speckit.constitution`: Define project governing principles.
+- `/speckit.implement`: Execute the implementation.
+- `/speckit.plan`: Generate technical implementation plans.
+- `/speckit.specify`: Create feature specifications.
+- `/speckit.tasks`: Break down work into actionable tasks.
+- `/speckit.taskstoissues`: Convert the tasks in tasks.md into GitHub issues.
+
+::: {.callout-note}
+If the '`/speckit.`' commands don't appear, try closing and then reopening the
+project’s codespace.
+:::
+
+## Generate the constitution
+
+GitHub Spec Kit includes several resources that help you create and maintain the
+constitution.md file:
+
+- `.specify/memory/constitution.md` file contains a template for the constitution
+  document.
+- `.github/agents/speckit.constitution.agent.md` file contains detailed
+  instructions that are used to generate (or update) the constitution.md file.
+- `.github/prompts/speckit.constitution.prompt.md` file contains a “routing stub”
+  that tells Copilot Chat to run the agent named speckit.constitution when the
+  /speckit.constitution command is invoked.
+- /speckit.constitution command is used to generate a constitution.md file for
+  the project.
+
+
+```sh
+/speckit.constitution
+  --text
+"Code projects emphasize security, maintainability, and code quality. Ensure
+that all principles are specific, actionable, and relevant to the project context."
+  --files
+.StakeholderDocuments/ProjectGoals.md
+.StakeholderDocuments/AppFeatures.md
+.StakeholderDocuments/TechStack.md
+```
+
+add files to version control to monitor changes at each steps
+
+
+
+::: {.callout-important}
+Claude Sonnet 4.6 - High
+:::
