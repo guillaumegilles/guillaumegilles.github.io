@@ -1,0 +1,192 @@
+---
+title: "Statistical Learning vs. Machine Learning vs. Deep Learning"
+description: |
+  What separates these three paradigms — and what unites them? A conceptual
+  overview of their origins, assumptions, and trade-offs.
+date-modified: 2026-04-01
+draft: true
+---
+
+The terms *statistical learning*, *machine learning*, and *deep learning* are
+often used interchangeably, but they come from different intellectual traditions,
+carry different assumptions, and excel at different tasks. Understanding where
+they overlap — and where they diverge — is essential for choosing the right tool
+and speaking precisely about what a model actually does.
+
+## The Big Picture
+
+```{mermaid}
+%%| fig-align: center
+flowchart TD
+    AI["Artificial Intelligence"]
+    ML["Machine Learning"]
+    SL["Statistical Learning"]
+    DL["Deep Learning"]
+
+    AI --> ML
+    AI --> SL
+    ML --> DL
+    SL -.->|shared methods| ML
+```
+
+All three paradigms learn patterns from data, but they differ in **where they
+come from**, **what they prioritize**, and **how they scale**.
+
+## Statistical Learning
+
+::: {.callout-note}
+## Core idea
+Start with a probabilistic model of how the data were generated, then use the
+data to estimate that model's parameters and quantify uncertainty.
+:::
+
+Statistical learning emerges from **statistics and probability theory**. Its
+intellectual home is the work of R.A. Fisher, Jerzy Neyman, and later
+Leo Breiman, Trevor Hastie, Robert Tibshirani, and Jerome Friedman — whose
+textbook *The Elements of Statistical Learning* (2001) remains a cornerstone
+reference.
+
+**Key characteristics:**
+
+- **Interpretability first.** Models are chosen to be understandable: linear
+  regression, logistic regression, generalized additive models.
+- **Inference matters.** The goal is often not just prediction but understanding
+  *which variables matter* and *how* — confidence intervals, p-values, hypothesis
+  tests.
+- **Distributional assumptions.** Models typically assume a specific form for the
+  data-generating process (e.g., Gaussian errors, linearity).
+- **Small-to-medium data.** Designed for settings where data are expensive,
+  samples are modest, and every observation counts.
+
+**Typical methods:** linear/logistic regression, ANOVA, generalized linear
+models, principal component analysis, LASSO, ridge regression, survival analysis.
+
+## Machine Learning
+
+::: {.callout-note}
+## Core idea
+Let the algorithm discover patterns in data by optimizing a performance metric
+— prediction accuracy matters more than explaining *why*.
+:::
+
+Machine learning grows out of **computer science and engineering**, with roots in
+pattern recognition, information theory, and optimization. Key figures include
+Arthur Samuel (who coined the term in 1959), Vladimir Vapnik (SVMs and
+statistical learning theory), and Leo Breiman — who straddled both worlds and
+famously argued for the "algorithmic modeling culture" in his 2001 paper
+*Statistical Modeling: The Two Cultures*.
+
+**Key characteristics:**
+
+- **Prediction first.** The measure of success is out-of-sample performance,
+  evaluated via [cross-validation](cross-validation.qmd) and held-out test sets.
+- **Minimal assumptions.** Algorithms like random forests, gradient boosting, and
+  SVMs make few assumptions about the data-generating process.
+- **Feature engineering.** The practitioner transforms raw data into informative
+  features; the model learns the mapping from features to targets.
+- **Scales to large datasets.** Designed for settings where data are abundant
+  and computational resources are available.
+
+**Typical methods:** decision trees, random forests, gradient boosting (XGBoost,
+LightGBM), support vector machines, k-nearest neighbors, Bayesian methods.
+
+::: {.callout-tip}
+## Breiman's Two Cultures
+
+In *Statistical Modeling: The Two Cultures* (2001), Leo Breiman contrasts the
+**data-modeling culture** (assume a stochastic model, estimate parameters) with
+the **algorithmic-modeling culture** (treat the mechanism as unknown, optimize
+predictive accuracy). Statistical learning lives in the first culture; machine
+learning in the second. In practice, the best work often draws from both.
+:::
+
+## Deep Learning
+
+::: {.callout-note}
+## Core idea
+Stack many layers of parameterized transformations and let gradient-based
+optimization discover both the features and the decision function directly from
+raw data.
+:::
+
+Deep learning is a subfield of machine learning that uses **neural networks**
+with many layers — hence "deep." The modern era begins with the
+[backpropagation breakthrough](fundamental-papers.qmd#the-backpropagation-revolution-19861991)
+of the 1980s and accelerates dramatically after 2012, when GPU-trained
+convolutional networks prove their dominance on large-scale benchmarks.
+
+**Key characteristics:**
+
+- **End-to-end learning.** No manual feature engineering: the network learns to
+  extract features from raw pixels, text, or audio.
+- **Representation learning.** Hidden layers learn increasingly abstract
+  representations — edges → textures → objects in vision; characters → words →
+  semantics in language.
+- **Massive scale.** Modern models have billions of parameters and require large
+  datasets and significant compute (GPUs/TPUs).
+- **Flexible architectures.** CNNs for images, RNNs/LSTMs for sequences,
+  [Transformers](transformers.qmd) for almost everything — architecture choice
+  encodes inductive biases.
+
+**Typical methods:** feedforward networks, convolutional neural networks (CNN),
+recurrent networks (RNN, LSTM), [transformers](transformers.qmd),
+autoencoders (VAE), generative adversarial networks (GAN), diffusion models.
+
+For a deeper dive into the building blocks, see [Deep Learning](deep-learning.qmd).
+
+## Side-by-Side Comparison
+
+| | Statistical Learning | Machine Learning | Deep Learning |
+|---|---|---|---|
+| **Origin** | Statistics & probability | Computer science & optimization | Neural network research |
+| **Primary goal** | Inference & understanding | Prediction & generalization | Representation & prediction at scale |
+| **Interpretability** | High (by design) | Medium (varies by method) | Low (black-box by default) |
+| **Data requirements** | Small to moderate | Moderate to large | Large to massive |
+| **Feature engineering** | Guided by domain theory | Manual, critical step | Learned automatically |
+| **Assumptions** | Explicit (distributional) | Minimal | Minimal (architectural) |
+| **Compute needs** | Low | Moderate | High (GPU/TPU) |
+| **Uncertainty quantification** | Built-in (CIs, p-values) | Ad hoc (bootstrap, calibration) | Active research area |
+| **Flagship textbook** | *ESL* (Hastie et al.) | *Pattern Recognition & ML* (Bishop) | *Deep Learning* (Goodfellow et al.) |
+
+## Where the Boundaries Blur
+
+::: {.callout-caution}
+## These categories are not walls
+Many modern methods sit at the intersection. Regularized regression (LASSO) is
+claimed by both statisticians and ML practitioners. Random forests were invented
+by a statistician (Breiman). Bayesian deep learning combines probabilistic
+inference with neural networks. The labels are useful for orientation, not for
+gatekeeping.
+:::
+
+- **LASSO and ridge regression** — statistical models that use the same
+  optimization tricks as machine learning.
+- **Random forests and boosting** — algorithmic methods now taught in statistics
+  departments worldwide.
+- **Gaussian processes** — a fully Bayesian approach that competes with neural
+  networks on small datasets.
+- **Neural network theory** — an active area of statistics studying
+  generalization, double descent, and implicit regularization.
+- **Foundation models** — large pretrained deep learning models that are
+  [fine-tuned](machine-learning.qmd) or prompted for downstream tasks, blurring
+  the line between learning paradigms entirely.
+
+## A Rule of Thumb
+
+::: {.callout-tip}
+## When to reach for what
+
+- **Small data, need to explain why** → statistical learning
+- **Tabular data, need best prediction** → machine learning (gradient boosting
+  is hard to beat on tables)
+- **Images, text, audio, or massive scale** → deep learning
+- **Unsure?** Start simple. A logistic regression baseline costs nothing and
+  often surprises.
+:::
+
+## Further Reading
+
+- Hastie, Tibshirani & Friedman — [*The Elements of Statistical Learning*](https://hastie.su.domains/ElemStatLearn/) (free PDF)
+- Breiman — [*Statistical Modeling: The Two Cultures*](https://doi.org/10.1214/ss/1009213726) (2001)
+- Goodfellow, Bengio & Courville — [*Deep Learning*](https://www.deeplearningbook.org/) (free online)
+- [Fundamental AI Papers](fundamental-papers.qmd) — the chronological story from 1943 to today

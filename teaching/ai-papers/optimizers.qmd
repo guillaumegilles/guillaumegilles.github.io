@@ -1,0 +1,36 @@
+---
+title: "Optimizers"
+---
+
+## Stochastic Gradient Descent (SGD)
+
+The [loss function](loss-function.qmd) guides the network to its objective, where the optimizer tells _how_ to get there. An optimizer is an algorithm that adjusts the weights to minimize the loss. Virtually, all optimizer algorithms used in deep learning belong to a family called **stochastic gradient descent**. They are iterative algorithms that train a network in steps:
+
+1. Sample the training data and run it through the network to make predictions.
+2. Measure the loss between the predictions and the true values.
+3. Finally, adjust the weights in a direction that makes the loss smaller.
+
+Then, repeat these steps until the loss won't decrease any further.
+
+Each iteration's sample of training data (step #1) is called a **minibatch** (or often just **batch**), while a complete round of the training data is called an **epoch**. The number of epochs you train for is how many times the network will see each training example.
+
+### Learning Rate and Batch Size
+
+The line only makes small shifts for every iteration. This is determined by the **learning rate**. A smaller learning rate means the network needs to see more minibatches before its weights converge to their best values.
+
+The learning rate and the **batch size** are two parameters that have the largest effect on how SGD training proceeds. Their interaction is subtle and the right choice for these parameters isn't always obvious. Adam is an SGD algorithm that has an adaptive learning rate that makes it suitable for most problems without any parameter tuning. In a sense, it is self-tuning.
+
+### Keras
+
+After defining a neural network, we add a loss function and optimizer with model's `compile` method:
+
+```python
+model.compile(
+  optimizer = "adam",
+  loss = "mae"
+)
+```
+
+::: {.callout-note title="Why Stochastic Gradient Descent?"}
+The **gradient** is a vector that tells us what direction the weights need to be adjusted. More precisely, it tells us how to change the weights to make the loss change _fastest_. We call the process gradient **descent** because it uses the gradient to _descend_ the loss curve toward a minimum. **Stochastic** means "determined by chance". Our training is _stochastic_ because the minibatches are _random samples_ from the dataset. That's why it's called SGD!
+:::
