@@ -6,14 +6,19 @@
    |_ copilot-instructions.md
 ```
 
-## Instructions Files
+## Instruction Files
 
 When GitHub Copilot processes a request, it reads instructions files and
 incorporates their content into its responses, producing suggestions that align
 with your project's conventions without requiring you to repeat the same
 context in every prompt.
 
+These instructions are automatically appended to every GitHub Copilot Chat
+prompt in the repository, so they influence all responses without any extra
+action from the developer.
+
 ### `.github/copoilot-instructions.md`
+
 The primary instructions file for GitHub Copilot is the
 `.github/copoilot-instructions.md` markdown file. The instructions are
 automatically included in every GitHub Copilot prompt acting as **always-on**
@@ -35,3 +40,154 @@ repository with the appropriate instructions file.
 ::: {.callout}
 
 :::
+
+### Path-specific instructions
+
+While `.github/copilot-instructions.md` works for every files in the directory,
+`.github/instructions/<custom_name>.instructions.md` apply to specific guidelines
+to files or patterns. GitHub Copilot uses YAML frontmatter header and especially 
+`applyTo` field to determine 
+
+For example, `database.instructions.md` specific instructions for C# files inside
+the DataAccess directory looks like this:
+
+```markdown
+---
+name: 'C# Backend Standards'
+description: 'Coding conventions for C# backend files'
+applyTo: 'src/Backend/**/*.cs'
+---
+
+# C# backend coding standards
+
+- Use PascalCase for public members and camelCase for private fields.
+- Prefix private fields with an underscore (e.g., _orderService).
+- Use async/await for all I/O-bound operations.
+- Include XML documentation comments on all public methods.
+```
+
+When GitHub Copilot works with files that match the specified pattern, it merges
+both the repository-wide instructions and the relevant path-specific
+instructions to produce contextually appropriate suggestions.
+
+#### YAML Frontmatter
+
+Supported metadata for GitHub Copilot are:
+
+- `name`: a display name for the instruction set that appears in the Chat
+  Instructions menu and diagnostics view.
+- `description`: a natural language description of what the instructions cover.
+  GitHub Copilot uses this field for semantic matching. When you ask a question
+  in chat, GitHub Copilot evaluates the description to determine whether the
+  instructions are relevant to the current context, even if no file matching the
+  `applyTo` pattern is open. For example, a description of "Guidelines for
+  database migration scripts" helps GitHub Copilot include those instructions
+  when you ask about database migrations.
+- `applyTo`: a glob pattern that determines which files trigger the instructions.
+  Common patterns include `**/*.cs` to match all C# files, `src/Frontend/**/*.ts`
+  to match TypeScript files in a specific directory, or `**/Tests/**/*.cs` to
+  match test files across the project.
+
+### Conflict in Instructions
+
+When multiple types of custom instructions exist, GitHub Copilot includes all of
+them but follows a priority order when resolving conflicts. The full instruction
+priority chain, from highest to lowest, is:
+
+1. Instructions entered manually in the Chat Instructions menu or pinned to the
+  conversation.
+2. `.github/instructions/<custom_name>.instructions.md` files (path-specific
+  instructions).
+3 `.github/copilot-instructions.md` (repository-wide instructions).
+4. `AGENTS.md` or `CLAUDE.md` files.
+5. Organization-level instructions configured by a GitHub organization
+  administrator.
+
+### Tips for effective instructions
+
+**Explain the reasoning behind rules**. Instead of just "prefix private fields
+with `_`" write "Prefix private fields with `_` to distinguish them from
+parameters and local variables at a glance." When GitHub Copilot understands why
+a rule exists, it applies the rule more consistently and can extend the
+principle to similar situations.
+
+**Include short code examples**. Pair guidelines with brief code snippets showing
+the expected pattern. For instance, follow "Use the factory pattern for complex
+object creation" with a two-line example. Concrete examples reduce ambiguity.
+
+**Focus on non-obvious rules**. Don't repeat what linters and formatters already
+enforce. Instead, document the conventions that only your team knows—like which
+libraries to prefer, which patterns to follow for error handling, or which
+architectural boundaries exist between modules.
+
+**Keep instructions concise and specific**. Overly long or vague instruction
+files dilute GitHub Copilot's attention. Each instruction should express one
+clear rule. Remove instructions that overlap or contradict each other.
+
+**Separate concerns using path-specific files**. Use `.instructions.md` files
+with `applyTo` patterns to keep backend and frontend rules separate, test logic
+distinct from production code, and infrastructure scripts isolated from
+application code.
+
+## Prompt Files
+
+While instruction files shape AI generated inference, prompt files define
+_how to ask_. It contains prewritten prompts that you can invoke with a simple
+command, without needing to write the full prompt yourself. This is especially
+useful for complex or multi-step prompts that you use frequently.
+
+Prompt files are stored in the `.github/prompts/` directory with `.prompt.md`
+extension and can be invoked using the `/<name>` command in GitHub Copilot
+Chat. For example, a prompt file named `generate-tests.prompt.md` with the
+following content can be used to generate unit tests for the current file: 
+
+```markdown
+---
+description: 'Generate unit tests for the current file'
+agent: 'copilot'
+tools: ['search', 'read']
+---
+
+# Generate Unit Tests
+
+Analyze the code in the active file and generate comprehensive unit tests.
+
+For each public method or function:
+1. Write a test for the expected behavior (happy path).
+2. Write tests for edge cases and error conditions.
+3. Use the project's existing test framework and naming conventions.
+
+Output the tests as a complete, runnable test file.
+```
+
+### YAML Frontmatter for Prompts
+
+- `name`	(optional): display name. If omitted, the filename is used.
+- `description`: a natural language description of what the prompt does.
+  Appears in the slash command picker.
+- `agent`: the agent that should handle the prompt (for example, copilot).
+- `model`: an optional model preference for this prompt.
+- `tools`: tools the prompt should have access to when executed.
+
+Once defined, you can simply type `/generate-tests` in GitHub Copilot Chat
+to execute the prompt and generate unit tests for the current file without
+having to write the instructions from scratch each time.
+
+
+::: {.callout-tip}
+Prompt files support variable placeholdersto allow creation of dynamic prompts
+using `${variableName}` syntax. For example `${file}` refers to the currently
+active file, `${selection}` to the current selection, etc. You can define custom
+variables in the YAML frontmatter and provide values for them when invoking the
+prompt.
+:::
+
+## Summary
+
+GitHub Copilot's instruction and prompt files provide a powerful way to customize
+and optimize AI-generated suggestions for your specific project needs. By defining
+`.`
+
+clear guidelines in instruction files and creating reusable prompts, you can ensure            
+that GitHub Copilot's assistance is aligned with your coding standards and workflows,
+ultimately enhancing your productivity and code quality.
