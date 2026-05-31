@@ -1,0 +1,302 @@
+---
+title: "Session 7 — Estimation & Confidence Intervals"
+subtitle: "Decision Making Statistics — S04"
+author: "M. Kachour"
+date: today
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+This session introduces the basic tools of inferential statistics: estimation and confidence intervals.
+
+## Overview
+
+### Modeling framework
+
+#### Problem 1 — Average life of an electronic circuit
+
+The quality department of factory U is interested in the average life of electronic circuit CE110.
+
+::: {.callout-note title="Modeling elements"}
+- **Population:** all CE110 electronic circuits manufactured and marketed by factory U
+- **Variable studied:** the lifetime of a CE110 circuit
+- **Type of variable:** quantitative continuous
+- **Modeling assumption:** the studied variable, noted $X$, follows a distribution $\mathcal{L}$
+- **Unknown parameter:** $\mu$, the mean lifetime
+:::
+
+#### Problem 2 — Defective rate of a machine
+
+Factory U is interested in the **rate of defective parts** produced by machine M.
+
+::: {.callout-note title="Modeling elements"}
+- **Variable studied:** $X=1$ if the part is defective, $X=0$ otherwise
+- **Unknown parameter:** $p$, the proportion of defective parts
+:::
+
+### What do we know about the law?
+
+The distribution $\mathcal{L}$ may be:
+
+- **totally unknown**, or
+- **partially unknown**: we know the family of laws but not the value of its parameters.
+
+## Inferential statistics
+
+::: {.callout-note title="Definition"}
+Inferential statistics is a set of methods that makes it possible to formulate, in probabilistic terms, a judgment about the characteristics of a population from the observations made on a sample.
+:::
+
+::: {.callout-warning title="Important remark"}
+When moving from a sample to a population, we take a **risk of error**. Inferential statistics does not remove uncertainty; it manages it.
+:::
+
+## Sampling and empirical estimators
+
+Suppose we observe a random sample of size $n$:
+
+$$
+x_1, x_2, \dots, x_n
+$$
+
+::: {.callout-tip title="Empirical estimators"}
+- Empirical mean:
+
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
+$$
+
+- Empirical variance:
+
+$$
+s^2 = \frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2
+$$
+
+- Empirical proportion:
+
+$$
+\hat{p} = \frac{\text{number with the property}}{n}
+$$
+:::
+
+## Central Limit Theorem
+
+::: {.callout-tip title="Key result"}
+For large samples (typically $n \geq 30$):
+
+$$
+\bar{X} \approx \mathcal{N}\left(\mu,\frac{\sigma^2}{n}\right)
+$$
+
+which is equivalent to
+
+$$
+\frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \approx \mathcal{N}(0,1).
+$$
+:::
+
+## Confidence interval for the mean
+
+For a large sample and confidence level $1-\alpha$:
+
+::: {.callout-tip title="Mean confidence interval"}
+$$
+CI_{\mu}=\left[\bar{x}-z_{\alpha/2}\frac{s}{\sqrt{n}},\;\bar{x}+z_{\alpha/2}\frac{s}{\sqrt{n}}\right]
+$$
+:::
+
+where $z_{\alpha/2}$ satisfies
+
+$$
+P(Z\leq z_{\alpha/2}) = 1-\frac{\alpha}{2}, \qquad Z\sim \mathcal{N}(0,1).
+$$
+
+| Confidence level | $\alpha$ | $z_{\alpha/2}$ |
+|-----------------|---------:|---------------:|
+| 90% | 10% | 1.645 |
+| 95% | 5% | 1.960 |
+| 99% | 1% | 2.576 |
+
+::: {.callout-note title="Interpretation"}
+With confidence level $(1-\alpha)\times 100\%$, we say that the interval is compatible with the unknown mean $\mu$.
+:::
+
+## Confidence interval for a proportion
+
+For a large sample such that $n\hat{p}\geq 5$ and $n(1-\hat{p})\geq 5$:
+
+::: {.callout-tip title="Proportion confidence interval"}
+$$
+CI_p=\left[\hat{p}-z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}},\;\hat{p}+z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\right]
+$$
+:::
+
+::: {.callout-important title="Exam tip"}
+A higher confidence level means a **wider** confidence interval. Greater security comes with less precision.
+:::
+
+## Exercises
+
+### Exercise 1 — Number of calls
+
+::: {.callout-caution title="Exercise"}
+The table below represents the number of calls received between 12:00 noon and 2:00 p.m. by a service department, observed over 200 randomly selected days.
+
+| Number of calls | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|----------------|---|---|---|---|---|---|---|---|---|
+| Number of days | 4 | 11 | 26 | 45 | 52 | 39 | 15 | 5 | 3 |
+
+1. Compute the confidence interval of the average number of calls received for $\alpha=10\%$, $5\%$, and $1\%$. Comment.
+2. Let $p$ be the probability that the number of calls exceeds 6. Compute the confidence interval of $p$ for $\alpha=10\%$, $5\%$, and $1\%$. Comment.
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+From the table,
+
+$$
+n=200, \qquad \bar{x}=3.75, \qquad s\approx 1.568.
+$$
+
+For the mean:
+
+- 90% confidence level ($\alpha=10\%$):
+
+$$
+[3.568,\;3.932]
+$$
+
+- 95% confidence level ($\alpha=5\%$):
+
+$$
+[3.533,\;3.967]
+$$
+
+- 99% confidence level ($\alpha=1\%$):
+
+$$
+[3.464,\;4.036]
+$$
+
+Comment: the interval becomes wider when the confidence level increases.
+
+For $p=P(X>6)$, there are $5+3=8$ such days, so
+
+$$
+\hat{p}=\frac{8}{200}=0.04.
+$$
+
+The confidence intervals are approximately:
+
+- 90%: $[0.017,\;0.063]$
+- 95%: $[0.013,\;0.067]$
+- 99%: $[0.004,\;0.076]$
+
+Comment: the probability that the number of calls exceeds 6 is small, around **4%**.
+:::
+
+### Exercise 2 — Amount of taxes
+
+::: {.callout-caution title="Exercise"}
+The table below represents the tax amount in euros of 300 randomly selected taxpayers.
+
+| Tax amount (€) | [600, 900[ | [900, 1200[ | [1200, 1500[ | [1500, 1800[ | [1800, 2100[ |
+|----------------|-----------:|------------:|-------------:|-------------:|-------------:|
+| Number of taxpayers | 18 | 60 | 90 | 87 | 45 |
+
+1. Compute the confidence interval of the average amount paid (in taxes) for $\alpha=7\%$, $5\%$, and $1\%$. Comment.
+2. Let $p$ be the rate of taxpayers who pay less than 1400€. Compute the confidence interval of $p$ for $\alpha=10\%$, $4\%$, and $1\%$. Comment.
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+Using class midpoints $750, 1050, 1350, 1650, 1950$:
+
+$$
+n=300, \qquad \bar{x}=1431, \qquad s\approx 336.361.
+$$
+
+Confidence intervals for the mean are approximately:
+
+- for $\alpha=7\%$:
+
+$$
+[1395.813,\;1466.187]
+$$
+
+- for $\alpha=5\%$:
+
+$$
+[1392.938,\;1469.062]
+$$
+
+- for $\alpha=1\%$:
+
+$$
+[1380.978,\;1481.022]
+$$
+
+Comment: the mean tax amount is centered around **€1431**, with moderate sampling uncertainty.
+
+To estimate $p=P(X<1400)$, we approximate the class $[1200,1500[$ uniformly. Since 1400 is two-thirds of the way through the class,
+
+$$
+\text{count below 1400} \approx 18+60+\frac{200}{300}\times 90 = 138.
+$$
+
+Hence
+
+$$
+\hat{p}=\frac{138}{300}=0.46.
+$$
+
+Approximate confidence intervals:
+
+- for $\alpha=10\%$: $[0.413,\;0.507]$
+- for $\alpha=4\%$: $[0.401,\;0.519]$
+- for $\alpha=1\%$: $[0.386,\;0.534]$
+
+Comment: the proportion of taxpayers paying less than €1400 is close to **46%**, but the answer is approximate because we interpolate inside a class.
+:::
+
+### Application — Lifetime of machines
+
+::: {.callout-caution title="Exercise"}
+The research officer of an insurance company is interested in the lifetime (in months) of a machine of brand M. He randomly chose 100 machines and recorded their lifetime. The empirical mean is $17.4$ and the empirical standard deviation is $7.15821$.
+
+1. Calculate the confidence interval for the average life of machines M, with confidence level 95%. Interpret.
+2. Let $p$ be the probability that a machine M exceeds 1 year. Compute the confidence interval for $p$, with confidence levels 95% and 99%. Interpret.
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+For the mean, with $n=100$, $\bar{x}=17.4$, $s=7.15821$, and $z_{0.025}=1.96$:
+
+$$
+CI_{\mu} = \left[17.4-1.96\frac{7.15821}{10},\;17.4+1.96\frac{7.15821}{10}\right]
+$$
+
+so
+
+$$
+CI_{\mu} \approx [15.997,\;18.803].
+$$
+
+Interpretation: with 95% confidence, the mean lifetime is compatible with values between about **16.0** and **18.8 months**.
+
+For $p=P(X>12)$, the raw count of machines above 12 months is not given. If we additionally use a **Normal approximation** with mean $17.4$ and standard deviation $7.15821$, then
+
+$$
+\hat{p} \approx P(X>12) \approx 0.775.
+$$
+
+This gives approximate confidence intervals:
+
+- 95%: $[0.693,\;0.857]$
+- 99%: $[0.667,\;0.882]$
+
+::: {.callout-warning title="Methodological remark"}
+For a proportion, the most direct method would be to count how many of the 100 machines lasted more than 12 months. Since this count is absent, the result above relies on an additional modeling assumption.
+:::
+:::
