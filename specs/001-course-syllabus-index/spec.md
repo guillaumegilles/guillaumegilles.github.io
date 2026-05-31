@@ -13,6 +13,16 @@ references with author(s), title, edition, and publisher.
 
 ---
 
+## Clarifications
+
+### Session 2026-06-01
+
+- Q: What format should the Recommended Literature section use? → A: Markdown table with fixed columns (Author | Title | Edition | Publisher), one row per reference.
+- Q: What format should the session outline use? → A: Markdown table with columns `| # | Session Title | Topics Covered |`, session title linking to the session file.
+- Q: What should a FR bilingual stub contain? → A: EN course title as the page title, a "translation in progress" callout block in French, and a direct link to the EN syllabus.
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 — Student finds the course reading list (Priority: P1)
@@ -83,8 +93,9 @@ version is rendered.
 1. **Given** a course with an English `index.qmd`, **When** a visitor
    navigates to `fr/teaching/<course>/`, **Then** they see either a complete
    French syllabus or a bilingual stub — never a 404.
-2. **Given** a stub page, **When** a visitor views it, **Then** it contains
-   a "translation in progress" notice and a direct link to the English version.
+2. **Given** a stub page, **When** a visitor views it, **Then** it shows the
+   EN course title, a French "traduction en cours" callout, and a direct link
+   to the English syllabus.
 
 ---
 
@@ -113,19 +124,27 @@ version is rendered.
   root directory.
 - **FR-002**: Each `index.qmd` MUST include a course description paragraph and
   a set of learning objectives.
-- **FR-003**: Each `index.qmd` MUST include a session outline (table or ordered
-  list) with links to every session page in the course.
+- **FR-003**: Each `index.qmd` MUST include a session outline as a Markdown
+  table with columns `| # | Session Title | Topics Covered |`. The Session
+  Title cell MUST be a Markdown link pointing to the corresponding session
+  file.
 - **FR-004**: Each `index.qmd` MUST include a "Recommended Literature" section
   with at least one entry.
-- **FR-005**: Every Recommended Literature entry MUST include: author(s), full
-  title, edition (or "N/A" if not applicable), and publisher or source.
+- **FR-005**: Every Recommended Literature entry MUST be formatted as a row in
+  a Markdown table with fixed columns: `| Author(s) | Title | Edition | Publisher/Source |`.
+  For entries with no edition (e.g., online resources), the Edition cell MUST
+  contain "N/A". For papers (FR-009), the columns map as:
+  Author(s) | Title | Year | Publication Venue.
 - **FR-006**: The course `index.qmd` MUST be registered as the first entry of
   its course sidebar block in `_quarto.yml`.
 - **FR-007**: The `index.qmd` front matter MUST declare `lang: en` (or `lang:
   fr` for French variants) and include a `title` and `date-modified` field.
 - **FR-008**: A FR counterpart (`fr/teaching/<course>/index.qmd`) MUST exist
-  for every EN syllabus — either as a full translation or a stub page per
-  Principle VI.
+  for every EN syllabus. If a full translation is not yet available, the stub
+  MUST contain: (1) the EN course title as the Quarto `title` front-matter
+  field, (2) `lang: fr` in front matter, (3) a `.callout-note` block in French
+  with a "traduction en cours" notice, and (4) a Markdown link to the EN
+  syllabus (`../../../teaching/<course>/index.qmd`).
 - **FR-009**: Courses that use papers rather than books (e.g., `ai-papers`)
   MUST list their primary readings in the literature section, using the paper's
   authors, title, year, and publication venue in place of edition/publisher.
@@ -135,10 +154,13 @@ version is rendered.
 - **Course Syllabus** (`index.qmd`): The entry-point document for a course.
   Attributes: title, lang, date-modified, description, learning objectives,
   session outline, recommended literature.
-- **Literature Entry**: A single reading recommendation. Mandatory fields:
-  author(s), title, edition, publisher/source. Optional: year, URL.
-- **Bilingual Stub**: A minimal `index.qmd` in the target language containing
-  a "translation in progress" notice and a link to the source-language version.
+- **Literature Entry**: A single reading recommendation formatted as a table row.
+  Mandatory columns: Author(s), Title, Edition (or "N/A"), Publisher/Source.
+  For papers: Author(s), Title, Year, Publication Venue. Optional extra column: URL.
+- **Bilingual Stub**: A minimal FR `index.qmd` for a course not yet fully
+  translated. Required: `title` = EN course title, `lang: fr`, a
+  `.callout-note` block in French with "traduction en cours" notice, and a
+  link to the EN syllabus. Treated as a placeholder; not a complete syllabus.
 
 ---
 
