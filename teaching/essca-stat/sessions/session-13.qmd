@@ -1,0 +1,208 @@
+---
+title: "Session 13 — Linear Correlation Coefficient Test"
+subtitle: "Decision Making Statistics — S04"
+author: "M. Kachour"
+date: today
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+This session studies the statistical test used to detect a **linear relationship** between two quantitative variables.
+
+## Introduction
+
+### Typical questions
+
+- For a sample of students, is there a link between **height** and **weight**?
+- For a sample of drivers, is there a link between **age** and **number of accidents**?
+
+::: {.callout-note title="Goal of the test"}
+Two quantitative variables $X$ and $Y$ are measured simultaneously on each individual. The aim is to study the possible **linear link** between them.
+:::
+
+## Formulation
+
+### Modeling framework
+
+- The population is described by two quantitative variables $X$ and $Y$.
+- The pair $Z=(X,Y)$ is assumed to follow a bivariate distribution.
+- The unknown parameter of interest is the **theoretical linear correlation coefficient** $\rho(X,Y)$.
+
+### Hypotheses
+
+::: {.callout-note title="Hypotheses"}
+$$
+H_0: \rho(X,Y)=0
+\qquad \text{vs.} \qquad
+H_1: \rho(X,Y)\neq 0
+$$
+:::
+
+This is a **two-tailed** test. If $H_1$ is accepted, we conclude that there is a linear link between the two variables.
+
+::: {.callout-warning title="Assumption"}
+The pair $(X,Y)$ is assumed to follow a **bivariate Normal distribution**. This assumption is less restrictive when the sample size is large.
+:::
+
+## Empirical quantities
+
+### Sample summaries
+
+For a sample of $n$ pairs $(x_1,y_1),\ldots,(x_n,y_n)$:
+
+- empirical means:
+
+$$
+\bar{x}=\frac{1}{n}\sum x_i,
+\qquad
+\bar{y}=\frac{1}{n}\sum y_i
+$$
+
+- empirical variances:
+
+$$
+s_x^2=\frac{1}{n}\sum(x_i-\bar{x})^2,
+\qquad
+s_y^2=\frac{1}{n}\sum(y_i-\bar{y})^2
+$$
+
+- empirical covariance:
+
+$$
+s_{xy}=\frac{1}{n}\sum(x_i-\bar{x})(y_i-\bar{y})
+$$
+
+### Empirical linear correlation coefficient
+
+::: {.callout-tip title="Pearson correlation coefficient"}
+$$
+r=\frac{s_{xy}}{s_xs_y}
+=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum(x_i-\bar{x})^2\cdot\sum(y_i-\bar{y})^2}}
+$$
+:::
+
+The coefficient satisfies:
+
+$$
+r\in[-1,1]
+$$
+
+### Interpretation of $r$
+
+- $r>0$: the variables tend to vary in the **same direction**,
+- $r<0$: the variables tend to vary in **opposite directions**,
+- $|r|$ close to $1$: strong linear relationship,
+- $|r|$ close to $0$: weak linear relationship.
+
+## Test statistic
+
+### Case $n<30$
+
+::: {.callout-tip title="Student test statistic"}
+When the sample is small, use Student's distribution with $\nu=n-2$ degrees of freedom:
+
+$$
+U_{obs}=r\sqrt{\frac{n-2}{1-r^2}}
+$$
+
+Reject $H_0$ if:
+
+$$
+|U_{obs}|>t_{\alpha/2,n-2}
+$$
+:::
+
+### Case $n\geq 30$
+
+::: {.callout-tip title="Normal approximation"}
+When the sample is large, use the same statistic:
+
+$$
+U_{obs}=r\sqrt{\frac{n-2}{1-r^2}}
+$$
+
+and compare it with the centred reduced Normal distribution:
+
+$$
+|U_{obs}|>z_{\alpha/2}
+$$
+:::
+
+::: {.callout-warning title="Important remark"}
+A significant correlation indicates a **linear association**. It does **not** prove causality.
+:::
+
+::: {.callout-important title="Exam tip"}
+Always comment on both:
+
+1. the **sign** of $r$ (positive or negative relationship),
+2. the **magnitude** of $|r|$ (weak, moderate, or strong relationship).
+:::
+
+## Application exercise
+
+### Height and high-jump performance
+
+::: {.callout-caution title="Exercise"}
+The data below concern the height and high-jump score of $40$ athletes.
+
+The empirical linear correlation coefficient computed from this sample is:
+
+$$
+r=0.342
+$$
+
+At the $1\%$ risk level, can we say that height and high-jump performance are linked?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+**Step 1 — Formulation**
+
+- $X$: athlete height
+- $Y$: high-jump result
+- $H_0: \rho(X,Y)=0$
+- $H_1: \rho(X,Y)\neq 0$
+
+**Step 2 — Test statistic**
+
+Since $n=40\geq 30$, we use the Normal distribution:
+
+$$
+U_{obs}=r\sqrt{\frac{n-2}{1-r^2}}
+$$
+
+Therefore:
+
+$$
+U_{obs}=0.342\times \sqrt{\frac{38}{1-0.342^2}}
+=0.342\times \sqrt{\frac{38}{0.8830}}
+\approx 0.342\times 6.560
+\approx 2.243
+$$
+
+**Step 3 — Critical value**
+
+At risk $\alpha=1\%$ for a two-tailed test:
+
+$$
+z_{\alpha/2}=z_{0.005}=2.576
+$$
+
+**Step 4 — Decision**
+
+$$
+|U_{obs}|=2.243<2.576
+$$
+
+So we do **not** reject $H_0$.
+
+**Conclusion:** with a $1\%$ risk, the data do **not** confirm a linear link between athlete height and high-jump performance.
+
+::: {.callout-warning title="Data remark"}
+In the complete exercise, recompute $r$ directly from the dataset before making the final conclusion.
+:::
+:::
