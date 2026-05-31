@@ -1,0 +1,301 @@
+---
+title: "Session 9 — Hypothesis Testing: Comparison Tests"
+subtitle: "Decision Making Statistics — S04"
+author: "M. Kachour"
+date: today
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+This session extends hypothesis testing to the comparison of **two unknown populations**.
+
+## Session plan
+
+1. Comparison test between two unknown means
+2. Comparison test between two unknown proportions
+
+## Comparison test between two unknown means
+
+### Introductory example
+
+The Department of Education studies the average first-hire salary of students graduating in 2021. It wants to compare engineering school graduates with business school graduates. There is **no reference value** here: both means are unknown.
+
+### Modeling framework
+
+::: {.callout-note title="Two-population framework"}
+- Population: graduates in 2021
+- Subpopulation 1: engineering school graduates $\rightarrow X_1$, unknown mean $\mu_1$
+- Subpopulation 2: business school graduates $\rightarrow X_2$, unknown mean $\mu_2$
+- Parameters of interest: $\mu_1$ and $\mu_2$
+:::
+
+### Hypotheses
+
+Depending on the question, we test:
+
+- $H_0: \mu_1 = \mu_2$
+- $H_1: \mu_1 \neq \mu_2$
+- or $H_1: \mu_1 < \mu_2$
+- or $H_1: \mu_1 > \mu_2$
+
+### Test statistic
+
+::: {.callout-tip title="Comparison of two means"}
+For two independent large samples ($n_1,n_2\geq 30$):
+
+$$
+U_{obs} = \frac{\bar{x}_1-\bar{x}_2}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}}
+$$
+
+Under $H_0$, we use approximately
+
+$$
+U_{obs} \sim \mathcal{N}(0,1).
+$$
+:::
+
+## Comparison test between two unknown proportions
+
+### Introductory example
+
+The Ministry of Education compares hiring rates between engineering and business school graduates using two independent studies.
+
+### Modeling framework
+
+::: {.callout-note title="Two-proportion framework"}
+- Subpopulation 1: engineering graduates $\rightarrow X_1 \sim B(p_1)$
+- Subpopulation 2: business graduates $\rightarrow X_2 \sim B(p_2)$
+- Parameters of interest: $p_1$ and $p_2$
+:::
+
+### Hypotheses
+
+- $H_0: p_1 = p_2$
+- $H_1: p_1 \neq p_2$
+- or $H_1: p_1 < p_2$
+- or $H_1: p_1 > p_2$
+
+### Test statistic
+
+::: {.callout-tip title="Comparison of two proportions"}
+For two independent large samples:
+
+$$
+U_{obs} = \frac{\hat{p}_1-\hat{p}_2}{\sqrt{\hat{p}(1-\hat{p})\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}}
+$$
+
+with the pooled proportion
+
+$$
+\hat{p} = \frac{n_1\hat{p}_1+n_2\hat{p}_2}{n_1+n_2}.
+$$
+:::
+
+::: {.callout-warning title="Important remark"}
+In the two-proportion test, the denominator is built with the **pooled proportion** under $H_0$.
+:::
+
+::: {.callout-important title="Exam tip"}
+Before calculating, always identify:
+
+1. the two subpopulations,
+2. the parameter being compared (mean or proportion),
+3. whether the alternative is two-tailed, left-tailed, or right-tailed.
+:::
+
+## Exercises
+
+### Exercise 1 — Comparison of two means
+
+::: {.callout-caution title="Exercise"}
+Data were collected on the price of product PP in April (sample 1) and May (sample 2).
+
+Can we confirm, with 5% risk (then 10%), that the average price has decreased between April and May?
+
+Build the full modeling framework: population, variable, subpopulations, hypotheses, test statistic, and conclusion.
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+Since the question is whether the average price has **decreased** from April to May, a convenient formulation is:
+
+- subpopulation 1: April prices
+- subpopulation 2: May prices
+- parameter of interest: the two means $\mu_1$ and $\mu_2$
+
+Hypotheses:
+
+$$
+H_0: \mu_1 = \mu_2
+$$
+
+$$
+H_1: \mu_1 > \mu_2
+$$
+
+because a decrease from April to May means that the April mean is greater than the May mean.
+
+Then compute
+
+$$
+U_{obs} = \frac{\bar{x}_1-\bar{x}_2}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}}
+$$
+
+and compare it with the right-tailed critical values:
+
+- $1.645$ for 5% risk,
+- $1.282$ for 10% risk.
+
+If $U_{obs}$ exceeds the critical value, reject $H_0$ and conclude that the mean price has decreased. Otherwise, do not reject $H_0$.
+
+::: {.callout-warning title="Data remark"}
+The numerical conclusion depends on the sample summaries $n_1$, $n_2$, $\bar{x}_1$, $\bar{x}_2$, $s_1$, and $s_2$, which are not provided in the statement above.
+:::
+:::
+
+### Exercise 2 — Comparison of two proportions
+
+::: {.callout-caution title="Exercise"}
+A firm tests advertising effectiveness in two areas A and B:
+
+- Area A: 1,100 randomly selected people who saw the ad, of whom 658 remembered the slogan
+- Area B: 1,000 randomly selected people who saw the ad, of whom 526 remembered the slogan
+
+Can we confirm, with 5% risk (then 1%), that advertising is more effective in area A?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+Let $p_1$ be the remembrance rate in area A and $p_2$ the remembrance rate in area B.
+
+We test:
+
+$$
+H_0: p_1 = p_2, \qquad H_1: p_1 > p_2.
+$$
+
+Observed proportions:
+
+$$
+\hat{p}_1 = \frac{658}{1100} \approx 0.5982, \qquad \hat{p}_2 = \frac{526}{1000} = 0.526.
+$$
+
+Pooled proportion:
+
+$$
+\hat{p} = \frac{658+526}{1100+1000} = \frac{1184}{2100} \approx 0.5638.
+$$
+
+Test statistic:
+
+$$
+U_{obs} \approx 3.331.
+$$
+
+Critical values for a right-tailed test:
+
+- at 5% risk: $1.645$
+- at 1% risk: $2.326$
+
+Since
+
+$$
+3.331 > 1.645 \quad \text{and} \quad 3.331 > 2.326,
+$$
+
+we reject $H_0$ in both cases.
+
+Conclusion: yes, we can confirm that advertising is **more effective in area A**.
+:::
+
+### Application — Comparison of two average salaries
+
+::: {.callout-caution title="Exercise"}
+The Ministry of Education conducted two studies:
+
+- Study 1: 100 engineering school graduates — average salary = €3,350, with standard deviation $s = 400$
+- Study 2: 120 business school graduates — average salary = €3,550, with standard deviation $s = 650$
+
+Can we say, with 1% risk, that there is a difference in average salary between engineering and business school graduates?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+Let $\mu_1$ be the mean salary of engineering graduates and $\mu_2$ the mean salary of business school graduates.
+
+We test:
+
+$$
+H_0: \mu_1 = \mu_2, \qquad H_1: \mu_1 \neq \mu_2.
+$$
+
+The observed statistic is
+
+$$
+U_{obs} = \frac{3350-3550}{\sqrt{\frac{400^2}{100}+\frac{650^2}{120}}} \approx -2.795.
+$$
+
+For a two-tailed test at 1% risk, the critical value is $z_{0.005}=2.576$.
+
+Since
+
+$$
+|{-2.795}| > 2.576,
+$$
+
+we reject $H_0$.
+
+Conclusion: with 1% risk, there is a **significant difference** in average salary. The sample indicates a higher mean salary for **business school graduates**.
+:::
+
+### Second application — Comparison of two hiring rates
+
+::: {.callout-caution title="Exercise"}
+The Ministry of Education conducted two studies:
+
+- Study 1: 100 engineering school graduates — 70 were hired after graduation
+- Study 2: 120 business school graduates — 75 were hired after graduation
+
+Can we confirm, with 5% risk, that the hiring rate is higher among engineering school graduates?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+Let $p_1$ be the hiring rate among engineering graduates and $p_2$ the hiring rate among business graduates.
+
+We test:
+
+$$
+H_0: p_1 = p_2, \qquad H_1: p_1 > p_2.
+$$
+
+Observed proportions:
+
+$$
+\hat{p}_1 = 0.70, \qquad \hat{p}_2 = \frac{75}{120} = 0.625.
+$$
+
+Pooled proportion:
+
+$$
+\hat{p} = \frac{70+75}{220} \approx 0.6591.
+$$
+
+The statistic is
+
+$$
+U_{obs} \approx 1.169.
+$$
+
+For a right-tailed test at 5% risk, the critical value is $1.645$.
+
+Since
+
+$$
+1.169 < 1.645,
+$$
+
+we do **not** reject $H_0$.
+
+Conclusion: with 5% risk, we do **not** have enough evidence to confirm that the hiring rate is higher among engineering school graduates.
+:::
