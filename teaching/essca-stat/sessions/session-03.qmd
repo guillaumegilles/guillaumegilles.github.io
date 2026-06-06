@@ -1,0 +1,214 @@
+---
+title: "Session 3 — Discrete Random Variable"
+subtitle: "Decision Making Statistics — S04"
+author: "M. Kachour"
+date: today
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+This session introduces discrete random variables and the main distributions used in inferential statistics.
+
+## Introduction
+
+After performing a random experiment, we are often interested in a function of the outcome rather than in the outcome itself. For example, when we roll two fair dice with two different colors, we may focus only on the **sum** of the two numbers obtained. Such quantities are called **random variables**.
+
+::: {.callout-note title="Definition"}
+A **random variable** is a real-valued function that associates a number with each outcome of a random experiment.
+:::
+
+In business applications, a random variable can represent:
+
+- the number of defective products in a sample,
+- the number of customers who answer a survey,
+- the number of calls received in one minute.
+
+## Discrete random variable
+
+### Probability distribution
+
+::: {.callout-note title="Definition"}
+A random variable $X$ is **discrete** if it takes a countable number of values $x_1, x_2, \dots, x_k$.
+:::
+
+Its **probability distribution** associates each value $x_i$ with a probability
+
+$$
+p_i = P(X = x_i)
+$$
+
+with the properties:
+
+$$
+p_i \geq 0 \quad \text{for all } i, \qquad \sum_i p_i = 1
+$$
+
+### Expected value, variance, and standard deviation
+
+::: {.callout-tip title="Key formulas"}
+The main numerical characteristics of a discrete random variable are:
+
+$$
+E(X) = \mu = \sum_i x_i p_i
+$$
+
+$$
+\operatorname{Var}(X) = \sigma^2 = \sum_i (x_i - \mu)^2 p_i = E(X^2) - [E(X)]^2
+$$
+
+$$
+\sigma = \sqrt{\operatorname{Var}(X)}
+$$
+:::
+
+### Bernoulli distribution
+
+::: {.callout-note title="Definition"}
+A **Bernoulli distribution** models one trial with only two outcomes: success or failure.
+:::
+
+If $X \sim B(p)$:
+
+- $P(X=1) = p$
+- $P(X=0) = 1-p$
+- $E(X) = p$
+- $\operatorname{Var}(X) = p(1-p)$
+
+### Binomial distribution
+
+::: {.callout-note title="Definition"}
+A **binomial distribution** models the number of successes in $n$ independent Bernoulli trials with the same success probability $p$.
+:::
+
+If $X \sim B(n,p)$, then for $k = 0,1,\dots,n$:
+
+::: {.callout-tip title="Binomial formula"}
+$$
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}
+$$
+
+$$
+E(X) = np, \qquad \operatorname{Var}(X) = np(1-p)
+$$
+:::
+
+### Poisson distribution
+
+::: {.callout-note title="Definition"}
+A **Poisson distribution** models the number of rare events occurring in a fixed interval of time, space, or volume.
+:::
+
+If $X \sim \mathcal{P}(\lambda)$, then for $k = 0,1,2,\dots$:
+
+::: {.callout-tip title="Poisson formula"}
+$$
+P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}
+$$
+
+$$
+E(X) = \lambda, \qquad \operatorname{Var}(X) = \lambda
+$$
+:::
+
+### Binomial–Poisson approximation
+
+::: {.callout-tip title="Approximation rule"}
+When $n \geq 30$ and $p \leq 0.1$ (or $np \leq 5$), the binomial distribution can be approximated by a Poisson distribution:
+
+$$
+B(n,p) \approx \mathcal{P}(np)
+$$
+:::
+
+::: {.callout-warning title="Important remark"}
+Choose the distribution by reading the situation carefully:
+
+- **Bernoulli**: one trial,
+- **Binomial**: a fixed number $n$ of repeated independent trials,
+- **Poisson**: counting events in a time or space interval.
+:::
+
+::: {.callout-important title="Exam tip"}
+Before calculating, always identify:
+
+1. what the random variable $X$ counts,
+2. the possible values of $X$,
+3. the distribution that matches the wording of the problem.
+:::
+
+## Detailed example
+
+A salesperson contacts 4 prospects. Each prospect independently accepts a meeting with probability $0.3$.
+
+Let $X$ be the number of accepted meetings. Then:
+
+$$
+X \sim B(4,0.3)
+$$
+
+### Probability of exactly 2 accepted meetings
+
+Using the binomial formula:
+
+$$
+P(X=2) = \binom{4}{2}(0.3)^2(0.7)^2
+$$
+
+$$
+P(X=2) = 6 \times 0.09 \times 0.49 = 0.2646
+$$
+
+So the probability of getting exactly 2 accepted meetings is **0.2646**.
+
+### Mean and variance
+
+$$
+E(X) = np = 4 \times 0.3 = 1.2
+$$
+
+$$
+\operatorname{Var}(X) = np(1-p) = 4 \times 0.3 \times 0.7 = 0.84
+$$
+
+The expected number of accepted meetings is **1.2**.
+
+## Application exercise
+
+> ::: {.callout-caution title="Exercise"}
+> A call center receives on average 3 calls per minute. Assuming a Poisson distribution:
+>
+> 1. What is the probability of receiving exactly 2 calls in a minute?
+> 2. What is the probability of receiving at most 2 calls in a minute?
+> :::
+
+> ::: {.callout-caution title="Solution" collapse="true"}
+> Let $X$ be the number of calls received in one minute. Then:
+>
+> $$
+> X \sim \mathcal{P}(3)
+> $$
+>
+> **1. Probability of exactly 2 calls**
+>
+> $$
+> P(X=2) = \frac{e^{-3} \cdot 3^2}{2!} = \frac{e^{-3} \cdot 9}{2} \approx 0.2240
+> $$
+>
+> **2. Probability of at most 2 calls**
+>
+> $$
+> P(X \leq 2) = P(X=0) + P(X=1) + P(X=2)
+> $$
+>
+> $$
+> P(X \leq 2) = e^{-3}\left(1 + 3 + \frac{3^2}{2}\right) = e^{-3}(1 + 3 + 4.5)
+> $$
+>
+> $$
+> P(X \leq 2) = e^{-3} \cdot 8.5 \approx 0.4232
+> $$
+> :::
