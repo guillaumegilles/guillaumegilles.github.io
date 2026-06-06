@@ -101,9 +101,9 @@ version is rendered.
 
 ### Edge Cases
 
-- What if a course has sessions but no `index.qmd` yet (e.g., `ai-papers`,
-  `ece-proba`, `mathematical-analysis`)? → An `index.qmd` MUST be created;
-  the course is considered incomplete without one.
+- What if a (future) course has session pages but no `index.qmd`? → An
+  `index.qmd` MUST be created; the course is considered incomplete without one.
+  (All six current courses already have one — see Assumptions.)
 - What if a course has no fixed textbook (e.g., paper-reading seminars)?
   → The literature section MUST still exist; it may list primary papers or
   online resources in lieu of books, but the section heading MUST be present.
@@ -190,13 +190,31 @@ version is rendered.
   new courses added later will follow T-VIII by constitution.
 - `essca-stat` and `inseec-finance` already have `index.qmd` files — these
   need amendment to add literature sections, not full rewrites.
-- `ai-dev` already has an `index.qmd` — it also needs a literature section
-  added.
-- `ai-papers`, `ece-proba`, and `mathematical-analysis` have no `index.qmd`
-  yet — these require new files.
+- **Correction (confirmed during planning)**: all six courses already have an
+  `index.qmd` (`ai-papers`, `ece-proba`, and `mathematical-analysis` included).
+  This feature therefore *amends* existing files; it does not create new ones.
 - FR counterpart stubs (not full translations) are acceptable for the initial
   merge; full translations are a follow-on task.
 - Literature lists for paper-reading courses (`ai-papers`) may reference
   foundational papers (e.g., "Attention Is All You Need") rather than books.
-- The `_quarto.yml` sidebar entries for courses where `index.qmd` is new will
-  need updating — this is in scope for this feature.
+- The `_quarto.yml` sidebar entries (including the broken `ece-proba`
+  reference) will need updating — this is in scope for this feature.
+
+---
+
+## Out of Scope / Deferred
+
+These items are intentionally **not** delivered by this feature and are tracked
+for a separate **language-normalization** feature. Principle VI (full EN+FR
+parity) is therefore only **partially** satisfied here; this is a consciously
+recorded deviation, not a reinterpretation of the principle.
+
+- **Full bilingual parity for FR-authored courses**: `inseec-finance`,
+  `ece-proba`, and `mathematical-analysis` are authored in French at the site
+  root. Relocating them under `fr/` with English root counterparts is a
+  site-wide migration and is deferred. No `en/` tree is created by this feature.
+- **Navbar language switcher** (Principle VI): not added here. Adding a working
+  EN⇄FR switcher belongs to the language-normalization feature once both
+  language trees exist.
+- **Full translations**: only French *stubs* are produced for the three
+  EN-authored courses; complete translations are follow-on work.

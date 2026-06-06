@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="M. Kachour">
-<meta name="dcterms.date" content="2026-05-26">
+<meta name="dcterms.date" content="2026-06-05">
 
 <title>Guillaume Gilles - Session 9 — Hypothesis Testing: Comparison Tests</title>
 <style>
@@ -70,6 +70,12 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -185,6 +191,8 @@ window.Quarto = {
   <li><a href="#exercise-2-comparison-of-two-proportions" id="toc-exercise-2-comparison-of-two-proportions" class="nav-link" data-scroll-target="#exercise-2-comparison-of-two-proportions"><span class="header-section-number">4.2</span> Exercise 2 — Comparison of two proportions</a></li>
   <li><a href="#application-comparison-of-two-average-salaries" id="toc-application-comparison-of-two-average-salaries" class="nav-link" data-scroll-target="#application-comparison-of-two-average-salaries"><span class="header-section-number">4.3</span> Application — Comparison of two average salaries</a></li>
   <li><a href="#second-application-comparison-of-two-hiring-rates" id="toc-second-application-comparison-of-two-hiring-rates" class="nav-link" data-scroll-target="#second-application-comparison-of-two-hiring-rates"><span class="header-section-number">4.4</span> Second application — Comparison of two hiring rates</a></li>
+  <li><a href="#exercise-3-productivity-comparison-between-two-production-lines" id="toc-exercise-3-productivity-comparison-between-two-production-lines" class="nav-link" data-scroll-target="#exercise-3-productivity-comparison-between-two-production-lines"><span class="header-section-number">4.5</span> Exercise 3 — Productivity comparison between two production lines</a></li>
+  <li><a href="#exercise-4-contract-renewal-by-sales-region" id="toc-exercise-4-contract-renewal-by-sales-region" class="nav-link" data-scroll-target="#exercise-4-contract-renewal-by-sales-region"><span class="header-section-number">4.6</span> Exercise 4 — Contract renewal by sales region</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -212,7 +220,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 26, 2026</p>
+      <p class="date">June 5, 2026</p>
     </div>
   </div>
   
@@ -397,13 +405,17 @@ Exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Data were collected on the price of product PP in April (sample 1) and May (sample 2).</p>
-<p>Can we confirm, with 5% risk (then 10%), that the average price has decreased between April and May?</p>
+<p>Data were collected on the price of product PP in April (sample 1) and May (sample 2):</p>
+<ul>
+<li><strong>April:</strong> <span class="math inline">\(n_1 = 60\)</span> observations, <span class="math inline">\(\bar{x}_1 = 18.90\)</span>€, <span class="math inline">\(s_1 = 2.50\)</span>€</li>
+<li><strong>May:</strong> <span class="math inline">\(n_2 = 55\)</span> observations, <span class="math inline">\(\bar{x}_2 = 18.10\)</span>€, <span class="math inline">\(s_2 = 2.20\)</span>€</li>
+</ul>
+<p>Can we confirm, with <span class="math inline">\(5\%\)</span> risk (then <span class="math inline">\(10\%\)</span> risk), that the average price has <strong>decreased</strong> between April and May?</p>
 <p>Build the full modeling framework: population, variable, subpopulations, hypotheses, test statistic, and conclusion.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled" title="Solution">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -412,45 +424,29 @@ Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Since the question is whether the average price has <strong>decreased</strong> from April to May, a convenient formulation is:</p>
 <ul>
-<li>subpopulation 1: April prices</li>
-<li>subpopulation 2: May prices</li>
-<li>parameter of interest: the two means <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_2\)</span></li>
+<li>subpopulation 1: April prices (<span class="math inline">\(\mu_1\)</span> unknown)</li>
+<li>subpopulation 2: May prices (<span class="math inline">\(\mu_2\)</span> unknown)</li>
 </ul>
-<p>Hypotheses:</p>
+<p>Hypotheses: a decrease means the April mean exceeds the May mean, so</p>
 <p><span class="math display">\[
-H_0: \mu_1 = \mu_2
+H_0: \mu_1 = \mu_2, \qquad H_1: \mu_1 &gt; \mu_2.
 \]</span></p>
+<p>This is a <strong>right-tailed</strong> test on <span class="math inline">\(\mu_1 - \mu_2\)</span>.</p>
+<p>The test statistic is</p>
 <p><span class="math display">\[
-H_1: \mu_1 &gt; \mu_2
+U_{obs} = \frac{\bar{x}_1-\bar{x}_2}{\sqrt{\dfrac{s_1^2}{n_1}+\dfrac{s_2^2}{n_2}}} = \frac{18.90-18.10}{\sqrt{\dfrac{6.25}{60}+\dfrac{4.84}{55}}} = \frac{0.80}{\sqrt{0.1042+0.0880}} = \frac{0.80}{\sqrt{0.1922}} \approx \frac{0.80}{0.4384} \approx 1.825.
 \]</span></p>
-<p>because a decrease from April to May means that the April mean is greater than the May mean.</p>
-<p>Then compute</p>
-<p><span class="math display">\[
-U_{obs} = \frac{\bar{x}_1-\bar{x}_2}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}}
-\]</span></p>
-<p>and compare it with the right-tailed critical values:</p>
+<p>Critical values for a right-tailed test:</p>
 <ul>
-<li><span class="math inline">\(1.645\)</span> for 5% risk,</li>
-<li><span class="math inline">\(1.282\)</span> for 10% risk.</li>
+<li>at <span class="math inline">\(5\%\)</span> risk: <span class="math inline">\(1.645\)</span></li>
+<li>at <span class="math inline">\(10\%\)</span> risk: <span class="math inline">\(1.282\)</span></li>
 </ul>
-<p>If <span class="math inline">\(U_{obs}\)</span> exceeds the critical value, reject <span class="math inline">\(H_0\)</span> and conclude that the mean price has decreased. Otherwise, do not reject <span class="math inline">\(H_0\)</span>.</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Data remark">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Data remark
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The numerical conclusion depends on the sample summaries <span class="math inline">\(n_1\)</span>, <span class="math inline">\(n_2\)</span>, <span class="math inline">\(\bar{x}_1\)</span>, <span class="math inline">\(\bar{x}_2\)</span>, <span class="math inline">\(s_1\)</span>, and <span class="math inline">\(s_2\)</span>, which are not provided in the statement above.</p>
-</div>
-</div>
+<p>Since <span class="math inline">\(1.825 &gt; 1.645\)</span> and <span class="math inline">\(1.825 &gt; 1.282\)</span>, we <strong>reject</strong> <span class="math inline">\(H_0\)</span> at both risk levels.</p>
+<p>Conclusion: the data confirm that the average price has significantly <strong>decreased</strong> between April and May, at both <span class="math inline">\(5\%\)</span> and <span class="math inline">\(10\%\)</span> risk.</p>
 </div>
 </div>
 </div>
@@ -476,7 +472,7 @@ Exercise
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled" title="Solution">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -485,7 +481,7 @@ Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Let <span class="math inline">\(p_1\)</span> be the remembrance rate in area A and <span class="math inline">\(p_2\)</span> the remembrance rate in area B.</p>
 <p>We test:</p>
@@ -540,7 +536,7 @@ Exercise
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled" title="Solution">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -549,7 +545,7 @@ Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Let <span class="math inline">\(\mu_1\)</span> be the mean salary of engineering graduates and <span class="math inline">\(\mu_2\)</span> the mean salary of business school graduates.</p>
 <p>We test:</p>
@@ -592,7 +588,7 @@ Exercise
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled" title="Solution">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -601,7 +597,7 @@ Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Let <span class="math inline">\(p_1\)</span> be the hiring rate among engineering graduates and <span class="math inline">\(p_2\)</span> the hiring rate among business graduates.</p>
 <p>We test:</p>
@@ -627,6 +623,119 @@ U_{obs} \approx 1.169.
 \]</span></p>
 <p>we do <strong>not</strong> reject <span class="math inline">\(H_0\)</span>.</p>
 <p>Conclusion: with 5% risk, we do <strong>not</strong> have enough evidence to confirm that the hiring rate is higher among engineering school graduates.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-3-productivity-comparison-between-two-production-lines" class="level3" data-number="4.5">
+<h3 data-number="4.5" class="anchored" data-anchor-id="exercise-3-productivity-comparison-between-two-production-lines"><span class="header-section-number">4.5</span> Exercise 3 — Productivity comparison between two production lines</h3>
+<div class="callout callout-style-default callout-caution callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A factory manager wants to know whether production line A is more productive than line B.</p>
+<ul>
+<li><strong>Line A:</strong> <span class="math inline">\(n_1 = 40\)</span> working days, <span class="math inline">\(\bar{x}_1 = 95\)</span> parts/hour, <span class="math inline">\(s_1 = 8\)</span> parts/hour</li>
+<li><strong>Line B:</strong> <span class="math inline">\(n_2 = 35\)</span> working days, <span class="math inline">\(\bar{x}_2 = 91\)</span> parts/hour, <span class="math inline">\(s_2 = 10\)</span> parts/hour</li>
+</ul>
+<p>Can we confirm, with <span class="math inline">\(5\%\)</span> risk (then <span class="math inline">\(1\%\)</span>), that line A is more productive than line B?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_2\)</span> be the mean hourly output of lines A and B respectively.</p>
+<p>We test:</p>
+<p><span class="math display">\[
+H_0: \mu_1 = \mu_2, \qquad H_1: \mu_1 &gt; \mu_2.
+\]</span></p>
+<p>The test statistic is</p>
+<p><span class="math display">\[
+U_{obs} = \frac{95-91}{\sqrt{\dfrac{64}{40}+\dfrac{100}{35}}} = \frac{4}{\sqrt{1.600+2.857}} = \frac{4}{\sqrt{4.457}} = \frac{4}{2.111} \approx 1.895.
+\]</span></p>
+<p>Critical values for a right-tailed test:</p>
+<ul>
+<li>at <span class="math inline">\(5\%\)</span> risk: <span class="math inline">\(1.645\)</span></li>
+<li>at <span class="math inline">\(1\%\)</span> risk: <span class="math inline">\(2.326\)</span></li>
+</ul>
+<p><strong>At 5% risk:</strong> <span class="math inline">\(1.895 &gt; 1.645\)</span> → <strong>reject</strong> <span class="math inline">\(H_0\)</span>. Line A is significantly more productive.</p>
+<p><strong>At 1% risk:</strong> <span class="math inline">\(1.895 &lt; 2.326\)</span> → do <strong>not reject</strong> <span class="math inline">\(H_0\)</span>. The evidence is insufficient at the stricter level.</p>
+<p>Comment: the advantage of line A is confirmed at <span class="math inline">\(5\%\)</span> but not at <span class="math inline">\(1\%\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-4-contract-renewal-by-sales-region" class="level3" data-number="4.6">
+<h3 data-number="4.6" class="anchored" data-anchor-id="exercise-4-contract-renewal-by-sales-region"><span class="header-section-number">4.6</span> Exercise 4 — Contract renewal by sales region</h3>
+<div class="callout callout-style-default callout-caution callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A subscription-based firm compares its contract renewal rates across two sales regions:</p>
+<ul>
+<li><strong>North region:</strong> <span class="math inline">\(n_1 = 300\)</span> customers, <span class="math inline">\(198\)</span> renewed their contract</li>
+<li><strong>South region:</strong> <span class="math inline">\(n_2 = 250\)</span> customers, <span class="math inline">\(137\)</span> renewed their contract</li>
+</ul>
+<p>Can we say, with <span class="math inline">\(5\%\)</span> risk (then <span class="math inline">\(1\%\)</span>), that the renewal rates differ between the two regions?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span> be the renewal rates in the North and South regions respectively.</p>
+<p>We test:</p>
+<p><span class="math display">\[
+H_0: p_1 = p_2, \qquad H_1: p_1 \neq p_2.
+\]</span></p>
+<p>Observed proportions:</p>
+<p><span class="math display">\[
+\hat{p}_1 = \frac{198}{300} = 0.660, \qquad \hat{p}_2 = \frac{137}{250} = 0.548.
+\]</span></p>
+<p>Pooled proportion:</p>
+<p><span class="math display">\[
+\hat{p} = \frac{198+137}{300+250} = \frac{335}{550} \approx 0.6091.
+\]</span></p>
+<p>Test statistic:</p>
+<p><span class="math display">\[
+U_{obs} = \frac{0.660-0.548}{\sqrt{0.6091\times 0.3909\times\left(\dfrac{1}{300}+\dfrac{1}{250}\right)}} = \frac{0.112}{\sqrt{0.2381\times 0.007333}} = \frac{0.112}{\sqrt{0.001746}} = \frac{0.112}{0.04178} \approx 2.681.
+\]</span></p>
+<p>Critical values for a two-tailed test:</p>
+<ul>
+<li>at <span class="math inline">\(5\%\)</span> risk: <span class="math inline">\(z_{0.025}=1.96\)</span></li>
+<li>at <span class="math inline">\(1\%\)</span> risk: <span class="math inline">\(z_{0.005}=2.576\)</span></li>
+</ul>
+<p>Since <span class="math inline">\(|2.681| &gt; 1.96\)</span> and <span class="math inline">\(|2.681| &gt; 2.576\)</span>, we <strong>reject</strong> <span class="math inline">\(H_0\)</span> at both risk levels.</p>
+<p>Conclusion: with both <span class="math inline">\(5\%\)</span> and <span class="math inline">\(1\%\)</span> risk, the renewal rates in the North and South regions are <strong>significantly different</strong>. The North region has a higher renewal rate (<span class="math inline">\(66\%\)</span> vs.&nbsp;<span class="math inline">\(54.8\%\)</span>).</p>
 </div>
 </div>
 </div>
