@@ -112,9 +112,12 @@ Before calculating, always identify:
 ### Exercise 1 — Comparison of two means
 
 ::: {.callout-caution title="Exercise"}
-Data were collected on the price of product PP in April (sample 1) and May (sample 2).
+Data were collected on the price of product PP in April (sample 1) and May (sample 2):
 
-Can we confirm, with 5% risk (then 10%), that the average price has decreased between April and May?
+- **April:** $n_1 = 60$ observations, $\bar{x}_1 = 18.90$€, $s_1 = 2.50$€
+- **May:** $n_2 = 55$ observations, $\bar{x}_2 = 18.10$€, $s_2 = 2.20$€
+
+Can we confirm, with $5\%$ risk (then $10\%$ risk), that the average price has **decreased** between April and May?
 
 Build the full modeling framework: population, variable, subpopulations, hypotheses, test statistic, and conclusion.
 :::
@@ -122,38 +125,31 @@ Build the full modeling framework: population, variable, subpopulations, hypothe
 ::: {.callout-caution title="Solution" collapse="true"}
 Since the question is whether the average price has **decreased** from April to May, a convenient formulation is:
 
-- subpopulation 1: April prices
-- subpopulation 2: May prices
-- parameter of interest: the two means $\mu_1$ and $\mu_2$
+- subpopulation 1: April prices ($\mu_1$ unknown)
+- subpopulation 2: May prices ($\mu_2$ unknown)
 
-Hypotheses:
-
-$$
-H_0: \mu_1 = \mu_2
-$$
+Hypotheses: a decrease means the April mean exceeds the May mean, so
 
 $$
-H_1: \mu_1 > \mu_2
+H_0: \mu_1 = \mu_2, \qquad H_1: \mu_1 > \mu_2.
 $$
 
-because a decrease from April to May means that the April mean is greater than the May mean.
+This is a **right-tailed** test on $\mu_1 - \mu_2$.
 
-Then compute
+The test statistic is
 
 $$
-U_{obs} = \frac{\bar{x}_1-\bar{x}_2}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}}
+U_{obs} = \frac{\bar{x}_1-\bar{x}_2}{\sqrt{\dfrac{s_1^2}{n_1}+\dfrac{s_2^2}{n_2}}} = \frac{18.90-18.10}{\sqrt{\dfrac{6.25}{60}+\dfrac{4.84}{55}}} = \frac{0.80}{\sqrt{0.1042+0.0880}} = \frac{0.80}{\sqrt{0.1922}} \approx \frac{0.80}{0.4384} \approx 1.825.
 $$
 
-and compare it with the right-tailed critical values:
+Critical values for a right-tailed test:
 
-- $1.645$ for 5% risk,
-- $1.282$ for 10% risk.
+- at $5\%$ risk: $1.645$
+- at $10\%$ risk: $1.282$
 
-If $U_{obs}$ exceeds the critical value, reject $H_0$ and conclude that the mean price has decreased. Otherwise, do not reject $H_0$.
+Since $1.825 > 1.645$ and $1.825 > 1.282$, we **reject** $H_0$ at both risk levels.
 
-::: {.callout-warning title="Data remark"}
-The numerical conclusion depends on the sample summaries $n_1$, $n_2$, $\bar{x}_1$, $\bar{x}_2$, $s_1$, and $s_2$, which are not provided in the statement above.
-:::
+Conclusion: the data confirm that the average price has significantly **decreased** between April and May, at both $5\%$ and $10\%$ risk.
 :::
 
 ### Exercise 2 — Comparison of two proportions
@@ -298,4 +294,90 @@ $$
 we do **not** reject $H_0$.
 
 Conclusion: with 5% risk, we do **not** have enough evidence to confirm that the hiring rate is higher among engineering school graduates.
+:::
+
+### Exercise 3 — Productivity comparison between two production lines
+
+::: {.callout-caution title="Exercise"}
+A factory manager wants to know whether production line A is more productive than line B.
+
+- **Line A:** $n_1 = 40$ working days, $\bar{x}_1 = 95$ parts/hour, $s_1 = 8$ parts/hour
+- **Line B:** $n_2 = 35$ working days, $\bar{x}_2 = 91$ parts/hour, $s_2 = 10$ parts/hour
+
+Can we confirm, with $5\%$ risk (then $1\%$), that line A is more productive than line B?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+Let $\mu_1$ and $\mu_2$ be the mean hourly output of lines A and B respectively.
+
+We test:
+
+$$
+H_0: \mu_1 = \mu_2, \qquad H_1: \mu_1 > \mu_2.
+$$
+
+The test statistic is
+
+$$
+U_{obs} = \frac{95-91}{\sqrt{\dfrac{64}{40}+\dfrac{100}{35}}} = \frac{4}{\sqrt{1.600+2.857}} = \frac{4}{\sqrt{4.457}} = \frac{4}{2.111} \approx 1.895.
+$$
+
+Critical values for a right-tailed test:
+
+- at $5\%$ risk: $1.645$
+- at $1\%$ risk: $2.326$
+
+**At 5% risk:** $1.895 > 1.645$ → **reject** $H_0$. Line A is significantly more productive.
+
+**At 1% risk:** $1.895 < 2.326$ → do **not reject** $H_0$. The evidence is insufficient at the stricter level.
+
+Comment: the advantage of line A is confirmed at $5\%$ but not at $1\%$.
+:::
+
+### Exercise 4 — Contract renewal by sales region
+
+::: {.callout-caution title="Exercise"}
+A subscription-based firm compares its contract renewal rates across two sales regions:
+
+- **North region:** $n_1 = 300$ customers, $198$ renewed their contract
+- **South region:** $n_2 = 250$ customers, $137$ renewed their contract
+
+Can we say, with $5\%$ risk (then $1\%$), that the renewal rates differ between the two regions?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+Let $p_1$ and $p_2$ be the renewal rates in the North and South regions respectively.
+
+We test:
+
+$$
+H_0: p_1 = p_2, \qquad H_1: p_1 \neq p_2.
+$$
+
+Observed proportions:
+
+$$
+\hat{p}_1 = \frac{198}{300} = 0.660, \qquad \hat{p}_2 = \frac{137}{250} = 0.548.
+$$
+
+Pooled proportion:
+
+$$
+\hat{p} = \frac{198+137}{300+250} = \frac{335}{550} \approx 0.6091.
+$$
+
+Test statistic:
+
+$$
+U_{obs} = \frac{0.660-0.548}{\sqrt{0.6091\times 0.3909\times\left(\dfrac{1}{300}+\dfrac{1}{250}\right)}} = \frac{0.112}{\sqrt{0.2381\times 0.007333}} = \frac{0.112}{\sqrt{0.001746}} = \frac{0.112}{0.04178} \approx 2.681.
+$$
+
+Critical values for a two-tailed test:
+
+- at $5\%$ risk: $z_{0.025}=1.96$
+- at $1\%$ risk: $z_{0.005}=2.576$
+
+Since $|2.681| > 1.96$ and $|2.681| > 2.576$, we **reject** $H_0$ at both risk levels.
+
+Conclusion: with both $5\%$ and $1\%$ risk, the renewal rates in the North and South regions are **significantly different**. The North region has a higher renewal rate ($66\%$ vs. $54.8\%$).
 :::

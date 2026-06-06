@@ -105,3 +105,12 @@ Common types: `.callout-note`, `.callout-important`, `.callout-tip`.
 ### Theme
 All styling goes in `assets/dark.scss`. The compiled theme is referenced in
 `_quarto.yml` under `format.html.theme`.
+
+<!-- SPECKIT START -->
+## Active Spec Kit Plan
+
+Current feature plan: `specs/001-course-syllabus-index/plan.md`
+(Course Syllabus Index Pages — T-VIII: every course `index.qmd` is the first
+sidebar entry and carries a session-outline table plus a Recommended Literature
+table.)
+<!-- SPECKIT END -->
