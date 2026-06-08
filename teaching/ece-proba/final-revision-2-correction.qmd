@@ -1,0 +1,421 @@
+---
+title: "Correction — Examen · Statistiques et Probabilités"
+subtitle: "Statistiques bivariées · Couples de v.a.r. continues · Inférence statistique"
+date-modified: 2026-05-21
+abstract: |
+  Corrigé détaillé de l'[examen (sujet 4)](final-revision-2.qmd).
+---
+
+> **Barème indicatif :** Exercice 1 — 30 pts · Exercice 2 — 40 pts · Exercice 3 — 30 pts
+
+---
+
+## Exercice 1 — Statistiques bivariées (30 points)
+
+### Partie A — Tableau de contingence et test du $\chi^2$ (14 points)
+
+Le tableau des effectifs observés est :
+
+|  | Insuffisante | Partielle | Complète | **Total** |
+|:---:|:---:|:---:|:---:|:---:|
+| **Traitement X** | 20 | 60 | 20 | **100** |
+| **Traitement Y** | 30 | 40 | 30 | **100** |
+| **Total** | **50** | **100** | **50** | **200** |
+
+---
+
+**1.** *(3 pts)* **Fréquences marginales et distribution conditionnelle.**
+
+*Fréquences marginales de la variable Traitement :*
+$$\frac{100}{200} = 50\,\%\ \text{de patients sous X} \qquad \text{et} \qquad \frac{100}{200} = 50\,\%\ \text{sous Y.}$$
+
+*Fréquences marginales de la variable Réponse :*
+$$\frac{50}{200} = 25\,\%\ \text{Insuffisante,} \qquad \frac{100}{200} = 50\,\%\ \text{Partielle,} \qquad \frac{50}{200} = 25\,\%\ \text{Complète.}$$
+
+*Distribution conditionnelle de la réponse pour le Traitement X :*
+$$P(\text{Insuff.}\mid X) = \frac{20}{100} = 20\,\%, \quad
+  P(\text{Partielle}\mid X) = \frac{60}{100} = 60\,\%, \quad
+  P(\text{Complète}\mid X) = \frac{20}{100} = 20\,\%.$$
+
+*Interprétation :* le traitement X donne majoritairement une réponse partielle (60 %). On pourra comparer avec Y : $P(\text{Partielle}\mid Y) = 40\,\%$ et $P(\text{Complète}\mid Y) = 30\,\%$. Le traitement Y semble produire davantage de réponses complètes, ce qui suggère un lien entre traitement et réponse.
+
+---
+
+**2.** *(3 pts)* **Probabilités.**
+
+- $\displaystyle P(\text{Partielle}\mid\text{Traitement Y}) = \frac{40}{100} = \boxed{0{,}40.}$
+
+- $\displaystyle P(\text{Complète}) = \frac{50}{200} = \boxed{0{,}25.}$
+
+- $\displaystyle P(\text{Traitement X}\mid\text{Insuffisante}) = \frac{20}{50} = \boxed{0{,}40.}$
+  *(Par la formule de Bayes : $P(X\mid\text{Insuff.}) = \frac{P(X \cap \text{Insuff.})}{P(\text{Insuff.})} = \frac{20/200}{50/200}$.)*
+
+---
+
+**3.** *(4 pts)* **Effectifs théoriques sous l'hypothèse d'indépendance.**
+
+Sous $H_0$ (indépendance), l'effectif théorique de la case $(i,j)$ est :
+$$e_{ij} = \frac{n_{i\bullet} \times n_{\bullet j}}{n}.$$
+
+Comme les deux lignes ont le même total (100) et les colonnes ont des totaux 50, 100, 50, tous les effectifs théoriques sont :
+
+| | Insuffisante | Partielle | Complète |
+|:---:|:---:|:---:|:---:|
+| **Traitement X** | $\dfrac{100\times50}{200}=25$ | $\dfrac{100\times100}{200}=50$ | $\dfrac{100\times50}{200}=25$ |
+| **Traitement Y** | $\dfrac{100\times50}{200}=25$ | $\dfrac{100\times100}{200}=50$ | $\dfrac{100\times50}{200}=25$ |
+
+Tous les effectifs théoriques valent **25 ou 50**, donc sont strictement supérieurs à 5. $\checkmark$
+
+*Vérification :* la somme par ligne vaut $25+50+25=100$ et le total général vaut $200$. $\checkmark$
+
+---
+
+**4.** *(4 pts)* **Calcul de $T$, conclusion et interprétation.**
+
+$$T = \sum_{i,j} \frac{(o_{ij} - e_{ij})^2}{e_{ij}}$$
+
+| Case | $o_{ij}$ | $e_{ij}$ | $(o-e)^2/e$ |
+|:---:|:---:|:---:|:---:|
+| X – Insuffisante | 20 | 25 | $25/25 = 1{,}000$ |
+| X – Partielle | 60 | 50 | $100/50 = 2{,}000$ |
+| X – Complète | 20 | 25 | $25/25 = 1{,}000$ |
+| Y – Insuffisante | 30 | 25 | $25/25 = 1{,}000$ |
+| Y – Partielle | 40 | 50 | $100/50 = 2{,}000$ |
+| Y – Complète | 30 | 25 | $25/25 = 1{,}000$ |
+
+$$\boxed{T = 1 + 2 + 1 + 1 + 2 + 1 = 8{,}0.}$$
+
+Le nombre de degrés de liberté est $(r-1)(c-1) = (2-1)(3-1) = 2$.
+
+$$T = 8{,}0 > 5{,}991 = \chi^2_{2\,;\,0{,}05.}$$
+
+**Conclusion :** on rejette $H_0$ au seuil $5\,\%$. Le lien entre le traitement et la réponse thérapeutique est **statistiquement significatif**. Les cases « Partielle » contribuent le plus à $T$ (2 chacune) : le traitement X sur-représente les réponses partielles ($60 > 50$) tandis que le traitement Y les sous-représente ($40 < 50$).
+
+---
+
+### Partie B — Droite de régression (16 points)
+
+| Candidat | 1 | 2 | 3 | 4 | 5 | Total |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| $x_i$ | 1 | 2 | 3 | 4 | 5 | 15 |
+| $y_i$ | 5 | 7 | 9 | 13 | 16 | 50 |
+
+---
+
+**5.** *(4 pts)* **Calcul de $\bar{x}$, $\bar{y}$, $S_{xx}$, $S_{xy}$, $S_{yy}$.**
+
+$$\bar{x} = \frac{15}{5} = \boxed{3,} \qquad \bar{y} = \frac{50}{5} = \boxed{10.}$$
+
+$$S_{xx} = \sum x_i^2 - n\bar{x}^2 = 55 - 5 \times 9 = \boxed{10.}$$
+
+$$S_{xy} = \sum x_iy_i - n\bar{x}\bar{y} = 178 - 5 \times 3 \times 10 = 178 - 150 = \boxed{28.}$$
+
+$$S_{yy} = \sum y_i^2 - n\bar{y}^2 = 580 - 5 \times 100 = \boxed{80.}$$
+
+---
+
+**6.** *(4 pts)* **Coefficients de la droite de régression.**
+
+$$\hat{b} = \frac{S_{xy}}{S_{xx}} = \frac{28}{10} = \boxed{2{,}8.}$$
+
+$$\hat{a} = \bar{y} - \hat{b}\,\bar{x} = 10 - 2{,}8 \times 3 = 10 - 8{,}4 = \boxed{1{,}6.}$$
+
+**Équation de la droite de régression :**
+$$\boxed{\hat{y} = 1{,}6 + 2{,}8\,x.}$$
+
+*Lecture :* chaque point supplémentaire au test psychométrique est associé à une augmentation moyenne de 2,8 points de l'indice de performance.
+
+---
+
+**7.** *(4 pts)* **Coefficient de corrélation et coefficient de détermination.**
+
+$$r = \frac{S_{xy}}{\sqrt{S_{xx}\,S_{yy}}} = \frac{28}{\sqrt{10 \times 80}} = \frac{28}{\sqrt{800}} = \frac{28}{20\sqrt{2}} \approx \boxed{0{,}990.}$$
+
+$$r^2 = \frac{S_{xy}^2}{S_{xx}\,S_{yy}} = \frac{784}{800} = \frac{49}{50} = \boxed{0{,}980.}$$
+
+*Commentaire :* $r \approx 0{,}990$ est très proche de 1, indiquant une **liaison linéaire quasi-parfaite** entre le score et la performance. Le coefficient de détermination $r^2 = 98\,\%$ signifie que la droite de régression explique 98 % de la variabilité des performances observées.
+
+---
+
+**8.** *(4 pts)* **Prédiction pour $x = 6$ et discussion.**
+
+$$\hat{y}(6) = 1{,}6 + 2{,}8 \times 6 = 1{,}6 + 16{,}8 = \boxed{18{,}4\ \text{(sur 20).}}$$
+
+*Discussion :* le score $x = 6$ est **hors de l'intervalle d'observation** $[1\,;\,5]$ : il s'agit d'une **extrapolation**. Bien que la relation soit excellente sur $[1\,;\,5]$, rien ne garantit qu'elle reste linéaire au-delà. La prédiction de 18,4/20 doit donc être interprétée avec prudence, d'autant plus qu'elle approche le plafond de l'échelle (20/20).
+
+---
+
+## Exercice 2 — Couple de variables aléatoires continues (40 points)
+
+$$f(x,y) = \begin{cases} 2 & \text{si } x \geq 0,\ y \geq 0,\ x + y \leq 1, \\ 0 & \text{sinon.} \end{cases}$$
+
+Le domaine d'intégration est le triangle $D = \{(x,y) \in \mathbb{R}^2 : x \geq 0,\, y \geq 0,\, x+y \leq 1\}$.
+
+---
+
+**1.** *(2 pts)* **Vérification de la normalisation.**
+
+On intègre d'abord sur $y$ (pour $x$ fixé, $y$ varie de $0$ à $1-x$) puis sur $x$ :
+
+$$\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+  = \int_0^1 \int_0^{1-x} 2\,dy\,dx
+  = \int_0^1 2(1-x)\,dx
+  = 2\Bigl[x - \frac{x^2}{2}\Bigr]_0^1
+  = 2\!\left(1 - \frac{1}{2}\right)
+  = \boxed{1.} \checkmark$$
+
+---
+
+**2.** *(8 pts)* **Densités marginales et indépendance.**
+
+*Densité marginale de $X$.* Pour $x \in [0,1]$, $y$ varie de $0$ à $1-x$ :
+$$f_X(x) = \int_0^{1-x} 2\,dy = 2(1-x), \quad x \in [0,1].$$
+
+Vérification : $\displaystyle\int_0^1 2(1-x)\,dx = 2\left[x - \frac{x^2}{2}\right]_0^1 = 2 \times \frac{1}{2} = 1.$ $\checkmark$
+
+$$\boxed{f_X(x) = \begin{cases} 2(1-x) & \text{si } x \in [0,1], \\ 0 & \text{sinon.} \end{cases}}$$
+
+*Densité marginale de $Y$.* Pour $y \in [0,1]$, $x$ varie de $0$ à $1-y$ :
+$$f_Y(y) = \int_0^{1-y} 2\,dx = 2(1-y), \quad y \in [0,1].$$
+
+Vérification : $\displaystyle\int_0^1 2(1-y)\,dy = 1.$ $\checkmark$ *(calcul identique par symétrie)*
+
+$$\boxed{f_Y(y) = \begin{cases} 2(1-y) & \text{si } y \in [0,1], \\ 0 & \text{sinon.} \end{cases}}$$
+
+*Non-indépendance.* Si $X$ et $Y$ étaient indépendantes, on aurait $f(x,y) = f_X(x)\,f_Y(y)$ en tout point. Or :
+$$f_X(x)\,f_Y(y) = 4(1-x)(1-y).$$
+
+Prenons $(x,y) = \bigl(\tfrac{1}{2}, \tfrac{1}{2}\bigr)$. Ce point est hors du domaine $D$ (car $\tfrac{1}{2}+\tfrac{1}{2} = 1$ est la frontière, mais par exemple $\bigl(\tfrac{1}{2}, \tfrac{3}{4}\bigr)$ avec $\tfrac{1}{2}+\tfrac{3}{4} > 1$) :
+
+Prenons $(x,y) = \bigl(\tfrac{1}{2}, \tfrac{3}{4}\bigr)$ : hors de $D$, donc $f\!\bigl(\tfrac{1}{2},\tfrac{3}{4}\bigr) = 0$. En revanche :
+$$f_X\!\left(\tfrac{1}{2}\right)\,f_Y\!\left(\tfrac{3}{4}\right) = 4 \times \tfrac{1}{2} \times \tfrac{1}{4} = \tfrac{1}{2} \neq 0.$$
+
+Donc $f(x,y) \neq f_X(x)\,f_Y(y)$, et **$X$ et $Y$ ne sont pas indépendantes**.
+
+---
+
+**3.** *(8 pts)* **Espérances et variances.**
+
+*Calculs pour $X$, en utilisant $f_X(x) = 2(1-x)$ sur $[0,1]$ :*
+
+$$\mathbb{E}[X] = \int_0^1 x \cdot 2(1-x)\,dx
+  = 2\int_0^1 (x - x^2)\,dx
+  = 2\left[\frac{x^2}{2} - \frac{x^3}{3}\right]_0^1
+  = 2\!\left(\frac{1}{2} - \frac{1}{3}\right)
+  = 2 \times \frac{1}{6}
+  = \boxed{\frac{1}{3}.}$$
+
+$$\mathbb{E}[X^2] = \int_0^1 x^2 \cdot 2(1-x)\,dx
+  = 2\int_0^1 (x^2 - x^3)\,dx
+  = 2\left[\frac{x^3}{3} - \frac{x^4}{4}\right]_0^1
+  = 2\!\left(\frac{1}{3} - \frac{1}{4}\right)
+  = 2 \times \frac{1}{12}
+  = \boxed{\frac{1}{6}.}$$
+
+$$\mathrm{Var}(X) = \mathbb{E}[X^2] - \bigl(\mathbb{E}[X]\bigr)^2
+  = \frac{1}{6} - \frac{1}{9}
+  = \frac{3}{18} - \frac{2}{18}
+  = \boxed{\frac{1}{18}.}$$
+
+*Résultats pour $Y$ par symétrie.* Les densités $f_X$ et $f_Y$ ont la même expression $2(1-\cdot)$ sur $[0,1]$. Les calculs sont donc identiques :
+
+$$\boxed{\mathbb{E}[Y] = \frac{1}{3}, \qquad \mathrm{Var}(Y) = \frac{1}{18}.}$$
+
+---
+
+**4.** *(7 pts)* **$\mathbb{E}[XY]$, covariance et coefficient de corrélation.**
+
+On intègre sur le domaine $D$ (pour $x$ fixé, $y$ de $0$ à $1-x$) :
+
+$$\mathbb{E}[XY]
+  = \int_0^1 \int_0^{1-x} 2xy\,dy\,dx
+  = \int_0^1 2x\left[\frac{y^2}{2}\right]_0^{1-x} dx
+  = \int_0^1 x(1-x)^2\,dx.$$
+
+En développant $(1-x)^2 = 1 - 2x + x^2$ :
+
+$$\int_0^1 x(1 - 2x + x^2)\,dx
+  = \int_0^1 (x - 2x^2 + x^3)\,dx
+  = \left[\frac{x^2}{2} - \frac{2x^3}{3} + \frac{x^4}{4}\right]_0^1
+  = \frac{1}{2} - \frac{2}{3} + \frac{1}{4}
+  = \frac{6 - 8 + 3}{12}
+  = \boxed{\frac{1}{12}.}$$
+
+$$\mathrm{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\,\mathbb{E}[Y]
+  = \frac{1}{12} - \frac{1}{3} \times \frac{1}{3}
+  = \frac{1}{12} - \frac{1}{9}
+  = \frac{3}{36} - \frac{4}{36}
+  = \boxed{-\frac{1}{36}.}$$
+
+$$\rho(X,Y) = \frac{\mathrm{Cov}(X,Y)}{\sqrt{\mathrm{Var}(X)\,\mathrm{Var}(Y)}}
+  = \frac{-1/36}{\sqrt{1/18 \times 1/18}}
+  = \frac{-1/36}{1/18}
+  = -\frac{18}{36}
+  = \boxed{-\frac{1}{2}.}$$
+
+*Interprétation :* le coefficient de corrélation est **négatif** ($\rho = -0{,}5$). C'est cohérent avec la contrainte $X + Y \leq 1$ : une grande valeur de $X$ laisse peu de place à $Y$, et réciproquement. La valeur $-1/2$ indique une dépendance négative modérée.
+
+---
+
+**5.** *(6 pts)* **Densité conditionnelle $f_{Y\mid X=x}$.**
+
+Par définition :
+$$f_{Y\mid X=x}(y) = \frac{f(x,y)}{f_X(x)}.$$
+
+Pour $x \in (0,1)$ et $y \in [0, 1-x]$ :
+$$f_{Y\mid X=x}(y) = \frac{2}{2(1-x)} = \frac{1}{1-x}.$$
+
+$$\boxed{f_{Y\mid X=x}(y) = \begin{cases} \dfrac{1}{1-x} & \text{si } y \in [0,\,1-x], \\[4pt] 0 & \text{sinon.} \end{cases}}$$
+
+*Identification :* il s'agit de la **loi uniforme** $\mathcal{U}\bigl([0,\,1-x]\bigr)$.
+
+*Vérification :* $\displaystyle\int_0^{1-x} \frac{1}{1-x}\,dy = \frac{1-x}{1-x} = 1.$ $\checkmark$
+
+---
+
+**6.** *(9 pts)* **Probabilités.**
+
+**$P(X + Y < 1/2)$ par la loi totale des probabilités.** *(5 pts)*
+
+Sachant $X = x$, on a $Y \sim \mathcal{U}\bigl([0,\,1-x]\bigr)$. Pour $x \in [0, 1/2]$, la borne $1/2 - x$ est dans $[0, 1-x]$ donc :
+
+$$P\!\left(Y < \frac{1}{2} - x \,\middle|\, X = x\right)
+  = \frac{1/2 - x}{1-x}.$$
+
+Pour $x > 1/2$, on aurait $1/2 - x < 0$, mais $P(X > 1/2) = 1/4$ (voir ci-après), et si $X > 1/2$ alors $X+Y > 1/2$ est impossible uniquement si $Y$ est assez petit — cependant, lorsque $x > 1/2$, la valeur $1/2 - x < 0$, donc $P(Y < 1/2 - x \mid X=x) = 0$. L'intégration est donc limitée à $x \in [0, 1/2]$ :
+
+$$P\!\left(X + Y < \frac{1}{2}\right)
+  = \int_0^{1/2} \frac{1/2 - x}{1-x} \cdot 2(1-x)\,dx
+  = \int_0^{1/2} 2\!\left(\frac{1}{2} - x\right)dx.$$
+
+$$= 2\left[\frac{x}{2} - \frac{x^2}{2}\right]_0^{1/2}
+  = 2\!\left(\frac{1}{4} - \frac{1}{8}\right)
+  = 2 \times \frac{1}{8}
+  = \boxed{\frac{1}{4}.}$$
+
+*Vérification directe :* la région $\{x \geq 0,\, y \geq 0,\, x+y < 1/2\}$ est un triangle de côtés $1/2$, d'aire $\frac{1}{2}\times\frac{1}{2}\times\frac{1}{2} = \frac{1}{8}$. Avec la densité $f = 2$ : $P = 2 \times \frac{1}{8} = \frac{1}{4}$. $\checkmark$
+
+**$P(X > 1/2)$ à partir de $f_X$.** *(2 pts)*
+
+$$P\!\left(X > \frac{1}{2}\right)
+  = \int_{1/2}^1 2(1-x)\,dx
+  = 2\left[x - \frac{x^2}{2}\right]_{1/2}^1
+  = 2\!\left[\left(1 - \frac{1}{2}\right) - \left(\frac{1}{2} - \frac{1}{8}\right)\right]
+  = 2\!\left(\frac{1}{2} - \frac{3}{8}\right)
+  = 2 \times \frac{1}{8}
+  = \boxed{\frac{1}{4}.}$$
+
+**$P(Y < 1/4 \mid X = 1/2)$.** *(2 pts)*
+
+Sachant $X = 1/2$, on a $Y \sim \mathcal{U}\bigl([0,\, 1-1/2]\bigr) = \mathcal{U}\bigl([0,\,1/2]\bigr)$.
+
+$$P\!\left(Y < \frac{1}{4}\,\middle|\,X = \frac{1}{2}\right)
+  = \frac{1/4}{1/2}
+  = \boxed{\frac{1}{2}.}$$
+
+---
+
+## Exercice 3 — Inférence statistique (30 points)
+
+### Partie A — Inégalités de concentration (10 points)
+
+$X$ variable aléatoire positive, $\mathbb{E}[X] = 4$, $\mathrm{Var}(X) = 4$.
+
+---
+
+**1.** *(2 pts)* **Inégalité de Markov.**
+
+Pour toute v.a. positive et tout $a > 0$ : $P(X \geq a) \leq \mathbb{E}[X]/a$. Avec $a = 12$ :
+
+$$\boxed{P(X \geq 12) \leq \frac{4}{12} = \frac{1}{3} \approx 0{,}333.}$$
+
+---
+
+**2.** *(4 pts)* **Inégalité de Bienaymé-Tchebychev.**
+
+Pour tout $\varepsilon > 0$ : $P(|X - \mathbb{E}[X]| \geq \varepsilon) \leq \mathrm{Var}(X)/\varepsilon^2$. Avec $\varepsilon = 4$ :
+
+$$\boxed{P(|X - 4| \geq 4) \leq \frac{4}{16} = \frac{1}{4}.}$$
+
+On remarque que $|X - 4| < 4 \iff 0 < X < 8$ (la positivité de $X$ assure $X > 0$). Donc :
+
+$$P(0 < X < 8) \geq 1 - \frac{1}{4} = \boxed{\frac{3}{4} = 75\,\%.}$$
+
+---
+
+**3.** *(4 pts)* **Calcul exact sous $X \sim \mathcal{N}(4,\,4)$.**
+
+$\mathbb{E}[X] = 4$ et $\sigma = \sqrt{4} = 2$. On centre-réduit : $Z = (X - 4)/2 \sim \mathcal{N}(0,1)$.
+
+$$P(0 < X < 8)
+  = P\!\left(\frac{0-4}{2} < Z < \frac{8-4}{2}\right)
+  = P(-2 < Z < 2)
+  = 2\Phi(2) - 1
+  = 2 \times 0{,}9772 - 1
+  = \boxed{0{,}9544.}$$
+
+*Commentaire :* la borne de Bienaymé-Tchebychev ($\geq 75\,\%$) est très **conservative** : la vraie probabilité sous la loi normale est 95,44 %, soit bien au-delà. B-T est valable pour **toute** loi de variance finie ; sa force est l'universalité, au prix d'une grande imprécision pour les lois régulières comme la loi normale.
+
+---
+
+### Partie B — Intervalle de confiance pour une moyenne (20 points)
+
+$n = 100$ requêtes, $\bar{x} = 72$ ms, $s^2 = 225$ ms² (variance corrigée, donc $s = 15$ ms).
+
+---
+
+**4.** *(4 pts)* **Justification de l'approximation normale.**
+
+Les 100 mesures sont indépendantes et identiquement distribuées. Par le **Théorème Central Limite**, pour $n = 100$ (grand échantillon), la moyenne empirique suit approximativement une loi normale :
+
+$$\bar{X}_{100} \overset{\text{approx}}{\sim} \mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right).$$
+
+On substitue $s^2 = 225$ à $\sigma^2$ (inconnu) :
+
+$$\boxed{\bar{X}_{100} \approx \mathcal{N}\!\left(\mu,\, \frac{225}{100}\right) = \mathcal{N}(\mu,\, 2{,}25),
+  \quad \text{avec } \frac{s}{\sqrt{n}} = \frac{15}{\sqrt{100}} = 1{,}5 \text{ ms}.}$$
+
+---
+
+**5.** *(5 pts)* **Intervalle de confiance à 95 %.**
+
+La formule est $\bar{x} \pm z_{\alpha/2}\,\dfrac{s}{\sqrt{n}}$, avec $z_{0{,}025} = 1{,}96$ :
+
+$$72 \pm 1{,}96 \times 1{,}5 = 72 \pm 2{,}940.$$
+
+$$\boxed{IC_{95\,\%}(\mu) = [69{,}060\,;\,74{,}940] \text{ ms}.}$$
+
+*Lecture :* on est certain à 95 % que le vrai temps de réponse moyen $\mu$ est compris entre 69,06 ms et 74,94 ms.
+
+---
+
+**6.** *(5 pts)* **Intervalle de confiance à 99 %.**
+
+On utilise $z_{0{,}005} = 2{,}58$ :
+
+$$72 \pm 2{,}58 \times 1{,}5 = 72 \pm 3{,}870.$$
+
+$$\boxed{IC_{99\,\%}(\mu) = [68{,}130\,;\,75{,}870] \text{ ms}.}$$
+
+*Remarque :* l'IC à 99 % est plus large ($\pm 3{,}87$ ms) que celui à 95 % ($\pm 2{,}94$ ms) : une plus grande confiance exige un intervalle plus conservateur.
+
+---
+
+**7.** *(6 pts)* **Effectif minimal pour une demi-largeur $\leq 2$ ms.**
+
+On cherche $n$ tel que :
+
+$$z_{0{,}025} \times \frac{s}{\sqrt{n}} \leq 2
+  \implies 1{,}96 \times \frac{15}{\sqrt{n}} \leq 2.$$
+
+On isole $\sqrt{n}$ :
+
+$$\sqrt{n} \geq \frac{1{,}96 \times 15}{2} = \frac{29{,}4}{2} = 14{,}7.$$
+
+En élevant au carré :
+
+$$n \geq 14{,}7^2 = 216{,}09.$$
+
+$$\boxed{n_{\min} = 217 \text{ requêtes}.}$$
+
+*Interprétation :* avec 217 requêtes (au lieu de 100), la demi-largeur de l'IC à 95 % passe de 2,94 ms à 2 ms. Pour diviser la demi-largeur par un facteur $k$, il faut multiplier la taille de l'échantillon par $k^2$.

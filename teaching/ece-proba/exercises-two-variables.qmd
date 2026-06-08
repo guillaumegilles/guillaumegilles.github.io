@@ -1,0 +1,741 @@
+---
+title: "Feuille d'exercices — Probabilités et statistiques à deux variables"
+abstract: |
+  Cette feuille propose **8 exercices progressifs** pour s'entraîner sur la
+  partie **Deux variables** du cours : statistiques bivariées, intégrales
+  doubles, densité conjointe, lois marginales et conditionnelles,
+  indépendance, covariance, corrélation et convolution. Chaque exercice est
+  suivi d'un **corrigé repliable** pour permettre un vrai temps de recherche
+  avant la vérification.
+date-modified: 2026-05-06
+---
+
+[📍 Retour à la carte du cours](index.html) · [📘 Revenir à la fiche de révision](revision-two-variables.html)
+
+> Cette feuille d'entraînement couvre les **cinq chapitres** de la partie *Deux variables*. Commencez par chercher sans ouvrir le corrigé, puis comparez votre méthode au protocole de la fiche de révision.
+
+> **Temps conseillé :** pour chaque exercice, essayez de chercher pendant la durée indiquée avant d'ouvrir le corrigé.
+
+## Plan de travail
+
+| Bloc | Compétences travaillées | Exercices |
+|---|---|---|
+| Statistiques bivariées | marginales, conditionnelles, indépendance visuelle, test du $\chi^2$ | 1 à 2 |
+| Intégrales et loi conjointe | description d'un domaine, changement d'ordre, probabilité sur une région | 3 à 4 |
+| Marginales et grandeurs numériques | marginalisation, densité conditionnelle, espérance, covariance, corrélation | 5 à 6 |
+| Indépendance et sommes | factorisation, calculs de probabilités, convolution | 7 à 8 |
+
+## 1. Statistiques bivariées
+
+::: {.callout-caution}
+## Exercice 1
+
+Le tableau suivant croise la **formule d'abonnement** d'une plateforme vidéo et l'usage du **mode hors ligne** chez 180 abonnés.
+
+| Formule | Hors ligne : oui | Hors ligne : non |
+|---|---:|---:|
+| Essentiel | 18 | 42 |
+| Standard | 30 | 30 |
+| Premium | 36 | 24 |
+
+1. Identifier les deux variables et leur type.
+2. Déterminer les distributions marginales.
+3. Calculer la proportion d'utilisateurs du mode hors ligne dans chaque formule.
+4. Les variables « formule » et « usage du mode hors ligne » semblent-elles indépendantes ?
+:::
+
+**Temps conseillé avant de consulter le corrigé : 15 à 20 min**
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 1
+
+**1. Variables étudiées**
+
+- *Formule d'abonnement* : variable qualitative nominale à trois modalités.
+- *Usage du mode hors ligne* : variable qualitative nominale binaire.
+
+**2. Distributions marginales**
+
+Le total vaut
+$$
+n = 18+42+30+30+36+24 = 180.
+$$
+
+Totaux par ligne :
+
+| Formule | Total | Fréquence |
+|---|---:|---:|
+| Essentiel | 60 | $60/180 = 1/3$ |
+| Standard | 60 | $60/180 = 1/3$ |
+| Premium | 60 | $60/180 = 1/3$ |
+
+Totaux par colonne :
+
+| Usage hors ligne | Total | Fréquence |
+|---|---:|---:|
+| Oui | 84 | $84/180 = 7/15 \approx 0{,}467$ |
+| Non | 96 | $96/180 = 8/15 \approx 0{,}533$ |
+
+**3. Fréquences conditionnelles du mode hors ligne sachant la formule**
+
+$$
+P(\text{oui}\mid \text{Essentiel})=\frac{18}{60}=0{,}30,
+$$
+$$
+P(\text{oui}\mid \text{Standard})=\frac{30}{60}=0{,}50,
+$$
+$$
+P(\text{oui}\mid \text{Premium})=\frac{36}{60}=0{,}60.
+$$
+
+**4. Indépendance visuelle**
+
+Si les variables étaient indépendantes, on devrait retrouver la même proportion globale d'utilisateurs du mode hors ligne, soit
+$$
+P(\text{oui})=\frac{84}{180}\approx 0{,}467,
+$$
+dans chaque formule. Or on observe $0{,}30$, $0{,}50$ et $0{,}60$.
+
+Les profils sont différents : les variables **ne semblent pas indépendantes**.
+:::
+
+::: {.callout-caution}
+## Exercice 2
+
+On observe 200 visites d'un site e-commerce. Le tableau croise le **temps de chargement** de la page d'accueil et l'**issue de la visite**.
+
+| Issue / Temps de chargement | Moins de 5 s | $[5;10[$ s | 10 s ou plus |
+|---|---:|---:|---:|
+| Achat finalisé | 42 | 33 | 15 |
+| Achat abandonné | 18 | 27 | 65 |
+
+1. Déterminer les effectifs théoriques sous l'hypothèse d'indépendance.
+2. Vérifier la condition de Cochran et calculer la statistique du $\chi^2$.
+3. Conclure au seuil de 5 %.
+:::
+
+**Temps conseillé avant de consulter le corrigé : 25 à 30 min**
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 2
+
+**1. Totaux et effectifs théoriques**
+
+Totaux lignes :
+
+- Achat finalisé : $90$.
+- Achat abandonné : $110$.
+
+Totaux colonnes :
+
+- Moins de 5 s : $60$.
+- $[5;10[$ s : $60$.
+- 10 s ou plus : $80$.
+
+Sous $H_0$ (indépendance), les effectifs théoriques sont
+$$
+e_{ij}=\frac{n_{i\cdot}n_{\cdot j}}{200}.
+$$
+
+| Issue / Temps de chargement | Moins de 5 s | $[5;10[$ s | 10 s ou plus |
+|---|---:|---:|---:|
+| Achat finalisé | $90\times 60/200 = 27$ | $90\times 60/200 = 27$ | $90\times 80/200 = 36$ |
+| Achat abandonné | $110\times 60/200 = 33$ | $110\times 60/200 = 33$ | $110\times 80/200 = 44$ |
+
+**2. Condition de Cochran et statistique**
+
+Tous les effectifs théoriques sont supérieurs à $5$, donc la condition de Cochran est satisfaite.
+
+La statistique vaut
+$$
+\chi^2_{obs}
+= \frac{(42-27)^2}{27}
++ \frac{(33-27)^2}{27}
++ \frac{(15-36)^2}{36}
++ \frac{(18-33)^2}{33}
++ \frac{(27-33)^2}{33}
++ \frac{(65-44)^2}{44}.
+$$
+
+Donc
+$$
+\chi^2_{obs}
+= \frac{225}{27}+\frac{36}{27}+\frac{441}{36}+\frac{225}{33}+\frac{36}{33}+\frac{441}{44}
+\approx 39{,}85.
+$$
+
+**3. Décision**
+
+Les degrés de liberté sont
+$$
+\nu=(2-1)(3-1)=2.
+$$
+
+Au seuil de 5 %, la valeur critique est
+$$
+\chi^2_{0{,}95;2}\approx 5{,}991.
+$$
+
+Comme
+$$
+39{,}85 \gg 5{,}991,
+$$
+on **rejette** l'hypothèse d'indépendance.
+
+Le temps de chargement et l'issue de la visite sont donc **dépendants** : les abandons sont beaucoup plus fréquents quand le chargement est long.
+:::
+
+## 2. Intégrales et loi conjointe
+
+::: {.callout-caution}
+## Exercice 3
+
+On considère le domaine
+$$
+D=\{(x,y)\in\mathbb{R}^2 : 0\le y\le x\le 2\}.
+$$
+
+Autrement dit, $D$ est le triangle délimité par la droite $y=0$, la droite $y=x$ et la droite $x=2$.
+
+1. Réécrire $D$ en **inversant l'ordre d'intégration**, c'est-à-dire sous la forme : « d'abord $y$ varie entre deux bornes fixes, puis $x$ varie entre deux bornes dépendant de $y$ ».
+2. En déduire le calcul de
+   $$
+   I=\iint_D (x+y)\,dx\,dy.
+   $$
+3. Un point est choisi uniformément dans $D$. Traduire alors l'événement $\{Y\le 1\}$ sur le dessin, puis calculer sa probabilité en utilisant un **rapport d'aires**.
+:::
+
+**Temps conseillé avant de consulter le corrigé : 15 à 20 min**
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 3
+
+**1. Domaine avec l'ordre inversé**
+
+La description initiale est
+$$
+0\le y\le x\le 2.
+$$
+
+Géométriquement, $D$ est le triangle situé :
+
+- au-dessus de l'axe des abscisses ($y=0$) ;
+- sous la droite $y=x$ ;
+- à gauche de la droite $x=2$.
+
+Si l'on fixe maintenant la valeur de $y$, alors :
+
+- $y$ peut aller de $0$ à $2$ ;
+- une fois $y$ fixé, $x$ commence sur la droite $x=y$ et va jusqu'à $x=2$.
+
+Donc
+$$
+D=\{(x,y)\in\mathbb{R}^2 : 0\le y\le 2,\ y\le x\le 2\}.
+$$
+
+**2. Calcul de l'intégrale**
+
+Avec l'ordre donné :
+$$
+I=\int_0^2\int_0^x (x+y)\,dy\,dx.
+$$
+
+On calcule l'intégrale intérieure :
+$$
+\int_0^x (x+y)\,dy = xy+\frac{y^2}{2}\Big|_{0}^{x}
+=x^2+\frac{x^2}{2}
+=\frac{3x^2}{2}.
+$$
+
+Ainsi,
+$$
+I=\int_0^2 \frac{3x^2}{2}\,dx
+=\frac{3}{2}\cdot\frac{x^3}{3}\Big|_0^2
+=\frac{2^3}{2}
+=4.
+$$
+
+**3. Probabilité de $\{Y\le 1\}$ sous la loi uniforme sur $D$**
+
+Comme le point est choisi **uniformément** dans $D$, cela signifie que la densité est **constante** sur tout le domaine $D$ :
+les zones de même aire ont donc la même probabilité.
+
+Autrement dit, pour toute sous-région $A\subset D$,
+$$
+P\bigl((X,Y)\in A\bigr)=\frac{\text{aire de }A}{\text{aire de }D}.
+$$
+
+Ici, on prendra $A=\{(x,y)\in D : y\le 1\}$.
+
+L'aire de $D$ vaut
+$$
+\mathcal{A}(D)=\int_0^2 x\,dx=2.
+$$
+
+Pourquoi ? Pour chaque abscisse $x\in[0,2]$, la tranche verticale du triangle va de $y=0$ à $y=x$ :
+sa hauteur vaut donc $x$. On additionne ces hauteurs de $x=0$ à $x=2$, d'où
+$$
+\mathcal{A}(D)=\int_0^2 x\,dx.
+$$
+
+On peut aussi le voir directement : $D$ est un triangle rectangle de base $2$ et de hauteur $2$, donc
+$$
+\mathcal{A}(D)=\frac{2\times 2}{2}=2.
+$$
+
+La région $\{(x,y)\in D : y\le 1\}$ se décompose en :
+
+- pour $0\le x\le 1$, la condition $y\le 1$ ne change rien, car on a déjà $y\le x\le 1$, donc toute la tranche $0\le y\le x$ est conservée ;
+- pour $1\le x\le 2$, la tranche complète irait jusqu'à $y=x$, mais la condition $y\le 1$ coupe cette tranche à la hauteur $1$, donc il ne reste que $0\le y\le 1$.
+
+Son aire vaut donc
+$$
+\int_0^1 x\,dx+\int_1^2 1\,dx
+=\frac{1}{2}+1
+=\frac{3}{2}.
+$$
+
+Le premier terme correspond au petit triangle situé à gauche de la droite $x=1$ ; le second correspond au rectangle situé entre $x=1$ et $x=2$, sous la droite $y=1$.
+
+La probabilité demandée est
+$$
+P(Y\le 1)=\frac{\mathcal{A}(\{(x,y)\in D : y\le 1\})}{\mathcal{A}(D)}
+=\frac{3/2}{2}
+=\frac{3}{4}.
+$$
+:::
+
+::: {.callout-caution}
+## Exercice 4
+
+Soit $(X,Y)$ un couple de variables aléatoires continues de densité
+$$
+f(x,y)=c(x+y)\,\mathbf{1}_{[0,1]^2}(x,y).
+$$
+
+1. Déterminer la constante $c$.
+2. Calculer $P(X+Y\le 1)$.
+3. Calculer $P(X>Y)$.
+4. Les variables $X$ et $Y$ sont-elles indépendantes ?
+:::
+
+**Temps conseillé avant de consulter le corrigé : 30 à 35 min**
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 4
+
+**1. Normalisation**
+
+La densité doit vérifier
+$$
+\int_0^1\int_0^1 c(x+y)\,dy\,dx = 1.
+$$
+
+Or
+$$
+\int_0^1\int_0^1 (x+y)\,dy\,dx
+=\int_0^1 \left(x+\frac{1}{2}\right)\,dx
+=\frac{1}{2}+\frac{1}{2}
+=1.
+$$
+
+Donc
+$$
+c=1.
+$$
+
+**2. Probabilité de l'événement $\{X+Y\le 1\}$**
+
+On intègre sur le triangle $0\le x\le 1$, $0\le y\le 1-x$ :
+$$
+P(X+Y\le 1)=\int_0^1\int_0^{1-x} (x+y)\,dy\,dx.
+$$
+
+L'intégrale intérieure vaut
+$$
+x(1-x)+\frac{(1-x)^2}{2}
+=\frac{1-x^2}{2}.
+$$
+
+Donc
+$$
+P(X+Y\le 1)=\int_0^1 \frac{1-x^2}{2}\,dx
+=\frac{1}{2}\left(1-\frac{1}{3}\right)
+=\frac{1}{3}.
+$$
+
+**3. Probabilité de l'événement $\{X>Y\}$**
+
+On intègre sur le triangle $0\le y\le x\le 1$ :
+$$
+P(X>Y)=\int_0^1\int_0^x (x+y)\,dy\,dx.
+$$
+
+On obtient
+$$
+\int_0^1 \left(x^2+\frac{x^2}{2}\right)\,dx
+=\frac{3}{2}\int_0^1 x^2\,dx
+=\frac{3}{2}\cdot\frac{1}{3}
+=\frac{1}{2}.
+$$
+
+**4. Indépendance**
+
+Les densités marginales valent
+$$
+f_X(x)=\left(x+\frac{1}{2}\right)\mathbf{1}_{[0,1]}(x),
+\qquad
+f_Y(y)=\left(y+\frac{1}{2}\right)\mathbf{1}_{[0,1]}(y),
+$$
+car, sur $[0,1]$, on a
+$$
+\int_0^1 (x+y)\,dy = x+\frac{1}{2},
+\qquad
+\int_0^1 (x+y)\,dx = y+\frac{1}{2}.
+$$
+
+Le produit
+$$
+f_X(x)f_Y(y)=\left(x+\frac{1}{2}\right)\left(y+\frac{1}{2}\right)
+$$
+n'est pas égal à $x+y$ sur $[0,1]^2$.
+
+Les variables $X$ et $Y$ **ne sont donc pas indépendantes**.
+:::
+
+## 3. Marginales, conditionnelles et grandeurs numériques
+
+::: {.callout-caution}
+## Exercice 5
+
+Soit $(X,Y)$ un couple de densité
+$$
+f(x,y)=2\,\mathbf{1}_{\{0<y<x<1\}}(x,y).
+$$
+
+1. Déterminer les densités marginales $f_X$ et $f_Y$.
+2. Déterminer la densité conditionnelle $f_{Y\mid X}(y\mid x)$ pour $0<x<1$.
+3. Calculer $E(Y\mid X=x)$.
+4. Les variables $X$ et $Y$ sont-elles indépendantes ?
+:::
+
+**Temps conseillé avant de consulter le corrigé : 20 à 30 min**
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 5
+
+**1. Densités marginales**
+
+Pour $0<x<1$, on a $0<y<x$, donc
+$$
+f_X(x)=\int_0^x 2\,dy = 2x.
+$$
+Ainsi,
+$$
+f_X(x)=2x\,\mathbf{1}_{(0,1)}(x).
+$$
+
+Pour $0<y<1$, on a $y<x<1$, donc
+$$
+f_Y(y)=\int_y^1 2\,dx = 2(1-y).
+$$
+Ainsi,
+$$
+f_Y(y)=2(1-y)\,\mathbf{1}_{(0,1)}(y).
+$$
+
+**2. Densité conditionnelle**
+
+Pour $0<y<x<1$,
+$$
+f_{Y\mid X}(y\mid x)=\frac{f(x,y)}{f_X(x)}=\frac{2}{2x}=\frac{1}{x}.
+$$
+
+Donc
+$$
+f_{Y\mid X}(y\mid x)=\frac{1}{x}\,\mathbf{1}_{(0,x)}(y).
+$$
+
+**3. Espérance conditionnelle**
+
+$$
+E(Y\mid X=x)=\int_0^x y\frac{1}{x}\,dy
+=\frac{1}{x}\cdot\frac{x^2}{2}
+=\frac{x}{2}.
+$$
+
+**4. Indépendance**
+
+Le support est triangulaire :
+$$
+\{(x,y):0<y<x<1\}.
+$$
+
+Il n'est pas rectangulaire, donc l'indépendance est impossible. On peut aussi remarquer que
+$$
+f_X(x)f_Y(y)=4x(1-y)
+$$
+ne coïncide pas avec la densité conjointe $2$ sur le support.
+
+Les variables $X$ et $Y$ **ne sont pas indépendantes**.
+:::
+
+::: {.callout-caution}
+## Exercice 6
+
+On reprend le couple $(X,Y)$ de l'exercice 5.
+
+1. Calculer $E(X)$, $E(Y)$ et $E(XY)$.
+2. En déduire $\operatorname{Cov}(X,Y)$.
+3. Calculer le coefficient de corrélation $\rho(X,Y)$.
+:::
+
+**Temps conseillé avant de consulter le corrigé : 30 à 40 min**
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 6
+
+**1. Espérances**
+
+À partir de la marginale de $X$ :
+$$
+E(X)=\int_0^1 x\cdot 2x\,dx = 2\int_0^1 x^2\,dx = \frac{2}{3}.
+$$
+
+À partir de la marginale de $Y$ :
+$$
+E(Y)=\int_0^1 y\cdot 2(1-y)\,dy
+=2\int_0^1 (y-y^2)\,dy
+=2\left(\frac{1}{2}-\frac{1}{3}\right)
+=\frac{1}{3}.
+$$
+
+Pour $E(XY)$ :
+$$
+E(XY)=\int_0^1\int_0^x 2xy\,dy\,dx
+=\int_0^1 x\left(y^2\Big|_0^x\right)\,dx
+=\int_0^1 x^3\,dx
+=\frac{1}{4}.
+$$
+
+**2. Covariance**
+
+$$
+\operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y)
+=\frac{1}{4}-\frac{2}{3}\cdot\frac{1}{3}
+=\frac{1}{4}-\frac{2}{9}
+=\frac{1}{36}.
+$$
+
+**3. Corrélation**
+
+On calcule d'abord les variances.
+
+Pour $X$ :
+$$
+E(X^2)=\int_0^1 x^2\cdot 2x\,dx = 2\int_0^1 x^3\,dx = \frac{1}{2},
+$$
+donc
+$$
+\operatorname{Var}(X)=\frac{1}{2}-\left(\frac{2}{3}\right)^2
+=\frac{1}{2}-\frac{4}{9}
+=\frac{1}{18}.
+$$
+
+Pour $Y$ :
+$$
+E(Y^2)=\int_0^1 y^2\cdot 2(1-y)\,dy
+=2\int_0^1 (y^2-y^3)\,dy
+=2\left(\frac{1}{3}-\frac{1}{4}\right)
+=\frac{1}{6},
+$$
+donc
+$$
+\operatorname{Var}(Y)=\frac{1}{6}-\left(\frac{1}{3}\right)^2
+=\frac{1}{6}-\frac{1}{9}
+=\frac{1}{18}.
+$$
+
+Le coefficient de corrélation vaut alors
+$$
+\rho(X,Y)=\frac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y}
+=\frac{1/36}{\sqrt{1/18}\sqrt{1/18}}
+=\frac{1/36}{1/18}
+=\frac{1}{2}.
+$$
+
+On obtient donc une **corrélation linéaire positive modérée**.
+:::
+
+## 4. Indépendance et convolution
+
+::: {.callout-caution}
+## Exercice 7
+
+Soit $(X,Y)$ un couple de densité
+$$
+f(x,y)=4xy\,\mathbf{1}_{[0,1]^2}(x,y).
+$$
+
+1. Déterminer $f_X$ et $f_Y$.
+2. Montrer que $X$ et $Y$ sont indépendantes.
+3. Calculer $P\left(X\le \frac{1}{2},\,Y\le \frac{3}{4}\right)$.
+4. Calculer $P(Y\le X)$.
+:::
+
+**Temps conseillé avant de consulter le corrigé : 15 à 20 min**
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 7
+
+**1. Marginales**
+
+Pour $x\in[0,1]$ :
+$$
+f_X(x)=\int_0^1 4xy\,dy = 4x\cdot\frac{1}{2}=2x.
+$$
+
+Pour $y\in[0,1]$ :
+$$
+f_Y(y)=\int_0^1 4xy\,dx = 4y\cdot\frac{1}{2}=2y.
+$$
+
+Donc
+$$
+f_X(x)=2x\,\mathbf{1}_{[0,1]}(x),
+\qquad
+f_Y(y)=2y\,\mathbf{1}_{[0,1]}(y).
+$$
+
+**2. Indépendance**
+
+Sur $[0,1]^2$,
+$$
+f_X(x)f_Y(y)=(2x)(2y)=4xy=f(x,y).
+$$
+
+La densité conjointe se factorise : les variables $X$ et $Y$ sont **indépendantes**.
+
+**3. Probabilité sur un rectangle**
+
+Par indépendance :
+$$
+P\left(X\le \frac{1}{2},\,Y\le \frac{3}{4}\right)
+=P\left(X\le \frac{1}{2}\right)P\left(Y\le \frac{3}{4}\right).
+$$
+
+Or
+$$
+P\left(X\le \frac{1}{2}\right)=\int_0^{1/2}2x\,dx=\frac{1}{4},
+$$
+et
+$$
+P\left(Y\le \frac{3}{4}\right)=\int_0^{3/4}2y\,dy=\frac{9}{16}.
+$$
+
+Donc
+$$
+P\left(X\le \frac{1}{2},\,Y\le \frac{3}{4}\right)=\frac{1}{4}\cdot\frac{9}{16}=\frac{9}{64}.
+$$
+
+**4. Probabilité de l'événement $\{Y\le X\}$**
+
+On peut intégrer directement :
+$$
+P(Y\le X)=\int_0^1\int_0^x 4xy\,dy\,dx
+=\int_0^1 2x^3\,dx
+=\frac{1}{2}.
+$$
+
+On retrouve aussi ce résultat par symétrie entre $X$ et $Y$.
+:::
+
+::: {.callout-caution}
+## Exercice 8
+
+Soient $X$ et $Y$ deux variables indépendantes de loi uniforme sur $[0,1]$. On pose
+$$
+S=X+Y.
+$$
+
+1. Déterminer la densité de $S$ par convolution.
+2. Calculer
+   $$
+   P\left(\frac{1}{2}\le S\le \frac{3}{2}\right).
+   $$
+:::
+
+**Temps conseillé avant de consulter le corrigé : 20 à 25 min**
+
+::: {.callout-tip collapse="true"}
+## Solution — Exercice 8
+
+Comme $X$ et $Y$ sont indépendantes et ont pour densité
+$$
+f_X(x)=f_Y(x)=\mathbf{1}_{[0,1]}(x),
+$$
+la densité de $S=X+Y$ est donnée par la convolution
+$$
+f_S(t)=\int_{\mathbb{R}} f_X(x)f_Y(t-x)\,dx.
+$$
+
+**1. Densité de $S$**
+
+Pour $0\le t\le 1$, la condition $0\le x\le 1$ et $0\le t-x\le 1$ donne $0\le x\le t$, donc
+$$
+f_S(t)=\int_0^t 1\,dx = t.
+$$
+
+Pour $1\le t\le 2$, on a $t-1\le x\le 1$, donc
+$$
+f_S(t)=\int_{t-1}^1 1\,dx = 2-t.
+$$
+
+En dehors de $[0,2]$, la densité vaut $0$. Ainsi,
+$$
+f_S(t)=
+\begin{cases}
+0 & \text{si } t<0,\\
+t & \text{si } 0\le t\le 1,\\
+2-t & \text{si } 1\le t\le 2,\\
+0 & \text{si } t>2.
+\end{cases}
+$$
+
+**2. Probabilité demandée**
+
+$$
+P\left(\frac{1}{2}\le S\le \frac{3}{2}\right)
+=\int_{1/2}^1 t\,dt+\int_1^{3/2}(2-t)\,dt.
+$$
+
+On obtient
+$$
+\int_{1/2}^1 t\,dt
+=\frac{1}{2}\left(1-\frac{1}{4}\right)
+=\frac{3}{8},
+$$
+et
+$$
+\int_1^{3/2}(2-t)\,dt
+=\left(2t-\frac{t^2}{2}\right)\Big|_1^{3/2}
+=\frac{3}{8}.
+$$
+
+Donc
+$$
+P\left(\frac{1}{2}\le S\le \frac{3}{2}\right)=\frac{3}{8}+\frac{3}{8}=\frac{3}{4}.
+$$
+:::
+
+## Pour aller plus vite en autonomie
+
+::: {.callout-important}
+## Réflexes à systématiser
+
+1. En statistique bivariée, commencez toujours par les **marginales**, puis les **conditionnelles**.
+2. En continu, dessinez d'abord le **support** ou la **région d'intégration** avant toute formule.
+3. Pour l'indépendance, ne concluez jamais sur une intuition seule : vérifiez la **factorisation**.
+4. Pour la covariance, calculez séparément $E(X)$, $E(Y)$ et $E(XY)$.
+5. Pour une somme de variables indépendantes, pensez immédiatement à la **convolution**.
+:::

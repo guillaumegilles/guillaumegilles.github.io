@@ -1,0 +1,478 @@
+---
+title: "Correction — Révision Examen Final · Statistiques et Probabilités"
+subtitle: "Statistiques bivariées · Couples de v.a.r. continues · Convergence et estimation"
+date-modified: 2026-05-21
+abstract: |
+  Corrigé détaillé de la [fiche de révision examen final](final-revision.qmd).
+---
+
+> **Barème indicatif :** Exercice 1 — 30 pts · Exercice 2 — 40 pts · Exercice 3 — 30 pts
+
+---
+
+## Exercice 1 — Statistiques bivariées (30 points)
+
+### Partie A — Tableau de contingence et test du $\chi^2$ (16 points)
+
+Le tableau des effectifs observés est :
+
+|  | Insatisfait | Neutre | Satisfait | **Total** |
+|:---:|:---:|:---:|:---:|:---:|
+| **Cadre** | 18 | 32 | 50 | **100** |
+| **Non-cadre** | 22 | 48 | 30 | **100** |
+| **Total** | **40** | **80** | **80** | **200** |
+
+---
+
+**1.** *(3 pts)* **Fréquences marginales et distribution conditionnelle.**
+
+*Fréquences marginales de la variable Statut :*
+
+$$\frac{100}{200} = 50\,\%\ \text{de Cadres} \qquad \text{et} \qquad \frac{100}{200} = 50\,\%\ \text{de Non-cadres.}$$
+
+*Fréquences marginales de la variable Satisfaction :*
+
+$$\frac{40}{200} = 20\,\%\ \text{Insatisfaits,} \qquad \frac{80}{200} = 40\,\%\ \text{Neutres,} \qquad \frac{80}{200} = 40\,\%\ \text{Satisfaits.}$$
+
+*Distribution conditionnelle du niveau de satisfaction pour les Non-cadres :*
+
+$$P(\text{Insatisfait}\mid\text{NC}) = \frac{22}{100} = 22\,\%, \quad
+  P(\text{Neutre}\mid\text{NC}) = \frac{48}{100} = 48\,\%, \quad
+  P(\text{Satisfait}\mid\text{NC}) = \frac{30}{100} = 30\,\%.$$
+
+*Interprétation :* parmi les Non-cadres, près de la moitié est neutre et seulement 30 % se déclare satisfaite. On peut comparer avec les Cadres : $P(\text{Satisfait}\mid\text{Cadre}) = 50\,\%$, ce qui suggère un lien entre le statut et la satisfaction.
+
+---
+
+**2.** *(3 pts)* **Probabilités conditionnelles et totales.**
+
+- $\displaystyle P(\text{Insatisfait}\mid\text{Cadre}) = \frac{18}{100} = \boxed{0{,}18.}$
+
+- $\displaystyle P(\text{Satisfait}) = \frac{80}{200} = \boxed{0{,}40.}$
+
+- $\displaystyle P(\text{Cadre}\mid\text{Neutre}) = \frac{32}{80} = \boxed{0{,}40.}$
+  *(Par la formule de Bayes : $P(\text{Cadre}\mid\text{Neutre}) = \frac{P(\text{Cadre et Neutre})}{P(\text{Neutre})} = \frac{32/200}{80/200}$.)*
+
+---
+
+**3.** *(4 pts)* **Effectifs théoriques sous l'hypothèse d'indépendance.**
+
+Sous $H_0$ (indépendance), l'effectif théorique de la case $(i,j)$ est :
+$$e_{ij} = \frac{n_{i\bullet} \times n_{\bullet j}}{n}.$$
+
+| | Insatisfait | Neutre | Satisfait |
+|:---:|:---:|:---:|:---:|
+| **Cadre** | $\dfrac{100\times40}{200}=20$ | $\dfrac{100\times80}{200}=40$ | $\dfrac{100\times80}{200}=40$ |
+| **Non-cadre** | $\dfrac{100\times40}{200}=20$ | $\dfrac{100\times80}{200}=40$ | $\dfrac{100\times80}{200}=40$ |
+
+Tous les effectifs théoriques sont **égaux à 20 ou 40**, donc strictement supérieurs à 5. $\checkmark$
+
+*Vérification :* la somme des effectifs théoriques par ligne vaut $20+40+40=100$ et le total général vaut $200$. $\checkmark$
+
+---
+
+**4.** *(4 pts)* **Calcul de la statistique $T$ et conclusion.**
+
+$$T = \sum_{i,j} \frac{(o_{ij} - e_{ij})^2}{e_{ij}}$$
+
+On calcule chaque terme :
+
+| Case | $o_{ij}$ | $e_{ij}$ | $(o-e)^2/e$ |
+|:---:|:---:|:---:|:---:|
+| Cadre – Insatisfait | 18 | 20 | $4/20 = 0{,}200$ |
+| Cadre – Neutre | 32 | 40 | $64/40 = 1{,}600$ |
+| Cadre – Satisfait | 50 | 40 | $100/40 = 2{,}500$ |
+| Non-cadre – Insatisfait | 22 | 20 | $4/20 = 0{,}200$ |
+| Non-cadre – Neutre | 48 | 40 | $64/40 = 1{,}600$ |
+| Non-cadre – Satisfait | 30 | 40 | $100/40 = 2{,}500$ |
+
+$$\boxed{T = 0{,}2 + 1{,}6 + 2{,}5 + 0{,}2 + 1{,}6 + 2{,}5 = 8{,}6.}$$
+
+Le nombre de degrés de liberté est $(r-1)(c-1) = (2-1)(3-1) = 2$.
+Le seuil critique à $\alpha = 5\,\%$ est $\chi^2_{2\,;\,0{,}05} = 5{,}991$.
+
+$$T = 8{,}6 > 5{,}991 = \chi^2_{2\,;\,0{,}05}.$$
+
+**Conclusion :** on rejette $H_0$ au seuil 5 %. Le lien entre le statut et le niveau de satisfaction est **statistiquement significatif**.
+
+---
+
+**5.** *(2 pts)* **Interprétation et case la plus contributrice.**
+
+Le rejet de l'indépendance indique que la satisfaction dépend du statut : les Cadres sont proportionnellement plus satisfaits (50 %) et les Non-cadres plus souvent neutres (48 %).
+
+Les cases **Cadre – Satisfait** et **Non-cadre – Satisfait** contribuent le plus à $T$, avec $2{,}5$ chacune. Elles montrent que les cadres sont surreprésentés parmi les satisfaits ($o = 50 > e = 40$) et les non-cadres sous-représentés ($o = 30 < e = 40$).
+
+---
+
+### Partie B — Droite de régression (14 points)
+
+| Actif | A | B | C | D | E | Total |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| $x_i$ | 1 | 2 | 3 | 4 | 5 | 15 |
+| $y_i$ | 2 | 4 | 5 | 8 | 11 | 30 |
+
+---
+
+**6.** *(3 pts)* **Calcul de $\bar{x}$, $\bar{y}$, $S_{xx}$, $S_{xy}$, $S_{yy}$.**
+
+$$\bar{x} = \frac{1+2+3+4+5}{5} = \frac{15}{5} = \boxed{3,} \qquad
+  \bar{y} = \frac{2+4+5+8+11}{5} = \frac{30}{5} = \boxed{6.}$$
+
+$$S_{xx} = \sum x_i^2 - n\bar{x}^2 = 55 - 5 \times 9 = 55 - 45 = \boxed{10.}$$
+
+$$S_{xy} = \sum x_iy_i - n\bar{x}\bar{y} = 112 - 5 \times 3 \times 6 = 112 - 90 = \boxed{22.}$$
+
+$$S_{yy} = \sum y_i^2 - n\bar{y}^2 = 230 - 5 \times 36 = 230 - 180 = \boxed{50.}$$
+
+---
+
+**7.** *(4 pts)* **Coefficients de la droite de régression.**
+
+$$\hat{b} = \frac{S_{xy}}{S_{xx}} = \frac{22}{10} = \boxed{2{,}2.}$$
+
+$$\hat{a} = \bar{y} - \hat{b}\,\bar{x} = 6 - 2{,}2 \times 3 = 6 - 6{,}6 = \boxed{-0{,}6.}$$
+
+**Équation de la droite de régression :**
+$$\boxed{\hat{y} = -0{,}6 + 2{,}2\,x.}$$
+
+*Lecture :* pour chaque point de volatilité supplémentaire, le rendement prédit augmente en moyenne de 2,2 points de pourcentage.
+
+---
+
+**8.** *(4 pts)* **Coefficient de corrélation et coefficient de détermination.**
+
+$$r = \frac{S_{xy}}{\sqrt{S_{xx}\,S_{yy}}} = \frac{22}{\sqrt{10 \times 50}} = \frac{22}{\sqrt{500}} = \frac{22}{10\sqrt{5}} \approx \frac{22}{22{,}361} \approx \boxed{0{,}984.}$$
+
+$$r^2 = \frac{S_{xy}^2}{S_{xx}\,S_{yy}} = \frac{484}{500} = \boxed{0{,}968.}$$
+
+*Commentaire :* $r \approx 0{,}984$ est très proche de 1, ce qui indique une **liaison linéaire quasi-parfaite** entre la volatilité et le rendement. Le coefficient de détermination $r^2 \approx 96{,}8\,\%$ signifie que la droite de régression explique 96,8 % de la variabilité totale du rendement.
+
+---
+
+**9.** *(3 pts)* **Prédiction pour $x = 6\,\%$ et discussion.**
+
+$$\hat{y}(6) = -0{,}6 + 2{,}2 \times 6 = -0{,}6 + 13{,}2 = \boxed{12{,}6\,\%.}$$
+
+*Discussion :* $x = 6$ est **hors de l'intervalle d'observation** $[1\,;\,5]$ : il s'agit d'une **extrapolation**. La relation linéaire, bien que très bonne sur $[1\,;\,5]$, n'est pas garantie au-delà. La prédiction doit donc être interprétée avec précaution.
+
+---
+
+## Exercice 2 — Couple de variables aléatoires continues (40 points)
+
+$$f(x,y) = \begin{cases} 2 & \text{si } 0 \leq y \leq x \leq 1, \\ 0 & \text{sinon.} \end{cases}$$
+
+Le domaine d'intégration est le triangle $D = \{(x,y) \in \mathbb{R}^2 : 0 \leq y \leq x \leq 1\}$.
+
+---
+
+**1.** *(2 pts)* **Vérification de la normalisation.**
+
+On intègre d'abord sur $y$ (pour $x$ fixé, $y$ varie de $0$ à $x$) puis sur $x$ :
+
+$$\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy
+  = \int_0^1 \int_0^x 2\,dy\,dx
+  = \int_0^1 2x\,dx
+  = \Bigl[x^2\Bigr]_0^1
+  = \boxed{1.} \checkmark$$
+
+---
+
+**2.** *(6 pts)* **Densités marginales $f_X$ et $f_Y$.**
+
+*Densité marginale de $X$.* Pour $x \in [0,1]$, $y$ varie de $0$ à $x$ :
+$$f_X(x) = \int_0^x 2\,dy = 2x, \quad x \in [0,1].$$
+
+Vérification : $\displaystyle\int_0^1 2x\,dx = \bigl[x^2\bigr]_0^1 = 1.$ $\checkmark$
+
+$$\boxed{f_X(x) = \begin{cases} 2x & \text{si } x \in [0,1], \\ 0 & \text{sinon.} \end{cases}}$$
+
+*Densité marginale de $Y$.* Pour $y \in [0,1]$, $x$ varie de $y$ à $1$ :
+$$f_Y(y) = \int_y^1 2\,dx = 2(1-y), \quad y \in [0,1].$$
+
+Vérification : $\displaystyle\int_0^1 2(1-y)\,dy = 2\Bigl[y - \frac{y^2}{2}\Bigr]_0^1 = 2\!\left(1 - \frac{1}{2}\right) = 1.$ $\checkmark$
+
+$$\boxed{f_Y(y) = \begin{cases} 2(1-y) & \text{si } y \in [0,1], \\ 0 & \text{sinon.} \end{cases}}$$
+
+---
+
+**3.** *(4 pts)* **$X$ et $Y$ ne sont pas indépendantes.**
+
+Si $X$ et $Y$ étaient indépendantes, on aurait $f(x,y) = f_X(x)\,f_Y(y)$ en tout point. Or :
+
+$$f_X(x)\,f_Y(y) = 2x \cdot 2(1-y) = 4x(1-y).$$
+
+Prenons par exemple le point $(x,y) = \bigl(\tfrac{1}{4},\,\tfrac{1}{2}\bigr)$.
+Comme $y = \tfrac{1}{2} > x = \tfrac{1}{4}$, ce point est **hors du domaine** $D$, donc $f\!\bigl(\tfrac{1}{4},\tfrac{1}{2}\bigr) = 0$.
+En revanche :
+$$f_X\!\left(\tfrac{1}{4}\right)\,f_Y\!\left(\tfrac{1}{2}\right) = 4 \times \tfrac{1}{4} \times \tfrac{1}{2} = \tfrac{1}{2} \neq 0.$$
+
+On conclut que $f(x,y) \neq f_X(x)\,f_Y(y)$ en ce point, donc **$X$ et $Y$ ne sont pas indépendantes**.
+
+---
+
+**4.** *(8 pts)* **Espérances et variances de $X$ et $Y$.**
+
+*Calculs pour $X$, en utilisant $f_X(x) = 2x$ sur $[0,1]$ :*
+
+$$\mathbb{E}[X] = \int_0^1 x \cdot 2x\,dx = 2\int_0^1 x^2\,dx = 2 \times \frac{1}{3} = \boxed{\frac{2}{3}.}$$
+
+$$\mathbb{E}[X^2] = \int_0^1 x^2 \cdot 2x\,dx = 2\int_0^1 x^3\,dx = 2 \times \frac{1}{4} = \boxed{\frac{1}{2}.}$$
+
+$$\mathrm{Var}(X) = \mathbb{E}[X^2] - \bigl(\mathbb{E}[X]\bigr)^2 = \frac{1}{2} - \frac{4}{9} = \frac{9}{18} - \frac{8}{18} = \boxed{\frac{1}{18} \approx 0{,}056.}$$
+
+*Calculs pour $Y$, en utilisant $f_Y(y) = 2(1-y)$ sur $[0,1]$ :*
+
+$$\mathbb{E}[Y] = \int_0^1 y \cdot 2(1-y)\,dy = 2\int_0^1 (y - y^2)\,dy
+  = 2\left[\frac{y^2}{2} - \frac{y^3}{3}\right]_0^1
+  = 2\!\left(\frac{1}{2} - \frac{1}{3}\right) = 2 \times \frac{1}{6} = \boxed{\frac{1}{3}.}$$
+
+$$\mathbb{E}[Y^2] = \int_0^1 y^2 \cdot 2(1-y)\,dy = 2\int_0^1 (y^2 - y^3)\,dy
+  = 2\left[\frac{y^3}{3} - \frac{y^4}{4}\right]_0^1
+  = 2\!\left(\frac{1}{3} - \frac{1}{4}\right) = 2 \times \frac{1}{12} = \boxed{\frac{1}{6}.}$$
+
+$$\mathrm{Var}(Y) = \mathbb{E}[Y^2] - \bigl(\mathbb{E}[Y]\bigr)^2 = \frac{1}{6} - \frac{1}{9} = \frac{3}{18} - \frac{2}{18} = \boxed{\frac{1}{18} \approx 0{,}056.}$$
+
+*Remarque :* les deux variances sont égales, $\mathrm{Var}(X) = \mathrm{Var}(Y) = \frac{1}{18}$.
+
+---
+
+**5.** *(7 pts)* **$\mathbb{E}[XY]$, covariance et coefficient de corrélation.**
+
+On calcule directement sur le domaine $D$ :
+
+$$\mathbb{E}[XY]
+  = \iint_D xy \cdot 2\,dx\,dy
+  = \int_0^1 \int_0^x 2xy\,dy\,dx
+  = \int_0^1 2x\left[\frac{y^2}{2}\right]_0^x dx
+  = \int_0^1 2x \cdot \frac{x^2}{2}\,dx
+  = \int_0^1 x^3\,dx
+  = \left[\frac{x^4}{4}\right]_0^1
+  = \boxed{\frac{1}{4}.}$$
+
+$$\mathrm{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\,\mathbb{E}[Y]
+  = \frac{1}{4} - \frac{2}{3} \times \frac{1}{3}
+  = \frac{1}{4} - \frac{2}{9}
+  = \frac{9}{36} - \frac{8}{36}
+  = \boxed{\frac{1}{36}.}$$
+
+$$\rho(X,Y) = \frac{\mathrm{Cov}(X,Y)}{\sqrt{\mathrm{Var}(X)\,\mathrm{Var}(Y)}}
+  = \frac{1/36}{\sqrt{1/18 \times 1/18}}
+  = \frac{1/36}{1/18}
+  = \frac{18}{36}
+  = \boxed{\frac{1}{2}.}$$
+
+*Interprétation :* le coefficient de corrélation est **positif** ($\rho = 0{,}5$) : $X$ et $Y$ évoluent dans le même sens. La valeur modérée s'explique par la contrainte géométrique $0 \leq Y \leq X$ : $Y$ est toujours plus petite que $X$, mais pas parfaitement proportionnelle.
+
+---
+
+**6.** *(5 pts)* **Densité conditionnelle $f_{Y\mid X=x}$.**
+
+Par définition :
+$$f_{Y\mid X=x}(y) = \frac{f(x,y)}{f_X(x)}.$$
+
+Pour $x \in (0,1]$ et $y \in [0,x]$ :
+$$f_{Y\mid X=x}(y) = \frac{2}{2x} = \frac{1}{x}.$$
+
+$$\boxed{f_{Y\mid X=x}(y) = \begin{cases} \dfrac{1}{x} & \text{si } y \in [0,x], \\[4pt] 0 & \text{sinon.} \end{cases}}$$
+
+*Identification :* il s'agit de la **loi uniforme** $\mathcal{U}([0,x])$.
+
+*Vérification :* $\displaystyle\int_0^x \frac{1}{x}\,dy = \frac{x}{x} = 1.$ $\checkmark$
+
+---
+
+**7.** *(4 pts)* **Calcul de $P\!\left(Y < X/2\right)$.**
+
+On conditionne par $X$ et on utilise la loi totale des probabilités. Sachant $X = x$, on a $Y \sim \mathcal{U}([0,x])$, donc :
+
+$$P\!\left(Y < \frac{x}{2}\,\middle|\,X = x\right)
+  = \int_0^{x/2} \frac{1}{x}\,dy
+  = \frac{x/2}{x}
+  = \frac{1}{2}.$$
+
+Ce résultat est **indépendant de $x$**. Par conséquent :
+
+$$P\!\left(Y < \frac{X}{2}\right)
+  = \int_0^1 P\!\left(Y < \frac{x}{2}\,\middle|\,X=x\right) f_X(x)\,dx
+  = \int_0^1 \frac{1}{2} \times 2x\,dx
+  = \int_0^1 x\,dx
+  = \left[\frac{x^2}{2}\right]_0^1
+  = \boxed{\frac{1}{2}.}$$
+
+*Interprétation :* sachant $X = x$, $Y$ est uniformément réparti sur $[0, x]$, donc la probabilité que $Y$ tombe dans la moitié inférieure $[0, x/2]$ est toujours $1/2$, quelle que soit la valeur de $x$.
+
+---
+
+**8.** *(4 pts)* **$P(X > 3/4)$ et $P(Y < 1/4\mid X = 3/4)$.**
+
+*Première probabilité* à partir de $f_X$ :
+
+$$P\!\left(X > \frac{3}{4}\right)
+  = \int_{3/4}^1 2x\,dx
+  = \Bigl[x^2\Bigr]_{3/4}^1
+  = 1 - \frac{9}{16}
+  = \boxed{\frac{7}{16} = 0{,}4375.}$$
+
+*Deuxième probabilité* à l'aide de la densité conditionnelle.
+
+Sachant $X = 3/4$, on a $Y \sim \mathcal{U}\!\bigl([0,\,3/4]\bigr)$. Donc :
+
+$$P\!\left(Y < \frac{1}{4}\,\middle|\,X = \frac{3}{4}\right)
+  = \int_0^{1/4} \frac{1}{3/4}\,dy
+  = \frac{4}{3} \times \frac{1}{4}
+  = \boxed{\frac{1}{3} \approx 0{,}333.}$$
+
+---
+
+## Exercice 3 — Convergence et inférence statistique (30 points)
+
+### Partie A — Inégalités de concentration (8 points)
+
+$X$ variable aléatoire positive, $\mathbb{E}[X] = 6$, $\mathrm{Var}(X) = 9$.
+
+---
+
+**1.** *(2 pts)* **Inégalité de Markov.**
+
+L'**inégalité de Markov** stipule que pour toute v.a. positive et tout $a > 0$ :
+$$P(X \geq a) \leq \frac{\mathbb{E}[X]}{a}.$$
+
+Application avec $a = 18$ :
+$$\boxed{P(X \geq 18) \leq \frac{6}{18} = \frac{1}{3} \approx 0{,}333.}$$
+
+---
+
+**2.** *(3 pts)* **Inégalité de Bienaymé-Tchebychev.**
+
+L'**inégalité de Bienaymé-Tchebychev** stipule que pour tout $\varepsilon > 0$ :
+$$P\bigl(|X - \mathbb{E}[X]| \geq \varepsilon\bigr) \leq \frac{\mathrm{Var}(X)}{\varepsilon^2}.$$
+
+Application avec $\mathbb{E}[X] = 6$ et $\varepsilon = 6$ :
+$$\boxed{P(|X - 6| \geq 6) \leq \frac{9}{36} = \frac{1}{4}.}$$
+
+On remarque que $|X - 6| < 6 \iff 0 < X < 12$ (la borne inférieure $X > 0$ est automatiquement satisfaite car $X$ est positive). On en déduit :
+$$P(0 < X < 12) = P(|X - 6| < 6) \geq 1 - \frac{1}{4} = \boxed{\frac{3}{4} = 75\,\%.}$$
+
+---
+
+**3.** *(3 pts)* **Calcul exact sous $X \sim \mathcal{N}(6,\,9)$.**
+
+On a $\mathbb{E}[X] = 6$ et $\sigma = \sqrt{9} = 3$. On centre-réduit par $Z = (X-6)/3 \sim \mathcal{N}(0,1)$ :
+
+$$P(0 < X < 12)
+  = P\!\left(\frac{0-6}{3} < Z < \frac{12-6}{3}\right)
+  = P(-2 < Z < 2)
+  = 2\Phi(2) - 1
+  = 2 \times 0{,}9772 - 1
+  = \boxed{0{,}9544.}$$
+
+*Commentaire :* la borne de Bienaymé-Tchebychev ($\geq 75\,\%$) est **très conservative** : la vraie valeur est 95,44 %, soit bien plus élevée. Cela illustre que l'inégalité de B-T est valable pour toutes les distributions à variance finie, mais elle est peu précise pour les distributions concentrées comme la loi normale.
+
+---
+
+### Partie B — Maximum de vraisemblance (10 points)
+
+$T_1, \ldots, T_n$ i.i.d. de loi $\mathcal{E}(\lambda)$, $f(t\,;\,\lambda) = \lambda\,e^{-\lambda t}$, $t > 0$.
+
+---
+
+**4.** *(4 pts)* **Vraisemblance et log-vraisemblance.**
+
+$$L(\lambda)
+  = \prod_{i=1}^n \lambda\,e^{-\lambda T_i}
+  = \lambda^n \exp\!\left(-\lambda \sum_{i=1}^n T_i\right)
+  = \boxed{\lambda^n\,e^{-n\lambda\bar{T}}.}$$
+
+En prenant le logarithme :
+$$\ell(\lambda) = \ln L(\lambda) = n\ln\lambda - \lambda\sum_{i=1}^n T_i = \boxed{n\ln\lambda - n\lambda\bar{T}.}$$
+
+---
+
+**5.** *(4 pts)* **Résolution $d\ell/d\lambda = 0$ : estimateur EMV.**
+
+$$\frac{d\ell}{d\lambda} = \frac{n}{\lambda} - n\bar{T}.$$
+
+En posant $\dfrac{d\ell}{d\lambda} = 0$ :
+
+$$\frac{n}{\lambda} = n\bar{T} \implies \boxed{\hat{\lambda} = \frac{1}{\bar{T}}.}$$
+
+*Vérification que c'est bien un maximum :*
+$$\frac{d^2\ell}{d\lambda^2} = -\frac{n}{\lambda^2} < 0, \quad \checkmark$$
+ce qui confirme que $\hat{\lambda}$ est bien un **maximum** de $\ell$.
+
+---
+
+**6.** *(2 pts)* **Application numérique.**
+
+Avec $n = 25$ et $\bar{t} = 4{,}0$ s :
+$$\hat{\lambda} = \frac{1}{4{,}0} = \boxed{0{,}25 \text{ s}^{-1}.}$$
+
+L'estimation de l'espérance vaut :
+$$\widehat{\mathbb{E}[T]} = \frac{1}{\hat{\lambda}} = \bar{t} = \boxed{4{,}0 \text{ s}.}$$
+
+*Remarque :* l'EMV de l'espérance $1/\lambda$ d'une loi exponentielle coïncide avec la moyenne empirique $\bar{t}$, résultat intuitivement satisfaisant.
+
+---
+
+### Partie C — Intervalle de confiance pour une moyenne (12 points)
+
+$n = 100$ requêtes, $\bar{x} = 85$ ms, $s^2 = 400$ ms² (variance corrigée, donc $s = 20$ ms).
+
+---
+
+**7.** *(2 pts)* **Justification de l'approximation normale.**
+
+L'échantillon contient $n = 100$ observations indépendantes. Par le **Théorème Central Limite**, la moyenne empirique $\bar{X}_{100}$ suit **approximativement** une loi normale :
+
+$$\bar{X}_{100} \overset{\text{approx}}{\sim} \mathcal{N}\!\left(\mu,\, \frac{\sigma^2}{n}\right).$$
+
+On substitue $s^2 = 400$ à $\sigma^2$ (estimé sur l'échantillon) :
+
+$$\boxed{\bar{X}_{100} \approx \mathcal{N}\!\left(\mu,\, \frac{400}{100}\right) = \mathcal{N}(\mu,\, 4),
+  \quad \text{avec } \frac{s}{\sqrt{n}} = \frac{20}{\sqrt{100}} = 2 \text{ ms}.}$$
+
+---
+
+**8.** *(3 pts)* **Intervalle de confiance à 95 %.**
+
+La formule générale est $\bar{x} \pm z_{\alpha/2}\,\dfrac{s}{\sqrt{n}}$, avec $z_{0{,}025} = 1{,}96$ :
+
+$$85 \pm 1{,}96 \times 2 = 85 \pm 3{,}92.$$
+
+$$\boxed{IC_{95\,\%}(\mu) = [81{,}08\,;\,88{,}92] \text{ ms}.}$$
+
+*Lecture :* on est certain à 95 % que le vrai temps de réponse moyen $\mu$ de l'API est compris entre 81,08 ms et 88,92 ms.
+
+---
+
+**9.** *(3 pts)* **Intervalle de confiance à 99 %.**
+
+On utilise $z_{0{,}005} = 2{,}58$ :
+
+$$85 \pm 2{,}58 \times 2 = 85 \pm 5{,}16.$$
+
+$$\boxed{IC_{99\,\%}(\mu) = [79{,}84\,;\,90{,}16] \text{ ms}.}$$
+
+*Remarque :* l'IC à 99 % est plus large que l'IC à 95 % ($\pm 5{,}16$ contre $\pm 3{,}92$) : une plus grande confiance exige un intervalle plus conservateur.
+
+---
+
+**10.** *(4 pts)* **Effectif minimal pour une demi-largeur $\leq 2$ ms.**
+
+On cherche $n$ tel que la demi-largeur de l'IC à 95 % vérifie :
+
+$$z_{0{,}025} \times \frac{s}{\sqrt{n}} \leq 2
+  \implies 1{,}96 \times \frac{20}{\sqrt{n}} \leq 2.$$
+
+On isole $\sqrt{n}$ :
+
+$$\sqrt{n} \geq \frac{1{,}96 \times 20}{2} = 1{,}96 \times 10 = 19{,}6.$$
+
+En élevant au carré :
+
+$$n \geq 19{,}6^2 = 384{,}16.$$
+
+$$\boxed{n_{\min} = 385 \text{ requêtes}.}$$
+
+*Interprétation :* avec 385 observations (contre 100 dans l'énoncé), la précision de l'IC à 95 % passe de $\pm 3{,}92$ ms à $\pm 2$ ms. Multiplier la précision par un facteur $k$ nécessite de multiplier la taille de l'échantillon par $k^2$.
