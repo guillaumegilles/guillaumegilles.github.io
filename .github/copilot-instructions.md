@@ -109,8 +109,8 @@ All styling goes in `assets/dark.scss`. The compiled theme is referenced in
 <!-- SPECKIT START -->
 ## Active Spec Kit Plan
 
-Current feature plan: `specs/001-course-syllabus-index/plan.md`
-(Course Syllabus Index Pages — T-VIII: every course `index.qmd` is the first
-sidebar entry and carries a session-outline table plus a Recommended Literature
-table.)
+Current feature plan: `specs/002-dynamic-course-listing/plan.md`
+(Dynamic Course Listing — Transform `teaching.qmd` into automated discovery page that
+lists all course `index.qmd` files from `teaching/` subdirectories, organized into
+Graduate, Undergraduate, and AI Guide sections, displayed as responsive grid cards.)
 <!-- SPECKIT END -->
