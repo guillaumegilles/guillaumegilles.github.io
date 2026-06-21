@@ -109,8 +109,12 @@ All styling goes in `assets/dark.scss`. The compiled theme is referenced in
 <!-- SPECKIT START -->
 ## Active Spec Kit Plan
 
-Current feature plan: `specs/002-dynamic-course-listing/plan.md`
-(Dynamic Course Listing — Transform `teaching.qmd` into automated discovery page that
-lists all course `index.qmd` files from `teaching/` subdirectories, organized into
-Graduate, Undergraduate, and AI Guide sections, displayed as responsive grid cards.)
+Current feature plan: `specs/003-giscus-theme-integration/plan.md`
+(Giscus Retro Blackboard Theme Integration — Customise the giscus comment widget to
+blend with the Retro Blackboard dark.scss theme by delivering a custom plain-CSS file
+at `assets/giscus-retro-blackboard.css`, served at `https://ggilles.dev/assets/
+giscus-retro-blackboard.css`, referenced via `posts/_metadata.yml` `comments.giscus.
+theme`. All giscus CSS custom properties are mapped to Retro Blackboard design tokens
+— phosphor-green primary, chalk text, board-surface backgrounds, no GitHub-default
+blue visible.)
 <!-- SPECKIT END -->

@@ -1,0 +1,919 @@
+---
+title: "The New SDLC With Vibe Coding"
+abstract: |
+  From ad-hoc prompting to Agentic Engineering. This paper traces the spectrum
+  from casual vibe coding to disciplined agentic engineering, examines how the
+  developer's role shifts from writing code to exercising judgment, and lays out
+  what it takes to adopt AI tools in ways that produce software you can depend on.
+lang: en
+date-modified: 2026-06-18
+---
+
+::: {.callout-note}
+## Source
+Authors: Addy Osmani, Shubham Saboo, and Sokratis Kartakis — May 2026
+:::
+
+> The most profound shift in software engineering isn't a new language, framework,
+> or cloud service. It's the transition from writing code to expressing intent, and
+> trusting intelligent systems to translate that intent into working software.
+
+## Introduction
+
+For most of computing history, programming has been an act of translation:
+understand the problem in human terms, design a solution in abstract terms, then
+render it in syntax a machine can execute. Each step introduces friction. That
+friction is now collapsing. Software engineering is undergoing its most significant
+transformation since the introduction of high-level programming languages. For
+decades, the developer's primary interface with the machine has been syntax: curly
+braces, semicolons, type annotations, and the precise grammar of programming
+languages. That era is ending.
+
+A new paradigm has arrived in which developers express *what* they want to build
+rather than *how* to build it. The machine handles implementation. The human
+provides intent, architecture, and judgment. As of early 2026, **85% of
+professional developers regularly use AI Coding Agents**, 51% use them daily, and
+an estimated **41% of all new code is AI-generated**.
+
+This shift began with autocomplete — simple token prediction in the editor. Then
+came inline code suggestions that could complete entire functions. Next,
+chat-based interfaces allowed developers to describe features in natural language
+and receive working implementations. Now, fully autonomous agents can clone
+repositories, plan multi-file changes, execute them in sandboxed environments, run
+tests, and submit pull requests — all without a human typing a single line of code.
+
+```{mermaid}
+%%| label: fig-autocomplete-to-autonomy
+%%| fig-cap: "From Autocomplete to Autonomy"
+flowchart LR
+    A["🔤 Autocomplete\nToken prediction\nin the editor"] --> B["📝 Inline Suggestions\nComplete entire\nfunctions"] --> C["💬 Chat Interfaces\nDescribe features\nin natural language"] --> D["🤖 Autonomous Agents\nClone repos, plan, execute,\ntest, submit PRs"]
+
+    style A fill:#1a1a2e,stroke:#4a4a8a,color:#fff
+    style B fill:#16213e,stroke:#4a4a8a,color:#fff
+    style C fill:#0f3460,stroke:#4a4a8a,color:#fff
+    style D fill:#533483,stroke:#7a5ab5,color:#fff
+```
+
+The spectrum ranges from casual **vibe coding**, where a developer prompts an AI
+and accepts whatever comes back, to disciplined **agentic engineering**, where AI
+acts as a powerful implementation engine within carefully designed systems of
+constraints, tests, and feedback loops, with humans retaining oversight over
+architecture, correctness, and quality.
+
+::: {.callout-important}
+Telling a CTO that your team is *vibe coding* their payment processing system
+will — and should — raise alarm bells. Telling that same CTO that your team
+practices *agentic engineering*, with AI handling implementation under
+human-designed constraints while test coverage ensures correctness, is a
+fundamentally different conversation.
+:::
+
+### Why this paper, why now
+
+New tools, capabilities, and paradigms emerge weekly. Engineering teams need a
+framework for making sense of this landscape — not a snapshot that will be
+outdated in months, but a set of principles and mental models that will remain
+useful as the specific tools evolve.
+
+### Who this paper is for
+
+This paper is for software engineers, engineering managers, architects, and
+technical leaders who want to understand how AI is reshaping the SDLC and adopt
+these new capabilities without sacrificing the discipline that production software
+demands.
+
+---
+
+## The Shift from Syntax to Intent
+
+### AI Agents: A Quick Refresher
+
+An AI agent is a software system that perceives a goal, plans steps to reach it,
+takes actions through tools, observes the results, and iterates until the goal is
+met or it hits a stopping condition. Where a chatbot produces a response and waits
+for the next prompt, an agent runs its own loop. You give it a goal at the top,
+then it decides what to do next at each step.
+
+```{mermaid}
+%%| label: fig-agent-loop
+%%| fig-cap: "The Agent Loop — Perceive, Plan, Act, Observe, Iterate"
+flowchart TD
+    G["🎯 Goal"] --> P["👁️ Perceive\nRead current context"]
+    P --> PL["🧠 Plan\nDecide next step"]
+    PL --> A["⚡ Act\nTool call / message"]
+    A --> O["🔍 Observe\nCapture results"]
+    O --> D{Goal\nmet?}
+    D -- No --> PL
+    D -- Yes --> R["✅ Result"]
+
+    style G fill:#1a1a2e,stroke:#4a4a8a,color:#fff
+    style P fill:#16213e,stroke:#4a4a8a,color:#fff
+    style PL fill:#0f3460,stroke:#4a4a8a,color:#fff
+    style A fill:#533483,stroke:#7a5ab5,color:#fff
+    style O fill:#0f3460,stroke:#4a4a8a,color:#fff
+    style D fill:#1a1a2e,stroke:#e94560,color:#fff
+    style R fill:#1a472a,stroke:#2d6a4f,color:#fff
+```
+
+Every agent is built from five parts:
+
+- **The model** — the reasoning engine. It reads the current context, decides
+  what should happen next, and produces the next thought, tool call, or message.
+- **Tools** — connect the model to the world: APIs, code execution, databases,
+  and other agents it can delegate to.
+- **Memory** — the state. Allows the agent to recall past interactions, retrieve
+  project-specific rules, and retain context across sessions.
+- **Orchestration** — the code that runs the loop. Assembles context for each
+  model call, dispatches tool calls, captures results, and decides whether to
+  continue.
+- **Deployment** — what turns the prototype into a service: hosting, identity,
+  observability, and production infrastructure.
+
+### What is Vibe Coding?
+
+In February 2025, Andrej Karpathy described an approach where you "fully give in
+to the vibes, embrace exponentials, and forget that the code even exists." In this
+mode, a developer describes what they want in natural language, accepts the AI's
+output, and when something breaks, copies the error message back into the prompt
+and asks the AI to fix it.
+
+The term went viral because it captured something real: many developers were
+already working this way but hadn't had language for it. By early 2026, Karpathy
+himself acknowledged that the original framing was too narrow, introducing the
+term **"agentic engineering"** to describe the more disciplined end of the
+spectrum.
+
+### The Spectrum: Vibe Coding to Agentic Engineering
+
+Rather than treating vibe coding and agentic engineering as a binary, it is more
+useful to think of them as endpoints on a spectrum. The key differentiator is not
+whether you use AI — it's **how much structure, verification, and human judgment
+surrounds the AI's output**.
+
+```{mermaid}
+%%| label: fig-spectrum
+%%| fig-cap: "The Vibe Coding to Agentic Engineering Spectrum"
+flowchart LR
+    subgraph VC["🌊 Vibe Coding"]
+        V1["Casual NL prompts"]
+        V2["'Does it seem to work?'"]
+        V3["Copy-paste errors to AI"]
+        V4["Minimal code understanding"]
+    end
+    subgraph SAC["🔧 Structured AI-Assisted Coding"]
+        S1["Detailed prompts with examples"]
+        S2["Manual testing & spot-checking"]
+        S3["Developer diagnoses root cause"]
+        S4["Selective review of critical paths"]
+    end
+    subgraph AE["⚙️ Agentic Engineering"]
+        A1["Formal specs, architecture docs"]
+        A2["Automated test suites, CI/CD gates"]
+        A3["Agents self-diagnose within bounds"]
+        A4["Comprehensive architecture review"]
+    end
+    VC --> SAC --> AE
+
+    style VC fill:#3d1a1a,stroke:#8a4a4a,color:#fff
+    style SAC fill:#1a2a3d,stroke:#4a6a8a,color:#fff
+    style AE fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+```
+
+| Dimension | Vibe Coding | Structured AI-Assisted | Agentic Engineering |
+|---|---|---|---|
+| **Intent spec** | Casual NL prompts | Detailed prompts with examples | Formal specs, architecture docs, memory files |
+| **Verification** | "Does it seem to work?" | Manual testing, spot-checking | Automated test suites, CI/CD gates, LM judges |
+| **Codebase understanding** | Minimal; may not read generated code | Selective review of critical paths | Comprehensive review of architecture |
+| **Error handling** | Copy-paste error messages to AI | Developer diagnoses root cause | Agents self-diagnose within defined bounds |
+| **Appropriate scope** | Prototypes, scripts, hackathons | Features in established codebases | Production systems, team-scale development |
+| **Risk profile** | High; acceptable for disposable code | Moderate; human judgment at key checkpoints | Low; systematic verification at every stage |
+
+: The Spectrum from Vibe Coding to Agentic Engineering {.striped .hover}
+
+::: {.callout-tip}
+## Applied Tip
+The right position on this spectrum depends on the stakes. A weekend prototype
+can be pure vibe coding. A production API handling financial transactions demands
+agentic engineering. Most real work falls somewhere in between, and the skill is
+knowing where to draw the line for each task.
+:::
+
+The single biggest differentiator between the two ends is how outputs get
+verified. In vibe coding, verification is optional. In agentic engineering, two
+mechanisms work together:
+
+- **Tests** verify the deterministic parts: a function given this input produces
+  that output.
+- **Evals** verify the non-deterministic parts: did the agent take the right
+  trajectory, choose the right tools, and produce a response that meets the
+  quality bar.
+
+Without both, the practice is always vibe coding, regardless of how
+sophisticated the prompts are.
+
+---
+
+## Context Engineering: The Real Skill
+
+As the field has matured, a key insight has emerged: **the quality of AI-generated
+code depends less on the cleverness of your prompts and more on the quality of the
+context provided**. This realization has given rise to **context engineering** —
+the practice of providing AI agents with rich, structured information about your
+codebase, architecture, conventions, and intent.
+
+Developers must consider six primary types of context:
+
+- **Instructions** — the agent's core role, goals, and operational boundaries.
+- **Knowledge** — retrieved documents, architectural diagrams, and
+  domain-specific data.
+- **Memory** — short-term session logs (what just happened) and long-term
+  persistent state (what the project is).
+- **Examples** — few-shot behavioral demonstrations and codebase reference
+  patterns.
+- **Tools** — precise definitions of the APIs, scripts, and external services the
+  agent can invoke.
+- **Guardrails** — hard constraints, formatting rules, and safety validations.
+
+### Static vs. Dynamic Context
+
+```{mermaid}
+%%| label: fig-context-engineering
+%%| fig-cap: "Context Engineering — Static vs. Dynamic"
+flowchart TB
+    subgraph Static["📌 Static Context (Always Loaded)"]
+        direction LR
+        SI["System instructions"]
+        RF["Rule files\n(AGENTS.md, CLAUDE.md)"]
+        GM["Global memory"]
+        PD["Persona definitions"]
+    end
+    subgraph Dynamic["⚡ Dynamic Context (On Demand)"]
+        direction LR
+        SK["Skill instructions\n(task matching)"]
+        TR["Tool results\n(execution)"]
+        RAG["RAG documents\n(fetched)"]
+        WH["Windowed session\nhistory"]
+    end
+    Agent["🤖 Agent"] --> Static
+    Agent --> Dynamic
+
+    style Static fill:#1a2a3d,stroke:#4a6a8a,color:#fff
+    style Dynamic fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+    style Agent fill:#533483,stroke:#7a5ab5,color:#fff
+```
+
+- **Static context** is always loaded: system instructions, rule files, global
+  memory, persona definitions. It defines who the agent is and how it behaves.
+  It is expensive because every token is present in every interaction.
+- **Dynamic context** is loaded on demand: skill instructions triggered by task
+  matching, tool results, documents fetched from RAG pipelines, windowed session
+  history. It is efficient because the agent pays the token cost only when the
+  information is needed.
+
+::: {.callout-note}
+## The Design Trade-off
+Too much static context wastes tokens and dilutes signals. Too little means the
+agent forgets critical rules. The best systems treat this boundary as a
+first-class architectural decision, reviewed and versioned like any other
+configuration.
+:::
+
+### Agent Skills
+
+The most powerful pattern for managing dynamic context is **Agent Skills**:
+structured, portable packages of procedural knowledge that the agent loads only
+when the task calls for it.
+
+Rather than embedding every piece of specialized knowledge into the system prompt,
+skills allow the agent to remain a lightweight generalist that flexes into
+specialist roles on demand through **progressive disclosure**:
+
+1. The agent sees only lightweight metadata at startup
+2. Loads full instructions when a task matches
+3. Pulls deep reference material only when explicitly needed
+
+Agent Skills solve four problems that have plagued AI agent development:
+
+1. **Context rot** from overloaded prompts
+2. **Absence of procedural memory** for LLMs
+3. **Operational overhead** of multi-agent architectures
+4. **Need for portability** across tools and vendors
+
+---
+
+## The New Software Development Life Cycle
+
+### The Traditional SDLC Under Pressure
+
+The software development life cycle has already been through one major
+transformation. Over the past two decades, most enterprises moved from sequential
+waterfall processes to iterative models: Agile sprints, continuous integration,
+DevOps pipelines, and rapid release cycles.
+
+**AI compresses this cycle dramatically, but unevenly:** implementation that once
+took weeks can now be done in hours, while requirements, architecture, and
+verification remain stubbornly human-paced.
+
+```{mermaid}
+%%| label: fig-sdlc-comparison
+%%| fig-cap: "Traditional SDLC vs. AI-Driven SDLC"
+flowchart LR
+    subgraph Traditional["🕰️ Traditional SDLC"]
+        direction TB
+        T1["Requirements\n(weeks)"] --> T2["Design\n(weeks)"] --> T3["Implementation\n(months)"] --> T4["Testing\n(weeks)"] --> T5["Deployment\n(days)"] --> T6["Maintenance\n(ongoing)"]
+    end
+    subgraph AI["🚀 AI-Driven SDLC"]
+        direction TB
+        A1["Requirements +\nPrototype (hours)"] --> A2["Architecture\n(human-paced)"] --> A3["Implementation\nby AI (hours)"] --> A4["Automated\nTesting (minutes)"] --> A5["AI-monitored\nDeployment"] --> A6["AI-assisted\nMaintenance"]
+    end
+
+    style Traditional fill:#2d1a1a,stroke:#8a4a4a,color:#fff
+    style AI fill:#1a2a1a,stroke:#4a8a4a,color:#fff
+```
+
+::: {.callout-note}
+## A Note on Pace of Change
+The phase-by-phase picture described here reflects the state of AI-driven SDLC
+as of mid-2026. Early signs suggest that the compression will spread beyond
+implementation: teams are already experimenting with workflows where developers
+go directly from specs to review, with AI agents handling implementation, testing,
+and deployment in the background.
+:::
+
+### How AI Transforms Each Phase
+
+#### Requirements and Planning
+
+Requirements stop being a document handed off between teams. They become **a
+conversation between humans and AI** that produces specification and initial
+implementation simultaneously.
+
+Modern AI tools can:
+
+- Generate user stories from product briefs
+- Identify edge cases that humans miss
+- Produce API schemas from natural-language descriptions
+- Generate interactive prototypes from specification documents
+
+#### Design and Architecture
+
+Architecture remains the most stubbornly human-centric phase, and for good
+reason. Architectural decisions are fundamentally about trade-offs: consistency
+vs. availability, complexity vs. flexibility, build vs. buy. These trade-offs
+depend on business context, organisational constraints, and long-term strategic
+considerations that AI cannot fully grasp.
+
+AI excels at **implementing** architectural decisions once they are made. Given a
+clear architecture document, AI agents can scaffold entire applications, generate
+consistent patterns across modules, and ensure that new code conforms to
+established conventions.
+
+#### Implementation
+
+Modern coding agents can generate entire features from natural-language
+descriptions, implement complex algorithms, and produce multi-file changes that
+work together correctly. Industry surveys report **25 to 39% productivity
+improvements**, with some tasks seeing larger gains.
+
+::: {.callout-important}
+A study by METR found that experienced developers using AI assistants actually
+took **19% longer** on certain tasks, largely because of time spent verifying,
+debugging, and correcting AI output. AI does not eliminate implementation work —
+it transforms it from writing to reviewing, guiding, and verifying.
+:::
+
+#### Testing and Quality Assurance
+
+Testing AI-generated code requires evaluating not just what the agent produced,
+but how it got there:
+
+- **Output evaluation** — checks the final artifact: does the code compile, do
+  the tests pass?
+- **Trajectory evaluation** — checks the full sequence of tool calls and
+  intermediate reasoning. A fluent output that skipped its verification steps is
+  a more dangerous failure than one with a visible error.
+
+The **continuous quality flywheel**:
+
+1. Evaluate against a benchmark suite
+2. Diagnose failures by clustering root causes
+3. Optimize the prompts or tools that caused them
+4. Verify fixes against a regression suite
+5. Monitor production traffic for new failure modes
+
+#### Code Review and Deployment
+
+AI serves as a **first-pass reviewer** that can identify potential bugs, style
+violations, security vulnerabilities, and performance issues before a human
+reviewer sees the code. Context-dependent decisions about design, maintainability,
+and strategic alignment still require human judgment.
+
+Deployment pipelines are becoming AI-aware: agents can monitor deployment health,
+automatically roll back problematic releases, and predict deployment risks based
+on the nature and scope of changes.
+
+#### Maintenance and Evolution
+
+Legacy codebases that were once impenetrable to new team members can now be
+navigated, understood, and modified with AI assistance. AI agents can
+systematically migrate codebases between frameworks, update deprecated APIs, and
+modernize test suites — tasks that were previously so tedious and risky that they
+simply never happened.
+
+### The Factory Model
+
+```{mermaid}
+%%| label: fig-factory-model
+%%| fig-cap: "The Factory Model — Developer designs the system, agents produce the code, tests verify the output"
+flowchart TD
+    Dev["👨‍💻 Developer\n(Factory Manager)"]
+
+    subgraph Factory["🏭 The Factory"]
+        direction TB
+        Spec["📋 Specifications\n& Context"] --> Agents["🤖 AI Agents\n(Implementation)"]
+        Agents --> Tests["✅ Tests\n& Quality Gates"]
+        Tests --> FL["🔄 Feedback\nLoops"]
+        FL --> Agents
+        GR["🛡️ Guardrails\n& Constraints"] --> Agents
+    end
+
+    Dev --> Factory
+    Factory --> Code["📦 Production\nCode"]
+
+    style Factory fill:#1a1a2e,stroke:#4a4a8a,color:#fff
+    style Dev fill:#533483,stroke:#7a5ab5,color:#fff
+    style Code fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+```
+
+The mental model that ties these transformations together is the **factory model**.
+In this model, the developer's primary output is not code — it's **the system that
+produces code**. This system includes:
+
+- Specifications and context that define what needs to be built
+- Agents that translate specifications into implementation
+- Tests and quality gates that verify correctness
+- Feedback loops that route failures back to agents for correction
+- Guardrails that constrain agents to safe, predictable behavior
+
+A factory manager does not assemble every widget by hand. They design the assembly
+line and ensure quality control. Success comes from giving agents **success
+criteria rather than step-by-step instructions**, then letting them iterate.
+
+---
+
+## Harness Engineering: What Surrounds the Model
+
+There is a temptation to treat the model as the system. A new model comes out, the
+agent gets smarter. That intuition is wrong, and it leads to the wrong investments.
+
+**A raw model is not an agent.** It becomes one once a harness gives it state,
+tool execution, feedback loops, and enforceable constraints. The behaviour
+developers experience when working with Claude Code, Cursor, Codex, Aider, or
+Cline is dominated by what the harness does, not just by which model is
+underneath.
+
+$$\text{Agent} = \text{Model} + \text{Harness}$$
+
+```{mermaid}
+%%| label: fig-harness-anatomy
+%%| fig-cap: "Harness Anatomy — Agent = Model + Harness"
+flowchart TB
+    subgraph Harness["🔧 The Harness"]
+        direction TB
+        IR["📜 Instructions &\nRule Files\n(AGENTS.md, CLAUDE.md)"]
+        Tools["🛠️ Tools\n(APIs, MCP Servers)"]
+        Sandbox["📦 Sandboxes &\nExecution Environments"]
+        Orch["🔀 Orchestration Logic\n(Sub-agents, routing)"]
+        GR["🛡️ Guardrails / Hooks\n(Lifecycle checkpoints)"]
+        Obs["📊 Observability\n(Logs, traces, evals)"]
+    end
+
+    Model["🧠 Model\n(Reasoning Engine)"] --> Harness
+    Harness --> Agent["🤖 Agent\n(Working System)"]
+
+    style Harness fill:#1a1a2e,stroke:#4a4a8a,color:#fff
+    style Model fill:#533483,stroke:#7a5ab5,color:#fff
+    style Agent fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+```
+
+### What's in the Harness
+
+- **Instructions and Rule Files** — the text that defines who the agent is, what
+  it cares about, and what it is forbidden from doing. Includes `AGENTS.md`,
+  `CLAUDE.md`, `GEMINI.md`, skill files, and sub-agent prompts.
+- **Tools** — the functions, MCP servers, and APIs the agent can call, plus the
+  prose that tells the model when and how to call them.
+- **Sandboxes and execution environments** — where the agent's code actually
+  runs, what it has access to, what it cannot reach.
+- **Orchestration logic** — sub-agent spawning, model routing, hand-offs between
+  specialists, and the rules that govern when each fires.
+- **Guardrails / Hooks** — deterministic code that runs at specific lifecycle
+  points: before a tool call, after a file edit, before a commit. Hooks are the
+  place for things the agent should never forget but often does.
+- **Observability** — logs, traces, evaluations, cost and latency metering.
+  Without observability, there is no way to tell whether the agent is doing well
+  or quietly drifting.
+
+### Harness in SDLC
+
+```{mermaid}
+%%| label: fig-harness-sdlc
+%%| fig-cap: "The Harness Across SDLC Phases"
+flowchart LR
+    subgraph P1["Phase 1\nRequirements & Architecture"]
+        H1["⚙️ Configure\nInstruction files,\ntool access, rules"]
+    end
+    subgraph P2["Phase 2\nImplementation"]
+        H2["▶️ Run\nSandboxes,\nexecution environments,\ntools"]
+    end
+    subgraph P3["Phase 3\nTesting & QA"]
+        H3["🔄 Feedback Loop\nOrchestration logic,\nguardrails → self-correction"]
+    end
+    subgraph P4["Phase 4\nReview, Deploy & Maintain"]
+        H4["👁️ Observe\nHooks, observability,\naudit trails"]
+    end
+    P1 --> P2 --> P3 --> P4
+
+    style P1 fill:#1a2a3d,stroke:#4a6a8a,color:#fff
+    style P2 fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+    style P3 fill:#3d2a1a,stroke:#8a6a4a,color:#fff
+    style P4 fill:#2d1a3d,stroke:#6a4a8a,color:#fff
+```
+
+::: {.callout-important}
+## Most Agent Failures are Configuration Failures
+When an agent does something wrong, the first instinct is to blame the model.
+More often, the failure traces back to a missing tool, a vague rule, an absent
+guardrail, or a context window stuffed with noise. Public benchmarks confirm
+this: one team moved a coding agent from outside the Top 30 to the Top 5 on
+Terminal Bench 2.0 by changing **only the harness**, with no model change at all.
+:::
+
+---
+
+## The Developer's Evolving Role: Conductors and Orchestrators
+
+As AI takes over more of the implementation work, developers move fluidly between
+two modes:
+
+```{mermaid}
+%%| label: fig-conductor-orchestrator
+%%| fig-cap: "Conductor vs. Orchestrator — Two Modes of Working with AI Agents"
+flowchart LR
+    subgraph Conductor["🎼 Conductor Mode"]
+        direction TB
+        C1["Real-time collaboration\nwith AI pair-programmer"]
+        C2["In the IDE, watching\ncode appear"]
+        C3["Fine-grained control\nover every change"]
+        C4["Tools: Copilot, Cursor,\nWindsurf, Gemini Code Assist"]
+    end
+    subgraph Orchestrator["🎭 Orchestrator Mode"]
+        direction TB
+        O1["High-level abstraction:\ndefine goals, assign to agents"]
+        O2["Agents work in background,\nin parallel"]
+        O3["Review results,\nprovide course corrections"]
+        O4["Tools: Jules, Copilot Agent\nMode, Claude Code"]
+    end
+    Dev["👨‍💻 Developer"] --> Conductor
+    Dev --> Orchestrator
+
+    style Conductor fill:#1a2a3d,stroke:#4a6a8a,color:#fff
+    style Orchestrator fill:#1a3d2a,stroke:#4a8a6a,color:#fff
+    style Dev fill:#533483,stroke:#7a5ab5,color:#fff
+```
+
+### The Conductor: Hands-On, Real-Time Direction
+
+In conductor mode, a developer works in real-time with an AI pair-programmer.
+They're in the IDE, watching code appear, guiding the AI with prompts and
+corrections, maintaining fine-grained control over what gets written.
+
+This mode is typical when:
+- Working on complex logic
+- Debugging tricky issues
+- Working in unfamiliar codebases where each change must be understood
+
+The risk is that it can become a bottleneck — if the developer is personally
+directing every keystroke, the throughput improvement from AI is limited.
+
+### The Orchestrator: Async, Multi-Agent Delegation
+
+In orchestrator mode, the developer operates at a higher level of abstraction.
+They define goals, assign them to agents, and review results — not watching code
+appear line by line. Agents may be working in the background, in parallel, on
+different parts of a codebase.
+
+This mode is typical for:
+- Well-defined bug fixes
+- Feature implementations against established patterns
+- Codebase migrations
+- Test generation
+
+The orchestrator mode requires different skills:
+
+- **Specification** — defining tasks precisely enough for autonomous execution
+- **Decomposition** — breaking large tasks into appropriately sized units
+- **Evaluation** — quickly assessing whether agent output meets quality standards
+- **System design** — designing the constraints, tests, and feedback loops that
+  keep agents productive
+
+### The 80% Problem
+
+A persistent challenge: AI agents can rapidly generate approximately **80% of
+the code** for a feature, but the remaining 20% — edge cases, error handling,
+integration points, and subtle correctness requirements — demands deep contextual
+knowledge that current models often lack.
+
+The nature of AI errors has evolved from simple syntax mistakes to more insidious
+**conceptual failures**: wrong assumptions about business logic, missing edge
+cases, and architectural decisions that create subtle long-term maintenance
+burdens. These errors are harder to detect because the code "looks right" and may
+even pass basic tests.
+
+::: {.callout-tip}
+The developers who navigate this challenge most effectively use AI for what it's
+good at (rapid implementation of well-specified tasks) while reserving their own
+attention for what AI struggles with (ambiguous requirements, architectural
+trade-offs, and correctness verification).
+:::
+
+---
+
+## Coding Agents in Practice
+
+### Where Coding Agents Fit in the Developer's Day
+
+Coding agents show up in three places in everyday work. Most developers use all
+three at once:
+
+**In the editor:** Inline completion, chat panels, whole-codebase awareness. This
+is where most people first meet AI in coding. Examples: GitHub Copilot, Cursor,
+Windsurf, JetBrains AI Assistant.
+
+**In the terminal:** Coding agents launched from the command line, given a goal
+in plain language, working across the codebase with full file system access,
+multi-file edits, ability to run tools and tests. Examples: Claude Code, Codex
+CLI, Cline.
+
+**In the background:** Agents that take a task and run autonomously in
+cloud-hosted sandboxes, often for hours, producing a pull request as output.
+Examples: Google Jules, GitHub Copilot agent mode, Cursor's background agents.
+
+```{mermaid}
+%%| label: fig-agent-placement
+%%| fig-cap: "Where Coding Agents Fit — Editor, Terminal, Background"
+flowchart TD
+    subgraph Editor["💻 In the Editor"]
+        E1["Inline completion\nas you type"]
+        E2["Chat panels:\nexplain/modify code"]
+        E3["Whole-codebase\nawareness in IDE"]
+    end
+    subgraph Terminal["🖥️ In the Terminal"]
+        T1["Multi-file edits\nacross codebase"]
+        T2["Run tests and\nreact to results"]
+        T3["Explore unfamiliar\ncodebases"]
+    end
+    subgraph Background["☁️ In the Background"]
+        B1["Cloud-hosted sandboxes\n(hours of autonomous work)"]
+        B2["Well-specified tasks:\nbug fixes, migrations"]
+        B3["Output: pull request\nfor developer review"]
+    end
+    Dev["👨‍💻 Developer"] --> Editor & Terminal & Background
+
+    style Editor fill:#1a2a3d,stroke:#4a6a8a,color:#fff
+    style Terminal fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+    style Background fill:#3d1a3d,stroke:#8a4a8a,color:#fff
+    style Dev fill:#533483,stroke:#7a5ab5,color:#fff
+```
+
+### Vibe Coding Production-Ready Agents
+
+The same terminal-based workflow that produces prototype scripts now reaches
+production agents. Building, evaluating, and deploying a real agent — with
+persistent memory, governance, and observability — has moved from a framework and
+cloud console task into something that happens in the same terminal.
+
+**Google's Agents CLI** bundles skills for building agents on Google Cloud,
+covering the full ADK lifecycle: scaffolding, writing, evaluating, deploying,
+and wiring up observability. After a one-time install, the coding agent gains
+seven new skills.
+
+```{.bash}
+# One-time setup
+uvx google-agents-cli setup
+
+# Then in your coding agent:
+# > Build a support agent that answers questions from our docs.
+# > evaluate it on the FAQ dataset
+# > Deploy it to Agent Engine
+```
+
+Behind that single instruction, the coding agent scaffolds a project from a
+template, writes the ADK code, generates an evalset, runs it against the agent,
+deploys to Agent Runtime, and reports back.
+
+Coordination across agents happens through:
+- **Shared session state** for simple cases
+- **Model Context Protocol (MCP)** for tool access
+- **Agent2Agent (A2A) protocol** for cross-agent delegation
+
+---
+
+## The Economics of AI Development
+
+When evaluating AI's impact on the SDLC, the more critical metric for engineering
+leaders is **Total Cost of Ownership (TCO)** — specifically how different
+workflows shift the financial burden between:
+
+- **CapEx** — the upfront investment to build something
+- **OpEx** — the ongoing cost to run, fix, and maintain it
+
+```{mermaid}
+%%| label: fig-economics
+%%| fig-cap: "The Economics of AI Development — Vibe Coding vs. Agentic Engineering"
+quadrantChart
+    title CapEx vs OpEx by Development Approach
+    x-axis Low CapEx --> High CapEx
+    y-axis Low OpEx --> High OpEx
+    quadrant-1 High Investment, High Ops
+    quadrant-2 Low Investment, High Ops
+    quadrant-3 Low Investment, Low Ops
+    quadrant-4 High Investment, Low Ops
+    Vibe Coding: [0.15, 0.85]
+    Structured AI-Assisted: [0.45, 0.5]
+    Agentic Engineering: [0.8, 0.2]
+```
+
+### The Hidden Debt of Vibe Coding (Low CapEx, High OpEx)
+
+At first glance, vibe coding appears incredibly cost-effective — essentially zero
+barrier to entry. However, the economics hide a massive, compounding OpEx burden:
+
+- **The Token Burn Rate** — developers dump massive, unstructured files into the
+  context window and repeatedly ask the model to fix unverified mistakes. This
+  creates an expensive "prompting loop" with low first-pass success rates.
+- **Maintenance Tax** — code written through ad-hoc prompting often lacks
+  structural consistency. When a bug arises six months later, engineers must
+  spend days reverse-engineering unstructured, AI-generated "spaghetti" code.
+- **Security Remediation** — without an automated evaluation harness, rapid code
+  generation leads to rapid vulnerability generation. Fixing a security flaw in
+  production is exponentially more expensive than catching it during design.
+
+### The Investment of Agentic Engineering (High CapEx, Low OpEx)
+
+Agentic engineering flips this economic model. The CapEx includes designing API
+schemas, building deterministic test suites, and structuring the agent's context.
+While higher upfront, the **marginal cost of shipping and maintaining a feature
+drops dramatically**.
+
+### Context Engineering as a Financial Lever
+
+In the token economy, context engineering is not just a technical skill — it is a
+**financial strategy**. Effective context engineering ensures the model receives
+a dense, high-signal payload rather than a sprawling, noisy one, dramatically
+increasing the agent's first-pass success rate.
+
+### Intelligent Model Routing
+
+A well-designed factory model avoids expensive waste by routing tasks intelligently:
+
+- **Large frontier models** for highly complex tasks (Requirements, Architecture,
+  initial Implementation)
+- **Smaller, faster, cheaper models** for lower-complexity tasks (Test
+  Generation, Code Review, CI/CD monitoring)
+
+---
+
+## Where to Start
+
+### For Individual Developers
+
+1. **Set up an `AGENTS.md`** for the project. Start with ten lines: stack,
+   conventions, hard rules, workflow. Add a rule every time the agent does
+   something it should not do again.
+
+2. **Install a set of skills** for your coding agents (like Agents CLI) to build,
+   evaluate, deploy and optimize agents.
+
+3. **Pick one repetitive workflow and make it the first agent.** A research
+   workflow, a code review process, a recurring report. Use a coding agent for
+   the prototype, graduate it to a production agent when it earns its keep.
+   Building one agent end to end teaches more than reading about a hundred.
+
+4. **Write the tests and evals before generating the code.** Together they are
+   the contract with the AI. A well-written test and eval suite communicates
+   intent more precisely than any natural-language prompt, and turns AI-assisted
+   development from vibe coding into agentic engineering.
+
+5. **Review every line the agent produces that is going to ship.** Be skeptical
+   of anything that looks clever. Check imports for real packages. Verify that
+   error handling covers realistic failure modes.
+
+6. **Maintain your developer skills.** AI handles the routine so the developer
+   can focus on the challenging. That arrangement only works if foundational
+   skills — debugging, system design, intuition for performance and correctness
+   — stay sharp.
+
+### For Engineering Leaders
+
+1. **Make context engineering a first-class engineering practice.** Treat
+   `AGENTS.md`, system prompts, eval suites, and skill libraries as code:
+   reviewed in pull requests, versioned with the project, owned by named
+   engineers.
+
+2. **Set the bar at the eval, not the demo.** A working demo proves an agent can
+   succeed once. A passing eval suite proves it succeeds reliably. Define what
+   you are scoring: task success, tool use quality, trajectory compliance,
+   hallucination, and response quality.
+
+3. **Re-shape code review for AI-generated code.** Extra attention to
+   hallucinated dependencies, inadequate error handling, and subtle correctness
+   gaps that look right at a glance.
+
+4. **Distinguish prototyping work from production work in team norms.** Vibe
+   coding is the right speed for exploration. Agentic engineering is the right
+   discipline for production. Make the boundary explicit.
+
+5. **Invest in harness components as a shared team asset.** Reusable system
+   prompts, skill libraries, MCP server connections, and evaluation harnesses
+   compound across projects. Treat them as infrastructure.
+
+### For Organizations
+
+1. **Treat AI-assisted development as an engineering investment, not a
+   productivity feature.** Rolling out a coding agent without eval coverage,
+   observability, and clear architectural standards produces speed without
+   quality.
+
+2. **Invest in the production substrate before scale.** What graduates a
+   vibe-coded prototype to production is operations discipline: trajectory and
+   final-response evals in CI, traces of every agent run, scoped permissions,
+   and security review tuned to generated code's failure modes.
+
+3. **Adopt open standards.** Model Context Protocol (MCP) for tool access and
+   Agent2Agent (A2A) for cross-agent delegation are converging into the
+   connective tissue of multi-agent systems.
+
+4. **Plan for hybrid teams of humans and agents.** The strongest production
+   results come from architectures where humans set direction, agents do the
+   implementation, and clear handoff protocols govern the boundary.
+
+5. **Reframe hiring and skill development around judgment, not just
+   implementation.** The most valuable engineers in the next several years will
+   be the ones who can direct agents well, not the ones who can write the most
+   code.
+
+---
+
+## Conclusion: Intent as the New Interface
+
+The transition from syntax to intent is not a future prediction — it's a present
+reality. Three principles stand out as durable:
+
+::: {.callout-tip}
+## 1. Structure scales, vibes don't
+Vibe coding is valid for exploration, prototyping, and personal projects. But for
+software that organizations depend on, the discipline of agentic engineering —
+specifications, tests, guardrails, and human oversight of architecture — is not
+optional.
+:::
+
+::: {.callout-tip}
+## 2. AI amplifies your engineering culture
+Organizations with strong testing practices, clear architectural standards, and
+healthy code review processes get dramatically more value from AI-assisted
+development than those without. AI is a force multiplier — it multiplies both
+your strengths and your weaknesses.
+:::
+
+::: {.callout-tip}
+## 3. The human role is evolving, not diminishing
+The builders who understand architecture, can define precise specifications,
+evaluate output critically, and design effective systems of constraints and
+feedback loops are more valuable than ever. The skills that matter are shifting
+from implementation to judgment, from writing code to designing the systems that
+produce code.
+:::
+
+**Generation is solved. Verification, judgment, and direction are the new craft.**
+
+---
+
+## Endnotes
+
+1. GetPanto, "AI Coding Assistant Statistics 2025-2026," <https://www.getpanto.ai/blog/ai-coding-assistant-statistics>
+2. Karpathy, A., "Vibe Coding," X/Twitter post, February 2025. <https://x.com/karpathy/status/1886192184808149383>
+3. Osmani, A., "Agentic Engineering," <https://addyosmani.com/blog/agentic-engineering/>
+4. Karpathy, A., "From Vibe Coding to Agentic Engineering," 2026; The New Stack, <https://thenewstack.io/vibe-coding-is-passe/>
+5. Glide Blog, "What is Agentic Engineering?" <https://www.glideapps.com/blog/what-is-agentic-engineering>
+6. CircleCI, "AI-Native SDLC," <https://circleci.com/blog/ai-sdlc/>
+7. GroovyWeb, "SDLC in the AI Era," <https://www.groovyweb.co/blog/sdlc-ai-era-software-development-2026>
+8. Osmani, A., "The Factory Model," <https://addyosmani.com/blog/factory-model/>
+9. Deloitte, "AI in Software Engineering: Productivity Gains 2025-2026"
+10. METR, "Uplift Update: Measuring the Impact of AI Coding Tools," February 2026. <https://metr.org/blog/2026-02-24-uplift-update/>
+11. Google, "Introduction to Agents," Agents Whitepaper Series, November 2025
+12. Osmani, A., "From Conductors to Orchestrators," <https://addyosmani.com/blog/future-agentic-coding/>
+13. Google, "Jules: AI-Powered Coding Agent," <https://developers.googleblog.com/en/the-next-chapter-of-the-gemini-era-for-developers/>
+14. Osmani, A., "The 80% Problem in Agentic Coding," <https://addyo.substack.com/p/the-80-problem-in-agentic-coding>
+15. Google, "Agent Development Kit (ADK)," <https://google.github.io/adk-docs/>
+16. Google, "Agent-to-Agent (A2A) Protocol," <https://google.github.io/a2a-protocol/>
