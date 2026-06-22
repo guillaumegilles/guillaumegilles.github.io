@@ -1,3 +1,69 @@
 ---
 title: "Model Context Protocol (MCP)"
 ---
+
+## Layer 3 — Runtime Protocol: MCP and Multi-Agent Orchestration
+
+Once your agent has instructions and tools, the next question is: *how does it
+talk to the world?* This is where protocols come in.
+
+### Model Context Protocol (MCP)
+
+MCP, open-sourced by Anthropic in late 2024 and now stewarded by the Linux
+Foundation's Agentic AI Foundation, is the closest thing the AI ecosystem has
+to a universal plug standard. Think of it as USB-C for AI integrations.
+
+**The architecture in one paragraph:** An MCP *server* exposes three kinds of
+objects — *resources* (data, like a file or a database row), *tools* (actions,
+like running a query), and *prompts* (templated workflows). An MCP *client*
+(your agent) connects to one or more servers, discovers what is available, and
+invokes resources and tools as needed. Communication uses JSON-RPC 2.0 over
+stdio (local) or HTTP + Server-Sent Events (remote).
+
+```
+Agent (MCP client)
+   │
+   ├── MCP Server: filesystem  (resources: files; tools: read, write)
+   ├── MCP Server: GitHub      (resources: repos, PRs; tools: create_pr, comment)
+   └── MCP Server: Postgres    (resources: tables; tools: run_query)
+```
+
+Claude, Cursor, and an expanding list of platforms support MCP out of the box.
+The [official MCP registry](https://mcp.so) lists hundreds of pre-built servers
+for GitHub, Slack, Google Drive, databases, and more.
+
+→ [MCP specification & SDK docs](https://modelcontextprotocol.io)
+→ [MCP server registry](https://mcp.so)
+→ [Anthropic — MCP quickstart](https://docs.anthropic.com/en/docs/agents-and-tools/mcp)
+
+### Multi-agent orchestration — OpenAI Agents SDK
+
+For applications that genuinely need multiple specialised agents, OpenAI's
+Agents SDK (the successor to the experimental Swarm framework) provides two
+main patterns:
+
+**Handoffs** — one agent transfers full control to another:
+
+```python
+from agents import Agent, Runner
+
+billing_agent = Agent(
+    name="Billing",
+    instructions="Handle billing questions only."
+)
+
+triage_agent = Agent(
+    name="Triage",
+    instructions="Route questions to the right specialist.",
+    handoffs=[billing_agent]
+)
+
+result = Runner.run_sync(triage_agent, "Why was I charged twice?")
+```
+
+**Agents-as-tools** — a manager agent calls specialists for sub-tasks and
+retains control of the final response. Choose this when you need to compose
+results from several specialists into a single answer.
+
+→ [OpenAI Agents SDK docs](https://openai.github.io/openai-agents-python/)
+→ [Orchestration & handoffs guide](https://platform.openai.com/docs/agents/orchestration/handoffs)
