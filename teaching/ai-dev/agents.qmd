@@ -1,15 +1,50 @@
 ---
 title: "A Map of Agentic AI Customization"
-author:
-  - name: Guillaume Gilles
 abstract: |
-  Every major AI platform now offers a way to customize how its agent behaves
-  in *your* project: instruction files, skill definitions, tool schemas, and
-  runtime protocols. The conventions are converging but not yet unified. This
-  post maps the landscape so you can find the right lever for the right job.
+    An AI agent is a software system that perceives a goal, plans steps to reach
+    it, takes actions through tools, observes the results, and iterates until
+    the goal is met or it hits a stopping condition. Where a chatbot produces a
+    response and waits for the next prompt, an agent runs its own loop. You give
+    it a goal at the top, then it decides what to do next at each step.
 date: 2026-04-19
-categories: [AI, Agentic AI, Developer Tools]
 ---
+
+Every agent is built from five parts:
+
+- **The model** — the reasoning engine. It reads the current context, decides
+  what should happen next, and produces the next thought, tool call, or message.
+- **Tools** — connect the model to the world: APIs, code execution, databases,
+  and other agents it can delegate to.
+- **Memory** — the state. Allows the agent to recall past interactions, retrieve
+  project-specific rules, and retain context across sessions.
+- **Orchestration** — the code that runs the loop. Assembles context for each
+  model call, dispatches tool calls, captures results, and decides whether to
+  continue.
+- **Deployment** — what turns the prototype into a service: hosting, identity,
+  observability, and production infrastructure.
+
+  ```{mermaid}
+%%| label: fig-agent-loop
+%%| fig-cap: "The Agent Loop — Perceive, Plan, Act, Observe, Iterate"
+flowchart TD
+    G("🎯 Perceive Goal") --> P("🧠 Plan Steps")
+    P --> A("⚡ Act (Tool calls)")
+    A --> O("🔍 Observe Results")
+    O --> G
+
+    style G fill:#1a1a2e,stroke:#4a4a8a,color:#fff
+    style P fill:#16213e,stroke:#4a4a8a,color:#fff
+    style A fill:#533483,stroke:#7a5ab5,color:#fff
+    style O fill:#0f3460,stroke:#4a4a8a,color:#fff
+```
+
+
+----
+
+> Every major AI platform now offers a way to customize how its agent behaves
+> in *your* project: instruction files, skill definitions, tool schemas, and
+> runtime protocols. The conventions are converging but not yet unified. This
+> post maps the landscape so you can find the right lever for the right job.
 
 Agentic AI is no longer a research curiosity. GitHub Copilot can open pull
 requests, Claude can run multi-step research loops, and OpenAI's Agents SDK
