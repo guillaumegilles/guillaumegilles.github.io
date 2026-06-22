@@ -1,0 +1,69 @@
+---
+title: Context Engineering
+--- 
+
+## A Real Skill
+
+As [agentic engieering](./agentic-engineering.qmd) has matured, a key insight
+has emerged: **the quality of AI-generated code depends less on the cleverness
+of your prompts and more on the quality of the context provided**. This means
+providing AI agents with rich, structured information about your codebase,
+architecture, conventions, and intent. It less about [prompt engineering](./prompt-engineering.qmd)
+and more about **context engineering**.
+
+Developers must consider six primary types of context:
+
+- **Instructions** — the agent's core role, goals, and operational boundaries.
+- **Knowledge** — retrieved documents, architectural diagrams, and
+  domain-specific data.
+- **Memory** — short-term session logs (what just happened) and long-term
+  persistent state (what the project is).
+- **Examples** — few-shot behavioral demonstrations and codebase reference
+  patterns.
+- **Tools** — precise definitions of the APIs, scripts, and external services the
+  agent can invoke.
+- **Guardrails** — hard constraints, formatting rules, and safety validations.
+
+### Static vs. Dynamic Context
+
+```{mermaid}
+%%| label: fig-context-engineering
+%%| fig-cap: "Context Engineering — Static vs. Dynamic"
+flowchart TB
+    subgraph Static["📌 Static Context (Always Loaded)"]
+        direction LR
+        SI["System instructions"]
+        RF["Rule files\n(AGENTS.md, CLAUDE.md)"]
+        GM["Global memory"]
+        PD["Persona definitions"]
+    end
+    subgraph Dynamic["⚡ Dynamic Context (On Demand)"]
+        direction LR
+        SK["Skill instructions\n(task matching)"]
+        TR["Tool results\n(execution)"]
+        RAG["RAG documents\n(fetched)"]
+        WH["Windowed session\nhistory"]
+    end
+    Agent["🤖 Agent"] --> Static
+    Agent --> Dynamic
+
+    style Static fill:#1a2a3d,stroke:#4a6a8a,color:#fff
+    style Dynamic fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+    style Agent fill:#533483,stroke:#7a5ab5,color:#fff
+```
+
+- **Static context** is always loaded: system instructions, rule files, global
+  memory, persona definitions. It defines who the agent is and how it behaves.
+  It is expensive because every token is present in every interaction.
+- **Dynamic context** is loaded on demand: skill instructions triggered by task
+  matching, tool results, documents fetched from RAG pipelines, windowed session
+  history. It is efficient because the agent pays the token cost only when the
+  information is needed.
+
+::: {.callout-note}
+## The Design Trade-off
+Too much static context wastes tokens and dilutes signals. Too little means the
+agent forgets critical rules. The best systems treat this boundary as a
+first-class architectural decision, reviewed and versioned like any other
+configuration.
+:::

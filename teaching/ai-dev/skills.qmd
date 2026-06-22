@@ -1,6 +1,7 @@
 ---
-title: "Skills"
+title: "Agent Skills"
 abstract: |
+  The most powerful pattern for managing dynamic context is **Agent Skills**.
   Skills are reusable markdown files that teach agents how to handle specific
   tasks automatically. Instead of repeating instructions every time you ask an
   agent to review a PR or write a commit message, you write a skill once and
@@ -8,6 +9,23 @@ abstract: |
 lang: eng
 date: 2026-06-09
 ---
+
+## 
+
+Rather than embedding every piece of specialized knowledge into the system
+prompt, skills allow the agent to remain a lightweight generalist that flexes
+into specialist roles on demand through **progressive disclosure**:
+
+1. The agent sees only lightweight metadata at startup
+2. Loads full instructions when a task matches
+3. Pulls deep reference material only when explicitly needed
+
+Agent Skills solve four problems that have plagued AI agent development:
+
+1. **Context rot** from overloaded prompts
+2. **Absence of procedural memory** for LLMs
+3. **Operational overhead** of multi-agent architectures
+4. **Need for portability** across tools and vendors
 
 ## Why Agent Skills?
 
@@ -270,3 +288,114 @@ Efficient script execution: When Claude runs `validate_form.py`, the script's co
 No practical limit on bundled content: Because files don't consume context until accessed, Skills can include comprehensive API documentation, large datasets, extensive examples, or any reference materials you need. There's no context penalty for bundled content that isn't used.
 
 This filesystem-based model is what makes progressive disclosure work. Claude navigates your Skill like you'd reference specific sections of an onboarding guide, accessing exactly what each task requires.
+
+
+
+
+
+## Layer 2 — Skills & Tool Definitions
+
+Static instructions tell an agent *how to think*. Skills and tools tell it
+*what it can do*. This is where you extend the agent beyond pure text generation.
+
+### `skill.md` and the `.agent/` directory
+
+Several frameworks (and an emerging cross-framework convention) use a `.agent/`
+directory to house skill definitions. Each skill is documented in a Markdown
+file and can reference the code that implements it.
+
+```
+.agent/
+├── skill.md          # catalogue of all skills
+├── skills/
+│   ├── search.md     # skill: web search
+│   └── summarise.md  # skill: document summarisation
+└── tools/
+    ├── search.py
+    └── summarise.py
+```
+
+A `skill.md` entry describes the trigger, the expected inputs and outputs, and
+any limitations:
+
+```markdown
+## Skill: Summarise document
+
+**Trigger:** User uploads a file or provides a URL.
+**Goal:** Produce a 3-bullet executive summary.
+
+### Instructions
+1. Extract the main text.
+2. Identify the 3 most important claims.
+3. Return them as a bullet list, each ≤ 25 words.
+
+### Limitations
+- PDF only; does not handle scanned images.
+- Max 50 pages.
+```
+
+**When to use it:** When you are building a custom agent or documenting skills
+for a team, especially in a multi-agent system where different specialists need
+clear capability boundaries.
+
+### Function calling — OpenAI
+
+OpenAI's function-calling API lets you describe tools as JSON schemas. The
+model decides when to call one and returns structured arguments you execute
+in your own code.
+
+```python
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_stock_price",
+            "description": "Get the current price for a stock ticker.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "ticker": {"type": "string", "description": "e.g. AAPL"}
+                },
+                "required": ["ticker"]
+            }
+        }
+    }
+]
+```
+
+The model returns `{"name": "get_stock_price", "arguments": {"ticker": "AAPL"}}`;
+you call your real API and feed the result back.
+
+→ [OpenAI — Function calling guide](https://platform.openai.com/docs/guides/function-calling)
+
+### Tool use — Anthropic Claude
+
+Claude uses the same concept under the name *tool use*. The schema is slightly
+different but the mental model is identical: describe a tool, let the model
+decide when to invoke it, execute it yourself, return the result.
+
+```python
+tools = [
+    {
+        "name": "get_stock_price",
+        "description": "Returns the current price for a stock ticker.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "ticker": {"type": "string"}
+            },
+            "required": ["ticker"]
+        }
+    }
+]
+```
+
+→ [Anthropic — Tool use documentation](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview)
+
+::: {.callout-note}
+## The convergence pattern
+
+Both OpenAI and Anthropic tool definitions follow JSON Schema. If you abstract
+your tool registry behind a small adapter, the same tool implementation can be
+exposed to both platforms with a thin translation layer.
+:::
