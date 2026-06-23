@@ -12,8 +12,8 @@ all your interactions with the project.
 ### 1. Fork and clone the repository
 
 ```bash
-git clone https://github.com/your-username/sdd-project-template
-cd sdd-project-template
+git clone https://github.com/guillaumegilles/guillaumegilles.github.io
+cd guillaumegilles.github.io
 ```
 
 ### 2. Describe your change as a feature
