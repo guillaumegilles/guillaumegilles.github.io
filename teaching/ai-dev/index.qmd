@@ -17,12 +17,33 @@ A new paradigm has arrived in which developers express *what* they want to build
 rather than *how* to build it. The machine handles implementation while humans
 provides intent, architecture, and judgment.
 
-This shift began with autocomplete, simple token prediction in the editor. Then
-came inline code suggestions where IDE completes entire functions. Next,
-chat-based interfaces allowed developers to describe features in natural language
-and receive working implementations. Now, fully autonomous agents can clone
-repositories, plan multi-file changes, execute them in sandboxed environments, run
-tests, and submit pull requests — all without a human typing a single line of code.
+The first generation was accelerated autocomplete. Tools that predicted the next
+line, filled in boilerplate, and saved keystrokes on repetitive patterns. Useful.
+Genuinely time-saving. But the workflow stayed identical to what it had always
+been: you drove, the tool assisted. The feedback loop was: write code, run it,
+debug, repeat. The AI just reduced friction inside that loop.
+
+The second generation introduced synchronous agents. You described a task in
+natural language. The model generated code. You reviewed it, corrected it,
+iterated toward a working result. This moved further up the stack. Less typing,
+more describing intent. But you were still present for every step. The agent was
+a collaborator, not an autonomous worker. You held the context, directed the next
+move, and caught mistakes in real time.
+
+The third generation introduced autonomous agents. These agents can take a
+specification and run with it for thirty minutes, an hour, several hours and
+increasingly days. They set up environments, install dependencies, write tests,
+hit failures, research solutions online, fix the failures, write the
+implementation, test it again, set up services, and produce artifacts you can
+review. You hand them a task, move on to something else, and come back to logs,
+previews, and pull requests. You are no longer interacting line by line. You are
+defining outcomes and reviewing results. This is where swarms of agents and even
+self-improving agents come into play.
+
+Now, fully autonomous agents can clone
+repositories, plan multi-file changes, execute them in sandboxed environments,
+run tests, and submit pull requests: all without a human typing a single line
+of code.
 
 ```{mermaid}
 %%| label: fig-autocomplete-to-autonomy
@@ -52,113 +73,31 @@ DevOps pipelines, and rapid release cycles.
 took weeks can now be done in hours, while requirements, architecture, and
 verification remain stubbornly human-paced.
 
-```{mermaid}
-%%| label: fig-sdlc-comparison
-%%| fig-cap: "Traditional SDLC vs. AI-Driven SDLC"
-flowchart LR
-    subgraph Traditional["🕰️ Traditional SDLC"]
-        direction TB
-        T1["Requirements\n(weeks)"] --> T2["Design\n(weeks)"] --> T3["Implementation\n(months)"] --> T4["Testing\n(weeks)"] --> T5["Deployment\n(days)"] --> T6["Maintenance\n(ongoing)"]
-    end
-    subgraph AI["🚀 AI-Driven SDLC"]
-        direction TB
-        A1["Requirements +\nPrototype (hours)"] --> A2["Architecture\n(human-paced)"] --> A3["Implementation\nby AI (hours)"] --> A4["Automated\nTesting (minutes)"] --> A5["AI-monitored\nDeployment"] --> A6["AI-assisted\nMaintenance"]
-    end
-
-    style Traditional fill:#2d1a1a,stroke:#8a4a4a,color:#fff
-    style AI fill:#1a2a1a,stroke:#4a8a4a,color:#fff
-```
-
-::: {.callout-note}
-## A Note on Pace of Change
-The phase-by-phase picture described here reflects the state of AI-driven SDLC
-as of mid-2026. Early signs suggest that the compression will spread beyond
-implementation: teams are already experimenting with workflows where developers
-go directly from specs to review, with AI agents handling implementation, testing,
-and deployment in the background.
-:::
-
-### How AI Transforms Each Phase
-
-#### Requirements and Planning
-
-Requirements stop being a document handed off between teams. They become **a
-conversation between humans and AI** that produces specification and initial
-implementation simultaneously.
-
-Modern AI tools can:
-
-- Generate user stories from product briefs
-- Identify edge cases that humans miss
-- Produce API schemas from natural-language descriptions
-- Generate interactive prototypes from specification documents
-
-#### Design and Architecture
-
-Architecture remains the most stubbornly human-centric phase, and for good
-reason. Architectural decisions are fundamentally about trade-offs: consistency
-vs. availability, complexity vs. flexibility, build vs. buy. These trade-offs
-depend on business context, organisational constraints, and long-term strategic
-considerations that AI cannot fully grasp.
-
-AI excels at **implementing** architectural decisions once they are made. Given a
-clear architecture document, AI agents can scaffold entire applications, generate
-consistent patterns across modules, and ensure that new code conforms to
-established conventions.
-
-#### Implementation
-
-Modern coding agents can generate entire features from natural-language
-descriptions, implement complex algorithms, and produce multi-file changes that
-work together correctly. Industry surveys report **25 to 39% productivity
-improvements**, with some tasks seeing larger gains.
-
-::: {.callout-important}
-A study by METR found that experienced developers using AI assistants actually
-took **19% longer** on certain tasks, largely because of time spent verifying,
-debugging, and correcting AI output. AI does not eliminate implementation work —
-it transforms it from writing to reviewing, guiding, and verifying.
-:::
-
-#### Testing and Quality Assurance
-
-Testing AI-generated code requires evaluating not just what the agent produced,
-but how it got there:
-
-- **Output evaluation** — checks the final artifact: does the code compile, do
-  the tests pass?
-- **Trajectory evaluation** — checks the full sequence of tool calls and
-  intermediate reasoning. A fluent output that skipped its verification steps is
-  a more dangerous failure than one with a visible error.
-
-The **continuous quality flywheel**:
-
-1. Evaluate against a benchmark suite
-2. Diagnose failures by clustering root causes
-3. Optimize the prompts or tools that caused them
-4. Verify fixes against a regression suite
-5. Monitor production traffic for new failure modes
-
-#### Code Review and Deployment
-
-AI serves as a **first-pass reviewer** that can identify potential bugs, style
-violations, security vulnerabilities, and performance issues before a human
-reviewer sees the code. Context-dependent decisions about design, maintainability,
-and strategic alignment still require human judgment.
-
-Deployment pipelines are becoming AI-aware: agents can monitor deployment health,
-automatically roll back problematic releases, and predict deployment risks based
-on the nature and scope of changes.
-
-#### Maintenance and Evolution
-
-Legacy codebases that were once impenetrable to new team members can now be
-navigated, understood, and modified with AI assistance. AI agents can
-systematically migrate codebases between frameworks, update deprecated APIs, and
-modernize test suites — tasks that were previously so tedious and risky that they
-simply never happened.
-
 ## The Factory Model
+https://addyosmani.com/blog/factory-model/
+The most useful mental model for this new paradigm is that you are no longer just writing code. You are building the factory that builds your software.
+
+That factory consists of fleets of agents. Each agent has a task, a toolbelt (repositories, test runners, deployment scripts, documentation), context (specs, architecture decisions, prior constraints), and a feedback loop. Instead of hand-holding a single agent through a single task, you spin up many agents in parallel. One handles backend refactors. Another implements a feature. Another writes integration tests. Another updates documentation. You review outputs, give feedback, refine specs, and redeploy.
+
+The analogy runs deeper than it might first appear. A factory has quality control. A factory has process documentation. A factory has inputs that need to be precisely specified or the outputs come out wrong. A factory stalls when the environment is unreliable. All of these properties map directly onto agentic software development, and taking the analogy seriously points you toward the investments that actually matter.
+
+Inside teams that have adopted this model aggressively, a substantial portion of merged pull requests now originate from agents running autonomously in cloud environments. That is not theoretical anymore. It is production reality for a growing number of engineering organizations.
+
+The sentiments from Cursor around “The developer’s job is becoming building the system that builds the software, the factory, not just the product” and “reviewing ideas is a lot more fun than reviewing code” (video) resonate with these points.
+
+The mental model that ties these transformations together is the **factory model**.
+In this model, the developer's primary output is not code: it's **the system that
+produces code**. This system includes:
+
+- Specifications and context that define what needs to be built
+- Agents that translate specifications into implementation
+- Tests and quality gates that verify correctness
+- Feedback loops that route failures back to agents for correction
+- Guardrails that constrain agents to safe, predictable behavior
+
+A factory manager does not assemble every widget by hand. They design the assembly
+line and ensure quality control. Success comes from giving agents **success
+criteria rather than step-by-step instructions**, then letting them iterate.
 
 ```{mermaid}
 %%| label: fig-factory-model
@@ -182,20 +121,6 @@ flowchart TD
     style Dev fill:#533483,stroke:#7a5ab5,color:#fff
     style Code fill:#1a3d1a,stroke:#4a8a4a,color:#fff
 ```
-
-The mental model that ties these transformations together is the **factory model**.
-In this model, the developer's primary output is not code — it's **the system that
-produces code**. This system includes:
-
-- Specifications and context that define what needs to be built
-- Agents that translate specifications into implementation
-- Tests and quality gates that verify correctness
-- Feedback loops that route failures back to agents for correction
-- Guardrails that constrain agents to safe, predictable behavior
-
-A factory manager does not assemble every widget by hand. They design the assembly
-line and ensure quality control. Success comes from giving agents **success
-criteria rather than step-by-step instructions**, then letting them iterate.
 
 ## Harness Engineering: What Surrounds the Model
 
@@ -351,7 +276,11 @@ The orchestrator mode requires different skills:
 - **System design** — designing the constraints, tests, and feedback loops that
   keep agents productive
 
-### The 80% Problem
+### The Pareto Law
+
+...WIP...
+    
+The 80% Problem
 
 A persistent challenge: AI agents can rapidly generate approximately **80% of
 the code** for a feature, but the remaining 20% — edge cases, error handling,
