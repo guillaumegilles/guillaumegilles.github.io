@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Guillaume Gilles - Spec-Driven Production Grade Development in the Age of Vibe Coding</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+
+
+<meta property="og:title" content="Guillaume Gilles - Spec-Driven Production Grade Development in the Age of Vibe Coding">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://ggilles.dev/teaching/ai-dev/assets/og-image.jpg">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Spec-Driven Production Grade Development in the Age of Vibe Coding">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://ggilles.dev/teaching/ai-dev/assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Guillaume Gilles</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Spec-Driven Production Grade Development in the Age of Vibe Coding</li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AI-Assisted Development</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vibe Coding</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/prompt-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prompt Engineering</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/agentic-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Agentic Engineering</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/agents.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Agents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/context.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Context Engineering</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/skills.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Agent Skills</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/sdd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spec-Driven Development</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/sdd-get-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Get Started with Spec-Driven Development</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/mcp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Context Protocol (MCP)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+ <span class="menu-text">teaching/ai-dev/local-models.qmd</span>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/customization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Agent Customization</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#spec-driven-development-sdd" id="toc-spec-driven-development-sdd" class="nav-link" data-scroll-target="#spec-driven-development-sdd">Spec-Driven Development (SDD)</a>
+  <ul class="collapse">
+  <li><a href="#a-good-specification" id="toc-a-good-specification" class="nav-link" data-scroll-target="#a-good-specification">A good specification</a></li>
+  <li><a href="#which-format-to-use" id="toc-which-format-to-use" class="nav-link" data-scroll-target="#which-format-to-use">Which format to use?</a></li>
+  <li><a href="#behavior-driven" id="toc-behavior-driven" class="nav-link" data-scroll-target="#behavior-driven">Behavior Driven</a></li>
+  <li><a href="#where-do-the-instructions-live" id="toc-where-do-the-instructions-live" class="nav-link" data-scroll-target="#where-do-the-instructions-live">Where do the instructions live?</a></li>
+  <li><a href="#different-prompts-for-different-use-cases" id="toc-different-prompts-for-different-use-cases" class="nav-link" data-scroll-target="#different-prompts-for-different-use-cases">Different Prompts for Different Use Cases</a>
+  <ul class="collapse">
+  <li><a href="#project-generation-the-architect" id="toc-project-generation-the-architect" class="nav-link" data-scroll-target="#project-generation-the-architect">1. Project Generation (The Architect)</a></li>
+  <li><a href="#feature-generation-the-builder" id="toc-feature-generation-the-builder" class="nav-link" data-scroll-target="#feature-generation-the-builder">2. Feature Generation (The Builder)</a></li>
+  <li><a href="#bug-fixing-the-forensic-specialist" id="toc-bug-fixing-the-forensic-specialist" class="nav-link" data-scroll-target="#bug-fixing-the-forensic-specialist">3. Bug Fixing (The Forensic Specialist)</a></li>
+  <li><a href="#documentation-writing-the-author" id="toc-documentation-writing-the-author" class="nav-link" data-scroll-target="#documentation-writing-the-author">4. Documentation Writing (The Author)</a></li>
+  <li><a href="#data-engineering-the-librarian" id="toc-data-engineering-the-librarian" class="nav-link" data-scroll-target="#data-engineering-the-librarian">5. Data Engineering (The Librarian)</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#mcp-one-integration-every-framework" id="toc-mcp-one-integration-every-framework" class="nav-link" data-scroll-target="#mcp-one-integration-every-framework">MCP: One Integration, Every Framework</a>
+  <ul class="collapse">
+  <li><a href="#building-an-mcp-server" id="toc-building-an-mcp-server" class="nav-link" data-scroll-target="#building-an-mcp-server">Building an MCP Server</a></li>
+  <li><a href="#connecting-an-mcp-client" id="toc-connecting-an-mcp-client" class="nav-link" data-scroll-target="#connecting-an-mcp-client">Connecting an MCP Client</a></li>
+  </ul></li>
+  <li><a href="#team-culture-process-evolution" id="toc-team-culture-process-evolution" class="nav-link" data-scroll-target="#team-culture-process-evolution">Team Culture &amp; Process Evolution</a>
+  <ul class="collapse">
+  <li><a href="#code-reviews" id="toc-code-reviews" class="nav-link" data-scroll-target="#code-reviews">Code Reviews</a>
+  <ul class="collapse">
+  <li><a href="#strategies-for-high-velocity-integration" id="toc-strategies-for-high-velocity-integration" class="nav-link" data-scroll-target="#strategies-for-high-velocity-integration">Strategies for High-Velocity Integration</a></li>
+  <li><a href="#deploying-agents-that-watch-your-repo" id="toc-deploying-agents-that-watch-your-repo" class="nav-link" data-scroll-target="#deploying-agents-that-watch-your-repo">Deploying Agents That Watch Your Repo</a></li>
+  <li><a href="#the-spectrum" id="toc-the-spectrum" class="nav-link" data-scroll-target="#the-spectrum">The Spectrum</a></li>
+  <li><a href="#tier-3-at-full-scale-graph-native-code-understanding" id="toc-tier-3-at-full-scale-graph-native-code-understanding" class="nav-link" data-scroll-target="#tier-3-at-full-scale-graph-native-code-understanding">Tier 3 at Full Scale: Graph-Native Code Understanding</a></li>
+  </ul></li>
+  <li><a href="#sustainability" id="toc-sustainability" class="nav-link" data-scroll-target="#sustainability">Sustainability</a></li>
+  </ul></li>
+  <li><a href="#zero-trust-development-building-the-safety-net" id="toc-zero-trust-development-building-the-safety-net" class="nav-link" data-scroll-target="#zero-trust-development-building-the-safety-net">Zero-Trust Development: Building the Safety Net</a>
+  <ul class="collapse">
+  <li><a href="#implementing-guardrails" id="toc-implementing-guardrails" class="nav-link" data-scroll-target="#implementing-guardrails">Implementing Guardrails</a></li>
+  <li><a href="#sandboxing" id="toc-sandboxing" class="nav-link" data-scroll-target="#sandboxing">Sandboxing</a></li>
+  <li><a href="#human-in-the-loop" id="toc-human-in-the-loop" class="nav-link" data-scroll-target="#human-in-the-loop">Human-in-the-Loop</a></li>
+  <li><a href="#ai-generated-test-coverage" id="toc-ai-generated-test-coverage" class="nav-link" data-scroll-target="#ai-generated-test-coverage">AI Generated Test Coverage</a></li>
+  <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation">Evaluation</a></li>
+  <li><a href="#policy-server" id="toc-policy-server" class="nav-link" data-scroll-target="#policy-server">Policy Server</a></li>
+  <li><a href="#context-hygiene-prompt-sanitization" id="toc-context-hygiene-prompt-sanitization" class="nav-link" data-scroll-target="#context-hygiene-prompt-sanitization">Context Hygiene &amp; Prompt Sanitization</a>
+  <ul class="collapse">
+  <li><a href="#implementing-a-dynamic-contextresolver" id="toc-implementing-a-dynamic-contextresolver" class="nav-link" data-scroll-target="#implementing-a-dynamic-contextresolver">Implementing a Dynamic ContextResolver</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#endnotes" id="toc-endnotes" class="nav-link" data-scroll-target="#endnotes">Endnotes</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Spec-Driven Production Grade Development in the Age of Vibe Coding</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p><strong>“Vibe Coding” is not “Vibe In Production”</strong></p>
+</blockquote>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>The daily routine of a Google Software Engineer has undergone a complete 180-degree forward flip in the past year. In early 2024 and before, significant time was spent digging into developer APIs and documentation, manually trying out code line by line, and determining if Python uses <code>substring</code> in string, <code>string.includes</code>, or <code>string.contains</code>. Once code was finished, substantial effort went into debugging and resolving discrepancies between the functional code and the original intent. Today, development moves at warp speed.</p>
+<p>Teams now use Coding Agents—like Antigravity<sup>1</sup> or Gemini CLI<sup>2</sup> that don’t just suggest text, but actually use tools and execute tasks. An AI Coding Editor can churn out a thousand lines of well-documented code rapidly. It feels as if a legion of interns who never sleep and never complain has been hired. But there is a catch: while velocity has hit overdrive, the <strong>Illusion of Speed</strong> is real. While the bug-to-code ratio remains a challenge—as AI writes code much faster, it can also generate potential mistakes at an unprecedented rate. However, because implementation is no longer the primary bottleneck, AI can be leveraged to write more comprehensive test coverage than any human could in the same timeframe. This is a powerful, programmatic way to increase confidence in code, which will be discussed in detail later. Furthermore, AI’s potential extends far beyond implementation: it excels in system design, spec writing, roadmap planning, and results analysis. While the bottleneck has shifted downstream to the humans who must integrate and review this work, the tools to handle it are available.</p>
+<p>“Vibe coding” refers to using AI to rapidly generate code based on a “vibe” or high-level intent rather than rigid, manual coding. However, it is crucial to clarify that “vibe coding” is not “vibe-in-production.” While we utilize AI agents to their full potential, everything is fully intended and controlled to ensure production-grade reliability, rather than relying on unvalidated AI output.</p>
+<p>In an enterprise setting, this “vibe” is referred to as <strong>Development with Agentic AI</strong>. Unlike standard Generative AI, which acts like a smart autocomplete, Agentic AI acts as a <strong>Hybrid Team Member</strong>; it uses the language model to generate (the brains), and it uses tools to integrate into the workflow (the hands). It can reason, write specs or test cases, use a browser to test a UI, and commit and merge code in Git. However, as development moves from individual experimentation to team-based production at scale, it becomes evident that writing 1000 lines of code before lunch isn’t the same as shipping software.</p>
+<p>When an agent “hallucinates”—which is AI-speak for when the model confidently makes something up that isn’t true—it doesn’t just create one bug; it can generate a thousand lines of “vibe-consistent” but functionally broken logic. If human reviewers are drowning in a sea of AI-generated Pull Requests (PRs)—those digital requests where teammates are asked to look at work before it goes live—the speed of writing becomes irrelevant. The process isn’t actually faster; it is simply creating a bigger pile of “stuff” to be sorted later.</p>
+<p>Luckily there are ways to protect the development process, but it’s important to use these techniques from the start, rather than while halfway through. This paper contains a set of techniques, from developing code for production, to securing code and changing team culture in the age of vibe coding.</p>
+</section>
+<section id="spec-driven-development-sdd" class="level1">
+<h1>Spec-Driven Development (SDD)</h1>
+<p>In the traditional world of software engineering, developers were taught to be “Code-First.” A vague idea would lead to opening an editor and typing until something worked. But in the age of Agentic AI, daily activities have shifted dramatically. Most time is now spent writing high-quality specifications—the detailed technical instructions that tell an AI exactly what to build.</p>
+<p>In this new workflow, the developer’s role is more of a technical architect than a traditional coder. Here is the critical part: <strong>code is now disposable</strong>. If a rock-solid specification is written, the entire codebase can be regenerated repeatedly. An agent can even be instructed to flip the whole project from Python to JavaScript in a single afternoon. Because the code is disposable, there isn’t the same emotional attachment to it. Since twelve hours haven’t been spent debugging a single semicolon, there is no fear of trashing it and starting over if the requirements change.</p>
+<p>Coding Agents—like Antigravity or Gemini CLI—work by using a Large Language Model (LLM) as the “brain” to reason and tools as the “hands” to execute tasks. If a brain is given a “vibe” instead of a “blueprint,” it will guess. And in enterprise software, guessing is how “Rogue Agent” incidents occur.</p>
+<section id="a-good-specification" class="level2">
+<h2 class="anchored" data-anchor-id="a-good-specification">A good specification</h2>
+<p>So, what does a production-grade blueprint look like? A good specification is an <strong>Architectural North Star</strong>. It prevents “context fragmentation”—the digital equivalent of the game “telephone,” where the AI starts losing the plot because it’s looking at outdated snapshots of files. AI can be used to refine a good spec, essentially as a co-author or as a spec editor/reviewer. Typically, the spec is stored within the code base, for example as a Markdown or YAML file in a <code>specs/</code> folder. It acts as the “source of truth” for both humans and AI.</p>
+</section>
+<section id="which-format-to-use" class="level2">
+<h2 class="anchored" data-anchor-id="which-format-to-use">Which format to use?</h2>
+<p>A 2026 study by Ouyang et al., “SkCC: Portable and Secure Skill Compilation for Cross-Framework LLM Agents”<sup>3</sup>, reveals that LLM agents exhibit extreme sensitivity to how instructions are formatted, resulting in up to a <strong>40% performance drop</strong> when using generic, unoptimized Markdown files. To address this, the researchers developed <strong>SkCC (Skill Compiler)</strong>, an ultra-fast tool that automatically compiles a single-source instruction file into a model’s optimal target format in under 10 milliseconds. For teams using Gemini, the paper demonstrates that the absolute best formatting strategy is a <strong>hybrid Markdown + Conditional YAML</strong> approach. Gemini uses clean Markdown headers to anchor its attention, but performance peaks when switching to YAML for any structured configuration or data schemas with a nesting depth of &gt; 3. The data shows that for deeply nested configurations, YAML achieves a 51.9% parsing accuracy, compared to only 43.1% for JSON and 33.8% for XML. By rendering deeply nested specifications in YAML while keeping narrative instructions in Markdown, developers bypass the reasoning “format tax” associated with heavy JSON inputs, ensuring Gemini operates with maximum accuracy and optimal token economics.</p>
+</section>
+<section id="behavior-driven" class="level2">
+<h2 class="anchored" data-anchor-id="behavior-driven">Behavior Driven</h2>
+<p>A <strong>Behavior-Driven Development (BDD)</strong> specification is the ultimate tool for turning vague, ambiguous human ideas into a precise architectural design that an AI agent can build without guessing. At its core, BDD is a software development methodology that uses plain, structured natural language to describe exactly how a system should behave from the user’s perspective before any code is actually written.</p>
+<p>A BDD spec uses a standardized syntax called <strong>Gherkin</strong><sup>4</sup>. Gherkin relies on a simple, declarative template: <strong>Scenario / Given / When / Then</strong>. It forces the LLM to think in terms of <strong>State &gt; Action &gt; Outcome</strong>, which completely eliminates “vibe coding” and keeps the agent on a strict track.</p>
+<p>A good specification for generating a new project contains:</p>
+<ul>
+<li><strong>The Full Technical Design</strong>: Don’t just say “make a login page.” Break it down into pieces. Address the requirements, database schemas (the structure of your data), and API specifications (the “contracts” that allow different parts of software to talk to each other).</li>
+<li><strong>Visual Aids</strong>: Include diagrams and a list of specific tools and libraries with version numbers.</li>
+<li><strong>Background Information</strong>: Give the agent the “Why” behind the “What.”, this will help the agent to think forward. It knows the steps you will likely need as well.</li>
+<li><strong>Scenarios</strong>: What does good look like, what’s wrong, and include edge cases.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I often write my technical designs in Google Docs. I let my architectural plans be read and reviewed by many others. This is now more important than ever because you’d much rather have a human catch a logic flaw in your design than wait until the AI has already generated thousands lines of broken code.</p>
+<p>Once reviewed, I use <strong>File &gt; Download &gt; Markdown</strong> and add that file into a <code>specs/</code> folder in my workspace.</p>
+</div>
+</div>
+<p>Large language models do not interpret data structures. They process tokenized text. Every character you send is broken down into tokens, and every token consumes budget, time, and context capacity. Ultimately, drafting a production-grade specification means treating tokenization as a hard physical constraint, because every character, newline, and indentation space you send translates directly into your development budget and system latency. While agent platforms like Google Antigravity—powered by Gemini—grant incredibly generous context windows and built-in rates during preview, they are still fundamentally bound by the token physics of their underlying models. Every unnecessary space in a deeply nested YAML block, and every repetitive Given / When / Then instruction, consumes processing cycles and attention-head capacity during the multi-turn reasoning loops where the agent iteratively constructs, tests, and edits your application. By treating your <code>/specs</code> folder not just as documentation, but as a lean, compiled instruction set that balances human-readable Markdown with highly targeted, flat YAML blocks, you eliminate the reasoning “format tax” and keep your AI agent operating on strict, cost-efficient rails.</p>
+</section>
+<section id="where-do-the-instructions-live" class="level2">
+<h2 class="anchored" data-anchor-id="where-do-the-instructions-live">Where do the instructions live?</h2>
+<p>To practice Spec-Driven Development (SDD), it is necessary to understand how coding tools consume instructions. Instructions are not written in a single place. Dumping a massive, 100-page system design document directly into a chat window will rapidly exhaust the short-term context budget, increase latency, and fragment the context. These specifications can live in different places.</p>
+<ol type="1">
+<li><p><strong>Chat Interface (Short-lived, Session-specific)</strong><br>
+The ephemeral, conversational input box in the IDE (e.g., the Gemini side-panel or terminal interface) lives with the active developer session. Use the chat interface purely for high-level orchestration and instant feedback loops. E.g. “Review the design in <code>specs/payment_retry.md</code> and generate the failing unit tests defined in Scenario 3.”</p>
+<p>The spec folder (Task-specific, Checked into version control)<br>
+This is a static folder checked directly into the repository. It stores the technical design, BDD scenarios, API contracts, and structural YAML schemas. The agent dynamically indexes this directory to build and verify code without manual prompt-stuffing.</p>
+<p><code>./my-app/specs/my_spec.md</code></p></li>
+<li><p><strong>Agent Skills (Reusable, Feature/Behavior-focused)</strong><br>
+Skills are structured Markdown files containing specialized, trigger-based workflows. While skills can live anywhere in the repository, they must be stored in the designated <code>.agent</code> directory to be recognized by the Antigravity workspace manager. They teach the agent repeatable engineering habits—like automatically maintaining a <code>CHANGELOG.md</code> when code changes are detected.</p>
+<p><code>./my-app/.agent/skills/docs-maintenance/SKILL.md</code></p>
+<p>Such a skills folder, can also contain data assets or scripts, for the skill to use.</p></li>
+<li><p><strong>System Prompts (Global, Identity-focused)</strong><br>
+This is where the AI learns the specific engineering DNA. Both Gemini CLI and Google Antigravity scan and concatenate context files hierarchically, meaning custom instructions are layered from global overrides down to local project configurations.</p>
+<ul>
+<li><p><strong>The Global Profile</strong>: This file lives in the home configuration directory (e.g., <code>~/.gemini/GEMINI.md</code>). This is where the AI becomes more aligned with individual preferences. It defines a universal persona, default style, and core principles, regardless of the project.</p></li>
+<li><p><strong>The Shared Multi-Tool Config (AGENTS.md)</strong>: To prevent instructional fragmentation if a team uses multiple AI clients, the ecosystem supports <code>AGENTS.md</code>. This acts as a shared cross-tool foundation, while a local <code>GEMINI.md</code> file retains the highest priority for Google-specific settings.</p>
+<p><code>./my-app/.agents/AGENTS.md</code></p></li>
+<li><p><strong>The Project Spec</strong>: This file lives in the project’s root directory (e.g., <code>./my-app/.gemini/GEMINI.md</code>). This is the project’s DNA. The CLI agent automatically detects and reads this file, prioritizing its rules.</p></li>
+</ul></li>
+</ol>
+</section>
+<section id="different-prompts-for-different-use-cases" class="level2">
+<h2 class="anchored" data-anchor-id="different-prompts-for-different-use-cases">Different Prompts for Different Use Cases</h2>
+<p>There isn’t just one way to turn a spec into code. This can be broken down into several <strong>Execution Modes</strong>, each requiring a different mindset:</p>
+<section id="project-generation-the-architect" class="level3">
+<h3 class="anchored" data-anchor-id="project-generation-the-architect">1. Project Generation (The Architect)</h3>
+<p>In this mode, scaffolding is done from scratch—building the skeleton of the project. <strong>No YOLO Mode</strong>: The agent should be explicitly prompted not to code immediately. It should propose the folder structure and tech stack first for confirmation. Ensure the prompt includes the generation of tests, documentation and logging (the digital “black box” that records what the app is doing).</p>
+<p>Include version numbers for every library. Without them, the agent might suggest an older version of a tool because its “knowledge cutoff”—the date its training data ended—was in the past.</p>
+</section>
+<section id="feature-generation-the-builder" class="level3">
+<h3 class="anchored" data-anchor-id="feature-generation-the-builder">2. Feature Generation (The Builder)</h3>
+<p>In this mode, features are implemented on top of an existing codebase. Prompt the agent to match the existing style, including naming patterns and how the code handles errors. When multiple files are being edited, changes should be manually confirmed. It is important to see the “Diff”—a list showing exactly what lines are being added or removed—inside the editor.</p>
+</section>
+<section id="bug-fixing-the-forensic-specialist" class="level3">
+<h3 class="anchored" data-anchor-id="bug-fixing-the-forensic-specialist">3. Bug Fixing (The Forensic Specialist)</h3>
+<p>When things break, forensic mode is required. The goal is root cause analysis and a surgical repair. Shift from <strong>Symptom Prompting</strong> (“The button doesn’t work”) to <strong>Evidence Prompting</strong> (“Logs pulled using <code>gcloud logging read 'textPayload:ERROR' --limit 5</code> showed a 403 error”). Use versioning on the command line (e.g.&nbsp;<code>gh</code> commands for Git) to compare versions of code. Then explain the flow: “Request hits Load Balancer -&gt; Auth strips header -&gt; Pod fails.”</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sometimes the coding agent will suggest renaming variables. Renaming of variables is acceptable, but it should be done as a separate task rather than part of a bug fix to avoid complications.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sometimes the coding agent will suggest lower versions of existing tools, libraries or models. This occurs because the underlying model was trained on a certain cutoff time. For example, it might suggest <code>gemini-1.5-flash</code> because no later version exists in the model’s knowledge. This can be prevented by using RAG features in a coding editor to add the latest documentation, or by downloading documentation as markdown files within the spec folder. In agent skills or profile prompts, this information can also be added. Keep in mind that agents easily fall back to their training data, so proposed version numbers should always be double-checked.</p>
+</div>
+</div>
+<p>Always prompt for a failing unit test or a curl command (a way to send data to a URL) to reproduce the bug first. Keep this test case in the codebase to ensure the bug does not return. Set a strict constraint that the agent should only fix the root cause. Unrelated code should not be “cleaned up,” as this complicates the review process.</p>
+<p>To elevate end-to-end (E2E) testing and troubleshooting, tools like Antigravity feature a built-in browser giving agents the ability to autonomously run localhost, interact with live user interfaces, and verify visual fixes in real time. Under the hood, Antigravity orchestrates a fully automated, native Chrome instance to execute, record, and verify these front-end tasks. Crucially, to prevent unauthorized actions and protect privacy, this subagent runs inside a completely isolated, sandbox-like Chrome profile. Because this profile does not share or access active browser logins or active personal sessions (acting essentially as a clean incognito environment), it prevents context leakage or accidental live operations while allowing the agent to rigorously test UX changes without compromised security. Debugging prompts can go far beyond static code analysis—the built-in browser can be given step-by-step instructions to point out exactly what goes wrong visually and define precisely what needs to be fixed on the screen.</p>
+</section>
+<section id="documentation-writing-the-author" class="level3">
+<h3 class="anchored" data-anchor-id="documentation-writing-the-author">4. Documentation Writing (The Author)</h3>
+<p>In SDD, the documentation is the source of truth. If the docs and the code aren’t in sync, the AI will start to hallucinate. Specify in agent “skills” that instructions in a <code>README.md</code> or <code>CHANGELOG.md</code> must always be maintained.</p>
+<p>Use Google Style Docstrings for Python or JSDoc for TypeScript. These are structured ways of writing comments that help the AI (and humans) understand exactly what a function does without reading every line of logic.</p>
+</section>
+<section id="data-engineering-the-librarian" class="level3">
+<h3 class="anchored" data-anchor-id="data-engineering-the-librarian">5. Data Engineering (The Librarian)</h3>
+<p>When querying tables or moving files, the role is that of a data engineer. Use IDE extensions like the Google Cloud Data Extension<sup>5</sup> to access cloud data directly from the editor. Prompt the agent to always show the specific SQL query or command used to generate the output.</p>
+</section>
+</section>
+</section>
+<section id="mcp-one-integration-every-framework" class="level1">
+<h1>MCP: One Integration, Every Framework</h1>
+<p>MCP was created by Anthropic and is now an open standard. People like to call it “the USB-C for AI tools” — a bit of a stretch, but the analogy captures the idea. You build one MCP server for your database (or API, or file system), and any MCP-compatible agent can use it without writing a custom integration.</p>
+<section id="building-an-mcp-server" class="level2">
+<h2 class="anchored" data-anchor-id="building-an-mcp-server">Building an MCP Server</h2>
+<p>Here’s a working server in about 40 lines that exposes a SQLite database:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mcp_server.py — Exposes a SQLite database via MCP</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.server <span class="im">import</span> Server</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.server.stdio <span class="im">import</span> stdio_server</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.types <span class="im">import</span> Tool, TextContent</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>server <span class="op">=</span> Server(<span class="st">"knowledge-base"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">"knowledge.db"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">@server.list_tools</span>()</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> list_tools() <span class="op">-&gt;</span> <span class="bu">list</span>[Tool]:</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        Tool(</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>            name<span class="op">=</span><span class="st">"query_knowledge"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            description<span class="op">=</span><span class="st">"Query the knowledge base with SQL"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            inputSchema<span class="op">=</span>{</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">"properties"</span>: {</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"sql"</span>: {</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"type"</span>: <span class="st">"string"</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"description"</span>: <span class="st">"SQL query to execute (SELECT only)"</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                    }</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">"required"</span>: [<span class="st">"sql"</span>]</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            },</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        Tool(</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>            name<span class="op">=</span><span class="st">"add_knowledge"</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>            description<span class="op">=</span><span class="st">"Add a new knowledge entry"</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>            inputSchema<span class="op">=</span>{</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>                <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>                <span class="st">"properties"</span>: {</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"title"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>},</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"content"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>},</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"tags"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"description"</span>: <span class="st">"Comma-separated tags"</span>}</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>                <span class="st">"required"</span>: [<span class="st">"title"</span>, <span class="st">"content"</span>]</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>            },</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="at">@server.call_tool</span>()</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> call_tool(name: <span class="bu">str</span>, arguments: <span class="bu">dict</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[TextContent]:</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> name <span class="op">==</span> <span class="st">"query_knowledge"</span>:</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        sql <span class="op">=</span> arguments[<span class="st">"sql"</span>]</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> sql.strip().upper().startswith(<span class="st">"SELECT"</span>):</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> [TextContent(<span class="bu">type</span><span class="op">=</span><span class="st">"text"</span>, text<span class="op">=</span><span class="st">"Error: Only SELECT queries allowed"</span>)]</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>        cursor <span class="op">=</span> db.execute(sql)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        rows <span class="op">=</span> cursor.fetchall()</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>        columns <span class="op">=</span> [desc[<span class="dv">0</span>] <span class="cf">for</span> desc <span class="kw">in</span> cursor.description]</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> [<span class="bu">dict</span>(<span class="bu">zip</span>(columns, row)) <span class="cf">for</span> row <span class="kw">in</span> rows]</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [TextContent(<span class="bu">type</span><span class="op">=</span><span class="st">"text"</span>, text<span class="op">=</span><span class="bu">str</span>(result))]</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> name <span class="op">==</span> <span class="st">"add_knowledge"</span>:</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>        db.execute(</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>            <span class="st">"INSERT INTO knowledge (title, content, tags) VALUES (?, ?, ?)"</span>,</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>            (arguments[<span class="st">"title"</span>], arguments[<span class="st">"content"</span>], arguments.get(<span class="st">"tags"</span>, <span class="st">""</span>))</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>        db.commit()</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [TextContent(<span class="bu">type</span><span class="op">=</span><span class="st">"text"</span>, text<span class="op">=</span><span class="st">"Knowledge entry added."</span>)]</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="cf">with</span> stdio_server() <span class="im">as</span> (read, write):</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        init_options <span class="op">=</span> server.create_initialization_options()</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">await</span> server.run(read, write, init_options)</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> asyncio</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    asyncio.run(main())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Snippet 1: mcp_server.py: This snippet implements an MCP server using the Python SDK to expose a SQLite database as a set of tools.</em></p>
+</section>
+<section id="connecting-an-mcp-client" class="level2">
+<h2 class="anchored" data-anchor-id="connecting-an-mcp-client">Connecting an MCP Client</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp <span class="im">import</span> ClientSession, StdioServerParameters</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.client.stdio <span class="im">import</span> stdio_client</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>server_params <span class="op">=</span> StdioServerParameters(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    command<span class="op">=</span><span class="st">"python"</span>, args<span class="op">=</span>[<span class="st">"mcp_server.py"</span>]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="cf">with</span> stdio_client(server_params) <span class="im">as</span> (read, write):</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="cf">with</span> ClientSession(read, write) <span class="im">as</span> session:</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">await</span> session.initialize()</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># List available tools</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        tools <span class="op">=</span> <span class="cf">await</span> session.list_tools()</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Available: </span><span class="sc">{</span>[t.name <span class="cf">for</span> t <span class="kw">in</span> tools.tools]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Call a tool</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> <span class="cf">await</span> session.call_tool(</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"query_knowledge"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"sql"</span>: <span class="st">"SELECT * FROM knowledge WHERE tags LIKE '%agent%'"</span>}</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(result.content[<span class="dv">0</span>].text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Snippet 2: mcp_client.py: This example demonstrates an MCP client connecting to a local server via stdio to discover and call tools.</em></p>
+</section>
+</section>
+<section id="team-culture-process-evolution" class="level1">
+<h1>Team Culture &amp; Process Evolution</h1>
+<p>Working with modern coding agents requires changes in thinking and team culture. Sticking to old processes while using modern tools is like trying to put a jet engine on a horse-drawn carriage; this technology cannot be bolted onto a 20-year-old workflow with the expectation that it will fly. Imagine an experience where a pull request (PR) could become enormous, and you consider breaking it down into smaller chunks. Merge conflicts suddenly multiply as developers land in the same files. It creates a dependency chain that’s hard to untangle. PR #1 can’t merge without PR #2, which needs PR #3, but PR #3 is blocked by a reviewer in a different timezone. Some changes got approved while related ones are waiting for review, spawning even more conflicts. Now you are suddenly stuck with a broken branch. Let’s break these type of issues down in categories:</p>
+<ul>
+<li><strong>Merge conflicts</strong>: Multiple developers landing on the same file within the hour.</li>
+<li><strong>Review gridlock</strong>: A massive PR becomes a Russian-doll of sub-PRs.</li>
+<li><strong>Context fragmentation</strong>: While a developer is away, a teammate renames a variable in a shared file; an agent, quoting an outdated snapshot, mints code that calls a function that no longer exists.</li>
+</ul>
+<p>Let’s look into a couple of lessons learned.</p>
+<section id="code-reviews" class="level2">
+<h2 class="anchored" data-anchor-id="code-reviews">Code Reviews</h2>
+<p>To survive the volume and scale of AI-generated commits without burnout, teams will need to explore new guidelines. While the ideal workflow is subject to debate, here are some ideas to help manage the shift from writing code to integrating it:</p>
+<section id="strategies-for-high-velocity-integration" class="level3">
+<h3 class="anchored" data-anchor-id="strategies-for-high-velocity-integration">Strategies for High-Velocity Integration</h3>
+<ul>
+<li><strong>Bundled Summaries and Risk Assessments</strong>: Consider requiring every PR to include an AI-generated snapshot of what changed, potential breakage points, and a risk assessment. This could be a markdown file or a detailed commit description that helps human reviewers focus on architectural impact rather than getting lost in the lines.</li>
+<li><strong>Reimagined Ownership</strong>: Shift the focus of human reviews from nitpicking style on disposable, agent-written code to ensuring the integrity of the architectural blueprints. Style concerns can be addressed through automated integration tools like shared syntax linters or workspace-specific stylebooks (e.g., <code>SKILLS.md</code>).</li>
+<li><strong>The “Conditional LGTM”</strong>: To eliminate 12-hour delays in cross-timezone teams, you might institute a “Conditional LGTM” (Looks Good To Me). A reviewer approves the PR contingent on it passing all automated tests; if the tests turn green, the code merges automatically.</li>
+<li><strong>Defining a No-Blame Culture</strong>: In high-velocity environments, the person producing the most code often becomes a scapegoat for bugs or merge conflicts. It is helpful to discuss how to attribute these issues to broken integration processes rather than the individual developer using the agent.</li>
+<li><strong>The Usage of Agent Coding Reviews</strong>: You could build a skill which does the code review for you. And you can even write skills that respond to code reviews. See Code Snippet 5.1. You can automate this with Github Actions<sup>6</sup> or using Gemini Code Assist on Github<sup>7</sup>. Lastly, you could even wonder and discuss; if you can work with a squad of agents, do you even need to work as a team at all? But if you decide you do, you might explore ways to split work so that team members rarely touch the same files—for example, assigning clear ownership over APIs versus UX. When overlap is necessary, the designated “part owner” can handle the final synchronization.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Act as a Senior Software Engineer and Security Researcher. Review the provided</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>code for this Github PR or Diff using these strict criteria:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Use the command line to fetch the Github PR:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="in">`gh pr view &lt;PR NUMBER&gt;`</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>First analyze the code, then code review:</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Critical Vulnerabilities:** Check for hardcoded secrets (API keys), SQL</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>injection, XSS, or broken authentication.</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Logic &amp; Efficiency:** Identify "off-by-one" errors, infinite loops, or</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>redundant API calls.</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Readability:** Suggest better naming conventions or breaking down "mega-</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>functions" into smaller pieces.</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Edge Cases:** What happens if the input is null? What if the network fails?</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>Output Format:</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Description:** - What is this PR doing? Explain in details.</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>ISSUES:</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>⚠ **Critical:** (Stop-ship issues)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>⚠️ **Warnings:** (Code smells or style issues)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>✅ **Best Practices:** (Specific lines to refactor for better performance)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>💡 **Quick Win:** (One sentence summary of the biggest improvement)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>When there are no issues return</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Description:** - What is this PR doing? Explain in details.</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>LGTM</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Snippet 3: code-check.md: This skill defines a structured workflow for automated code reviews against security and logic criteria.</em></p>
+</section>
+<section id="deploying-agents-that-watch-your-repo" class="level3">
+<h3 class="anchored" data-anchor-id="deploying-agents-that-watch-your-repo">Deploying Agents That Watch Your Repo</h3>
+<p>You can write a great review prompt. But who runs it on every PR, every nightly sweep — without a human pushing the button?</p>
+<p>A code review skill runs when you invoke them from inside the IDE. The next step is to deploy them as continuous code analysis agents — services that watch the repository, react to events (PR opened, nightly cron), and post findings back without anyone asking. They catch what tired humans miss on a Friday afternoon: a dependency with a fresh CVE, a TODO from six months ago that quietly became a security gap. Once your team is shipping AI-generated PRs at volume, a continuous reviewer is the only thing that scales with the output. The question is how custom you need to go — and the answer is a spectrum with three tiers, each trading control for simplicity.</p>
+</section>
+<section id="the-spectrum" class="level3">
+<h3 class="anchored" data-anchor-id="the-spectrum">The Spectrum</h3>
+<p>The three tiers differ in who owns the runtime and who writes the review criteria:</p>
+<ul>
+<li><p><strong>Tier 1 — Managed</strong> (e.g.&nbsp;Gemini Code Assist on GitHub<sup>8</sup>, or any SaaS PR reviewer). The off-the-shelf path. Enable it on your GitHub or GitLab org and every PR gets an AI reviewer that comments on style, bugs, and security out of the box. No prompts to write, no infrastructure to manage; pay per seat. The trade: you get the vendor’s review opinions, not yours — a generic reviewer will miss what matters to a team with a strict house style or a domain-specific risk profile (HIPAA, PCI, internal SDKs).</p></li>
+<li><p><strong>Tier 2 — Hybrid</strong> (e.g.&nbsp;a GitHub Action<sup>6</sup> triggering a coding agent CLI — Antigravity CLI<sup>12</sup>). The middle path, and the right starting point for most teams. Write your own review skill — the <code>code-check.md</code> from earlier in this paper is a working example — commit it to the repo, and trigger it from a CI action that runs the CLI of choice in non-interactive mode and posts the result as a PR comment. The runtime belongs to your CI provider; the prompts, model choice, sandboxing, and review criteria belong to you.</p></li>
+<li><p><strong>Tier 3 — Custom</strong> (e.g.&nbsp;an ADK agent on Gemini Enterprise Agent Engine<sup>9</sup>). The fully owned path. For example you can set the reviewer as an ADK agent, deploy it to Agent Runtime for managed runtime with durable Sessions and Memory Bank, and wire it to webhook events from your source host. This is the right answer when the reviewer must hold context across a multi-PR refactor, decompose “audit this service for compliance drift” into a hundred sub-tasks via a planner-and-sub-agents pattern, or coordinate with other agents over A2A<sup>10</sup>. The trade: you own evaluation, observability, cost, and the on-call rotation when it fails in production. An example of such an architecture can be found in the Siemens case study<sup>17</sup>.</p></li>
+</ul>
+<p>Three questions tell you which tier you need:</p>
+<ol type="1">
+<li>How specific is your review criteria?
+<ul>
+<li>Generic -&gt; Tier 1.</li>
+<li>Team- or repo-specific -&gt; Tier 2 or 3.</li>
+</ul></li>
+<li>Does the agent need to remember things across runs?
+<ul>
+<li>No -&gt; Tier 1 or 2.</li>
+<li>Yes (codebase memory, cross-PR context) -&gt; Tier 3.</li>
+</ul></li>
+<li>What is the worst case if it goes wrong?
+<ul>
+<li>A noisy comment -&gt; any tier.</li>
+<li>A merged regression or leaked secret -&gt; Tier 3 with the Policy Server pattern from the previous section in front of every tool call.</li>
+</ul></li>
+</ol>
+<p>Most teams discover their tier the moment the managed reviewer misses something specific. A platform team at a mid-size fintech, for example, started on Tier 1 and quickly found their compliance reviewer flagging boilerplate that auditors had already signed off — while missing the one pattern that mattered, unmasked PII in log statements. A 40-line <code>compliance-check.md</code> skill wired to a GitHub Action (Tier 2) dropped the false-positive comments sharply within a week. Tier 3 has not yet been needed.</p>
+</section>
+<section id="tier-3-at-full-scale-graph-native-code-understanding" class="level3">
+<h3 class="anchored" data-anchor-id="tier-3-at-full-scale-graph-native-code-understanding">Tier 3 at Full Scale: Graph-Native Code Understanding</h3>
+<p>Custom Code Review Runtime (Tier 3) stretches further than a single ADK agent reading diffs. The same architecture supports the heavier components a serious reviewer needs on a hundred-million-line legacy codebase — a graph database holding the code’s structure, a vector store for semantic retrieval, a sub-agent pipeline for decomposition. Loading code as flat text into a context window runs out of room at that scale, and standard RAG strips out the structure that makes code legible: a class belongs to a file, a function call traces to a requirements doc written a decade ago. Flatten that into a vector store and the map is gone.</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph Data_Ingestion["Data Ingestion"]
+        A1[Code Repositories]
+        A2[Documentation &amp; Tickets]
+        A3[Design PDFs]
+    end
+
+    subgraph Knowledge_Graph["Knowledge Graph Layer"]
+        B[Spanner Graph DB]
+    end
+
+    subgraph Retrieval["Retrieval Layer"]
+        C1[Graph Traversal&lt;br/&gt;GQL]
+        C2[Vector Search&lt;br/&gt;ANN Embeddings]
+        C3[Full-Text Search&lt;br/&gt;Identifier Match]
+    end
+
+    subgraph Pipeline["ADK Sub-Agent Pipeline"]
+        D1[Search Agent]
+        D2[Story Agent]
+        D3[Impact Agent]
+        D4[Task-Breakdown&lt;br/&gt;Agent]
+        D5[Coding Agent]
+    end
+
+    subgraph Output["Output"]
+        E[Code Review Results&lt;br/&gt;Impact Map &amp; Changes]
+    end
+
+    A1 --&gt; B
+    A2 --&gt; B
+    A3 --&gt; B
+    B --&gt; C1
+    B --&gt; C2
+    B --&gt; C3
+    C1 --&gt; D1
+    C2 --&gt; D1
+    C3 --&gt; D1
+    D1 --&gt; D2
+    D2 --&gt; D3
+    D3 --&gt; D4
+    D4 --&gt; D5
+    D5 --&gt; E</code></pre>
+<p><em>Figure 1: Example of a Custom Code Review Runtime Architecture</em></p>
+<p>The pattern that has emerged on the largest legacy modernisations is to build the agent on a knowledge graph. Ingest code, docs, tickets, and design PDFs into a graph database (e.g.&nbsp;Spanner Graph<sup>11</sup>), then let agents combine three retrieval modes: <strong>graph traversal (GQL)</strong> for structural queries (“every function that transitively calls <code>payment.process()</code>”), <strong>vector search (ANN over node embeddings)</strong> for semantic queries (“find code that does what this paragraph describes”), and <strong>full-text search</strong> for exact identifier matches. The combination answers “what breaks if I change this?” with a precise impact map instead of a confident guess.</p>
+<p>The second half is decomposition. A single agent told to “refactor this module” will fail. Split the same job across an ADK<sup>13</sup> sub-agent pipeline — a <strong>Search agent</strong> that explores the graph, a <strong>Story agent</strong> that captures requirements, an <strong>Impact agent</strong> that predicts side-effects, a <strong>Task-breakdown agent</strong> that produces atomic units of work, and only then a <strong>Coding agent</strong> — and the work becomes manageable. Pilots in production on million-line codebases have moved equivalent refactor work from two weeks to a few hours. This is Tier 3 at full scale: not an agent that watches PRs, but one that understands the system the PRs live in.</p>
+<p>A Managed Code Review Runtime (Tier 1) gets you a generic reviewer in minutes. A Hybrid Code Review Runtime gets you your reviewer in a day, where the Custom Code Review Runtime (Tier 3) gets you a reviewer that understands the whole system — at the cost of owning the runtime, and the evaluation. Pick the lowest tier that catches what matters.</p>
+</section>
+</section>
+<section id="sustainability" class="level2">
+<h2 class="anchored" data-anchor-id="sustainability">Sustainability</h2>
+<p>We’re seeing a new phenomenon: <strong>approval fatigue</strong>. According to Quantum Workplace research reported by CNBC, frequent AI users are 45% more likely to experience high burnout than non-users<sup>14</sup>. When faced with a constant stream of micro-approvals (improving a single line, adjusting a tool call) developers start clicking “Approve” reflexively. It’s a form of low-grade exhaustion where the team stops checking the machine’s work just to keep up with its pace, and you risk it that developers are missing the attention to the details.</p>
+<p>To protect the team, you can move from constant oversight to structured boundaries:</p>
+<ul>
+<li><strong>Digital Quiet Hours</strong>: Set boundaries so approval requests do not bleed into evenings and weekends.</li>
+<li><strong>Agent Insight Sessions</strong>: Hold weekly sessions where developers share patterns identified by their AI counterparts, turning isolated discoveries into shared organizational knowledge.</li>
+</ul>
+</section>
+</section>
+<section id="zero-trust-development-building-the-safety-net" class="level1">
+<h1>Zero-Trust Development: Building the Safety Net</h1>
+<p>The focus thus far has been on the review and team culture side. But there’s another lesson regarding what happens when an agent acts without sufficient guardrails.</p>
+<p>During a routine code update, the power and limits of Antigravity’s built-in UI browser were discovered. This feature allows the AI agent to interact with applications under development without requiring login credentials, making it invaluable for UX testing. However, in YOLO (auto approve) mode, it can act faster than a human can think.</p>
+<p>A simple prompt to create a button triggered an unexpected chain reaction. The browser agent autonomously clicked the new button, which was intended for an email agent. Without a specified URL, the agent hallucinated by connecting to a deprecated legacy agent with no email safeguards. The result? Fifty colleagues received false emails filled with hallucinated content.</p>
+<p>This incident highlighted <strong>context hallucination</strong> risk: when AI lacks sufficient data, it sometimes fills gaps using whatever strings exist in its context, including sensitive information like hardcoded email addresses or URLs. This may seem minor if it is just an email. However, consider what the agent was doing: fulfilling its directive with the data available to it, without any check on whether it should. That is the core risk with autonomous systems. Without a human-in-the-loop or a policy engine, the agent optimizes for its goal using whatever it can find. Guardrails are not optional; they are what keep a useful tool from becoming an unpredictable one.</p>
+<section id="implementing-guardrails" class="level2">
+<h2 class="anchored" data-anchor-id="implementing-guardrails">Implementing Guardrails</h2>
+<p>As the boundaries of Agentic AI are pushed, a paradox is encountered: agents should be autonomous enough to solve complex problems, but the risk of them going rogue in an enterprise environment cannot be afforded.</p>
+<p>Imagine an agent tasked with “resolving customer disputes.” To be effective, it needs access to customer data, email tools, and internal systems. But the challenge is ensuring it doesn’t accidentally email the entire database or share proprietary code.</p>
+<p>Autonomous agents are driven by LLMs that are probabilistic, not deterministic. Hard-coding constraints into a system prompt is brittle, contexts overflow, and agents can be “convinced” to bypass rules via prompt injection. To build production-grade platforms, external, tamper-proof governance is required. You can read more about securing and evaluating agents against malicious code, in the day 4 paper: <em>Vibe Coding Agent Security and Evaluation</em>.</p>
+</section>
+<section id="sandboxing" class="level2">
+<h2 class="anchored" data-anchor-id="sandboxing">Sandboxing</h2>
+<p>Beyond sanitizing strings, true security requires a restricted execution environment, or “Sandbox,” to contain an agent’s actions. Even with rigorous output filtering, an LLM might generate syntactically valid but logically malicious code that could compromise a host system. By executing agent-driven tasks within ephemeral, low-privilege containers isolated from the primary network and sensitive file systems, a “blast radius” is created that protects the core infrastructure. In this model, if an agent is tricked into executing a destructive command, the damage is confined to a disposable instance that can be wiped and reset without consequence.</p>
+<p>Within Antigravity this safety net can be enforced with a single toggle. Navigate to <strong>User Settings</strong> and enable “Terminal Sandboxing”<sup>15</sup>. Alternatively, if a portable, cloud-based sandbox for a team is required, the agent’s workspace can be containerized. By writing a custom Dockerfile (e.g., in <code>.gemini/sandbox.Dockerfile</code>) that starts from the official Gemini CLI sandbox<sup>16</sup> image, limited cloud credentials can be injected, and the CLI tool can be forced to run entirely in Docker by setting <code>export GEMINI_SANDBOX=docker</code> in the terminal. In both models, if the agent is tricked into a malicious execution, it will hit a hard permission error at the kernel level, keeping the host system completely untouched.</p>
+</section>
+<section id="human-in-the-loop" class="level2">
+<h2 class="anchored" data-anchor-id="human-in-the-loop">Human-in-the-Loop</h2>
+<p>While automation is the goal, high-stakes operations require a <strong>Human-in-the-Loop (HITL)</strong> protocol to serve as the ultimate fail-safe. This involves implementing “checkpoint” gates for actions that meet a specific risk profile, such as deploying code to production, modifying database schemas, or initiating financial transactions. By presenting an agent’s sanitized intent to a human supervisor for manual sign-off, the speed of AI is balanced with the nuanced judgment of a developer. This ensures that while the agent does the heavy lifting, final responsibility for architectural integrity remains firmly in human hands.</p>
+</section>
+<section id="ai-generated-test-coverage" class="level2">
+<h2 class="anchored" data-anchor-id="ai-generated-test-coverage">AI Generated Test Coverage</h2>
+<p>The surge in AI-generated code creates a shift from manual testing to <strong>AI-generated test coverage</strong> to maintain a reliable safety net. In a high-velocity environment, “test-driven development” becomes a reality by tasking the machine with writing the very tests that validate its own output.</p>
+<p>This process involves forcing the agent to produce a failing unit test or a reproduction command, such as a curl request, before attempting any fix. By embedding these automated tests into the codebase, every rapid iteration is backed by a verifiable suite of checks, preventing bugs from returning and allowing human reviewers to trust the automated green light for integration.</p>
+</section>
+<section id="evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation">Evaluation</h2>
+<p>Why do we need a special quality check for code that uses ML models? Traditional software tests are insufficient for systems whose output is generated rather than computed. An agent — or any ML-driven component like a classifier, summariser, or retriever — can pass 100 unit tests on its tools and still fail spectacularly by choosing the wrong tool, paraphrasing a critical answer, or hallucinating a fact. The error margin isn’t a defect to eliminate; it’s an inherent property of the model, and the testing strategy has to accommodate it.</p>
+<p>Evaluation closes this gap by replacing binary assertions with scored judgments and tolerance bands. A unit test asks “did the function return the right value?” — a binary answer. An evaluation asks “is the agent’s behaviour at least as good as the baseline?” — a 0–5 score from an LLM-as-judge, a trajectory check that tolerates ordering variance in tool calls, a gate that fires when quality drops below a configurable margin rather than when an assertion flips. <strong>Tests catch deterministic regressions; evaluation catches behavioural drift.</strong></p>
+</section>
+<section id="policy-server" class="level2">
+<h2 class="anchored" data-anchor-id="policy-server">Policy Server</h2>
+<p>Here’s an example Hybrid Policy Server that intercepts actions before they hit external systems. It operates on two layers:</p>
+<ul>
+<li><strong>Structural Gating (The Traffic Lights)</strong>: Deterministic rules based on roles and environments. These are fast, binary checks (e.g., a viewer role cannot use the <code>send_email</code> tool). This layer prevents architectural violations without needing to ask an LLM.</li>
+<li><strong>Semantic Gating (The Intelligent Referee)</strong>: This uses a secondary, specialized LLM (like Gemini) to inspect the intent and content of a proposed action against natural language privacy guidelines. This addresses the need for when a tool is allowed, but the way it is used violates a policy. For example, an admin can use <code>send_email</code>, but they should not send unmasked PII (like plain-text email addresses or API keys). This is where structural rules fail. You cannot regex every possible PII leak.</li>
+</ul>
+<p>These rules are defined in a standard <code>policies.yaml</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">environments</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">localhost</span><span class="kw">:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">blocked_tools</span><span class="kw">:</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> send_email</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">roles</span><span class="kw">:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">viewer</span><span class="kw">:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">allowed_tools</span><span class="kw">:</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> list_files</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> read_file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Snippet 4: policies.yaml: This configuration establishes deterministic gating rules for tool-level permissions based on role and environment.</em></p>
+<p>Below is a lightweight implementation of a Policy Server designed to intercept tool calls and verify permissions at runtime.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, yaml</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.genai <span class="im">import</span> Client</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PolicyService:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> is_tool_allowed(<span class="va">self</span>, tool_name: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check Environment Blocks</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        env_config <span class="op">=</span> <span class="va">self</span>.config.get(<span class="st">"environments"</span>, {}).get(<span class="va">self</span>.env, {})</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> tool_name <span class="kw">in</span> env_config.get(<span class="st">"blocked_tools"</span>, []): <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check Role Permissions</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        role_allows <span class="op">=</span> <span class="va">self</span>.config.get(<span class="st">"roles"</span>, {}).get(<span class="va">self</span>.role, {}).get(<span class="st">"allowed_tools"</span>, [])</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"*"</span> <span class="kw">in</span> role_allows <span class="kw">or</span> tool_name <span class="kw">in</span> role_allows</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="kw">def</span> check_action_semantic(<span class="va">self</span>, action_description: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        client <span class="op">=</span> Client(vertexai<span class="op">=</span><span class="va">True</span>, project<span class="op">=</span><span class="va">self</span>.project_id, location<span class="op">=</span><span class="va">self</span>.location)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        prompt <span class="op">=</span> <span class="ss">f"Evaluate if this action violates PII policies: </span><span class="sc">{</span>action_description<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> client.models.generate_content(model<span class="op">=</span><span class="st">"gemini-3.1-pro"</span>, contents<span class="op">=</span>prompt)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">not</span> response.text.strip().upper().startswith(<span class="st">"VIOLATION"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Snippet 5: policy_server.py: This service implements a hybrid policy engine to intercept actions and perform structural and semantic evaluations.</em></p>
+<p>The code listing works as follows: When the agent decides to use a tool, the execution flow is intercepted:</p>
+<ol type="1">
+<li><strong>Structural Check</strong>: Is the tool allowed for this role/env? (Check YAML).</li>
+<li><strong>Semantic Check</strong>: Are the arguments safe? (Ask Gemini). See the prompt in the code snippet. Unmasked email addresses are considered a violation.</li>
+<li><strong>Execution</strong>: If both pass, the tool runs. Otherwise, a “Policy Violation” message is returned to the agent, allowing it to self-correct or fail gracefully.</li>
+</ol>
+<p>This creates a safety net that separates execution logic from governance logic—a critical separation of concerns for enterprise software.</p>
+</section>
+<section id="context-hygiene-prompt-sanitization" class="level2">
+<h2 class="anchored" data-anchor-id="context-hygiene-prompt-sanitization">Context Hygiene &amp; Prompt Sanitization</h2>
+<p>A significant danger in autonomous development is the “Context Hallucination” risk. When an agent lacks specific data, it may fill gaps using any available strings in its current context, potentially leaking sensitive information like hardcoded email addresses or private URLs.</p>
+<p>To mitigate this, implement rigorous <strong>Context Hygiene</strong> through middleware that performs PII masking and placeholder injection. By replacing personally identifiable information with generic placeholders in templates, ensure that the agent operates on sterilized data.</p>
+<p>Furthermore, all agent outputs must be sanitized to prevent prompt injection and rogue UI interactions, ensuring that the machine’s “vibe” never translates into an architectural vulnerability.</p>
+<section id="implementing-a-dynamic-contextresolver" class="level3">
+<h3 class="anchored" data-anchor-id="implementing-a-dynamic-contextresolver">Implementing a Dynamic ContextResolver</h3>
+<p>This security pattern is achieved by implementing a lightweight regex-based translation utility inside the application’s core codebase. Below is a practical implementation of this design:</p>
+<p>This script acts as the core translation engine, replacing placeholder strings structured with double-bracket syntax <code>[[VARIABLE_NAME]]</code> with runtime overrides or environment configurations:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Optional, Dict, Any</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> resolve_context(template_str: <span class="bu">str</span>, override_state: Optional[Dict[<span class="bu">str</span>, Any]] <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Scans a template string for [[VARIABLE_NAME]] and replaces it with</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">    values from override_state or os.environ.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> template_str <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">""</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    state_to_check <span class="op">=</span> override_state <span class="kw">or</span> {}</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> replacement(match):</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        var_name <span class="op">=</span> match.group(<span class="dv">1</span>).strip()</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1. Prioritize runtime state overrides</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> var_name <span class="kw">in</span> state_to_check <span class="kw">and</span> state_to_check[var_name] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">str</span>(state_to_check[var_name])</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. Fallback to validated environment variables</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> var_name <span class="kw">in</span> os.environ <span class="kw">and</span> os.environ[var_name] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> os.environ[var_name]</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. Leave unresolved to prevent silent failures</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> match.group(<span class="dv">0</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolve all bracketed variables dynamically, e.g., [[COMMENTER_EMAIL]]</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> re.sub(<span class="vs">r'\[\[([^\]]+)\]\]'</span>, replacement, template_str)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Snippet 6: context_resolver.py: This utility resolves bracketed placeholders with environment variables to maintain context hygiene.</em></p>
+<p>To enforce context hygiene globally, the sanitization utility must be wired directly into your agent’s execution pipeline as a validation step. By intercepting incoming tool calls before they run, you ensure all prompt-injected strings are sterilized dynamically:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ... inside the validate_tool_call framework execution ...</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>resolved_args <span class="op">=</span> {}</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, v <span class="kw">in</span> args.items():</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(v, <span class="bu">str</span>):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        resolved_args[k] <span class="op">=</span> resolve_context(v)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">isinstance</span>(v, <span class="bu">list</span>):</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        resolved_args[k] <span class="op">=</span> [resolve_context(i) <span class="cf">if</span> <span class="bu">isinstance</span>(i, <span class="bu">str</span>) <span class="cf">else</span> i <span class="cf">for</span> i <span class="kw">in</span> v]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        resolved_args[k] <span class="op">=</span> v</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>args.clear()</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>args.update(resolved_args)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Snippet 7: tool_policy_engine.py: This middleware integrates the context resolver into the agent pipeline to sanitize tool arguments before execution.</em></p>
+<p>By enforcing this boundary, any attempt by an agent to execute an action (such as sending an email or querying a cloud presentation) is intercepted. The engine translates generic placeholders like <code>[[COMMENTER_EMAIL]]</code> or <code>[[DEFAULT_PRESENTATION_ID]]</code> into authorized test assets safely and silently, eliminating the need to ever hardcode sensitive PII in test suites or system prompts.</p>
+</section>
+</section>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<p>In less than a year, software development cycles have become dramatically faster. Watching an agent produce a thousand lines of well-documented code by lunchtime is a significant advancement.</p>
+<p>But that speed revealed an important shift. AI has eliminated the code production bottleneck, moving the constraint downstream to humans who must review, test, and integrate that output. This is a shared cognitive load: humans act as architects writing Test Specs, Integration Specs, and MLOps/DevOps blueprints, while the AI handles the heavy lifting writing actual test code, performing integrations, and managing granular operational details.</p>
+<p>Better prompts and faster models alone won’t fix the integration bottleneck. Success relies on evolving team dynamics, refining collaboration with agents, and setting strict boundaries for tools that never sleep. The challenge has shifted from mere code production to orchestrating systems that verify, integrate, and deploy work.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Where to start
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For teams operationalizing these patterns on agent codebases, <code>uv google-agents-cli setup</code> installs the seven skills into your coding agent — covering scaffolding, ADK code, evaluation, deployment, publishing, and observability. The patterns described in this paper become commands you can run today: <code>agents-cli scaffold</code> for spec-driven project generation, <code>agents-cli eval run</code> for the AI-generated test coverage gate, and <code>agents-cli deploy</code> for sandboxed deployment to Cloud Run or Vertex AI Agent Engine.</p>
+</div>
+</div>
+</section>
+<section id="endnotes" class="level1">
+<h1>Endnotes</h1>
+<ol type="1">
+<li>Google, 2026, Antigravity, agentic development platform, Available at: <a href="https://antigravity.google" class="uri">https://antigravity.google</a></li>
+<li>Google for Developers, 2025, Gemini CLI, Query and edit large codebases, generate apps from images or PDFs, and automate complex workflows—all from your terminal with Gemini 3. Available at: <a href="https://geminicli.com" class="uri">https://geminicli.com</a></li>
+<li>Ouyang Y., et al., 2026, SkCC: Portable and Secure Skill Compilation for Cross-Framework LLM Agents, Available at: <a href="https://arxiv.org/abs/2605.03353" class="uri">https://arxiv.org/abs/2605.03353</a></li>
+<li>Cucumber Open Source Project, 2026, Gherkin Syntax Reference, Available at: <a href="https://cucumber.io/docs/gherkin/reference" class="uri">https://cucumber.io/docs/gherkin/reference</a></li>
+<li>Google Cloud, 2026, Data Agent Kit extension for VS Code overview, Available at: <a href="https://docs.cloud.google.com/data-cloud-extension/vs-code/overview" class="uri">https://docs.cloud.google.com/data-cloud-extension/vs-code/overview</a></li>
+<li>Github, 2026, Quickstart for GitHub Actions, Available at: <a href="https://docs.github.com/en/actions/get-started/quickstart" class="uri">https://docs.github.com/en/actions/get-started/quickstart</a></li>
+<li>Google, 2026, Set up Gemini Code Assist on GitHub, Available at: <a href="https://developers.google.com/gemini-code-assist/docs/set-up-code-assist-github#consumer" class="uri">https://developers.google.com/gemini-code-assist/docs/set-up-code-assist-github#consumer</a></li>
+<li>Github, 2026, Gemini Code Assist on Github Marketplace, Available at: <a href="https://github.com/marketplace/gemini-code-assist" class="uri">https://github.com/marketplace/gemini-code-assist</a></li>
+<li>Google, 2026, Antigravity CLI Overview, Available at: <a href="https://antigravity.google/docs/cli-overview" class="uri">https://antigravity.google/docs/cli-overview</a></li>
+<li>Google Cloud, 2025, Agent Engine Overview, Available at: <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview" class="uri">https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview</a></li>
+<li>The Linux Foundation, 2025, Agent 2 Agent (A2A) Protocol, Available at: <a href="https://a2a-protocol.org/latest/" class="uri">https://a2a-protocol.org/latest/</a></li>
+<li>Google Cloud, 2025, Spanner Graph Documentation, Available at: <a href="https://cloud.google.com/spanner/docs/graph" class="uri">https://cloud.google.com/spanner/docs/graph</a></li>
+<li>Google ADK, Build powerful multi-agent systems with the Agent Development Kit Documentation, Available at: <a href="https://google.github.io/adk-docs/" class="uri">https://google.github.io/adk-docs/</a></li>
+<li>CNBC, 2025, Working smarter, not harder: AI could help fight burnout — but is it?, Available at: <a href="https://www.cnbc.com/2025/09/20/working-smarter-not-harder-how-ai-could-help-fight-burnout-.html" class="uri">https://www.cnbc.com/2025/09/20/working-smarter-not-harder-how-ai-could-help-fight-burnout-.html</a></li>
+<li>Google, 2026, Sandboxing Terminal Commands, Available at: <a href="https://antigravity.google/docs/sandbox-mode" class="uri">https://antigravity.google/docs/sandbox-mode</a></li>
+<li>Google, 2026, Sandboxing in Gemini CLI, Available at: <a href="https://geminicli.com/docs/cli/sandbox" class="uri">https://geminicli.com/docs/cli/sandbox</a></li>
+<li>Google Cloud, 2026, How Siemens “slices the elephant,” advancing agentic workflows for industrial software development, Available at: <a href="https://cloud.google.com/blog/products/ai-machine-learning/how-siemens-sliced-the-elephant-modernizing-legacy-code-with-agentic-workflows/?e=48754805" class="uri">https://cloud.google.com/blog/products/ai-machine-learning/how-siemens-sliced-the-elephant-modernizing-legacy-code-with-agentic-workflows/?e=48754805</a></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a> · Source on <a href="https://github.com/guillaumegilles/guillaumegilles.github.io"><i class="bi bi-github"></i> GitHub</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>This site respects your privacy — no cookies, no tracking.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

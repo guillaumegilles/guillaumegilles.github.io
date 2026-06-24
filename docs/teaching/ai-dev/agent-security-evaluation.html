@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Guillaume Gilles - Vibe Coding Agent Security and Evaluation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+<meta property="og:title" content="Guillaume Gilles - Vibe Coding Agent Security and Evaluation">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://ggilles.dev/teaching/ai-dev/assets/og-image.jpg">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Vibe Coding Agent Security and Evaluation">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://ggilles.dev/teaching/ai-dev/assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Guillaume Gilles</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Vibe Coding Agent Security and Evaluation</li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">AI-Assisted Development</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vibe Coding</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/prompt-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prompt Engineering</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/agentic-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Agentic Engineering</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/agents.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Agents</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/context.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Context Engineering</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/skills.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Agent Skills</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/sdd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spec-Driven Development</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/sdd-get-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Get Started with Spec-Driven Development</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/mcp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Context Protocol (MCP)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+ <span class="menu-text">teaching/ai-dev/local-models.qmd</span>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/customization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Agent Customization</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#authors" id="toc-authors" class="nav-link active" data-scroll-target="#authors">Authors</a></li>
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#security-the-evolution-to-secure-agentic-development" id="toc-security-the-evolution-to-secure-agentic-development" class="nav-link" data-scroll-target="#security-the-evolution-to-secure-agentic-development">Security: The Evolution to Secure Agentic Development</a>
+  <ul class="collapse">
+  <li><a href="#the-foundation-the-7-pillar-agent-security-architecture" id="toc-the-foundation-the-7-pillar-agent-security-architecture" class="nav-link" data-scroll-target="#the-foundation-the-7-pillar-agent-security-architecture">The Foundation: The 7-Pillar Agent Security Architecture</a></li>
+  <li><a href="#sandboxes-and-supply-chain-defence-pillars-1-4" id="toc-sandboxes-and-supply-chain-defence-pillars-1-4" class="nav-link" data-scroll-target="#sandboxes-and-supply-chain-defence-pillars-1-4">Sandboxes and Supply Chain Defence (Pillars 1 &amp; 4)</a>
+  <ul class="collapse">
+  <li><a href="#ephemeral-sandboxing-and-state-management" id="toc-ephemeral-sandboxing-and-state-management" class="nav-link" data-scroll-target="#ephemeral-sandboxing-and-state-management">Ephemeral Sandboxing and State Management</a></li>
+  <li><a href="#mitigating-hallucinated-packages" id="toc-mitigating-hallucinated-packages" class="nav-link" data-scroll-target="#mitigating-hallucinated-packages">Mitigating Hallucinated Packages</a></li>
+  <li><a href="#egress-governance-and-non-interactive-access" id="toc-egress-governance-and-non-interactive-access" class="nav-link" data-scroll-target="#egress-governance-and-non-interactive-access">Egress Governance and Non-Interactive Access</a></li>
+  </ul></li>
+  <li><a href="#vibe-coding-specifics-securing-application-logic-pillar-4" id="toc-vibe-coding-specifics-securing-application-logic-pillar-4" class="nav-link" data-scroll-target="#vibe-coding-specifics-securing-application-logic-pillar-4">Vibe-Coding Specifics: Securing Application Logic (Pillar 4)</a>
+  <ul class="collapse">
+  <li><a href="#application-vulnerabilities" id="toc-application-vulnerabilities" class="nav-link" data-scroll-target="#application-vulnerabilities">Application Vulnerabilities</a></li>
+  <li><a href="#reconciling-ide-friction-with-cicd-enforcement" id="toc-reconciling-ide-friction-with-cicd-enforcement" class="nav-link" data-scroll-target="#reconciling-ide-friction-with-cicd-enforcement">Reconciling IDE Friction with CI/CD Enforcement</a></li>
+  <li><a href="#mcp-spoofing-and-contextual-authorisation" id="toc-mcp-spoofing-and-contextual-authorisation" class="nav-link" data-scroll-target="#mcp-spoofing-and-contextual-authorisation">MCP Spoofing and Contextual Authorisation</a></li>
+  </ul></li>
+  <li><a href="#identity-trust-high-stakes-actions-pillar-5" id="toc-identity-trust-high-stakes-actions-pillar-5" class="nav-link" data-scroll-target="#identity-trust-high-stakes-actions-pillar-5">Identity, Trust &amp; High-Stakes Actions (Pillar 5)</a>
+  <ul class="collapse">
+  <li><a href="#the-confused-deputy-and-delegated-vs.-agentic-identity" id="toc-the-confused-deputy-and-delegated-vs.-agentic-identity" class="nav-link" data-scroll-target="#the-confused-deputy-and-delegated-vs.-agentic-identity">The Confused Deputy and Delegated vs.&nbsp;Agentic Identity</a></li>
+  <li><a href="#zero-ambient-authority-and-jit-downscoping" id="toc-zero-ambient-authority-and-jit-downscoping" class="nav-link" data-scroll-target="#zero-ambient-authority-and-jit-downscoping">Zero Ambient Authority and JIT Downscoping</a></li>
+  <li><a href="#elicitation-mfa-challenges-and-the-vibe-diff" id="toc-elicitation-mfa-challenges-and-the-vibe-diff" class="nav-link" data-scroll-target="#elicitation-mfa-challenges-and-the-vibe-diff">Elicitation, MFA Challenges, and the “Vibe Diff”</a></li>
+  </ul></li>
+  <li><a href="#red-blue-and-green-security-teaming-pillar-6" id="toc-red-blue-and-green-security-teaming-pillar-6" class="nav-link" data-scroll-target="#red-blue-and-green-security-teaming-pillar-6">Red, Blue, and Green Security Teaming (Pillar 6)</a>
+  <ul class="collapse">
+  <li><a href="#invisible-payloads-and-repository-poisoning" id="toc-invisible-payloads-and-repository-poisoning" class="nav-link" data-scroll-target="#invisible-payloads-and-repository-poisoning">Invisible Payloads and Repository Poisoning</a></li>
+  <li><a href="#the-red-team-agent-attacker-injecting-adversarial-vibes" id="toc-the-red-team-agent-attacker-injecting-adversarial-vibes" class="nav-link" data-scroll-target="#the-red-team-agent-attacker-injecting-adversarial-vibes">The Red Team (Agent Attacker): Injecting Adversarial Vibes</a></li>
+  <li><a href="#the-blue-team-agent-defender-behavioural-analytics" id="toc-the-blue-team-agent-defender-behavioural-analytics" class="nav-link" data-scroll-target="#the-blue-team-agent-defender-behavioural-analytics">The Blue Team (Agent Defender): Behavioural Analytics</a></li>
+  <li><a href="#the-green-team-agent-fixer-quarantine-and-auto-refactoring" id="toc-the-green-team-agent-fixer-quarantine-and-auto-refactoring" class="nav-link" data-scroll-target="#the-green-team-agent-fixer-quarantine-and-auto-refactoring">The Green Team (Agent Fixer): Quarantine and Auto-Refactoring</a></li>
+  <li><a href="#integrating-the-triad-and-enforcing-small-batch-sizes" id="toc-integrating-the-triad-and-enforcing-small-batch-sizes" class="nav-link" data-scroll-target="#integrating-the-triad-and-enforcing-small-batch-sizes">Integrating the Triad and Enforcing Small Batch Sizes</a></li>
+  </ul></li>
+  <li><a href="#observability-auditing-the-agents-mind-pillar-6-7" id="toc-observability-auditing-the-agents-mind-pillar-6-7" class="nav-link" data-scroll-target="#observability-auditing-the-agents-mind-pillar-6-7">Observability: Auditing the Agent’s Mind (Pillar 6 &amp; 7)</a>
+  <ul class="collapse">
+  <li><a href="#tracing-the-vibe-trajectory-and-content-scanning" id="toc-tracing-the-vibe-trajectory-and-content-scanning" class="nav-link" data-scroll-target="#tracing-the-vibe-trajectory-and-content-scanning">Tracing the “Vibe Trajectory” and Content Scanning</a></li>
+  <li><a href="#measuring-intent-drift-and-trust-decay" id="toc-measuring-intent-drift-and-trust-decay" class="nav-link" data-scroll-target="#measuring-intent-drift-and-trust-decay">Measuring Intent Drift and Trust Decay</a></li>
+  <li><a href="#checkpoints-and-stateful-circuit-breakers" id="toc-checkpoints-and-stateful-circuit-breakers" class="nav-link" data-scroll-target="#checkpoints-and-stateful-circuit-breakers">Checkpoints and Stateful Circuit Breakers</a></li>
+  </ul></li>
+  <li><a href="#security-recap" id="toc-security-recap" class="nav-link" data-scroll-target="#security-recap">Security Recap</a></li>
+  </ul></li>
+  <li><a href="#evaluation-orchestrating-quality-in-intent-driven-agentic-systems" id="toc-evaluation-orchestrating-quality-in-intent-driven-agentic-systems" class="nav-link" data-scroll-target="#evaluation-orchestrating-quality-in-intent-driven-agentic-systems">Evaluation: Orchestrating Quality in Intent-Driven Agentic Systems</a>
+  <ul class="collapse">
+  <li><a href="#why-evaluating-vibe-coding-agents-is-different" id="toc-why-evaluating-vibe-coding-agents-is-different" class="nav-link" data-scroll-target="#why-evaluating-vibe-coding-agents-is-different">Why evaluating vibe coding agents is different</a></li>
+  <li><a href="#what-to-evaluate" id="toc-what-to-evaluate" class="nav-link" data-scroll-target="#what-to-evaluate">What to Evaluate</a></li>
+  <li><a href="#how-to-evaluate" id="toc-how-to-evaluate" class="nav-link" data-scroll-target="#how-to-evaluate">How to evaluate</a>
+  <ul class="collapse">
+  <li><a href="#standardised-benchmarks-kaggle-agent-exams" id="toc-standardised-benchmarks-kaggle-agent-exams" class="nav-link" data-scroll-target="#standardised-benchmarks-kaggle-agent-exams">Standardised Benchmarks &amp; Kaggle Agent Exams</a></li>
+  </ul></li>
+  <li><a href="#observability-the-prerequisite-for-evaluation" id="toc-observability-the-prerequisite-for-evaluation" class="nav-link" data-scroll-target="#observability-the-prerequisite-for-evaluation">Observability: The Prerequisite for Evaluation</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Vibe Coding Agent Security and Evaluation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="authors" class="level1 unnumbered">
+<h1 class="unnumbered">Authors</h1>
+<p>Sokratis Kartakis, Aron Eidelman, Wafae Bakkali, and Meltem Subasioglu</p>
+<p>May 2026</p>
+</section>
+<section id="acknowledgements" class="level1 unnumbered">
+<h1 class="unnumbered">Acknowledgements</h1>
+<p><strong>Content contributors</strong></p>
+<p>Priya Pandey, Antonio Gulli, Reah Miyara, Sita Lakshmi Sangameswaran</p>
+<p><strong>Curators and editors</strong></p>
+<p>Anant Nawalgaria</p>
+<p><strong>Designer</strong></p>
+<p>Michael Lanning</p>
+</section>
+<section id="introduction" class="level1 page-columns page-full">
+<h1>Introduction</h1>
+<p>Software engineering is undergoing its most significant transformation since the introduction of high-level programming languages. The most profound shift is the transition from writing code to expressing intent, trusting intelligent systems to translate that intent into working software.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This new paradigm spans a spectrum: from casual “vibe coding”, where a developer describes what they want in natural language and accepts whatever the AI generates, to disciplined “agentic engineering”, where AI acts as an implementation engine within carefully designed constraints.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="no-row-height column-margin column-container"><p><sup>1</sup>&nbsp;This new paradigm spans a spectrum from casual vibe coding to disciplined agentic engineering.</p><p><sup>2</sup>&nbsp;Agentic engineering refers to AI acting as an implementation engine within carefully designed constraints.</p></div><p>While this high-velocity, intent-driven development drastically accelerates innovation, it shatters traditional paradigms of trust. In deterministic software, trust is binary: the code compiles, the tests pass, and the static credentials are valid. In an agentic system, an autonomous workforce possesses the ambient agency to execute generated code, access sensitive internal APIs, and dynamically modify production environments.</p>
+<p>To operationalise vibe coding in the enterprise, we must redefine trust across two distinct axes: <strong>Security</strong> and <strong>Evaluation</strong>.</p>
+<ul>
+<li><strong>Security</strong> tells you if the agent stayed inside the boundary, ensuring it operates safely and without malicious intent.</li>
+<li><strong>Evaluation</strong> tells you whether what happened inside that boundary is actually worth shipping.</li>
+</ul>
+<p>A vibe-coded agent can pass every security check and still fundamentally misread the developer’s intent, ignore project conventions, or silently degrade user experience. This whitepaper provides the definitive 2026 framework for both: establishing the strict “safety harness” required to secure non-deterministic agents, and opening the “glass box” to rigorously measure the quality, efficiency, and alignment of their internal reasoning.</p>
+</section>
+<section id="security-the-evolution-to-secure-agentic-development" class="level1 page-columns page-full">
+<h1>Security: The Evolution to Secure Agentic Development</h1>
+<p>As noted in a Mandiant special report for Google Cloud, “adversaries have moved beyond the simple use of large language models to draft phishing content and are now deploying adaptive tools capable of rewriting code.”<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Broad threat intelligence trends show adversaries continuously adapting their initial access vectors to exploit the new paradigm.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<div class="no-row-height column-margin column-container"><p><sup>3</sup>&nbsp;Mandiant special report for Google Cloud on adversaries deploying adaptive tools capable of rewriting code.</p><p><sup>4</sup>&nbsp;Broad threat intelligence trends on adversaries adapting initial access vectors to exploit the new paradigm.</p></div><p>Intent-driven development drastically accelerates innovation but introduces unprecedented security vulnerabilities. We are no longer simply securing web applications against traditional exploits; we are tasked with securing a non-human workforce that possesses the ambient agency to execute generated code, access sensitive internal APIs, and dynamically modify production environments.</p>
+<p>Traditional software testing and security models rely on deterministic logic, where a fixed set of inputs produces a predictable output. However, in an agentic system, an agent might possess a valid access token but operate autonomously with misaligned intent. A critical realisation is that a raw AI model is not an agent. It only becomes one when wrapped in a “harness”—the scaffolding that gives it state, tool execution, feedback loops, and enforceable constraints. Securing this new paradigm requires shifting our focus from securing code syntax to securing this harness.</p>
+<p>In this fluid, non-deterministic environment, static identity acts as a poor perimeter. Trust can no longer be a gate an agent passes through once during deployment; it must be continuously earned, verified, and dynamically enforced based on runtime context. We define this ongoing assurance as <strong>Effective Trust</strong>—a continuous metric evaluated across an agent’s supply chain, identity, runtime behaviour, and contextual associations.</p>
+<p>To achieve this continuous Effective Trust and secure the chaotic reality of vibe coding, we have developed a layered defence-in-depth architecture. As illustrated below, this framework builds upon a strict 7-pillar foundational baseline, extends into high-velocity execution controls, and is crowned by active, agentic defence mechanisms.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-agent-framework" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-agent-framework-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-agent-framework">flowchart TB
+    subgraph Crown["Active Agentic Defence"]
+        direction TB
+        RT[Red Team&lt;br/&gt;Adversarial Vibes]
+        BT[Blue Team&lt;br/&gt;Behavioural Analytics]
+        GT[Green Team&lt;br/&gt;Auto-Refactoring]
+    end
+
+    subgraph Execution["High-Velocity Execution Controls"]
+        direction TB
+        JIT[Just-In-Time&lt;br/&gt;Token Downscoping]
+        SBX[Ephemeral&lt;br/&gt;Sandboxing]
+        EG[Egress&lt;br/&gt;Governance]
+        VIBE[Vibe Diff &amp;&lt;br/&gt;MFA Challenges]
+    end
+
+    subgraph Foundation["The 7-Pillar Foundation"]
+        direction TB
+        P1[Pillar 1&lt;br/&gt;Infrastructure &amp; Networking]
+        P2[Pillar 2&lt;br/&gt;Data]
+        P3[Pillar 3&lt;br/&gt;Model]
+        P4[Pillar 4&lt;br/&gt;Application &amp; Runtime]
+        P5[Pillar 5&lt;br/&gt;IAM]
+        P6[Pillar 6&lt;br/&gt;Observability &amp; SecOps]
+        P7[Pillar 7&lt;br/&gt;Governance]
+    end
+
+    Foundation --&gt; Execution --&gt; Crown
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-agent-framework-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The Secure Vibe Coding Agent Framework. This layered architecture differentiates the foundational security controls required to safely host an autonomous agent (The 7 Pillars) from the high-velocity, intent-driven defences needed to secure its dynamic code execution and runtime behaviour.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The following sections will deconstruct this architecture layer by layer, beginning with the baseline security harness.</p>
+<section id="the-foundation-the-7-pillar-agent-security-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="the-foundation-the-7-pillar-agent-security-architecture">The Foundation: The 7-Pillar Agent Security Architecture</h2>
+<p>In traditional enterprise environments, security is deterministic. Applications rely on predictable code syntax, and access is governed by static Identity-as-a-Perimeter models, such as Role-Based Access Control (RBAC). If a user or service account has the correct authorisation token, the system implicitly trusts the execution path.</p>
+<p>The agentic environment fundamentally disrupts this model. Because everyday agent failures often trace back to a missing tool, a vague rule, or an absent guardrail, organisations must shift to a “Context-as-a-Perimeter” model. Because we must assume the underlying model could fail or be compromised, security cannot reside solely within the AI itself. Instead, we must enforce a strict, external “safety envelope” spanning multiple disciplines.</p>
+<p>We split this baseline architecture into seven distinct pillars, establishing the mandatory foundation that forms the secure harness for any autonomous system:</p>
+<ul>
+<li><p><strong>Pillar 1 - Infrastructure &amp; Networking:</strong> Cloud Infrastructure Engineers must secure the foundational environment against upstream poisoning and container escapes. Because the harness must dictate where the agent’s code actually runs and what it cannot reach, we isolate runtime execution within ephemeral, kernel-level sandboxes (such as gVisor). Furthermore, strict network egress governance guarantees that agent-generated data travels only through authorised, offline caches or explicit internal proxies, preventing inadvertent public exfiltration.</p></li>
+<li><p><strong>Pillar 2 - Data:</strong> Data Architects face the threat of agents leaking sensitive information from their context windows or ingesting poisoned RAG data. The practice of “context engineering” provides agents with rich, structured information about codebases and intent. To protect this sensitive context, data at rest is secured using Customer-Managed Encryption Keys (CMEK), whilst data in transit is protected via mutual TLS (mTLS). Crucially, data access must be strictly scoped down to enforce the principle of least privilege. Furthermore, long-term memory stores—particularly Vector Databases—must enforce strict tenant partitioning to prevent Cross-Tenant Vector Poisoning, ensuring that a malicious payload ingested by one tenant cannot be retrieved during another tenant’s similarity search.</p></li>
+<li><p><strong>Pillar 3 - Model:</strong> AI Engineers must defend the core application logic against semantic attacks that subvert the model’s instructions. In agentic workflows, the prompt and the “Instructions and Rule Files” that define what the agent is forbidden from doing serve as the new source code. Securing this pillar requires treating the model’s system instructions and prompt templates as highly sensitive, cryptographically attested artifacts.</p></li>
+<li><p><strong>Pillar 4 - Application &amp; Runtime:</strong> Agent developers must secure the agent’s autonomy as it executes logic and utilises tools. Because agents operate interactively, traditional rules-based firewalls are insufficient. We deploy LLM firewalls for dynamic prompt and response filtering, alongside deterministic “hooks” that run at specific lifecycle points, such as before a tool call or after a file edit. Centralised Agent Gateways act as the ecosystem’s bouncers, governing Agent-to-Agent (A2A) orchestration to prevent unauthorised lateral movement.</p></li>
+<li><p><strong>Pillar 5 - Identity and Access Management (IAM):</strong> Identity Administrators are tasked with cryptographically verifying exactly who is interacting with the system. The major risk is the “Confused Deputy” problem, where an over-privileged agent is tricked into executing unauthorised commands. We resolve this by assigning unique, cryptographic identities (such as SPIFFE IDs) to every agent. Access relies on Attribute-Based Access Control (ABAC) and Just-In-Time (JIT) token downscoping. This enforces a strict permissions matrix of Intent × User × Time, ensuring agents receive fresh, hyper-restricted credentials that expire immediately after a task concludes.</p></li>
+<li><p><strong>Pillar 6 - Observability &amp; Security Ops:</strong> Security Operations teams must combat “invisible failures” where an agent quietly cascades into an infinite reasoning loop. Without observability—including logs, traces, and metering—there is no way to tell whether an agent is doing well or quietly drifting. We resolve this by deploying an autonomous SecOps triad: the Blue Team utilises OpenTelemetry and Agent Behavioural Analytics (ABA), the Red Team proactively simulates multi-hop attacks, and the Green Team executes “Stateful Quarantines” if an anomaly is detected.</p></li>
+<li><p><strong>Pillar 7 - Governance:</strong> Governance and Compliance Officers must ensure that autonomous decisions meet rigorous regulatory standards. Beyond traditional data frameworks, governance must now strictly adhere to the EU AI Act, mandating Algorithmic Impact Assessments for high-risk autonomous agents to manage the legal liabilities of automated decision-making. To satisfy these requirements, agentic governance requires continuous oversight and risk prioritisation—understanding exactly which autonomous workflows carry the highest business impact if compromised, and securing those first. By leveraging the observability and identity pillars, organisations must create an immutable audit trail that strictly attributes every real-world action back to a specific agent and the human who deployed or approved it. Furthermore, if generated code compiles without errors, developers often assume it is safe. We resolve this by replacing simple approval buttons with mandatory “Logic Reviews,” translating complex syntax back into plain language. We utilise Risk-Stratified Attestation to bind digital signatures to the agent’s outputs, creating a transparent ledger for internal governance and third-party audits.</p></li>
+</ul>
+<p>This 7-pillar architecture provides the universal baseline required to securely graduate an AI model into a functioning enterprise agent. However, theoretical frameworks must survive contact with reality. In practice, modern developers operate fluidly between acting as a hands-on “conductor” and an asynchronous “orchestrator”. When this high-speed workflow collides with complex legacy environments, specific threat vectors emerge—from hallucinated software dependencies to inadvertently bypassed authentication flows. In the following sections, we will deep-dive into how these generic security principles are practically applied to tame the chaotic, high-velocity realities of vibe coding.</p>
+</section>
+<section id="sandboxes-and-supply-chain-defence-pillars-1-4" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sandboxes-and-supply-chain-defence-pillars-1-4">Sandboxes and Supply Chain Defence (Pillars 1 &amp; 4)</h2>
+<p>The core mechanism of vibe coding relies on dynamically translating human intent into executable logic on the fly. However, vibe-coded agents rarely write perfect code on their first attempt. The reality of intent-driven development is a high-speed, iterative cycle: the agent writes a script, executes it, reads the resulting error logs, and autonomously rewrites the logic until it aligns with the user’s vibe. Because this generative process introduces high variability, the resulting code cannot be implicitly trusted. Running these dynamically generated scripts directly alongside the root agent or on standard host infrastructure introduces an unacceptable level of risk.</p>
+<section id="ephemeral-sandboxing-and-state-management" class="level3">
+<h3 class="anchored" data-anchor-id="ephemeral-sandboxing-and-state-management">Ephemeral Sandboxing and State Management</h3>
+<p>To safely harness this high-velocity “vibe loop,” any skill-generated code must first execute within an ephemeral, network-isolated sandbox. Sub-agents designed to execute untrusted code or invoke tools must run in hardened environments, such as dedicated containers, virtual machines, or kernel-level environments like gVisor.</p>
+<p>Crucially, these sandboxes are not merely “prisons” for malicious payloads; they must actively block raw host access and completely reset their state between runs. This ensures that even if a vibe-coded script contains a severe vulnerability or is manipulated into a container escape attempt, the compromised logic cannot persist or impact the underlying host node while the agent safely iterates on its solution.</p>
+</section>
+<section id="mitigating-hallucinated-packages" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="mitigating-hallucinated-packages">Mitigating Hallucinated Packages</h3>
+<p>Agentic code generation introduces a highly specific and dangerous supply chain vulnerability: large language models frequently hallucinate software packages that do not exist. Malicious actors actively monitor developer forums and AI outputs for these hallucinations, proactively publishing malware under those exact fake names. Because autonomous agents can alter dependency graphs without human confirmation, a single hallucination can pull malware directly into the build environment.</p>
+<p>According to Wiz’s research on vibe coding, attackers actively exploit the tendency of language models to hallucinate dependency names: they upload malicious packages using these fabricated names so that automated agents will inadvertently download them, a technique Wiz refers to as “slopsquatting.”<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Instead, agents must source dependencies exclusively from vetted providers or internal enterprise registries, whilst enforcing strict cryptographic version pinning. As a final defensive pillar, CI/CD pipelines must automatically verify Software Bill of Materials (SBOM) entries and digital signatures before any artifacts advance to production, acting as a definitive gate using Binary Authorisation.</p>
+<div class="no-row-height column-margin column-container"><p><sup>5</sup>&nbsp;Wiz research on “slopsquatting”: attackers exploit LLM hallucination of dependency names by uploading malicious packages under those fabricated names.</p></div></section>
+<section id="egress-governance-and-non-interactive-access" class="level3">
+<h3 class="anchored" data-anchor-id="egress-governance-and-non-interactive-access">Egress Governance and Non-Interactive Access</h3>
+<p>While kernel-level isolation protects the host infrastructure, organisations must also secure the network boundary. In traditional software, outbound network traffic is highly predictable. In vibe-coded systems, egress is non-deterministic because it is driven by the dynamic usage of newly generated tools.</p>
+<p>A common failure mode in vibe coding is the agent inadvertently attempting to push unverified code to live environments, or exfiltrating sensitive data. However, relying on a simple allowlist of approved domains is insufficient. An allowlist cannot secure an agent against indirect prompt injections hidden within third-party web pages.</p>
+<p>To mitigate this risk, agents must be restricted to non-interactive internet access. Administrators should force the agent to fetch external information exclusively through offline caches or dedicated, pre-sanitised web-crawling services. By forcing all data to travel strictly through governed pathways, organisations prevent the agent from interacting directly with malicious payloads or inadvertently downloading typosquatted packages while fulfilling the user’s intent.</p>
+<p>While securing the execution environment and the supply chain ensures that an agent operates within a safely contained perimeter, a perfect sandbox does not prevent an agent from writing fundamentally flawed code or connecting to a malicious internal tool. To truly secure the output of this high-speed workflow, we must elevate our focus from the infrastructure to the application pillar itself.</p>
+</section>
+</section>
+<section id="vibe-coding-specifics-securing-application-logic-pillar-4" class="level2">
+<h2 class="anchored" data-anchor-id="vibe-coding-specifics-securing-application-logic-pillar-4">Vibe-Coding Specifics: Securing Application Logic (Pillar 4)</h2>
+<p>Because vibe coding inherently prioritises immediate functionality over secure design, the resulting generated applications frequently contain severe structural flaws. Users often implicitly trust the generated code simply because it compiles and runs without errors, blinding them to the fact that the application may have completely bypassed standard backend security controls.</p>
+<section id="application-vulnerabilities" class="level3">
+<h3 class="anchored" data-anchor-id="application-vulnerabilities">Application Vulnerabilities</h3>
+<p>When developers use AI to rapidly build applications, the resulting code tends to fail in two predictable ways: it trusts the browser too much, and it leaves the backend wide open.</p>
+<p>First, AI generation usually takes the path of least resistance by handling sensitive operations on the frontend. Instead of routing things through a secure server, the generated code often dumps API keys, password validation, and user session flags directly into the client side. This means anyone who opens their browser’s developer tools can easily read those credentials or manipulate their access level without ever needing a real password.</p>
+<p>Second, the speed of building these apps tends to outpace the setup of invisible security layers. AI tools are great at connecting a database or spinning up an admin dashboard, but they rarely enable the strict, default-deny access controls needed to actually protect them. As a result, basic things like row-level database security get skipped, leaving private user data and internal staging environments completely exposed to the public internet.</p>
+</section>
+<section id="reconciling-ide-friction-with-cicd-enforcement" class="level3">
+<h3 class="anchored" data-anchor-id="reconciling-ide-friction-with-cicd-enforcement">Reconciling IDE Friction with CI/CD Enforcement</h3>
+<p>To catch these structural flaws, we must balance developer velocity with strict security enforcement. Attempting to aggressively hard-block insecure prompts directly within the developer’s IDE is easily bypassed and can cause excessive friction for benign developers trying to iterate on complex logic.</p>
+<p>Instead, “shifting left” should be implemented via Developer Advisory Linters in the IDE to provide real-time guidance, while the unyielding security enforcement is pushed to deterministic checks within the CI/CD pipeline. Integrating Static Application Security Testing (SAST) and Software Composition Analysis (SCA) into the pipeline ensures that all generated application logic is deterministically scanned for vulnerable dependencies and structural flaws before the code ever reaches production.</p>
+</section>
+<section id="mcp-spoofing-and-contextual-authorisation" class="level3">
+<h3 class="anchored" data-anchor-id="mcp-spoofing-and-contextual-authorisation">MCP Spoofing and Contextual Authorisation</h3>
+<p>Once the vibe-coded application logic is deployed, security controls must govern how the agent interacts with external systems. Agents increasingly rely on tool coordination frameworks, such as the Model Context Protocol (MCP), which allow them to discover and connect to external or internal enterprise servers at runtime.</p>
+<p>This introduces a critical threat vector: a forged or compromised server can pose as a legitimate MCP tool to inject payloads or demand excessive privileges. Because agents operate autonomously, they may execute malicious commands supplied by these spoofed servers before any human intervention occurs.</p>
+<p>To secure Agent-to-Tool and Agent-to-Agent (A2A) orchestration, organisations must deploy a runtime LLM firewall in front of the active agent to dynamically intercept opportunistic prompt injections. Furthermore, a Centralised Agent Gateway must evaluate Contextual Authorisation—acting as the enforcer for the ‘Association’ trust factor by dynamically verifying if an agent’s request to call a tool perfectly aligns with the developer’s original intent. By routing all invocations through this governed entry and exit point, the architecture prevents unauthorised lateral movement when an agent attempts to connect with internal tools.</p>
+<p>By routing all tool invocations through a Centralised Agent Gateway, we successfully limit the agent’s ability to execute unauthorised actions at the runtime pillar. However, the integrity of these decisions ultimately relies on how we verify the actor behind the agent, manage credentials under pressure, and establish human control over high-risk actions. This shifts the security boundary from application orchestration to the cryptographic verification of identity and the mechanics of human authorisation.</p>
+</section>
+</section>
+<section id="identity-trust-high-stakes-actions-pillar-5" class="level2">
+<h2 class="anchored" data-anchor-id="identity-trust-high-stakes-actions-pillar-5">Identity, Trust &amp; High-Stakes Actions (Pillar 5)</h2>
+<p>Because developers often use vague or highly abstracted natural language to generate code (for example, “fix the backend routing”), the resulting agentic workflows are inherently broad. Granting these autonomous agents shared, long-lived service identities creates an unmanageable internal threat vector. To secure this pillar, organisations must assign unique, cryptographic identities (such as SPIFFE IDs) to every individual agent.</p>
+<section id="the-confused-deputy-and-delegated-vs.-agentic-identity" class="level3">
+<h3 class="anchored" data-anchor-id="the-confused-deputy-and-delegated-vs.-agentic-identity">The Confused Deputy and Delegated vs.&nbsp;Agentic Identity</h3>
+<p>Even with a unique identity, a vibe-coded agent remains highly susceptible to the Confused Deputy problem. This occurs when a prompt injection—such as a malicious instruction hidden inside an open-source repository that a developer unknowingly pasted into their IDE’s context window—tricks an over-privileged agent into executing an unauthorised command on the attacker’s behalf.</p>
+<p>To resolve this, an agent must never be the final arbiter of access. Instead of operating under the human user’s delegated credentials, which grants the agent dangerous ambient access, the agent must authenticate using a dedicated identity explicitly tagged as agentic. A distinct, observable agentic identity ensures that its permissions remain strictly bound and subject to granular audit logs.</p>
+</section>
+<section id="zero-ambient-authority-and-jit-downscoping" class="level3">
+<h3 class="anchored" data-anchor-id="zero-ambient-authority-and-jit-downscoping">Zero Ambient Authority and JIT Downscoping</h3>
+<p>Building on this, the architecture must enforce Zero Ambient Authority. An agent executing a “vibe” must never inherit the developer’s full, ambient administrative privileges. Instead, the system relies on Just-In-Time (JIT) token downscoping.</p>
+<p>When an agent dynamically writes a new script or skill to solve a task, the execution sandbox receives fresh, hyper-restricted credentials explicitly scoped to the exact data sources required for that specific script, rather than inheriting its parent agent’s broad permissions. Furthermore, administrators must enforce file-tree allowlists that confine read and write operations to specific project directories, utilising deny-by-default rules to block access to secrets, build scripts, and production manifests. These downscoped tokens are highly ephemeral and expire the exact moment the task concludes.</p>
+</section>
+<section id="elicitation-mfa-challenges-and-the-vibe-diff" class="level3">
+<h3 class="anchored" data-anchor-id="elicitation-mfa-challenges-and-the-vibe-diff">Elicitation, MFA Challenges, and the “Vibe Diff”</h3>
+<p>While automated identity constraints handle the majority of routine tasks, high-stakes actions—such as modifying production databases, executing financial transfers, or altering IAM configurations—require explicit verification and cannot rely on simple “approve/deny” buttons. Because vibe coders often rely on the AI to write complex syntax they may not fully understand (the “It Works, Ship It” fallacy), simple approval gates quickly cause confirmation fatigue, leading developers to blindly authorise code they do not comprehend.</p>
+<p>To combat this, the system must implement structured, context-aware elicitation. The agent is forced to actively request confirmation based on the specific context of a high-risk action, which must be accompanied by two distinct security boundaries:</p>
+<ul>
+<li><strong>Cryptographic Hardware MFA:</strong> The system should mandate physical multi-factor authentication challenges, such as requiring the developer to touch a hardware USB security key to cryptographically approve the execution.</li>
+<li><strong>The Vibe Diff:</strong> Before a critical tool runs, an Evaluator Quorum intercepts the request and translates the complex, generated code back into a plain-English summary. This “Vibe Diff” shows the human developer exactly how their original, fuzzy intent maps to the proposed execution steps, ensuring the human operator actually understands what they are authorising before providing explicit cryptographic consent.</li>
+</ul>
+<p>Even with perfect identity verification and granular human authorisation, malicious instructions can still slip past initial defences. When developers blindly trust open-source repositories or pull in massive blocks of unstructured context, they invite sophisticated semantic attacks that bypass standard IAM controls. To proactively detect and neutralise these hidden threats as the code is being generated, security operations must evolve to match the exact speed of the agentic workflow.</p>
+</section>
+</section>
+<section id="red-blue-and-green-security-teaming-pillar-6" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="red-blue-and-green-security-teaming-pillar-6">Red, Blue, and Green Security Teaming (Pillar 6)</h2>
+<p>In a vibe-coded environment, application logic is generated, executed, and discarded at an unprecedented velocity. Because the attack surface is non-deterministic and driven by natural language, traditional, manual security operations simply cannot scale to keep pace. To secure autonomous systems, the security operations themselves must become agentic, requiring the deployment of a continuous, AI-driven triad of Red, Blue, and Green teaming running in parallel with the developer’s workflow.</p>
+<section id="invisible-payloads-and-repository-poisoning" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="invisible-payloads-and-repository-poisoning">Invisible Payloads and Repository Poisoning</h3>
+<p>Before deploying defensive operations, we must understand the stealthy nature of agentic threats. Repositories themselves act as a highly effective attack vector. Threat actors can compromise repositories by inserting zero-width Unicode characters or homoglyphs directly into the codebase. Knostic warns that these “invisible payloads hide in plain sight and bypass human review”. Because agents manipulate and replicate code much faster than a human developer, a single hidden payload can “spread across hundreds of files in minutes” before anyone notices.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<div class="no-row-height column-margin column-container"><p><sup>6</sup>&nbsp;Knostic on invisible payloads hiding in plain sight and bypassing human review.</p></div></section>
+<section id="the-red-team-agent-attacker-injecting-adversarial-vibes" class="level3">
+<h3 class="anchored" data-anchor-id="the-red-team-agent-attacker-injecting-adversarial-vibes">The Red Team (Agent Attacker): Injecting Adversarial Vibes</h3>
+<p>Passive monitoring is fundamentally reactive. To uncover semantic vulnerabilities and invisible payloads before external adversaries do, organisations must deploy Virtual Red-Teaming Agents. Rather than running static penetration tests, the Agent Attacker proactively injects “Adversarial Vibes”.</p>
+<p>This involves dynamically crafting sophisticated roleplay jailbreaks and burying hidden, malicious instructions inside massive blocks of RAG context or dummy forum posts that developers frequently paste into their IDEs. The Red Team actively tests whether the target enterprise agent gets distracted by the poisoned context and hallucinates an insecure solution.</p>
+</section>
+<section id="the-blue-team-agent-defender-behavioural-analytics" class="level3">
+<h3 class="anchored" data-anchor-id="the-blue-team-agent-defender-behavioural-analytics">The Blue Team (Agent Defender): Behavioural Analytics</h3>
+<p>Functioning as the active monitoring pillar, the automated Blue Team replaces traditional User and Entity Behaviour Analytics (UEBA), which are ineffective for non-deterministic AI. Instead, the Agent Defender relies on Agent Behavioural Analytics (ABA) to baseline expected execution paths and detect AI-specific anomalies.</p>
+<p>It continuously monitors the agent’s Runtime Agent Bill of Materials (AgBOM)—a dynamic inventory of the tools, models, and data sources the agent is actively using at any given millisecond. If an agent’s logic begins to drift—for example, if a vibe-coded script suddenly begins querying an unusual number of external tools or enters an unbounded resource loop—the ABA engine immediately flags the deviation.</p>
+</section>
+<section id="the-green-team-agent-fixer-quarantine-and-auto-refactoring" class="level3">
+<h3 class="anchored" data-anchor-id="the-green-team-agent-fixer-quarantine-and-auto-refactoring">The Green Team (Agent Fixer): Quarantine and Auto-Refactoring</h3>
+<p>When the Blue Team detects a compromised agent, traditional incident response methods—such as aggressively killing the host container—are highly disruptive and dangerous. Terminating an agent mid-thought can leave connected APIs in a corrupted state. Instead, the automated Green Team executes a “Stateful Quarantine” via SOAR playbooks. This gracefully revokes the agent’s specific tool access, freezing its ability to act upon the world while preserving its short-term memory entirely intact for forensic analysis.</p>
+<p>Furthermore, the Green Team goes a step further by performing Auto-Refactoring. Leveraging the system’s innate capacity for self-repair, the Agent Fixer autonomously rewrites the insecure, vibe-coded script to patch the vulnerability. It then presents the secure, alternative code back to the developer directly within their IDE, requiring no manual human intervention to formulate the fix.</p>
+</section>
+<section id="integrating-the-triad-and-enforcing-small-batch-sizes" class="level3">
+<h3 class="anchored" data-anchor-id="integrating-the-triad-and-enforcing-small-batch-sizes">Integrating the Triad and Enforcing Small Batch Sizes</h3>
+<p>To prevent agents from generating massive, unreviewable code modifications during this process, developers must restrict agent output to small batch sizes. This is ideally achieved using a test-driven loop where the system blocks the agent from modifying tests and implementation code simultaneously, ensuring the test remains an objective baseline.</p>
+<p>With these constraints in place, the Red, Blue, and Green triad dynamically adapts the primary agent’s behaviour at runtime across three distinct phases:</p>
+<ul>
+<li><strong>The Planner Phase:</strong> When a primary agent designs a workflow, a specialised threat-modelling skill helps it evaluate the plan, identifying logical flaws and policy violations before the agent begins active execution.</li>
+<li><strong>The Evaluator Phase:</strong> The Evaluator quorum reviews the proposed execution trace while the Agent Defender (Blue) simultaneously verifies the AgBOM and monitors the semantic context for intent drift.</li>
+<li><strong>The Executor Phase:</strong> As the Executor performs the downscoped action, the Agent Fixer (Green) monitors the real-world tool execution, ready to instantly orchestrate a stateful quarantine or trigger an auto-refactoring loop if the agent encounters an error or trips a security constraint.</li>
+</ul>
+<p>To ensure these automated defence mechanisms can successfully intervene, the security triad requires an unimpeded, granular view into the agent’s internal reasoning. An agentic security operation is entirely blind if it only looks at the final code output. We must shift our focus from observing the host infrastructure to observing the agent’s “mind,” creating an immutable audit trail that maps exactly how a fuzzy intent translates into a real-world action.</p>
+</section>
+</section>
+<section id="observability-auditing-the-agents-mind-pillar-6-7" class="level2">
+<h2 class="anchored" data-anchor-id="observability-auditing-the-agents-mind-pillar-6-7">Observability: Auditing the Agent’s Mind (Pillar 6 &amp; 7)</h2>
+<p>To effectively secure and evaluate a vibe-coded agent, we must acknowledge a fundamental rule: you cannot secure what you cannot see. In traditional microservices, an HTTP 200 OK status indicates a successful operation. However, in an agentic system, a “success” status might merely mask a scenario where the agent’s internal logic has quietly cascaded into a hallucination loop. This introduces the critical risk of Denial of Wallet (DoW) attacks, where adversaries intentionally trigger infinite, computationally expensive API loops to deliberately bankrupt the organisation’s cloud and LLM billing accounts.</p>
+<p>Observability is no longer merely an operational concern for uptime and latency; it is a strict security requirement to illuminate the “glass box” of non-deterministic logic.</p>
+<section id="tracing-the-vibe-trajectory-and-content-scanning" class="level3">
+<h3 class="anchored" data-anchor-id="tracing-the-vibe-trajectory-and-content-scanning">Tracing the “Vibe Trajectory” and Content Scanning</h3>
+<p>To answer the critical question, “Why did an agent do that?”, security teams must construct a unified, chronological lens to view the agent’s cognitive steps. By utilising standard telemetry frameworks like OpenTelemetry, enterprises can aggregate diverse signals—API calls, tool inputs/outputs, RAG retrievals, and token latency—into a complete Vibe Trajectory.</p>
+<p>Tracking this trajectory requires logging the massive cognitive leap from the user’s initial prompt to the compiled Abstract Syntax Tree (AST). To fortify this trace, organisations must pair traditional logging with Centralised Content Scanning, explicitly designed to inspect all dynamic code snippets or scripts retrieved by the agent at runtime. This trace securely binds the agent’s internal reasoning loop to its physical actions, supporting rigorous third-party security audits.</p>
+</section>
+<section id="measuring-intent-drift-and-trust-decay" class="level3">
+<h3 class="anchored" data-anchor-id="measuring-intent-drift-and-trust-decay">Measuring Intent Drift and Trust Decay</h3>
+<p>As a vibe-coded agent dynamically generates logic and pulls in new tools, its security perimeter constantly fluctuates, making static asset inventories (SBOMs) instantly stale. Instead, observability platforms must monitor a Runtime Agent Bill of Materials (AgBOM)—a living document that maps the agent’s active blast radius at any given millisecond.</p>
+<p>Because trust in an autonomous system is a degradable asset, the architecture continuously monitors for Intent Drift. The principle of Trust Decay dictates that trust is lost when an agent’s internal chain of thought pursues sub-goals that diverge from the original human vibe. For instance, a simple prompt to “optimise the database query” might maliciously drift into the agent attempting to download a new, unauthorised indexing library.</p>
+</section>
+<section id="checkpoints-and-stateful-circuit-breakers" class="level3">
+<h3 class="anchored" data-anchor-id="checkpoints-and-stateful-circuit-breakers">Checkpoints and Stateful Circuit Breakers</h3>
+<p>To prevent destructive actions when this drift occurs, the observability pillar must proactively manage state. Before an agent executes any codebase modifications, the system must generate a version control checkpoint.</p>
+<p>As Agent Behavioural Analytics evaluate the Vibe Trajectory against the AgBOM, any detected instability instantly penalises the dynamic Agent Trust Score. If this score drops below a pre-defined threshold, an automated “circuit breaker” is tripped. The environment uses the version control checkpoint to immediately roll back changes, gracefully revoking tool access and freezing the agent’s autonomous execution without corrupting connected APIs, preserving the environment state for forensic analysis.</p>
+</section>
+</section>
+<section id="security-recap" class="level2">
+<h2 class="anchored" data-anchor-id="security-recap">Security Recap</h2>
+<p>For developers operationalising these concepts, securing a vibe-coded architecture relies on abandoning implicit trust and implementing the following practical baseline:</p>
+<ul>
+<li><strong>Sandbox the Vibe Loop:</strong> Always execute dynamically generated scripts within kernel-level, network-isolated sandboxes to contain the blast radius. Embed up-to-date Software Composition Analysis (SCA) to actively scan for hallucinated or vulnerable dependencies before the code reaches production.</li>
+<li><strong>Shift the Perimeter Left:</strong> Enforce the use of trusted sources and verified internal registries. While blocking insecure generation at the IDE level provides an advisory first step, rely on strict deterministic checks at multiple points in the CI/CD pipeline to intercept vulnerable or malicious agent logic before deployment.</li>
+<li><strong>Enforce Zero Ambient Authority:</strong> Never grant an agent a “Global Key”. Restrict access by mandating delegated user identities and Just-In-Time (JIT) hyper-restricted tokens that expire the moment a task concludes. For high-stakes actions, replace blind approval buttons with a mandatory “Vibe Diff” to ensure developers understand the generated logic.</li>
+<li><strong>Deploy Agentic SecOps:</strong> Continuously stress-test your architecture by deploying Virtual Red-Teaming Agents to inject “Adversarial Vibes”. Leverage Agent Behavioural Analytics to monitor the dynamic Runtime AgBOM, while empowering the Green Team to auto-refactor vulnerabilities on the fly.</li>
+<li><strong>Trace the Execution Trajectory:</strong> Log the agent’s API calls, tool inputs, and reasoning steps. Security teams must continuously monitor these execution logs to detect unexpected behaviour and utilise version control checkpoints to revert access if the agent drifts from its intended task.</li>
+</ul>
+<p>Implementing these security controls helps our vibe-coded agents operate safely within a secure, well-governed perimeter. However, a secure agent is not inherently an effective one. Security ensures the agent does not do anything malicious or unauthorised, but how do we definitively prove it actually achieved the user’s nuanced intent?</p>
+<p>To truly operationalise these agents, we must move beyond securing the perimeter and open the “glass box” to measure the quality, efficiency, and alignment of their internal reasoning. This brings us to the crucial next phase of the pipeline: Agent Evaluation.</p>
+</section>
+</section>
+<section id="evaluation-orchestrating-quality-in-intent-driven-agentic-systems" class="level1">
+<h1>Evaluation: Orchestrating Quality in Intent-Driven Agentic Systems</h1>
+<p>The previous sections covered the security controls that constrain what a vibe-coded agent can do.</p>
+<p>Those controls don’t answer the question the developer actually has: did the agent build what I asked for, and is it any good? A vibe-coded agent can pass every security check and still misread the developer’s intent, ignore the project’s conventions, or break an unrelated feature. Security tells you the agent stayed inside the boundary; evaluation tells you whether what happened inside that boundary is worth shipping.</p>
+<p>The following sections are structured around three questions: why vibe coding evaluation is different from evaluating other software, what to evaluate, and how to evaluate it. The diagram below summarizes each layer; the rest of the whitepaper expands them.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-eval-framework" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eval-framework-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-eval-framework">flowchart LR
+    subgraph Why["WHY: Why Evaluation is Different"]
+        A[Underspecification Gap&lt;br/&gt;No spec exists]
+        B[User Cannot Validate&lt;br/&gt;Output]
+        C[Session is Iterative&lt;br/&gt;Codebase is State]
+    end
+
+    subgraph What["WHAT: Seven Dimensions"]
+        D[Intent Satisfaction]
+        E[Functional Correctness]
+        F[Visual &amp; Behavioural&lt;br/&gt;Correctness]
+        G[Cost &amp; Efficiency]
+        H[Code Quality &amp;&lt;br/&gt;Convention Matching]
+        I[Trajectory Quality]
+        J[Self-Repair Behaviour]
+    end
+
+    subgraph How["HOW: Evaluation Methods"]
+        K[Automated&lt;br/&gt;Functional Testing]
+        L[Security &amp; Safety&lt;br/&gt;Evaluation]
+        M[LLM/Agent-as-Judge]
+        N[Browser-based&lt;br/&gt;Testing]
+        O[Trajectory&lt;br/&gt;Inspection]
+        P[Human Review]
+        Q[Online Evaluation]
+    end
+
+    Why --&gt; What --&gt; How
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eval-framework-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: The vibe coding agent evaluation framework
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="why-evaluating-vibe-coding-agents-is-different" class="level2">
+<h2 class="anchored" data-anchor-id="why-evaluating-vibe-coding-agents-is-different">Why evaluating vibe coding agents is different</h2>
+<p>Evaluating vibe coding agents is not the same problem as evaluating deterministic software, and it’s not the same problem as evaluating a customer-service agent or a research agent either.</p>
+<p>Three things make it unique:</p>
+<ul>
+<li><strong>The Underspecification Gap (There is no spec).</strong> Traditional software testing operates on the unyielding assumption that a complete, rigid specification exists before a single line of code is evaluated. Vibe coding is the exact opposite: the user’s natural language prompt is inherently underspecified. “Make the dashboard load faster” is not a test case. The prompt relies entirely on the foundation model’s latent knowledge, aesthetic judgment, and domain expertise to fill in the operational gaps. The first job of evaluation is to determine whether the agent successfully bridged this gap and reconstructed the right unstated spec.</li>
+<li><strong>The user often cannot validate the output.</strong> Non-technical users cannot review 600 lines of code line by line. Experienced engineers cannot either, in real time. The gap between “the agent thinks it succeeded” and “the code is actually correct” is wider here than in any other agent category, and closing that gap is the central work of evaluation.</li>
+<li><strong>The session is iterative and the codebase is state.</strong> Each turn modifies real files. Bad early decisions compound. Evaluation has to cover not just turn-level decisions but the full arc of a multi-turn conversation, on a living codebase with its own conventions, dependencies, and history.</li>
+</ul>
+<p>These three constraints shape every dimension, method, and tip that follows.</p>
+</section>
+<section id="what-to-evaluate" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-evaluate">What to Evaluate</h2>
+<p>Vibe coding agent evaluation breaks into seven dimensions, in two groups. User-facing dimensions are what the developer experiences directly. Internal dimensions describe what the agent does invisibly to the user. In addition, Safety and responsible AI is transversal, it intersects multiple dimensions (code vulnerabilities, refusal behaviour, content safety, IP exposure) and has to be evaluated alongside each of them.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-eval-dimensions" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eval-dimensions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-eval-dimensions">flowchart TB
+    subgraph UserFacing["User-Facing Dimensions"]
+        D1[1. Intent Satisfaction&lt;br/&gt;Did the agent build what the user meant?]
+        D2[2. Functional Correctness&lt;br/&gt;Does the code build, run, and pass tests?]
+        D3[3. Visual &amp; Behavioural Correctness&lt;br/&gt;Does the rendered output look and behave right?]
+        D4[4. Cost &amp; Efficiency&lt;br/&gt;Token spend, latency, iteration count]
+    end
+
+    subgraph Internal["Internal Dimensions"]
+        D5[5. Code Quality &amp; Convention Matching&lt;br/&gt;Does the code match project idioms?]
+        D6[6. Trajectory Quality&lt;br/&gt;Did the agent take a sensible path?]
+        D7[7. Self-Repair Behaviour&lt;br/&gt;Does the agent recover or compound failures?]
+    end
+
+    subgraph Transversal["Transversal"]
+        S[Safety &amp; Responsible AI&lt;br/&gt;Code vulnerabilities, refusal, content safety, IP exposure]
+    end
+
+    S -.-&gt; UserFacing
+    S -.-&gt; Internal
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eval-dimensions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Evaluation dimensions for vibe coding agents
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ol type="1">
+<li><p><strong>Intent satisfaction.</strong> Did the agent build what the user meant, not just what they said? The hardest dimension to evaluate because the intent is unstated, ambiguous, and often shifts mid-session. Intent satisfaction is what the user ultimately judges the agent on.</p></li>
+<li><p><strong>Functional correctness.</strong> Does the code build, run, and pass tests? The floor, not the ceiling. Easy to measure but easy to game: tests can be deleted or mocked to make red turn green without fixing anything.</p></li>
+<li><p><strong>Visual and behavioural correctness.</strong> For agents that produce web apps or UI, the artifact is the rendered output, not the code. Code-level metrics miss the point entirely. The page either looks right and behaves right, or it doesn’t.</p></li>
+<li><p><strong>Cost and efficiency.</strong> Token spend, wall-clock latency, tool-call count, and iteration count, how many corrections did the user have to issue before the agent converged? An agent that lands the right diff in 1 turn is a different product from one that needs 8 corrections.</p></li>
+<li><p><strong>Code quality and convention matching.</strong> Does the code match the project’s idioms, patterns, and conventions? A diff that passes tests but violates the codebase’s style is a vibe-coding failure even when locally correct.</p></li>
+<li><p><strong>Trajectory quality.</strong> Did the agent take a sensible path: read the related files first, sequence the edits coherently, pick the right tool or skill at each step? Correct output produced by bad reasoning is a fragile success.</p></li>
+<li><p><strong>Self-repair behaviour.</strong> When the build fails, the test breaks, or the user says “no, not like that,” does the agent recover or compound the failure? Recovery quality compounds across a multi-turn session.</p></li>
+</ol>
+<p>These dimensions are not independent. For instance, stronger trajectory quality (dimension 6) tends to mean stronger functional correctness (dimension 2), which is a prerequisite for intent satisfaction (dimension 1).</p>
+</section>
+<section id="how-to-evaluate" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-evaluate">How to evaluate</h2>
+<p>The seven dimensions are not all measurable the same way. No single method covers everything, so production pipelines combine several. The figure below summarizes the evaluation methods and the dimensions each is recommended for; the rest of the section describes each in detail.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-eval-methods" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eval-methods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-eval-methods">flowchart LR
+    subgraph Methods["Evaluation Methods"]
+        A[Automated Functional Testing]
+        B[Security &amp; Safety Evaluation]
+        C[LLM/Agent-as-Judge]
+        D[Browser-based Testing]
+        E[Trajectory Inspection]
+        F[Human Review]
+        G[Online Evaluation]
+    end
+
+    subgraph Dims["Recommended Dimensions"]
+        H["D2: Functional Correctness&lt;br/&gt;D5: Code Quality (rule-based parts)"]
+        I["Cross-cutting: Safety &amp; RAI"]
+        J["D1: Intent Satisfaction&lt;br/&gt;D5: Code Quality &amp; Style&lt;br/&gt;D6: Trajectory Quality"]
+        K["D3: Visual &amp; Behavioural Correctness"]
+        L["D6: Trajectory Quality&lt;br/&gt;D7: Self-Repair Behaviour"]
+        M["D1: Intent Satisfaction&lt;br/&gt;D5: Code Quality&lt;br/&gt;Safety &amp; RAI (nuanced)"]
+        N["All dimensions (sampled)"]
+    end
+
+    A --&gt; H
+    B --&gt; I
+    C --&gt; J
+    D --&gt; K
+    E --&gt; L
+    F --&gt; M
+    G --&gt; N
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eval-methods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Evaluation methods and recommended dimensions
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Automated functional testing.</strong> Run the build, the test suite, and the linters on the agent’s output. The standard tooling does most of the work here, pytest, jest, eslint, mypy, plugged into the project’s CI pipeline. This is the cheapest signal available, recommended for functional correctness (dimension 2) and the rule-checkable parts of code quality (dimension 5).</p>
+<p><strong>Security and safety evaluation.</strong> Combine static security analysis on the generated code with adversarial probing for refusal behaviour. This is cross-cutting, it scores safety and responsible AI alongside the other dimensions, not as a separate gate. The tooling splits in two: static scanners like Snyk and Semgrep find vulnerabilities, git-secrets catches credential leaks, and scripted red-team suites test whether the agent refuses clearly harmful requests.</p>
+<p><strong>LLM-as-judge and Agent-as-judge.</strong> Use a model to score outputs against rubrics. Recommended for the dimensions where rules don’t quite capture the right answer, intent satisfaction (dimension 1), code quality and style (dimension 5), and trajectory quality (dimension 6). In practice that means Gemini scoring an output against the original user prompt, or an agent-as-judge inspecting the trace for plan coherence.</p>
+<p><strong>Browser-based testing.</strong> Run multi-step workflows against the deployed app and observe what happens. Recommended for visual and behavioural correctness (dimension 3) on UI-producing agents. The techniques are well-established in software testing: Playwright scripts that interact with the rendered UI, screenshot comparison against a reference.</p>
+<p><strong>Trajectory inspection.</strong> Analyze the agent’s reasoning, tool calls, skill invocations, and retrievals. Recommended for the internal dimensions, trajectory quality (dimension 6) and self-repair behaviour (dimension 7). The substrate is OpenTelemetry traces with span-level tool-call data, surfaced through trace-replay tools that bind each model invocation to the actions that followed.</p>
+<p><strong>Human review.</strong> Sample sessions for direct review by qualified reviewers. Recommended for intent satisfaction (dimension 1, where humans are the only ground truth), code quality (dimension 5, the traditional domain of code review), and safety and responsible AI calls that need nuanced judgment. Doesn’t scale; mainly used to calibrate the other methods. In practice that means structured annotation by senior engineers on review queues filled by online sampling.</p>
+<p><strong>Online evaluation.</strong> Sample live production traffic and score it against the same rubrics used in offline eval. Covers all dimensions at sample rate. The trick is sampling well: a flat 1% misses the long tail, so bias toward high-cost sessions, sessions with many corrections, and sessions the user abandoned.</p>
+<section id="standardised-benchmarks-kaggle-agent-exams" class="level3">
+<h3 class="anchored" data-anchor-id="standardised-benchmarks-kaggle-agent-exams">Standardised Benchmarks &amp; Kaggle Agent Exams</h3>
+<p>While custom evaluation frameworks handle the open-ended nature of vibe coding, standardised testing isolates specific cognitive capabilities from the noise of custom enterprise environments. They provide the empirical baseline required to trust a non-deterministic system.</p>
+<ul>
+<li><strong>The Role of Standardised Testing:</strong> Benchmarks compare your agent against the field on shared task sets. Vibe Code Bench evaluates zero-to-one web app generation, SWE-bench Verified evaluates code changes on real GitHub repos, and LiveCodeBench gives a contamination-resistant signal for code generation.</li>
+<li><strong>Kaggle Agent Exams (SAE) and Zero-Setup Evaluation:</strong> Addressing the historically heavy infrastructure burden required to run these benchmarks, the Kaggle Standardised Agent Exams (SAE) represent a massive shift toward “zero-setup” autonomous evaluation. Deployed as a lightweight API integration via a SKILL.md file, SAE allows an agent to autonomously register itself with Kaggle, fetch exam questions, execute the multi-step logic within its own sandboxed environment, and instantly publish its score to a live public leaderboard. It acts as a rigorous, friction-free test of an agent’s multi-hop reasoning and adversarial safety under pressure.</li>
+<li><strong>Tradeoffs: Overfitting vs.&nbsp;Real-World Intent:</strong> Despite their immense utility, an over-reliance on standardised benchmarks introduces a severe tradeoff: benchmark overfitting. Agents can be hyper-optimized to achieve top-tier scores on static Kaggle datasets but fail catastrophically when exposed to the messy, contradictory realities of human intent in production. While a high score on SWE-bench proves an agent can navigate a highly structured Python repository, it provides zero guarantees that the agent possesses the aesthetic judgment required to “vibe code” a consumer-facing application. Standardised exams should be used strictly for cognitive calibration, not as a replacement for evaluating custom intent.</li>
+</ul>
+</section>
+</section>
+<section id="observability-the-prerequisite-for-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="observability-the-prerequisite-for-evaluation">Observability: The Prerequisite for Evaluation</h2>
+<p>To evaluate an agent’s internal reasoning, developers must possess the capability to see it. Observability is the absolute prerequisite for Glass Box evaluation; without it, agent failures appear as inexplicable monolithic events.</p>
+<ul>
+<li><strong>Tracing the Thought:</strong> Modern a</li>
+</ul>
+
+
+</section>
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a> · Source on <a href="https://github.com/guillaumegilles/guillaumegilles.github.io"><i class="bi bi-github"></i> GitHub</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>This site respects your privacy — no cookies, no tracking.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
