@@ -75,9 +75,9 @@ see how each piece of this file works.
 :::{.cr-section}
 
 This is the complete `.devcontainer/devcontainer.json` for this template.
-Every key plays a specific role — let's go through them one by one. @cr-config
+Every key plays a specific role — let's go through them one by one. @cr-config-1
 
-:::{#cr-config}
+:::{#cr-config-1}
 ```json
 {
   "name": "Quarto Codespaces",
@@ -92,6 +92,24 @@ Every key plays a specific role — let's go through them one by one. @cr-config
       "version": "latest"
     }
   },
+```
+:::
+
+**`name`** is just a human-readable label shown in the Codespaces dashboard.
+**`image`** sets the base container. The Microsoft Ubuntu image is a lean
+starting point with `git`, `curl`, and common shell tools — without the bloat
+of the universal image. [@cr-config-1]{highlight="2,4"}
+
+**`features`** are the magic of dev containers. Each entry is a self-contained
+install script that layers on top of the base image. Here we pull in two: the
+official Python feature (which also sets up `pip`) and the Rocker project's
+Quarto CLI feature (which installs the latest `quarto` binary).
+[@cr-config-1]{highlight="6-13"}
+
+:::{#cr-config-2}
+```json
+{
+  …SNIP…
 
   "hostRequirements": {
     "cpus": 4
@@ -100,7 +118,7 @@ Every key plays a specific role — let's go through them one by one. @cr-config
   "waitFor": "onCreateCommand",
   "updateContentCommand": "python3 -m pip install -r requirements.txt",
   "postAttachCommand": {
-    "server": "quarto preview hello.qmd --no-browser --port 8000"
+    "server": "quarto preview hello.qmd --output-dir _page --no-browser --port 8000"
   },
   "portsAttributes": {
     "8000": {
@@ -108,6 +126,42 @@ Every key plays a specific role — let's go through them one by one. @cr-config
       "onAutoForward": "openPreview"
     }
   },
+}
+```
+:::
+
+**`hostRequirements`** asks GitHub to provision a machine with at least 4 CPU
+cores. Quarto rendering — especially with Jupyter kernels — benefits from extra
+CPU headroom, so this prevents the codespace from running on the smallest tier.
+[@cr-config-2]{highlight="4-5"}
+
+**`waitFor`** tells the lifecycle to wait until `onCreateCommand` has finished
+before running subsequent commands. This ensures the container is fully ready
+before installing Python packages or starting the preview server.
+[@cr-config-2]{highlight="8"}
+
+**`updateContentCommand`** runs every time the codespace content is updated
+(including on creation). Here it installs all Python packages listed in
+`requirements.txt` — so adding a dependency to that file is all you need to
+do to make it available in your codespace.
+[@cr-config-2]{highlight="9"}
+
+**`postAttachCommand`** runs once VS Code connects to the container. The
+`server` key starts a `quarto preview` process in the background, watching
+`hello.qmd` and serving a live preview on port 8000.
+[@cr-config-2]{highlight="10-11"}
+
+**`portsAttributes`** tells Codespaces what to do when port 8000 is open.
+`"onAutoForward": "openPreview"` makes the preview appear directly in the VS
+Code side panel — no copying URLs, no browser tabs.
+[@cr-config-2]{highlight="13-16"}
+
+
+:::{#cr-config-3}
+```json
+{
+
+  …SNIP…
 
   "customizations": {
     "codespaces": {
@@ -127,54 +181,18 @@ Every key plays a specific role — let's go through them one by one. @cr-config
 ```
 :::
 
-**`name`** is just a human-readable label shown in the Codespaces dashboard.
-**`image`** sets the base container. The Microsoft Ubuntu image is a lean
-starting point with `git`, `curl`, and common shell tools — without the bloat
-of the universal image. [@cr-config]{highlight="2,4"}
-
-**`features`** are the magic of dev containers. Each entry is a self-contained
-install script that layers on top of the base image. Here we pull in two: the
-official Python feature (which also sets up `pip`) and the Rocker project's
-Quarto CLI feature (which installs the latest `quarto` binary).
-[@cr-config]{highlight="6-13"}
-
-**`hostRequirements`** asks GitHub to provision a machine with at least 4 CPU
-cores. Quarto rendering — especially with Jupyter kernels — benefits from extra
-CPU headroom, so this prevents the codespace from running on the smallest tier.
-[@cr-config]{highlight="15-17"}
-
-**`waitFor`** tells the lifecycle to wait until `onCreateCommand` has finished
-before running subsequent commands. This ensures the container is fully ready
-before installing Python packages or starting the preview server.
-[@cr-config]{highlight="19"}
-
-**`updateContentCommand`** runs every time the codespace content is updated
-(including on creation). Here it installs all Python packages listed in
-`requirements.txt` — so adding a dependency to that file is all you need to
-do to make it available in your codespace.
-[@cr-config]{highlight="20"}
-
-**`postAttachCommand`** runs once VS Code connects to the container. The
-`server` key starts a `quarto preview` process in the background, watching
-`hello.qmd` and serving a live preview on port 8000.
-[@cr-config]{highlight="21-23"}
-
-**`portsAttributes`** tells Codespaces what to do when port 8000 is open.
-`"onAutoForward": "openPreview"` makes the preview appear directly in the VS
-Code side panel — no copying URLs, no browser tabs.
-[@cr-config]{highlight="24-29"}
 
 **`customizations`** configures the editor itself. The `codespaces.openFiles`
 list causes `hello.qmd` to open automatically when the workspace loads.
 The `vscode.extensions` list pre-installs three extensions: **Quarto** for
 syntax highlighting and rendering commands, **Python** for IntelliSense, and
 **Jupyter** for running notebook cells inline.
-[@cr-config]{highlight="31-42"}
+[@cr-config-3]{highlight="1-12"}
 
 **`forwardPorts`** ensures port 8000 is always forwarded to your browser,
 even if `portsAttributes` automatic forwarding hasn't triggered yet. This is
 the safety net that guarantees the preview is always reachable.
-[@cr-config]{highlight="44"}
+[@cr-config-3]{highlight="14"}
 
 :::
 
