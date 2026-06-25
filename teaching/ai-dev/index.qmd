@@ -73,7 +73,8 @@ DevOps pipelines, and rapid release cycles.
 took weeks can now be done in hours, while requirements, architecture, and
 verification remain stubbornly human-paced.
 
-## The Factory Model
+### The Factory Model
+
 https://addyosmani.com/blog/factory-model/
 The most useful mental model for this new paradigm is that you are no longer just writing code. You are building the factory that builds your software.
 
@@ -122,164 +123,14 @@ flowchart TD
     style Code fill:#1a3d1a,stroke:#4a8a4a,color:#fff
 ```
 
-## Harness Engineering: What Surrounds the Model
 
-There is a temptation to treat the model as the system. A new model comes out, the
-agent gets smarter. That intuition is wrong, and it leads to the wrong investments.
-
-**A raw model is not an agent.** It becomes one once a harness gives it state,
-tool execution, feedback loops, and enforceable constraints. The behaviour
-developers experience when working with Claude Code, Cursor, Codex, Aider, or
-Cline is dominated by what the harness does, not just by which model is
-underneath.
-
-$$\text{Agent} = \text{Model} + \text{Harness}$$
-
-```{mermaid}
-%%| label: fig-harness-anatomy
-%%| fig-cap: "Harness Anatomy — Agent = Model + Harness"
-flowchart TB
-    subgraph Harness["🔧 The Harness"]
-        direction TB
-        IR["📜 Instructions &\nRule Files\n(AGENTS.md, CLAUDE.md)"]
-        Tools["🛠️ Tools\n(APIs, MCP Servers)"]
-        Sandbox["📦 Sandboxes &\nExecution Environments"]
-        Orch["🔀 Orchestration Logic\n(Sub-agents, routing)"]
-        GR["🛡️ Guardrails / Hooks\n(Lifecycle checkpoints)"]
-        Obs["📊 Observability\n(Logs, traces, evals)"]
-    end
-
-    Model["🧠 Model\n(Reasoning Engine)"] --> Harness
-    Harness --> Agent["🤖 Agent\n(Working System)"]
-
-    style Harness fill:#1a1a2e,stroke:#4a4a8a,color:#fff
-    style Model fill:#533483,stroke:#7a5ab5,color:#fff
-    style Agent fill:#1a3d1a,stroke:#4a8a4a,color:#fff
-```
-
-### What's in the Harness
-
-- **Instructions and Rule Files** — the text that defines who the agent is, what
-  it cares about, and what it is forbidden from doing. Includes `AGENTS.md`,
-  `CLAUDE.md`, `GEMINI.md`, skill files, and sub-agent prompts.
-- **Tools** — the functions, MCP servers, and APIs the agent can call, plus the
-  prose that tells the model when and how to call them.
-- **Sandboxes and execution environments** — where the agent's code actually
-  runs, what it has access to, what it cannot reach.
-- **Orchestration logic** — sub-agent spawning, model routing, hand-offs between
-  specialists, and the rules that govern when each fires.
-- **Guardrails / Hooks** — deterministic code that runs at specific lifecycle
-  points: before a tool call, after a file edit, before a commit. Hooks are the
-  place for things the agent should never forget but often does.
-- **Observability** — logs, traces, evaluations, cost and latency metering.
-  Without observability, there is no way to tell whether the agent is doing well
-  or quietly drifting.
-
-### Harness in SDLC
-
-```{mermaid}
-%%| label: fig-harness-sdlc
-%%| fig-cap: "The Harness Across SDLC Phases"
-flowchart LR
-    subgraph P1["Phase 1\nRequirements & Architecture"]
-        H1["⚙️ Configure\nInstruction files,\ntool access, rules"]
-    end
-    subgraph P2["Phase 2\nImplementation"]
-        H2["▶️ Run\nSandboxes,\nexecution environments,\ntools"]
-    end
-    subgraph P3["Phase 3\nTesting & QA"]
-        H3["🔄 Feedback Loop\nOrchestration logic,\nguardrails → self-correction"]
-    end
-    subgraph P4["Phase 4\nReview, Deploy & Maintain"]
-        H4["👁️ Observe\nHooks, observability,\naudit trails"]
-    end
-    P1 --> P2 --> P3 --> P4
-
-    style P1 fill:#1a2a3d,stroke:#4a6a8a,color:#fff
-    style P2 fill:#1a3d1a,stroke:#4a8a4a,color:#fff
-    style P3 fill:#3d2a1a,stroke:#8a6a4a,color:#fff
-    style P4 fill:#2d1a3d,stroke:#6a4a8a,color:#fff
-```
-
-::: {.callout-important}
-## Most Agent Failures are Configuration Failures
-When an agent does something wrong, the first instinct is to blame the model.
-More often, the failure traces back to a missing tool, a vague rule, an absent
-guardrail, or a context window stuffed with noise. Public benchmarks confirm
-this: one team moved a coding agent from outside the Top 30 to the Top 5 on
-Terminal Bench 2.0 by changing **only the harness**, with no model change at all.
-:::
-
-## The Developer's Evolving Role: Conductors and Orchestrators
-
-As AI takes over more of the implementation work, developers move fluidly between
-two modes:
-
-```{mermaid}
-%%| label: fig-conductor-orchestrator
-%%| fig-cap: "Conductor vs. Orchestrator — Two Modes of Working with AI Agents"
-flowchart LR
-    subgraph Conductor["🎼 Conductor Mode"]
-        direction TB
-        C1["Real-time collaboration\nwith AI pair-programmer"]
-        C2["In the IDE, watching\ncode appear"]
-        C3["Fine-grained control\nover every change"]
-        C4["Tools: Copilot, Cursor,\nWindsurf, Gemini Code Assist"]
-    end
-    subgraph Orchestrator["🎭 Orchestrator Mode"]
-        direction TB
-        O1["High-level abstraction:\ndefine goals, assign to agents"]
-        O2["Agents work in background,\nin parallel"]
-        O3["Review results,\nprovide course corrections"]
-        O4["Tools: Jules, Copilot Agent\nMode, Claude Code"]
-    end
-    Dev["👨‍💻 Developer"] --> Conductor
-    Dev --> Orchestrator
-
-    style Conductor fill:#1a2a3d,stroke:#4a6a8a,color:#fff
-    style Orchestrator fill:#1a3d2a,stroke:#4a8a6a,color:#fff
-    style Dev fill:#533483,stroke:#7a5ab5,color:#fff
-```
-
-### The Conductor: Hands-On, Real-Time Direction
-
-In conductor mode, a developer works in real-time with an AI pair-programmer.
-They're in the IDE, watching code appear, guiding the AI with prompts and
-corrections, maintaining fine-grained control over what gets written.
-
-This mode is typical when:
-- Working on complex logic
-- Debugging tricky issues
-- Working in unfamiliar codebases where each change must be understood
-
-The risk is that it can become a bottleneck — if the developer is personally
-directing every keystroke, the throughput improvement from AI is limited.
-
-### The Orchestrator: Async, Multi-Agent Delegation
-
-In orchestrator mode, the developer operates at a higher level of abstraction.
-They define goals, assign them to agents, and review results — not watching code
-appear line by line. Agents may be working in the background, in parallel, on
-different parts of a codebase.
-
-This mode is typical for:
-- Well-defined bug fixes
-- Feature implementations against established patterns
-- Codebase migrations
-- Test generation
-
-The orchestrator mode requires different skills:
-
-- **Specification** — defining tasks precisely enough for autonomous execution
-- **Decomposition** — breaking large tasks into appropriately sized units
-- **Evaluation** — quickly assessing whether agent output meets quality standards
-- **System design** — designing the constraints, tests, and feedback loops that
-  keep agents productive
 
 ### The Pareto Law
 
 ...WIP...
-    
+
+Let AI do 80% of the work and focus your energy on the 20% left.
+
 The 80% Problem
 
 A persistent challenge: AI agents can rapidly generate approximately **80% of
