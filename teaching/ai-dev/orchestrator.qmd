@@ -1,0 +1,75 @@
+---
+title: "Orchestrator"
+---
+
+The developer's evolving role:
+conductors and orchestrators
+As AI takes over more of the implementation work, the developer's role is transforming in
+ways that are both exciting and disorienting. We find it useful to think of two modes that
+developers move between fluidly: conductor and orchestrator.12
+
+The conductor: hands-on, real-time direction
+In conductor mode, a developer works in real-time with an AI pair-programmer. They're in
+the IDE, watching code appear, guiding the AI with prompts and corrections, and maintaining
+fine-grained control over what gets written. The AI is a powerful instrument, but the
+developer is actively directing every movement.
+
+This mode is typical when working on complex logic, debugging tricky issues, or working in
+unfamiliar codebases where the developer needs to understand each change as it's made.
+Tools like GitHub Copilot, Google's Gemini Code Assist, Cursor, and Windsurf primarily
+support this mode through inline completions, chat interfaces, and edit-in-place capabilities.
+The conductor mode is natural for developers who come from traditional engineering
+backgrounds. It preserves the sense of understanding and control that many engineers value.
+The risk is that it can also become a bottleneck - if the developer is personally directing every
+keystroke, the throughput improvement from AI is limited.
+The orchestrator: async, multi-agent delegation
+In orchestrator mode, the developer operates at a higher level of abstraction. They
+define goals, assign them to agents, and review results - but they're not watching code
+appear line by line. Agents may be working in the background, in parallel, on different
+parts of a codebase. The developer checks in periodically, reviews output, and provides
+course corrections.
+This mode is typical for well-defined tasks like bug fixes, feature implementations against
+established patterns, codebase migrations, and test generation. Tools like Google's Jules,
+GitHub Copilot's agent mode, Cursor's background agents, and Claude Code support this
+mode through async task execution, often working in sandboxed environments with full
+access to the repository, build tools, and test suites.13
+The orchestrator mode requires a different skill set. Instead of deep expertise in syntax and
+language idioms, it demands strong skills in:
+• Specification: Defining tasks precisely enough that an agent can execute them
+without ambiguity
+
+Decomposition: Breaking large tasks into appropriately sized units for agent execution
+• Evaluation: Quickly assessing whether agent output meets quality standards
+• System design: Designing the constraints, tests, and feedback loops that keep
+agents productive
+
+## Role transition
+
+There's an uncomfortable truth here: _orchestrating_ agents feels a lot like
+management: delegating tasks, reviewing output, redirecting when things go
+sideways,etc. If you became an engineer because you didn't want to be a manager,
+this shift might feel like a betrayal. The role changed underneath you.
+
+=> https://addyosmani.com/blog/future-agentic-coding/
+
+## Practical Patterns
+
+1. Agent-first drafts with tight iteration loops
+
+  Don’t use AI for one-off suggestions. Generate entire first drafts, then
+  refine. The Claude Code team practice: have the model review its own code
+  with a fresh context window. This catches issues before human review.
+
+2. Declarative communication
+
+  Spend 70% of effort on problem definition, 30% on execution. Write
+  comprehensive specs, define success criteria, provide test cases up front.
+  Guide the agent’s goals, not its methods.
+
+3. Automated verification
+
+  If you repeatedly fix the same class of mistake, write a test or lint rule
+  preemptively. Make the agent explain its code and flag potential problems
+  before you review.
+
+
