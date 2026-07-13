@@ -1,0 +1,679 @@
+---
+title: "Home Lab"
+---
+
+Le bon objectif : créer un portfolio de preuves, pas une collection d’outils
+
+Pour renforcer votre profil, votre homelab doit démontrer une chaîne complète :
+
+Cartographier → évaluer les risques → sécuriser → superviser → détecter → investiguer → documenter
+
+Compte tenu de votre expérience à la Banque de France, de votre expertise en analyse des risques et de votre pratique de Python, je vous conseille un homelab orienté Blue Team / SOC / GRC, plutôt qu’un laboratoire centré uniquement sur le pentest.
+
+Votre avantage différenciant serait de montrer que vous savez relier :
+
+les risques métier ;
+l’architecture technique ;
+les mesures de sécurité ;
+les événements observés ;
+les décisions de remédiation ;
+les indicateurs destinés au management.
+1. Architecture cible recommandée
+                    INTERNET
+                        |
+                [Routeur domestique]
+                        |
+          Aucun accès direct au réseau du lab
+                        |
+                 [Pare-feu virtuel]
+                  OPNsense / pfSense
+                        |
+       +----------------+----------------+
+       |                |                |
+  VLAN 10          VLAN 20          VLAN 30
+ MANAGEMENT        SERVEURS          UTILISATEURS
+ 10.10.10.0/24     10.10.20.0/24     10.10.30.0/24
+       |                |                |
+   Proxmox          Linux Server     Windows client
+   Wazuh            Web app          Ubuntu client
+   Admin            Base données     Agent Wazuh
+       |
+       +-------------------------------+
+                        |
+                    VLAN 40
+                 LABORATOIRE ISOLE
+                  10.10.40.0/24
+                        |
+              Machines de test jetables
+              et scénarios de détection
+
+
+L’hyperviseur peut être Proxmox VE, dont la documentation couvre les machines virtuelles KVM, les conteneurs, le SDN, le pare-feu, les utilisateurs, les sauvegardes et la restauration.
+
+Segmentation minimale
+VLAN 10 — Management
+
+Contient exclusivement :
+
+l’interface d’administration Proxmox ;
+le serveur de supervision ;
+les interfaces de gestion ;
+éventuellement un bastion d’administration.
+
+Seul votre poste d’administration doit pouvoir atteindre ce réseau.
+
+VLAN 20 — Serveurs
+
+Contient :
+
+un serveur Linux ;
+une application web de démonstration ;
+une base de données ;
+éventuellement un contrôleur de domaine dans une seconde phase.
+VLAN 30 — Utilisateurs
+
+Contient :
+
+un poste Windows ;
+un poste Linux ou Ubuntu Desktop ;
+les agents de collecte et de supervision.
+VLAN 40 — Laboratoire isolé
+
+Ce réseau sert exclusivement aux exercices autorisés sur vos propres machines :
+
+tests de configuration ;
+génération contrôlée d’événements ;
+validation de règles de détection ;
+restauration après incident ;
+tests de segmentation.
+
+Il ne doit pas avoir de route directe vers votre réseau familial, vos équipements personnels, vos données réelles ou Internet, sauf accès sortant temporaire et strictement contrôlé pour les mises à jour. Proxmox permet de travailler avec des réseaux virtuels, son pare-feu et des fonctions SDN adaptées à cette séparation.
+
+2. Commencer par une plateforme raisonnable
+
+Ne déployez pas simultanément Wazuh, Security Onion, Splunk, TheHive, MISP, Grafana et plusieurs EDR. Vous produiriez une architecture impressionnante mais difficile à comprendre et à maintenir.
+
+Phase initiale : Wazuh
+
+Je commencerais par Wazuh en installation mono-nœud. Sa documentation officielle couvre notamment :
+
+la collecte par agents ;
+l’analyse des événements ;
+la surveillance d’intégrité des fichiers ;
+l’évaluation des configurations de sécurité ;
+la détection de vulnérabilités ;
+le suivi de Docker ;
+l’intégration d’un IDS réseau ;
+les déploiements en VM ou Docker ;
+les cas d’usage de conformité.
+
+Cela vous permettra d’utiliser honnêtement dans votre CV des expressions comme :
+
+déploiement d’un SIEM ;
+collecte centralisée des journaux ;
+supervision d’endpoints Windows et Linux ;
+File Integrity Monitoring ;
+détection de vulnérabilités ;
+investigation d’alertes ;
+création et ajustement de règles ;
+tableaux de bord de sécurité.
+Phase ultérieure : Security Onion
+
+Security Onion est pertinent lorsque vous voudrez approfondir la visibilité réseau. La plateforme réunit notamment Suricata pour la détection par signatures, Zeek ou Suricata pour les métadonnées réseau, la capture de paquets, la visibilité des endpoints, la gestion des alertes, le threat hunting et la gestion de cas.
+
+Mais ses besoins matériels sont sensiblement plus importants. Je ne l’ajouterais qu’après avoir parfaitement documenté le premier périmètre Wazuh.
+
+3. Les machines virtuelles à créer
+Socle minimal viable
+Machine	Fonction	Ressources indicativesOPNsense ou pfSense	Routage, filtrage, segmentation	2 vCPU, 2–4 Go RAM
+Wazuh all-in-one	SIEM/XDR, dashboard, indexation	4 vCPU, 8 Go RAM minimum
+Windows 11	Poste utilisateur supervisé	2–4 vCPU, 4–8 Go RAM
+Ubuntu Server	Serveur supervisé	2 vCPU, 2–4 Go RAM
+Ubuntu Desktop	Poste utilisateur facultatif	2 vCPU, 4 Go RAM
+Poste d’administration	Accès au lab	Physique ou VM dédiée
+
+Avec moins de 32 Go de RAM, restez sur ce périmètre et arrêtez les VM non utilisées. Avec 64 Go, vous pourrez ajouter Active Directory et un serveur applicatif.
+
+Deuxième vague
+
+Ajoutez ensuite :
+
+un contrôleur de domaine Windows Server ;
+DNS interne ;
+comptes et groupes ;
+stratégies de groupe ;
+journalisation Windows avancée ;
+éventuellement Sysmon ;
+une application web interne ;
+un serveur de sauvegarde.
+
+L’objectif n’est pas de dire « j’ai installé Active Directory », mais de démontrer :
+
+que vous avez défini les rôles ;
+que vous avez limité les privilèges ;
+que vous collectez les événements d’authentification ;
+que vous détectez des comportements inhabituels ;
+que vous savez analyser et corriger un écart.
+4. Transformez le homelab en quatre projets recrutables
+Projet 1 — Architecture sécurisée et segmentation réseau
+Réalisation
+création de quatre segments ;
+définition des flux autorisés ;
+politique de refus par défaut ;
+séparation administration/utilisateurs/serveurs/lab ;
+journalisation des connexions refusées ;
+sauvegarde de la configuration du pare-feu.
+Livrables
+schéma d’architecture ;
+matrice des flux ;
+inventaire des actifs ;
+règles de filtrage commentées ;
+procédure de restauration ;
+captures expurgées.
+Ce que cela démontre
+sécurité réseau ;
+VLAN ;
+pare-feu ;
+TCP/IP ;
+segmentation ;
+contrôle d’accès ;
+documentation technique.
+Projet 2 — SIEM Wazuh et supervision des endpoints
+Réalisation
+déploiement de Wazuh ;
+raccordement d’un poste Windows et d’un serveur Linux ;
+collecte des journaux ;
+surveillance de fichiers sensibles ;
+inventaire logiciel ;
+détection de vulnérabilités ;
+tableaux de bord ;
+création d’au moins une règle personnalisée.
+
+Wazuh fournit précisément des fonctions de détection de vulnérabilités, de surveillance d’intégrité, de contrôle de configuration et d’analyse d’événements que vous pouvez mobiliser dans ce projet.
+
+Cas d’usage défensifs possibles
+succession d’échecs d’authentification sur un compte de test ;
+ajout d’un utilisateur au groupe administrateurs ;
+désactivation d’un service de sécurité dans une VM jetable ;
+modification d’un fichier surveillé ;
+installation d’un logiciel non autorisé ;
+connexion depuis un segment normalement interdit ;
+utilisation de privilèges élevés hors plage habituelle.
+Livrable principal
+
+Rédigez un rapport d’investigation de deux ou trois pages :
+
+contexte ;
+alerte initiale ;
+chronologie ;
+sources de journaux ;
+analyse ;
+niveau de gravité ;
+mesures immédiates ;
+cause racine ;
+remédiation ;
+contrôle de non-récurrence.
+Projet 3 — Analyse EBIOS Risk Manager du homelab
+
+C’est probablement le projet qui valorisera le mieux votre parcours.
+
+L’ANSSI présente EBIOS Risk Manager comme une méthode permettant d’apprécier et de traiter les risques numériques en combinant un socle de sécurité fondé sur la conformité avec des scénarios de menace. Elle est structurée en cinq ateliers progressifs.
+
+Objet de l’étude
+
+Vous pouvez retenir :
+
+« Plateforme personnelle de réservation de repas hébergée dans un environnement virtualisé et supervisée par un SIEM. »
+
+Livrables par atelier
+Atelier 1 — Cadrage et socle
+périmètre ;
+valeurs métier ;
+biens supports ;
+événements redoutés ;
+exigences de sécurité.
+Atelier 2 — Sources de risque
+cybercriminel ;
+utilisateur négligent ;
+administrateur malveillant ;
+prestataire compromis ;
+logiciel tiers vulnérable.
+Atelier 3 — Scénarios stratégiques
+
+Exemples :
+
+compromission d’un compte administrateur ;
+exploitation d’une vulnérabilité applicative ;
+compromission d’un composant tiers ;
+indisponibilité de l’application ;
+altération de la base de données.
+Atelier 4 — Scénarios opérationnels
+
+Reliez chaque scénario :
+
+aux composants concernés ;
+aux événements observables ;
+aux journaux nécessaires ;
+aux règles de détection ;
+aux mesures préventives.
+Atelier 5 — Traitement
+
+Construisez un registre contenant :
+
+risque initial ;
+vraisemblance ;
+gravité ;
+mesures ;
+responsable ;
+échéance ;
+risque résiduel ;
+indicateur de suivi.
+
+Vous démontrerez ainsi que vous savez passer d’une analyse abstraite à une mesure technique et à un dispositif de surveillance.
+
+Projet 4 — Durcissement et conformité
+
+Choisissez un seul système, par exemple Ubuntu Server.
+
+Réalisation
+inventaire initial ;
+identification des services inutiles ;
+comptes et privilèges ;
+règles SSH ;
+mises à jour ;
+journalisation ;
+pare-feu local ;
+sauvegarde ;
+analyse des écarts ;
+contrôle après remédiation.
+Livrables
+checklist avant/après ;
+rapport d’écarts ;
+plan de remédiation ;
+preuves de correction ;
+exceptions justifiées ;
+indicateurs de conformité.
+Indicateurs pertinents
+nombre d’écarts avant/après ;
+taux de remédiation ;
+nombre de vulnérabilités par criticité ;
+délai moyen de correction ;
+nombre de services exposés ;
+couverture de collecte des journaux ;
+nombre de faux positifs après ajustement.
+
+Votre expérience statistique vous permet ici de produire des indicateurs plus sérieux que de simples captures d’écran.
+
+5. Structurer le dépôt GitHub comme un projet professionnel
+homelab-cybersecurity/
+├── README.md
+├── docs/
+│   ├── architecture.md
+│   ├── threat-model.md
+│   ├── risk-analysis-ebios.md
+│   ├── network-flow-matrix.md
+│   ├── hardening-report.md
+│   └── incident-report.md
+├── diagrams/
+│   ├── logical-architecture.png
+│   └── log-flow.png
+├── infrastructure/
+│   ├── ansible/
+│   ├── docker/
+│   └── terraform/
+├── wazuh/
+│   ├── rules/
+│   ├── decoders/
+│   └── dashboards/
+├── scripts/
+│   ├── inventory/
+│   ├── health-check/
+│   └── reporting/
+├── policies/
+│   ├── access-control.md
+│   ├── logging-policy.md
+│   └── backup-policy.md
+├── evidence/
+│   ├── sanitized-screenshots/
+│   └── sample-logs/
+├── CHANGELOG.md
+├── LICENSE
+└── SECURITY.md
+
+Votre README doit répondre en trente secondes à cinq questions
+Quel problème avez-vous voulu résoudre ?
+Quelle architecture avez-vous choisie ?
+Quelles technologies avez-vous utilisées ?
+Quels scénarios avez-vous validés ?
+Qu’avez-vous appris ou amélioré ?
+
+Évitez de déposer :
+
+mots de passe ;
+clés privées ;
+jetons d’API ;
+vraies adresses IP publiques ;
+exports complets de configuration ;
+données personnelles ;
+journaux contenant des informations sensibles.
+6. Feuille de route réaliste sur douze semaines
+Semaines 1–2 — Infrastructure
+installer l’hyperviseur ;
+créer les réseaux virtuels ;
+déployer le pare-feu ;
+établir la matrice des flux ;
+tester l’isolation ;
+mettre en place les sauvegardes.
+
+Livrable : schéma d’architecture et matrice des flux.
+
+Semaines 3–4 — Endpoints et journalisation
+déployer Windows et Ubuntu ;
+configurer les comptes ;
+centraliser les journaux ;
+documenter les sources de logs.
+
+Livrable : inventaire des actifs et matrice de journalisation.
+
+Semaines 5–6 — Wazuh
+installer le serveur ;
+ajouter les agents ;
+activer la surveillance d’intégrité ;
+activer l’inventaire et la détection de vulnérabilités ;
+créer un tableau de bord.
+
+Livrable : dossier « Déploiement d’un SIEM open source ».
+
+Semaines 7–8 — Détection et investigation
+créer trois scénarios bénins et contrôlés ;
+collecter les preuves ;
+analyser les alertes ;
+réduire les faux positifs ;
+rédiger un rapport d’incident.
+
+Livrable : rapport d’investigation et règle personnalisée.
+
+Semaines 9–10 — EBIOS RM
+cadrer l’étude ;
+construire les scénarios ;
+évaluer les risques ;
+élaborer le plan de traitement.
+
+Livrable : analyse EBIOS synthétique.
+
+Semaines 11–12 — Automatisation et portfolio
+automatiser un inventaire ou un contrôle avec Python ;
+nettoyer le dépôt ;
+rédiger le README ;
+préparer une démonstration de cinq minutes ;
+ajouter les réalisations vérifiables au CV.
+
+Livrable : portfolio public entièrement expurgé.
+
+7. Ce que vous pourrez écrire dans le CV
+
+Une fois les projets réellement terminés, vous pourrez ajouter quelque chose comme :
+
+Homelab cybersécurité — Projet personnel
+Conception d’une architecture virtualisée et segmentée sous Proxmox, séparant administration, serveurs, utilisateurs et environnement de test.
+Déploiement d’une plateforme Wazuh pour centraliser et analyser les journaux de systèmes Windows et Linux.
+Mise en œuvre de cas d’usage de détection : échecs d’authentification, modification de fichiers sensibles, élévation de privilèges et anomalies de configuration.
+Réalisation d’une analyse de risques EBIOS RM et élaboration d’un plan de traitement.
+Durcissement d’un serveur Linux, suivi des vulnérabilités et mesure du taux de remédiation.
+Automatisation en Python de contrôles d’inventaire et de production d’indicateurs de sécurité.
+Rédaction d’une documentation d’architecture, de procédures et d’un rapport d’investigation.
+
+N’écrivez ces lignes qu’après avoir produit les preuves correspondantes.
+
+8. Votre meilleur angle différenciant
+
+À votre place, je nommerais le projet :
+
+Cyber Risk & Detection Lab — From risk analysis to security monitoring
+
+La promesse serait claire :
+
+« Concevoir une architecture sécurisée, identifier les risques avec EBIOS RM, traduire ces risques en cas d’usage de détection, mesurer les alertes et piloter la remédiation. »
+
+C’est beaucoup plus distinctif qu’un simple « Active Directory lab » ou « Kali Linux lab ». Cela crée une continuité crédible entre votre expérience d’analyste des risques, votre maîtrise de la donnée, vos capacités rédactionnelles et votre transition vers la cybersécurité.
+
+---
+
+> What Os is best to setting up this homelab: linux or macos ?
+
+Short answer: Linux — preferably Proxmox VE on a dedicated x86-64 machine
+
+For the homelab we discussed, Linux is the better host platform than macOS.
+
+My recommended setup is:
+
+Host OS / hypervisor: Proxmox VE
+Hardware: dedicated Intel or AMD mini-PC/workstation
+Daily computer: keep using your Mac if you have one
+Administration: connect from macOS to Proxmox through its web interface and SSH
+Guest systems: Windows, Ubuntu/Debian, Wazuh, OPNsense and eventually Windows Server
+
+Proxmox VE is based on Debian GNU/Linux and its official installer is the recommended installation method. It is designed to host KVM virtual machines and Linux containers, with integrated virtual networking, firewalling, backups and snapshots.
+
+Why Linux/Proxmox is better
+1. It better reflects enterprise infrastructure
+
+Your objective is not merely to run a few security tools. You want to demonstrate experience with:
+
+hypervisors;
+virtual machines;
+network segmentation;
+Linux administration;
+firewalls;
+Windows and Active Directory;
+centralised logging;
+SIEM deployment;
+snapshots and restoration;
+infrastructure automation.
+
+A dedicated Proxmox host exposes you to substantially more relevant infrastructure concepts than running several desktop VMs directly from macOS.
+
+It also gives you credible CV terminology:
+
+Proxmox VE, Debian Linux, KVM, virtual networking, network segmentation, firewall rules, virtual machines, containers, snapshots, backup and restoration.
+
+2. Proxmox provides better lab networking
+
+Your proposed homelab requires several isolated networks:
+
+Management
+Servers
+User workstations
+Monitoring
+Isolated testing environment
+
+
+Proxmox includes virtual networking, software-defined networking and host-level firewall capabilities. This makes it appropriate for modelling an enterprise-style network rather than placing every machine behind the same desktop NAT connection.
+
+On macOS, Parallels, VMware Fusion or UTM can run VMs effectively, but complex multi-segment networking is generally less natural and less representative of a dedicated virtualisation server.
+
+3. You can leave it running continuously
+
+A security-monitoring lab becomes much more useful when it operates like a small server:
+
+Wazuh continuously receives events;
+scheduled scans execute automatically;
+dashboards retain history;
+systems can be updated remotely;
+you can observe normal activity over several days;
+you can practise backup and restoration.
+
+A MacBook is less suitable as a permanent server because it is frequently suspended, transported or disconnected. A dedicated mini-PC can run quietly and independently.
+
+macOS is still useful — as the administration workstation
+
+This does not mean macOS is a poor operating system for cybersecurity work.
+
+A good division of roles is:
+
+Mac
+├── Web browser → Proxmox and Wazuh dashboards
+├── VS Code → documentation, Python and Ansible
+├── SSH → Linux administration
+├── Git → portfolio repository
+└── VPN → secured remote lab access
+
+Dedicated Linux/Proxmox host
+├── OPNsense
+├── Wazuh
+├── Ubuntu Server
+├── Windows workstation
+├── Windows Server / Active Directory
+└── Isolated test environment
+
+
+This is arguably the strongest combination: macOS as your daily workstation, Linux as your laboratory infrastructure.
+
+Important distinction: Intel Mac versus Apple Silicon
+If you have an Intel Mac
+
+An Intel Mac can run x86-64 Windows and Linux virtual machines relatively naturally through a desktop hypervisor. It can therefore support an initial version of the lab.
+
+However, I would still prefer dedicated Proxmox hardware because it offers:
+
+more realistic networking;
+continuous availability;
+easier snapshots and backup management;
+independence from your personal computer;
+a stronger infrastructure learning experience.
+If you have an Apple Silicon Mac
+
+If your Mac uses an M-series processor, the distinction is more important.
+
+Apple Silicon uses an ARM architecture, while the official Proxmox requirements specify Intel 64 or AMD64 hardware with Intel VT or AMD-V for KVM virtualisation. Proxmox does not provide the normal supported installation path for an Apple Silicon host.
+
+Experiments exist for running Proxmox-related packages on ARM, but they rely on unofficial builds or custom compilation and are not the clean, supported path you want for a career portfolio.
+
+An Apple Silicon Mac can comfortably run:
+
+ARM Linux virtual machines;
+Docker containers;
+some ARM-compatible security tools;
+Windows 11 for ARM.
+
+However, you may encounter limitations with:
+
+x86-only appliances;
+some prebuilt virtual-machine images;
+nested virtualisation;
+Windows Server labs;
+certain network-security appliances;
+recreating standard enterprise x86 environments.
+
+For this reason, I would not build the main lab around an M-series Mac.
+
+Recommended hardware
+Sensible starter configuration
+
+Look for a used business mini-PC or small workstation with:
+
+Intel Core i5/i7 or AMD Ryzen;
+x86-64 virtualisation support;
+32 GB of RAM minimum;
+64 GB preferred if you want Active Directory and Security Onion later;
+1 TB NVMe SSD;
+one Ethernet interface minimum;
+two Ethernet interfaces preferred;
+upgradeable memory and storage.
+
+Proxmox officially recommends an Intel 64 or AMD64 processor with hardware virtualisation, memory for the host plus the guests, SSD storage and sufficient network interfaces for the intended setup.
+
+Hardware tiers
+16 GB RAM
+
+Suitable for a reduced lab:
+
+OPNsense;
+Wazuh, with tight resources;
+one Linux server;
+one lightweight client.
+
+It will become restrictive quickly.
+
+32 GB RAM — recommended starting point
+
+Suitable for:
+
+OPNsense;
+Wazuh;
+Ubuntu Server;
+Windows 11;
+an administration or application VM.
+64 GB RAM — ideal
+
+Suitable for the above plus:
+
+Windows Server;
+Active Directory;
+an additional Windows client;
+Security Onion experiments;
+multiple simultaneous scenarios.
+
+Wazuh and Security Onion are memory-intensive primarily because of indexing, dashboards and log retention. Therefore, RAM is usually more important than buying the fastest processor.
+
+What I would choose for your project
+Recommended architecture
+Personal Mac or PC
+        |
+        | Browser / SSH / VS Code
+        |
+Dedicated Ethernet connection
+        |
+Proxmox VE host — x86-64
+        |
+        ├── OPNsense firewall
+        ├── Wazuh SIEM
+        ├── Ubuntu application server
+        ├── Windows 11 endpoint
+        ├── Windows Server / Active Directory
+        └── Isolated test network
+
+Host installation
+
+Install Proxmox VE directly on the dedicated machine, rather than:
+
+Ubuntu Desktop with VirtualBox;
+macOS with several desktop VMs;
+Proxmox nested inside another hypervisor;
+Docker for every component.
+
+Proxmox’s official documentation recommends its ISO installer for new deployments; installing Proxmox over an existing Debian system is considered the more advanced alternative.
+
+When macOS alone is acceptable
+
+Use macOS as the host initially if:
+
+you do not yet want to buy equipment;
+your aim is to create a proof of concept;
+you only need two or three VMs;
+you are comfortable with limited network realism;
+you intend to migrate to Proxmox later.
+
+In that case, start with:
+
+macOS
+├── UTM, VMware Fusion or Parallels
+├── Ubuntu Server VM
+├── Windows VM
+├── Wazuh VM or Docker deployment
+└── One isolated virtual network
+
+
+Treat this as phase zero, not the final architecture.
+
+Do not spend weeks trying to reproduce an elaborate datacentre topology on macOS. Build one working Wazuh scenario, document it, and migrate to dedicated hardware when the concept is validated.
+
+Final recommendation
+Situation	Best choiceYou want the strongest career portfolio	Dedicated x86-64 host with Proxmox VE
+You already own an M-series Mac	Use it as the admin workstation, not the principal hypervisor
+You own an Intel Mac and have no other hardware	Acceptable for an initial proof of concept
+You want Active Directory, realistic networking and SIEM monitoring	Proxmox VE
+You only want Python, Docker and one Linux VM	macOS is sufficient
+You want a lab running continuously	Dedicated Linux/Proxmox host
+
+Therefore: choose Linux for the homelab host, specifically Proxmox VE. Keep macOS as your development, documentation and administration workstation.
