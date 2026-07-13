@@ -1,4 +1,4 @@
-## Post-Training Optimisation: Pruning and Quantisation
+# Post-Training Optimisation: Pruning and Quantisation
 
 Once a model is trained, it often goes through compression steps before
 deployment (particularly if it needs to run efficiently on limited hardware).
@@ -9,7 +9,7 @@ Two of the most common are pruning and quantisation:
 | Pruning   | Removes parameters that contribute little to predictions, shrinking model size |Changes model behaviour post-training; rarely documented in detail |
 | Quantisation | Reduces numerical precision of weights (e.g., 32-bit to 8-bit floats) to cut memory and compute requirements | Can degrade safety-aligned behaviour; backdoor defences tested on full-precision models may fail to detect threats in quantised versions |
 
-## Pre-Trained Models & Fine-Tuning
+# Pre-Trained Models & Fine-Tuning
 
 A pre-trained model is one that has already been trained on a large, general-purpose dataset (the kind of web-scale corpus discussed in Task 2). These base models learn broad language understanding: grammar, facts, reasoning patterns, and world knowledge. They're produced by a small number of well-resourced organisations and then made available for others to build on, either through open weights (like Meta's LLaMA family) or through access (like OpenAI's GPT series).
 
@@ -30,15 +30,15 @@ This shows up in three concrete ways:
 
 1. Safety alignment erodes, not breaks
 
-Stanford and Princeton (https://arxiv.org/abs/2310.03693) found that the defence mechanisms of aligned LLMs can be compromised by fine-tuning on as few as 10 adversarially crafted examples (at a cost of under $0.20). Even benign fine-tuning on legitimate data degraded safety as a side effect.
+Stanford and Princeton (<https://arxiv.org/abs/2310.03693>) found that the defence mechanisms of aligned LLMs can be compromised by fine-tuning on as few as 10 adversarially crafted examples (at a cost of under $0.20). Even benign fine-tuning on legitimate data degraded safety as a side effect.
 
 Think of safety alignment like a well-worn path through a forest. The model has been trained to follow this safe path when generating responses. Fine-tuning is like adding new paths through the same forest. Even if those new paths are legitimate (like teaching medical terminology), they can gradually obscure the original safe path. The model hasn't forgotten how to be unsafe; the probability weights have just shifted, making unsafe responses more likely again. The defence mechanisms don't snap; they wear down.
 
-2. Specialisation increases attack surface
+1. Specialisation increases attack surface
 
-Cisco (https://blogs.cisco.com/security/fine-tuning-llms-breaks-their-safety-and-security-alignment) found that fine-tuned models are measurably more susceptible to prompt injection than the base models they were fine-tuned on. The reason is structural: fine-tuning narrows the focus, reducing resilience to unexpected tokens. Think of it like this: a model fine-tuned on financial records gets better at financial reasoning, but also becomes more responsive to an attacker who frames their prompt in financial terms.
+Cisco (<https://blogs.cisco.com/security/fine-tuning-llms-breaks-their-safety-and-security-alignment>) found that fine-tuned models are measurably more susceptible to prompt injection than the base models they were fine-tuned on. The reason is structural: fine-tuning narrows the focus, reducing resilience to unexpected tokens. Think of it like this: a model fine-tuned on financial records gets better at financial reasoning, but also becomes more responsive to an attacker who frames their prompt in financial terms.
 
-3. Version matters, and it's rarely tracked
+1. Version matters, and it's rarely tracked
 
 Fine-tuning always targets a specific checkpoint of a base model. If that checkpoint later turned out to contain a backdoor or problematic
 
@@ -47,27 +47,26 @@ Inheritance Tax
 
 When your organisation deploys a fine-tuned model, you're not deploying the fine-tuning work your team did; you're deploying the entire pre-trained base beneath it. That base was shaped by a training process you didn't control, on data you didn't audit, by an organisation whose supply chain you almost certainly haven't reviewed. Fine-tuning is powerful, but it doesn't sanitise what came before it.
 
-
 Model Cards
 
-The documentation artefact designed to address this is the model card: a structured document that accompanies a model and describes what it is, how it was built, and where it falls short. The concept was introduced by Google researchers in 2019 (https://arxiv.org/abs/1810.03993) and has since become the closest thing the industry has to a standard transparency format.
+The documentation artefact designed to address this is the model card: a structured document that accompanies a model and describes what it is, how it was built, and where it falls short. The concept was introduced by Google researchers in 2019 (<https://arxiv.org/abs/1810.03993>) and has since become the closest thing the industry has to a standard transparency format.
 
 A well-formed model card should give you the answers to the questions you can't get by inspecting the weights themselves:
-Section 	What it should tell you
+Section  What it should tell you
 What sources were used, how they were filtered, known gaps or biases
-Intended use 	What the model was designed for (and explicitly what it wasn't)
-Evaluation results 	Performance metrics across different conditions and demographics
-Known limitations 	Conditions under which the model is known to underperform or behave unexpectedly
-Bias assessment 	Where
+Intended use  What the model was designed for (and explicitly what it wasn't)
+Evaluation results  Performance metrics across different conditions and demographics
+Known limitations  Conditions under which the model is known to underperform or behave unexpectedly
+Bias assessment  Where
 or evaluation may have introduced skew
-Licence 	What you're legally permitted to do with the model
+Licence  What you're legally permitted to do with the model
 
 Think of it like a nutritional label for an
 
 model. You can't see inside the product, but the label is supposed to tell you what went into it and what to watch out for.
 The Gaps
 
-Have you ever checked out a food label, and it all sounds good until you find out your chicken slices are only 49% chicken? Well, in practice, model cards can also be frequently incomplete, vague, or (in some cases) absent entirely. Unlike food labels, there's no regulatory requirement to produce one; as of now, it remains voluntary for most use cases. The incentive to be thorough is weak when disclosing limitations might reduce adoption. The Data Provenance Initiative (https://arxiv.org/abs/2310.16787)'s audit of over 1,800 datasets found documentation gaps throughout the
+Have you ever checked out a food label, and it all sounds good until you find out your chicken slices are only 49% chicken? Well, in practice, model cards can also be frequently incomplete, vague, or (in some cases) absent entirely. Unlike food labels, there's no regulatory requirement to produce one; as of now, it remains voluntary for most use cases. The incentive to be thorough is weak when disclosing limitations might reduce adoption. The Data Provenance Initiative (<https://arxiv.org/abs/2310.16787)'s> audit of over 1,800 datasets found documentation gaps throughout the
 supply chain, and model cards sit at the end of that same underdocumented pipeline.
 
 Different models use different tokenisation methods: GPT uses Byte-Pair Encoding, while BERT uses WordPiece. The same sentence produces different token sequences depending on which model you're using.
@@ -81,11 +80,11 @@ Temperature: The Randomness Dial
 
 Temperature is the most important parameter you'll touch. This is a numerical value, commonly ranging from 0.0 - 2.0 (which can differ between providers) that controls how "adventurous" the model is when picking its next word. For illustration's sake, consider we are examining temperature within a range of 0.0 - 2.0.
 
-Temperature Range 	Behaviour 	Use Case
-0.0 – 0.3 	Always picks the most probable token; closest to determinism 	Code generation, data extraction, factual Q&A
-0.7 – 1.0 	Samples from a wider distribution; more variety and creativity 	Brainstorming, storytelling, marketing copy
-1.2 – 1.5 	Coherence begins to break down; unpredictable outputs 	Experimental use only
-1.5+ 	Low-probability tokens dominate; outputs can feel "drunk" 	Avoid for most tasks
+Temperature Range  Behaviour  Use Case
+0.0 – 0.3  Always picks the most probable token; closest to determinism  Code generation, data extraction, factual Q&A
+0.7 – 1.0  Samples from a wider distribution; more variety and creativity  Brainstorming, storytelling, marketing copy
+1.2 – 1.5  Coherence begins to break down; unpredictable outputs  Experimental use only
+1.5+  Low-probability tokens dominate; outputs can feel "drunk"  Avoid for most tasks
 
 ---
 
@@ -123,18 +122,20 @@ Effective prompts aren't magic; they're carefully structured instructions that
 guide the model toward the desired outcome. A good prompt explicitly spells out
 what you want, how you want it, and any constraints to follow. Experts often
 break prompts into clear components (or pillars):
-  - the core instruction (task to perform)
+
+- the core instruction (task to perform)
     Instruction (task): This is the core command or action you want from the , expressed with a clear verb. For example, use commands such as "Write...", "Analyse…", "Summarise…", or "Compare..." to explicitly state the task. Being explicit with the action prevents ambiguity. It's the difference between saying "Help me with marketing" and "Draft a 300-word social media post about a new eco-friendly product aimed at millennials". Clear instructions set expectations and direct the AI's focus.
-  - relevant context (background information),
+- relevant context (background information),
     Context (background): Context provides the AI with relevant information or a scenario so it understands the situation and perspective. This can include domain details, objectives, or background documents. For instance, you might explain who the audience is, reference specific data, or even set a "system message" style role: "You are an experienced marine biologist specialising in fish". Such context steers the 's tone and content. The more relevant background you supply, the less guessing the model has to do, reducing errors. Context can also link to external sources or files (e.g., "Based on the attached report..."), ensuring the answer fits the situation.
-  - the desired output format (structure/style),
+- the desired output format (structure/style),
     Output format (structure): Specify how you want the answer to look. This could mean asking for bullet points, a numbered list, a table, code blocks, a JSON object, or a certain word count. For example, "Summarise these 3 log samples each in a bullet point, all under 50 words". Explicitly stating format and length makes the response immediately useful. If you need a summary, specify its length; if you need code, specify language or style.
-  - and any constraints (rules or limits).
+- and any constraints (rules or limits).
     Constraints (boundaries): These are any rules or limits you impose on the response. Constraints guide the model to follow specific boundaries; for example, forbidding certain topics, enforcing a style guide, or mandating a tone. They ensure output aligns with your needs. For example, "Write an academic report on IoT devices, provide citations in MLA format, and include a bullet-pointed summary section at the end (do NOT exceed 5 bullets)". By defining constraints, you keep the AI on track and avoid unwanted directions.
-	
+ 
 When all these elements work together, the model has a well-defined framework for generating accurate, on-target responses. Let's break that down.
 
 ---
+
 ## Model Card Audit
 
 ### Training data
@@ -147,6 +148,7 @@ When all these elements work together, the model has a well-defined framework fo
 Fine-tuned from enterprise-base-v1.1 — a specific version with no documentation of what that version contains or whether it has known issues.
 
 Be careful on :
+
 - fine-tuning, what model used ?
 
 ### Evaluation
@@ -160,3 +162,4 @@ Licence listed as "Custom" with no link, no terms, and no contact detail beyond 
 ### Files
 
 Model file size is significantly smaller than the base model with no documentation of what post-training modifications were applied.
+
