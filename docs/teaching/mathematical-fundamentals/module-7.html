@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-09-17">
 
-<title>Guillaume Gilles - AI-Assisted Development</title>
+<title>Guillaume Gilles - 7️⃣ Introduction to Optimization</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,7 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../teaching/ai-dev/vibe-coding.html" rel="next">
+<link href="../../teaching/mathematical-fundamentals/module-8.html" rel="next">
+<link href="../../teaching/mathematical-fundamentals/module-6.html" rel="prev">
 <link href="../../assets/favicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -69,28 +71,48 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
-<script async="" src="https://hypothes.is/embed.js"></script>
-<script>
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    document.body.classList.add('hypothesis-enabled');
-  });
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
 </script>
-<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
-
-<meta property="og:title" content="Guillaume Gilles - AI-Assisted Development">
-<meta property="og:description" content="The most profound shift in software engineering isn’t a new language, framework, or cloud service. It’s the transition from writing code to expressing intent, and trusting intelligent systems to translate that intent into working software. Writing code for the sake of writing code has never been the point of software engineering, it is about creating a solution to human problems. Software engineering is more than just writing code.">
-<meta property="og:image" content="https://ggilles.dev/teaching/ai-dev/assets/og-image.jpg">
+<meta property="og:title" content="Guillaume Gilles - 7️⃣ Introduction to Optimization">
+<meta property="og:description" content="Introduce the average and instantaneous rates of change, the intuitive notion of the derivative, and its application to affine and degree-2 polynomial functions, in order to find maxima and minima for decision-making.">
+<meta property="og:image" content="https://ggilles.dev/teaching/mathematical-fundamentals/assets/og-image.jpg">
 <meta property="og:site_name" content="Guillaume Gilles">
-<meta name="twitter:title" content="Guillaume Gilles - AI-Assisted Development">
-<meta name="twitter:description" content="The most profound shift in software engineering isn’t a new language, framework, or cloud service. It’s the transition from writing code to expressing intent, and trusting intelligent systems to translate that intent into working software. Writing code for the sake of writing code has never been the point of software engineering, it is about creating a solution to human problems. Software engineering is more than just writing code.">
-<meta name="twitter:image" content="https://ggilles.dev/teaching/ai-dev/assets/og-image.jpg">
+<meta name="twitter:title" content="Guillaume Gilles - 7️⃣ Introduction to Optimization">
+<meta name="twitter:description" content="Introduce the average and instantaneous rates of change, the intuitive notion of the derivative, and its application to affine and degree-2 polynomial functions, in order to find maxima and minima for decision-making.">
+<meta name="twitter:image" content="https://ggilles.dev/teaching/mathematical-fundamentals/assets/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar floating nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -138,7 +160,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/ai-dev/index.html">AI-Assisted Development</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/mathematical-fundamentals/module-7.html">7️⃣ Introduction to Optimization</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -152,105 +174,87 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">AI-Assisted Development</span></a>
+  <a href="../../teaching/mathematical-fundamentals/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mathematical Fundamentals and Data Analysis</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/vibe-coding.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Vibe Coding</span></a>
+  <a href="../../teaching/mathematical-fundamentals/module-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1️⃣ Essential Mathematical Calculations for Economics and Management</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/prompt-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Prompt Engineering</span></a>
+  <a href="../../teaching/mathematical-fundamentals/module-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2️⃣ Mastering Equations for Better Decision-Making</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/agentic-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Agentic Engineering</span></a>
+  <a href="../../teaching/mathematical-fundamentals/module-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3️⃣ Curve Analysis in Economics and Management</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/orchestrator.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Orchestrator</span></a>
+  <a href="../../teaching/mathematical-fundamentals/module-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4️⃣ Introduction to Financial-Mathematics Tools</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/agents.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Agents</span></a>
+  <a href="../../teaching/mathematical-fundamentals/module-5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5️⃣ Application of Financial Mathematics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/context.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Context Engineering</span></a>
+  <a href="../../teaching/mathematical-fundamentals/module-6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">6️⃣ Functions Useful in Economics and Management</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/skills.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Agent Skills</span></a>
+  <a href="../../teaching/mathematical-fundamentals/module-7.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">7️⃣ Introduction to Optimization</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/sdd.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Spec-Driven Development</span></a>
+  <a href="../../teaching/mathematical-fundamentals/module-8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">8️⃣ Revision and Final-Exam Preparation</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text"><strong>Resources</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/sdd-get-started.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Get Started with Spec-Driven Development</span></a>
+  <a href="../../teaching/mathematical-fundamentals/glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/mcp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Model Context Protocol (MCP)</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
- <span class="menu-text">teaching/ai-dev/local-models.qmd</span>
+      </ul>
   </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../teaching/ai-dev/customization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Agent Customization</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#a-new-paradigm" id="toc-a-new-paradigm" class="nav-link active" data-scroll-target="#a-new-paradigm">A New Paradigm</a>
-  <ul class="collapse">
-  <li><a href="#a-new-software-development-life-cycle-sdlc" id="toc-a-new-software-development-life-cycle-sdlc" class="nav-link" data-scroll-target="#a-new-software-development-life-cycle-sdlc">A New Software Development Life Cycle (SDLC)</a></li>
-  <li><a href="#the-factory-model" id="toc-the-factory-model" class="nav-link" data-scroll-target="#the-factory-model">The Factory Model</a></li>
-  <li><a href="#the-pareto-law" id="toc-the-pareto-law" class="nav-link" data-scroll-target="#the-pareto-law">The Pareto Law</a></li>
-  </ul></li>
-  <li><a href="#where-to-start" id="toc-where-to-start" class="nav-link" data-scroll-target="#where-to-start">Where to Start</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">AI-Assisted Development</h1>
+<h1 class="title">7️⃣ Introduction to Optimization</h1>
 </div>
 
 
@@ -258,6 +262,12 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 17, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -265,7 +275,7 @@ ul.task-list li input[type="checkbox"] {
 <div>
   <div class="abstract">
     <div class="block-title">Abstract</div>
-    <p>The most profound shift in software engineering isn’t a new language, framework, or cloud service. It’s the transition from writing code to expressing intent, and trusting intelligent systems to translate that intent into working software. Writing code for the sake of writing code has never been the point of software engineering, it is about creating a solution to human problems. Software engineering is <strong>more</strong> than just writing code.</p>
+    <p>Introduce the average and instantaneous rates of change, the intuitive notion of the derivative, and its application to affine and degree-2 polynomial functions, in order to find maxima and minima for decision-making.</p>
   </div>
 </div>
 
@@ -273,155 +283,182 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="a-new-paradigm" class="level2">
-<h2 class="anchored" data-anchor-id="a-new-paradigm">A New Paradigm</h2>
-<p>A new paradigm has arrived in which developers express <em>what</em> they want to build rather than <em>how</em> to build it. The machine handles implementation while humans provides intent, architecture, and judgment.</p>
-<p>The first generation was accelerated autocomplete. Tools that predicted the next line, filled in boilerplate, and saved keystrokes on repetitive patterns. Useful. Genuinely time-saving. But the workflow stayed identical to what it had always been: you drove, the tool assisted. The feedback loop was: write code, run it, debug, repeat. The AI just reduced friction inside that loop.</p>
-<p>The second generation introduced synchronous agents. You described a task in natural language. The model generated code. You reviewed it, corrected it, iterated toward a working result. This moved further up the stack. Less typing, more describing intent. But you were still present for every step. The agent was a collaborator, not an autonomous worker. You held the context, directed the next move, and caught mistakes in real time.</p>
-<p>The third generation introduced autonomous agents. These agents can take a specification and run with it for thirty minutes, an hour, several hours and increasingly days. They set up environments, install dependencies, write tests, hit failures, research solutions online, fix the failures, write the implementation, test it again, set up services, and produce artifacts you can review. You hand them a task, move on to something else, and come back to logs, previews, and pull requests. You are no longer interacting line by line. You are defining outcomes and reviewing results. This is where swarms of agents and even self-improving agents come into play.</p>
-<p>Now, fully autonomous agents can clone repositories, plan multi-file changes, execute them in sandboxed environments, run tests, and submit pull requests: all without a human typing a single line of code.</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div id="fig-autocomplete-to-autonomy" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-autocomplete-to-autonomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div>
-<pre class="mermaid mermaid-js" data-label="fig-autocomplete-to-autonomy">flowchart TB
-    A["🔤 Autocomplete 2021 \n\n Simple token prediction. \n The editor guesses your next few characters."]
-    --&gt; B["📝 Inline Code Suggestions 2022 \n\n Complete entire functions. \n The model understands patterns, not just tokens."]
-    --&gt; C["💬 Chat-based Generations 2023 \n\n Describe features in natural language. \n The conversation became the interface."]
-    --&gt; D["🔄 Coding Agents 2024-25 \n\n Multi-file edits, tool callings, test executions, iterative self-correction. \n  The agents runs its own loop."]
-    --&gt; E["🤖 Autonomous Agents 2025-26 \n\n Clone repos, plan architecture, execute in sandboxes, run full test, submit pull requests \n No human keystrokes required."]
-
-    style A fill:#003333,stroke:#4a4a8a,color:#fff
-    style B fill:#003399,stroke:#4a4a8a,color:#fff
-    style C fill:#000066,stroke:#4a4a8a,color:#fff
-    style D fill:#330066,stroke:#7a5ab5,color:#fff
-    style E fill:#660066,stroke:#7a5ab5,color:#fff
-</pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Learning objectives
 </div>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-autocomplete-to-autonomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: From Autocomplete to Autonomy
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<section id="a-new-software-development-life-cycle-sdlc" class="level3">
-<h3 class="anchored" data-anchor-id="a-new-software-development-life-cycle-sdlc">A New Software Development Life Cycle (SDLC)</h3>
-<p>The software development life cycle has already been through one major transformation. Over the past two decades, most enterprises moved from sequential waterfall processes to iterative models: Agile sprints, continuous integration, DevOps pipelines, and rapid release cycles.</p>
-<p><strong>AI compresses this cycle dramatically, but unevenly:</strong> implementation that once took weeks can now be done in hours, while requirements, architecture, and verification remain stubbornly human-paced.</p>
-</section>
-<section id="the-factory-model" class="level3">
-<h3 class="anchored" data-anchor-id="the-factory-model">The Factory Model</h3>
-<p>https://addyosmani.com/blog/factory-model/ The most useful mental model for this new paradigm is that you are no longer just writing code. You are building the factory that builds your software.</p>
-<p>That factory consists of fleets of agents. Each agent has a task, a toolbelt (repositories, test runners, deployment scripts, documentation), context (specs, architecture decisions, prior constraints), and a feedback loop. Instead of hand-holding a single agent through a single task, you spin up many agents in parallel. One handles backend refactors. Another implements a feature. Another writes integration tests. Another updates documentation. You review outputs, give feedback, refine specs, and redeploy.</p>
-<p>The analogy runs deeper than it might first appear. A factory has quality control. A factory has process documentation. A factory has inputs that need to be precisely specified or the outputs come out wrong. A factory stalls when the environment is unreliable. All of these properties map directly onto agentic software development, and taking the analogy seriously points you toward the investments that actually matter.</p>
-<p>Inside teams that have adopted this model aggressively, a substantial portion of merged pull requests now originate from agents running autonomously in cloud environments. That is not theoretical anymore. It is production reality for a growing number of engineering organizations.</p>
-<p>The sentiments from Cursor around “The developer’s job is becoming building the system that builds the software, the factory, not just the product” and “reviewing ideas is a lot more fun than reviewing code” (video) resonate with these points.</p>
-<p>The mental model that ties these transformations together is the <strong>factory model</strong>. In this model, the developer’s primary output is not code: it’s <strong>the system that produces code</strong>. This system includes:</p>
+<div class="callout-body-container callout-body">
 <ul>
-<li>Specifications and context that define what needs to be built</li>
-<li>Agents that translate specifications into implementation</li>
-<li>Tests and quality gates that verify correctness</li>
-<li>Feedback loops that route failures back to agents for correction</li>
-<li>Guardrails that constrain agents to safe, predictable behavior</li>
+<li>Compute an average rate of change between two points.</li>
+<li>Understand the instantaneous rate of change and the intuitive notion of the derivative.</li>
+<li>Differentiate affine and degree-2 polynomial functions.</li>
+<li>Use the derivative to find a maximum or a minimum.</li>
 </ul>
-<p>A factory manager does not assemble every widget by hand. They design the assembly line and ensure quality control. Success comes from giving agents <strong>success criteria rather than step-by-step instructions</strong>, then letting them iterate.</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div id="fig-factory-model" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-factory-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div>
-<pre class="mermaid mermaid-js" data-label="fig-factory-model">flowchart TD
-    Dev["👨‍💻 Developer\n(Factory Manager)"]
-
-    subgraph Factory["🏭 The Factory"]
-        direction TB
-        Spec["📋 Specifications\n&amp; Context"] --&gt; Agents["🤖 AI Agents\n(Implementation)"]
-        Agents --&gt; Tests["✅ Tests\n&amp; Quality Gates"]
-        Tests --&gt; FL["🔄 Feedback\nLoops"]
-        FL --&gt; Agents
-        GR["🛡️ Guardrails\n&amp; Constraints"] --&gt; Agents
-    end
-
-    Dev --&gt; Factory
-    Factory --&gt; Code["📦 Production\nCode"]
-
-    style Factory fill:#1a1a2e,stroke:#4a4a8a,color:#fff
-    style Dev fill:#533483,stroke:#7a5ab5,color:#fff
-    style Code fill:#1a3d1a,stroke:#4a8a4a,color:#fff
-</pre>
 </div>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-factory-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: The Factory Model — Developer designs the system, agents produce the code, tests verify the output
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
+<section id="what-does-optimize-mean" class="level2">
+<h2 class="anchored" data-anchor-id="what-does-optimize-mean">What Does “Optimize” Mean?</h2>
+<p>In mathematics, to <strong>optimize</strong> means to find the <strong>maximum</strong> or the <strong>minimum</strong> of a function. In management there are many situations that call for an optimal decision:</p>
+<ul>
+<li><strong>maximisation</strong>: firm profit, production, yield, consumer utility;</li>
+<li><strong>minimisation</strong>: average cost, production or delivery time, inventory, the risk of a portfolio.</li>
+</ul>
+<p>To find a maximum or a minimum we study how the function <strong>varies</strong>: over which intervals is it increasing, and over which is it decreasing? The derivative is the tool that answers this question precisely.</p>
 </section>
-<section id="the-pareto-law" class="level3">
-<h3 class="anchored" data-anchor-id="the-pareto-law">The Pareto Law</h3>
-<p>= https://addyo.substack.com/p/the-80-problem-in-agentic-coding</p>
-<p>Andrej Karpathy Twitter / X</p>
-<p>= Boris Cherney : &gt; “Pretty much 100% of our code is written by Claude Code + Opus 4.5. For me &gt; personally it has been 100% for two+ months now, I don’t even make small edits &gt; by hand. I shipped 22 PRs yesterday and 27 the day before, each one 100% &gt; written by Claude. I think most of the industry will see similar stats in the &gt; coming months - it will take more time for some vs others.”</p>
-<p>…WIP…</p>
-<p>Let AI do 80% of the work and focus your energy on the 20% left.</p>
-<p>The 80% Problem</p>
-<p>A persistent challenge: AI agents can rapidly generate approximately <strong>80% of the code</strong> for a feature, but the remaining 20% — edge cases, error handling, integration points, and subtle correctness requirements — demands deep contextual knowledge that current models often lack.</p>
-<p>The nature of AI errors has evolved from simple syntax mistakes to more insidious <strong>conceptual failures</strong>: wrong assumptions about business logic, missing edge cases, and architectural decisions that create subtle long-term maintenance burdens. These errors are harder to detect because the code “looks right” and may even pass basic tests.</p>
+<section id="average-rate-of-change" class="level2">
+<h2 class="anchored" data-anchor-id="average-rate-of-change">Average Rate of Change</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <strong>average rate of change</strong> of a function <span class="math inline">\(f\)</span> between <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> is <span class="math display">\[
+\tau = \frac{f(x_2) - f(x_1)}{x_2 - x_1}.
+\]</span></p>
+</div>
+</div>
+<p>Geometrically, it is the <strong>slope of the secant line</strong> joining the two points <span class="math inline">\((x_1, f(x_1))\)</span> and <span class="math inline">\((x_2, f(x_2))\)</span> on the graph. Economically, it measures the average change of <span class="math inline">\(f\)</span> per unit of <span class="math inline">\(x\)</span> — for instance the average change of cost per additional unit produced.</p>
+<section id="worked-example-average-rate-of-change" class="level3">
+<h3 class="anchored" data-anchor-id="worked-example-average-rate-of-change">Worked example — average rate of change</h3>
+<p>For <span class="math inline">\(f(x) = x^{2}\)</span> between <span class="math inline">\(x_1 = 1\)</span> and <span class="math inline">\(x_2 = 3\)</span>:</p>
+<p><span class="math display">\[
+\tau = \frac{f(3) - f(1)}{3 - 1} = \frac{9 - 1}{2} = 4.
+\]</span></p>
+</section>
+</section>
+<section id="instantaneous-rate-of-change-and-the-derivative" class="level2">
+<h2 class="anchored" data-anchor-id="instantaneous-rate-of-change-and-the-derivative">Instantaneous Rate of Change and the Derivative</h2>
+<p>If we let the second point get closer and closer to the first (<span class="math inline">\(x_2 \to x_1\)</span>), the secant line tends towards the <strong>tangent line</strong> at the point. Its slope is the <strong>instantaneous rate of change</strong>, called the <strong>derivative</strong> of <span class="math inline">\(f\)</span> at <span class="math inline">\(x_1\)</span>, written <span class="math inline">\(f'(x_1)\)</span>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Tip
+Intuition
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The developers who navigate this challenge most effectively use AI for what it’s good at (rapid implementation of well-specified tasks) while reserving their own attention for what AI struggles with (ambiguous requirements, architectural trade-offs, and correctness verification).</p>
+<ul>
+<li><span class="math inline">\(f'(x) &gt; 0\)</span> on an interval <span class="math inline">\(\;\Rightarrow\; f\)</span> is <strong>increasing</strong> there.</li>
+<li><span class="math inline">\(f'(x) &lt; 0\)</span> on an interval <span class="math inline">\(\;\Rightarrow\; f\)</span> is <strong>decreasing</strong> there.</li>
+<li><span class="math inline">\(f'(x) = 0\)</span> at a point where <span class="math inline">\(f\)</span> changes direction <span class="math inline">\(\;\Rightarrow\;\)</span> a candidate <strong>maximum or minimum</strong> (the tangent is horizontal).</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Derivation — the derivative of <span class="math inline">\(f(x) = x^{2}\)</span> (click to expand)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Take a point <span class="math inline">\(x\)</span> and a small increment <span class="math inline">\(h\)</span>. The average rate of change between <span class="math inline">\(x\)</span> and <span class="math inline">\(x + h\)</span> is</p>
+<p><span class="math display">\[
+\frac{f(x + h) - f(x)}{h}
+= \frac{(x + h)^{2} - x^{2}}{h}
+= \frac{x^{2} + 2xh + h^{2} - x^{2}}{h}
+= \frac{2xh + h^{2}}{h} = 2x + h.
+\]</span></p>
+<p>As <span class="math inline">\(h\)</span> becomes infinitely small (<span class="math inline">\(h \to 0\)</span>), this tends to <span class="math inline">\(2x\)</span>. Hence the instantaneous rate of change is</p>
+<p><span class="math display">\[
+f'(x) = 2x.
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Derivatives of the reference functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Constant</strong> <span class="math inline">\(f(x) = k\)</span>: <span class="math inline">\(\;f'(x) = 0\)</span>.</li>
+<li><strong>Affine</strong> <span class="math inline">\(f(x) = a x + b\)</span>: <span class="math inline">\(\;f'(x) = a\)</span> (constant slope).</li>
+<li><strong>Power</strong> <span class="math inline">\(f(x) = x^{n}\)</span>: <span class="math inline">\(\;f'(x) = n\,x^{n-1}\)</span>.</li>
+<li><strong>Quadratic</strong> <span class="math inline">\(f(x) = a x^{2} + b x + c\)</span>: <span class="math inline">\(\;f'(x) = 2a x + b\)</span>.</li>
+</ul>
 </div>
 </div>
 </section>
+<section id="applying-the-derivative-to-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="applying-the-derivative-to-optimization">Applying the Derivative to Optimization</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Method to optimise a quadratic
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Compute the derivative <span class="math inline">\(f'(x)\)</span>.</li>
+<li>Solve <span class="math inline">\(f'(x) = 0\)</span> to find the candidate point <span class="math inline">\(x^{\*}\)</span>.</li>
+<li>For <span class="math inline">\(f(x) = a x^{2} + b x + c\)</span>, the extremum is at <span class="math inline">\(x^{\*} = -\dfrac{b}{2a}\)</span>: it is a <strong>maximum</strong> if <span class="math inline">\(a &lt; 0\)</span> and a <strong>minimum</strong> if <span class="math inline">\(a &gt; 0\)</span>.</li>
+</ol>
+</div>
+</div>
+<section id="worked-example-maximising-profit" class="level3">
+<h3 class="anchored" data-anchor-id="worked-example-maximising-profit">Worked example — maximising profit</h3>
+<p>A firm’s profit is <span class="math inline">\(P(x) = -2x^{2} + 40x - 50\)</span> (in thousands of euros), where <span class="math inline">\(x\)</span> is the quantity produced. Then <span class="math inline">\(P'(x) = -4x + 40\)</span>. Setting <span class="math inline">\(P'(x) = 0\)</span> gives <span class="math inline">\(x = 10\)</span>. Since <span class="math inline">\(a = -2 &lt; 0\)</span>, the parabola opens downward, so <span class="math inline">\(x = 10\)</span> is a <strong>maximum</strong>. The maximum profit is <span class="math inline">\(P(10) = -2(100) + 400 - 50 = 150\)</span> (thousand euros).</p>
 </section>
-<section id="where-to-start" class="level2">
-<h2 class="anchored" data-anchor-id="where-to-start">Where to Start</h2>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">For Individual Developers</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">For Engineering Leaders</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">For Organizations</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+</section>
+<section id="practice" class="level2">
+<h2 class="anchored" data-anchor-id="practice">Practice</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercises (click for solutions)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <ol type="1">
-<li><p><strong>Set up an <code>AGENTS.md</code></strong> for the project. Start with ten lines: stack, conventions, hard rules, workflow. Add a rule every time the agent does something it should not do again.</p></li>
-<li><p><strong>Install a set of skills</strong> for your coding agents (like Agents CLI) to build, evaluate, deploy and optimize agents.</p></li>
-<li><p><strong>Pick one repetitive workflow and make it the first agent.</strong> A research workflow, a code review process, a recurring report. Use a coding agent for the prototype, graduate it to a production agent when it earns its keep. Building one agent end to end teaches more than reading about a hundred.</p></li>
-<li><p><strong>Write the tests and evals before generating the code.</strong> Together they are the contract with the AI. A well-written test and eval suite communicates intent more precisely than any natural-language prompt, and turns AI-assisted development from vibe coding into agentic engineering.</p></li>
-<li><p><strong>Review every line the agent produces that is going to ship.</strong> Be skeptical of anything that looks clever. Check imports for real packages. Verify that error handling covers realistic failure modes.</p></li>
-<li><p><strong>Maintain your developer skills.</strong> AI handles the routine so the developer can focus on the challenging. That arrangement only works if foundational skills — debugging, system design, intuition for performance and correctness — stay sharp.</p></li>
+<li>Average rate of change of <span class="math inline">\(f(x) = 3x + 2\)</span> between <span class="math inline">\(x = 0\)</span> and <span class="math inline">\(x = 4\)</span>. <span class="math inline">\(\tau = \dfrac{14 - 2}{4} = 3\)</span> (equal to the slope, as expected for an affine function).</li>
+<li>Differentiate <span class="math inline">\(f(x) = 5x^{2} - 3x + 7\)</span>. <span class="math inline">\(\;f'(x) = 10x - 3\)</span>.</li>
+<li>Minimise the average cost <span class="math inline">\(C(x) = x^{2} - 12x + 40\)</span>. <span class="math inline">\(C'(x) = 2x - 12 = 0
+\Rightarrow x = 6\)</span>; since <span class="math inline">\(a &gt; 0\)</span> it is a minimum, <span class="math inline">\(C(6) = 4\)</span>.</li>
 </ol>
 </div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<ol type="1">
-<li><p><strong>Make context engineering a first-class engineering practice.</strong> Treat <code>AGENTS.md</code>, system prompts, eval suites, and skill libraries as code: reviewed in pull requests, versioned with the project, owned by named engineers.</p></li>
-<li><p><strong>Set the bar at the eval, not the demo.</strong> A working demo proves an agent can succeed once. A passing eval suite proves it succeeds reliably. Define what you are scoring: task success, tool use quality, trajectory compliance, hallucination, and response quality.</p></li>
-<li><p><strong>Re-shape code review for AI-generated code.</strong> Extra attention to hallucinated dependencies, inadequate error handling, and subtle correctness gaps that look right at a glance.</p></li>
-<li><p><strong>Distinguish prototyping work from production work in team norms.</strong> Vibe coding is the right speed for exploration. Agentic engineering is the right discipline for production. Make the boundary explicit.</p></li>
-<li><p><strong>Invest in harness components as a shared team asset.</strong> Reusable system prompts, skill libraries, MCP server connections, and evaluation harnesses compound across projects. Treat them as infrastructure.</p></li>
-</ol>
 </div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<ol type="1">
-<li><p><strong>Treat AI-assisted development as an engineering investment, not a productivity feature.</strong> Rolling out a coding agent without eval coverage, observability, and clear architectural standards produces speed without quality.</p></li>
-<li><p><strong>Invest in the production substrate before scale.</strong> What graduates a vibe-coded prototype to production is operations discipline: trajectory and final-response evals in CI, traces of every agent run, scoped permissions, and security review tuned to generated code’s failure modes.</p></li>
-<li><p><strong>Adopt open standards.</strong> Model Context Protocol (MCP) for tool access and Agent2Agent (A2A) for cross-agent delegation are converging into the connective tissue of multi-agent systems.</p></li>
-<li><p><strong>Plan for hybrid teams of humans and agents.</strong> The strongest production results come from architectures where humans set direction, agents do the implementation, and clear handoff protocols govern the boundary.</p></li>
-<li><p><strong>Reframe hiring and skill development around judgment, not just implementation.</strong> The most valuable engineers in the next several years will be the ones who can direct agents well, not the ones who can write the most code.</p></li>
-</ol>
 </div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>TODO: interactive tangent-slope explorer (secant → tangent as <span class="math inline">\(h \to 0\)</span>) deferred — see plan Complexity Tracking.</p>
 </div>
 </div>
 
@@ -813,10 +850,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../../teaching/mathematical-fundamentals/module-6.html" class="pagination-link  aria-label=" 6️⃣="" functions="" useful="" in="" economics="" and="" management"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">6️⃣ Functions Useful in Economics and Management</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../teaching/ai-dev/vibe-coding.html" class="pagination-link" aria-label="Vibe Coding">
-        <span class="nav-page-text">Vibe Coding</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../teaching/mathematical-fundamentals/module-8.html" class="pagination-link" aria-label="8️⃣ Revision and Final-Exam Preparation">
+        <span class="nav-page-text">8️⃣ Revision and Final-Exam Preparation</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
