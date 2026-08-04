@@ -174,6 +174,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../teaching/ai-dev/orchestrator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Orchestrator</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../teaching/ai-dev/agents.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Agents</span></a>
   </div>
@@ -245,6 +251,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#of-11-5" id="toc-of-11-5" class="nav-link" data-scroll-target="#of-11-5">11 of 11</a></li>
   <li><a href="#quizz" id="toc-quizz" class="nav-link" data-scroll-target="#quizz">Quizz</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">——</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -611,6 +618,201 @@ ul.task-list li input[type="checkbox"] {
 <p>The main takeaway from this module is the ability to implement a spec-driven development process, which allows you to use AI tools like GitHub Copilot to generate code based on structured specifications. This approach enables you to focus on defining clear requirements and technical plans before implementation begins, ensuring that generated code aligns with intended behaviors from the start. You also learned how to compare SDD with other methodologies, set up your environment for GitHub Spec Kit, and use commands like /speckit.constitution, /speckit.specify, /speckit.plan, and /speckit.tasks to generate the artifacts that guide implementation. These skills are essential for effectively using AI-driven tools in a structured, enterprise-ready workflow.</p>
 <p>You can apply the knowledge gained in this module to build greenfield applications with confidence, maintain consistency across AI-assisted development sessions, and reduce the gap between specifications and implementation. By practicing spec-driven development with GitHub Spec Kit, you can enhance your productivity and deliver higher-quality software that meets stakeholder requirements.</p>
 <p>Note</p>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section">——</h2>
+<blockquote class="blockquote">
+<p>What is the difference between Spec-Driven Development and behavior driven (bdd). BDD is a subset of SDD ?</p>
+</blockquote>
+<p>Short answer: BDD is not exactly a subset of Spec-Driven Development (SDD), but it can be viewed as a specialized form of it.</p>
+<p>The confusion comes from the fact that different communities use “Spec-Driven Development” in slightly different ways.</p>
+<p>Spec-Driven Development (SDD)</p>
+<p>SDD starts from the idea that:</p>
+<p>Specifications are the primary artifact that drives design, implementation, and validation.</p>
+<p>The specification can be:</p>
+<p>Functional requirements API contracts (OpenAPI, GraphQL schema, protobuf) Formal specifications User stories Acceptance criteria Executable specifications</p>
+<p>Typical workflow:</p>
+<p>Specification ↓ Design ↓ Implementation ↓ Verification</p>
+<p>The focus is:</p>
+<p>What the system should do Traceability from requirements to code Consistency between specification and implementation</p>
+<p>Examples:</p>
+<p>Generating code from OpenAPI specs Developing a protocol from RFC requirements Writing acceptance criteria before coding Formal methods and model-driven development Behavior-Driven Development (BDD)</p>
+<p>BDD is much more specific.</p>
+<p>BDD focuses on:</p>
+<p>Specifying software through observable business behavior.</p>
+<p>Instead of technical specifications, BDD describes:</p>
+<p>Given I am a customer When I place an order Then the order should be confirmed</p>
+<p>The emphasis is on:</p>
+<p>Shared understanding Business language Collaboration between business, QA, and developers Executable specifications</p>
+<p>Workflow:</p>
+<p>Business conversation ↓ Scenarios (Given/When/Then) ↓ Executable acceptance tests ↓ Implementation</p>
+<p>BDD asks:</p>
+<p>“How should the system behave from the user’s perspective?”</p>
+<p>rather than:</p>
+<p>“What are the technical requirements?”</p>
+<p>Relationship between SDD and BDD</p>
+<p>Think of it as:</p>
+<p>Specification-Driven Development │ ├── Formal specifications ├── API contract-driven development ├── Requirements-driven development └── Behavior-Driven Development</p>
+<p>In that sense:</p>
+<p>✅ BDD can be considered a subset (or specialization) of SDD, because BDD uses specifications to drive development.</p>
+<p>However:</p>
+<p>SDD is a broader umbrella. Many SDD approaches do not use BDD. BDD requires executable behavioral specifications and business-oriented language, while SDD does not. Another way to compare them Aspect SDD BDDMain artifact Specification Behavioral scenarios Audience Analysts, architects, developers Business + QA + developers Focus Requirements and correctness User-visible behavior Formality Can be highly formal Usually conversational Testing May or may not be executable Usually executable Example OpenAPI spec, RFC, requirements doc Given-When-Then scenarios A practical example SDD</p>
+<p>Specification:</p>
+<p>POST /orders</p>
+<p>Request: customerId: string amount: decimal</p>
+<p>Response: orderId: string</p>
+<p>Developer implements according to the contract.</p>
+<p>BDD</p>
+<p>Specification:</p>
+<p>Scenario: Customer creates an order</p>
+<p>Given a valid customer exists When the customer submits an order for 100 euros Then the order is accepted And an order identifier is generated</p>
+<p>Developer implements behavior described by the scenario.</p>
+<p>My recommendation</p>
+<p>For modern product development, the hierarchy is often:</p>
+<p>SDD └─ BDD └─ TDD</p>
+<p>Where:</p>
+<p>SDD defines the overall specification-first mindset. BDD expresses specifications as business behaviors. TDD drives the implementation of individual units through tests.</p>
+<p>So if someone says “BDD is a subset of SDD”, I would say that is generally correct, provided SDD is understood broadly as “development driven by specifications.” BDD is essentially specification-driven development focused on observable business behavior and executable acceptance criteria.</p>
+<blockquote class="blockquote">
+<p>How does TDD relate to BDD and SDD?</p>
+</blockquote>
+<p>TDD, BDD, and SDD operate at different levels of abstraction, which is why they work well together rather than compete.</p>
+<p>A useful way to think about them is:</p>
+<p>SDD → Are we building the right thing? BDD → How should it behave for the user/business? TDD → How do we implement it correctly?</p>
+<p>The hierarchy Specification-Driven Development (SDD) │ └── Behavior-Driven Development (BDD) │ └── Test-Driven Development (TDD)</p>
+<p>This isn’t a strict academic hierarchy, but it’s how many teams apply them in practice.</p>
+<ol type="1">
+<li>SDD: Specification First</li>
+</ol>
+<p>SDD starts with a specification.</p>
+<p>Examples:</p>
+<p>Product requirements User stories API contracts Regulatory requirements Business rules System models</p>
+<p>Example:</p>
+<p>The application shall allow customers to submit orders and receive a unique order number.</p>
+<p>At this level, we’re describing what must exist.</p>
+<ol start="2" type="1">
+<li>BDD: Behavior First</li>
+</ol>
+<p>BDD takes part of that specification and expresses it as observable behavior.</p>
+<p>Example:</p>
+<p>Scenario: Successful order creation</p>
+<p>Given a registered customer When the customer places an order Then an order should be created And a confirmation number should be returned</p>
+<p>Now we’re describing:</p>
+<p>How should the system behave from the user’s perspective?</p>
+<p>BDD makes specifications:</p>
+<p>Concrete Examples-based Executable Easy for business stakeholders to understand</p>
+<p>BDD is often called “executable specifications.”</p>
+<ol start="3" type="1">
+<li>TDD: Implementation First</li>
+</ol>
+<p>Once a behavioral scenario exists, developers implement the code using TDD.</p>
+<p>Example:</p>
+<p>BDD scenario:</p>
+<p>Given a registered customer When the customer places an order Then an order should be created</p>
+<p>Possible TDD test:</p>
+<p><span class="citation" data-cites="Test">@Test</span> void createsOrderForValidCustomer() { Order order = orderService.create(customer, amount);</p>
+<pre><code>assertNotNull(order.getId());</code></pre>
+<p>}</p>
+<p>TDD then follows:</p>
+<p>Red ↓ Green ↓ Refactor</p>
+<p>Write failing test Make it pass Improve design</p>
+<p>TDD focuses on small units and implementation details.</p>
+<p>Example: All three together SDD Level</p>
+<p>Requirement:</p>
+<p>Customers may order products if they have a valid account.</p>
+<p>BDD Level Scenario: Valid customer places order</p>
+<p>Given a valid account When the customer submits an order Then the order is accepted</p>
+<p>TDD Level def test_order_is_created_for_valid_customer(): …</p>
+<p>def test_order_receives_unique_id(): …</p>
+<p>def test_order_status_is_pending(): …</p>
+<p>Each BDD scenario might generate many TDD tests.</p>
+<p>Scope comparison SDD ┌───────────────────────────────┐ │ Entire system specification │ └───────────────────────────────┘</p>
+<p>BDD ┌───────────────────────┐ │ User-visible behavior │ └───────────────────────┘</p>
+<p>TDD ┌──────────────┐ │ Code design │ └──────────────┘</p>
+<p>Concern SDD BDD TDDLevel Strategic Functional Technical Audience Product, business, architects Business, QA, developers Developers Main artifact Specifications Scenarios Unit tests Focus Requirements Behavior Implementation Granularity Large Medium Small Drives Product design Feature design Code design Can TDD exist without BDD?</p>
+<p>Absolutely.</p>
+<p>Many teams do:</p>
+<p>Requirement ↓ TDD ↓ Code</p>
+<p>without writing any BDD scenarios.</p>
+<p>This is common in:</p>
+<p>Libraries Frameworks Infrastructure code Internal tools Can BDD exist without TDD?</p>
+<p>Also yes.</p>
+<p>A team may write Gherkin scenarios and acceptance tests:</p>
+<p>Given … When … Then …</p>
+<p>but implement them without practicing Red-Green-Refactor TDD.</p>
+<p>This is surprisingly common.</p>
+<p>The ideal flow</p>
+<p>A mature team often follows:</p>
+<p>Specification (SDD) ↓ Behavior Scenarios (BDD) ↓ Acceptance Tests ↓ Unit Tests (TDD) ↓ Implementation</p>
+<p>In that model:</p>
+<p>SDD ensures you build the right product. BDD ensures the product behaves correctly for users. TDD ensures the implementation is correct, maintainable, and well-designed.</p>
+<p>So while BDD can reasonably be seen as a specialization of SDD, TDD is better viewed as a complementary engineering practice beneath BDD, focused on turning behavioral specifications into clean, working code.</p>
+<blockquote class="blockquote">
+<p>What tools support BDD and TDD together?</p>
+</blockquote>
+<p>BDD and TDD are often most effective when they are used together, with:</p>
+<p>BDD tools defining and executing business scenarios. TDD tools driving the implementation of the underlying code.</p>
+<p>A common workflow is:</p>
+<p>BDD Scenario ↓ Acceptance Test ↓ TDD Unit Tests ↓ Implementation</p>
+<p>Java Ecosystem BDD Cucumber JBehave SpecFlow (for .NET teams)</p>
+<p>Example:</p>
+<p>Feature: Order Creation</p>
+<p>Scenario: Valid customer places an order Given a valid customer When the customer submits an order Then the order is accepted</p>
+<p>TDD JUnit 5 TestNG Mockito (mocking)</p>
+<p>Example:</p>
+<p><span class="citation" data-cites="Test">@Test</span> void shouldCreateOrder() { Order order = service.create(customer);</p>
+<pre><code>assertNotNull(order);</code></pre>
+<p>}</p>
+<p>Typical stack:</p>
+<p>Cucumber ↓ JUnit ↓ Mockito</p>
+<p>.NET Ecosystem BDD SpecFlow Reqnroll (successor/fork of SpecFlow) TDD xUnit NUnit MSTest Moq</p>
+<p>Typical stack:</p>
+<p>Reqnroll ↓ xUnit ↓ Moq</p>
+<p>JavaScript / TypeScript BDD Cucumber.js Playwright + Gherkin integrations TDD Jest Vitest Mocha</p>
+<p>Example:</p>
+<p>describe(“Order Service”, () =&gt; { it(“creates an order”, () =&gt; { // test }); });</p>
+<p>Common stack:</p>
+<p>Cucumber.js ↓ Playwright ↓ Jest</p>
+<p>Python BDD Behave pytest-bdd TDD pytest unittest</p>
+<p>Example:</p>
+<p>def test_order_created(): order = create_order(customer)</p>
+<pre><code>assert order.id is not None</code></pre>
+<p>Typical stack:</p>
+<p>Behave ↓ pytest-bdd ↓ pytest</p>
+<p>Ruby</p>
+<p>This is where BDD largely originated.</p>
+<p>BDD Cucumber TDD RSpec</p>
+<p>Example:</p>
+<p>describe OrderService do it “creates an order” do expect(order.id).not_to be_nil end end</p>
+<p>Modern Product-Team Stack</p>
+<p>A very common contemporary setup is:</p>
+<p>Business Requirement ↓ Gherkin Scenario (Cucumber) ↓ Acceptance Test ↓ Unit Tests (JUnit/Jest/pytest) ↓ Implementation</p>
+<p>For example:</p>
+<p>BDD Layer Scenario: Customer places an order</p>
+<p>Given a registered customer When the customer places an order Then a confirmation number is returned</p>
+<p>TDD Layer <span class="citation" data-cites="Test">@Test</span> void orderReceivesConfirmationNumber() { … }</p>
+<p>The BDD scenario validates the feature, while the TDD tests validate the components that implement the feature.</p>
+<p>Specification-Oriented Tools (SDD + BDD + TDD)</p>
+<p>Recently, the boundaries have started to blur. Tools increasingly support all three levels:</p>
+<p>Living Documentation Cucumber Reports LivingDoc Pickles Allure</p>
+<p>These generate documentation directly from BDD scenarios, creating executable specifications.</p>
+<p>Contract-Driven Development OpenAPI Pact Spring Cloud Contract</p>
+<p>These are closer to SDD, but can coexist with BDD and TDD:</p>
+<p>OpenAPI Contract (SDD) ↓ BDD Acceptance Tests ↓ TDD Unit Tests</p>
+<p>My recommended stack</p>
+<p>For a new project:</p>
+<p>Java BDD: Cucumber</p>
+<p>TDD: JUnit 5 Mockito</p>
+<p>Acceptance/UI: Playwright</p>
+<p>CI: GitHub Actions or Azure DevOps</p>
+<p>Python BDD: pytest-bdd</p>
+<p>TDD: pytest</p>
+<p>Acceptance/UI: Playwright</p>
+<p>.NET BDD: Reqnroll</p>
+<p>TDD: xUnit Moq</p>
+<p>This combination provides a clean hierarchy:</p>
+<p>Specifications (SDD) ↓ Gherkin Scenarios (BDD) ↓ Unit Tests (TDD) ↓ Code</p>
+<p>which is probably the closest practical realization of SDD → BDD → TDD in modern software development.</p>
 
 
 </section>
