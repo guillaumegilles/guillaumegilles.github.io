@@ -1,11 +1,8 @@
 ---
-title: "Agent Skills"
+title: "From Generalist to Specialist: How Agent Skills Work"
+subtitle: "A practical guide to progressive disclosure, SKILL.md, executable workflows, and portable agent expertise."
 abstract: |
-  The most powerful pattern for managing dynamic context is **Agent Skills**.
-  Skills are reusable markdown files that teach agents how to handle specific
-  tasks automatically. Instead of repeating instructions every time you ask an
-  agent to review a PR or write a commit message, you write a skill once and
-  agents applies it whenever the task comes up.
+  The most powerful pattern for managing dynamic context is **Agent Skills**. Skills are reusable markdown files that teach agents how to handle specific tasks automatically. Instead of repeating instructions every time you ask an agent to review a PR or write a commit message, you write a skill once and agents applies it whenever the task comes up.
 date: 2026-06-09
 ---
 
@@ -33,6 +30,10 @@ Anthropic introduced skills, in octobre 2025, to solve this by packaging procedu
 > "Building a skill for an agent is like putting together an onboarding guide for a new hire. Instead of building fragmented, custom-designed agents for each use case, anyone can now specialize their agents with composable capabilities by capturing and sharing their procedural knowledge."
 
 Two months later, in december 2025, Anthropic, released Agents Skills as an **open standard** to the community. It means that agent skills are freely available for adoption, implementation and updates, enabling cross-platform portability.
+
+[GitHub Copilot supports Agent Skill - 2025-12-18](https://github.blog/changelog/2025-12-18-github-copilot-now-supports-agent-skills/)
+- openAI : https://github.com/openai/skills/commits/main/?after=a8924c2a35cfa290458852c4fad17c9133054c2e+104
+
 
 ## Anatomy of Skills
 
@@ -197,7 +198,9 @@ Data files (lookup tables, schemas)
 
 ## Preventing Context Rot: Progressive Disclosure
 
-To preserve the LLM context windows, agents load skills progressively, pulling in more detail only as a task calls for it. This is called **progressive disclosure**. It is the core design principle that makes Agent Skills flexible and scalable. Like a well-organized manual that starts with a table of contents, then specific chapters, and finally a detailed appendix, skills let agents load information only as needed. 
+To preserve the LLM context windows, agents load skills progressively, pulling in more detail only as a task calls for it. This is called **progressive disclosure**. It is the core design principle that makes Agent Skills flexible and scalable. Like a well-organized manual that starts with a table of contents, then specific chapters, and finally a detailed appendix, skills let agents load information only as needed.
+
+Skills run in a code execution environment where agent has filesystem access, bash commands, and code execution capabilities.
 
 [context window](./context-window.webp)
 
@@ -211,18 +214,50 @@ To preserve the LLM context windows, agents load skills progressively, pulling i
 |   2   | `SKILL.md` body                    | Load when skill triggers | < 5k                  |
 |   3+  | Bundled files (text, script, data) | Loaded as-needed         | Effectively unlimited |
 
+No practical limit on bundled content: Because files don't consume context until accessed, Skills can include comprehensive API documentation, large datasets, extensive examples, or any reference materials you need. There's no context penalty for bundled content that isn't used.
+
+This filesystem-based model is what makes progressive disclosure work. Claude navigates your Skill like you'd reference specific sections of an onboarding guide, accessing exactly what each task requires.
+
+## Towards a repeatable and deterministic Agent
+
+Skills can also include code for Claude to execute as tools at its discretion.
+
+Large language models excel at many tasks, but certain operations are better suited for traditional code execution. For example, sorting a list via token generation is far more expensive than simply running a sorting algorithm. Beyond efficiency concerns, many applications require the deterministic reliability that only code can provide.
+
+In our example, the PDF skill includes a pre-written Python script that reads a PDF and extracts all form fields. Claude can run this script without loading either the script or the PDF into context. And because code is deterministic, this workflow is consistent and repeatable.
+
+![Skills can also include code for Claude to execute as tools at its discretion based on the nature of the task.](./assets/script.webp)
+
+## Skills Library
+
+- [Anthropic open-source skills](https://github.com/anthropics/skills)
+
+
+## Good Practices 
+
+- Keep your main SKILL.md under 500 lines. Move detailed reference material to separate files.
+- When referencing other files in your skill, use relative paths from the skill root:
+  ```markdown
+  See [the reference guide](references/REFERENCE.md) for details.
+
+  Run the extraction script:
+  scripts/extract.py
+  ```
+
+  :::{.callout-note}
+  Keep file references one level deep from SKILL.md. Avoid deeply nested reference chains.
+  :::
+
+## References
+
+- https://agentskills.io/home
+- https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+- https://www.deeplearning.ai/short-courses/agent-skills-with-anthropic/
 
 
 
 
-
-
-
-
-
-
-
-
+-------------------
 
 
 
@@ -324,76 +359,6 @@ Similarly, pay attention to instructions or code within the skill that instruct
 agents to connect to potentially untrusted external network sources.
 :::
 
-### Skills Library
-
-- [Anthropic open-source skills](https://github.com/anthropics/skills)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-- [GitHub Copilot supports Agent Skill - 2025-12-18](https://github.blog/changelog/2025-12-18-github-copilot-now-supports-agent-skills/)
-- openAI : https://github.com/openai/skills/commits/main/?after=a8924c2a35cfa290458852c4fad17c9133054c2e+104
-
-
-
-
-
-
-Ressources
-- https://www.deeplearning.ai/short-courses/agent-skills-with-anthropic/
-
-
-
-
-
-
-
-
-
-## Towards a repeatable and deterministic Agent
-
-Skills can also include code for Claude to execute as tools at its discretion.
-
-Large language models excel at many tasks, but certain operations are better suited for traditional code execution. For example, sorting a list via token generation is far more expensive than simply running a sorting algorithm. Beyond efficiency concerns, many applications require the deterministic reliability that only code can provide.
-
-In our example, the PDF skill includes a pre-written Python script that reads a PDF and extracts all form fields. Claude can run this script without loading either the script or the PDF into context. And because code is deterministic, this workflow is consistent and repeatable.
-
-![Skills can also include code for Claude to execute as tools at its discretion based on the nature of the task.](./assets/script.webp)
-
-
-
-
-
-## The Skills architecture
-Skills run in a code execution environment where Claude has filesystem access, bash commands, and code execution capabilities. Think of it like this: Skills exist as directories on a virtual machine, and Claude interacts with them using the same bash commands you'd use to navigate files on your computer.
-
-![A skill is a directory containing a SKILL.md file that contains organized folders of instructions, scripts, and resources that give agents additional capabilities.](../assets/skills.jpeg)
-
-How Claude accesses Skill content:
-
-When a Skill is triggered, Claude uses bash to read SKILL.md from the filesystem, bringing its instructions into the context window. If those instructions reference other files (like FORMS.md or a database schema), Claude reads those files too using additional bash commands. When instructions mention executable scripts, Claude runs them via bash and receives only the output (the script code itself never enters context).
-
-What this architecture enables:
-
-On-demand file access: Claude reads only the files needed for each specific task. A Skill can include dozens of reference files, but if your task only needs the sales schema, Claude loads just that one file. The rest remain on the filesystem consuming zero tokens.
-
-Efficient script execution: When Claude runs `validate_form.py`, the script's code never loads into the context window. Only the script's output (like "Validation passed" or specific error messages) consumes tokens. This makes scripts far more efficient than having Claude generate equivalent code on the fly.
-
-No practical limit on bundled content: Because files don't consume context until accessed, Skills can include comprehensive API documentation, large datasets, extensive examples, or any reference materials you need. There's no context penalty for bundled content that isn't used.
-
-This filesystem-based model is what makes progressive disclosure work. Claude navigates your Skill like you'd reference specific sections of an onboarding guide, accessing exactly what each task requires.
-
 
 
 
@@ -464,31 +429,3 @@ Both OpenAI and Anthropic tool definitions follow JSON Schema. If you abstract
 your tool registry behind a small adapter, the same tool implementation can be
 exposed to both platforms with a thin translation layer.
 :::
-
-
-
-
-
-
-
-## Good Practices 
-
-- Keep your main SKILL.md under 500 lines. Move detailed reference material to separate files.
-- When referencing other files in your skill, use relative paths from the skill root:
-  ```markdown
-  See [the reference guide](references/REFERENCE.md) for details.
-
-  Run the extraction script:
-  scripts/extract.py
-  ```
-
-  :::{.callout-note}
-  Keep file references one level deep from SKILL.md. Avoid deeply nested reference chains.
-  :::
-- 
-
-
-## References
-
-- https://agentskills.io/home
-- https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
