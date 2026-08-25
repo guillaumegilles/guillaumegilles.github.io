@@ -110,41 +110,30 @@ description: A description of what this skill does and when to use it.
 ```
 
 ##### optional Fields
-Agents Skills open standard has 4 more optionnal frontmatter 
 
-license field
-The optional license field:
-Specifies the license applied to the skill
-We recommend keeping it short (either the name of a license or the name of a bundled license file)
+Agents Skills open standard has **4 more optionnal frontmatter**: 
 
-```yaml
-license: Proprietary. LICENSE.txt has complete terms
-```
+- `license` field specifies the license applied to the skill:
+  ```yaml
+  license: Proprietary. LICENSE.txt has complete terms
+  ```
 
-compatibility field
-The optional compatibility field:
-Must be 1-500 characters if provided
-Should only be included if your skill has specific environment requirements
-Can indicate intended product, required system packages, network access needs, etc.
+- `compatibility` field an indicate intended product, required system packages, network access needs, etc. It must be 1-500 characters if provided and should only be included if your skill has specific environment requirements
+  ```yaml
+  compatibility: Designed for Claude Code (or similar products)
+  ```
+  ```yaml
+  compatibility: Requires git, docker, jq, and access to the internet
+  ```
+  ```yaml
+  compatibility: Requires Python 3.14+ and uv
+  ```
 
-```yaml
-compatibility: Designed for Claude Code (or similar products)
-```
+  :::{.callout-note}
+  Most skills do not need the compatibility field.
+  :::
 
-```yaml
-compatibility: Requires git, docker, jq, and access to the internet
-```
-
-```yaml
-compatibility: Requires Python 3.14+ and uv
-```
-
-:::{.callout-note}
-Most skills do not need the compatibility field.
-:::
-
-metadata field
-The optional metadata field:
+- `metadata` field
 A map from string keys to string values
 Clients can use this to store additional properties not defined by the Agent Skills spec
 We recommend making your key names reasonably unique to avoid accidental conflicts
@@ -171,9 +160,10 @@ Recommended sections:
 Step-by-step instructions
 Examples of inputs and outputs
 Common edge cases
-Note that the agent will load this entire file once it’s decided to activate a skill. Consider splitting longer SKILL.md content into referenced files.
+Note that the agent will load this entire file once it's decided to activate a skill. Consider splitting longer SKILL.md content into referenced files.
 
 ### Optional directories
+
 A skill directory may contain any files and directories beyond the required SKILL.md. The conventions below are recommendations for organizing common types of content.
 ​
 scripts/
@@ -247,6 +237,11 @@ In our example, the PDF skill includes a pre-written Python script that reads a 
   :::{.callout-note}
   Keep file references one level deep from SKILL.md. Avoid deeply nested reference chains.
   :::
+
+## Further Reading
+
+- [Extend Claude with skills](https://code.claude.com/docs/en/skills)
+- [Give ChatGPT and Codex new capabilities and expertise](https://learn.chatgpt.com/docs/build-skills)
 
 ## References
 
