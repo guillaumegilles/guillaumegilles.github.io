@@ -3,16 +3,16 @@ title: "A series of Elegant Pedagogical Essays"
 lang: en
 date:
 date-modified: 
+draft: true
 ---
 
 #### [Quantization from the ground up](https://ngrok.com/blog/quantization)
 
 [Sam Rose](https://github.com/samwho)
 
+<https://alexharri.com/blog/ascii-rendering>
 
-https://alexharri.com/blog/ascii-rendering
-
-https://ciechanow.ski/archives/
+<https://ciechanow.ski/archives/>
 = a treasure of interactive essays
 
-https://nik.digital/posts/tab-roving
+<https://nik.digital/posts/tab-roving>

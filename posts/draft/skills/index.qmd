@@ -4,6 +4,7 @@ subtitle: "A practical guide to progressive disclosure, SKILL.md, executable wor
 abstract: |
   The most powerful pattern for managing dynamic context is **Agent Skills**. Skills are reusable markdown files that teach agents how to handle specific tasks automatically. Instead of repeating instructions every time you ask an agent to review a PR or write a commit message, you write a skill once and agents applies it whenever the task comes up.
 date: 2026-06-09
+draft: true
 ---
 
 ## Why Agent Skills?
@@ -32,8 +33,8 @@ Anthropic introduced skills, in octobre 2025, to solve this by packaging procedu
 Two months later, in december 2025, Anthropic, released Agents Skills as an **open standard** to the community. It means that agent skills are freely available for adoption, implementation and updates, enabling cross-platform portability.
 
 [GitHub Copilot supports Agent Skill - 2025-12-18](https://github.blog/changelog/2025-12-18-github-copilot-now-supports-agent-skills/)
-- openAI : https://github.com/openai/skills/commits/main/?after=a8924c2a35cfa290458852c4fad17c9133054c2e+104
 
+- openAI : <https://github.com/openai/skills/commits/main/?after=a8924c2a35cfa290458852c4fad17c9133054c2e+104>
 
 ## Anatomy of Skills
 
@@ -49,7 +50,7 @@ On Windows, personal skills live in `C:/Users/<your-user>/.agents/skills`.
 
 ### `SKILL.md` and the `.agent/` directory
 
-A skill directory contains, at minimum, a `SKILL.md`: 
+A skill directory contains, at minimum, a `SKILL.md`:
 
 ```markdown
 .agents/skills/
@@ -85,7 +86,7 @@ The first required YAML metadata a `SKILL.md` must have is `name` and it must fo
 | **Valid** `name` metadata | **Invalid** `name` metadata |
 |---------------------------|-----------------------------|
 | `name: pdf-processing`    | `name: PDF-Processing`      |
-| `name: data-analysis`     | `name: -data`               |    
+| `name: data-analysis`     | `name: -data`               |
 | `name: code-review`       | `name: code--review`        |
 
 ##### `description`
@@ -111,20 +112,24 @@ description: A description of what this skill does and when to use it.
 
 ##### optional Fields
 
-Agents Skills open standard has **4 more optionnal frontmatter**: 
+Agents Skills open standard has **4 more optionnal frontmatter**:
 
 - `license` field specifies the license applied to the skill:
+
   ```yaml
   license: Proprietary. LICENSE.txt has complete terms
   ```
 
 - `compatibility` field an indicate intended product, required system packages, network access needs, etc. It must be 1-500 characters if provided and should only be included if your skill has specific environment requirements
+
   ```yaml
   compatibility: Designed for Claude Code (or similar products)
   ```
+
   ```yaml
   compatibility: Requires git, docker, jq, and access to the internet
   ```
+
   ```yaml
   compatibility: Requires Python 3.14+ and uv
   ```
@@ -222,11 +227,11 @@ In our example, the PDF skill includes a pre-written Python script that reads a 
 
 - [Anthropic open-source skills](https://github.com/anthropics/skills)
 
-
-## Good Practices 
+## Good Practices
 
 - Keep your main SKILL.md under 500 lines. Move detailed reference material to separate files.
 - When referencing other files in your skill, use relative paths from the skill root:
+
   ```markdown
   See [the reference guide](references/REFERENCE.md) for details.
 
@@ -245,16 +250,11 @@ In our example, the PDF skill includes a pre-written Python script that reads a 
 
 ## References
 
-- https://agentskills.io/home
-- https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
-- https://www.deeplearning.ai/short-courses/agent-skills-with-anthropic/
-
-
-
+- <https://agentskills.io/home>
+- <https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills>
+- <https://www.deeplearning.ai/short-courses/agent-skills-with-anthropic/>
 
 -------------------
-
-
 
 ```yaml
 ---
@@ -272,8 +272,6 @@ When reviewing code in this FastAPI projects, check for:
 
 [...]
 ```
-
-
 
 ### Example
 
@@ -337,6 +335,7 @@ This process will help you discover what context agents actually needs, instead
 of trying to anticipate it upfront.
 
 ::: {.callout-important}
+
 ## Security Considerations
 
 Skills provide agents with new capabilities through instructions and code. While
@@ -354,14 +353,9 @@ Similarly, pay attention to instructions or code within the skill that instruct
 agents to connect to potentially untrusted external network sources.
 :::
 
-
-
-
-
 ## Layer 2 —  Tool Definitions
 
 Static instructions tell an agent *how to think*. Skills and tools tell it *what it can do*. This is where you extend the agent beyond pure text generation.
-
 
 ### Function calling — OpenAI
 
@@ -418,6 +412,7 @@ tools = [
 → [Anthropic — Tool use documentation](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview)
 
 ::: {.callout-note}
+
 ## The convergence pattern
 
 Both OpenAI and Anthropic tool definitions follow JSON Schema. If you abstract
