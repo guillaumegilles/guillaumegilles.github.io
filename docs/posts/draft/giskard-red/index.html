@@ -145,9 +145,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="../../../index.qmd"> 
-<span class="menu-text"></span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../../teaching.html"> 
@@ -532,12 +532,12 @@ Objective
 <p>The whole harness is about a hundred lines of Python and depends only on <code>requests</code>. It breaks into three parts: <strong>configuration</strong>, the <strong>prompt battery</strong>, and the <strong>run loop</strong>.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="4-5" data-focus-on="cr-config">
+<div class="trigger new-trigger" data-focus-on="cr-config" data-highlight="4-5">
 <div class="narrative">
 <p>Everything starts with the <strong>token</strong>. The challenge API is authenticated, so we grab a <code>Bearer</code> token from the browser’s DevTools and paste it in. <code>CHALLENGE_ID</code> selects which challenge to attack.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="10" data-focus-on="cr-config">
+<div class="trigger new-trigger" data-focus-on="cr-config" data-highlight="10">
 <div class="narrative">
 <p>The <code>BLOCKED</code> set is the whole game in one line: these are the three “boring” outputs. Any response <em>outside</em> this set means the guardrail has been bypassed. </p>
 </div>
@@ -547,17 +547,17 @@ Objective
 <p>The <strong>prompt battery</strong> is just a list, grouped by technique with comments. Each entry is one hypothesis about how the guardrail might fail — translation, format manipulation, role injection, and so on. Adding a new idea is a one-line change.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="2-11" data-focus-on="cr-send">
+<div class="trigger new-trigger" data-focus-on="cr-send" data-highlight="2-11">
 <div class="narrative">
 <p><code>send_prompt</code> does the network call — a single <code>GET</code> to the challenge’s <code>chat</code> endpoint with the message as a query parameter. The chained <code>.get(...)</code> calls defensively handle whichever key the API happens to use for its answer. </p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="15-16" data-focus-on="cr-send">
+<div class="trigger new-trigger" data-focus-on="cr-send" data-highlight="15-16">
 <div class="narrative">
 <p><code>is_jailbroken</code> is the classifier. It normalises the response (strip + uppercase) and checks membership against <code>BLOCKED</code>. Anything not in the set is a win. </p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="11" data-focus-on="cr-loop">
+<div class="trigger new-trigger" data-focus-on="cr-loop" data-highlight="11">
 <div class="narrative">
 <p>The <strong>run loop</strong> ties it together: send each prompt, classify the response, and <strong>stop at the first jailbreak</strong>. The <code>time.sleep(0.5)</code> throttles requests so we don’t hammer the endpoint.</p>
 </div>
