@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-17">
 
 <title>Guillaume Gilles - 7️⃣ Introduction to Optimization</title>
 <style>
@@ -20,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -71,6 +104,14 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -112,7 +153,7 @@ window.Quarto = {
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating nav-fixed fullcontent">
+<body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -236,6 +277,18 @@ window.Quarto = {
  <span class="menu-text">Glossary</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-fundamentals/formula-sheet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Formula Sheet</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/mathematical-fundamentals/learning-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Learning Guide</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -243,7 +296,38 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#diagnostic-activity" id="toc-diagnostic-activity" class="nav-link active" data-scroll-target="#diagnostic-activity">Diagnostic Activity</a></li>
+  <li><a href="#opening-problem" id="toc-opening-problem" class="nav-link" data-scroll-target="#opening-problem">Opening Problem</a></li>
+  <li><a href="#core-concepts" id="toc-core-concepts" class="nav-link" data-scroll-target="#core-concepts">Core Concepts</a>
+  <ul class="collapse">
+  <li><a href="#what-does-optimise-mean" id="toc-what-does-optimise-mean" class="nav-link" data-scroll-target="#what-does-optimise-mean">What Does “Optimise” Mean?</a></li>
+  <li><a href="#average-rate-of-change" id="toc-average-rate-of-change" class="nav-link" data-scroll-target="#average-rate-of-change">Average Rate of Change</a></li>
+  <li><a href="#instantaneous-rate-of-change-and-the-derivative" id="toc-instantaneous-rate-of-change-and-the-derivative" class="nav-link" data-scroll-target="#instantaneous-rate-of-change-and-the-derivative">Instantaneous Rate of Change and the Derivative</a></li>
+  <li><a href="#applying-the-derivative-to-optimization" id="toc-applying-the-derivative-to-optimization" class="nav-link" data-scroll-target="#applying-the-derivative-to-optimization">Applying the Derivative to Optimization</a></li>
+  </ul></li>
+  <li><a href="#worked-example" id="toc-worked-example" class="nav-link" data-scroll-target="#worked-example">Worked Example</a>
+  <ul class="collapse">
+  <li><a href="#worked-example-maximising-the-manufacturers-profit-opening-problem" id="toc-worked-example-maximising-the-manufacturers-profit-opening-problem" class="nav-link" data-scroll-target="#worked-example-maximising-the-manufacturers-profit-opening-problem">Worked example — maximising the manufacturer’s profit (Opening Problem)</a></li>
+  </ul></li>
+  <li><a href="#guided-practice" id="toc-guided-practice" class="nav-link" data-scroll-target="#guided-practice">Guided Practice</a></li>
+  <li><a href="#interactive-exploration" id="toc-interactive-exploration" class="nav-link" data-scroll-target="#interactive-exploration">Interactive Exploration</a>
+  <ul class="collapse">
+  <li><a href="#investigation" id="toc-investigation" class="nav-link" data-scroll-target="#investigation">Investigation</a></li>
+  </ul></li>
+  <li><a href="#applied-problem" id="toc-applied-problem" class="nav-link" data-scroll-target="#applied-problem">Applied Problem</a></li>
+  <li><a href="#common-errors" id="toc-common-errors" class="nav-link" data-scroll-target="#common-errors">Common Errors</a></li>
+  <li><a href="#check-your-understanding" id="toc-check-your-understanding" class="nav-link" data-scroll-target="#check-your-understanding">Check Your Understanding</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#independent-work" id="toc-independent-work" class="nav-link" data-scroll-target="#independent-work">Independent Work</a></li>
+  <li><a href="#continue" id="toc-continue" class="nav-link" data-scroll-target="#continue">Continue</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -257,12 +341,6 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 17, 2025</p>
-    </div>
-  </div>
   
     
   </div>
@@ -296,8 +374,47 @@ Learning objectives
 </ul>
 </div>
 </div>
-<section id="what-does-optimize-mean" class="level2">
-<h2 class="anchored" data-anchor-id="what-does-optimize-mean">What Does “Optimize” Mean?</h2>
+<section id="diagnostic-activity" class="level2">
+<h2 class="anchored" data-anchor-id="diagnostic-activity">Diagnostic Activity</h2>
+<p>Answer these questions <strong>before</strong> reading further. They review the tools you will need throughout this module.</p>
+<ol type="1">
+<li>Compute <span class="math inline">\(f'(x)\)</span> for <span class="math inline">\(f(x) = 3x^2 - 4x\)</span>.</li>
+<li>Find <span class="math inline">\(x\)</span> where <span class="math inline">\(f'(x) = 0\)</span> for <span class="math inline">\(f(x) = -x^2 + 6x\)</span>.</li>
+<li>For <span class="math inline">\(f(x) = -x^2 + 6x\)</span>, is <span class="math inline">\(x = 3\)</span> a maximum or a minimum? Justify your answer.</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled" title="Check your answers">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Check your answers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Using the power rule: <span class="math inline">\(f'(x) = 6x - 4\)</span>.</li>
+<li><span class="math inline">\(f'(x) = -2x + 6 = 0 \;\Rightarrow\; x = 3\)</span>.</li>
+<li><strong>Maximum</strong>, because <span class="math inline">\(a = -1 &lt; 0\)</span> so the parabola opens downward.</li>
+</ol>
+</div>
+</div>
+</div>
+<p>Use your results to identify topics needing attention.</p>
+</section>
+<section id="opening-problem" class="level2">
+<h2 class="anchored" data-anchor-id="opening-problem">Opening Problem</h2>
+<p>A manufacturer produces <span class="math inline">\(q\)</span> units of a product. The revenue function is <span class="math inline">\(R(q) = 60q - 0.2q^2\)</span> (euros) and the total cost function is <span class="math inline">\(C(q) = 500 + 20q\)</span> (euros).</p>
+<blockquote class="blockquote">
+<p>What quantity <span class="math inline">\(q\)</span> maximises the manufacturer’s profit? Write down your estimate before continuing.</p>
+</blockquote>
+</section>
+<section id="core-concepts" class="level2">
+<h2 class="anchored" data-anchor-id="core-concepts">Core Concepts</h2>
+<section id="what-does-optimise-mean" class="level3">
+<h3 class="anchored" data-anchor-id="what-does-optimise-mean">What Does “Optimise” Mean?</h3>
 <p>In mathematics, to <strong>optimize</strong> means to find the <strong>maximum</strong> or the <strong>minimum</strong> of a function. In management there are many situations that call for an optimal decision:</p>
 <ul>
 <li><strong>maximisation</strong>: firm profit, production, yield, consumer utility;</li>
@@ -305,8 +422,8 @@ Learning objectives
 </ul>
 <p>To find a maximum or a minimum we study how the function <strong>varies</strong>: over which intervals is it increasing, and over which is it decreasing? The derivative is the tool that answers this question precisely.</p>
 </section>
-<section id="average-rate-of-change" class="level2">
-<h2 class="anchored" data-anchor-id="average-rate-of-change">Average Rate of Change</h2>
+<section id="average-rate-of-change" class="level3">
+<h3 class="anchored" data-anchor-id="average-rate-of-change">Average Rate of Change</h3>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -323,16 +440,16 @@ Definition
 </div>
 </div>
 <p>Geometrically, it is the <strong>slope of the secant line</strong> joining the two points <span class="math inline">\((x_1, f(x_1))\)</span> and <span class="math inline">\((x_2, f(x_2))\)</span> on the graph. Economically, it measures the average change of <span class="math inline">\(f\)</span> per unit of <span class="math inline">\(x\)</span> — for instance the average change of cost per additional unit produced.</p>
-<section id="worked-example-average-rate-of-change" class="level3">
-<h3 class="anchored" data-anchor-id="worked-example-average-rate-of-change">Worked example — average rate of change</h3>
+<section id="worked-example-average-rate-of-change" class="level4">
+<h4 class="anchored" data-anchor-id="worked-example-average-rate-of-change">Worked example — average rate of change</h4>
 <p>For <span class="math inline">\(f(x) = x^{2}\)</span> between <span class="math inline">\(x_1 = 1\)</span> and <span class="math inline">\(x_2 = 3\)</span>:</p>
 <p><span class="math display">\[
 \tau = \frac{f(3) - f(1)}{3 - 1} = \frac{9 - 1}{2} = 4.
 \]</span></p>
 </section>
 </section>
-<section id="instantaneous-rate-of-change-and-the-derivative" class="level2">
-<h2 class="anchored" data-anchor-id="instantaneous-rate-of-change-and-the-derivative">Instantaneous Rate of Change and the Derivative</h2>
+<section id="instantaneous-rate-of-change-and-the-derivative" class="level3">
+<h3 class="anchored" data-anchor-id="instantaneous-rate-of-change-and-the-derivative">Instantaneous Rate of Change and the Derivative</h3>
 <p>If we let the second point get closer and closer to the first (<span class="math inline">\(x_2 \to x_1\)</span>), the secant line tends towards the <strong>tangent line</strong> at the point. Its slope is the <strong>instantaneous rate of change</strong>, called the <strong>derivative</strong> of <span class="math inline">\(f\)</span> at <span class="math inline">\(x_1\)</span>, written <span class="math inline">\(f'(x_1)\)</span>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -352,7 +469,7 @@ Intuition
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -361,7 +478,7 @@ Derivation — the derivative of <span class="math inline">\(f(x) = x^{2}\)</spa
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Take a point <span class="math inline">\(x\)</span> and a small increment <span class="math inline">\(h\)</span>. The average rate of change between <span class="math inline">\(x\)</span> and <span class="math inline">\(x + h\)</span> is</p>
 <p><span class="math display">\[
@@ -396,8 +513,8 @@ Derivatives of the reference functions
 </div>
 </div>
 </section>
-<section id="applying-the-derivative-to-optimization" class="level2">
-<h2 class="anchored" data-anchor-id="applying-the-derivative-to-optimization">Applying the Derivative to Optimization</h2>
+<section id="applying-the-derivative-to-optimization" class="level3">
+<h3 class="anchored" data-anchor-id="applying-the-derivative-to-optimization">Applying the Derivative to Optimization</h3>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -410,57 +527,339 @@ Method to optimise a quadratic
 <div class="callout-body-container callout-body">
 <ol type="1">
 <li>Compute the derivative <span class="math inline">\(f'(x)\)</span>.</li>
-<li>Solve <span class="math inline">\(f'(x) = 0\)</span> to find the candidate point <span class="math inline">\(x^{\*}\)</span>.</li>
-<li>For <span class="math inline">\(f(x) = a x^{2} + b x + c\)</span>, the extremum is at <span class="math inline">\(x^{\*} = -\dfrac{b}{2a}\)</span>: it is a <strong>maximum</strong> if <span class="math inline">\(a &lt; 0\)</span> and a <strong>minimum</strong> if <span class="math inline">\(a &gt; 0\)</span>.</li>
+<li>Solve <span class="math inline">\(f'(x) = 0\)</span> to find the candidate point <span class="math inline">\(x^{*}\)</span>.</li>
+<li>For <span class="math inline">\(f(x) = a x^{2} + b x + c\)</span>, the extremum is at <span class="math inline">\(x^{*} = -\dfrac{b}{2a}\)</span>: it is a <strong>maximum</strong> if <span class="math inline">\(a &lt; 0\)</span> and a <strong>minimum</strong> if <span class="math inline">\(a &gt; 0\)</span>.</li>
 </ol>
 </div>
 </div>
-<section id="worked-example-maximising-profit" class="level3">
-<h3 class="anchored" data-anchor-id="worked-example-maximising-profit">Worked example — maximising profit</h3>
+<section id="worked-example-maximising-profit" class="level4">
+<h4 class="anchored" data-anchor-id="worked-example-maximising-profit">Worked example — maximising profit</h4>
 <p>A firm’s profit is <span class="math inline">\(P(x) = -2x^{2} + 40x - 50\)</span> (in thousands of euros), where <span class="math inline">\(x\)</span> is the quantity produced. Then <span class="math inline">\(P'(x) = -4x + 40\)</span>. Setting <span class="math inline">\(P'(x) = 0\)</span> gives <span class="math inline">\(x = 10\)</span>. Since <span class="math inline">\(a = -2 &lt; 0\)</span>, the parabola opens downward, so <span class="math inline">\(x = 10\)</span> is a <strong>maximum</strong>. The maximum profit is <span class="math inline">\(P(10) = -2(100) + 400 - 50 = 150\)</span> (thousand euros).</p>
-</section>
-</section>
-<section id="practice" class="level2">
-<h2 class="anchored" data-anchor-id="practice">Practice</h2>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercises (click for solutions)
+Practice exercises (click for solutions)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ol type="1">
 <li>Average rate of change of <span class="math inline">\(f(x) = 3x + 2\)</span> between <span class="math inline">\(x = 0\)</span> and <span class="math inline">\(x = 4\)</span>. <span class="math inline">\(\tau = \dfrac{14 - 2}{4} = 3\)</span> (equal to the slope, as expected for an affine function).</li>
 <li>Differentiate <span class="math inline">\(f(x) = 5x^{2} - 3x + 7\)</span>. <span class="math inline">\(\;f'(x) = 10x - 3\)</span>.</li>
-<li>Minimise the average cost <span class="math inline">\(C(x) = x^{2} - 12x + 40\)</span>. <span class="math inline">\(C'(x) = 2x - 12 = 0
-\Rightarrow x = 6\)</span>; since <span class="math inline">\(a &gt; 0\)</span> it is a minimum, <span class="math inline">\(C(6) = 4\)</span>.</li>
+<li>Minimise the average cost <span class="math inline">\(C(x) = x^{2} - 12x + 40\)</span>. <span class="math inline">\(C'(x) = 2x - 12 = 0 \Rightarrow x = 6\)</span>; since <span class="math inline">\(a &gt; 0\)</span> it is a minimum, <span class="math inline">\(C(6) = 4\)</span>.</li>
 </ol>
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-important callout-titled">
+</section>
+</section>
+</section>
+<section id="worked-example" class="level2">
+<h2 class="anchored" data-anchor-id="worked-example">Worked Example</h2>
+<section id="worked-example-maximising-the-manufacturers-profit-opening-problem" class="level3">
+<h3 class="anchored" data-anchor-id="worked-example-maximising-the-manufacturers-profit-opening-problem">Worked example — maximising the manufacturer’s profit (Opening Problem)</h3>
+<p>We return to the opening problem. Given:</p>
+<p><span class="math display">\[
+R(q) = 60q - 0.2q^2, \qquad C(q) = 500 + 20q.
+\]</span></p>
+<p><strong>Step 1 — Write the profit function.</strong></p>
+<p><span class="math display">\[
+P(q) = R(q) - C(q) = 60q - 0.2q^2 - 500 - 20q
+     = -0.2q^2 + 40q - 500.
+\]</span></p>
+<p><strong>Step 2 — Compute the derivative.</strong></p>
+<p><span class="math display">\[
+P'(q) = -0.4q + 40.
+\]</span></p>
+<p><strong>Step 3 — Solve <span class="math inline">\(P'(q) = 0\)</span>.</strong></p>
+<p><span class="math display">\[
+-0.4q + 40 = 0 \;\Rightarrow\; q^* = 100 \text{ units.}
+\]</span></p>
+<p><strong>Step 4 — Confirm the nature of the critical point.</strong></p>
+<p>Since <span class="math inline">\(a = -0.2 &lt; 0\)</span>, the parabola opens downward, so <span class="math inline">\(q^* = 100\)</span> is a <strong>maximum</strong>.</p>
+<p><strong>Step 5 — Compute the maximum profit.</strong></p>
+<p><span class="math display">\[
+P(100) = -0.2(10{,}000) + 40(100) - 500
+       = -2{,}000 + 4{,}000 - 500 = 1{,}500 \text{ €.}
+\]</span></p>
+<p>The manufacturer maximises profit at <strong>100 units</strong>, earning <strong>€1,500</strong>.</p>
+</section>
+</section>
+<section id="guided-practice" class="level2">
+<h2 class="anchored" data-anchor-id="guided-practice">Guided Practice</h2>
+<p>A firm’s average cost function is <span class="math inline">\(C(x) = x^2 - 12x + 40\)</span>, where <span class="math inline">\(x\)</span> is the production level (hundreds of units).</p>
+<ol type="1">
+<li>Find the production level that minimises average cost.</li>
+<li>What is the minimum average cost?</li>
+<li>On which intervals is average cost decreasing? Increasing?</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Hint">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Compute <span class="math inline">\(C'(x)\)</span> and set it equal to zero. Since <span class="math inline">\(a &gt; 0\)</span>, the critical point is a minimum.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="Show the solution">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Show the solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><span class="math inline">\(C'(x) = 2x - 12 = 0 \;\Rightarrow\; x = 6\)</span> (hundreds of units).</li>
+<li>Minimum average cost: <span class="math inline">\(C(6) = 36 - 72 + 40 = 4\)</span> (per unit).</li>
+<li>Decreasing on <span class="math inline">\(]-\infty, 6[\,\)</span>; increasing on <span class="math inline">\(\,]6, +\infty[\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="interactive-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-exploration">Interactive Exploration</h2>
+<p>Use the slider to choose a production quantity <span class="math inline">\(q\)</span> and observe how revenue, cost, and profit change. The red dashed line marks the analytically derived optimum <span class="math inline">\(q^* = 100\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" data-startfrom="230" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 229;"><span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>viewof quantity <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">200</span>]<span class="op">,</span> {</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Quantity q (units)"</span></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" data-startfrom="239" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 238;"><span id="cb2-239"><a href="#cb2-239" aria-hidden="true" tabindex="-1"></a>qRange <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> <span class="dv">201</span>}<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> i)</span>
+<span id="cb2-240"><a href="#cb2-240" aria-hidden="true" tabindex="-1"></a>curveData <span class="op">=</span> qRange<span class="op">.</span><span class="fu">flatMap</span>(q <span class="kw">=&gt;</span> [</span>
+<span id="cb2-241"><a href="#cb2-241" aria-hidden="true" tabindex="-1"></a>  {q<span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">60</span><span class="op">*</span>q <span class="op">-</span> <span class="fl">0.2</span><span class="op">*</span>q<span class="op">*</span>q<span class="op">,</span> <span class="dt">curve</span><span class="op">:</span> <span class="st">"Revenue R(q)"</span>}<span class="op">,</span></span>
+<span id="cb2-242"><a href="#cb2-242" aria-hidden="true" tabindex="-1"></a>  {q<span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">500</span> <span class="op">+</span> <span class="dv">20</span><span class="op">*</span>q<span class="op">,</span> <span class="dt">curve</span><span class="op">:</span> <span class="st">"Cost C(q)"</span>}<span class="op">,</span></span>
+<span id="cb2-243"><a href="#cb2-243" aria-hidden="true" tabindex="-1"></a>  {q<span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">60</span><span class="op">*</span>q <span class="op">-</span> <span class="fl">0.2</span><span class="op">*</span>q<span class="op">*</span>q <span class="op">-</span> <span class="dv">500</span> <span class="op">-</span> <span class="dv">20</span><span class="op">*</span>q<span class="op">,</span> <span class="dt">curve</span><span class="op">:</span> <span class="st">"Profit P(q)"</span>}</span>
+<span id="cb2-244"><a href="#cb2-244" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb2-245"><a href="#cb2-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-246"><a href="#cb2-246" aria-hidden="true" tabindex="-1"></a>qStar <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb2-247"><a href="#cb2-247" aria-hidden="true" tabindex="-1"></a>revenue_q <span class="op">=</span> <span class="dv">60</span><span class="op">*</span>quantity <span class="op">-</span> <span class="fl">0.2</span><span class="op">*</span>quantity<span class="op">*</span>quantity</span>
+<span id="cb2-248"><a href="#cb2-248" aria-hidden="true" tabindex="-1"></a>cost_q <span class="op">=</span> <span class="dv">500</span> <span class="op">+</span> <span class="dv">20</span><span class="op">*</span>quantity</span>
+<span id="cb2-249"><a href="#cb2-249" aria-hidden="true" tabindex="-1"></a>profit_q <span class="op">=</span> revenue_q <span class="op">-</span> cost_q</span>
+<span id="cb2-250"><a href="#cb2-250" aria-hidden="true" tabindex="-1"></a>revenue_opt <span class="op">=</span> <span class="dv">60</span><span class="op">*</span>qStar <span class="op">-</span> <span class="fl">0.2</span><span class="op">*</span>qStar<span class="op">*</span>qStar</span>
+<span id="cb2-251"><a href="#cb2-251" aria-hidden="true" tabindex="-1"></a>profit_opt <span class="op">=</span> revenue_opt <span class="op">-</span> (<span class="dv">500</span> <span class="op">+</span> <span class="dv">20</span><span class="op">*</span>qStar)</span>
+<span id="cb2-252"><a href="#cb2-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-253"><a href="#cb2-253" aria-hidden="true" tabindex="-1"></a>profitChart <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb2-254"><a href="#cb2-254" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb2-255"><a href="#cb2-255" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(curveData<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"q"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"value"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"curve"</span>})<span class="op">,</span></span>
+<span id="cb2-256"><a href="#cb2-256" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"#aaa"</span><span class="op">,</span> <span class="dt">strokeDash</span><span class="op">:</span> [<span class="dv">2</span><span class="op">,</span><span class="dv">2</span>]})<span class="op">,</span></span>
+<span id="cb2-257"><a href="#cb2-257" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([quantity]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"white"</span><span class="op">,</span> <span class="dt">strokeDash</span><span class="op">:</span> [<span class="dv">3</span><span class="op">,</span><span class="dv">3</span>]})<span class="op">,</span></span>
+<span id="cb2-258"><a href="#cb2-258" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([qStar]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">strokeDash</span><span class="op">:</span> [<span class="dv">4</span><span class="op">,</span><span class="dv">2</span>]})</span>
+<span id="cb2-259"><a href="#cb2-259" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
+<span id="cb2-260"><a href="#cb2-260" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Quantity q"</span>}<span class="op">,</span></span>
+<span id="cb2-261"><a href="#cb2-261" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Value (€)"</span>}<span class="op">,</span></span>
+<span id="cb2-262"><a href="#cb2-262" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb2-263"><a href="#cb2-263" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">550</span><span class="op">,</span></span>
+<span id="cb2-264"><a href="#cb2-264" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">320</span></span>
+<span id="cb2-265"><a href="#cb2-265" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" data-startfrom="268" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 267;"><span id="cb3-268"><a href="#cb3-268" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`</span></span>
+<span id="cb3-269"><a href="#cb3-269" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div style="margin-bottom:1rem"&gt;</span><span class="sc">${</span>profitChart<span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb3-270"><a href="#cb3-270" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;p style="font-size:0.85rem;opacity:0.7"&gt;White dashed line: your slider</span></span>
+<span id="cb3-271"><a href="#cb3-271" aria-hidden="true" tabindex="-1"></a><span class="vs">position q = </span><span class="sc">${</span>quantity<span class="sc">}</span><span class="vs">. Red dashed line: optimal q* = 100.&lt;/p&gt;</span></span>
+<span id="cb3-272"><a href="#cb3-272" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div class="metric-grid"&gt;</span></span>
+<span id="cb3-273"><a href="#cb3-273" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="metric-card"&gt;</span></span>
+<span id="cb3-274"><a href="#cb3-274" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;span class="metric-label"&gt;Revenue R(q)&lt;/span&gt;</span></span>
+<span id="cb3-275"><a href="#cb3-275" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;strong&gt;</span><span class="sc">${</span>revenue_q<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="sc">}</span><span class="vs"> €&lt;/strong&gt;</span></span>
+<span id="cb3-276"><a href="#cb3-276" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb3-277"><a href="#cb3-277" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="metric-card"&gt;</span></span>
+<span id="cb3-278"><a href="#cb3-278" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;span class="metric-label"&gt;Cost C(q)&lt;/span&gt;</span></span>
+<span id="cb3-279"><a href="#cb3-279" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;strong&gt;</span><span class="sc">${</span>cost_q<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="sc">}</span><span class="vs"> €&lt;/strong&gt;</span></span>
+<span id="cb3-280"><a href="#cb3-280" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb3-281"><a href="#cb3-281" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="metric-card"&gt;</span></span>
+<span id="cb3-282"><a href="#cb3-282" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;span class="metric-label"&gt;Profit P(q)&lt;/span&gt;</span></span>
+<span id="cb3-283"><a href="#cb3-283" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;strong&gt;</span><span class="sc">${</span>profit_q<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="sc">}</span><span class="vs"> €&lt;/strong&gt;</span></span>
+<span id="cb3-284"><a href="#cb3-284" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb3-285"><a href="#cb3-285" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="metric-card"&gt;</span></span>
+<span id="cb3-286"><a href="#cb3-286" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;span class="metric-label"&gt;Maximum profit at q* = 100&lt;/span&gt;</span></span>
+<span id="cb3-287"><a href="#cb3-287" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;strong&gt;</span><span class="sc">${</span>profit_opt<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="sc">}</span><span class="vs"> €&lt;/strong&gt;</span></span>
+<span id="cb3-288"><a href="#cb3-288" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb3-289"><a href="#cb3-289" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb3-290"><a href="#cb3-290" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<section id="investigation" class="level3">
+<h3 class="anchored" data-anchor-id="investigation">Investigation</h3>
+<ol type="1">
+<li>Move the slider to <span class="math inline">\(q = 100\)</span>. Does the displayed profit match the worked example result (€1,500)?</li>
+<li>Move the slider to <span class="math inline">\(q = 50\)</span> and <span class="math inline">\(q = 150\)</span>. Are both profits the same? Why? What does this say about the shape of the profit function?</li>
+<li>At what quantity does revenue equal cost (the break-even point)? Use the slider to find it approximately, then verify algebraically.</li>
+<li>Does producing more always increase profit? Find the quantity beyond which profit starts to decline.</li>
+</ol>
+</section>
+</section>
+<section id="applied-problem" class="level2">
+<h2 class="anchored" data-anchor-id="applied-problem">Applied Problem</h2>
+<p>A bakery sells artisan bread at €4 per loaf. The daily cost function is <span class="math inline">\(C(q) = 0.05q^2 + 0.5q + 80\)</span> (euros), where <span class="math inline">\(q\)</span> is the number of loaves baked.</p>
+<ol type="1">
+<li>Write the daily profit function <span class="math inline">\(P(q)\)</span>.</li>
+<li>Find the number of loaves that maximises daily profit.</li>
+<li>What is the maximum daily profit?</li>
+<li>Find the break-even quantities (where profit = 0).</li>
+</ol>
+</section>
+<section id="common-errors" class="level2">
+<h2 class="anchored" data-anchor-id="common-errors">Common Errors</h2>
+<div class="callout callout-style-default callout-warning callout-titled" title="Common error — not verifying whether the critical point is a maximum or minimum">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important
+Common error — not verifying whether the critical point is a maximum or minimum
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>TODO: interactive tangent-slope explorer (secant → tangent as <span class="math inline">\(h \to 0\)</span>) deferred — see plan Complexity Tracking.</p>
+<p>A student finds <span class="math inline">\(f'(x) = 0\)</span> at <span class="math inline">\(x = 5\)</span> and immediately declares “the function has a maximum at <span class="math inline">\(x = 5\)</span>.”</p>
+<p>Finding <span class="math inline">\(f'(x^*) = 0\)</span> identifies a <strong>candidate</strong> extremum — it could be a maximum, a minimum, or neither (an inflection point). For a quadratic <span class="math inline">\(f(x) = ax^2 + bx + c\)</span>:</p>
+<ul>
+<li>If <span class="math inline">\(a &lt; 0\)</span>: the critical point is a <strong>maximum</strong> (parabola opens downward).</li>
+<li>If <span class="math inline">\(a &gt; 0\)</span>: the critical point is a <strong>minimum</strong> (parabola opens upward).</li>
+</ul>
+<p>Always check the sign of <span class="math inline">\(a\)</span> before concluding.</p>
 </div>
 </div>
+</section>
+<section id="check-your-understanding" class="level2">
+<h2 class="anchored" data-anchor-id="check-your-understanding">Check Your Understanding</h2>
+<ol type="1">
+<li>Compute the average rate of change of <span class="math inline">\(f(x) = 2x^2 - 3\)</span> between <span class="math inline">\(x = 1\)</span> and <span class="math inline">\(x = 4\)</span>.</li>
+<li>Differentiate <span class="math inline">\(g(x) = -3x^2 + 12x - 5\)</span>.</li>
+<li>A cost function is <span class="math inline">\(C(q) = 2q^2 - 40q + 300\)</span>. Find the production level that minimises cost.</li>
+<li>A student sets the derivative of a profit function equal to zero and gets <span class="math inline">\(q = 80\)</span>. She concludes profit is maximised. What additional check should she perform?</li>
+<li>Revenue is <span class="math inline">\(R(q) = 50q\)</span> and cost is <span class="math inline">\(C(q) = q^2 + 100q + 200\)</span>. Is there a quantity that maximises profit? What does a negative optimal <span class="math inline">\(q\)</span> mean in this context?</li>
+</ol>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<ol type="1">
+<li>The derivative <span class="math inline">\(f'(x)\)</span> measures the instantaneous rate of change of <span class="math inline">\(f\)</span> at <span class="math inline">\(x\)</span>: it is positive when <span class="math inline">\(f\)</span> is increasing, negative when decreasing, and zero at a candidate extremum (where the tangent is horizontal).</li>
+<li>To optimise a quadratic function, compute <span class="math inline">\(f'(x)\)</span>, set it to zero to find <span class="math inline">\(x^*\)</span>, then confirm whether <span class="math inline">\(x^*\)</span> is a maximum (if <span class="math inline">\(a &lt; 0\)</span>) or minimum (if <span class="math inline">\(a &gt; 0\)</span>) by checking the sign of the leading coefficient.</li>
+<li>Calculus provides the exact optimal decision — the exact quantity, price, or production level — rather than a graphical approximation; combining the derivative with the economic context (does a maximum make sense?) is what turns mathematics into decision support.</li>
+</ol>
+</section>
+<section id="independent-work" class="level2">
+<h2 class="anchored" data-anchor-id="independent-work">Independent Work</h2>
+<ul>
+<li>Compute derivatives for functions 1–8 in the exercise bank.</li>
+<li>Solve optimisation problems A–F.</li>
+<li>Compare the derivative-based solution with the slider-based estimate from the Interactive Exploration.</li>
+<li>Record errors in your error log.</li>
+<li>Review glossary entries for: <em>derivative</em>, <em>rate of change</em>, <em>maximum</em>, <em>minimum</em>, <em>optimisation</em>.</li>
+</ul>
+</section>
+<section id="continue" class="level2">
+<h2 class="anchored" data-anchor-id="continue">Continue</h2>
+<p><a href="../../teaching/mathematical-fundamentals/module-8.html">Continue to Module 8 →</a></p>
 
 
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBxdWFudGl0eSA9IElucHV0cy5yYW5nZShbMCwgMjAwXSwge1xuICB2YWx1ZTogNTAsXG4gIHN0ZXA6IDEsXG4gIGxhYmVsOiBcIlF1YW50aXR5IHEgKHVuaXRzKVwiXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoicVJhbmdlID0gQXJyYXkuZnJvbSh7bGVuZ3RoOiAyMDF9LCAoXywgaSkgPT4gaSlcbmN1cnZlRGF0YSA9IHFSYW5nZS5mbGF0TWFwKHEgPT4gW1xuICB7cSwgdmFsdWU6IDYwKnEgLSAwLjIqcSpxLCBjdXJ2ZTogXCJSZXZlbnVlIFIocSlcIn0sXG4gIHtxLCB2YWx1ZTogNTAwICsgMjAqcSwgY3VydmU6IFwiQ29zdCBDKHEpXCJ9LFxuICB7cSwgdmFsdWU6IDYwKnEgLSAwLjIqcSpxIC0gNTAwIC0gMjAqcSwgY3VydmU6IFwiUHJvZml0IFAocSlcIn1cbl0pXG5cbnFTdGFyID0gMTAwXG5yZXZlbnVlX3EgPSA2MCpxdWFudGl0eSAtIDAuMipxdWFudGl0eSpxdWFudGl0eVxuY29zdF9xID0gNTAwICsgMjAqcXVhbnRpdHlcbnByb2ZpdF9xID0gcmV2ZW51ZV9xIC0gY29zdF9xXG5yZXZlbnVlX29wdCA9IDYwKnFTdGFyIC0gMC4yKnFTdGFyKnFTdGFyXG5wcm9maXRfb3B0ID0gcmV2ZW51ZV9vcHQgLSAoNTAwICsgMjAqcVN0YXIpXG5cbnByb2ZpdENoYXJ0ID0gUGxvdC5wbG90KHtcbiAgbWFya3M6IFtcbiAgICBQbG90LmxpbmUoY3VydmVEYXRhLCB7eDogXCJxXCIsIHk6IFwidmFsdWVcIiwgc3Ryb2tlOiBcImN1cnZlXCJ9KSxcbiAgICBQbG90LnJ1bGVZKFswXSwge3N0cm9rZTogXCIjYWFhXCIsIHN0cm9rZURhc2g6IFsyLDJdfSksXG4gICAgUGxvdC5ydWxlWChbcXVhbnRpdHldLCB7c3Ryb2tlOiBcIndoaXRlXCIsIHN0cm9rZURhc2g6IFszLDNdfSksXG4gICAgUGxvdC5ydWxlWChbcVN0YXJdLCB7c3Ryb2tlOiBcInJlZFwiLCBzdHJva2VEYXNoOiBbNCwyXX0pXG4gIF0sXG4gIHg6IHtsYWJlbDogXCJRdWFudGl0eSBxXCJ9LFxuICB5OiB7bGFiZWw6IFwiVmFsdWUgKOKCrClcIn0sXG4gIGNvbG9yOiB7bGVnZW5kOiB0cnVlfSxcbiAgd2lkdGg6IDU1MCxcbiAgaGVpZ2h0OiAzMjBcbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTMiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJodG1sYFxuPGRpdiBzdHlsZT1cIm1hcmdpbi1ib3R0b206MXJlbVwiPiR7cHJvZml0Q2hhcnR9PC9kaXY+XG48cCBzdHlsZT1cImZvbnQtc2l6ZTowLjg1cmVtO29wYWNpdHk6MC43XCI+V2hpdGUgZGFzaGVkIGxpbmU6IHlvdXIgc2xpZGVyXG5wb3NpdGlvbiBxID0gJHtxdWFudGl0eX0uIFJlZCBkYXNoZWQgbGluZTogb3B0aW1hbCBxKiA9IDEwMC48L3A+XG48ZGl2IGNsYXNzPVwibWV0cmljLWdyaWRcIj5cbiAgPGRpdiBjbGFzcz1cIm1ldHJpYy1jYXJkXCI+XG4gICAgPHNwYW4gY2xhc3M9XCJtZXRyaWMtbGFiZWxcIj5SZXZlbnVlIFIocSk8L3NwYW4+XG4gICAgPHN0cm9uZz4ke3JldmVudWVfcS50b0ZpeGVkKDApfSDigqw8L3N0cm9uZz5cbiAgPC9kaXY+XG4gIDxkaXYgY2xhc3M9XCJtZXRyaWMtY2FyZFwiPlxuICAgIDxzcGFuIGNsYXNzPVwibWV0cmljLWxhYmVsXCI+Q29zdCBDKHEpPC9zcGFuPlxuICAgIDxzdHJvbmc+JHtjb3N0X3EudG9GaXhlZCgwKX0g4oKsPC9zdHJvbmc+XG4gIDwvZGl2PlxuICA8ZGl2IGNsYXNzPVwibWV0cmljLWNhcmRcIj5cbiAgICA8c3BhbiBjbGFzcz1cIm1ldHJpYy1sYWJlbFwiPlByb2ZpdCBQKHEpPC9zcGFuPlxuICAgIDxzdHJvbmc+JHtwcm9maXRfcS50b0ZpeGVkKDApfSDigqw8L3N0cm9uZz5cbiAgPC9kaXY+XG4gIDxkaXYgY2xhc3M9XCJtZXRyaWMtY2FyZFwiPlxuICAgIDxzcGFuIGNsYXNzPVwibWV0cmljLWxhYmVsXCI+TWF4aW11bSBwcm9maXQgYXQgcSogPSAxMDA8L3NwYW4+XG4gICAgPHN0cm9uZz4ke3Byb2ZpdF9vcHQudG9GaXhlZCgwKX0g4oKsPC9zdHJvbmc+XG4gIDwvZGl2PlxuPC9kaXY+XG5gXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3F1YW50aXR5JykifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/mathematical-fundamentals";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -152,10 +152,15 @@ explanation of what it computes and why it matters.
 
 ### T-IV. Interactive Demonstrations
 
-Priority concepts in each course MUST have a Shinylive interactive demo
-(`{shinylive-python}` block). Where a demo has not yet been built, a
-`.callout-important` block with a `TODO:` label MUST mark the gap so
-missing demos are trackable.
+Priority concepts in each course MUST have an interactive demo —
+implemented as either a `{shinylive-python}` block (Shinylive Python)
+or a `{ojs}` block (Observable JS). The choice of technology MUST be
+justified by the nature of the computation: use Shinylive when the
+simulation requires Python libraries; use OJS when the simulation is
+computable in pure JavaScript (arithmetic, algebra, elementary
+statistics). Where a demo has not yet been built, a `.callout-important`
+block with a `TODO:` label MUST mark the gap so missing demos are
+trackable.
 
 ### T-V. Glossary
 
@@ -257,4 +262,4 @@ The site owner (Guillaume Gilles) holds sole amendment authority.
 All Copilot-assisted changes MUST be validated against these principles
 before merging.
 
-**Version**: 1.5.0 | **Ratified**: 2026-05-31 | **Last Amended**: 2026-05-31
+**Version**: 1.5.1 | **Ratified**: 2026-05-31 | **Last Amended**: 2026-09-13
