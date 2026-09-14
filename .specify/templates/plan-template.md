@@ -60,7 +60,7 @@ Verify the following before proceeding:
 - [ ] **T-I. Content Fidelity** — Canonical theory, examples, and exercises preserved.
 - [ ] **T-II. Pedagogical Structure** — Theory → examples → exercises order maintained.
 - [ ] **T-III. Audience language** — Plain language; every formula has a prose explanation.
-- [ ] **T-IV. Interactive demos** — Priority concepts have Shinylive demos; gaps marked with TODO callout.
+- [ ] **T-IV. Interactive demos** — Priority concepts have Shinylive Python or OJS interactive demos; gaps marked with TODO callout.
 - [ ] **T-V. Glossary** — New symbols added to the course `glossary.qmd`.
 - [ ] **T-VI. Proof** — Each session includes at least one collapsible formal proof.
 - [ ] **T-VII. Visual intuition** — Geometric interpretation surfaced where applicable.
