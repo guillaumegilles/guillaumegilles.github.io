@@ -363,7 +363,7 @@ code:not([class]) {
   border-left-color: $pixel-amber;
 
   .callout-header { color: $pixel-amber; }
-  i.callout-icon::before { content: "U+26A0" !important; }
+  i.callout-icon::before { content: "⚠️" !important; }
 }
 
 // warning — 🚨 amber, slightly muted
@@ -380,6 +380,70 @@ code:not([class]) {
 
   .callout-header { color: $pixel-red; }
   i.callout-icon::before { content: "❗" !important; }
+}
+
+// ─── OJS metric display — used by interactive simulations ─────────
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.metric-card {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  background: $board-dark;
+  border: 1px solid $board-lighter;
+}
+
+.metric-label {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  color: $chalk-dim;
+  margin-bottom: 0.25rem;
+}
+
+// ─── Observable Plot charts — blackboard integration ────────────────
+
+// OJS output wrapper: establish chalk color for currentColor inheritance
+.observablehq {
+  background: transparent;
+  color: $chalk;
+
+  // Kill any white box around the SVG
+  svg {
+    background: transparent !important;
+    color: $chalk;
+  }
+
+  // Plot.plot() sometimes wraps in <figure>
+  figure {
+    background: transparent;
+    color: $chalk;
+    margin: 0;
+  }
+
+  // All text (axis names, tick labels, legend) → chalk
+  svg text {
+    fill: $chalk;
+  }
+
+  // Axis baselines and tick marks → muted board border
+  svg g[aria-label$="axis"] path,
+  svg g[aria-label$="axis"] line,
+  svg g[aria-label*="tick"] line {
+    stroke: $chalk-dim;
+    stroke-opacity: 0.5;
+  }
+
+  // Grid lines (if present) → very subtle
+  svg g[aria-label*="grid"] line {
+    stroke: $board-lighter;
+    stroke-opacity: 0.5;
+  }
 }
 
 // ─── Footer — matches navbar frame ──────────────────────────────────
