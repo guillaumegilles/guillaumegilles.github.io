@@ -19,12 +19,14 @@ trap cleanup EXIT
 
 echo "📄 Rendering about.qmd → GFM README.md …"
 quarto render "$PROJECT_DIR/about.qmd" --to gfm \
-  --output README.md --output-dir "$TMPDIR" 2>/dev/null
+  --output-dir "$TMPDIR" 2>/dev/null
 
-if [ ! -f "$TMPDIR/README.md" ]; then
-  echo "❌ GFM render failed — README.md not produced."
+# Quarto names the output after the source file (about.md); rename it.
+if [ ! -f "$TMPDIR/about.md" ]; then
+  echo "❌ GFM render failed — about.md not produced."
   exit 1
 fi
+mv "$TMPDIR/about.md" "$TMPDIR/README.md"
 
 # Clean up Quarto artifacts:
 # 1. Remove the auto-generated "# About" title (first 2 lines)
