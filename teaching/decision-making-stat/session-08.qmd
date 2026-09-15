@@ -1,0 +1,412 @@
+---
+title: "Session 8 — Hypothesis Testing: Concept & Conformity Tests"
+subtitle: "Decision Making Statistics — S04"
+author: "M. Kachour"
+date: today
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+This session introduces the logic of hypothesis testing and the first two families of tests: conformity to a reference mean and conformity to a reference proportion.
+
+## Session plan
+
+1. Logic reminders
+2. Legal approach
+3. Concept and formulation
+4. Test of conformity to a reference average
+5. Test of conformity to a reference proportion
+
+## Logic reminders and the legal analogy
+
+### Why a legal analogy?
+
+The logic of hypothesis testing is similar to a legal trial.
+
+::: {.callout-note title="Legal analogy"}
+- The **null hypothesis** $H_0$ plays the role of the initial presumption.
+- The goal is not to prove everything with certainty, but to decide whether the evidence is strong enough to **reject** this initial position.
+- Doubt benefits the party protected by the initial presumption.
+:::
+
+### Presumption of innocence
+
+- Any person suspected or prosecuted is presumed innocent until proven guilty.
+- The accused is presumed innocent and doubt must benefit them.
+- The trial gathers evidence to invalidate the initial presumption.
+
+### Reality versus statistical decision
+
+| | $H_0$ is true | $H_0$ is false |
+|--|--------------|----------------|
+| **Reject $H_0$** | Type I error ($\alpha$) | Correct decision |
+| **Do not reject $H_0$** | Correct decision | Type II error ($\beta$) |
+
+::: {.callout-warning title="Important remark"}
+Not rejecting $H_0$ does **not** mean that $H_0$ is true. It only means that the sample does not provide enough evidence against it.
+:::
+
+::: {.callout-caution title="Exercise"}
+Quick True/False check:
+
+1. If we do not reject $H_0$, then $H_0$ is proven true.
+   - [ ] True
+   - [ ] False
+2. A Type I error means rejecting $H_0$ when $H_0$ is actually true.
+   - [ ] True
+   - [ ] False
+3. In a right-tailed test, the rejection region is located in the right tail of the reference distribution.
+   - [ ] True
+   - [ ] False
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+1. **False** — we only conclude that the evidence is insufficient.
+2. **True** — that is exactly the definition of the risk $\alpha$.
+3. **True** — we reject when the observed statistic is too large.
+:::
+
+## Concept and formulation
+
+A statistical test is characterized by the following elements.
+
+::: {.callout-note title="Definitions"}
+- **$H_0$**: null hypothesis, the status quo to challenge
+- **$H_1$**: alternative hypothesis, the claim supported if $H_0$ is rejected
+- **$\alpha$**: significance level, i.e. the probability of Type I error
+- **$U_{obs}$**: observed test statistic
+- **$k$**: critical value
+:::
+
+| Test type | Form of $H_1$ | Rejection region |
+|-----------|---------------|------------------|
+| Two-tailed | $\theta \neq \theta_0$ | $|U_{obs}| > k$ |
+| Left one-tailed | $\theta < \theta_0$ | $U_{obs} < -k$ |
+| Right one-tailed | $\theta > \theta_0$ | $U_{obs} > k$ |
+
+::: {.callout-important title="Exam tip"}
+Choose the form of $H_1$ from the wording:
+
+- **changed / different** $\rightarrow$ two-tailed,
+- **decreased / less than** $\rightarrow$ left-tailed,
+- **increased / greater than** $\rightarrow$ right-tailed.
+:::
+
+## Test of conformity to a reference mean
+
+### Principle
+
+We compare the current mean $\mu$ to a reference value $\mu_0$.
+
+::: {.callout-note title="Hypotheses"}
+Typical forms are:
+
+- $H_0: \mu = \mu_0$
+- $H_1: \mu \neq \mu_0$, or $H_1: \mu < \mu_0$, or $H_1: \mu > \mu_0$
+:::
+
+::: {.callout-tip title="Test statistic"}
+For a large sample $n\geq 30$:
+
+$$
+U_{obs} = \frac{\bar{x}-\mu_0}{s/\sqrt{n}}
+$$
+
+Under $H_0$, we use approximately
+
+$$
+U_{obs} \sim \mathcal{N}(0,1).
+$$
+:::
+
+### Introductory example
+
+The quality manager confirms that in 2019 the average daily number of defective parts was $4$. After a technical intervention in 2020, he randomly selected $50$ days and found:
+
+$$
+\bar{x}=3.82, \qquad s=1.80765.
+$$
+
+To test whether the average has **decreased**:
+
+$$
+H_0: \mu = 4, \qquad H_1: \mu < 4
+$$
+
+The observed statistic is
+
+$$
+U_{obs} = \frac{3.82-4}{1.80765/\sqrt{50}} \approx -0.704.
+$$
+
+- At 25% risk, the critical value is about $-0.674$, so we **reject** $H_0$.
+- At 5% risk, the critical value is $-1.645$, so we **do not reject** $H_0$.
+
+## Test of conformity to a reference proportion
+
+### Principle
+
+We compare an observed proportion $p$ with a reference value $p_0$.
+
+::: {.callout-note title="Hypotheses"}
+Typical forms are:
+
+- $H_0: p = p_0$
+- $H_1: p \neq p_0$, or $H_1: p < p_0$, or $H_1: p > p_0$
+:::
+
+::: {.callout-tip title="Test statistic"}
+For a large sample such that $np_0\geq 5$ and $n(1-p_0)\geq 5$:
+
+$$
+U_{obs} = \frac{\hat{p}-p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}
+$$
+:::
+
+## Exercises
+
+### Exercise 1 — Tire lifetime
+
+::: {.callout-caution title="Exercise"}
+A tire manufacturer claims that the average life of a new type of tire, rated NP, is 75,000 km under certain conditions. The new quality manager randomly selected 50 NP tires. This study gave an average life of 80,000 km and a standard deviation of 2,500 km.
+
+1. Can we confirm, with a 5% risk, that the manufacturer is wrong?
+2. Can we confirm, with a 1% risk, that the manufacturer is wrong?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+Here the wording "the manufacturer is wrong" suggests a **two-tailed** test:
+
+$$
+H_0: \mu = 75000, \qquad H_1: \mu \neq 75000.
+$$
+
+The test statistic is
+
+$$
+U_{obs} = \frac{80000-75000}{2500/\sqrt{50}} \approx 14.142.
+$$
+
+Critical values:
+
+- for $\alpha=5\%$: $z_{\alpha/2}=1.96$
+- for $\alpha=1\%$: $z_{\alpha/2}=2.576$
+
+Since
+
+$$
+|14.142| > 1.96 \quad \text{and} \quad |14.142| > 2.576,
+$$
+
+we reject $H_0$ in both cases.
+
+Conclusion: yes, with both 5% risk and 1% risk, we can conclude that the true mean lifetime is **different** from 75,000 km. In fact, the sample suggests a **higher** average lifetime.
+:::
+
+### Exercise 2 — Amount of taxes
+
+::: {.callout-caution title="Exercise"}
+The table below represents the tax amount in euros of 300 randomly selected taxpayers.
+
+| Tax amount (€) | [600, 900[ | [900, 1200[ | [1200, 1500[ | [1500, 1800[ | [1800, 2100[ |
+|----------------|-----------:|------------:|-------------:|-------------:|-------------:|
+| Number of taxpayers | 18 | 60 | 90 | 87 | 45 |
+
+1. Can we confirm, with 5% risk (then 1%), that the average amount of taxes is less than 1,550€?
+2. Can we confirm, with 5% risk, that more than half of the taxpayers pay more than 1,500€ in taxes?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+Using class midpoints, we obtained earlier:
+
+$$
+\bar{x}=1431, \qquad s\approx 336.361, \qquad n=300.
+$$
+
+For question 1:
+
+$$
+H_0: \mu = 1550, \qquad H_1: \mu < 1550.
+$$
+
+Then
+
+$$
+U_{obs} = \frac{1431-1550}{336.361/\sqrt{300}} \approx -6.128.
+$$
+
+Critical values for a left-tailed test:
+
+- at 5% risk: $-1.645$
+- at 1% risk: $-2.326$
+
+Since $-6.128$ is less than both critical values, we reject $H_0$ in both cases.
+
+Conclusion: yes, the mean amount of taxes is significantly **less than €1550**.
+
+For question 2, estimate the proportion paying more than €1500:
+
+$$
+\hat{p}=\frac{87+45}{300}=0.44.
+$$
+
+We test
+
+$$
+H_0: p = 0.5, \qquad H_1: p > 0.5.
+$$
+
+The statistic is
+
+$$
+U_{obs} = \frac{0.44-0.5}{\sqrt{0.5(1-0.5)/300}} \approx -2.078.
+$$
+
+For a 5% right-tailed test, the critical value is $1.645$. Since $-2.078 < 1.645$, we do **not** reject $H_0$.
+
+Conclusion: no, we cannot confirm that **more than half** of the taxpayers pay more than €1500.
+:::
+
+### Exercise 3 — Delivery time improvement
+
+::: {.callout-caution title="Exercise"}
+In 2022, the average delivery time for a logistics company was $\mu_0 = 3.5$ days. After a process reorganisation in 2023, a random sample of $40$ deliveries was recorded. The results gave $\bar{x} = 3.1$ days and $s = 1.2$ days.
+
+1. Can we confirm, with a $5\%$ risk, that the reorganisation has reduced the average delivery time?
+2. Would the conclusion change at a $1\%$ risk?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+The question asks whether the mean has **decreased**, so we use a **left-tailed** test:
+
+$$
+H_0: \mu = 3.5, \qquad H_1: \mu < 3.5.
+$$
+
+The observed statistic is
+
+$$
+U_{obs} = \frac{3.1-3.5}{1.2/\sqrt{40}} = \frac{-0.4}{0.18974} \approx -2.108.
+$$
+
+Critical values for a left-tailed test:
+
+- at $5\%$ risk: $-1.645$
+- at $1\%$ risk: $-2.326$
+
+**At 5% risk:** since $-2.108 < -1.645$, we **reject** $H_0$. The reorganisation has significantly reduced the average delivery time.
+
+**At 1% risk:** since $-2.108 > -2.326$, we do **not reject** $H_0$. The evidence is insufficient at the stricter level.
+
+Comment: the conclusion depends on the chosen risk level. The result is significant at 5% but not at 1%.
+:::
+
+### Exercise 4 — Customer complaint rate
+
+::: {.callout-caution title="Exercise"}
+Historically, the customer complaint rate of a telecom operator was $p_0 = 15\%$. After a service improvement campaign, a random sample of $150$ customers was surveyed and $12$ had lodged a complaint.
+
+Can we confirm, with a $5\%$ risk, that the complaint rate has **changed**? Would the conclusion change at a $1\%$ risk?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+The question asks whether the rate has **changed** (no specified direction), so we use a **two-tailed** test:
+
+$$
+H_0: p = 0.15, \qquad H_1: p \neq 0.15.
+$$
+
+Validity check: $np_0 = 150\times 0.15 = 22.5 \geq 5$ and $n(1-p_0) = 127.5 \geq 5$ ✓.
+
+The observed proportion is $\hat{p}=12/150=0.08$.
+
+$$
+U_{obs} = \frac{0.08-0.15}{\sqrt{\dfrac{0.15\times 0.85}{150}}} = \frac{-0.07}{\sqrt{0.00085}} = \frac{-0.07}{0.02915} \approx -2.402.
+$$
+
+Critical values for a two-tailed test:
+
+- at $5\%$ risk: $z_{0.025}=1.96$
+- at $1\%$ risk: $z_{0.005}=2.576$
+
+**At 5% risk:** $|{-2.402}| = 2.402 > 1.96$ → we **reject** $H_0$. The complaint rate has significantly changed.
+
+**At 1% risk:** $2.402 < 2.576$ → we do **not reject** $H_0$. The change is not significant at the stricter level.
+
+Comment: the sample suggests the complaint rate has decreased to $8\%$, but this is only confirmed at the $5\%$ level.
+:::
+
+### Exercise 5 — Production output after optimisation
+
+::: {.callout-caution title="Exercise"}
+The historical average daily output of a factory was $\mu_0 = 500$ parts/day. After an equipment upgrade, a sample of $35$ working days gave $\bar{x} = 512$ parts and $s = 28$ parts.
+
+Can we confirm, with a $5\%$ risk, that the upgrade has **increased** production? What about at a $1\%$ risk?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+The question asks whether the mean has **increased**, so we use a **right-tailed** test:
+
+$$
+H_0: \mu = 500, \qquad H_1: \mu > 500.
+$$
+
+The observed statistic is
+
+$$
+U_{obs} = \frac{512-500}{28/\sqrt{35}} = \frac{12}{4.732} \approx 2.536.
+$$
+
+Critical values for a right-tailed test:
+
+- at $5\%$ risk: $1.645$
+- at $1\%$ risk: $2.326$
+
+Since $2.536 > 1.645$ and $2.536 > 2.326$, we **reject** $H_0$ in both cases.
+
+Conclusion: with both $5\%$ and $1\%$ risk, the data confirm that the upgrade has significantly **increased** daily production.
+:::
+
+### Application — Defect rate of machine M
+
+::: {.callout-caution title="Exercise"}
+The quality manager confirms the 2% defect rate for machine M in 2019. After a 2020 intervention, he randomly selected 150 parts and found 1 defective.
+
+Can we confirm, with 1% risk, that the rate of defective parts has decreased?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+We test:
+
+$$
+H_0: p = 0.02, \qquad H_1: p < 0.02.
+$$
+
+The observed proportion is
+
+$$
+\hat{p}=\frac{1}{150}\approx 0.00667.
+$$
+
+The statistic is
+
+$$
+U_{obs} = \frac{0.00667-0.02}{\sqrt{\frac{0.02\times 0.98}{150}}} \approx -1.166.
+$$
+
+For a left-tailed test with $\alpha=1\%$, the critical value is $-2.326$.
+
+Since
+
+$$
+-1.166 > -2.326,
+$$
+
+we do **not** reject $H_0$.
+
+Conclusion: with 1% risk, we do **not** have enough evidence to confirm that the defect rate has decreased.
+:::

@@ -1,0 +1,298 @@
+---
+title: "Session 12 — Bivariate Practical-Work Synthesis"
+subtitle: "Data Description | Part III"
+---
+
+Session 11 turned Session 10's scatter plot into three hard numbers:
+a covariance of 252.81, a correlation $r=0.621$, and a regression
+line $\widehat{\text{revenue}} = -22.01+28.71\times\text{temperature\_c}$.
+This closing session rebuilds that whole bivariate analysis in one
+continuous Excel workflow — the exam-style "compute everything for
+these two variables" question — and then closes the course with an
+original mock exam covering the full 12-session syllabus.
+
+## Learning objectives
+
+- Build a complete bivariate descriptive-statistics summary in
+  Excel: contingency table, scatter plot, covariance, correlation,
+  and regression line, in the correct order.
+- Recall, without re-deriving, every formula from Sessions 10–11.
+- Prove that the least-squares regression line always passes through
+  the point $(\bar{x},\bar{y})$.
+- Self-assess exam readiness with an original mock exam mirroring the
+  Midterm/Final Exam format.
+
+## Theory recap
+
+No new formulas are introduced. This table consolidates every
+Session 10–11 result for quick reference during the walkthrough
+below.
+
+::: {.callout-tip}
+#### Recap — every Session 10–11 formula, in one table
+| Indicator | Formula | What it means |
+|---|---|---|
+| Contingency table margins | $n_{i\cdot}=\sum_j n_{ij}$, $n_{\cdot j}=\sum_i n_{ij}$ (Session 10) | Recovers each variable's own frequency table from the cross-tabulation |
+| Covariance | $\text{Cov}(X,Y)=\frac{1}{n-1}\sum_i(x_i-\bar{x})(y_i-\bar{y})$ (Session 11) | Direction of joint variation between $X$ and $Y$ |
+| Correlation | $r=\text{Cov}(X,Y)/(s_X s_Y)$, $-1\le r\le1$ (Session 11) | Unit-free strength and direction of the *linear* relationship |
+| Coefficient of determination | $r^2$ (Session 11) | Share of $Y$'s variability "explained" by a linear link with $X$ |
+| Regression line | $\hat{y}=a+bx$, $b=\text{Cov}(X,Y)/s_X^2$, $a=\bar{y}-b\bar{x}$ (Session 11) | Best-fitting line for predicting $Y$ from $X$ |
+:::
+
+## Worked example
+
+Every number below comes straight from `data-model.md`'s verified
+"Wandering Fork" statistics for `temperature_c` and
+`daily_revenue_eur` ($n=30$) — nothing is recomputed or re-invented.
+
+**Step 1 — contingency table.** Crossing `weather` with the
+`daily_revenue_eur` class table (Session 10) shows zero Sunny days
+below €500 and Sunny days dominating the top two revenue classes —
+row/column margins recover the Session 3 and Session 4 frequency
+tables exactly (13/12/5 and 6/6/8/7/3).
+
+**Step 2 — scatter plot.** Plotting `temperature_c` against
+`daily_revenue_eur` for all 30 days (Session 10) shows an upward,
+though imperfect, trend.
+
+**Step 3 — covariance.** `=COVARIANCE.S(temp_range,revenue_range)`
+gives $\text{Cov}=252.81 > 0$: confirms the positive direction seen
+in the scatter plot.
+
+**Step 4 — correlation.** `=CORREL(temp_range,revenue_range)` gives
+$r=0.621$; $r^2=0.386$ — a moderate linear relationship, with $38.6\%$
+of revenue's variability explained by temperature alone.
+
+**Step 5 — regression line.** `=SLOPE(...)`$=28.71$ and
+`=INTERCEPT(...)`$=-22.01$: $\widehat{\text{revenue}} =
+-22.01+28.71\times\text{temperature\_c}$; each extra $1°C$ is worth
+about €28.71 in predicted daily revenue.
+
+**Final summary table:**
+
+| Statistic | Value |
+|---|---:|
+| Covariance | 252.81 |
+| Correlation $r$ | 0.621 |
+| $r^2$ | 0.386 |
+| Regression slope $b$ | 28.71 |
+| Regression intercept $a$ | −22.01 |
+
+## Using Excel
+
+| Excel function | Used for |
+|---|---|
+| `COUNTIFS` / PivotTable | Contingency table cell counts (Step 1) |
+| `COVARIANCE.S` | Sample covariance (Step 3) |
+| `CORREL` | Correlation coefficient $r$ (Step 4) |
+| `RSQ` | Coefficient of determination $r^2$ |
+| `SLOPE` / `INTERCEPT` | Regression line coefficients (Step 5) |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — the regression line always passes through $(\bar{x},\bar{y})$ (click to expand)
+The least-squares intercept is defined as $a = \bar{y}-b\bar{x}$
+(Session 11). Substituting $x=\bar{x}$ into the regression line
+$\hat{y}=a+bx$:
+$$
+\hat{y}\big|_{x=\bar{x}} = a + b\bar{x} = (\bar{y}-b\bar{x}) + b\bar{x} = \bar{y}.
+$$
+So the point $(\bar{x},\bar{y})$ always lies exactly on the
+regression line, regardless of the data or the value of $b$. For
+"The Wandering Fork", the line must pass through
+$(\bar{x}_{\text{temp}},\bar{y}_{\text{revenue}})$ — a useful sanity
+check: if a hand-drawn or Excel trend line visibly misses the point
+(mean temperature, mean revenue), a calculation error is the likely
+cause.
+:::
+
+## Visual/geometric intuition
+
+The regression line is the single straight line that best threads
+through the scatter-plot cloud, pivoting on the "center of mass"
+point $(\bar{x},\bar{y})$ proved above — every other candidate line
+through that same point would leave a larger total squared vertical
+gap to the 30 points. $r^2=0.386$ is the geometric share of the
+points' vertical spread that this pivoting line actually "catches";
+the rest is the scatter around the line that no straight-line
+relationship with temperature alone can capture.
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 — Reading the summary table (click for solution)
+Using only the final summary table above, would you say temperature
+is a strong or a partial predictor of "The Wandering Fork"'s daily
+revenue? Justify with one number.
+
+**Solution.** A **partial** predictor: $r^2=0.386$ means temperature
+explains only about $38.6\%$ of the day-to-day variability in
+revenue, leaving the majority ($61.4\%$) to other factors.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 — Predicting from the regression line (click for solution)
+Predict `daily_revenue_eur` for a $18°C$ day using
+$\widehat{\text{revenue}}=-22.01+28.71\times\text{temperature\_c}$.
+
+**Solution.** $-22.01+28.71\times18 = 494.77$ €.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 — Contingency table consistency (click for solution)
+Session 10's contingency table shows 3 Rainy days in the [400,500[
+revenue class, out of 5 Rainy days total. What percentage of Rainy
+days fell in the lowest revenue class, and is this consistent with
+the positive correlation found in this session?
+
+**Solution.** $3/5=60\%$ of Rainy days fell in the lowest revenue
+class. Yes — Rainy days also tend to be cooler, and cooler days are
+associated with lower predicted revenue by the regression line, so
+Rainy days clustering in the lowest revenue class is exactly what a
+positive temperature–revenue correlation would predict.
+:::
+
+## Mock exam — Sessions 1–12
+
+::: {.callout-important}
+This is an **originally-authored** mock exam on "The Wandering
+Fork" data, mirroring the format and difficulty of the Midterm Exam
+(35%, 45 min) and Final Exam (65%, 90 min) described in the
+[syllabus](index.qmd): a multiple-choice section followed by one
+computational exercise. It does not reproduce any verbatim question
+or answer key from the source exam files.
+:::
+
+### Part A — Multiple choice (1 point each)
+
+::: {.callout-caution collapse="true"}
+#### Q1. Nature of a variable (click to reveal the answer)
+"The Wandering Fork"'s `weather` variable (Sunny/Cloudy/Rainy) is:
+
+(a) Quantitative discrete
+(b) Qualitative ordinal
+(c) Qualitative nominal
+(d) Quantitative continuous
+
+**Answer: (c).** There is no natural order among Sunny, Cloudy, and
+Rainy.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Q2. Reading a frequency table (click to reveal the answer)
+From Session 3's frequency table, what percentage of days were
+**not** Sunny?
+
+(a) 43.3%
+(b) 40.0%
+(c) 56.7%
+(d) 16.7%
+
+**Answer: (c).** $100\%-43.3\% = 56.7\%$ (equivalently
+$40.0\%+16.7\%$).
+:::
+
+::: {.callout-caution collapse="true"}
+#### Q3. Boxplot outliers (click to reveal the answer)
+"The Wandering Fork"'s daily-revenue boxplot has fences at 171.52 and
+1065.07. How many outliers does the 30-day dataset contain?
+
+(a) 0
+(b) 1
+(c) 2
+(d) Cannot be determined from the fences alone
+
+**Answer: (a).** Both the observed minimum (407.59) and maximum
+(886.56) lie inside the fences.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Q4. Mean vs. median (click to reveal the answer)
+For `daily_revenue_eur`, $\bar{x}=628.34$ and $Me=643.63$. This is
+most consistent with:
+
+(a) A strongly left-skewed distribution
+(b) A strongly right-skewed distribution
+(c) A distribution close to symmetric
+(d) A bimodal distribution
+
+**Answer: (c).** The two values are close together, consistent with
+the near-zero Fisher-Pearson skewness ($+0.034$) found in Session 8.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Q5. Coefficient of variation (click to reveal the answer)
+$CV=21.82\%$ for `daily_revenue_eur`. This value is:
+
+(a) A measure of central tendency
+(b) An absolute dispersion indicator, in €
+(c) A relative (unit-free) dispersion indicator
+(d) Always between −1 and 1
+
+**Answer: (c).** $CV=s/\bar{x}$ is unit-free, unlike $s$ or the
+range, which are in €.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Q6. Correlation sign (click to reveal the answer)
+The regression slope between `temperature_c` and `daily_revenue_eur`
+is $b=28.71 > 0$. What can you conclude about $r$?
+
+(a) $r$ is also positive
+(b) $r$ is negative
+(c) $r=0$
+(d) Nothing — the signs of $b$ and $r$ are unrelated
+
+**Answer: (a).** $b$ and $r$ always share the sign of the covariance
+(Session 11's Exercise 3).
+:::
+
+::: {.callout-caution collapse="true"}
+#### Q7. Interpreting $r^2$ (click to reveal the answer)
+$r^2=0.386$ for temperature vs. revenue means:
+
+(a) 38.6% of days had above-average revenue
+(b) The correlation is 0.386
+(c) About 38.6% of revenue's variability is explained by temperature
+(d) The regression slope is 0.386
+
+**Answer: (c).**
+:::
+
+### Part B — Computational exercise (6 points)
+
+::: {.callout-caution collapse="true"}
+#### Exercise (click to reveal the full solution)
+"The Wandering Fork"'s owner wants a one-page report on
+`daily_revenue_eur` ($n=30$) and its link to `temperature_c`.
+Using only the verified statistics from `data-model.md`
+(do **not** recompute from raw data), answer:
+
+1. State the five-number summary and say whether there are outliers.
+2. State the mean, the grouped mode, and comment on symmetry using
+   the skewness value.
+3. State the sample standard deviation and the coefficient of
+   variation, and interpret $CV$ using the 15%/35% guide from
+   Session 6's companion discussion in Session 7.
+4. State the regression line and predict revenue at $22°C$.
+
+**Solution.**
+
+1. Five-number summary: min 407.59, $Q_1=506.60$, $Me=643.63$,
+   $Q_3=729.99$, max 886.56. Fences: 171.52 / 1065.07. Both extremes
+   are inside the fences, so there are **zero outliers**.
+2. Mean $\bar{x}=628.34$; grouped mode $Mo\approx666.67$. Skewness
+   (Fisher-Pearson) $=+0.034$, very close to zero, so the
+   distribution is **essentially symmetric**, with only a very mild
+   right-hand tail.
+3. $s=137.09$; $CV=21.82\%$. Since $15\%\le CV\le35\%$, this is a
+   **moderate** level of relative variability — noticeable
+   day-to-day variation, but not extreme.
+4. Regression line: $\widehat{\text{revenue}} =
+   -22.01+28.71\times\text{temperature\_c}$. At $22°C$:
+   $-22.01+28.71\times22 = 609.61$ €.
+:::
+
+This mock exam, together with the twelve sessions before it, covers
+the full syllabus. Good luck on the real Midterm and Final Exam!

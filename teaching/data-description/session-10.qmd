@@ -1,0 +1,171 @@
+---
+title: "Session 10 — Bivariate Graphical Representation"
+subtitle: "Data Description | Part III"
+---
+
+Session 9 closed Part II by pulling every univariate indicator for
+`daily_revenue_eur` — class table, quartiles, mean, mode, dispersion,
+skewness — into one complete summary, confirming a near-symmetric,
+outlier-free 30-day distribution. Every one of those indicators,
+though, described **one** variable at a time. The real question
+behind "The Wandering Fork"'s trading is whether two variables move
+together — does warmer weather really bring more revenue? This
+session introduces the two graphical tools for answering that: the
+contingency table (for two qualitative-or-grouped variables) and the
+scatter plot (for two quantitative variables).
+
+## Learning objectives
+
+- Build and read a contingency table crossing two variables.
+- Compute row and column marginal distributions from a contingency
+  table.
+- Build a scatter plot of two quantitative variables and describe the
+  pattern it shows.
+- Compute a **conditional distribution** — the distribution of one
+  variable restricted to a single modality of the other — and use it
+  to compare sub-groups fairly.
+- Distinguish "a visible pattern" from "a proven relationship" —
+  formalised numerically in Session 11.
+
+## Theory
+
+::: {.callout-note}
+#### Definition — contingency table
+A **contingency table** (or cross-tabulation) crosses the modalities
+of two variables observed on the same individuals: cell $(i,j)$ holds
+the count $n_{ij}$ of individuals with modality $i$ of the first
+variable **and** modality $j$ of the second. The **row margin**
+$n_{i\cdot} = \sum_j n_{ij}$ and **column margin**
+$n_{\cdot j} = \sum_i n_{ij}$ recover each variable's own (univariate)
+frequency table from the same data.
+:::
+
+::: {.callout-note}
+#### Definition — conditional distribution
+A **conditional distribution** is the distribution of one variable
+*restricted* to a single modality of the other — one row (or one
+column), rescaled to its own row (or column) total instead of the
+grand total $n$. It answers "given this category, how is the other
+variable distributed?", which the raw counts alone cannot, since row
+totals differ in size.
+:::
+
+::: {.callout-note}
+#### Definition — scatter plot
+A **scatter plot** places one point per individual, using one
+quantitative variable for the $x$-coordinate and another for the
+$y$-coordinate. It is the standard first look at a possible
+relationship between two quantitative variables, before computing
+any numerical summary.
+:::
+
+## Worked example
+
+**Contingency table** — `weather` × `daily_revenue_eur` class, from
+"The Wandering Fork"'s 30 days (`wandering-fork-dataset.csv`):
+
+| Weather \\ Revenue class | [400,500[ | [500,600[ | [600,700[ | [700,800[ | [800,900[ | Row total |
+|---|---:|---:|---:|---:|---:|---:|
+| Sunny | 0 | 3 | 6 | 3 | 1 | 13 |
+| Cloudy | 3 | 2 | 2 | 3 | 2 | 12 |
+| Rainy | 3 | 1 | 0 | 1 | 0 | 5 |
+| **Column total** | **6** | **6** | **8** | **7** | **3** | **30** |
+
+**Step 1 — check the margins.** The row totals (13, 12, 5) match
+Session 3's `weather` frequency table exactly, and the column totals
+(6, 6, 8, 7, 3) match Session 4's `daily_revenue_eur` class table
+exactly — both are recovered as marginal distributions of the same
+30 rows, confirming the table was built correctly.
+
+**Step 2 — read the pattern.** All 6 days in the lowest revenue class
+[400,500[ were either Cloudy or Rainy — zero Sunny days earned under
+€500. Conversely, Sunny days dominate the two highest classes
+([600,700[ and [700,800[). This is a first, purely visual hint that
+better weather is associated with higher revenue.
+
+**Step 3 — conditional distribution.** Restricting to Sunny days
+only (row total 13) and rescaling each cell by 13 instead of 30 gives
+the *conditional* distribution of revenue class **given Sunny**:
+$0\%, 23.1\%, 46.2\%, 23.1\%, 7.7\%$ for the five classes (rounded;
+they sum to $100\%$ before rounding) — compare
+this to the *unconditional* column percentages from Session 4
+(20.0%, 20.0%, 26.7%, 23.3%, 10.0%): Sunny days are visibly shifted
+toward the higher revenue classes, confirming the pattern from Step 2
+with actual percentages instead of raw counts.
+
+**Step 4 — scatter plot.** Plotting `temperature_c` (x-axis) against
+`daily_revenue_eur` (y-axis) for all 30 days shows points trending
+upward and to the right: as temperature rises, revenue tends to rise
+too, though the points do not fall on a perfect line — there is
+visible scatter around the trend.
+
+## Using Excel
+
+| Concept | Excel function / steps |
+|---|---|
+| Contingency table | Select the two columns → **Insert → PivotTable**, one variable in Rows, the other in Columns, `Count` in Values |
+| Row/column margins | The PivotTable's own "Grand Total" row and column |
+| Scatter plot | Select the two quantitative columns → **Insert → Chart → Scatter (X Y)** |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — marginal totals recover the univariate frequency table (click to expand)
+Let $n_{ij}$ be the contingency table's cell counts, with row
+modalities $i=1,\dots,r$ and column modalities $j=1,\dots,c$. Every
+one of the $n$ individuals is counted in exactly one cell, so summing
+across all columns for a fixed row $i$ recovers that row modality's
+total univariate count:
+$$
+n_{i\cdot} = \sum_{j=1}^{c} n_{ij}.
+$$
+For "The Wandering Fork", row $i=\text{Sunny}$:
+$0+3+6+3+1 = 13$, matching Session 3's Sunny count exactly — this is
+not a coincidence but a direct consequence of the contingency table
+partitioning the same 30 rows both by `weather` and, independently,
+by `daily_revenue_eur` class.
+:::
+
+## Visual intuition
+
+A contingency table is a two-dimensional histogram: instead of one
+row of class counts (Session 4), we now have a *grid* of counts, and
+reading down a single column or across a single row projects the
+two-dimensional picture back onto one axis — exactly recovering the
+one-variable-at-a-time view from Sessions 3–4. A scatter plot's
+"upward-and-to-the-right" shape is the visual signature of a positive
+relationship; Session 11 replaces "shape" with a single number, the
+correlation coefficient.
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 — Reading a contingency table (click for solution)
+Out of the 12 Cloudy days, what proportion earned in the top two
+revenue classes ([700,800[ or [800,900[)?
+
+**Solution.** Cloudy row: $3+2=5$ days in the top two classes out of
+12 Cloudy days total, i.e. $5/12 \approx 41.7\%$.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 — Column margin check (click for solution)
+Verify that the column total for [600,700[ (8) is consistent with
+Session 4's class frequency table.
+
+**Solution.** Column [600,700[: $6\,(\text{Sunny}) + 2\,(\text{Cloudy})
++ 0\,(\text{Rainy}) = 8$, matching Session 4's $n_{[600,700[}=8$
+exactly.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 — Describing a scatter plot (click for solution)
+Without computing any number, how would you describe the scatter
+plot of `temperature_c` vs. `daily_revenue_eur` — direction, and is
+the relationship perfectly linear?
+
+**Solution.** The direction is positive (points trend upward to the
+right). The relationship is not perfectly linear — there is visible
+scatter of points around any trend line one might draw, meaning
+other factors besides temperature also influence daily revenue.
+:::

@@ -1,0 +1,187 @@
+---
+title: "Session 1 — Excel Fundamentals I"
+subtitle: "Data Description | Part I"
+---
+
+Every statistical analysis in this course is built on the same
+practical foundation: a clean, correctly-formulated spreadsheet.
+Before we can compute a single mean or draw a single chart, we need
+to be fluent with how Excel stores data, how a formula "sees" the
+cells it references, and how to compute the handful of basic
+quantities (totals, shares, changes) that every later session takes
+for granted.
+
+## Learning objectives
+
+- Enter, format, and sort data in an Excel worksheet.
+- Explain the difference between a relative, absolute, and mixed cell
+  reference, and use the `$` symbol correctly when copying a formula.
+- Compute a sum, an average, a percentage distribution, and a
+  percentage change with the correct Excel functions.
+- Use `MAX`, `MIN`, and `LARGE` to rank values in a series.
+- Write a simple `IF` function, and nested `IF`/`AND`/`OR` conditions.
+
+## Theory
+
+::: {.callout-note}
+#### Definition — cell reference
+A **cell reference** identifies a cell by its column letter and row
+number (e.g., `B4`). When a formula is copied to another cell, Excel
+adjusts *relative* references automatically, keeps *absolute*
+references fixed (`$B$4`), and adjusts only one coordinate of a
+*mixed* reference (`$B4` or `B$4`).
+:::
+
+::: {.callout-tip}
+#### Formula — percentage distribution (share of total)
+For a series of $n$ line items with values $x_1, \dots, x_n$ and total
+$T = \sum_{i=1}^{n} x_i$, the **percentage distribution** of item $i$
+is
+$$
+p_i = \frac{x_i}{T} \times 100\%.
+$$
+It answers "what share of the whole does this line represent?" and is
+the simplest case of the *relative frequency* idea we generalise in
+Session 3.
+:::
+
+::: {.callout-tip}
+#### Formula — percentage change
+Between an old value $x_{\text{old}}$ and a new value $x_{\text{new}}$,
+the **percentage change** is
+$$
+\Delta\% = \frac{x_{\text{new}} - x_{\text{old}}}{x_{\text{old}}} \times 100\%.
+$$
+A positive value is an increase, a negative value is a decrease.
+:::
+
+::: {.callout-note}
+#### Definition — logical functions
+`IF(condition, value_if_true, value_if_false)` returns one of two
+results depending on whether `condition` is true. `AND(cond1, cond2, …)`
+is true only if **every** condition is true; `OR(cond1, cond2, …)` is
+true if **at least one** condition is true. `IF` functions can be
+*nested* — the "value" arguments can themselves be another `IF` — to
+handle more than two outcomes.
+:::
+
+## Worked example
+
+We use a small, originally-authored warm-up dataset: one morning's
+print orders at **Northside Print Shop** (unrelated to the running
+case study that starts in Session 3), from
+`data-model.md`'s "Warm-up dataset" section.
+
+| Item | Unit price (€) | Quantity | Line total (€) |
+|---|---:|---:|---:|
+| Business cards (box of 100) | 18.50 | 4 | 74.00 |
+| A4 flyers (pack of 50) | 12.00 | 6 | 72.00 |
+| Posters A3 | 6.75 | 10 | 67.50 |
+| Spiral-bound reports | 4.20 | 15 | 63.00 |
+| Laminated signs | 9.90 | 5 | 49.50 |
+| Custom stamps | 15.00 | 2 | 30.00 |
+| **Total** | | **42** | **356.00** |
+
+**Step 1 — line total.** Each line total is `unit price × quantity`
+(e.g., Business cards: $18.50 \times 4 = 74.00$). Written in cell
+`D2` and copied down to `D7`, the formula is `=B2*C2` — both
+references are relative, since each row needs its own price and
+quantity.
+
+**Step 2 — grand total.** `=SUM(D2:D7) = 356.00`.
+
+**Step 3 — percentage distribution.** In `E2`, the formula
+`=D2/$D$8` (absolute reference on the grand total, so it doesn't shift
+when copied down) gives Business cards' share:
+$74.00 / 356.00 = 20.79\%$. Copied down: Flyers 20.22%, Posters
+18.96%, Reports 17.70%, Signs 13.90%, Stamps 8.43% — and these six
+shares sum to $100\%$ (see the derivation below).
+
+**Step 4 — ranking.** `=MAX(D2:D7) = 74.00` (Business cards);
+`=MIN(D2:D7) = 30.00` (Custom stamps); `=LARGE(D2:D7,2) = 72.00`
+(the second-largest line, Flyers).
+
+**Step 5 — flags with `IF`/`AND`/`OR`.** A `"BULK"` flag for any line
+with quantity $\geq 10$: `=IF(C2>=10,"BULK","")`, true for Posters and
+Reports. A rush-fee flag when quantity $\geq 10$ **and** unit price
+$< €10$: `=IF(AND(C2>=10,B2<10),"RUSH FEE","")`, true only for
+Reports. A discount-review flag when quantity $\geq 10$ **or** unit
+price $\geq €15$: `=IF(OR(C2>=10,B2>=15),"REVIEW","")`, true for
+Business cards, Posters, and Reports.
+
+## Using Excel
+
+| Concept | Excel function / steps |
+|---|---|
+| Line total | `=B2*C2` (relative references) |
+| Grand total | `=SUM(range)` |
+| Percentage distribution | `=cell/$total$` (mixed/absolute reference on the total) |
+| Percentage change | `=(new-old)/old` |
+| Largest / smallest value | `=MAX(range)` / `=MIN(range)` |
+| $k$-th largest value | `=LARGE(range, k)` |
+| Conditional value | `=IF(condition, value_if_true, value_if_false)` |
+| All conditions true | `=AND(condition1, condition2, …)` |
+| At least one condition true | `=OR(condition1, condition2, …)` |
+| Locking a reference when copying | Add `$` before the column and/or row (F4 cycles through the options) |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — percentage shares always sum to 100% (click to expand)
+Let $x_1, \dots, x_n$ be the line totals and $T = \sum_{i=1}^n x_i$
+their grand total (assume $T \neq 0$). Each share is
+$p_i = x_i / T$. Summing over all $n$ items:
+$$
+\sum_{i=1}^{n} p_i
+= \sum_{i=1}^{n} \frac{x_i}{T}
+= \frac{1}{T}\sum_{i=1}^{n} x_i
+= \frac{T}{T}
+= 1,
+$$
+i.e. $100\%$ regardless of how many items there are or how the total
+is split between them. This is why a percentage-distribution column
+is a useful check: if the shares you compute don't sum to (very close
+to) $100\%$, a reference was probably not locked correctly when the
+formula was copied down.
+:::
+
+## Visual intuition
+
+A percentage distribution is exactly what a **pie chart** displays:
+each $p_i$ becomes a slice occupying $p_i \times 360°$ of the circle.
+We will build pie charts formally for qualitative data in Session 3 —
+keep this table in mind, since "share of a total" is the same idea
+whether the "items" are print-shop products or categories of a
+qualitative variable.
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 — Percentage distribution (click for solution)
+A second order has three lines with totals €120, €80, and €50 (25
+units total). What percentage of the order value does the second line
+represent?
+
+**Solution.** Grand total $= 120+80+50=250$. Share
+$= 80/250 \times 100\% = 32.0\%$.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 — Percentage change (click for solution)
+Northside Print Shop's revenue was €320 last week and €356 this week
+(our worked-example total). What is the percentage change?
+
+**Solution.**
+$\Delta\% = (356-320)/320 \times 100\% = 11.25\%$, an increase.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 — Nested IF / AND / OR (click for solution)
+Using the worked-example table, which line(s) satisfy: quantity $< 5$
+**and** unit price $> €10$?
+
+**Solution.** `=IF(AND(C2<5,B2>10),"YES","")`. Checking each line:
+Business cards ($4<5$, $18.50>10$) → **YES**; Custom stamps
+($2<5$, $15>10$) → **YES**; all other lines fail on at least one
+condition.
+:::

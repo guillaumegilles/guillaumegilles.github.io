@@ -1,0 +1,348 @@
+---
+title: "Session 13 — Linear Correlation Coefficient Test"
+subtitle: "Decision Making Statistics — S04"
+author: "M. Kachour"
+date: today
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+This session studies the statistical test used to detect a **linear relationship** between two quantitative variables.
+
+## Introduction
+
+### Typical questions
+
+- For a sample of students, is there a link between **height** and **weight**?
+- For a sample of drivers, is there a link between **age** and **number of accidents**?
+
+::: {.callout-note title="Goal of the test"}
+Two quantitative variables $X$ and $Y$ are measured simultaneously on each individual. The aim is to study the possible **linear link** between them.
+:::
+
+## Formulation
+
+### Modeling framework
+
+- The population is described by two quantitative variables $X$ and $Y$.
+- The pair $Z=(X,Y)$ is assumed to follow a bivariate distribution.
+- The unknown parameter of interest is the **theoretical linear correlation coefficient** $\rho(X,Y)$.
+
+### Hypotheses
+
+::: {.callout-note title="Hypotheses"}
+$$
+H_0: \rho(X,Y)=0
+\qquad \text{vs.} \qquad
+H_1: \rho(X,Y)\neq 0
+$$
+:::
+
+This is a **two-tailed** test. If $H_1$ is accepted, we conclude that there is a linear link between the two variables.
+
+::: {.callout-warning title="Assumption"}
+The pair $(X,Y)$ is assumed to follow a **bivariate Normal distribution**. This assumption is less restrictive when the sample size is large.
+:::
+
+## Empirical quantities
+
+### Sample summaries
+
+For a sample of $n$ pairs $(x_1,y_1),\ldots,(x_n,y_n)$:
+
+- empirical means:
+
+$$
+\bar{x}=\frac{1}{n}\sum x_i,
+\qquad
+\bar{y}=\frac{1}{n}\sum y_i
+$$
+
+- empirical variances:
+
+$$
+s_x^2=\frac{1}{n}\sum(x_i-\bar{x})^2,
+\qquad
+s_y^2=\frac{1}{n}\sum(y_i-\bar{y})^2
+$$
+
+- empirical covariance:
+
+$$
+s_{xy}=\frac{1}{n}\sum(x_i-\bar{x})(y_i-\bar{y})
+$$
+
+### Empirical linear correlation coefficient
+
+::: {.callout-tip title="Pearson correlation coefficient"}
+$$
+r=\frac{s_{xy}}{s_xs_y}
+=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum(x_i-\bar{x})^2\cdot\sum(y_i-\bar{y})^2}}
+$$
+:::
+
+The coefficient satisfies:
+
+$$
+r\in[-1,1]
+$$
+
+### Interpretation of $r$
+
+- $r>0$: the variables tend to vary in the **same direction**,
+- $r<0$: the variables tend to vary in **opposite directions**,
+- $|r|$ close to $1$: strong linear relationship,
+- $|r|$ close to $0$: weak linear relationship.
+
+## Test statistic
+
+### Case $n<30$
+
+::: {.callout-tip title="Student test statistic"}
+When the sample is small, use Student's distribution with $\nu=n-2$ degrees of freedom:
+
+$$
+U_{obs}=r\sqrt{\frac{n-2}{1-r^2}}
+$$
+
+Reject $H_0$ if:
+
+$$
+|U_{obs}|>t_{\alpha/2,n-2}
+$$
+:::
+
+### Case $n\geq 30$
+
+::: {.callout-tip title="Normal approximation"}
+When the sample is large, use the same statistic:
+
+$$
+U_{obs}=r\sqrt{\frac{n-2}{1-r^2}}
+$$
+
+and compare it with the centred reduced Normal distribution:
+
+$$
+|U_{obs}|>z_{\alpha/2}
+$$
+:::
+
+::: {.callout-warning title="Important remark"}
+A significant correlation indicates a **linear association**. It does **not** prove causality.
+:::
+
+::: {.callout-important title="Exam tip"}
+Always comment on both:
+
+1. the **sign** of $r$ (positive or negative relationship),
+2. the **magnitude** of $|r|$ (weak, moderate, or strong relationship).
+:::
+
+## Application exercise
+
+### Height and high-jump performance
+
+::: {.callout-caution title="Exercise"}
+The data below concern the height and high-jump score of $40$ athletes.
+
+The empirical linear correlation coefficient computed from this sample is:
+
+$$
+r=0.342
+$$
+
+At the $1\%$ risk level, can we say that height and high-jump performance are linked?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+**Step 1 — Formulation**
+
+- $X$: athlete height
+- $Y$: high-jump result
+- $H_0: \rho(X,Y)=0$
+- $H_1: \rho(X,Y)\neq 0$
+
+**Step 2 — Test statistic**
+
+Since $n=40\geq 30$, we use the Normal distribution:
+
+$$
+U_{obs}=r\sqrt{\frac{n-2}{1-r^2}}
+$$
+
+Therefore:
+
+$$
+U_{obs}=0.342\times \sqrt{\frac{38}{1-0.342^2}}
+=0.342\times \sqrt{\frac{38}{0.8830}}
+\approx 0.342\times 6.560
+\approx 2.243
+$$
+
+**Step 3 — Critical value**
+
+At risk $\alpha=1\%$ for a two-tailed test:
+
+$$
+z_{\alpha/2}=z_{0.005}=2.576
+$$
+
+**Step 4 — Decision**
+
+$$
+|U_{obs}|=2.243<2.576
+$$
+
+So we do **not** reject $H_0$.
+
+**Conclusion:** with a $1\%$ risk, the data do **not** confirm a linear link between athlete height and high-jump performance.
+
+::: {.callout-warning title="Data remark"}
+In the complete exercise, recompute $r$ directly from the dataset before making the final conclusion.
+:::
+:::
+
+### Exercise 2 — Work experience and monthly salary
+
+::: {.callout-caution title="Exercise"}
+An HR analyst collects data from $10$ employees on their years of work experience ($X$) and monthly gross salary in k€ ($Y$):
+
+| $x_i$ | 1 | 3 | 5 | 7 | 9 | 2 | 4 | 6 | 8 | 10 |
+|------:|--:|--:|--:|--:|--:|--:|--:|--:|--:|---:|
+| $y_i$ | 2.1 | 2.8 | 3.0 | 3.6 | 4.5 | 2.0 | 3.2 | 3.3 | 4.2 | 4.3 |
+
+1. Compute the empirical linear correlation coefficient $r$.
+2. At the $5\%$ risk level, can we say that there is a linear link between experience and salary?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+**Step 1 — Summary statistics**
+
+$$
+n=10, \qquad \bar{x}=\frac{55}{10}=5.5, \qquad \bar{y}=\frac{33.0}{10}=3.30.
+$$
+
+We use the computational formulas:
+
+$$
+\sum x_i^2 = 1+9+25+49+81+4+16+36+64+100=385
+$$
+
+$$
+\sum y_i^2 = 4.41+7.84+9.00+12.96+20.25+4.00+10.24+10.89+17.64+18.49=115.72
+$$
+
+$$
+\sum x_iy_i = 2.1+8.4+15.0+25.2+40.5+4.0+12.8+19.8+33.6+43.0=204.4
+$$
+
+Then:
+
+$$
+\sum(x_i-\bar{x})^2=385-10\times 5.5^2=385-302.5=82.5
+$$
+
+$$
+\sum(y_i-\bar{y})^2=115.72-10\times 3.30^2=115.72-108.90=6.82
+$$
+
+$$
+\sum(x_i-\bar{x})(y_i-\bar{y})=204.4-10\times 5.5\times 3.30=204.4-181.5=22.9
+$$
+
+**Step 2 — Correlation coefficient**
+
+$$
+r = \frac{22.9}{\sqrt{82.5\times 6.82}}=\frac{22.9}{\sqrt{562.65}}=\frac{22.9}{23.72}\approx 0.965.
+$$
+
+The positive sign and high magnitude indicate a **strong positive linear relationship** between experience and salary.
+
+**Step 3 — Test statistic**
+
+Since $n=10<30$, we use the **Student distribution** with $\nu=n-2=8$ degrees of freedom:
+
+$$
+U_{obs}=r\sqrt{\frac{n-2}{1-r^2}}=0.965\times\sqrt{\frac{8}{1-0.931}}=0.965\times\sqrt{\frac{8}{0.069}}\approx 0.965\times 10.766\approx 10.39.
+$$
+
+**Step 4 — Decision**
+
+At the $5\%$ level (two-tailed), the critical value is $t_{0.025,8}=2.306$.
+
+Since $|U_{obs}|=10.39>2.306$, we **reject** $H_0$.
+
+**Conclusion:** with a $5\%$ risk, the data confirm a significant **positive linear link** between years of experience and monthly salary.
+:::
+
+### Exercise 3 — Advertising spending and revenue
+
+::: {.callout-caution title="Exercise"}
+A marketing analyst records advertising expenditure (in k€, variable $X$) and monthly revenue (in k€, variable $Y$) over $8$ months:
+
+| $x_i$ | 5 | 8 | 12 | 6 | 15 | 10 | 4 | 9 |
+|------:|--:|--:|---:|--:|---:|---:|--:|--:|
+| $y_i$ | 120 | 145 | 170 | 128 | 185 | 160 | 110 | 155 |
+
+The following sums have been computed for you:
+
+$$
+\sum x_i=69, \quad \sum y_i=1173, \quad \sum x_i^2=691, \quad \sum y_i^2=176\,659, \quad \sum x_iy_i=10\,778.
+$$
+
+1. Compute $r$.
+2. At the $5\%$ risk level, is there a linear link between advertising spend and revenue?
+:::
+
+::: {.callout-caution title="Solution" collapse="true"}
+**Step 1 — Summary statistics**
+
+$$
+\bar{x}=\frac{69}{8}=8.625, \qquad \bar{y}=\frac{1173}{8}=146.625.
+$$
+
+$$
+\sum(x_i-\bar{x})^2 = \sum x_i^2 - n\bar{x}^2 = 691-8\times 74.391 = 691-595.125=95.875
+$$
+
+$$
+\sum(y_i-\bar{y})^2 = 176\,659 - 8\times 21\,498.891 = 176\,659 - 171\,991.125 = 4\,667.875
+$$
+
+$$
+\sum(x_i-\bar{x})(y_i-\bar{y}) = 10\,778 - 8\times 8.625\times 146.625 = 10\,778 - 10\,117.125 = 660.875
+$$
+
+**Step 2 — Correlation coefficient**
+
+$$
+r = \frac{660.875}{\sqrt{95.875\times 4\,667.875}} = \frac{660.875}{\sqrt{447\,558}} = \frac{660.875}{669.0}\approx 0.988.
+$$
+
+The correlation is very close to $1$: advertising spend and revenue are almost perfectly linearly related.
+
+**Step 3 — Test statistic**
+
+Since $n=8<30$, we use the **Student distribution** with $\nu=8-2=6$ degrees of freedom:
+
+$$
+U_{obs}=0.988\times\sqrt{\frac{6}{1-0.976}}=0.988\times\sqrt{\frac{6}{0.024}}\approx 0.988\times 15.81\approx 15.62.
+$$
+
+**Step 4 — Decision**
+
+At the $5\%$ level (two-tailed), $t_{0.025,6}=2.447$.
+
+Since $|U_{obs}|=15.62\gg 2.447$, we **reject** $H_0$.
+
+**Conclusion:** with a $5\%$ risk, there is a highly significant **positive linear relationship** between advertising expenditure and monthly revenue.
+
+::: {.callout-warning title="Caution"}
+A high correlation does not imply that advertising directly **causes** revenue growth; other explanatory variables may be at play.
+:::
+:::

@@ -1,0 +1,255 @@
+---
+title: "Session 8 — Asymmetry and Shape"
+subtitle: "Data Description | Part II"
+---
+
+Session 7 established that "The Wandering Fork"'s daily revenue has
+real, moderate variability: $s=137.09$ and $CV=21.82\%$ — noticeably
+variable day to day, but not wildly erratic. Knowing *how much* a
+distribution spreads out, though, says nothing about *how* it
+spreads out: is it balanced evenly around its center, with values
+fanning out about the same amount on both sides, or is it lopsided,
+with a longer tail stretching out in one direction? **Skewness**
+indicators answer exactly that question, and they close the loop on
+what the mean, median, and mode (Session 6) were quietly hinting at
+all along.
+
+## Learning objectives
+
+- Explain what a symmetric, right-skewed, and left-skewed
+  distribution look like, and how the mean, median, and mode
+  typically order themselves in each case.
+- Compute and interpret the Fisher-Pearson sample skewness
+  coefficient (Excel's `SKEW`), the primary skewness measure used in
+  this course.
+- Compute the Pearson skewness coefficient and the Yule-Kendall
+  skewness coefficient as alternative, simpler measures, and
+  recognize that different formulas can disagree in sign or
+  magnitude for near-symmetric data.
+- Read skewness directly off a histogram or boxplot.
+
+## Theory
+
+::: {.callout-note}
+#### Definition — symmetry and skewness
+A distribution is **symmetric** if its left and right halves,
+measured from the center, are mirror images of each other; in that
+case the mean, median, and mode coincide. A distribution is
+**skewed** when one tail is longer or fatter than the other.
+**Right-skewed** (positive skew) means a longer tail toward high
+values, typically pulling the mean above the median above the mode
+($\bar{x} > Me > Mo$). **Left-skewed** (negative skew) is the mirror
+case, with a longer tail toward low values ($\bar{x} < Me < Mo$).
+:::
+
+::: {.callout-tip}
+#### Formula — Fisher-Pearson sample skewness coefficient
+The primary skewness measure used in this course is the
+**adjusted Fisher-Pearson standardized moment coefficient**, which is
+what Excel's `SKEW` function computes:
+$$
+SKEW = \frac{n}{(n-1)(n-2)} \sum_{i=1}^{n}
+\left(\frac{x_i-\bar{x}}{s}\right)^3.
+$$
+This standardizes every deviation from the mean (dividing by $s$, so
+the result is unit-free), cubes it (so, unlike variance, positive and
+negative deviations do *not* cancel and large deviations dominate),
+and averages the result with a small-sample correction factor. A
+value near $0$ signals near-symmetry; positive means right-skewed;
+negative means left-skewed.
+:::
+
+::: {.callout-note}
+#### Definition — alternative asymmetry coefficients
+Two simpler, complementary measures are also common. The **Pearson
+skewness coefficient** compares the mean to the mode, rescaled by the
+standard deviation. The **Yule-Kendall skewness coefficient** instead
+compares how the median sits between $Q_1$ and $Q_3$, using only the
+five-number summary from Session 5 — useful when the mode is hard to
+pin down or the data is only available as a boxplot.
+:::
+
+::: {.callout-tip}
+#### Formula — Pearson and Yule-Kendall coefficients
+$$
+\text{Pearson asymmetry} = \frac{\bar{x}-Mo}{s},
+\qquad\qquad
+YK = \frac{Q_3+Q_1-2\,Me}{Q_3-Q_1}.
+$$
+The Pearson coefficient asks "how many standard deviations separate
+the mean from the mode?" The Yule-Kendall coefficient asks "is the
+median closer to $Q_1$ or to $Q_3$?" — if $Me$ sits closer to $Q_1$
+than to $Q_3$, the upper quarter of the data is more spread out,
+which is itself a sign of right skew, and vice versa.
+:::
+
+::: {.callout-warning}
+Different skewness formulas can genuinely disagree in sign or
+magnitude, especially for near-symmetric data where all the values
+involved are close to each other and small estimation differences
+get amplified by division. Always state **which formula** you used
+when reporting a skewness value — "the Fisher-Pearson skewness is
++0.034" is a precise, checkable claim; "the skewness is positive" is
+not, unless the formula is named.
+:::
+
+## Worked example
+
+Using "The Wandering Fork"'s `daily_revenue_eur` ($n=30$), with
+$\bar{x}=628.34$, $Me=643.63$, grouped mode $Mo=666.67$ (Session 6),
+$s=137.09$ (Session 7), and $Q_1=506.60$, $Q_3=729.99$,
+$IQR=223.39$ (Session 5), all verified in `data-model.md`:
+
+| Statistic | Value | Interpretation |
+|---|---:|---|
+| Fisher-Pearson sample skewness | +0.034 | near-symmetric, very mild right skew |
+| Pearson skewness coefficient | −0.280 | mildly left, per this formula |
+| Yule-Kendall skewness coefficient | −0.227 | mildly left, per this formula |
+
+**Step 1 — the headline measure.** The Fisher-Pearson sample
+skewness, computed with Excel's `SKEW` on all 30 raw observations, is
+$+0.034$. Being so close to zero, this is the course's official
+conclusion: "The Wandering Fork"'s daily revenue is **essentially
+symmetric**, with only a very slight lean toward high values.
+
+**Step 2 — Pearson asymmetry.** $(\bar{x}-Mo)/s = (628.34-666.67)/137.09
+\approx -0.280$: comparing the mean to the *grouped-estimated* mode
+instead of using every raw value gives a mildly negative reading.
+
+**Step 3 — Yule-Kendall.** $(Q_3+Q_1-2Me)/(Q_3-Q_1) =
+(729.99+506.60-2\times643.63)/223.39 \approx -0.227$: comparing only
+the five-number summary also leans mildly negative.
+
+**Step 4 — reconciling the disagreement.** Steps 2 and 3 lean
+slightly negative while Step 1 leans slightly positive. This is not a
+contradiction, it is a lesson: the Fisher-Pearson coefficient uses
+every one of the 30 raw daily revenues, while the Pearson coefficient
+depends on the grouped mode ($Mo=666.67$), itself only an
+*estimate* from five class frequencies, and the Yule-Kendall
+coefficient uses just four numbers ($Q_1, Me, Q_3$, and the range
+between the first two). For a distribution this close to symmetric,
+such small formula-specific approximations are enough to flip the
+sign — which is itself consistent with the headline conclusion that
+the true skew is very small in absolute terms either way. **The
+value to report and remember for "The Wandering Fork" is the
+Fisher-Pearson $+0.034$.**
+
+## Using Excel
+
+| Concept | Excel function / steps |
+|---|---|
+| Fisher-Pearson sample skewness | `=SKEW(range)` |
+| Pearson skewness coefficient | No direct function — `=(AVERAGE(range)-Mo)/STDEV.S(range)`, with $Mo$ computed manually (Session 6) |
+| Yule-Kendall skewness coefficient | No direct function — `=(QUARTILE.EXC(range,3)+QUARTILE.EXC(range,1)-2*MEDIAN(range))/(QUARTILE.EXC(range,3)-QUARTILE.EXC(range,1))` |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — why Excel's `SKEW` includes a bias-correction factor (click to expand)
+The conceptually simplest skewness measure is the **third
+standardized moment**,
+$$
+g_1 = \frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^3}
+{\left(\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^{3/2}}
+= \frac{m_3}{m_2^{3/2}},
+$$
+the average cubed deviation ($m_3$), rescaled by the standard
+deviation cubed (via $m_2^{3/2}$) so the result is unit-free. Cubing
+(rather than squaring, as in variance) is what makes this measure
+sensitive to *direction*: a value far above the mean and one equally
+far below contribute equal-magnitude but opposite-sign terms, so they
+do not cancel the way squared deviations would.
+
+However, $g_1$ computed directly from a *sample* is a biased
+estimator of the true population skewness — it systematically
+under- or overstates it, especially for small $n$. Excel's `SKEW`
+applies the standard small-sample correction, replacing $\frac{1}{n}$
+with the factor $\frac{n}{(n-1)(n-2)}$ and using the sample standard
+deviation $s$ (with its own $n-1$ correction, Session 7) in place of
+the population-style $m_2^{1/2}$:
+$$
+SKEW = \frac{n}{(n-1)(n-2)}\sum_{i=1}^n\left(\frac{x_i-\bar x}{s}\right)^3.
+$$
+As $n$ grows large, $\frac{n}{(n-1)(n-2)} \to \frac{1}{n}$ and $s \to
+m_2^{1/2}$, so $SKEW \to g_1$: the correction matters most for small
+samples (like "The Wandering Fork"'s $n=30$) and becomes negligible
+for very large ones.
+:::
+
+## Visual intuition
+
+On a histogram, skewness is the **direction of the longer tail**: a
+right-skewed histogram has its bulk of bars on the left and a thin
+tail trailing off to the right (think: most days are ordinary, a few
+are exceptionally good); left-skewed is the mirror image. On a
+boxplot, skewness shows up as an **off-center median line inside the
+box** and **unequal whisker lengths**: if the whisker toward $Q_3$ is
+longer than the one toward $Q_1$, that is visual right skew. For "The
+Wandering Fork", the near-equal spacing seen in Session 5's boxplot
+(median roughly centered between $Q_1=506.60$ and $Q_3=729.99$) is
+the visual signature of the near-zero skewness confirmed numerically
+here.
+
+::: {.callout-important}
+TODO: an interactive skewness visualizer (editable sample, live
+histogram + skewness value) is a candidate for a future Shinylive
+demo.
+:::
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 — Reading the sign and magnitude (click for solution)
+A distribution has a Fisher-Pearson sample skewness of $-0.85$. What
+does the sign and rough magnitude tell you about its shape, and about
+the typical ordering of its mean and median?
+
+**Solution.** The negative sign means the distribution is
+**left-skewed**: it has a longer or fatter tail toward low values. A
+magnitude of $0.85$ (using the common rule of thumb: roughly
+$|SKEW|<0.5$ near-symmetric, $0.5$–$1$ moderate skew, $>1$ strong
+skew) indicates a **moderate** left skew — noticeable, but not
+extreme. In this case, the typical ordering is $\bar{x} < Me < Mo$:
+the few low outlying values pull the mean below the median.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 — Reconciling mean/median/mode order with the headline skewness (click for solution)
+"The Wandering Fork"'s mean (628.34), median (643.63), and grouped
+mode (666.67) follow the order $\bar{x} < Me < Mo$, which is the
+classic textbook signature of *left* skew — yet the Fisher-Pearson
+coefficient reports $+0.034$, a very mild *right* skew. How do you
+reconcile this?
+
+**Solution.** The "$\bar{x}<Me<Mo$ implies left skew" rule is only a
+rough heuristic, not a guarantee, and it is especially unreliable
+here for two reasons: (1) the gaps between the three values are tiny
+relative to the spread of the data ($s=137.09$), so their exact order
+can flip with negligible changes in the underlying data; and (2) the
+mode used is a *grouped estimate* ($Mo=666.67$, from five class
+frequencies), not an exact value computed from all 30 raw
+observations the way $\bar{x}$, $Me$, and the Fisher-Pearson
+coefficient are. The Fisher-Pearson value, using every raw
+observation, is the more precise and authoritative measure here, and
+at $+0.034$ it confirms the distribution is essentially symmetric —
+close enough to zero that a heuristic based on three closely-spaced,
+partly-estimated landmarks should not be trusted to override it.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 — Yule-Kendall from a five-number summary (click for solution)
+A dataset has $Q_1=40$, $Me=50$, $Q_3=55$. Compute the Yule-Kendall
+skewness coefficient and interpret its sign.
+
+**Solution.**
+$$
+YK = \frac{Q_3+Q_1-2Me}{Q_3-Q_1}
+= \frac{55+40-2\times50}{55-40}
+= \frac{95-100}{15}
+= -\frac{5}{15} \approx -0.33.
+$$
+The negative sign indicates mild **left** skew by this measure: the
+median (50) sits closer to $Q_3$ (55) than to $Q_1$ (40), meaning the
+lower quarter of the data is more spread out than the upper quarter
+— a longer effective "reach" on the low side.
+:::

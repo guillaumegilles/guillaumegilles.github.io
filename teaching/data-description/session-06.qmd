@@ -1,0 +1,239 @@
+---
+title: "Session 6 — Central Tendency"
+subtitle: "Data Description | Part II"
+---
+
+Session 5's boxplot told us something reassuring about "The
+Wandering Fork": with zero outliers, a minimum of 407.59 and a
+maximum of 886.56 both comfortably inside the fences (171.52 and
+1065.07), 30 days of trading never produced a wildly atypical day.
+But knowing the data is well-behaved doesn't tell a manager what to
+*expect* on an ordinary day. That is the job of **central tendency
+indicators** — the mean, median, and mode — which each try, in a
+different way, to answer the single most common question in
+business reporting: "where is the center of this distribution?"
+
+## Learning objectives
+
+- Compute the arithmetic mean, median, and mode of raw data.
+- Compute the mode of grouped (class-based) continuous data using
+  linear interpolation.
+- Explain why the mean, median, and mode can differ, and choose the
+  most appropriate one for a given business question.
+- Prove that the arithmetic mean is the value that minimizes the sum
+  of squared deviations — the property that makes it the natural
+  partner of the variance (Session 7).
+
+## Theory
+
+::: {.callout-note}
+#### Definition — arithmetic mean
+The **arithmetic mean** (or average) $\bar{x}$ of $n$ values
+$x_1,\dots,x_n$ is their sum divided by their count. It uses every
+single observation, which makes it efficient but also sensitive to
+extreme values: one very large or very small $x_i$ pulls $\bar{x}$
+toward it.
+:::
+
+::: {.callout-tip}
+#### Formula — arithmetic mean
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i.
+$$
+In plain terms: add up all the observations, then split the total
+evenly across them — the "if everyone got the same amount" value.
+:::
+
+::: {.callout-note}
+#### Definition — median (recap)
+As seen in Session 5, the **median** $Me$ is the value that splits
+an ordered series into two equal halves: at least 50% of
+observations are $\leq Me$ and at least 50% are $\geq Me$. Unlike
+the mean, the median only cares about the *rank* of each value, not
+its magnitude, so a single extreme observation cannot drag it far.
+:::
+
+::: {.callout-tip}
+#### Formula — median position
+For $n$ ordered values, the median sits at position $(n+1)/2$: if
+$n$ is odd this is a single observation; if $n$ is even, it is the
+average of the two middle observations. This is exactly the
+quantile formula from Session 5 with $p=0.5$.
+:::
+
+::: {.callout-note}
+#### Definition — mode
+The **mode** $Mo$ is the most frequently occurring value (for
+discrete or categorical data) or the center of the most frequent
+*class* (for grouped continuous data — the "peak" of the histogram
+from Session 4). A distribution can have one mode (unimodal), two
+(bimodal), or more.
+:::
+
+::: {.callout-tip}
+#### Formula — mode of grouped continuous data
+For continuous data grouped into classes of equal width $h$, the
+mode is estimated by linear interpolation *inside* the modal class
+(the class with the highest frequency $f_1$):
+$$
+Mo = L + h \cdot \frac{f_1-f_0}{(f_1-f_0)+(f_1-f_2)},
+$$
+where $L$ is the modal class's lower bound, $f_0$ is the frequency
+of the preceding class, and $f_2$ is the frequency of the following
+class. Intuitively, the mode leans toward whichever neighboring
+class is "competing" harder with the modal class for observations:
+a much lower $f_0$ than $f_2$ pulls the estimated mode toward the
+left edge of the class, and vice versa.
+:::
+
+## Worked example
+
+Using "The Wandering Fork"'s `daily_revenue_eur` ($n=30$), verified
+in `data-model.md`:
+
+| Statistic | Value |
+|---|---:|
+| Mean $\bar{x}$ | 628.34 |
+| Median $Me$ | 643.63 |
+| Grouped mode $Mo$ | 666.67 |
+
+Class frequency table (class width 100, from Session 4):
+
+| Class (€) | Frequency |
+|---|---:|
+| [400, 500[ | 6 |
+| [500, 600[ | 6 |
+| [600, 700[ | 8 |
+| [700, 800[ | 7 |
+| [800, 900[ | 3 |
+
+**Step 1 — mean.** Summing all 30 daily revenues and dividing by 30
+gives $\bar{x} = 628.34$: on average, "The Wandering Fork" brings in
+about €628 per day.
+
+**Step 2 — median.** As found in Session 5, $Me = 643.63$: half the
+trading days earned less than this, half earned more.
+
+**Step 3 — mode.** The modal class is $[600,700[$ with $f_1=8$,
+flanked by $[500,600[$ ($f_0=6$) and $[700,800[$ ($f_2=7$). With
+$L=600$ and $h=100$:
+$$
+Mo = 600 + 100 \times \frac{8-6}{(8-6)+(8-7)}
+= 600 + 100 \times \frac{2}{3}
+\approx 666.67.
+$$
+The single most "typical" revenue band, estimated from the histogram
+shape, centers around €666.67.
+
+**Putting it together.** The three indicators — 628.34, 643.63, and
+666.67 — are all close to one another, which is itself informative:
+it signals a roughly symmetric, well-behaved distribution rather
+than one dominated by a skewed tail. Whether that near-equality is
+exact enough to call the distribution "symmetric" is precisely the
+question Session 8 will answer with a dedicated skewness measure.
+
+## Using Excel
+
+| Concept | Excel function / steps |
+|---|---|
+| Arithmetic mean | `=AVERAGE(range)` |
+| Median | `=MEDIAN(range)` |
+| Mode, raw data (single mode) | `=MODE.SNGL(range)` |
+| Mode, raw data (all modes, array formula) | `=MODE.MULT(range)` |
+| Mode, grouped continuous data | No direct one-cell function — use `FREQUENCY(range, bins)` to get $f_0, f_1, f_2$, then apply the interpolation formula manually |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — the mean minimizes the sum of squared deviations (click to expand)
+Consider the function that measures the total squared "distance"
+between every observation and some reference point $a$:
+$$
+f(a) = \sum_{i=1}^{n} (x_i - a)^2.
+$$
+To find the value of $a$ that minimizes $f$, differentiate with
+respect to $a$ and set the result to zero:
+$$
+f'(a) = -2\sum_{i=1}^{n} (x_i - a) = 0
+\;\;\Longrightarrow\;\;
+\sum_{i=1}^{n} x_i - na = 0
+\;\;\Longrightarrow\;\;
+a = \frac{1}{n}\sum_{i=1}^{n} x_i = \bar{x}.
+$$
+The second derivative, $f''(a) = 2n > 0$, confirms this is a
+minimum, not a maximum. In words: **no other single number sits
+closer, on average in squared terms, to every observation than the
+arithmetic mean does.** This is exactly why the variance (Session 7)
+is defined as the average squared deviation *from the mean*
+specifically — any other reference point would only make the total
+squared deviation larger.
+:::
+
+## Visual intuition
+
+Picture each day's revenue as a small weight placed on a number
+line. The **mean** is the physical balance point (center of mass):
+if the number line were a rigid rod, it would balance perfectly on a
+pivot placed at $\bar{x}=628.34$. The **median** is a purely
+positional idea: the point that has exactly as many weights to its
+left as to its right, regardless of how heavy any of them are. The
+**mode** is simply the tallest bar on the histogram — the single
+most crowded spot on the number line. When the histogram is close to
+symmetric, all three landmarks cluster near the same spot, which is
+exactly the pattern seen above (628.34, 643.63, 666.67).
+
+::: {.callout-important}
+TODO: an interactive mean/median/mode explorer (editable sample) is
+a candidate for a future Shinylive demo.
+:::
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 — Mean vs. median with an outlier (click for solution)
+Five employee monthly salaries (in €k) are: 32, 35, 33, 34, 210.
+Compute the mean and the median. Which one better represents a
+"typical" salary here, and why?
+
+**Solution.** Mean $= (32+35+33+34+210)/5 = 344/5 = 68.8$. Ordering
+the values gives $32, 33, 34, 35, 210$, so the median (the middle
+value) is $34$. The median is the better representative here: the
+single very high salary (210) pulls the mean far above what four out
+of five employees actually earn, while the median, using only rank,
+is unaffected by how extreme that one value is.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 — Choosing an indicator for "The Wandering Fork" (click for solution)
+The owner of "The Wandering Fork" asks for "one typical number" for
+daily revenue. Given $\bar{x}=628.34$ and $Me=643.63$, which would
+you recommend, and why?
+
+**Solution.** Since Session 5 showed **zero outliers** in the daily
+revenue data, the mean is not being distorted by extreme values, so
+either indicator is defensible here. The mean is generally the
+better recommendation in this specific case: it uses every one of
+the 30 observations (not just their ranks), and it is the indicator
+that feeds directly into the variance, standard deviation, and
+coefficient of variation computed in Session 7 — keeping the
+reporting consistent across the analysis.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 — Grouped mode for a different class table (click for solution)
+A rival street-food vendor's daily revenue has a modal class
+$[500,600[$ ($L=500$, $h=100$) with frequency $f_1=18$, preceded by a
+class with frequency $f_0=10$ and followed by a class with frequency
+$f_2=15$. Estimate the grouped mode.
+
+**Solution.**
+$$
+Mo = 500 + 100 \times \frac{18-10}{(18-10)+(18-15)}
+= 500 + 100 \times \frac{8}{11}
+\approx 572.73.
+$$
+The estimated most-typical revenue band for the rival vendor centers
+around €572.73 — lower than "The Wandering Fork"'s €666.67, and
+leaning toward the lower-frequency neighboring class ($f_0=10$ vs.
+$f_2=15$) rather than the middle of the modal class.
+:::
