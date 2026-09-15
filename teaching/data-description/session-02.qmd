@@ -1,0 +1,169 @@
+---
+title: "Session 2 — Excel Fundamentals II"
+subtitle: "Data Description | Part I"
+---
+
+Raw rows of data are rarely useful on their own — the real value
+comes from sorting them and summarising them by group. This session
+covers Excel's two workhorse tools for that: sorting, and
+PivotTables/PivotCharts, plus conditional formatting to make patterns
+visible at a glance. These are exactly the operations we will need,
+one topic later, to build frequency tables from "The Wandering Fork"
+data.
+
+## Learning objectives
+
+- Sort a data range by one or more columns, ascending or descending.
+- Build a PivotTable that counts or sums a variable, grouped by
+  another column.
+- Build a PivotChart linked to a PivotTable.
+- Apply conditional formatting rules to highlight values automatically.
+
+## Theory
+
+::: {.callout-note}
+#### Definition — sorting
+**Sorting** reorders the rows of a range according to the values in
+one or more chosen columns (the *sort keys*), ascending or descending.
+Sorting never changes the *content* of a row, only its position.
+:::
+
+::: {.callout-note}
+#### Definition — PivotTable
+A **PivotTable** groups the rows of a data range by one or more
+categorical fields (placed in "Rows" and/or "Columns") and summarises
+a numeric field for each group — most often with `Sum`, `Count`, or
+`Average`. It is the fastest way to go from a raw log of
+transactions to a small, readable summary table.
+:::
+
+::: {.callout-tip}
+#### Formula — the sum-by-group property
+If a data range is completely partitioned into $k$ non-overlapping
+groups $G_1, \dots, G_k$, and $S(G_j)$ is the sum of a numeric field
+within group $j$, then
+$$
+\sum_{j=1}^{k} S(G_j) = T,
+$$
+where $T$ is the grand total over the whole range. A PivotTable's
+group totals must always add up to the grand total — this is exactly
+what we check below, and it is the same idea we will use for
+frequency tables in Session 3.
+:::
+
+## Worked example
+
+We continue with Northside Print Shop: one week's orders log (3
+items × 4 days = 12 rows), from `data-model.md`'s "Warm-up dataset"
+section (Session 2 table).
+
+| Day | Item | Quantity | Line total (€) |
+|---|---|---:|---:|
+| Mon | Business cards | 3 | 55.50 |
+| Mon | A4 flyers | 5 | 60.00 |
+| Mon | Posters A3 | 8 | 54.00 |
+| Tue | Business cards | 2 | 37.00 |
+| Tue | A4 flyers | 7 | 84.00 |
+| Tue | Posters A3 | 6 | 40.50 |
+| Wed | Business cards | 5 | 92.50 |
+| Wed | A4 flyers | 4 | 48.00 |
+| Wed | Posters A3 | 12 | 81.00 |
+| Thu | Business cards | 4 | 74.00 |
+| Thu | A4 flyers | 6 | 72.00 |
+| Thu | Posters A3 | 10 | 67.50 |
+
+**Step 1 — sort.** Sorting the log by `Item` (A→Z), then by
+`Line total` (descending) within each item, immediately shows that
+Wednesday's business-cards line (€92.50) is the single largest
+transaction of the week.
+
+**Step 2 — PivotTable by item.** Dragging `Item` into "Rows" and
+`Line total` into "Values" (set to `Sum`) gives: Business cards
+€259.00, A4 flyers €264.00, Posters A3 €243.00, grand total €766.00.
+
+**Step 3 — PivotTable by day.** Dragging `Day` into "Rows" instead
+gives: Mon €169.50, Tue €161.50, Wed €221.50, Thu €213.50. Both
+pivots must reach the same grand total, €766.00 — a direct check of
+the sum-by-group property above.
+
+**Step 4 — PivotChart.** Either PivotTable, with a clustered-column
+PivotChart inserted from it, turns the four-day or three-item summary
+into an immediately readable comparison.
+
+**Step 5 — conditional formatting.** A rule "highlight cells $\geq
+80.00$ in green" applied to the `Line total` column flags exactly
+three rows: Tuesday's flyers (€84.00), Wednesday's cards (€92.50),
+and Wednesday's posters (€81.00).
+
+## Using Excel
+
+| Concept | Excel steps |
+|---|---|
+| Sort a range | Select the range → **Data → Sort** → choose sort key(s) and order |
+| PivotTable | Select the range → **Insert → PivotTable** → drag fields into Rows/Values → set the Values field to `Sum` or `Count` |
+| PivotChart | With the PivotTable selected → **PivotTable Analyze → PivotChart** |
+| Conditional formatting | Select the range → **Home → Conditional Formatting → Highlight Cell Rules** (or a custom rule with a formula) |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — why every grouping of the same data gives the same grand total (click to expand)
+Let $x_1, \dots, x_n$ be the 12 line totals. Grouping by `Item`
+partitions the 12 rows into 3 groups $G_1, G_2, G_3$ (one per item);
+grouping by `Day` partitions the *same* 12 rows into 4 different
+groups $H_1, H_2, H_3, H_4$. Both are partitions of the identical set
+$\{x_1,\dots,x_{12}\}$ — every row belongs to exactly one item-group
+and exactly one day-group. Since summation does not depend on the
+order or grouping of terms,
+$$
+\sum_{j=1}^{3} S(G_j) = \sum_{i=1}^{12} x_i = \sum_{j=1}^{4} S(H_j) = T.
+$$
+Numerically, $259.00+264.00+243.00 = 766.00$ and
+$169.50+161.50+221.50+213.50 = 766.00$: both equal the same grand
+total $T = 766.00$, confirming the property.
+:::
+
+## Visual intuition
+
+A PivotChart makes the sum-by-group property visible: no matter which
+field you group by, the *areas* (bar heights) of all the columns in
+one PivotChart always add up to the same total height as any other
+grouping of the same data — you're just cutting the same "pie" along
+different lines.
+
+The Northside Print Shop warm-up is intentionally simple. Starting
+next session, we move to a real running case: **"The Wandering
+Fork"**, a small food-truck business that tracks its weather,
+temperature, customers, and daily revenue over a 30-day trading
+period. Every worked example and exercise from Session 3 onward uses
+this single dataset, so results you compute in one session carry over
+and get reused in the next.
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 — PivotTable by group (click for solution)
+Using the worked-example log, what is the sum of line totals for
+`Posters A3` only?
+
+**Solution.** $54.00+40.50+81.00+67.50 = 243.00$ — matching the
+PivotTable-by-item result above.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 — Conditional formatting rule (click for solution)
+Write the logical test (as you would enter it in a custom conditional
+formatting rule) to highlight any line total strictly below €40.00.
+
+**Solution.** `=D2<40`, applied to the `Line total` column; only
+Tuesday's business-cards line (€37.00) satisfies it.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 — Sort and rank (click for solution)
+Sort the worked-example log by `Line total` descending. What is the
+third-largest line total, and which day/item does it belong to?
+
+**Solution.** Sorted descending: 92.50, 84.00, 81.00, … The
+third-largest is **€81.00 — Wednesday, Posters A3**.
+:::

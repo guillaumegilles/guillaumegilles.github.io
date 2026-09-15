@@ -1,0 +1,293 @@
+---
+title: "Session 5 — Position Indicators"
+subtitle: "Data Description | Part II"
+---
+
+Session 4's histogram and cumulative-frequency curve gave us a full
+picture of how "The Wandering Fork"'s daily revenue is distributed
+across five €100 classes — but a picture is not yet a number we can
+quote or compare. **Position indicators** — the median, quartiles,
+percentiles — locate specific points *within* that distribution, and
+together they build the boxplot, the single most information-dense
+chart in descriptive statistics.
+
+## Learning objectives
+
+- Compute the median, quartiles, and a percentile of any kind of
+  data.
+- Apply linear interpolation to find a quantile in grouped
+  (class-based) continuous data.
+- Build a boxplot from the five-number summary and detect outliers
+  with the fence rule.
+- Use the interactive demo below to see how changing the quartiles
+  reshapes a boxplot.
+
+## Theory
+
+::: {.callout-note}
+#### Definition — median
+The **median** $Me$ is the value that splits an ordered series into
+two equal halves: at least 50% of observations are $\leq Me$ and at
+least 50% are $\geq Me$. For $n$ ordered values, if $n$ is odd the
+median is the value at position $(n+1)/2$; if $n$ is even, it is the
+average of the two values at positions $n/2$ and $n/2+1$.
+:::
+
+::: {.callout-tip}
+#### Formula — quartiles (exclusive method)
+The three **quartiles** $Q_1, Q_2 (=Me), Q_3$ split an ordered series
+into four equal quarters. Following the exclusive convention used
+throughout this course (Excel's `QUARTILE.EXC`), the position of
+$Q_p$ ($p=0.25, 0.5, 0.75$) in the ordered data is
+$$
+\text{rank}(Q_p) = p\,(n+1),
+$$
+interpolating linearly between the two surrounding observations when
+the rank is not a whole number.
+:::
+
+::: {.callout-tip}
+#### Formula — interquartile range and outlier fences
+$$
+IQR = Q_3 - Q_1, \qquad
+\text{lower fence} = Q_1 - 1.5\,IQR, \qquad
+\text{upper fence} = Q_3 + 1.5\,IQR.
+$$
+Any observation outside $[\text{lower fence}, \text{upper fence}]$ is
+flagged as a statistical **outlier** on the boxplot.
+:::
+
+::: {.callout-note}
+#### Definition — boxplot
+A **boxplot** draws the five-number summary
+($\min, Q_1, Me, Q_3, \max$, or the fences if there are outliers) as
+a box (from $Q_1$ to $Q_3$, split by a line at $Me$) with whiskers
+extending to the most extreme non-outlier values; outliers are marked
+individually.
+:::
+
+## Worked example
+
+Using "The Wandering Fork"'s `daily_revenue_eur` ($n=30$), verified
+in `data-model.md`:
+
+| Statistic | Value |
+|---|---:|
+| Minimum | 407.59 |
+| $Q_1$ (exclusive) | 506.60 |
+| $Q_2 = Me$ | 643.63 |
+| $Q_3$ (exclusive) | 729.99 |
+| Maximum | 886.56 |
+| $IQR = Q_3-Q_1$ | 223.39 |
+| Lower fence | 171.52 |
+| Upper fence | 1065.07 |
+
+**Step 1 — locate $Q_1$.** With $n=30$, rank$(Q_1) = 0.25\times 31 =
+7.75$: interpolate 75% of the way between the 7th and 8th smallest
+values of the ordered `daily_revenue_eur` series, giving $506.60$.
+
+**Step 2 — locate $Q_3$.** rank$(Q_3) = 0.75\times 31 = 23.25$:
+interpolate between the 23rd and 24th smallest values, giving
+$729.99$.
+
+**Step 3 — fences and outliers.** $IQR = 729.99-506.60 = 223.39$;
+lower fence $= 506.60 - 1.5(223.39) = 171.52$; upper fence $=
+729.99+1.5(223.39) = 1065.07$. The observed minimum (407.59) and
+maximum (886.56) both lie **inside** the fences — "The Wandering
+Fork" has **zero outliers** in its daily revenue, itself a useful
+finding: 30 days of trading, however variable, never produced a
+wildly atypical day.
+
+**Step 4 — draw the boxplot.** Box from 506.60 to 729.99, median line
+at 643.63, whiskers extending to the true min (407.59) and max
+(886.56) since neither is an outlier.
+
+## Using Excel
+
+| Concept | Excel function / steps |
+|---|---|
+| Median | `=MEDIAN(range)` |
+| Quartiles (exclusive) | `=QUARTILE.EXC(range, 1)` / `(range, 2)` / `(range, 3)` |
+| Arbitrary percentile | `=PERCENTILE.EXC(range, p)`, e.g. `p=0.9` for $P_{90}$ |
+| IQR | `=QUARTILE.EXC(range,3)-QUARTILE.EXC(range,1)` |
+| Boxplot | Select the data → **Insert → Statistical Chart → Box and Whisker** |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — locating a quantile in grouped continuous data (click to expand)
+For a continuous variable grouped into classes, we cannot read $Q_p$
+directly from a list of raw values — we interpolate *within* the
+class that contains the target cumulative frequency. If class
+$[L, L+h[$ has lower cumulative count $N_{\text{before}}$ (from all
+earlier classes) and count $n_{\text{class}}$ of its own, and we seek
+the value at cumulative position $p\cdot n$, linear interpolation
+across the class width $h$ gives
+$$
+Q_p = L + \frac{p\,n - N_{\text{before}}}{n_{\text{class}}}\; h.
+$$
+**Sanity check with our class table** (Session 4): to locate the
+median ($p=0.5$, target position $0.5\times30=15$) in
+`daily_revenue_eur`'s classes, the cumulative count reaches 12 after
+[500,600[ and 20 after [600,700[, so the median lies in [600,700[
+with $N_{\text{before}}=12$, $n_{\text{class}}=8$, $h=100$:
+$$
+Me \approx 600 + \frac{15-12}{8}\times 100 = 637.5,
+$$
+close to (though not identical to, because this formula uses grouped
+midpoint approximations while the true value uses the raw
+30 observations) the raw-data median of $643.63$ computed above —
+the small gap is exactly the information lost when data is grouped
+into classes.
+:::
+
+## Visual intuition
+
+The boxplot **is** the five-number summary drawn as a picture: the
+box's *width* is the IQR (how spread out the central 50% of days
+are), the line's *position inside the box* shows whether the median
+sits closer to $Q_1$ or $Q_3$ (a first hint of asymmetry, formalised
+in Session 8), and the *whisker lengths* show how far the more
+extreme (but non-outlier) days stretch beyond the box.
+
+## Interactive demo — boxplot from quartiles
+
+Drag each slider to set the five-number summary and watch the
+boxplot redraw. Starting values are "The Wandering Fork"'s verified
+statistics.
+
+```{shinylive-python}
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 560
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
+        .form-label {{ color: {FG} !important; }}
+        .form-range {{ accent-color: steelblue; width: 100%; }}
+        .info-box {{
+            background: #152119; border-radius: 6px; padding: 10px 14px;
+            margin: 8px 0; border-left: 3px solid steelblue;
+            font-family: monospace; font-size: 0.9em;
+        }}
+    """),
+    ui.h5("📦 Boxplot from the five-number summary", style=f"color:{FG}"),
+    ui.p(
+        "Move the sliders (kept in min ≤ Q1 ≤ median ≤ Q3 ≤ max order) "
+        "to see the boxplot and IQR/fences update live.",
+        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
+    ),
+    ui.input_slider("vmin", "Minimum:", min=300, max=900, value=407.59, step=1),
+    ui.input_slider("q1", "Q1:", min=300, max=900, value=506.60, step=1),
+    ui.input_slider("med", "Median:", min=300, max=900, value=643.63, step=1),
+    ui.input_slider("q3", "Q3:", min=300, max=900, value=729.99, step=1),
+    ui.input_slider("vmax", "Maximum:", min=300, max=900, value=886.56, step=1),
+    ui.output_ui("info"),
+    ui.output_plot("plot", height="300px"),
+)
+
+def server(input, output, session):
+    def ordered():
+        vals = sorted([input.vmin(), input.q1(), input.med(), input.q3(), input.vmax()])
+        return vals
+
+    @output
+    @render.ui
+    def info():
+        vmin, q1, med, q3, vmax = ordered()
+        iqr = q3 - q1
+        lo_fence = q1 - 1.5 * iqr
+        hi_fence = q3 + 1.5 * iqr
+        outlier = vmin < lo_fence or vmax > hi_fence
+        tag = "⚠️ min/max beyond fences — would be plotted as outliers" if outlier else "✅ no outliers"
+        return ui.HTML(f"""
+            <div class='info-box'>
+                IQR = {iqr:.2f} &nbsp;|&nbsp;
+                Lower fence = {lo_fence:.2f} &nbsp;|&nbsp;
+                Upper fence = {hi_fence:.2f}<br>{tag}
+            </div>
+        """)
+
+    @output
+    @render.plot
+    def plot():
+        vmin, q1, med, q3, vmax = ordered()
+
+        fig, ax = plt.subplots(figsize=(7, 2.6))
+        fig.patch.set_facecolor(BG)
+        ax.set_facecolor(BG)
+        for spine in ax.spines.values():
+            spine.set_edgecolor(FG)
+        ax.tick_params(colors=FG)
+
+        box = ax.bxp(
+            [{
+                'med': med, 'q1': q1, 'q3': q3,
+                'whislo': vmin, 'whishi': vmax,
+                'fliers': [],
+            }],
+            vert=False, widths=0.5, patch_artist=True,
+        )
+        for patch in box['boxes']:
+            patch.set_facecolor('steelblue')
+            patch.set_edgecolor(FG)
+        for line_group in ('whiskers', 'caps', 'medians'):
+            for line in box[line_group]:
+                line.set_color(FG)
+        ax.set_yticks([])
+        ax.set_xlabel("Value", color=FG)
+        ax.set_title("Boxplot from the five-number summary", color=FG)
+        ax.grid(alpha=0.15, color=FG, axis='x')
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)
+```
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 — Median position (click for solution)
+For an ordered series of $n=24$ values, at which position(s) do you
+read the median?
+
+**Solution.** $n=24$ is even, so the median is the average of the
+values at positions $n/2=12$ and $n/2+1=13$.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 — Outlier check (click for solution)
+A single unusually bad day of $\text{daily\_revenue\_eur} = 100$ is
+added to "The Wandering Fork"'s data. Using the fences computed above
+(171.52 / 1065.07, before recomputing the quartiles for the new
+$n=31$ sample), would this new day be flagged as an outlier?
+
+**Solution.** Yes: $100 < 171.52$ (the lower fence), so it would be
+flagged as a low outlier — a day that badly underperformed relative
+to the rest of the trading period.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 — Grouped-data interpolation (click for solution)
+Using the class table from Session 4, estimate $Q_1$ for
+`daily_revenue_eur` (target cumulative position $0.25\times30=7.5$).
+
+**Solution.** Cumulative count reaches 6 after [400,500[ and 12 after
+[500,600[, so $Q_1$ lies in [500,600[ with $N_{\text{before}}=6$,
+$n_{\text{class}}=6$, $h=100$:
+$$
+Q_1 \approx 500 + \frac{7.5-6}{6}\times100 = 525.
+$$
+This is close to, but not identical to, the raw-data value of 506.60
+— the difference is the same class-grouping approximation error
+discussed in this session's proof.
+:::

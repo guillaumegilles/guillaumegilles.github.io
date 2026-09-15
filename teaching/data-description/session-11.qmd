@@ -1,0 +1,283 @@
+---
+title: "Session 11 — Bivariate Numerical Summaries"
+subtitle: "Data Description | Part III"
+lang: en
+---
+
+Session 10's scatter plot showed a visible upward trend between
+temperature and revenue — but "visible" is not a number we can
+compare, report, or test. This session turns that picture into three
+precise numerical summaries: covariance, the correlation coefficient,
+and the least-squares regression line.
+
+## Learning objectives
+
+- Compute the covariance between two quantitative variables.
+- Compute and interpret the correlation coefficient $r$ and the
+  coefficient of determination $r^2$.
+- Compute the least-squares regression line and use it to predict a
+  value.
+- Use the interactive demo below to see how moving points changes
+  $r$ and the regression line live.
+
+## Theory
+
+::: {.callout-tip}
+#### Formula — covariance
+For two quantitative variables $X,Y$ observed on the same $n$
+individuals, with means $\bar{x},\bar{y}$, the **sample covariance**
+is
+$$
+\text{Cov}(X,Y) = \frac{1}{n-1}\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y}).
+$$
+A positive covariance means $X$ and $Y$ tend to move in the same
+direction; negative means opposite directions. Its unit (here,
+°C·€) makes it hard to judge the *strength* of the relationship
+directly — that is what $r$ is for.
+:::
+
+::: {.callout-tip}
+#### Formula — correlation coefficient
+$$
+r = \frac{\text{Cov}(X,Y)}{s_X\, s_Y}, \qquad -1 \le r \le 1.
+$$
+$r$ is covariance rescaled to be unit-free: $r$ near $+1$ means a
+strong positive linear relationship, near $-1$ a strong negative
+linear relationship, and near $0$ means little to no *linear*
+relationship (though a strong non-linear one could still exist).
+$r^2$, the **coefficient of determination**, is the share of $Y$'s
+variability that a linear relationship with $X$ "explains".
+:::
+
+::: {.callout-tip}
+#### Formula — least-squares regression line
+The line $\hat{y} = a + bx$ that minimises $\sum_i (y_i-\hat{y}_i)^2$
+has
+$$
+b = \frac{\text{Cov}(X,Y)}{s_X^2}, \qquad a = \bar{y} - b\,\bar{x}.
+$$
+$b$ (the slope) estimates how much $Y$ changes, on average, for a
+one-unit increase in $X$; $a$ (the intercept) is the predicted $Y$
+when $X=0$.
+:::
+
+## Worked example
+
+Using "The Wandering Fork"'s `temperature_c` ($X$) and
+`daily_revenue_eur` ($Y$), $n=30$, verified in `data-model.md`:
+
+| Statistic | Value |
+|---|---:|
+| Covariance | 252.81 |
+| Correlation $r$ | 0.621 |
+| $r^2$ | 0.386 |
+| Regression line | $\widehat{\text{revenue}} = -22.01 + 28.71\times\text{temperature\_c}$ |
+
+**Step 1 — covariance.** $\text{Cov}=252.81 > 0$: warmer days and
+higher revenue days do tend to coincide, confirming Session 10's
+scatter-plot impression numerically.
+
+**Step 2 — correlation.** $r=0.621$: a **moderate** positive linear
+relationship — clearly present, but far from perfect (a value near
+$r=1$ would mean the points fall almost exactly on a line).
+$r^2=0.386$: temperature alone "explains" about $38.6\%$ of the
+day-to-day variability in revenue; the remaining $61.4\%$ comes from
+other factors (weather details, day of week, customer traffic, …).
+
+**Step 3 — regression line.** $b=28.71$: each extra $1°C$ is
+associated with about €28.71 more revenue, on average. $a=-22.01$
+is the line's value at $\text{temperature\_c}=0$ — not a realistic
+trading day, so it should be read as a mathematical anchor for the
+line, not a real prediction. Predicting revenue on a $25°C$ day:
+$\widehat{\text{revenue}} = -22.01+28.71\times25 = 695.74$ €.
+
+## Using Excel
+
+| Concept | Excel function / steps |
+|---|---|
+| Covariance | `=COVARIANCE.S(range_x, range_y)` |
+| Correlation coefficient | `=CORREL(range_x, range_y)` |
+| Regression slope | `=SLOPE(range_y, range_x)` |
+| Regression intercept | `=INTERCEPT(range_y, range_x)` |
+| $r^2$ | `=RSQ(range_y, range_x)` (or $r^2$, squaring `CORREL`) |
+| Trend line on a scatter plot | Select a point on the chart → right-click → **Add Trendline** → **Linear**, tick "Display Equation" |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — the bounds $-1 \le r \le 1$ (click to expand)
+This follows from the **Cauchy–Schwarz inequality**. Writing
+$u_i = x_i-\bar{x}$ and $v_i=y_i-\bar{y}$,
+$$
+\left(\sum_{i=1}^n u_i v_i\right)^2 \;\le\; \left(\sum_{i=1}^n u_i^2\right)\left(\sum_{i=1}^n v_i^2\right).
+$$
+Dividing both sides by $\left(\sum u_i^2\right)\left(\sum v_i^2\right)$
+and taking square roots gives exactly
+$$
+\left|\frac{\sum_i u_i v_i}{\sqrt{\sum_i u_i^2}\sqrt{\sum_i v_i^2}}\right| \le 1,
+$$
+and the left-hand side is precisely $|r|$ once numerator and
+denominator are both divided by $n-1$. Equality ($|r|=1$) holds only
+when every point lies exactly on a line — the more scattered the
+points, the further $|r|$ falls below 1, which is exactly what "The
+Wandering Fork"'s $r=0.621$ (a real but imperfect trend) reflects.
+:::
+
+## Visual intuition
+
+$r$ measures how tightly the scatter-plot points cluster around a
+straight line: $|r|$ close to 1 means a thin, cigar-shaped cloud of
+points hugging the regression line; $|r|$ close to 0 means a round,
+shapeless cloud with no visible tilt. "The Wandering Fork"'s
+$r=0.621$ sits in between — a clearly tilted, but noticeably fat,
+cloud of points.
+
+## Interactive demo — scatter plot & correlation
+
+Drag any point to see the correlation coefficient and regression
+line update live. Starting positions are 8 days sampled from "The
+Wandering Fork" (`temperature_c`, `daily_revenue_eur`).
+
+```{shinylive-python}
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 560
+
+from shiny import App, render, ui, reactive
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+DAYS = [1, 2, 3, 6, 9, 14, 21, 28]
+TEMP0 = [21.9, 20.4, 16.4, 21.1, 23.6, 24.3, 23.5, 24.5]
+REV0 = [460.48, 500.02, 418.65, 785.79, 669.00, 886.56, 856.52, 841.83]
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
+        .form-label {{ color: {FG} !important; }}
+        .form-range {{ accent-color: steelblue; width: 100%; }}
+        .info-box {{
+            background: #152119; border-radius: 6px; padding: 10px 14px;
+            margin: 8px 0; border-left: 3px solid steelblue;
+            font-family: monospace; font-size: 0.9em;
+        }}
+    """),
+    ui.h5("📈 Scatter plot & correlation — 8 sampled days", style=f"color:{FG}"),
+    ui.p(
+        "Move a point's temperature or revenue and watch r, r², and "
+        "the regression line update live.",
+        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
+    ),
+    ui.input_select("point", "Point to edit (day):", {str(d): f"Day {d}" for d in DAYS}),
+    ui.input_slider("temp", "Temperature (°C):", min=10, max=32, value=21.9, step=0.1),
+    ui.input_slider("rev", "Revenue (€):", min=350, max=950, value=460.48, step=1),
+    ui.output_ui("info"),
+    ui.output_plot("plot", height="340px"),
+)
+
+def server(input, output, session):
+    temps = reactive.Value(list(TEMP0))
+    revs = reactive.Value(list(REV0))
+
+    @reactive.Effect
+    def _update_point():
+        idx = DAYS.index(int(input.point()))
+        t, r = list(temps()), list(revs())
+        t[idx] = input.temp()
+        r[idx] = input.rev()
+        temps.set(t)
+        revs.set(r)
+
+    @reactive.Effect
+    @reactive.event(input.point)
+    def _reset_sliders():
+        idx = DAYS.index(int(input.point()))
+        ui.update_slider("temp", value=temps()[idx])
+        ui.update_slider("rev", value=revs()[idx])
+
+    @output
+    @render.ui
+    def info():
+        x = np.array(temps())
+        y = np.array(revs())
+        r = float(np.corrcoef(x, y)[0, 1])
+        b = np.cov(x, y, ddof=1)[0, 1] / x.var(ddof=1)
+        a = y.mean() - b * x.mean()
+        return ui.HTML(f"""
+            <div class='info-box'>
+                r = <strong style='color:darkorange'>{r:.3f}</strong> &nbsp;|&nbsp;
+                r&sup2; = <strong style='color:darkorange'>{r**2:.3f}</strong><br>
+                Regression line: revenue = {a:.2f} + {b:.2f} × temperature
+            </div>
+        """)
+
+    @output
+    @render.plot
+    def plot():
+        x = np.array(temps())
+        y = np.array(revs())
+        b = np.cov(x, y, ddof=1)[0, 1] / x.var(ddof=1)
+        a = y.mean() - b * x.mean()
+
+        fig, ax = plt.subplots(figsize=(7, 4))
+        fig.patch.set_facecolor(BG)
+        ax.set_facecolor(BG)
+        for spine in ax.spines.values():
+            spine.set_edgecolor(FG)
+        ax.tick_params(colors=FG)
+
+        ax.scatter(x, y, color='steelblue', zorder=5, s=70)
+        xs = np.linspace(min(x) - 1, max(x) + 1, 100)
+        ax.plot(xs, a + b * xs, color='darkorange', lw=2, label=f'ŷ = {a:.1f} + {b:.1f}x')
+        ax.set_xlabel("Temperature (°C)", color=FG)
+        ax.set_ylabel("Daily revenue (€)", color=FG)
+        ax.set_title("The Wandering Fork — temperature vs. revenue", color=FG)
+        ax.legend(fontsize=8.5, facecolor=BG, edgecolor='none', labelcolor=FG)
+        ax.grid(alpha=0.15, color=FG)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)
+```
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 — Interpreting $r^2$ (click for solution)
+If a different pair of variables had $r=0.9$, what would $r^2$ be,
+and how would you interpret it in one sentence?
+
+**Solution.** $r^2 = 0.9^2 = 0.81$: about $81\%$ of one variable's
+variability is explained by its linear relationship with the other —
+a much tighter fit than "The Wandering Fork"'s $38.6\%$.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 — Prediction from the regression line (click for solution)
+Using $\widehat{\text{revenue}} = -22.01+28.71\times\text{temperature\_c}$,
+predict revenue for a $30°C$ day, and state one reason the true value
+might differ.
+
+**Solution.** $\widehat{\text{revenue}} = -22.01+28.71\times30 =
+839.29$ €. The true value could differ because temperature explains
+only $38.6\%$ of revenue's variability — weather category, day of the
+week, or random daily fluctuation could all push the actual result
+above or below this prediction.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 — Sign of the slope vs. sign of $r$ (click for solution)
+Explain, using the formulas above, why the regression slope $b$ and
+the correlation $r$ always have the same sign.
+
+**Solution.** Both $b=\text{Cov}(X,Y)/s_X^2$ and
+$r=\text{Cov}(X,Y)/(s_X s_Y)$ have $\text{Cov}(X,Y)$ in the
+numerator, and $s_X^2$, $s_X$, $s_Y$ are all non-negative — so the
+sign of both $b$ and $r$ is entirely determined by the sign of the
+covariance.
+:::

@@ -1,0 +1,167 @@
+---
+title: "Session 3 — Univariate Graphical Representation I"
+subtitle: "Data Description | Part II"
+---
+
+A spreadsheet full of raw observations is hard to read at a glance —
+the first job of descriptive statistics is to turn a long column of
+values into a short, informative summary. This session introduces the
+vocabulary of statistical description (population, individual,
+variable, modality) and shows how to summarise and chart a
+**qualitative** variable.
+
+## Learning objectives
+
+- Identify a population, a statistical individual, and the nature of
+  a variable (qualitative nominal/ordinal, quantitative
+  discrete/continuous).
+- Build a frequency table (counts and percentages) for a qualitative
+  variable.
+- Choose between a bar chart and a pie chart, and build either one.
+- Read "The Wandering Fork" case study's opening dataset.
+
+## Theory
+
+::: {.callout-note}
+#### Definition — population, individual, variable
+A **population** is the set of elements being studied; it is
+**finite** if we can determine the exact number of individuals, and
+**infinite** otherwise. A **statistical individual** is one element
+of the population. A **variable** is a characteristic observed on
+each individual (e.g., weather, revenue).
+:::
+
+::: {.callout-note}
+#### Definition — nature of a variable
+| Nature | Description | Example |
+|---|---|---|
+| Qualitative — nominal | Categories with no natural order | Weather (Sunny/Cloudy/Rainy) |
+| Qualitative — ordinal | Categories with a natural order | Satisfaction (low/medium/high) |
+| Quantitative — discrete | Countable numeric values | Customer count |
+| Quantitative — continuous | Any value in an interval | Daily revenue (€) |
+:::
+
+::: {.callout-tip}
+#### Formula — frequency table
+For a qualitative variable with $k$ modalities (categories) observed
+on $n$ individuals, the modality $i$ has an **absolute frequency**
+(count) $n_i$ and a **relative frequency**
+$$
+f_i = \frac{n_i}{n},
+$$
+usually reported as a percentage. By construction,
+$\sum_{i=1}^{k} n_i = n$ and $\sum_{i=1}^{k} f_i = 1$ (this is exactly
+the "percentages sum to 100%" property proved in Session 1, now
+applied to *categories* instead of order lines).
+:::
+
+## The case study: "The Wandering Fork"
+
+Starting now, every worked example uses **"The Wandering Fork"**, a
+fictional food-truck business. Over a 30-day trading period ($n=30$
+days) it recorded, among other things, the day's `weather`
+(qualitative: Sunny / Cloudy / Rainy) and `daily_revenue_eur`
+(quantitative, used from Session 4 onward). All figures come from the
+canonical dataset verified in `data-model.md`.
+
+## Worked example
+
+Frequency table for the qualitative variable `weather` ($n=30$ days):
+
+| Category | Count $n_i$ | $f_i$ (%) |
+|---|---:|---:|
+| Sunny | 13 | 43.3% |
+| Cloudy | 12 | 40.0% |
+| Rainy | 5 | 16.7% |
+| **Total** | **30** | **100.0%** |
+
+**Step 1 — counts.** Each day's `weather` value is tallied: 13 Sunny
+days, 12 Cloudy days, 5 Rainy days; $13+12+5=30=n$. ✓
+
+**Step 2 — relative frequencies.** $f_{\text{Sunny}} = 13/30 =
+43.3\%$, $f_{\text{Cloudy}} = 12/30 = 40.0\%$, $f_{\text{Rainy}} =
+5/30 = 16.7\%$; the three sum to $100.0\%$.
+
+**Step 3 — choosing a chart.** `weather` is nominal (no natural
+order among Sunny/Cloudy/Rainy), with only 3 modalities: both a
+**bar chart** (one bar per category, height = count or frequency)
+and a **pie chart** (one slice per category, angle $= f_i \times
+360°$) are appropriate. Sunny's slice spans
+$0.433 \times 360° \approx 156°$; Cloudy's spans $\approx 144°$;
+Rainy's spans $\approx 60°$.
+
+## Using Excel
+
+| Concept | Excel function / steps |
+|---|---|
+| Count occurrences of a category | `=COUNTIF(range, "Sunny")` |
+| Count with several criteria | `=COUNTIFS(range1, criterion1, range2, criterion2, …)` |
+| Relative frequency | `=count/COUNT(range)` (or `/COUNTA` for text data) |
+| Bar chart | Select the summary table → **Insert → Chart → Clustered Column** |
+| Pie chart | Select the summary table → **Insert → Chart → Pie** |
+| Quick summary alternative | **Insert → PivotTable**, with `weather` in Rows and `Count of weather` in Values |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — relative frequencies always sum to 1 (click to expand)
+Let a qualitative variable have $k$ modalities with counts
+$n_1, \dots, n_k$, and let $n = \sum_{i=1}^{k} n_i$ be the total
+number of individuals (every individual falls into exactly one
+modality, so the counts partition the population — the same
+partition idea used for PivotTable groups in Session 2). Then
+$$
+\sum_{i=1}^{k} f_i
+= \sum_{i=1}^{k} \frac{n_i}{n}
+= \frac{1}{n}\sum_{i=1}^{k} n_i
+= \frac{n}{n}
+= 1.
+$$
+For "The Wandering Fork": $f_{\text{Sunny}}+f_{\text{Cloudy}}+f_{\text{Rainy}}
+= 0.433+0.400+0.167 = 1.000$. ✓
+:::
+
+## Visual intuition
+
+The pie chart's geometry makes the frequency-sum-to-1 property
+*visible*: the three slices' angles, $156°+144°+60°=360°$, always
+complete a full circle no matter how the 30 days split across
+Sunny/Cloudy/Rainy — exactly as the algebra above guarantees.
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 — Frequency table (click for solution)
+"The Wandering Fork" also records `day_of_week`. Suppose, out of the
+30 days, exactly 5 fall on each weekday (Monday–Friday) except
+Saturday and Sunday, which occur less often because the truck trades
+mainly on weekdays — say 3 Saturdays and 2 Sundays (a hypothetical
+split for practice, not from the real 30-day calendar). What is the
+relative frequency of Monday?
+
+**Solution.** $f_{\text{Monday}} = 5/30 \approx 16.7\%$.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 — Choosing the right chart (click for solution)
+Which chart type(s) would you use for `weather`, and why would a
+**line chart** be a poor choice?
+
+**Solution.** A bar chart or a pie chart, because `weather` is
+nominal qualitative with no meaningful order between Sunny, Cloudy,
+and Rainy. A line chart implies a continuous progression *between*
+consecutive categories, which does not exist here — connecting
+"Sunny" to "Cloudy" to "Rainy" with a line would suggest an ordering
+that isn't real.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 — Pie-slice angle (click for solution)
+What angle does Cloudy's pie slice occupy, and what percentage of the
+circle's area does it represent?
+
+**Solution.** Angle $= f_{\text{Cloudy}} \times 360° = 0.400 \times
+360° = 144°$. Since a pie chart's slice area is proportional to its
+angle, Cloudy also represents $40.0\%$ of the circle's area — matching
+its relative frequency exactly, by construction.
+:::

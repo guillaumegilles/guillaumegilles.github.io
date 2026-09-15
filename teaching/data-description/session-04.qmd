@@ -1,0 +1,252 @@
+---
+title: "Session 4 — Univariate Graphical Representation II"
+subtitle: "Data Description | Part II"
+---
+
+Session 3's frequency table showed that "The Wandering Fork" traded
+on 13 Sunny, 12 Cloudy, and 5 Rainy days — a clean summary, because
+`weather` only has three possible categories. Qualitative categories
+are easy to chart with bars and pie slices this way — but a
+**continuous quantitative** variable like daily revenue needs a
+different approach, because almost every observation is a distinct
+value. This session covers how to group continuous data into classes
+and represent it with a histogram, a frequency polygon, and a
+cumulative-frequency curve.
+
+## Learning objectives
+
+- Explain why raw continuous data must be grouped into classes before
+  it can be summarised in a table.
+- Build a class frequency table with counts, relative frequencies, and
+  cumulative frequencies.
+- Build and interpret a histogram, a frequency polygon, and a
+  cumulative-frequency curve.
+- Use the interactive demo below to see how bin width changes a
+  histogram's shape.
+
+## Theory
+
+::: {.callout-note}
+#### Definition — class (grouped) frequency table
+When a continuous variable's individual values are (almost) all
+different, a plain frequency table brings no useful summary. The
+fix is to split the range of values into $k$ contiguous **classes**
+(intervals) of width $h$, then count how many observations fall into
+each class. Classes are conventionally written half-open,
+$[L_i, L_i+h[$, so every value belongs to exactly one class.
+:::
+
+::: {.callout-tip}
+#### Formula — cumulative frequency
+The **increasing cumulative frequency** up to class $i$ is
+$$
+N_i^{+} = \sum_{j=1}^{i} n_j, \qquad F_i^{+} = \frac{N_i^{+}}{n},
+$$
+i.e. the running total of counts (or relative frequencies) from the
+first class up to and including class $i$. It answers "how many/what
+share of observations are below the upper bound of class $i$?" and is
+what the cumulative-frequency curve plots.
+:::
+
+::: {.callout-note}
+#### Definition — histogram
+A **histogram** represents a grouped continuous variable with
+adjacent rectangles, one per class, whose **area** (not just height)
+is proportional to the class's count. For equal-width classes, area
+proportional to count is the same as height proportional to count;
+for unequal widths, the height must be adjusted
+($\text{height} = n_i / h_i$, a *density*) so that area stays
+correct — a common exam trap.
+:::
+
+## Worked example
+
+Class frequency table for `daily_revenue_eur` (class width $h=100$,
+$n=30$), from `data-model.md`:
+
+| Class (€) | $n_i$ | $N_i^{+}$ | $f_i$ (%) | $F_i^{+}$ (%) |
+|---|---:|---:|---:|---:|
+| [400, 500[ | 6 | 6 | 20.0% | 20.0% |
+| [500, 600[ | 6 | 12 | 20.0% | 40.0% |
+| [600, 700[ | 8 | 20 | 26.7% | 66.7% |
+| [700, 800[ | 7 | 27 | 23.3% | 90.0% |
+| [800, 900[ | 3 | 30 | 10.0% | 100.0% |
+
+**Step 1 — histogram.** All five classes share width $h=100$, so bar
+heights are simply the counts: 6, 6, 8, 7, 3. The tallest bar,
+[600,700[, is where the largest share of trading days fall.
+
+**Step 2 — frequency polygon.** Plotting each class's **midpoint**
+($450, 550, 650, 750, 850$) against its count and joining the points
+with straight lines gives the frequency polygon — the same
+information as the histogram, but as a line, useful for comparing two
+distributions on one chart.
+
+**Step 3 — cumulative-frequency curve.** Plotting each class's
+*upper bound* (500, 600, 700, 800, 900) against $F_i^{+}$
+(20.0%, 40.0%, 66.7%, 90.0%, 100.0%) and joining with straight lines
+gives a non-decreasing curve. Reading it at $600$ tells us $40.0\%$ of
+days earned under €600.
+
+## Using Excel
+
+| Concept | Excel function / steps |
+|---|---|
+| Count values in a class | `=COUNTIFS(range, ">=400", range, "<500")` |
+| Relative frequency | `=count/COUNT(range)` |
+| Cumulative frequency | Running `SUM` down the $f_i$ column, or `=COUNTIF(range,"<"&upper_bound)/COUNT(range)` |
+| Histogram | Select the class table → **Insert → Chart → Histogram** (or **Insert → Statistical Chart → Histogram**) |
+| Frequency polygon / cumulative curve | Select midpoints/bounds and $f_i$/$F_i^{+}$ → **Insert → Chart → Line** |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — the cumulative-frequency curve must reach 100% (click to expand)
+By definition $N_k^{+} = \sum_{j=1}^{k} n_j$, summed over *all* $k$
+classes. Since the classes partition all $n$ observations (every
+observation falls in exactly one class),
+$$
+N_k^{+} = \sum_{j=1}^{k} n_j = n
+\quad\Longrightarrow\quad
+F_k^{+} = \frac{N_k^{+}}{n} = 1 = 100\%.
+$$
+For "The Wandering Fork": $N_5^{+} = 6+6+8+7+3 = 30 = n$, so
+$F_5^{+} = 100.0\%$ — the cumulative curve must always finish at the
+top-right corner of the chart, whatever the class boundaries are.
+:::
+
+## Visual intuition
+
+A histogram is literally a bar-chart-shaped *area diagram*: each
+rectangle's area (height × width) represents that class's share of
+the 30 days. When all classes share the same width, taller means
+"more common" in the ordinary sense — but as soon as widths differ,
+only *area* (not height) can be compared directly across classes.
+
+## Interactive demo — build your own histogram
+
+Drag the slider to change the bin width and see how the same 30
+"Wandering Fork" `daily_revenue_eur` values regroup into wider or
+narrower classes.
+
+```{shinylive-python}
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 520
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+REVENUE = [
+    460.48, 500.02, 418.65, 508.80, 646.19, 785.79, 719.66, 478.04,
+    669.00, 666.42, 614.83, 520.99, 725.66, 886.56, 691.50, 744.92,
+    614.75, 700.41, 692.60, 764.59, 856.52, 641.07, 407.59, 437.31,
+    434.58, 587.06, 742.99, 841.83, 559.53, 531.91,
+]
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
+        .form-label {{ color: {FG} !important; }}
+        .form-range {{ accent-color: steelblue; width: 100%; }}
+        .info-box {{
+            background: #152119; border-radius: 6px; padding: 10px 14px;
+            margin: 8px 0; border-left: 3px solid steelblue;
+            font-family: monospace; font-size: 0.9em;
+        }}
+    """),
+    ui.h5("📊 Histogram builder — The Wandering Fork's daily revenue (n = 30)", style=f"color:{FG}"),
+    ui.p(
+        "Change the bin width and watch the same 30 days regroup into "
+        "wider or narrower classes.",
+        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
+    ),
+    ui.input_slider("bin_width", "Bin width (€):", min=25, max=200, value=100, step=25),
+    ui.output_ui("info"),
+    ui.output_plot("plot", height="360px"),
+)
+
+def server(input, output, session):
+    @output
+    @render.ui
+    def info():
+        w = input.bin_width()
+        lo = 400 - (400 % w)
+        hi = 900 + (w - (900 % w)) % w
+        n_bins = int(round((hi - lo) / w))
+        return ui.HTML(f"""
+            <div class='info-box'>
+                Bin width = <strong style='color:darkorange'>{w}</strong> € &rarr;
+                <strong style='color:darkorange'>{n_bins}</strong> classes,
+                from {lo} to {hi} €.
+            </div>
+        """)
+
+    @output
+    @render.plot
+    def plot():
+        w = input.bin_width()
+        lo = 400 - (400 % w)
+        hi = 900 + (w - (900 % w)) % w
+        bins = np.arange(lo, hi + w, w)
+
+        fig, ax = plt.subplots(figsize=(7, 4))
+        fig.patch.set_facecolor(BG)
+        ax.set_facecolor(BG)
+        for spine in ax.spines.values():
+            spine.set_edgecolor(FG)
+        ax.tick_params(colors=FG)
+
+        counts, edges, _ = ax.hist(
+            REVENUE, bins=bins, color='steelblue', edgecolor=BG, alpha=0.9
+        )
+        ax.set_xlabel("Daily revenue (€)", color=FG)
+        ax.set_ylabel("Number of days", color=FG)
+        ax.set_title("The Wandering Fork — daily revenue histogram", color=FG)
+        ax.grid(alpha=0.15, color=FG, axis='y')
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)
+```
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 — Reading the cumulative curve (click for solution)
+Using the worked-example table, what percentage of "The Wandering
+Fork"'s trading days earned **at least** €700?
+
+**Solution.** $F_{[700,800[}^{+}$ upper bound at 800 is $90.0\%$
+below €800, so above €700 is $100\% - F^{+}(700) = 100\% - 66.7\% =
+33.3\%$ — matching the [700,800[ and [800,900[ classes directly:
+$(7+3)/30 = 33.3\%$.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 — Unequal class widths (click for solution)
+Suppose a fourth class merged [700,800[ and [800,900[ into a single
+[700,900[ class of width 200 with count 10. What height should its
+histogram bar have, relative to the original [400,500[ bar (width
+100, count 6), so both bars' *areas* are comparable?
+
+**Solution.** Density $= n_i/h_i$. [700,900[: $10/200 = 0.05$;
+[400,500[: $6/100 = 0.06$. The merged bar must be drawn at height
+$0.05$ (not $10$), roughly $83\%$ of [400,500[’s height, even though
+it contains more days — because it is twice as wide.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 — Frequency polygon midpoint (click for solution)
+What is the midpoint of the class [600, 700[, and what count is
+plotted there on the frequency polygon?
+
+**Solution.** Midpoint $= (600+700)/2 = 650$; the frequency polygon
+plots the point $(650, 8)$, since $n_{[600,700[} = 8$.
+:::

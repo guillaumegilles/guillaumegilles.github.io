@@ -1,0 +1,228 @@
+---
+title: "Session 9 — Univariate Practical-Work Synthesis"
+subtitle: "Data Description | Part II"
+---
+
+Session 8 ended with a single number that settled the "is this data
+lopsided?" question for `daily_revenue_eur`: a skewness of $+0.034$,
+close enough to zero to call the distribution near-symmetric, with
+only a very mild right-leaning tail. That number, though, was the
+*last* piece of a much bigger picture. This session's mission is to
+put the whole picture together: starting from the same raw 30 days of
+"The Wandering Fork" data, we rebuild — in one continuous Excel
+workflow, with no new theory — every indicator from Sessions 3
+through 8, from the class table all the way to skewness. It is
+exactly the kind of "compute everything for this variable" question
+that shows up on the exam, and Part II of the course closes here
+before Part III turns to *two* variables at once in Session 10.
+
+## Learning objectives
+
+- Build a complete descriptive-statistics summary for a quantitative
+  variable in Excel, from raw data to shape indicators, without
+  external guidance.
+- Correctly sequence the computation: class table → position
+  indicators → central tendency → dispersion → shape.
+- Recall, without re-deriving, every formula from Sessions 3–8 and
+  match it to the Excel function that computes it.
+- Cross-check the internal consistency of a full set of results (e.g.
+  $Q_1 \le Me \le Q_3$) as a way of catching data-entry or formula
+  mistakes before trusting a summary.
+
+## Theory recap
+
+No new formulas are introduced in this session. The table below is a
+compact reference to everything from Sessions 3–8, re-derivations
+omitted (see the linked session for the full derivation).
+
+::: {.callout-tip}
+#### Recap — every Session 3–8 formula, in one table
+| Indicator | Formula | What it means |
+|---|---|---|
+| Class frequency ($n_i$, $f_i$, $N_i^{+}$, $F_i^{+}$) | $N_i^{+}=\sum_{j\le i} n_j,\; F_i^{+}=N_i^{+}/n$ (Session 4) | Count / share of observations in, and up to, class $i$ |
+| Quartiles (exclusive) | $\text{rank}(Q_p)=p(n+1)$ (Session 5) | Values splitting the ordered data into quarters |
+| $IQR$ and boxplot fences | $IQR=Q_3-Q_1;\; \text{fences}=Q_1-1.5\,IQR,\; Q_3+1.5\,IQR$ (Session 5) | Central-50% spread; range beyond which a value is an outlier |
+| Mean | $\bar{x}=\frac{1}{n}\sum_{i=1}^n x_i$ (Session 6) | Arithmetic average — the "balance point" of the data |
+| Grouped mode | $Mo=L+h\cdot\dfrac{f_1-f_0}{(f_1-f_0)+(f_1-f_2)}$ (Session 6) | Estimated most frequent value, interpolated within the modal class |
+| Sample variance / std. dev. | $s^2=\frac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})^2,\; s=\sqrt{s^2}$ (Session 7) | Average (squared) distance of observations from the mean |
+| Coefficient of variation | $CV=s/\bar{x}\times 100\%$ (Session 7) | Unit-free relative dispersion, for comparing across scales |
+| Skewness (Fisher-Pearson) | $g_1=\dfrac{\frac{1}{n}\sum_{i=1}^n(x_i-\bar{x})^3}{s^3}$ (Session 8) | Direction and strength of asymmetry around the mean |
+:::
+
+## Worked example
+
+Every number below comes straight from `data-model.md`'s verified
+"Wandering Fork" statistics for `daily_revenue_eur` ($n=30$) — nothing
+is recomputed or re-invented, only re-assembled into a single
+workflow.
+
+**Step 1 — frequency and class table.** With `daily_revenue_eur`
+almost entirely distinct values, we group it into five classes of
+width $h=100$ using `=COUNTIFS(range,">="&L,range,"<"&L+100)` for each
+class, then divide by `=COUNT(range)` for relative frequencies and
+run a cumulative `SUM` down the column:
+
+| Class (€) | $n_i$ | $f_i$ (%) | $F_i^{+}$ (%) |
+|---|---:|---:|---:|
+| [400, 500[ | 6 | 20.0% | 20.0% |
+| [500, 600[ | 6 | 20.0% | 40.0% |
+| [600, 700[ | 8 | 26.7% | 66.7% |
+| [700, 800[ | 7 | 23.3% | 90.0% |
+| [800, 900[ | 3 | 10.0% | 100.0% |
+
+**Step 2 — quartiles and boxplot.** `=QUARTILE.EXC(range,1)`,
+`=MEDIAN(range)`, and `=QUARTILE.EXC(range,3)` give
+$Q_1=506.60$, $Me=643.63$, $Q_3=729.99$. Then
+$IQR=Q_3-Q_1=223.39$, lower fence $=Q_1-1.5\,IQR=171.52$, upper fence
+$=Q_3+1.5\,IQR=1065.07$. With `=MIN(range)`$=407.59$ and
+`=MAX(range)`$=886.56$ both inside the fences, the boxplot shows
+**zero outliers**.
+
+**Step 3 — mean and mode.** `=AVERAGE(range)` gives
+$\bar{x}=628.34$. The raw data has no exactly-repeated value, so we
+read the mode off the Step 1 class table instead: the modal class is
+[600,700[ ($f_1=8$), flanked by [500,600[ ($f_0=6$) and [700,800[
+($f_2=7$), giving
+$$
+Mo = 600 + 100\times\frac{8-6}{(8-6)+(8-7)} = 600+100\times\frac{2}{3}
+\approx 666.67.
+$$
+
+**Step 4 — dispersion.** `=VAR.S(range)` gives
+$s^2=18{,}793.33$; `=STDEV.S(range)` gives $s=137.09$; and
+$CV=s/\bar{x}\times100\% = 137.09/628.34\times100\% = 21.82\%$ — a
+moderate, not extreme, day-to-day variability relative to the mean.
+
+**Step 5 — skewness.** `=SKEW(range)` returns $+0.034$: essentially
+symmetric, with only a very mild right-hand tail (a small number of
+unusually good days, rather than unusually bad ones).
+
+**Final summary table — every indicator, one place:**
+
+| Statistic | Value |
+|---|---:|
+| $n$ | 30 |
+| Min / Max | 407.59 / 886.56 |
+| Range | 478.97 |
+| $Q_1$ | 506.60 |
+| $Me\;(=Q_2)$ | 643.63 |
+| $Q_3$ | 729.99 |
+| $IQR$ | 223.39 |
+| Lower / upper fence | 171.52 / 1065.07 |
+| Outliers | 0 |
+| Mean $\bar{x}$ | 628.34 |
+| Mode $Mo$ (grouped) | $\approx 666.67$ |
+| Sample variance $s^2$ | 18,793.33 |
+| Sample std. dev. $s$ | 137.09 |
+| Coefficient of variation $CV$ | 21.82% |
+| Skewness $g_1$ | +0.034 |
+
+## Using Excel
+
+| Excel function | Used for |
+|---|---|
+| `COUNTIFS` | Counting observations within each class's bounds (Step 1) |
+| `COUNT` | Total $n$, used as the denominator for relative frequencies |
+| `MIN` / `MAX` | Extremes, used for the range and for the outlier check |
+| `QUARTILE.EXC` | $Q_1$, $Q_2/Me$, and $Q_3$ (Step 2) |
+| `MEDIAN` | Cross-check on $Q_2$ |
+| `AVERAGE` | Mean $\bar{x}$ (Step 3) |
+| `VAR.S` | Sample variance $s^2$ (Step 4) |
+| `STDEV.S` | Sample standard deviation $s$ (Step 4) |
+| `SKEW` | Sample skewness $g_1$ (Step 5) |
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — why $Q_1 \le Me \le Q_3$ always holds (click to expand)
+Quartiles are defined by their **rank** in the ordered data:
+$\text{rank}(Q_p) = p\,(n+1)$ for $p=0.25, 0.5, 0.75$ (Session 5).
+Since $\text{rank}$ is an increasing function of $p$, and
+$0.25 < 0.5 < 0.75$, it follows immediately that
+$$
+\text{rank}(Q_1) < \text{rank}(Q_2) < \text{rank}(Q_3).
+$$
+A higher rank in an *ordered* series always corresponds to a value
+that is greater than or equal to every value at a lower rank (ties
+aside), so
+$$
+Q_1 \le Q_2\,(=Me) \le Q_3
+$$
+by construction — this is not a property that needs to be checked
+case by case, it is guaranteed by the definition of a quantile applied
+to sorted data. It is nonetheless a useful sanity check: if a
+computed $Q_1$ ever turned out to be *larger* than $Me$, that would
+signal a formula or range-selection error, not a property of the
+data.
+
+**Numerical confirmation for "The Wandering Fork":**
+$$
+506.60 \;\le\; 643.63 \;\le\; 729.99 \quad \checkmark
+$$
+:::
+
+## Visual/geometric intuition
+
+Two pictures, already built in earlier sessions, cover everything in
+this session's final summary table. The **histogram** (Session 4)
+shows the class table's shape — how the 30 days distribute across
+the five €100 revenue bands, and where the bulk of trading days sit.
+The **boxplot** (Session 5) shows the five-number summary and the
+fences — the median's position inside the box, the box's width
+($IQR$), and the whisker reach, all in one glance. Between them,
+every row of the numerical summary table has a matching visual: the
+mean and mode sit near the histogram's peak, the quartiles and
+fences are literally the boxplot's box and whiskers, and the mild
+right skew shows up as a slightly longer right whisker/tail on both
+charts. Numbers and pictures should always tell the same story — when
+they don't, that's a sign to recheck the calculation.
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 (click for solution)
+Without recomputing anything, use only the final summary table above
+to determine: (a) is `daily_revenue_eur` closer to symmetric or
+strongly skewed? (b) does the dataset contain any outliers? Justify
+each answer with one specific number from the table.
+
+**Solution.** (a) Skewness $g_1=+0.034$ is very close to $0$, so the
+distribution is close to symmetric (with only a very mild right
+lean). (b) No outliers: the observed minimum (407.59) and maximum
+(886.56) both lie inside the boxplot fences (171.52 and 1065.07,
+respectively), and the summary table records 0 outliers directly.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 (click for solution)
+A classmate computes $CV = 137.09/643.63\times100\%$ instead of using
+the mean, getting $21.30\%$ instead of the correct $21.82\%$. What
+mistake did they make, and which value should have been in the
+denominator?
+
+**Solution.** The coefficient of variation is defined as
+$CV = s/\bar{x}\times100\%$ — the denominator must be the **mean**
+$\bar{x}=628.34$, not the median $Me=643.63$. Substituting the
+correct mean gives $137.09/628.34\times100\% = 21.82\%$, matching the
+verified value. Mean and median are close here (since the data is
+near-symmetric), which is exactly why the mistake produces a similar
+but still incorrect number — a good reminder to double-check which
+Excel cell a formula actually points to.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 (click for solution)
+Using only the class table (Step 1) and the grouped-mode formula from
+Session 6, verify that the modal class identification is consistent
+with the mean and median both falling inside the same class,
+[600,700[. Is that expected for a near-symmetric distribution?
+
+**Solution.** The modal class [600,700[ has the highest frequency
+($n=8$, $f=26.7\%$). The mean ($\bar{x}=628.34$) and the median
+($Me=643.63$) both fall inside [600,700[ as well. For a distribution
+that is close to symmetric (skewness $\approx 0$, Session 8), mean,
+median, and mode are expected to sit close together, near the centre
+of the distribution — which is exactly what happens here: all three
+central-tendency measures land in, or very near, the same €100-wide
+class.
+:::
