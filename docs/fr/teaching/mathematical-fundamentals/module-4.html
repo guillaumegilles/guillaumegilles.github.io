@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Guillaume Gilles - 4️⃣ Introduction aux outils de mathématiques financières</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../fr/teaching/mathematical-fundamentals/module-5.html" rel="next">
+<link href="../../../fr/teaching/mathematical-fundamentals/module-3.html" rel="prev">
+<link href="../../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Pas de résultats",
+    "search-matching-documents-text": "documents trouvés",
+    "search-copy-link-title": "Copier le lien vers la recherche",
+    "search-hide-matches-text": "Cacher les correspondances additionnelles",
+    "search-more-match-text": "correspondance de plus dans ce document",
+    "search-more-matches-text": "correspondances de plus dans ce document",
+    "search-clear-button-title": "Effacer",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Annuler",
+    "search-submit-button-title": "Envoyer",
+    "search-label": "Recherche"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Guillaume Gilles - 4️⃣ Introduction aux outils de mathématiques financières">
+<meta property="og:description" content="Étudiez les suites numériques — définition générale, suites arithmétiques et suites géométriques — afin de comprendre et de modéliser des phénomènes qui évoluent régulièrement dans le temps, tels que l’épargne, les emprunts et les indices de prix.">
+<meta property="og:image" content="https://ggilles.dev/fr/teaching/mathematical-fundamentals/assets/og-image.jpg">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - 4️⃣ Introduction aux outils de mathématiques financières">
+<meta name="twitter:description" content="Étudiez les suites numériques — définition générale, suites arithmétiques et suites géométriques — afin de comprendre et de modéliser des phénomènes qui évoluent régulièrement dans le temps, tels que l’épargne, les emprunts et les indices de prix.">
+<meta name="twitter:image" content="https://ggilles.dev/fr/teaching/mathematical-fundamentals/assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Guillaume Gilles</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Recherche"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+    <div class="dropdown">
+      <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../../teaching/mathematical-fundamentals/index.html">
+            🇬🇧 English
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../../fr/teaching/mathematical-fundamentals/index.html">
+            🇫🇷 Français
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../fr/teaching/mathematical-fundamentals/module-4.html">4️⃣ Introduction aux outils de mathématiques financières</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Basculer la barre latérale" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fondements Mathématiques et Analyse de Données</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/module-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1️⃣ Calculs mathématiques essentiels pour l’économie et la gestion</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/module-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2️⃣ Maîtriser les équations pour mieux décider</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/module-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3️⃣ Analyse de courbes en économie et gestion</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/module-4.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">4️⃣ Introduction aux outils de mathématiques financières</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/module-5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5️⃣ Application des mathématiques financières</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/module-6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">6️⃣ Fonctions utiles en économie et gestion</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/module-7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">7️⃣ Introduction à l’optimisation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/module-8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">8️⃣ Révision et préparation à l’examen final</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text"><strong>Ressources</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Basculer la section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossaire</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/formula-sheet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aide-mémoire</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../fr/teaching/mathematical-fundamentals/learning-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide d’apprentissage</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Sur cette page</h2>
+   
+  <ul>
+  <li><a href="#activité-diagnostique" id="toc-activité-diagnostique" class="nav-link active" data-scroll-target="#activité-diagnostique">Activité diagnostique</a></li>
+  <li><a href="#problème-dintroduction" id="toc-problème-dintroduction" class="nav-link" data-scroll-target="#problème-dintroduction">Problème d’introduction</a></li>
+  <li><a href="#concepts-clés" id="toc-concepts-clés" class="nav-link" data-scroll-target="#concepts-clés">Concepts clés</a>
+  <ul class="collapse">
+  <li><a href="#suites-numériques" id="toc-suites-numériques" class="nav-link" data-scroll-target="#suites-numériques">Suites numériques</a></li>
+  <li><a href="#suites-arithmétiques" id="toc-suites-arithmétiques" class="nav-link" data-scroll-target="#suites-arithmétiques">Suites arithmétiques</a></li>
+  <li><a href="#suites-géométriques" id="toc-suites-géométriques" class="nav-link" data-scroll-target="#suites-géométriques">Suites géométriques</a></li>
+  </ul></li>
+  <li><a href="#exemple-résolu" id="toc-exemple-résolu" class="nav-link" data-scroll-target="#exemple-résolu">Exemple résolu</a>
+  <ul class="collapse">
+  <li><a href="#exemple-résolu-deux-options-dévolution-salariale" id="toc-exemple-résolu-deux-options-dévolution-salariale" class="nav-link" data-scroll-target="#exemple-résolu-deux-options-dévolution-salariale">Exemple résolu — deux options d’évolution salariale</a></li>
+  </ul></li>
+  <li><a href="#pratique-guidée" id="toc-pratique-guidée" class="nav-link" data-scroll-target="#pratique-guidée">Pratique guidée</a></li>
+  <li><a href="#exploration-interactive" id="toc-exploration-interactive" class="nav-link" data-scroll-target="#exploration-interactive">Exploration interactive</a>
+  <ul class="collapse">
+  <li><a href="#investigation" id="toc-investigation" class="nav-link" data-scroll-target="#investigation">Investigation</a></li>
+  </ul></li>
+  <li><a href="#problème-appliqué" id="toc-problème-appliqué" class="nav-link" data-scroll-target="#problème-appliqué">Problème appliqué</a></li>
+  <li><a href="#erreurs-fréquentes" id="toc-erreurs-fréquentes" class="nav-link" data-scroll-target="#erreurs-fréquentes">Erreurs fréquentes</a></li>
+  <li><a href="#vérifiez-votre-compréhension" id="toc-vérifiez-votre-compréhension" class="nav-link" data-scroll-target="#vérifiez-votre-compréhension">Vérifiez votre compréhension</a></li>
+  <li><a href="#synthèse" id="toc-synthèse" class="nav-link" data-scroll-target="#synthèse">Synthèse</a></li>
+  <li><a href="#travail-personnel" id="toc-travail-personnel" class="nav-link" data-scroll-target="#travail-personnel">Travail personnel</a></li>
+  <li><a href="#continuer" id="toc-continuer" class="nav-link" data-scroll-target="#continuer">Continuer</a></li>
+  </ul>
+<div class="quarto-other-links"><h2>Autres liens</h2><ul><li><a href="./slides/module-4.html"><i class="bi bi-file-earmark-slides"></i>Slides</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Only show the language switcher on mathematical-fundamentals pages
+  var path = window.location.pathname;
+  var mathFrPath  = '/fr/teaching/mathematical-fundamentals/';
+  var mathEnPath  = '/teaching/mathematical-fundamentals/';
+  var isMathFr = path.startsWith(mathFrPath);
+  var isMathEn = path.startsWith(mathEnPath);
+  if (!isMathFr && !isMathEn) return;
+
+  // Do not show on RevealJS presentation pages
+  if (document.body.classList.contains('reveal')) return;
+
+  var counterpart = isMathFr
+    ? path.replace(/^\/fr/, '')
+    : '/fr' + path;
+  var label = isMathFr ? '🇬🇧 English version' : '🇫🇷 Version française';
+
+  var p = document.createElement('p');
+  p.className = 'lang-switch';
+  var a = document.createElement('a');
+  a.href = counterpart;
+  a.textContent = label;
+  p.appendChild(a);
+
+  // Insert right after the page title (h1.title)
+  var title = document.querySelector('h1.title');
+  if (title && title.parentNode) {
+    title.parentNode.insertBefore(p, title.nextSibling);
+  } else {
+    var content = document.querySelector('#quarto-document-content') ||
+                  document.querySelector('main') ||
+                  document.body;
+    content.insertBefore(p, content.firstChild);
+  }
+});
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">4️⃣ Introduction aux outils de mathématiques financières</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Résumé</div>
+    <p>Étudiez les suites numériques — définition générale, suites arithmétiques et suites géométriques — afin de comprendre et de modéliser des phénomènes qui évoluent régulièrement dans le temps, tels que l’épargne, les emprunts et les indices de prix.</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Objectifs d’apprentissage
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Comprendre ce qu’est une suite numérique et utiliser la notation indicielle.</li>
+<li>Reconnaître, modéliser et étudier les <strong>suites arithmétiques</strong>.</li>
+<li>Reconnaître, modéliser et étudier les <strong>suites géométriques</strong>.</li>
+<li>Calculer la somme des premiers termes de chaque type de suite.</li>
+</ul>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>📊 <strong>Diapositives</strong> : <a href="module-4-slides.qmd">Voir les diapositives de ce module</a></p>
+</blockquote>
+<section id="activité-diagnostique" class="level2">
+<h2 class="anchored" data-anchor-id="activité-diagnostique">Activité diagnostique</h2>
+<p>Répondez à chaque question de mémoire avant de lire la suite.</p>
+<ol type="1">
+<li>Quel est le terme suivant dans la suite 3, 7, 11, 15, … ?</li>
+<li>Quel est le terme suivant dans la suite 2, 6, 18, 54, … ?</li>
+<li>La suite 100, 50, 25, 12,5 est-elle arithmétique ou géométrique ?</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled" title="Vérifier vos réponses">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Vérifier vos réponses
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>19</strong> — chaque terme augmente de 4.</li>
+<li><strong>162</strong> — chaque terme est multiplié par 3.</li>
+<li><strong>Géométrique</strong>, de raison <span class="math inline">\(q = 0{,}5\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+<p>Utilisez vos résultats pour identifier le type de suite qui nécessite le plus d’attention.</p>
+</section>
+<section id="problème-dintroduction" class="level2">
+<h2 class="anchored" data-anchor-id="problème-dintroduction">Problème d’introduction</h2>
+<p>Deux collègues reçoivent chacun une augmentation de salaire à partir de 28 000 € par an. Option A : une augmentation fixe de 1 500 € par an. Option B : une augmentation de 5 % par an par rapport au salaire de l’année précédente.</p>
+<blockquote class="blockquote">
+<p>Après 10 ans, lequel des deux collègues gagne le plus ? Notez votre prédiction avant de continuer.</p>
+</blockquote>
+</section>
+<section id="concepts-clés" class="level2">
+<h2 class="anchored" data-anchor-id="concepts-clés">Concepts clés</h2>
+<section id="suites-numériques" class="level3">
+<h3 class="anchored" data-anchor-id="suites-numériques">Suites numériques</h3>
+<p>Une <strong>suite numérique</strong> est une liste ordonnée de nombres indexée par les entiers naturels. Le terme d’indice <span class="math inline">\(n\)</span> est noté <span class="math inline">\(u_n\)</span> ; <span class="math inline">\(u_0\)</span> (ou <span class="math inline">\(u_1\)</span>) est le <strong>premier terme</strong>. Les suites permettent de modéliser des phénomènes qui évoluent <strong>régulièrement</strong> — c’est-à-dire que, sur une période constante, on ajoute ou on multiplie par la même valeur.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Les suites en économie et en gestion
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Épargne ou remboursement d’emprunt</strong> : un capital qui croît ou décroît de mois en mois.</li>
+<li><strong>Comptabilité</strong> : calcul de l’amortissement annuel.</li>
+<li><strong>Gestion</strong> : prévoir le moment où un équipement doit être remplacé.</li>
+<li><strong>Macroéconomie</strong> : suivi d’un indice de prix dans le temps.</li>
+</ul>
+</div>
+</div>
+<p>Une suite peut être définie de deux façons :</p>
+<ul>
+<li><strong>par récurrence</strong>, en donnant <span class="math inline">\(u_0\)</span> et une règle reliant <span class="math inline">\(u_{n+1}\)</span> à <span class="math inline">\(u_n\)</span> ;</li>
+<li><strong>explicitement</strong>, en donnant <span class="math inline">\(u_n\)</span> directement comme fonction de <span class="math inline">\(n\)</span>.</li>
+</ul>
+</section>
+<section id="suites-arithmétiques" class="level3">
+<h3 class="anchored" data-anchor-id="suites-arithmétiques">Suites arithmétiques</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une suite est <strong>arithmétique</strong> si chaque terme est obtenu en ajoutant un nombre constant <span class="math inline">\(r\)</span>, appelé <strong>raison</strong>, au terme précédent : <span class="math display">\[
+u_{n+1} = u_n + r.
+\]</span></p>
+</div>
+</div>
+<p><strong>Exemple introductif.</strong> Une personne épargne 100 € par mois (sans intérêts), ajoutés à un capital initial de 500 €. Chaque mois on ajoute le montant constant de 100 €, donc le montant épargné forme une suite arithmétique de premier terme <span class="math inline">\(u_0 = 500\)</span> et de raison <span class="math inline">\(r = 100\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Forme explicite et sens de variation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+u_n = u_0 + n\,r.
+\]</span> La suite est <strong>croissante</strong> si <span class="math inline">\(r &gt; 0\)</span>, <strong>décroissante</strong> si <span class="math inline">\(r &lt; 0\)</span>, et <strong>constante</strong> si <span class="math inline">\(r = 0\)</span>.</p>
+</div>
+</div>
+<p>Pour l’exemple d’épargne, <span class="math inline">\(u_n = 500 + 100\,n\)</span>. Après <span class="math inline">\(12\)</span> mois, <span class="math inline">\(u_{12} = 500 + 100 \times 12 = 1700\)</span> €.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Dérivation — somme des premiers termes d’une suite arithmétique (cliquer)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(S = u_0 + u_1 + \dots + u_n\)</span> (<span class="math inline">\(n + 1\)</span> termes). Écrire la somme dans les deux sens et additionner terme à terme (astuce de Gauss) :</p>
+<p><span class="math display">\[
+\begin{aligned}
+S &amp;= u_0 + u_1 + \dots + u_n, \\
+S &amp;= u_n + u_{n-1} + \dots + u_0.
+\end{aligned}
+\]</span></p>
+<p>Chaque paire verticale vaut <span class="math inline">\(u_0 + u_n\)</span>, et il y a <span class="math inline">\(n + 1\)</span> telles paires, donc <span class="math inline">\(2S = (n + 1)(u_0 + u_n)\)</span>. D’où</p>
+<p><span class="math display">\[
+S = \frac{(n + 1)(u_0 + u_n)}{2}
+= (\text{nombre de termes}) \times \frac{\text{premier} + \text{dernier}}{2}.
+\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="suites-géométriques" class="level3">
+<h3 class="anchored" data-anchor-id="suites-géométriques">Suites géométriques</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Définition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une suite est <strong>géométrique</strong> si chaque terme est obtenu en multipliant le terme précédent par un nombre constant <span class="math inline">\(q\)</span>, appelé <strong>raison</strong> : <span class="math display">\[
+u_{n+1} = u_n \times q.
+\]</span></p>
+</div>
+</div>
+<p><strong>Exemple introductif.</strong> Plier une feuille de papier double son épaisseur à chaque pli : à chaque pli on multiplie par la constante <span class="math inline">\(2\)</span>. L’épaisseur forme une suite géométrique de raison <span class="math inline">\(q = 2\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Forme explicite et sens de variation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+u_n = u_0 \times q^{\,n}.
+\]</span> Pour <span class="math inline">\(u_0 &gt; 0\)</span> : la suite est <strong>croissante</strong> si <span class="math inline">\(q &gt; 1\)</span>, <strong>décroissante</strong> si <span class="math inline">\(0 &lt; q &lt; 1\)</span>, et <strong>constante</strong> si <span class="math inline">\(q = 1\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Dérivation — somme des premiers termes d’une suite géométrique (cliquer)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Soit <span class="math inline">\(S = u_0 + u_0 q + u_0 q^{2} + \dots + u_0 q^{n}\)</span>. Multiplier par <span class="math inline">\(q\)</span> : <span class="math inline">\(qS = u_0 q + u_0 q^{2} + \dots + u_0 q^{n+1}\)</span>. En soustrayant,</p>
+<p><span class="math display">\[
+S - qS = u_0 - u_0 q^{n+1}
+\;\Longrightarrow\; S(1 - q) = u_0\,(1 - q^{\,n+1}).
+\]</span></p>
+<p>Donc, pour <span class="math inline">\(q \neq 1\)</span>,</p>
+<p><span class="math display">\[
+S = u_0 \,\frac{1 - q^{\,n+1}}{1 - q}
+= (\text{premier terme}) \times
+  \frac{1 - q^{\,\text{nombre de termes}}}{1 - q}.
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercices (cliquer pour les solutions)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Une suite arithmétique a <span class="math inline">\(u_0 = 200\)</span> et <span class="math inline">\(r = 15\)</span>. Donner <span class="math inline">\(u_{10}\)</span> et la somme <span class="math inline">\(u_0 + \dots + u_{10}\)</span>. <span class="math inline">\(u_{10} = 200 + 150 = 350\)</span> ; <span class="math inline">\(S = 11 \times \tfrac{200 + 350}{2} = 3025\)</span>.</li>
+<li>Une suite géométrique a <span class="math inline">\(u_0 = 1000\)</span> et <span class="math inline">\(q = 1{,}02\)</span>. Donner <span class="math inline">\(u_5\)</span> et la somme des <span class="math inline">\(6\)</span> premiers termes. <span class="math inline">\(u_5 = 1000 \times 1{,}02^{5} \approx 1104{,}08\)</span> ; <span class="math inline">\(S = 1000 \times \tfrac{1 - 1{,}02^{6}}{1 - 1{,}02} \approx 6308{,}12\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="exemple-résolu" class="level2">
+<h2 class="anchored" data-anchor-id="exemple-résolu">Exemple résolu</h2>
+<section id="exemple-résolu-deux-options-dévolution-salariale" class="level3">
+<h3 class="anchored" data-anchor-id="exemple-résolu-deux-options-dévolution-salariale">Exemple résolu — deux options d’évolution salariale</h3>
+<p>Un salarié commence à 28 000 €/an. Comparer une augmentation fixe de 1 500 €/an (Option A) et une augmentation annuelle de 5 % (Option B).</p>
+<p><strong>1. Nature de chaque suite.</strong> L’Option A ajoute un montant constant → suite <strong>arithmétique</strong> (<span class="math inline">\(u_0 = 28\,000\)</span>, <span class="math inline">\(r = 1\,500\)</span>). L’Option B multiplie par un facteur constant → suite <strong>géométrique</strong> (<span class="math inline">\(v_0 = 28\,000\)</span>, <span class="math inline">\(q = 1{,}05\)</span>).</p>
+<p><strong>2. Salaire après 6 ans</strong> (indice <span class="math inline">\(6\)</span>, la 7e année) :</p>
+<ul>
+<li>Option A : <span class="math inline">\(u_6 = 28\,000 + 1\,500 \times 6 = 37\,000\)</span> €.</li>
+<li>Option B : <span class="math inline">\(v_6 = 28\,000 \times 1{,}05^{6} \approx 37\,527\)</span> €.</li>
+</ul>
+<p><strong>3. Salaire cumulé sur les 6 premières années</strong> (indices <span class="math inline">\(0\)</span> à <span class="math inline">\(5\)</span>, soit <span class="math inline">\(6\)</span> termes) :</p>
+<ul>
+<li>Option A : <span class="math inline">\(S_A = 6 \times \dfrac{u_0 + u_5}{2}
+= 6 \times \dfrac{28\,000 + 35\,500}{2} = 190\,500\)</span> €.</li>
+<li>Option B : <span class="math inline">\(S_B = 28\,000 \times \dfrac{1 - 1{,}05^{6}}{1 - 1{,}05}
+\approx 190\,570\)</span> €.</li>
+</ul>
+<p><strong>4–6. Commentaire.</strong> L’Option A donne un salaire annuel plus élevé dans les premières années, mais l’Option B croît plus vite et dépasse l’Option A au bout de quelques années, car la croissance géométrique (en pourcentage) finit par dominer la croissance arithmétique (fixe).</p>
+</section>
+</section>
+<section id="pratique-guidée" class="level2">
+<h2 class="anchored" data-anchor-id="pratique-guidée">Pratique guidée</h2>
+<p>Une entreprise acquiert un équipement d’une valeur de 50 000 €. Il se déprécie de 4 000 € par an (mode linéaire). L’équipement d’une entreprise concurrente se déprécie de 12 % de sa valeur résiduelle chaque année, à partir du même prix.</p>
+<ol type="1">
+<li>Écrire la fonction de valeur <span class="math inline">\(u_n\)</span> pour chaque entreprise après <span class="math inline">\(n\)</span> ans.</li>
+<li>Calculer la valeur de chaque équipement après 5 ans.</li>
+<li>Au bout de combien d’années la valeur de l’équipement de l’Entreprise B passe-t-elle en dessous de 20 000 € pour la première fois ?</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Indice">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Indice
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Entreprise A : arithmétique avec <span class="math inline">\(u_0 = 50\,000\)</span> et <span class="math inline">\(r = -4\,000\)</span>. Entreprise B : géométrique avec <span class="math inline">\(u_0 = 50\,000\)</span> et <span class="math inline">\(q = 0{,}88\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled" title="Afficher la solution">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Afficher la solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Entreprise A</strong> : <span class="math inline">\(u_n = 50\,000 - 4\,000n\)</span>. À <span class="math inline">\(n = 5\)</span> : <span class="math inline">\(u_5 = 30\,000\)</span> €.</li>
+<li><strong>Entreprise B</strong> : <span class="math inline">\(u_n = 50\,000 \times 0{,}88^n\)</span>. À <span class="math inline">\(n = 5\)</span> : <span class="math inline">\(u_5 \approx 27\,442\)</span> €.</li>
+<li><strong>Entreprise B en dessous de 20 000 €</strong> : <span class="math inline">\(50\,000 \times 0{,}88^n &lt; 20\,000
+\Rightarrow 0{,}88^n &lt; 0{,}4\)</span>. À <span class="math inline">\(n = 7\)</span> : <span class="math inline">\(0{,}88^7 \approx 0{,}409\)</span> ; à <span class="math inline">\(n = 8\)</span> : <span class="math inline">\(0{,}88^8 \approx 0{,}360 &lt; 0{,}4\)</span>. Donc après <strong>8 ans</strong>.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="exploration-interactive" class="level2">
+<h2 class="anchored" data-anchor-id="exploration-interactive">Exploration interactive</h2>
+<p>Utilisez les curseurs pour explorer comment les suites arithmétiques et géométriques se comparent en faisant varier le premier terme, la raison arithmétique et la raison géométrique.</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="243" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 242;"><span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>viewof u0 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span> {</span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">28</span><span class="op">,</span></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Premier terme u₀"</span></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>viewof d <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">10</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span> {</span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="fl">1.5</span><span class="op">,</span></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span></span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Raison d (arithmétique)"</span></span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>viewof r <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.5</span><span class="op">,</span> <span class="fl">2.0</span>]<span class="op">,</span> {</span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="fl">1.05</span><span class="op">,</span></span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span></span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Raison r (géométrique)"</span></span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>viewof nTerms <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">2</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {</span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span></span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Nombre de termes n"</span></span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="269" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 268;"><span id="cb2-269"><a href="#cb2-269" aria-hidden="true" tabindex="-1"></a>indices <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> nTerms}<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> i)</span>
+<span id="cb2-270"><a href="#cb2-270" aria-hidden="true" tabindex="-1"></a>arithmeticSeq <span class="op">=</span> indices<span class="op">.</span><span class="fu">map</span>(n <span class="kw">=&gt;</span> ({n<span class="op">,</span> <span class="dt">value</span><span class="op">:</span> u0 <span class="op">+</span> n <span class="op">*</span> d<span class="op">,</span> <span class="dt">type</span><span class="op">:</span> <span class="st">"Arithmétique"</span>}))</span>
+<span id="cb2-271"><a href="#cb2-271" aria-hidden="true" tabindex="-1"></a>geometricSeq <span class="op">=</span> indices<span class="op">.</span><span class="fu">map</span>(n <span class="kw">=&gt;</span> ({n<span class="op">,</span> <span class="dt">value</span><span class="op">:</span> u0 <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(r<span class="op">,</span> n)<span class="op">,</span> <span class="dt">type</span><span class="op">:</span> <span class="st">"Géométrique"</span>}))</span>
+<span id="cb2-272"><a href="#cb2-272" aria-hidden="true" tabindex="-1"></a>allData <span class="op">=</span> [<span class="op">...</span>arithmeticSeq<span class="op">,</span> <span class="op">...</span>geometricSeq]</span>
+<span id="cb2-273"><a href="#cb2-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-274"><a href="#cb2-274" aria-hidden="true" tabindex="-1"></a>seqChart <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb2-275"><a href="#cb2-275" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb2-276"><a href="#cb2-276" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>(allData<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"n"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"value"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"type"</span>})<span class="op">,</span></span>
+<span id="cb2-277"><a href="#cb2-277" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(allData<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"n"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"value"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"type"</span>})</span>
+<span id="cb2-278"><a href="#cb2-278" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
+<span id="cb2-279"><a href="#cb2-279" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Indice n"</span>}<span class="op">,</span></span>
+<span id="cb2-280"><a href="#cb2-280" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Valeur"</span>}<span class="op">,</span></span>
+<span id="cb2-281"><a href="#cb2-281" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}</span>
+<span id="cb2-282"><a href="#cb2-282" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="285" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 284;"><span id="cb3-285"><a href="#cb3-285" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`</span></span>
+<span id="cb3-286"><a href="#cb3-286" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div style="margin-bottom:1rem"&gt;</span><span class="sc">${</span>seqChart<span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb3-287"><a href="#cb3-287" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;div class="metric-grid"&gt;</span></span>
+<span id="cb3-288"><a href="#cb3-288" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="metric-card"&gt;</span></span>
+<span id="cb3-289"><a href="#cb3-289" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;span class="metric-label"&gt;Arithmétique u₍ₙ₎ (dernier terme)&lt;/span&gt;</span></span>
+<span id="cb3-290"><a href="#cb3-290" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;strong&gt;</span><span class="sc">${</span>(u0 <span class="op">+</span> (nTerms<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>d)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt;</span></span>
+<span id="cb3-291"><a href="#cb3-291" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb3-292"><a href="#cb3-292" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="metric-card"&gt;</span></span>
+<span id="cb3-293"><a href="#cb3-293" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;span class="metric-label"&gt;Géométrique u₍ₙ₎ (dernier terme)&lt;/span&gt;</span></span>
+<span id="cb3-294"><a href="#cb3-294" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;strong&gt;</span><span class="sc">${</span>(u0 <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(r<span class="op">,</span> nTerms<span class="op">-</span><span class="dv">1</span>))<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt;</span></span>
+<span id="cb3-295"><a href="#cb3-295" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb3-296"><a href="#cb3-296" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb3-297"><a href="#cb3-297" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<section id="investigation" class="level3">
+<h3 class="anchored" data-anchor-id="investigation">Investigation</h3>
+<ol type="1">
+<li>Fixer <span class="math inline">\(u_0 = 28\)</span>, <span class="math inline">\(d = 1{,}5\)</span>, <span class="math inline">\(r = 1{,}05\)</span>, <span class="math inline">\(n = 10\)</span>. Quelle suite est la plus grande au dernier terme ?</li>
+<li>Augmenter <span class="math inline">\(n\)</span> à 20. À partir de quel terme la suite géométrique dépasse-t-elle la suite arithmétique ?</li>
+<li>Fixer <span class="math inline">\(r = 0{,}88\)</span> et <span class="math inline">\(d = -4\)</span>. Quel modèle représente une dépréciation plus rapide ?</li>
+</ol>
+</section>
+</section>
+<section id="problème-appliqué" class="level2">
+<h2 class="anchored" data-anchor-id="problème-appliqué">Problème appliqué</h2>
+<p>Un indice de prix suit le coût d’un panier de biens. En 2020, l’indice est à 100. Sur les 5 années suivantes, les prix augmentent de 2 points fixes par an (Scénario A) ou de 2 % par an (Scénario B).</p>
+<ol type="1">
+<li>Écrire la valeur de l’indice <span class="math inline">\(I_n\)</span> pour chaque scénario après <span class="math inline">\(n\)</span> ans (<span class="math inline">\(n = 0\)</span> correspond à 2020).</li>
+<li>Calculer la valeur de l’indice pour chaque scénario après 5 ans.</li>
+<li>Quel scénario produit une augmentation de prix cumulée plus élevée sur 10 ans ?</li>
+<li>Interpréter : que signifie pour les consommateurs un indice supérieur à 100 ?</li>
+</ol>
+</section>
+<section id="erreurs-fréquentes" class="level2">
+<h2 class="anchored" data-anchor-id="erreurs-fréquentes">Erreurs fréquentes</h2>
+<div class="callout callout-style-default callout-warning callout-titled" title="Erreur fréquente — confondre raison arithmétique et raison géométrique">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Erreur fréquente — confondre raison arithmétique et raison géométrique
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un étudiant reçoit la suite 3, 6, 12, 24 et écrit <span class="math inline">\(u_n = 3 + n \times 3\)</span>.</p>
+<p>C’est incorrect — la suite est <strong>géométrique</strong> (chaque terme est multiplié par 2), non arithmétique (qui ajoute une constante). La formule correcte est <span class="math inline">\(u_n = 3 \times 2^n\)</span>.</p>
+<p>Toujours vérifier si les termes consécutifs ont une <strong>différence constante</strong> (arithmétique) ou un <strong>rapport constant</strong> (géométrique) avant d’appliquer une formule.</p>
+</div>
+</div>
+</section>
+<section id="vérifiez-votre-compréhension" class="level2">
+<h2 class="anchored" data-anchor-id="vérifiez-votre-compréhension">Vérifiez votre compréhension</h2>
+<ol type="1">
+<li>Une suite a <span class="math inline">\(u_0 = 5\)</span> et <span class="math inline">\(u_{n+1} = u_n + 3\)</span>. Quelle est la valeur de <span class="math inline">\(u_6\)</span> ? Quelle est la somme <span class="math inline">\(u_0 + u_1 + \dots + u_6\)</span> ?</li>
+<li>Pourquoi une suite géométrique de raison <span class="math inline">\(r &gt; 1\)</span> croît-elle plus vite que toute suite arithmétique de même premier terme, pour <span class="math inline">\(n\)</span> suffisamment grand ?</li>
+<li>Un compte d’épargne rapporte 4 % d’intérêts par an (composés). Modélisée comme une suite géométrique, quelle est la raison ?</li>
+<li>Un étudiant affirme que la somme des 5 premiers termes de la suite arithmétique <span class="math inline">\(2, 5, 8, 11, 14\)</span> est <span class="math inline">\(5 \times 8 = 40\)</span> (en utilisant la moyenne). Est-ce correct ?</li>
+<li>Deux suites commencent à <span class="math inline">\(u_0 = 100\)</span>. La Suite A a <span class="math inline">\(d = 10\)</span> ; la Suite B a <span class="math inline">\(r = 1{,}08\)</span>. Après combien de termes la Suite B dépasse-t-elle la Suite A pour la première fois ?</li>
+</ol>
+</section>
+<section id="synthèse" class="level2">
+<h2 class="anchored" data-anchor-id="synthèse">Synthèse</h2>
+<ol type="1">
+<li>Une suite arithmétique croît d’un montant constant à chaque période (<span class="math inline">\(u_n = u_0 + nr\)</span>) ; une suite géométrique croît d’un facteur constant (<span class="math inline">\(u_n = u_0 r^n\)</span>) — identifier le modèle applicable est la première étape de toute analyse.</li>
+<li>Pour la même valeur initiale et une croissance similaire à court terme, la croissance géométrique finit toujours par dominer la croissance arithmétique à mesure que <span class="math inline">\(n\)</span> augmente — c’est pourquoi les intérêts composés surpassent les intérêts simples sur le long terme.</li>
+<li>Les formules de somme — arithmétique : <span class="math inline">\(S_n = (n+1)(u_0 + u_n)/2\)</span> ; géométrique : <span class="math inline">\(S_n = u_0(1 - r^{n+1})/(1-r)\)</span> — permettent d’agréger les accumulations totales dans le temps sans sommer terme à terme.</li>
+</ol>
+</section>
+<section id="travail-personnel" class="level2">
+<h2 class="anchored" data-anchor-id="travail-personnel">Travail personnel</h2>
+<ul>
+<li>Réaliser les exercices sur les suites 1 à 10 dans la banque d’exercices.</li>
+<li>Traiter l’étude de cas sur la comparaison salariale.</li>
+<li>Consigner les erreurs dans votre journal d’erreurs.</li>
+<li>Réviser les entrées du glossaire pour : <em>suite arithmétique</em>, <em>suite géométrique</em>, <em>raison arithmétique</em>, <em>raison géométrique</em>, <em>formule de somme</em>.</li>
+</ul>
+</section>
+<section id="continuer" class="level2">
+<h2 class="anchored" data-anchor-id="continuer">Continuer</h2>
+<p><a href="../../../fr/teaching/mathematical-fundamentals/module-5.html">Continuer vers le Module 5 →</a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiB1MCA9IElucHV0cy5yYW5nZShbMCwgMTAwXSwge1xuICB2YWx1ZTogMjgsXG4gIHN0ZXA6IDEsXG4gIGxhYmVsOiBcIlByZW1pZXIgdGVybWUgdeKCgFwiXG59KVxuXG52aWV3b2YgZCA9IElucHV0cy5yYW5nZShbLTEwLCAxMF0sIHtcbiAgdmFsdWU6IDEuNSxcbiAgc3RlcDogMC41LFxuICBsYWJlbDogXCJSYWlzb24gZCAoYXJpdGhtw6l0aXF1ZSlcIlxufSlcblxudmlld29mIHIgPSBJbnB1dHMucmFuZ2UoWzAuNSwgMi4wXSwge1xuICB2YWx1ZTogMS4wNSxcbiAgc3RlcDogMC4wMSxcbiAgbGFiZWw6IFwiUmFpc29uIHIgKGfDqW9tw6l0cmlxdWUpXCJcbn0pXG5cbnZpZXdvZiBuVGVybXMgPSBJbnB1dHMucmFuZ2UoWzIsIDIwXSwge1xuICB2YWx1ZTogMTAsXG4gIHN0ZXA6IDEsXG4gIGxhYmVsOiBcIk5vbWJyZSBkZSB0ZXJtZXMgblwiXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiaW5kaWNlcyA9IEFycmF5LmZyb20oe2xlbmd0aDogblRlcm1zfSwgKF8sIGkpID0+IGkpXG5hcml0aG1ldGljU2VxID0gaW5kaWNlcy5tYXAobiA9PiAoe24sIHZhbHVlOiB1MCArIG4gKiBkLCB0eXBlOiBcIkFyaXRobcOpdGlxdWVcIn0pKVxuZ2VvbWV0cmljU2VxID0gaW5kaWNlcy5tYXAobiA9PiAoe24sIHZhbHVlOiB1MCAqIE1hdGgucG93KHIsIG4pLCB0eXBlOiBcIkfDqW9tw6l0cmlxdWVcIn0pKVxuYWxsRGF0YSA9IFsuLi5hcml0aG1ldGljU2VxLCAuLi5nZW9tZXRyaWNTZXFdXG5cbnNlcUNoYXJ0ID0gUGxvdC5wbG90KHtcbiAgbWFya3M6IFtcbiAgICBQbG90LmxpbmUoYWxsRGF0YSwge3g6IFwiblwiLCB5OiBcInZhbHVlXCIsIHN0cm9rZTogXCJ0eXBlXCJ9KSxcbiAgICBQbG90LmRvdChhbGxEYXRhLCB7eDogXCJuXCIsIHk6IFwidmFsdWVcIiwgZmlsbDogXCJ0eXBlXCJ9KVxuICBdLFxuICB4OiB7bGFiZWw6IFwiSW5kaWNlIG5cIn0sXG4gIHk6IHtsYWJlbDogXCJWYWxldXJcIn0sXG4gIGNvbG9yOiB7bGVnZW5kOiB0cnVlfVxufSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Imh0bWxgXG48ZGl2IHN0eWxlPVwibWFyZ2luLWJvdHRvbToxcmVtXCI+JHtzZXFDaGFydH08L2Rpdj5cbjxkaXYgY2xhc3M9XCJtZXRyaWMtZ3JpZFwiPlxuICA8ZGl2IGNsYXNzPVwibWV0cmljLWNhcmRcIj5cbiAgICA8c3BhbiBjbGFzcz1cIm1ldHJpYy1sYWJlbFwiPkFyaXRobcOpdGlxdWUgdeKCjeKCmeKCjiAoZGVybmllciB0ZXJtZSk8L3NwYW4+XG4gICAgPHN0cm9uZz4keyh1MCArIChuVGVybXMtMSkqZCkudG9GaXhlZCgyKX08L3N0cm9uZz5cbiAgPC9kaXY+XG4gIDxkaXYgY2xhc3M9XCJtZXRyaWMtY2FyZFwiPlxuICAgIDxzcGFuIGNsYXNzPVwibWV0cmljLWxhYmVsXCI+R8Opb23DqXRyaXF1ZSB14oKN4oKZ4oKOIChkZXJuaWVyIHRlcm1lKTwvc3Bhbj5cbiAgICA8c3Ryb25nPiR7KHUwICogTWF0aC5wb3cociwgblRlcm1zLTEpKS50b0ZpeGVkKDIpfTwvc3Ryb25nPlxuICA8L2Rpdj5cbjwvZGl2PlxuYFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCd1MCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdkJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3InKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnblRlcm1zJykifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../fr/teaching/mathematical-fundamentals";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copié");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copié");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../fr/teaching/mathematical-fundamentals/module-3.html" class="pagination-link  aria-label=" 3️⃣="" analyse="" de="" courbes="" en="" économie="" et="" gestion"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">3️⃣ Analyse de courbes en économie et gestion</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../fr/teaching/mathematical-fundamentals/module-5.html" class="pagination-link" aria-label="5️⃣ Application des mathématiques financières">
+        <span class="nav-page-text">5️⃣ Application des mathématiques financières</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a> · Source on <a href="https://github.com/guillaumegilles/guillaumegilles.github.io"><i class="bi bi-github"></i> GitHub</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>This site respects your privacy — no cookies, no tracking.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

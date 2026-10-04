@@ -1,0 +1,383 @@
+---
+title: "7️⃣ Introduction à l'optimisation"
+abstract: |
+  Introduisez le taux de variation moyen et instantané, la notion intuitive
+  de dérivée et son application aux fonctions affines et polynomiales de
+  degré 2, afin de trouver des maxima et des minima pour la prise de
+  décision.
+other-links:
+      - text: Slides
+        icon: file-earmark-slides
+        href: ./slides/module-7.html
+---
+
+::: {.callout-note}
+#### Objectifs d'apprentissage
+- Calculer un taux de variation moyen entre deux points.
+- Comprendre le taux de variation instantané et la notion intuitive de
+  dérivée.
+- Dériver des fonctions affines et polynomiales de degré 2.
+- Utiliser la dérivée pour trouver un maximum ou un minimum.
+:::
+
+> 📊 **Diapositives** : [Voir les diapositives de ce module](module-7-slides.qmd)
+
+## Activité diagnostique
+
+Répondez à ces questions **avant** de lire la suite. Elles passent en revue
+les outils nécessaires tout au long de ce module.
+
+1. Calculer $f'(x)$ pour $f(x) = 3x^2 - 4x$.
+2. Trouver $x$ tel que $f'(x) = 0$ pour $f(x) = -x^2 + 6x$.
+3. Pour $f(x) = -x^2 + 6x$, $x = 3$ est-il un maximum ou un minimum ?
+   Justifier.
+
+::: {.callout-note collapse="true" title="Vérifier vos réponses"}
+1. Par la règle des puissances : $f'(x) = 6x - 4$.
+2. $f'(x) = -2x + 6 = 0 \;\Rightarrow\; x = 3$.
+3. **Maximum**, car $a = -1 < 0$ donc la parabole est ouverte vers le bas.
+:::
+
+Utilisez vos résultats pour identifier les sujets à approfondir.
+
+## Problème d'introduction
+
+Un fabricant produit $q$ unités d'un produit. La fonction de chiffre
+d'affaires est $R(q) = 60q - 0{,}2q^2$ (euros) et la fonction de coût total
+est $C(q) = 500 + 20q$ (euros).
+
+> Quelle quantité $q$ maximise le profit du fabricant ? Notez votre estimation
+> avant de continuer.
+
+## Concepts clés
+
+### Qu'est-ce qu'« optimiser » ?
+
+En mathématiques, **optimiser** signifie trouver le **maximum** ou le
+**minimum** d'une fonction. En gestion, de nombreuses situations appellent
+une décision optimale :
+
+- **maximisation** : profit de l'entreprise, production, rendement,
+  utilité du consommateur ;
+- **minimisation** : coût moyen, temps de production ou de livraison,
+  stocks, risque d'un portefeuille.
+
+Pour trouver un maximum ou un minimum, on étudie comment la fonction
+**varie** : sur quels intervalles est-elle croissante, et sur quels intervalles
+est-elle décroissante ? La dérivée est l'outil qui répond précisément à cette
+question.
+
+### Taux de variation moyen
+
+::: {.callout-note}
+#### Définition
+Le **taux de variation moyen** d'une fonction $f$ entre $x_1$ et $x_2$ est
+$$
+\tau = \frac{f(x_2) - f(x_1)}{x_2 - x_1}.
+$$
+:::
+
+Géométriquement, c'est la **pente de la sécante** joignant les deux points
+$(x_1, f(x_1))$ et $(x_2, f(x_2))$ sur le graphe. Économiquement, il mesure
+la variation moyenne de $f$ par unité de $x$ — par exemple la variation
+moyenne du coût par unité supplémentaire produite.
+
+#### Exemple résolu — taux de variation moyen
+
+Pour $f(x) = x^{2}$ entre $x_1 = 1$ et $x_2 = 3$ :
+
+$$
+\tau = \frac{f(3) - f(1)}{3 - 1} = \frac{9 - 1}{2} = 4.
+$$
+
+### Taux de variation instantané et dérivée
+
+Lorsque le deuxième point se rapproche de plus en plus du premier
+($x_2 \to x_1$), la sécante tend vers la **tangente** au point. Sa pente
+est le **taux de variation instantané**, appelé **dérivée** de $f$ en $x_1$,
+noté $f'(x_1)$.
+
+::: {.callout-tip}
+#### Intuition
+- $f'(x) > 0$ sur un intervalle $\;\Rightarrow\; f$ est **croissante** là.
+- $f'(x) < 0$ sur un intervalle $\;\Rightarrow\; f$ est **décroissante** là.
+- $f'(x) = 0$ en un point où $f$ change de sens $\;\Rightarrow\;$ candidat
+  à un **maximum ou minimum** (la tangente est horizontale).
+:::
+
+::: {.callout-caution collapse="true"}
+#### Dérivation — la dérivée de $f(x) = x^{2}$ (cliquer pour développer)
+Prendre un point $x$ et un accroissement $h$. Le taux de variation moyen
+entre $x$ et $x + h$ est
+
+$$
+\frac{f(x + h) - f(x)}{h}
+= \frac{(x + h)^{2} - x^{2}}{h}
+= \frac{x^{2} + 2xh + h^{2} - x^{2}}{h}
+= \frac{2xh + h^{2}}{h} = 2x + h.
+$$
+
+Lorsque $h$ devient infiniment petit ($h \to 0$), ceci tend vers $2x$.
+Le taux de variation instantané est donc
+
+$$
+f'(x) = 2x.
+$$
+:::
+
+::: {.callout-tip}
+#### Dérivées des fonctions de référence
+- **Constante** $f(x) = k$ : $\;f'(x) = 0$.
+- **Affine** $f(x) = a x + b$ : $\;f'(x) = a$ (pente constante).
+- **Puissance** $f(x) = x^{n}$ : $\;f'(x) = n\,x^{n-1}$.
+- **Polynôme de degré 2** $f(x) = a x^{2} + b x + c$ : $\;f'(x) = 2a x + b$.
+:::
+
+### Appliquer la dérivée à l'optimisation
+
+::: {.callout-important}
+#### Méthode pour optimiser une fonction polynomiale de degré 2
+1. Calculer la dérivée $f'(x)$.
+2. Résoudre $f'(x) = 0$ pour trouver le point candidat $x^{*}$.
+3. Pour $f(x) = a x^{2} + b x + c$, l'extremum est en
+   $x^{*} = -\dfrac{b}{2a}$ : c'est un **maximum** si $a < 0$ et un
+   **minimum** si $a > 0$.
+:::
+
+#### Exemple résolu — maximiser le profit
+
+Le profit d'une entreprise est $P(x) = -2x^{2} + 40x - 50$ (en milliers
+d'euros), où $x$ est la quantité produite. Alors $P'(x) = -4x + 40$. En
+posant $P'(x) = 0$, on obtient $x = 10$. Comme $a = -2 < 0$, la parabole
+est ouverte vers le bas, donc $x = 10$ est un **maximum**. Le profit maximum
+est $P(10) = -2(100) + 400 - 50 = 150$ (milliers d'euros).
+
+::: {.callout-caution collapse="true"}
+#### Exercices d'entraînement (cliquer pour les solutions)
+1. Taux de variation moyen de $f(x) = 3x + 2$ entre $x = 0$ et $x = 4$.
+   $\tau = \dfrac{14 - 2}{4} = 3$ (égal à la pente, comme attendu pour une
+   fonction affine).
+2. Dériver $f(x) = 5x^{2} - 3x + 7$. $\;f'(x) = 10x - 3$.
+3. Minimiser le coût moyen $C(x) = x^{2} - 12x + 40$.
+   $C'(x) = 2x - 12 = 0 \Rightarrow x = 6$ ; comme $a > 0$ c'est un
+   minimum, $C(6) = 4$.
+:::
+
+## Exemple résolu
+
+### Exemple résolu — maximiser le profit du fabricant (Problème d'introduction)
+
+On reprend le problème d'introduction. Étant donné :
+
+$$
+R(q) = 60q - 0{,}2q^2, \qquad C(q) = 500 + 20q.
+$$
+
+**Étape 1 — Écrire la fonction de profit.**
+
+$$
+P(q) = R(q) - C(q) = 60q - 0{,}2q^2 - 500 - 20q
+     = -0{,}2q^2 + 40q - 500.
+$$
+
+**Étape 2 — Calculer la dérivée.**
+
+$$
+P'(q) = -0{,}4q + 40.
+$$
+
+**Étape 3 — Résoudre $P'(q) = 0$.**
+
+$$
+-0{,}4q + 40 = 0 \;\Rightarrow\; q^* = 100 \text{ unités.}
+$$
+
+**Étape 4 — Confirmer la nature du point critique.**
+
+Comme $a = -0{,}2 < 0$, la parabole est ouverte vers le bas, donc
+$q^* = 100$ est un **maximum**.
+
+**Étape 5 — Calculer le profit maximum.**
+
+$$
+P(100) = -0{,}2(10\,000) + 40(100) - 500
+       = -2\,000 + 4\,000 - 500 = 1\,500 \text{ €.}
+$$
+
+Le fabricant maximise son profit à **100 unités**, gagnant **1 500 €**.
+
+## Pratique guidée
+
+La fonction de coût moyen d'une entreprise est $C(x) = x^2 - 12x + 40$, où
+$x$ est le niveau de production (en centaines d'unités).
+
+1. Trouver le niveau de production qui minimise le coût moyen.
+2. Quel est le coût moyen minimum ?
+3. Sur quels intervalles le coût moyen est-il décroissant ? Croissant ?
+
+::: {.callout-tip collapse="true" title="Indice"}
+Calculer $C'(x)$ et l'égaler à zéro. Comme $a > 0$, le point critique est
+un minimum.
+:::
+
+::: {.callout-caution collapse="true" title="Afficher la solution"}
+- $C'(x) = 2x - 12 = 0 \;\Rightarrow\; x = 6$ (centaines d'unités).
+- Coût moyen minimum : $C(6) = 36 - 72 + 40 = 4$ (par unité).
+- Décroissant sur $]-\infty, 6[\,$; croissant sur $\,]6, +\infty[$.
+:::
+
+## Exploration interactive
+
+Utilisez le curseur pour choisir une quantité produite $q$ et observer
+l'évolution du chiffre d'affaires, du coût et du profit. La droite pointillée
+rouge marque l'optimum $q^* = 100$ obtenu analytiquement.
+
+```{ojs}
+viewof quantity = Inputs.range([0, 200], {
+  value: 50,
+  step: 1,
+  label: "Quantité q (unités)"
+})
+```
+
+```{ojs}
+qRange = Array.from({length: 201}, (_, i) => i)
+curveData = qRange.flatMap(q => [
+  {q, value: 60*q - 0.2*q*q, curve: "Chiffre d'affaires R(q)"},
+  {q, value: 500 + 20*q, curve: "Coût C(q)"},
+  {q, value: 60*q - 0.2*q*q - 500 - 20*q, curve: "Profit P(q)"}
+])
+
+qStar = 100
+revenue_q = 60*quantity - 0.2*quantity*quantity
+cost_q = 500 + 20*quantity
+profit_q = revenue_q - cost_q
+revenue_opt = 60*qStar - 0.2*qStar*qStar
+profit_opt = revenue_opt - (500 + 20*qStar)
+
+profitChart = Plot.plot({
+  marks: [
+    Plot.line(curveData, {x: "q", y: "value", stroke: "curve"}),
+    Plot.ruleY([0], {stroke: "#aaa", strokeDash: [2,2]}),
+    Plot.ruleX([quantity], {stroke: "white", strokeDash: [3,3]}),
+    Plot.ruleX([qStar], {stroke: "red", strokeDash: [4,2]})
+  ],
+  x: {label: "Quantité q"},
+  y: {label: "Valeur (€)"},
+  color: {legend: true},
+  width: 550,
+  height: 320
+})
+```
+
+```{ojs}
+html`
+<div style="margin-bottom:1rem">${profitChart}</div>
+<p style="font-size:0.85rem;opacity:0.7">Droite pointillée blanche : votre
+position q = ${quantity}. Droite pointillée rouge : optimum q* = 100.</p>
+<div class="metric-grid">
+  <div class="metric-card">
+    <span class="metric-label">Chiffre d'affaires R(q)</span>
+    <strong>${revenue_q.toFixed(0)} €</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">Coût C(q)</span>
+    <strong>${cost_q.toFixed(0)} €</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">Profit P(q)</span>
+    <strong>${profit_q.toFixed(0)} €</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">Profit maximum en q* = 100</span>
+    <strong>${profit_opt.toFixed(0)} €</strong>
+  </div>
+</div>
+`
+```
+
+### Investigation
+
+1. Déplacer le curseur à $q = 100$. Le profit affiché correspond-il au
+   résultat de l'exemple résolu (1 500 €) ?
+2. Déplacer le curseur à $q = 50$ et $q = 150$. Les deux profits sont-ils
+   identiques ? Pourquoi ? Qu'indique-t-on sur la forme de la fonction de
+   profit ?
+3. À quelle quantité le chiffre d'affaires est-il égal au coût (seuil de
+   rentabilité) ? Utiliser le curseur pour l'approcher, puis vérifier
+   algébriquement.
+4. Produire davantage augmente-t-il toujours le profit ? Trouver la quantité
+   au-delà de laquelle le profit commence à diminuer.
+
+## Problème appliqué
+
+Une boulangerie vend du pain artisanal à 4 € la miche. La fonction de coût
+journalier est $C(q) = 0{,}05q^2 + 0{,}5q + 80$ (euros), où $q$ est le
+nombre de miches cuites.
+
+1. Écrire la fonction de profit journalier $P(q)$.
+2. Trouver le nombre de miches qui maximise le profit journalier.
+3. Quel est le profit journalier maximum ?
+4. Trouver les quantités au seuil de rentabilité (où le profit = 0).
+
+## Erreurs fréquentes
+
+::: {.callout-warning title="Erreur fréquente — ne pas vérifier si le point critique est un maximum ou un minimum"}
+Un étudiant trouve $f'(x) = 0$ en $x = 5$ et déclare immédiatement que « la
+fonction a un maximum en $x = 5$ ».
+
+Trouver $f'(x^*) = 0$ identifie un **candidat** à un extremum — ce peut être
+un maximum, un minimum ou ni l'un ni l'autre (un point d'inflexion). Pour un
+polynôme de degré 2 $f(x) = ax^2 + bx + c$ :
+
+- Si $a < 0$ : le point critique est un **maximum** (parabole ouverte vers le
+  bas).
+- Si $a > 0$ : le point critique est un **minimum** (parabole ouverte vers le
+  haut).
+
+Toujours vérifier le signe de $a$ avant de conclure.
+:::
+
+## Vérifiez votre compréhension
+
+1. Calculer le taux de variation moyen de $f(x) = 2x^2 - 3$ entre $x = 1$
+   et $x = 4$.
+2. Dériver $g(x) = -3x^2 + 12x - 5$.
+3. Une fonction de coût est $C(q) = 2q^2 - 40q + 300$. Trouver le niveau de
+   production qui minimise le coût.
+4. Un étudiant égale à zéro la dérivée d'une fonction de profit et obtient
+   $q = 80$. Elle conclut que le profit est maximisé. Quelle vérification
+   supplémentaire doit-elle effectuer ?
+5. Le chiffre d'affaires est $R(q) = 50q$ et le coût est $C(q) = q^2 + 100q
+   + 200$. Existe-t-il une quantité qui maximise le profit ? Que signifie un
+   $q$ optimal négatif dans ce contexte ?
+
+## Synthèse
+
+1. La dérivée $f'(x)$ mesure le taux de variation instantané de $f$ en $x$ :
+   elle est positive lorsque $f$ est croissante, négative lorsqu'elle est
+   décroissante, et nulle en un candidat à un extremum (où la tangente est
+   horizontale).
+2. Pour optimiser une fonction polynomiale de degré 2, calculer $f'(x)$,
+   l'égaler à zéro pour trouver $x^*$, puis confirmer si $x^*$ est un maximum
+   (si $a < 0$) ou un minimum (si $a > 0$) en vérifiant le signe du coefficient
+   dominant.
+3. Le calcul différentiel fournit la décision optimale exacte — la quantité,
+   le prix ou le niveau de production exacts — plutôt qu'une approximation
+   graphique ; combiner la dérivée avec le contexte économique (un maximum
+   a-t-il du sens ?) est ce qui transforme les mathématiques en aide à la
+   décision.
+
+## Travail personnel
+
+- Calculer les dérivées des fonctions 1 à 8 dans la banque d'exercices.
+- Résoudre les problèmes d'optimisation A à F.
+- Comparer la solution par dérivée avec l'estimation par curseur de
+  l'Exploration interactive.
+- Consigner les erreurs dans votre journal d'erreurs.
+- Réviser les entrées du glossaire pour : *dérivée*, *taux de variation*,
+  *maximum*, *minimum*, *optimisation*.
+
+## Continuer
+
+[Continuer vers le Module 8 →](module-8.qmd)

@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Guillaume Gilles - Session 4 — Univariate Graphical Representation II</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Guillaume Gilles - Session 4 — Univariate Graphical Representation II">
+<meta property="og:description" content="Data Description | Part II">
+<meta property="og:image" content="https://ggilles.dev/teaching/data-description/modules/assets/og-image.jpg">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Session 4 — Univariate Graphical Representation II">
+<meta name="twitter:description" content="Data Description | Part II">
+<meta name="twitter:image" content="https://ggilles.dev/teaching/data-description/modules/assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Guillaume Gilles</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+    <div class="dropdown">
+      <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../../teaching/mathematical-fundamentals/index.html">
+            🇬🇧 English
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../../fr/teaching/mathematical-fundamentals/index.html">
+            🇫🇷 Français
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory">Theory</a></li>
+  <li><a href="#worked-example" id="toc-worked-example" class="nav-link" data-scroll-target="#worked-example">Worked example</a></li>
+  <li><a href="#using-excel" id="toc-using-excel" class="nav-link" data-scroll-target="#using-excel">Using Excel</a></li>
+  <li><a href="#proof-derivation" id="toc-proof-derivation" class="nav-link" data-scroll-target="#proof-derivation">Proof / derivation</a></li>
+  <li><a href="#visual-intuition" id="toc-visual-intuition" class="nav-link" data-scroll-target="#visual-intuition">Visual intuition</a></li>
+  <li><a href="#interactive-demo-build-your-own-histogram" id="toc-interactive-demo-build-your-own-histogram" class="nav-link" data-scroll-target="#interactive-demo-build-your-own-histogram">Interactive demo — build your own histogram</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Only show the language switcher on mathematical-fundamentals pages
+  var path = window.location.pathname;
+  var mathFrPath  = '/fr/teaching/mathematical-fundamentals/';
+  var mathEnPath  = '/teaching/mathematical-fundamentals/';
+  var isMathFr = path.startsWith(mathFrPath);
+  var isMathEn = path.startsWith(mathEnPath);
+  if (!isMathFr && !isMathEn) return;
+
+  // Do not show on RevealJS presentation pages
+  if (document.body.classList.contains('reveal')) return;
+
+  var counterpart = isMathFr
+    ? path.replace(/^\/fr/, '')
+    : '/fr' + path;
+  var label = isMathFr ? '🇬🇧 English version' : '🇫🇷 Version française';
+
+  var p = document.createElement('p');
+  p.className = 'lang-switch';
+  var a = document.createElement('a');
+  a.href = counterpart;
+  a.textContent = label;
+  p.appendChild(a);
+
+  // Insert right after the page title (h1.title)
+  var title = document.querySelector('h1.title');
+  if (title && title.parentNode) {
+    title.parentNode.insertBefore(p, title.nextSibling);
+  } else {
+    var content = document.querySelector('#quarto-document-content') ||
+                  document.querySelector('main') ||
+                  document.body;
+    content.insertBefore(p, content.firstChild);
+  }
+});
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Session 4 — Univariate Graphical Representation II</h1>
+<p class="subtitle lead">Data Description | Part II</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Session 3’s frequency table showed that “The Wandering Fork” traded on 13 Sunny, 12 Cloudy, and 5 Rainy days — a clean summary, because <code>weather</code> only has three possible categories. Qualitative categories are easy to chart with bars and pie slices this way — but a <strong>continuous quantitative</strong> variable like daily revenue needs a different approach, because almost every observation is a distinct value. This session covers how to group continuous data into classes and represent it with a histogram, a frequency polygon, and a cumulative-frequency curve.</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<ul>
+<li>Explain why raw continuous data must be grouped into classes before it can be summarised in a table.</li>
+<li>Build a class frequency table with counts, relative frequencies, and cumulative frequencies.</li>
+<li>Build and interpret a histogram, a frequency polygon, and a cumulative-frequency curve.</li>
+<li>Use the interactive demo below to see how bin width changes a histogram’s shape.</li>
+</ul>
+</section>
+<section id="theory" class="level2">
+<h2 class="anchored" data-anchor-id="theory">Theory</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition — class (grouped) frequency table
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When a continuous variable’s individual values are (almost) all different, a plain frequency table brings no useful summary. The fix is to split the range of values into <span class="math inline">\(k\)</span> contiguous <strong>classes</strong> (intervals) of width <span class="math inline">\(h\)</span>, then count how many observations fall into each class. Classes are conventionally written half-open, <span class="math inline">\([L_i, L_i+h[\)</span>, so every value belongs to exactly one class.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Formula — cumulative frequency
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <strong>increasing cumulative frequency</strong> up to class <span class="math inline">\(i\)</span> is <span class="math display">\[
+N_i^{+} = \sum_{j=1}^{i} n_j, \qquad F_i^{+} = \frac{N_i^{+}}{n},
+\]</span> i.e.&nbsp;the running total of counts (or relative frequencies) from the first class up to and including class <span class="math inline">\(i\)</span>. It answers “how many/what share of observations are below the upper bound of class <span class="math inline">\(i\)</span>?” and is what the cumulative-frequency curve plots.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition — histogram
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <strong>histogram</strong> represents a grouped continuous variable with adjacent rectangles, one per class, whose <strong>area</strong> (not just height) is proportional to the class’s count. For equal-width classes, area proportional to count is the same as height proportional to count; for unequal widths, the height must be adjusted (<span class="math inline">\(\text{height} = n_i / h_i\)</span>, a <em>density</em>) so that area stays correct — a common exam trap.</p>
+</div>
+</div>
+</section>
+<section id="worked-example" class="level2">
+<h2 class="anchored" data-anchor-id="worked-example">Worked example</h2>
+<p>Class frequency table for <code>daily_revenue_eur</code> (class width <span class="math inline">\(h=100\)</span>, <span class="math inline">\(n=30\)</span>), from <code>data-model.md</code>:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Class (€)</th>
+<th style="text-align: right;"><span class="math inline">\(n_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(N_i^{+}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(f_i\)</span> (%)</th>
+<th style="text-align: right;"><span class="math inline">\(F_i^{+}\)</span> (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>[400, 500[</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">20.0%</td>
+<td style="text-align: right;">20.0%</td>
+</tr>
+<tr class="even">
+<td>[500, 600[</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">20.0%</td>
+<td style="text-align: right;">40.0%</td>
+</tr>
+<tr class="odd">
+<td>[600, 700[</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">26.7%</td>
+<td style="text-align: right;">66.7%</td>
+</tr>
+<tr class="even">
+<td>[700, 800[</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">23.3%</td>
+<td style="text-align: right;">90.0%</td>
+</tr>
+<tr class="odd">
+<td>[800, 900[</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">10.0%</td>
+<td style="text-align: right;">100.0%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 1 — histogram.</strong> All five classes share width <span class="math inline">\(h=100\)</span>, so bar heights are simply the counts: 6, 6, 8, 7, 3. The tallest bar, [600,700[, is where the largest share of trading days fall.</p>
+<p><strong>Step 2 — frequency polygon.</strong> Plotting each class’s <strong>midpoint</strong> (<span class="math inline">\(450, 550, 650, 750, 850\)</span>) against its count and joining the points with straight lines gives the frequency polygon — the same information as the histogram, but as a line, useful for comparing two distributions on one chart.</p>
+<p><strong>Step 3 — cumulative-frequency curve.</strong> Plotting each class’s <em>upper bound</em> (500, 600, 700, 800, 900) against <span class="math inline">\(F_i^{+}\)</span> (20.0%, 40.0%, 66.7%, 90.0%, 100.0%) and joining with straight lines gives a non-decreasing curve. Reading it at <span class="math inline">\(600\)</span> tells us <span class="math inline">\(40.0\%\)</span> of days earned under €600.</p>
+</section>
+<section id="using-excel" class="level2">
+<h2 class="anchored" data-anchor-id="using-excel">Using Excel</h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Excel function / steps</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Count values in a class</td>
+<td><code>=COUNTIFS(range, "&gt;=400", range, "&lt;500")</code></td>
+</tr>
+<tr class="even">
+<td>Relative frequency</td>
+<td><code>=count/COUNT(range)</code></td>
+</tr>
+<tr class="odd">
+<td>Cumulative frequency</td>
+<td>Running <code>SUM</code> down the <span class="math inline">\(f_i\)</span> column, or <code>=COUNTIF(range,"&lt;"&amp;upper_bound)/COUNT(range)</code></td>
+</tr>
+<tr class="even">
+<td>Histogram</td>
+<td>Select the class table → <strong>Insert → Chart → Histogram</strong> (or <strong>Insert → Statistical Chart → Histogram</strong>)</td>
+</tr>
+<tr class="odd">
+<td>Frequency polygon / cumulative curve</td>
+<td>Select midpoints/bounds and <span class="math inline">\(f_i\)</span>/<span class="math inline">\(F_i^{+}\)</span> → <strong>Insert → Chart → Line</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="proof-derivation" class="level2">
+<h2 class="anchored" data-anchor-id="proof-derivation">Proof / derivation</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Derivation — the cumulative-frequency curve must reach 100% (click to expand)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>By definition <span class="math inline">\(N_k^{+} = \sum_{j=1}^{k} n_j\)</span>, summed over <em>all</em> <span class="math inline">\(k\)</span> classes. Since the classes partition all <span class="math inline">\(n\)</span> observations (every observation falls in exactly one class), <span class="math display">\[
+N_k^{+} = \sum_{j=1}^{k} n_j = n
+\quad\Longrightarrow\quad
+F_k^{+} = \frac{N_k^{+}}{n} = 1 = 100\%.
+\]</span> For “The Wandering Fork”: <span class="math inline">\(N_5^{+} = 6+6+8+7+3 = 30 = n\)</span>, so <span class="math inline">\(F_5^{+} = 100.0\%\)</span> — the cumulative curve must always finish at the top-right corner of the chart, whatever the class boundaries are.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="visual-intuition" class="level2">
+<h2 class="anchored" data-anchor-id="visual-intuition">Visual intuition</h2>
+<p>A histogram is literally a bar-chart-shaped <em>area diagram</em>: each rectangle’s area (height × width) represents that class’s share of the 30 days. When all classes share the same width, taller means “more common” in the ordinary sense — but as soon as widths differ, only <em>area</em> (not height) can be compared directly across classes.</p>
+</section>
+<section id="interactive-demo-build-your-own-histogram" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-demo-build-your-own-histogram">Interactive demo — build your own histogram</h2>
+<p>Drag the slider to change the bin width and see how the same 30 “Wandering Fork” <code>daily_revenue_eur</code> values regroup into wider or narrower classes.</p>
+<pre class="{shinylive-python}"><code>#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 520
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+REVENUE = [
+    460.48, 500.02, 418.65, 508.80, 646.19, 785.79, 719.66, 478.04,
+    669.00, 666.42, 614.83, 520.99, 725.66, 886.56, 691.50, 744.92,
+    614.75, 700.41, 692.60, 764.59, 856.52, 641.07, 407.59, 437.31,
+    434.58, 587.06, 742.99, 841.83, 559.53, 531.91,
+]
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
+        .form-label {{ color: {FG} !important; }}
+        .form-range {{ accent-color: steelblue; width: 100%; }}
+        .info-box {{
+            background: #152119; border-radius: 6px; padding: 10px 14px;
+            margin: 8px 0; border-left: 3px solid steelblue;
+            font-family: monospace; font-size: 0.9em;
+        }}
+    """),
+    ui.h5("📊 Histogram builder — The Wandering Fork's daily revenue (n = 30)", style=f"color:{FG}"),
+    ui.p(
+        "Change the bin width and watch the same 30 days regroup into "
+        "wider or narrower classes.",
+        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
+    ),
+    ui.input_slider("bin_width", "Bin width (€):", min=25, max=200, value=100, step=25),
+    ui.output_ui("info"),
+    ui.output_plot("plot", height="360px"),
+)
+
+def server(input, output, session):
+    @output
+    @render.ui
+    def info():
+        w = input.bin_width()
+        lo = 400 - (400 % w)
+        hi = 900 + (w - (900 % w)) % w
+        n_bins = int(round((hi - lo) / w))
+        return ui.HTML(f"""
+            &lt;div class='info-box'&gt;
+                Bin width = &lt;strong style='color:darkorange'&gt;{w}&lt;/strong&gt; € &amp;rarr;
+                &lt;strong style='color:darkorange'&gt;{n_bins}&lt;/strong&gt; classes,
+                from {lo} to {hi} €.
+            &lt;/div&gt;
+        """)
+
+    @output
+    @render.plot
+    def plot():
+        w = input.bin_width()
+        lo = 400 - (400 % w)
+        hi = 900 + (w - (900 % w)) % w
+        bins = np.arange(lo, hi + w, w)
+
+        fig, ax = plt.subplots(figsize=(7, 4))
+        fig.patch.set_facecolor(BG)
+        ax.set_facecolor(BG)
+        for spine in ax.spines.values():
+            spine.set_edgecolor(FG)
+        ax.tick_params(colors=FG)
+
+        counts, edges, _ = ax.hist(
+            REVENUE, bins=bins, color='steelblue', edgecolor=BG, alpha=0.9
+        )
+        ax.set_xlabel("Daily revenue (€)", color=FG)
+        ax.set_ylabel("Number of days", color=FG)
+        ax.set_title("The Wandering Fork — daily revenue histogram", color=FG)
+        ax.grid(alpha=0.15, color=FG, axis='y')
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)</code></pre>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 1 — Reading the cumulative curve (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Using the worked-example table, what percentage of “The Wandering Fork”’s trading days earned <strong>at least</strong> €700?</p>
+<p><strong>Solution.</strong> <span class="math inline">\(F_{[700,800[}^{+}\)</span> upper bound at 800 is <span class="math inline">\(90.0\%\)</span> below €800, so above €700 is <span class="math inline">\(100\% - F^{+}(700) = 100\% - 66.7\% =
+33.3\%\)</span> — matching the [700,800[ and [800,900[ classes directly: <span class="math inline">\((7+3)/30 = 33.3\%\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 2 — Unequal class widths (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Suppose a fourth class merged [700,800[ and [800,900[ into a single [700,900[ class of width 200 with count 10. What height should its histogram bar have, relative to the original [400,500[ bar (width 100, count 6), so both bars’ <em>areas</em> are comparable?</p>
+<p><strong>Solution.</strong> Density <span class="math inline">\(= n_i/h_i\)</span>. [700,900[: <span class="math inline">\(10/200 = 0.05\)</span>; [400,500[: <span class="math inline">\(6/100 = 0.06\)</span>. The merged bar must be drawn at height <span class="math inline">\(0.05\)</span> (not <span class="math inline">\(10\)</span>), roughly <span class="math inline">\(83\%\)</span> of [400,500[’s height, even though it contains more days — because it is twice as wide.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 3 — Frequency polygon midpoint (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>What is the midpoint of the class [600, 700[, and what count is plotted there on the frequency polygon?</p>
+<p><strong>Solution.</strong> Midpoint <span class="math inline">\(= (600+700)/2 = 650\)</span>; the frequency polygon plots the point <span class="math inline">\((650, 8)\)</span>, since <span class="math inline">\(n_{[600,700[} = 8\)</span>.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a> · Source on <a href="https://github.com/guillaumegilles/guillaumegilles.github.io"><i class="bi bi-github"></i> GitHub</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>This site respects your privacy — no cookies, no tracking.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
