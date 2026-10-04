@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Guillaume Gilles - Session 11 — Bivariate Numerical Summaries</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Guillaume Gilles - Session 11 — Bivariate Numerical Summaries">
+<meta property="og:description" content="Data Description | Part III">
+<meta property="og:image" content="https://ggilles.dev/teaching/data-description/modules/assets/og-image.jpg">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Session 11 — Bivariate Numerical Summaries">
+<meta name="twitter:description" content="Data Description | Part III">
+<meta name="twitter:image" content="https://ggilles.dev/teaching/data-description/modules/assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Guillaume Gilles</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+    <div class="dropdown">
+      <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../../teaching/mathematical-fundamentals/index.html">
+            🇬🇧 English
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../../fr/teaching/mathematical-fundamentals/index.html">
+            🇫🇷 Français
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory">Theory</a></li>
+  <li><a href="#worked-example" id="toc-worked-example" class="nav-link" data-scroll-target="#worked-example">Worked example</a></li>
+  <li><a href="#using-excel" id="toc-using-excel" class="nav-link" data-scroll-target="#using-excel">Using Excel</a></li>
+  <li><a href="#proof-derivation" id="toc-proof-derivation" class="nav-link" data-scroll-target="#proof-derivation">Proof / derivation</a></li>
+  <li><a href="#visual-intuition" id="toc-visual-intuition" class="nav-link" data-scroll-target="#visual-intuition">Visual intuition</a></li>
+  <li><a href="#interactive-demo-scatter-plot-correlation" id="toc-interactive-demo-scatter-plot-correlation" class="nav-link" data-scroll-target="#interactive-demo-scatter-plot-correlation">Interactive demo — scatter plot &amp; correlation</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Only show the language switcher on mathematical-fundamentals pages
+  var path = window.location.pathname;
+  var mathFrPath  = '/fr/teaching/mathematical-fundamentals/';
+  var mathEnPath  = '/teaching/mathematical-fundamentals/';
+  var isMathFr = path.startsWith(mathFrPath);
+  var isMathEn = path.startsWith(mathEnPath);
+  if (!isMathFr && !isMathEn) return;
+
+  // Do not show on RevealJS presentation pages
+  if (document.body.classList.contains('reveal')) return;
+
+  var counterpart = isMathFr
+    ? path.replace(/^\/fr/, '')
+    : '/fr' + path;
+  var label = isMathFr ? '🇬🇧 English version' : '🇫🇷 Version française';
+
+  var p = document.createElement('p');
+  p.className = 'lang-switch';
+  var a = document.createElement('a');
+  a.href = counterpart;
+  a.textContent = label;
+  p.appendChild(a);
+
+  // Insert right after the page title (h1.title)
+  var title = document.querySelector('h1.title');
+  if (title && title.parentNode) {
+    title.parentNode.insertBefore(p, title.nextSibling);
+  } else {
+    var content = document.querySelector('#quarto-document-content') ||
+                  document.querySelector('main') ||
+                  document.body;
+    content.insertBefore(p, content.firstChild);
+  }
+});
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Session 11 — Bivariate Numerical Summaries</h1>
+<p class="subtitle lead">Data Description | Part III</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Session 10’s scatter plot showed a visible upward trend between temperature and revenue — but “visible” is not a number we can compare, report, or test. This session turns that picture into three precise numerical summaries: covariance, the correlation coefficient, and the least-squares regression line.</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<ul>
+<li>Compute the covariance between two quantitative variables.</li>
+<li>Compute and interpret the correlation coefficient <span class="math inline">\(r\)</span> and the coefficient of determination <span class="math inline">\(r^2\)</span>.</li>
+<li>Compute the least-squares regression line and use it to predict a value.</li>
+<li>Use the interactive demo below to see how moving points changes <span class="math inline">\(r\)</span> and the regression line live.</li>
+</ul>
+</section>
+<section id="theory" class="level2">
+<h2 class="anchored" data-anchor-id="theory">Theory</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Formula — covariance
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For two quantitative variables <span class="math inline">\(X,Y\)</span> observed on the same <span class="math inline">\(n\)</span> individuals, with means <span class="math inline">\(\bar{x},\bar{y}\)</span>, the <strong>sample covariance</strong> is <span class="math display">\[
+\text{Cov}(X,Y) = \frac{1}{n-1}\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y}).
+\]</span> A positive covariance means <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> tend to move in the same direction; negative means opposite directions. Its unit (here, °C·€) makes it hard to judge the <em>strength</em> of the relationship directly — that is what <span class="math inline">\(r\)</span> is for.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Formula — correlation coefficient
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+r = \frac{\text{Cov}(X,Y)}{s_X\, s_Y}, \qquad -1 \le r \le 1.
+\]</span> <span class="math inline">\(r\)</span> is covariance rescaled to be unit-free: <span class="math inline">\(r\)</span> near <span class="math inline">\(+1\)</span> means a strong positive linear relationship, near <span class="math inline">\(-1\)</span> a strong negative linear relationship, and near <span class="math inline">\(0\)</span> means little to no <em>linear</em> relationship (though a strong non-linear one could still exist). <span class="math inline">\(r^2\)</span>, the <strong>coefficient of determination</strong>, is the share of <span class="math inline">\(Y\)</span>’s variability that a linear relationship with <span class="math inline">\(X\)</span> “explains”.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Formula — least-squares regression line
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The line <span class="math inline">\(\hat{y} = a + bx\)</span> that minimises <span class="math inline">\(\sum_i (y_i-\hat{y}_i)^2\)</span> has <span class="math display">\[
+b = \frac{\text{Cov}(X,Y)}{s_X^2}, \qquad a = \bar{y} - b\,\bar{x}.
+\]</span> <span class="math inline">\(b\)</span> (the slope) estimates how much <span class="math inline">\(Y\)</span> changes, on average, for a one-unit increase in <span class="math inline">\(X\)</span>; <span class="math inline">\(a\)</span> (the intercept) is the predicted <span class="math inline">\(Y\)</span> when <span class="math inline">\(X=0\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="worked-example" class="level2">
+<h2 class="anchored" data-anchor-id="worked-example">Worked example</h2>
+<p>Using “The Wandering Fork”’s <code>temperature_c</code> (<span class="math inline">\(X\)</span>) and <code>daily_revenue_eur</code> (<span class="math inline">\(Y\)</span>), <span class="math inline">\(n=30\)</span>, verified in <code>data-model.md</code>:</p>
+<table class="table">
+<colgroup>
+<col style="width: 42%">
+<col style="width: 57%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Statistic</th>
+<th style="text-align: right;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Covariance</td>
+<td style="text-align: right;">252.81</td>
+</tr>
+<tr class="even">
+<td>Correlation <span class="math inline">\(r\)</span></td>
+<td style="text-align: right;">0.621</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(r^2\)</span></td>
+<td style="text-align: right;">0.386</td>
+</tr>
+<tr class="even">
+<td>Regression line</td>
+<td style="text-align: right;"><span class="math inline">\(\widehat{\text{revenue}} = -22.01 + 28.71\times\text{temperature\_c}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 1 — covariance.</strong> <span class="math inline">\(\text{Cov}=252.81 &gt; 0\)</span>: warmer days and higher revenue days do tend to coincide, confirming Session 10’s scatter-plot impression numerically.</p>
+<p><strong>Step 2 — correlation.</strong> <span class="math inline">\(r=0.621\)</span>: a <strong>moderate</strong> positive linear relationship — clearly present, but far from perfect (a value near <span class="math inline">\(r=1\)</span> would mean the points fall almost exactly on a line). <span class="math inline">\(r^2=0.386\)</span>: temperature alone “explains” about <span class="math inline">\(38.6\%\)</span> of the day-to-day variability in revenue; the remaining <span class="math inline">\(61.4\%\)</span> comes from other factors (weather details, day of week, customer traffic, …).</p>
+<p><strong>Step 3 — regression line.</strong> <span class="math inline">\(b=28.71\)</span>: each extra <span class="math inline">\(1°C\)</span> is associated with about €28.71 more revenue, on average. <span class="math inline">\(a=-22.01\)</span> is the line’s value at <span class="math inline">\(\text{temperature\_c}=0\)</span> — not a realistic trading day, so it should be read as a mathematical anchor for the line, not a real prediction. Predicting revenue on a <span class="math inline">\(25°C\)</span> day: <span class="math inline">\(\widehat{\text{revenue}} = -22.01+28.71\times25 = 695.74\)</span> €.</p>
+</section>
+<section id="using-excel" class="level2">
+<h2 class="anchored" data-anchor-id="using-excel">Using Excel</h2>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Excel function / steps</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Covariance</td>
+<td><code>=COVARIANCE.S(range_x, range_y)</code></td>
+</tr>
+<tr class="even">
+<td>Correlation coefficient</td>
+<td><code>=CORREL(range_x, range_y)</code></td>
+</tr>
+<tr class="odd">
+<td>Regression slope</td>
+<td><code>=SLOPE(range_y, range_x)</code></td>
+</tr>
+<tr class="even">
+<td>Regression intercept</td>
+<td><code>=INTERCEPT(range_y, range_x)</code></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(r^2\)</span></td>
+<td><code>=RSQ(range_y, range_x)</code> (or <span class="math inline">\(r^2\)</span>, squaring <code>CORREL</code>)</td>
+</tr>
+<tr class="even">
+<td>Trend line on a scatter plot</td>
+<td>Select a point on the chart → right-click → <strong>Add Trendline</strong> → <strong>Linear</strong>, tick “Display Equation”</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="proof-derivation" class="level2">
+<h2 class="anchored" data-anchor-id="proof-derivation">Proof / derivation</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Derivation — the bounds <span class="math inline">\(-1 \le r \le 1\)</span> (click to expand)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This follows from the <strong>Cauchy–Schwarz inequality</strong>. Writing <span class="math inline">\(u_i = x_i-\bar{x}\)</span> and <span class="math inline">\(v_i=y_i-\bar{y}\)</span>, <span class="math display">\[
+\left(\sum_{i=1}^n u_i v_i\right)^2 \;\le\; \left(\sum_{i=1}^n u_i^2\right)\left(\sum_{i=1}^n v_i^2\right).
+\]</span> Dividing both sides by <span class="math inline">\(\left(\sum u_i^2\right)\left(\sum v_i^2\right)\)</span> and taking square roots gives exactly <span class="math display">\[
+\left|\frac{\sum_i u_i v_i}{\sqrt{\sum_i u_i^2}\sqrt{\sum_i v_i^2}}\right| \le 1,
+\]</span> and the left-hand side is precisely <span class="math inline">\(|r|\)</span> once numerator and denominator are both divided by <span class="math inline">\(n-1\)</span>. Equality (<span class="math inline">\(|r|=1\)</span>) holds only when every point lies exactly on a line — the more scattered the points, the further <span class="math inline">\(|r|\)</span> falls below 1, which is exactly what “The Wandering Fork”’s <span class="math inline">\(r=0.621\)</span> (a real but imperfect trend) reflects.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="visual-intuition" class="level2">
+<h2 class="anchored" data-anchor-id="visual-intuition">Visual intuition</h2>
+<p><span class="math inline">\(r\)</span> measures how tightly the scatter-plot points cluster around a straight line: <span class="math inline">\(|r|\)</span> close to 1 means a thin, cigar-shaped cloud of points hugging the regression line; <span class="math inline">\(|r|\)</span> close to 0 means a round, shapeless cloud with no visible tilt. “The Wandering Fork”’s <span class="math inline">\(r=0.621\)</span> sits in between — a clearly tilted, but noticeably fat, cloud of points.</p>
+</section>
+<section id="interactive-demo-scatter-plot-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-demo-scatter-plot-correlation">Interactive demo — scatter plot &amp; correlation</h2>
+<p>Drag any point to see the correlation coefficient and regression line update live. Starting positions are 8 days sampled from “The Wandering Fork” (<code>temperature_c</code>, <code>daily_revenue_eur</code>).</p>
+<pre class="{shinylive-python}"><code>#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 560
+
+from shiny import App, render, ui, reactive
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+DAYS = [1, 2, 3, 6, 9, 14, 21, 28]
+TEMP0 = [21.9, 20.4, 16.4, 21.1, 23.6, 24.3, 23.5, 24.5]
+REV0 = [460.48, 500.02, 418.65, 785.79, 669.00, 886.56, 856.52, 841.83]
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
+        .form-label {{ color: {FG} !important; }}
+        .form-range {{ accent-color: steelblue; width: 100%; }}
+        .info-box {{
+            background: #152119; border-radius: 6px; padding: 10px 14px;
+            margin: 8px 0; border-left: 3px solid steelblue;
+            font-family: monospace; font-size: 0.9em;
+        }}
+    """),
+    ui.h5("📈 Scatter plot &amp; correlation — 8 sampled days", style=f"color:{FG}"),
+    ui.p(
+        "Move a point's temperature or revenue and watch r, r², and "
+        "the regression line update live.",
+        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
+    ),
+    ui.input_select("point", "Point to edit (day):", {str(d): f"Day {d}" for d in DAYS}),
+    ui.input_slider("temp", "Temperature (°C):", min=10, max=32, value=21.9, step=0.1),
+    ui.input_slider("rev", "Revenue (€):", min=350, max=950, value=460.48, step=1),
+    ui.output_ui("info"),
+    ui.output_plot("plot", height="340px"),
+)
+
+def server(input, output, session):
+    temps = reactive.Value(list(TEMP0))
+    revs = reactive.Value(list(REV0))
+
+    @reactive.Effect
+    def _update_point():
+        idx = DAYS.index(int(input.point()))
+        t, r = list(temps()), list(revs())
+        t[idx] = input.temp()
+        r[idx] = input.rev()
+        temps.set(t)
+        revs.set(r)
+
+    @reactive.Effect
+    @reactive.event(input.point)
+    def _reset_sliders():
+        idx = DAYS.index(int(input.point()))
+        ui.update_slider("temp", value=temps()[idx])
+        ui.update_slider("rev", value=revs()[idx])
+
+    @output
+    @render.ui
+    def info():
+        x = np.array(temps())
+        y = np.array(revs())
+        r = float(np.corrcoef(x, y)[0, 1])
+        b = np.cov(x, y, ddof=1)[0, 1] / x.var(ddof=1)
+        a = y.mean() - b * x.mean()
+        return ui.HTML(f"""
+            &lt;div class='info-box'&gt;
+                r = &lt;strong style='color:darkorange'&gt;{r:.3f}&lt;/strong&gt; &amp;nbsp;|&amp;nbsp;
+                r&amp;sup2; = &lt;strong style='color:darkorange'&gt;{r**2:.3f}&lt;/strong&gt;&lt;br&gt;
+                Regression line: revenue = {a:.2f} + {b:.2f} × temperature
+            &lt;/div&gt;
+        """)
+
+    @output
+    @render.plot
+    def plot():
+        x = np.array(temps())
+        y = np.array(revs())
+        b = np.cov(x, y, ddof=1)[0, 1] / x.var(ddof=1)
+        a = y.mean() - b * x.mean()
+
+        fig, ax = plt.subplots(figsize=(7, 4))
+        fig.patch.set_facecolor(BG)
+        ax.set_facecolor(BG)
+        for spine in ax.spines.values():
+            spine.set_edgecolor(FG)
+        ax.tick_params(colors=FG)
+
+        ax.scatter(x, y, color='steelblue', zorder=5, s=70)
+        xs = np.linspace(min(x) - 1, max(x) + 1, 100)
+        ax.plot(xs, a + b * xs, color='darkorange', lw=2, label=f'ŷ = {a:.1f} + {b:.1f}x')
+        ax.set_xlabel("Temperature (°C)", color=FG)
+        ax.set_ylabel("Daily revenue (€)", color=FG)
+        ax.set_title("The Wandering Fork — temperature vs. revenue", color=FG)
+        ax.legend(fontsize=8.5, facecolor=BG, edgecolor='none', labelcolor=FG)
+        ax.grid(alpha=0.15, color=FG)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)</code></pre>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 1 — Interpreting <span class="math inline">\(r^2\)</span> (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If a different pair of variables had <span class="math inline">\(r=0.9\)</span>, what would <span class="math inline">\(r^2\)</span> be, and how would you interpret it in one sentence?</p>
+<p><strong>Solution.</strong> <span class="math inline">\(r^2 = 0.9^2 = 0.81\)</span>: about <span class="math inline">\(81\%\)</span> of one variable’s variability is explained by its linear relationship with the other — a much tighter fit than “The Wandering Fork”’s <span class="math inline">\(38.6\%\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 2 — Prediction from the regression line (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Using <span class="math inline">\(\widehat{\text{revenue}} = -22.01+28.71\times\text{temperature\_c}\)</span>, predict revenue for a <span class="math inline">\(30°C\)</span> day, and state one reason the true value might differ.</p>
+<p><strong>Solution.</strong> <span class="math inline">\(\widehat{\text{revenue}} = -22.01+28.71\times30 =
+839.29\)</span> €. The true value could differ because temperature explains only <span class="math inline">\(38.6\%\)</span> of revenue’s variability — weather category, day of the week, or random daily fluctuation could all push the actual result above or below this prediction.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 3 — Sign of the slope vs.&nbsp;sign of <span class="math inline">\(r\)</span> (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Explain, using the formulas above, why the regression slope <span class="math inline">\(b\)</span> and the correlation <span class="math inline">\(r\)</span> always have the same sign.</p>
+<p><strong>Solution.</strong> Both <span class="math inline">\(b=\text{Cov}(X,Y)/s_X^2\)</span> and <span class="math inline">\(r=\text{Cov}(X,Y)/(s_X s_Y)\)</span> have <span class="math inline">\(\text{Cov}(X,Y)\)</span> in the numerator, and <span class="math inline">\(s_X^2\)</span>, <span class="math inline">\(s_X\)</span>, <span class="math inline">\(s_Y\)</span> are all non-negative — so the sign of both <span class="math inline">\(b\)</span> and <span class="math inline">\(r\)</span> is entirely determined by the sign of the covariance.</p>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a> · Source on <a href="https://github.com/guillaumegilles/guillaumegilles.github.io"><i class="bi bi-github"></i> GitHub</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>This site respects your privacy — no cookies, no tracking.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
