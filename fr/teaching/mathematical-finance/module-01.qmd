@@ -1,0 +1,712 @@
+---
+title: "Journée 1 — Valeur temps de l'argent"
+date-modified: 2026-10-04
+abstract: |
+  Comment rendre comparables des sommes encaissées ou décaissées à des dates
+  différentes ? Cette journée pose les fondations du raisonnement financier :
+  capitalisation, actualisation, conversion de taux et annuités.
+---
+
+## Objectifs de la journée
+
+À la fin de cette journée, vous saurez :
+
+- distinguer capitalisation et actualisation ;
+- convertir des taux exprimés sur des périodicités différentes ;
+- calculer la valeur actuelle ou acquise d'un capital isolé ;
+- valoriser une suite d'annuités constantes (fin, début, différées, perpétuité) ;
+- résoudre des problèmes d'épargne et de constitution de capital.
+
+---
+
+## Séquence 1 — Introduction et diagnostic
+
+> *Durée : 30 minutes*
+
+### Intuition économique
+
+Choisissez une option, sans calculer, et justifiez votre choix :
+
+- **Option A** : recevoir **10 000 €** aujourd'hui
+- **Option B** : recevoir **11 000 €** dans un an
+- **Option C** : recevoir **12 500 €** dans deux ans
+
+Ce choix simple fait émerger les concepts qui structurent toute la finance :
+
+::: {.callout-note}
+## Pourquoi un euro aujourd'hui vaut-il plus qu'un euro demain ?
+
+Quatre raisons fondamentales :
+
+1. **Préférence pour le présent** — nous préférons disposer d'une somme maintenant
+   plutôt que de l'attendre.
+2. **Coût d'opportunité** — 10 000 € aujourd'hui peuvent être placés et produire
+   des intérêts.
+3. **Inflation** — 11 000 € dans un an achèteront peut-être moins que 10 000 €
+   aujourd'hui si les prix augmentent.
+4. **Risque** — une somme future est incertaine ; une somme présente est certaine.
+
+Ces quatre raisons se condensent en un seul paramètre : le **taux d'actualisation**.
+:::
+
+### Diagnostic initial
+
+Avant de démarrer, évaluez vos acquis sur :
+
+- pourcentages et taux de variation ;
+- calcul de puissances ($1{,}05^{10}$, $1{,}03^{-5}$) ;
+- résolution d'équations du type $x(1+i)^n = C$ ;
+- intérêt intuitif pour l'actualisation (ex. : « combien vaut 1 000 € dans 3 ans
+  si le taux est 4 % ? »).
+
+---
+
+## Séquence 2 — Intérêts simples et intérêts composés
+
+> *Durée : 1 heure*
+
+### Représentation (ligne du temps)
+
+```
+t = 0          t = 1          t = 2          ...    t = n
+  |--------------|--------------|------------- ... ---|
+  C₀                                                  Cₙ
+```
+
+Un capital $C_0$ placé à la date 0 produit un capital $C_n$ à la date $n$.
+
+### A. Intérêts simples
+
+::: {.callout-tip}
+## Formule — Capitalisation en intérêts simples
+
+$$C_n = C_0(1 + ni)$$
+
+**Intérêts produits :** $I = C_0 \, n \, i$
+
+**Lecture :** les intérêts sont calculés *uniquement* sur le capital initial $C_0$,
+à chaque période. Ils ne s'accumulent pas.
+:::
+
+### B. Intérêts composés
+
+::: {.callout-tip}
+## Formule — Capitalisation en intérêts composés
+
+$$C_n = C_0(1 + i)^n$$
+
+**Intérêts produits :** $I = C_0\left[(1+i)^n - 1\right]$
+
+**Lecture :** à chaque période, les intérêts s'ajoutent au capital et produisent
+eux-mêmes des intérêts lors des périodes suivantes. C'est l'effet des
+**intérêts composés** (ou « intérêts sur intérêts »).
+:::
+
+::: {.callout-caution collapse="true"}
+## Démonstration — Pourquoi $(1+i)^n$ ?
+
+À la fin de la période 1 : $C_1 = C_0 + C_0 \cdot i = C_0(1+i)$
+
+À la fin de la période 2 : $C_2 = C_1(1+i) = C_0(1+i)^2$
+
+Par récurrence, à la fin de la période $n$ :
+
+$$C_n = C_0(1+i)^n$$
+
+La clé est que la base de calcul des intérêts est le *capital courant* $C_{t-1}$,
+non le capital initial — d'où l'exposant $n$.
+:::
+
+### C. Comparaison des deux régimes
+
+| Régime | Base de calcul des intérêts | Croissance |
+|--------|----------------------------|------------|
+| Intérêts simples | Capital initial $C_0$ | Linéaire en $n$ |
+| Intérêts composés | Capital courant $C_{t-1}$ | Exponentielle en $n$ |
+
+::: {.callout-warning}
+## Remarque
+
+Pour une même durée $n$ et un même taux $i$ :
+
+- **Pour $n < 1$** (fraction d'année) : les intérêts simples donnent un montant
+  *supérieur* aux intérêts composés.
+- **Pour $n > 1$** : les intérêts composés donnent toujours un montant *supérieur*.
+- L'écart s'amplifie avec le taux et la durée.
+:::
+
+### Exemple résolu
+
+> Un capital de **20 000 €** est placé pendant **5 ans** au taux annuel de **4 %**.
+
+**Intérêts simples :**
+
+$$C_5 = 20\,000 \times (1 + 5 \times 0{,}04) = 20\,000 \times 1{,}20 = 24\,000 \text{ €}$$
+
+**Intérêts composés :**
+
+$$C_5 = 20\,000 \times (1{,}04)^5 = 20\,000 \times 1{,}21665 \approx 24\,333 \text{ €}$$
+
+L'écart (333 €) représente les intérêts générés par les intérêts capitalisés.
+
+::: {.callout-important}
+## Points de vigilance
+
+Avant d'appliquer une formule, vérifiez systématiquement :
+
+1. Le **taux exprimé** ($i$ en décimal, pas en pourcentage : $0{,}04$ et non $4$)
+2. La **durée** $n$ (en nombre de *périodes*, pas nécessairement en années)
+3. La **périodicité de calcul** (mensuelle, trimestrielle, annuelle…)
+4. La **fréquence de capitalisation** (combien de fois par an les intérêts
+   sont-ils capitalisés ?)
+:::
+
+---
+
+## Séquence 3 — Actualisation et équivalence financière
+
+> *Durée : 1 heure*
+
+### Intuition économique
+
+Si la capitalisation répond à « combien vaut un capital *dans le futur* ? »,
+l'actualisation répond à « combien vaut un capital futur *aujourd'hui* ? »
+
+### Représentation (ligne du temps)
+
+```
+t = 0          t = 1          ...    t = n
+  |<------------|<------------- ... --|
+  V₀                                  Vₙ
+  (valeur actuelle)             (valeur future)
+```
+
+### A. Valeur actuelle
+
+::: {.callout-tip}
+## Formule — Actualisation
+
+$$V_0 = \frac{V_n}{(1+i)^n} = V_n \cdot (1+i)^{-n}$$
+
+**Facteur d'actualisation :** $a_n = (1+i)^{-n}$
+
+**Lecture :** $V_0$ est la valeur *aujourd'hui* d'une somme $V_n$ disponible dans
+$n$ périodes. Le facteur $(1+i)^{-n}$ est toujours inférieur à 1 : une somme
+future vaut moins aujourd'hui.
+:::
+
+### B. Équivalence financière
+
+::: {.callout-note}
+## Définition — Équivalence financière
+
+Deux capitaux sont **financièrement équivalents** s'ils ont la même valeur
+actualisée à une date de référence commune, au même taux.
+
+Pour comparer $C_1$ versé à la date $n_1$ et $C_2$ versé à la date $n_2$,
+on les ramène tous deux à une date commune (souvent $t = 0$).
+:::
+
+### Exemple décisionnel
+
+> Une entreprise doit choisir entre :
+>
+> - payer **48 000 €** immédiatement ;
+> - payer **52 000 €** dans deux ans.
+>
+> Le taux d'actualisation est **5 %**.
+
+**Valeur actuelle du paiement différé :**
+
+$$VA = \frac{52\,000}{(1{,}05)^2} = \frac{52\,000}{1{,}1025} \approx 47\,166 \text{ €}$$
+
+$47\,166 < 48\,000$ : le paiement différé a une valeur actuelle *inférieure*.
+Toutes choses égales par ailleurs, il est financièrement préférable.
+
+::: {.callout-warning}
+## Pourquoi le taux d'actualisation n'est jamais neutre
+
+Le choix du taux $i$ reflète :
+
+- le **coût du capital** (le rendement minimum exigé par les investisseurs) ;
+- le **risque** (un projet risqué exige un taux plus élevé) ;
+- l'**inflation** attendue ;
+- la **liquidité** requise.
+
+Un taux plus élevé pénalise davantage les flux éloignés dans le temps.
+:::
+
+### Démonstration interactive — Capitalisation vs Actualisation
+
+```{ojs}
+//| echo: false
+viewof C0_s3 = Inputs.range([100, 20000], {
+  value: 1000, step: 100,
+  label: "Capital initial C₀ (€)"
+})
+viewof i_s3 = Inputs.range([0.01, 0.20], {
+  value: 0.05, step: 0.001,
+  label: "Taux d'intérêt i (annuel)"
+})
+viewof n_s3 = Inputs.range([1, 20], {
+  value: 10, step: 1,
+  label: "Nombre de périodes n"
+})
+
+data_s3 = Array.from({length: n_s3 + 1}, (_, t) => [
+  {t, valeur: C0_s3 * (1 + i_s3) ** t,                          serie: "Capitalisation (Cₙ)"},
+  {t, valeur: C0_s3 * (1 + i_s3) ** n_s3 / (1 + i_s3) ** (n_s3 - t), serie: "Actualisation (V₀)"}
+]).flat()
+
+Plot.plot({
+  title: "Valeur du capital selon la perspective choisie",
+  marks: [
+    Plot.barY(data_s3, Plot.groupX({y: "first"}, {
+      x: "t", y: "valeur", fill: "serie",
+      tip: true
+    })),
+    Plot.ruleY([C0_s3], {stroke: "gray", strokeDasharray: "4",
+      label: "C₀"}),
+    Plot.ruleY([0])
+  ],
+  color: {legend: true},
+  x: {label: "Période t", tickFormat: d => `t=${d}`},
+  y: {label: "Valeur (€)", grid: true},
+  marginBottom: 40
+})
+```
+
+::: {.callout-note}
+## Lire la démonstration
+
+- La barre **bleue** (Capitalisation) montre $C_n = C_0(1+i)^t$ : le capital
+  *croit* avec le temps.
+- La barre **orange** (Actualisation) montre $V_0 = C_n / (1+i)^{n-t}$ : vue
+  depuis la date $n$, la valeur *actuelle* d'un flux futur *décroît* plus on
+  s'éloigne dans le temps.
+- La ligne pointillée indique $C_0$ de départ.
+:::
+
+---
+
+## Séquence 4 — Taux proportionnels et taux équivalents
+
+> *Durée : 1 heure*
+
+### Intuition économique
+
+Un même taux peut s'exprimer sur des périodicités différentes (mensuelle,
+trimestrielle, annuelle…). Deux conventions existent, avec des implications
+très différentes.
+
+### A. Taux proportionnel
+
+::: {.callout-note}
+## Définition — Taux proportionnel
+
+Le taux mensuel **proportionnel** au taux annuel $i_a$ est :
+
+$$i_m = \frac{i_a}{12}$$
+
+**Logique :** on divise simplement le taux annuel par le nombre de périodes.
+Cette convention *ignore* la capitalisation infra-annuelle.
+:::
+
+### B. Taux équivalent
+
+::: {.callout-tip}
+## Formule — Taux équivalent
+
+Le taux mensuel **équivalent** au taux annuel $i_a$ vérifie :
+
+$$(1 + i_m)^{12} = 1 + i_a$$
+
+Donc :
+
+$$i_m = (1 + i_a)^{1/12} - 1$$
+
+De façon générale, pour $m$ sous-périodes par an :
+
+$$i_p = (1 + i_a)^{1/m} - 1$$
+
+**Lecture :** placer au taux mensuel équivalent pendant 12 mois donne
+*exactement* le même résultat que placer au taux annuel $i_a$ pendant 1 an.
+:::
+
+::: {.callout-caution collapse="true"}
+## Démonstration — Taux équivalent
+
+On cherche $i_p$ tel que placer $C_0$ pendant $m$ sous-périodes au taux $i_p$
+donne le même résultat que placer $C_0$ pendant 1 an au taux $i_a$ :
+
+$$C_0(1 + i_p)^m = C_0(1 + i_a)$$
+
+$$\Rightarrow \quad i_p = (1 + i_a)^{1/m} - 1$$
+
+Pour $m = 12$ (mensuel) : $i_m = (1 + i_a)^{1/12} - 1$
+
+Pour $m = 4$ (trimestriel) : $i_t = (1 + i_a)^{1/4} - 1$
+:::
+
+### C. Taux annuel effectif global (TAEG)
+
+À partir d'un taux périodique $i_p$ et de $m$ périodes par an :
+
+$$i_{\text{annuel effectif}} = (1 + i_p)^m - 1$$
+
+### Exemple résolu
+
+> Pour un taux mensuel de **0,5 %** :
+
+$$i_a = (1{,}005)^{12} - 1 \approx 0{,}0617 = 6{,}17\,\%$$
+
+Le taux annuel effectif est **6,17 %**, et non 6 % (qui serait le taux
+proportionnel $0{,}5\% \times 12$). L'écart (0,17 point) représente
+l'effet de la capitalisation mensuelle.
+
+::: {.callout-important}
+## Taux proportionnel ≠ taux équivalent
+
+| Conversion | Formule | Prend en compte la capitalisation ? |
+|------------|---------|--------------------------------------|
+| Proportionnel | $i_p = i_a / m$ | ❌ Non |
+| Équivalent | $i_p = (1+i_a)^{1/m} - 1$ | ✅ Oui |
+
+En finance exacte (prêts immobiliers, obligations), on utilise toujours les
+taux **équivalents**. Le taux proportionnel n'est utilisé que dans des
+conventions simplifiées ou pour des durées inférieures à 1 an.
+:::
+
+---
+
+## Séquence 5 — Annuités constantes
+
+> *Durée : 1 heure 15*
+
+### Intuition économique
+
+Une **annuité** est un flux financier constant (versement ou encaissement)
+répété à intervalles réguliers. La question est : quelle est la valeur
+*totale* de ces flux, ramenée à une date commune ?
+
+::: {.callout-important}
+## Règle d'or — La ligne du temps avant toute formule
+
+Avant d'appliquer une formule d'annuités, tracez *systématiquement* la
+ligne du temps et répondez à ces cinq questions :
+
+1. Quelle est la **date d'évaluation** souhaitée ($t = 0$ ou $t = n$) ?
+2. Les flux sont-ils en **début** ou en **fin de période** ?
+3. Y a-t-il un **différé** (les flux commencent après plusieurs périodes) ?
+4. Le taux et les flux sont-ils sur la **même périodicité** ?
+5. Doit-on **capitaliser** (aller vers le futur) ou **actualiser** (revenir
+   vers le présent) ?
+:::
+
+### A. Annuités de fin de période (terme échu)
+
+```
+t = 0    t = 1    t = 2    ...    t = n
+  |--------|--------|--------- ... ----|
+            A        A                 A
+```
+
+::: {.callout-tip}
+## Formules — Annuités de fin de période
+
+**Valeur acquise** (à la date $n$) :
+
+$$V_n = A \cdot \frac{(1+i)^n - 1}{i}$$
+
+**Valeur actuelle** (à la date $0$) :
+
+$$V_0 = A \cdot \frac{1 - (1+i)^{-n}}{i}$$
+
+**Lecture :** $A$ est le montant de chaque versement, $i$ le taux périodique,
+$n$ le nombre de versements. Les formules donnent la valeur *équivalente* de
+tous les versements à la date choisie.
+:::
+
+::: {.callout-caution collapse="true"}
+## Démonstration — Valeur actuelle des annuités de fin de période
+
+La valeur actuelle est la somme des valeurs actuelles de chaque versement :
+
+$$V_0 = \frac{A}{(1+i)^1} + \frac{A}{(1+i)^2} + \cdots + \frac{A}{(1+i)^n}$$
+
+C'est une suite géométrique de premier terme $A/(1+i)$, de raison $1/(1+i)$,
+avec $n$ termes. Sa somme vaut :
+
+$$V_0 = \frac{A}{1+i} \cdot \frac{1 - (1/(1+i))^n}{1 - 1/(1+i)}
+     = A \cdot \frac{1 - (1+i)^{-n}}{i}$$
+:::
+
+### B. Annuités de début de période (terme à échoir)
+
+```
+t = 0    t = 1    t = 2    ...    t = n-1
+  |--------|--------|--------- ... ----|
+  A        A        A                  A
+```
+
+Chaque versement est avancé d'une période par rapport au cas précédent, donc
+il bénéficie d'une période de capitalisation supplémentaire.
+
+::: {.callout-tip}
+## Formules — Annuités de début de période
+
+$$V_n = A \cdot \frac{(1+i)^n - 1}{i} \cdot (1+i)$$
+
+$$V_0 = A \cdot \frac{1 - (1+i)^{-n}}{i} \cdot (1+i)$$
+
+**Lecture :** il suffit de multiplier les formules de fin de période par
+$(1+i)$ pour obtenir celles de début de période.
+:::
+
+### C. Annuités différées
+
+Si les versements commencent après $d$ périodes de différé :
+
+1. Calculer $V_{d}$ : la valeur *juste avant le premier versement* (à $t = d$)
+   à l'aide des formules habituelles.
+2. Actualiser $V_{d}$ jusqu'à la date souhaitée : $V_0 = V_{d} \cdot (1+i)^{-d}$.
+
+### D. Perpétuités
+
+::: {.callout-tip}
+## Formules — Perpétuités
+
+**Perpétuité constante** (versements infinis et constants) :
+
+$$V_0 = \frac{A}{i}$$
+
+**Perpétuité croissante** au taux $g$ ($i > g$) :
+
+$$V_0 = \frac{A_1}{i - g}$$
+
+**Lecture :** quand $n \to \infty$, le facteur $1-(1+i)^{-n} \to 1$, donc
+$V_0 \to A/i$. La perpétuité croissante correspond au modèle de Gordon-Shapiro
+utilisé en évaluation d'actions.
+:::
+
+---
+
+## Séquence 6 — Cas pratique : constituer un capital
+
+> *Durée : 1 heure*
+
+### Situation
+
+> Une entreprise souhaite constituer dans **8 ans** une réserve de **500 000 €**
+> destinée au remplacement de son système d'information.
+>
+> Les versements sont effectués en **fin d'année**. Le placement rapporte **3,5 %**
+> par an.
+
+### Question principale — Calcul de l'annuité nécessaire
+
+On cherche $A$ tel que $V_n = 500\,000$ avec $n = 8$ et $i = 0{,}035$.
+
+On inverse la formule de valeur acquise des annuités de fin de période :
+
+$$A = V_n \times \frac{i}{(1+i)^n - 1}$$
+
+$$A = 500\,000 \times \frac{0{,}035}{(1{,}035)^8 - 1}
+   = 500\,000 \times \frac{0{,}035}{0{,}3168}
+   \approx 55\,244 \text{ €}$$
+
+::: {.callout-important}
+## Vérification — Contrôle interne du modèle
+
+Vérifiez que $55\,244 \times \frac{(1{,}035)^8 - 1}{0{,}035} \approx 500\,000$.
+Tout modèle Excel doit comporter ce type de cellule de contrôle.
+:::
+
+### Questions subsidiaires
+
+**Q2 — Versements en début d'année :**
+
+$$A_{\text{début}} = V_n \times \frac{i}{(1+i)^n - 1} \times \frac{1}{1+i}
+\approx 55\,244 / 1{,}035 \approx 53\,373 \text{ €}$$
+
+Verser en début d'année permet d'économiser environ 1 871 € par an.
+
+**Q3 — Taux limité à 2 % :**
+
+$$A = 500\,000 \times \frac{0{,}02}{(1{,}02)^8 - 1} \approx 58\,258 \text{ €}$$
+
+Un taux plus faible impose des versements plus élevés (la capitalisation
+travaille moins).
+
+**Q4 — Versements fixes de 50 000 € :**
+
+$$V_8 = 50\,000 \times \frac{(1{,}035)^8 - 1}{0{,}035} \approx 452\,849 \text{ €}$$
+
+Ces versements ne suffisent pas : il manquerait environ 47 151 €.
+
+---
+
+## Séquence 7 — Synthèse et erreurs fréquentes
+
+> *Durée : 45 minutes*
+
+### Carte mentale du cours
+
+```
+                        Valeur temps de l'argent
+                               │
+          ┌────────────────────┼────────────────────┐
+     Capitalisation       Actualisation          Taux
+     C_n = C_0(1+i)^n   V_0 = V_n/(1+i)^n    ┌──┴──┐
+                                            Propor. Équiv.
+                                               │
+                                           Annuités
+                              ┌────────────────┼──────────────┐
+                           Fin période    Début période   Perpétuité
+                           V_0 = A·(…)   V_0 = A·(…)·(1+i)  A/i
+```
+
+::: {.callout-warning}
+## Erreurs fréquentes à éviter
+
+**Erreurs mathématiques**
+
+- Utiliser $5$ au lieu de $0{,}05$ pour un taux de 5 %.
+- Mélanger un taux mensuel avec une durée exprimée en années (sans conversion).
+- Oublier les intérêts composés (utiliser la formule simple quand la période > 1 an).
+- Décaler les flux d'une période (erreur de ±1 dans l'exposant).
+- Confondre taux proportionnel et taux équivalent.
+
+**Erreurs de raisonnement**
+
+- Additionner directement des flux de dates différentes.
+- Ne pas tracer la ligne du temps avant de calculer.
+- Oublier de vérifier la cohérence entre la périodicité du taux et celle des flux.
+:::
+
+::: {.callout-tip}
+## Cinq réflexes à acquérir
+
+1. **Tracer la ligne du temps** avant toute formule.
+2. **Vérifier la cohérence** entre taux et périodicité des flux.
+3. **Actualiser à une date commune** avant de comparer des flux.
+4. **Interpréter le résultat** (que signifie cette VAN de 120 000 € ?).
+5. **Contrôler** le calcul par une formule inverse.
+:::
+
+---
+
+## Exercices
+
+### Niveau 1 — Application directe
+
+**Exercice 1.1** — Un capital de **15 000 €** est placé pendant **6 ans** au taux
+annuel de **3 %** en intérêts composés. Calculez la valeur acquise $C_6$.
+
+::: {.callout-caution collapse="true"}
+## Solution 1.1
+
+$$C_6 = 15\,000 \times (1{,}03)^6 = 15\,000 \times 1{,}1941 \approx 17\,911 \text{ €}$$
+:::
+
+**Exercice 1.2** — Quelle somme faut-il placer aujourd'hui pour obtenir **25 000 €**
+dans **4 ans**, si le taux annuel est **4,5 %** ?
+
+::: {.callout-caution collapse="true"}
+## Solution 1.2
+
+$$V_0 = \frac{25\,000}{(1{,}045)^4} = \frac{25\,000}{1{,}1925} \approx 20\,966 \text{ €}$$
+:::
+
+**Exercice 1.3** — Un taux mensuel de **0,8 %** correspond à quel taux annuel
+effectif ?
+
+::: {.callout-caution collapse="true"}
+## Solution 1.3
+
+$$i_a = (1{,}008)^{12} - 1 \approx 0{,}1003 = 10{,}03\,\%$$
+
+(Et non $0{,}8\% \times 12 = 9{,}6\,\%$ qui serait le taux proportionnel.)
+:::
+
+---
+
+### Niveau 2 — Problème contextualisé
+
+**Exercice 2.1** — Comparer les trois offres de placement suivantes sur une
+base annuelle effective :
+
+| Offre | Taux affiché | Périodicité |
+|-------|-------------|-------------|
+| A | 4,8 % | Mensuel proportionnel |
+| B | 4,7 % | Annuel |
+| C | 4,6 % | Trimestriel équivalent |
+
+Quelle offre est la plus avantageuse ?
+
+::: {.callout-caution collapse="true"}
+## Solution 2.1
+
+**Offre A** — taux mensuel proportionnel $4{,}8\% / 12 = 0{,}4\,\%$
+
+Taux annuel effectif :
+$$i_A = (1{,}004)^{12} - 1 \approx 4{,}91\,\%$$
+
+**Offre B** — déjà sur base annuelle : $i_B = 4{,}70\,\%$
+
+**Offre C** — taux trimestriel équivalent $4{,}6\,\% / 4 = 1{,}15\,\%$
+
+Taux annuel effectif :
+$$i_C = (1{,}0115)^{4} - 1 \approx 4{,}67\,\%$$
+
+Classement : **A (4,91 %) > B (4,70 %) > C (4,67 %)**
+
+L'offre A est la plus avantageuse malgré un taux affiché inférieur à B,
+parce que sa capitalisation mensuelle génère un taux effectif plus élevé.
+:::
+
+---
+
+### Niveau 3 — Étude de cas
+
+**Cas — Plan d'épargne retraite**
+
+Un cadre de 35 ans souhaite constituer un complément de retraite. Il envisage
+de verser **800 €/mois en fin de mois** pendant **30 ans** sur un contrat
+d'assurance-vie rémunéré à **3 % par an** (taux équivalent mensuel à calculer).
+
+1. Calculez le taux mensuel équivalent au taux annuel de 3 %.
+2. Calculez le capital constitué à 65 ans.
+3. Si ce capital sert ensuite à financer une rente mensuelle pendant 20 ans
+   (même taux), calculez le montant de la rente mensuelle.
+4. Quel serait l'impact d'une hausse du taux à 4 % annuel sur le capital final ?
+5. Rédigez une recommandation d'une phrase.
+
+::: {.callout-caution collapse="true"}
+## Correction
+
+**1. Taux mensuel équivalent :**
+$$i_m = (1{,}03)^{1/12} - 1 \approx 0{,}2466\,\%$$
+
+**2. Capital à 65 ans ($n = 360$ mois) :**
+$$V_{360} = 800 \times \frac{(1{,}002466)^{360} - 1}{0{,}002466}
+\approx 800 \times 563{,}3 \approx 450\,640 \text{ €}$$
+
+**3. Rente mensuelle pendant 20 ans ($n = 240$ mois) :**
+$$A = 450\,640 \times \frac{0{,}002466}{1 - (1{,}002466)^{-240}}
+\approx 450\,640 \times 0{,}005543 \approx 2\,497 \text{ €/mois}$$
+
+**4. Impact d'un taux de 4 % :**
+$$i_m = (1{,}04)^{1/12} - 1 \approx 0{,}3274\,\%$$
+$$V_{360} \approx 800 \times \frac{(1{,}003274)^{360} - 1}{0{,}003274}
+\approx 800 \times 693{,}6 \approx 554\,880 \text{ €}$$
+
+Soit un gain de +104 240 € par rapport au scénario à 3 %.
+
+**5. Recommandation :**
+À 3 % de rendement annuel et 800 €/mois de versement, le plan permet de
+constituer environ 451 000 € en 30 ans, générant une rente d'environ 2 500 €/mois
+pendant 20 ans ; une hausse d'un point de taux augmenterait ce capital de
+plus de 100 000 €, ce qui justifie d'arbitrer vers des supports plus
+dynamiques si le profil de risque le permet.
+:::
