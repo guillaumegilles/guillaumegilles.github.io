@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.537">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Guillaume Gilles - Mental Model for Agentic System</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var path = window.location.pathname;
+  var isEnTeaching = path.startsWith('/teaching/');
+  var isFrTeaching = path.startsWith('/fr/teaching/');
+
+  function translateTool() {
+    var icon = document.querySelector('.bi-translate');
+    return icon ? icon.closest('.dropdown') : null;
+  }
+
+  // Outside the teaching section: hide the translate tool
+  if (!isEnTeaching && !isFrTeaching) {
+    var tool = translateTool();
+    if (tool) tool.style.display = 'none';
+    return;
+  }
+
+  // Skip RevealJS slides
+  if (document.body.classList.contains('reveal')) return;
+
+  // Courses with full page-for-page FR translations [EN prefix, FR prefix]
+  var fullPairs = [
+    ['/teaching/mathematical-fundamentals/', '/fr/teaching/mathematical-fundamentals/'],
+  ];
+
+  function frCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][0]))
+        return fullPairs[i][1] + p.slice(fullPairs[i][0].length);
+    }
+    var slug = p.replace('/teaching/', '').split('/')[0];
+    return '/fr/teaching/' + slug + '/';
+  }
+
+  function enCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][1]))
+        return fullPairs[i][0] + p.slice(fullPairs[i][1].length);
+    }
+    var slug = p.replace('/fr/teaching/', '').split('/')[0];
+    return '/teaching/' + slug + '/';
+  }
+
+  var enHref = isEnTeaching ? path : enCounterpart(path);
+  var frHref = isFrTeaching ? path : frCounterpart(path);
+
+  var tool = translateTool();
+  if (!tool) return;
+
+  tool.querySelectorAll('a.dropdown-item').forEach(function (a) {
+    var txt = a.textContent.trim();
+    if (txt.includes('English')) a.href = enHref;
+    else if (txt.includes('Français') || txt.includes('francais')) a.href = frHref;
+  });
+});
+</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Guillaume Gilles - Mental Model for Agentic System">
+<meta property="og:description" content="Generative AI is changing software development by progressively transferring control from the developer to the machine. As this delegation expands from individual lines of code to complete workflows, the developer’s role shifts from writing code to designing, supervising, and governing the systems that produce it.">
+<meta property="og:image" content="https://ggilles.dev/posts/agentic-mental-model/assets/og-image.jpg">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Guillaume Gilles - Mental Model for Agentic System">
+<meta name="twitter:description" content="Generative AI is changing software development by progressively transferring control from the developer to the machine. As this delegation expands from individual lines of code to complete workflows, the developer’s role shifts from writing code to designing, supervising, and governing the systems that produce it.">
+<meta name="twitter:image" content="https://ggilles.dev/posts/agentic-mental-model/assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/favicon.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Guillaume Gilles</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+    <div class="dropdown">
+      <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../teaching.html">
+            🇬🇧 English
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../fr/teaching.html">
+            🇫🇷 Français
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#from-assistance-to-collaboration" id="toc-from-assistance-to-collaboration" class="nav-link active" data-scroll-target="#from-assistance-to-collaboration">From Assistance to Collaboration</a>
+  <ul class="collapse">
+  <li><a href="#a-new-paradigm" id="toc-a-new-paradigm" class="nav-link" data-scroll-target="#a-new-paradigm">A New Paradigm</a></li>
+  <li><a href="#level-1-autocompletion" id="toc-level-1-autocompletion" class="nav-link" data-scroll-target="#level-1-autocompletion">Level 1: Autocompletion</a></li>
+  <li><a href="#level-2-collaboration" id="toc-level-2-collaboration" class="nav-link" data-scroll-target="#level-2-collaboration">Level 2: Collaboration</a></li>
+  </ul></li>
+  <li><a href="#vibe-coding-as-a-transitional-stage" id="toc-vibe-coding-as-a-transitional-stage" class="nav-link" data-scroll-target="#vibe-coding-as-a-transitional-stage">Vibe Coding as a Transitional Stage</a>
+  <ul class="collapse">
+  <li><a href="#what-is-vibe-coding" id="toc-what-is-vibe-coding" class="nav-link" data-scroll-target="#what-is-vibe-coding">What is Vibe Coding</a></li>
+  </ul></li>
+  <li><a href="#from-collaboration-to-delegation" id="toc-from-collaboration-to-delegation" class="nav-link" data-scroll-target="#from-collaboration-to-delegation">From Collaboration to Delegation</a>
+  <ul class="collapse">
+  <li><a href="#level-3-delegation" id="toc-level-3-delegation" class="nav-link" data-scroll-target="#level-3-delegation">Level 3: Delegation</a></li>
+  </ul></li>
+  <li><a href="#from-delegation-to-orchestration" id="toc-from-delegation-to-orchestration" class="nav-link" data-scroll-target="#from-delegation-to-orchestration">From Delegation to Orchestration</a>
+  <ul class="collapse">
+  <li><a href="#level-4-orchestration" id="toc-level-4-orchestration" class="nav-link" data-scroll-target="#level-4-orchestration">Level 4: Orchestration</a></li>
+  </ul></li>
+  <li><a href="#the-factory-and-its-operator" id="toc-the-factory-and-its-operator" class="nav-link" data-scroll-target="#the-factory-and-its-operator">The Factory and Its Operator</a>
+  <ul class="collapse">
+  <li><a href="#the-factory-is-the-system" id="toc-the-factory-is-the-system" class="nav-link" data-scroll-target="#the-factory-is-the-system">The factory is the system</a></li>
+  </ul></li>
+  <li><a href="#harness" id="toc-harness" class="nav-link" data-scroll-target="#harness">Harness</a></li>
+  <li><a href="#harness-engineering-what-surrounds-the-model" id="toc-harness-engineering-what-surrounds-the-model" class="nav-link" data-scroll-target="#harness-engineering-what-surrounds-the-model">Harness Engineering: What Surrounds the Model</a>
+  <ul class="collapse">
+  <li><a href="#whats-in-the-harness" id="toc-whats-in-the-harness" class="nav-link" data-scroll-target="#whats-in-the-harness">What’s in the Harness</a></li>
+  <li><a href="#harness-in-sdlc" id="toc-harness-in-sdlc" class="nav-link" data-scroll-target="#harness-in-sdlc">Harness in SDLC</a></li>
+  </ul></li>
+  <li><a href="#agent-harness-vs.-ralph-loop-understanding-the-architecture-of-modern-ai-agents" id="toc-agent-harness-vs.-ralph-loop-understanding-the-architecture-of-modern-ai-agents" class="nav-link" data-scroll-target="#agent-harness-vs.-ralph-loop-understanding-the-architecture-of-modern-ai-agents">Agent Harness vs.&nbsp;RALPH Loop: Understanding the Architecture of Modern AI Agents</a>
+  <ul class="collapse">
+  <li><a href="#why-this-distinction-matters" id="toc-why-this-distinction-matters" class="nav-link" data-scroll-target="#why-this-distinction-matters">Why This Distinction Matters</a></li>
+  </ul></li>
+  <li><a href="#what-is-an-agent-harness" id="toc-what-is-an-agent-harness" class="nav-link" data-scroll-target="#what-is-an-agent-harness">What Is an Agent Harness?</a>
+  <ul class="collapse">
+  <li><a href="#a-practical-definition" id="toc-a-practical-definition" class="nav-link" data-scroll-target="#a-practical-definition">A Practical Definition</a></li>
+  <li><a href="#core-components-of-an-agent-harness" id="toc-core-components-of-an-agent-harness" class="nav-link" data-scroll-target="#core-components-of-an-agent-harness">Core Components of an Agent Harness</a></li>
+  <li><a href="#mental-model-the-body-of-the-agent" id="toc-mental-model-the-body-of-the-agent" class="nav-link" data-scroll-target="#mental-model-the-body-of-the-agent">Mental Model: The “Body” of the Agent</a></li>
+  </ul></li>
+  <li><a href="#what-is-a-react-ralph-loop" id="toc-what-is-a-react-ralph-loop" class="nav-link" data-scroll-target="#what-is-a-react-ralph-loop">What Is a ReAct / RALPH Loop?</a>
+  <ul class="collapse">
+  <li><a href="#the-core-idea-iterative-reasoning" id="toc-the-core-idea-iterative-reasoning" class="nav-link" data-scroll-target="#the-core-idea-iterative-reasoning">The Core Idea: Iterative Reasoning</a></li>
+  <li><a href="#the-react-loop-reason-act" id="toc-the-react-loop-reason-act" class="nav-link" data-scroll-target="#the-react-loop-reason-act">The ReAct Loop (Reason + Act)</a></li>
+  <li><a href="#the-ralph-loop-an-extended-reasoning-pattern" id="toc-the-ralph-loop-an-extended-reasoning-pattern" class="nav-link" data-scroll-target="#the-ralph-loop-an-extended-reasoning-pattern">The RALPH Loop (An Extended Reasoning Pattern)</a></li>
+  <li><a href="#mental-model-the-cognitive-cycle" id="toc-mental-model-the-cognitive-cycle" class="nav-link" data-scroll-target="#mental-model-the-cognitive-cycle">Mental Model: The “Cognitive Cycle”</a></li>
+  </ul></li>
+  <li><a href="#how-they-work-together" id="toc-how-they-work-together" class="nav-link" data-scroll-target="#how-they-work-together">How They Work Together</a>
+  <ul class="collapse">
+  <li><a href="#the-key-relationship" id="toc-the-key-relationship" class="nav-link" data-scroll-target="#the-key-relationship">The Key Relationship</a></li>
+  <li><a href="#putting-it-together-in-a-real-system" id="toc-putting-it-together-in-a-real-system" class="nav-link" data-scroll-target="#putting-it-together-in-a-real-system">Putting It Together in a Real System</a></li>
+  <li><a href="#common-confusion-and-why-it-happens" id="toc-common-confusion-and-why-it-happens" class="nav-link" data-scroll-target="#common-confusion-and-why-it-happens">Common Confusion (and Why It Happens)</a></li>
+  </ul></li>
+  <li><a href="#from-theory-to-practice" id="toc-from-theory-to-practice" class="nav-link" data-scroll-target="#from-theory-to-practice">From Theory to Practice</a>
+  <ul class="collapse">
+  <li><a href="#frameworks-as-agent-harnesses" id="toc-frameworks-as-agent-harnesses" class="nav-link" data-scroll-target="#frameworks-as-agent-harnesses">Frameworks as Agent Harnesses</a></li>
+  <li><a href="#research-as-loop-innovation" id="toc-research-as-loop-innovation" class="nav-link" data-scroll-target="#research-as-loop-innovation">Research as Loop Innovation</a></li>
+  </ul></li>
+  <li><a href="#final-takeaway" id="toc-final-takeaway" class="nav-link" data-scroll-target="#final-takeaway">Final Takeaway</a>
+  <ul class="collapse">
+  <li><a href="#the-one-sentence-distinction" id="toc-the-one-sentence-distinction" class="nav-link" data-scroll-target="#the-one-sentence-distinction">The One-Sentence Distinction</a></li>
+  <li><a href="#why-this-will-matter-increasingly" id="toc-why-this-will-matter-increasingly" class="nav-link" data-scroll-target="#why-this-will-matter-increasingly">Why This Will Matter Increasingly</a></li>
+  </ul></li>
+  <li><a href="#practical-patterns" id="toc-practical-patterns" class="nav-link" data-scroll-target="#practical-patterns">Practical Patterns</a>
+  <ul class="collapse">
+  <li><a href="#the-pareto-law" id="toc-the-pareto-law" class="nav-link" data-scroll-target="#the-pareto-law">The Pareto Law</a></li>
+  </ul></li>
+  <li><a href="#where-to-start" id="toc-where-to-start" class="nav-link" data-scroll-target="#where-to-start">Where to Start</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Mental Model for Agentic System</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>Generative AI is changing software development by progressively transferring control from the developer to the machine. As this delegation expands from individual lines of code to complete workflows, the developer’s role shifts from writing code to designing, supervising, and governing the systems that produce it.</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<p>Software development offers a striking illustration of the speed at which generative AI has evolved and been adopted. Developers were instrumental in building and advancing this technological revolution, but they are also among the first to experience its disruptive effects.</p>
+<p>Within only a few years, AI systems have progressed from simple coding assistants to increasingly autonomous agents capable of planning, writing, testing, and modifying code with limited human oversight.</p>
+<p>Agentic coding does not eliminate software engineering, but rather moves engineering effort from writing code to designing the environment in which implementations can be produced, tested, and trusted.</p>
+<blockquote class="blockquote">
+<p>What happens when AI progresses from suggesting code to controlling increasingly large portions of the development process?</p>
+</blockquote>
+<section id="from-assistance-to-collaboration" class="level2">
+<h2 class="anchored" data-anchor-id="from-assistance-to-collaboration">From Assistance to Collaboration</h2>
+<p>The evolution of AI-assisted development can be understood as a gradual transfer of control, from individual lines of code to complete software-production workflows.</p>
+<section id="a-new-paradigm" class="level3">
+<h3 class="anchored" data-anchor-id="a-new-paradigm">A New Paradigm</h3>
+<p>A new paradigm, in which developers express <em>what</em> they want to build rather than <em>how</em> to build it, has emerged. Rather than following a strict chronological eras that replace one after another, we should think as <strong>different levels of abstraction</strong>. Autocomplete, chat, synchronous agents, background agents, and autonomous workflows continue to coexist and varies accros industries.</p>
+</section>
+<section id="level-1-autocompletion" class="level3">
+<h3 class="anchored" data-anchor-id="level-1-autocompletion">Level 1: Autocompletion</h3>
+<p>The first generation was autocomplete. Tools, like <a href="https://github.blog/news-insights/product-news/introducing-github-copilot-ai-pair-programmer/">Github Copilot in 2021</a>, predicted the next line, filled in boilerplate, and saved keystrokes on repetitive patterns.</p>
+<p>Even though the feature is useful and genuinely time-saving, the workflow stayed identical. Software engineers wrote code, ran it, debug, and repeat. AI tool assisted by reducing friction.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./GitHub-Copilot_blog-header.webp" class="img-fluid figure-img" width="200"></p>
+<figcaption>GitHub Copilot</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>At this level, AI accelerates typing, but it does not control the development process.</p>
+</blockquote>
+</section>
+<section id="level-2-collaboration" class="level3">
+<h3 class="anchored" data-anchor-id="level-2-collaboration">Level 2: Collaboration</h3>
+<p>The second generation introduced synchronous AI assistants. You described a task in natural language, and the model generated code in response. As <a href="https://karpathy.ai/">Andrej Karpathy</a> famously wrote in January 2023:</p>
+<blockquote class="blockquote">
+<p>“The hottest new programming language is English.”</p>
+</blockquote>
+<p>This phrase perfectly captures an era defined by a continuous back-and-forth between a developer and a generative AI chatbot. The model generated an initial version of the code, which you then reviewed, corrected, and refined through successive prompts until you reached a working result.</p>
+<p>This represented another step up the delegation stack. Compared with the previous generation, the developer spent less time writing code directly and more time describing their intent. However, human involvement was still required at every stage. The AI acted as a collaborator, not as an autonomous worker. You retained the overall context, decided what should happen next, and identified mistakes as they occurred.</p>
+<blockquote class="twitter-tweet blockquote" data-lang="en" data-theme="dark">
+<p lang="en" dir="ltr">
+The hottest new programming language is English
+</p>
+— Andrej Karpathy (<span class="citation" data-cites="karpathy">@karpathy</span>) <a href="https://x.com/karpathy/status/1617979122625712128?ref_src=twsrc%5Etfw">January 24, 2023</a>
+</blockquote>
+<script async="" src="https://platform.x.com/widgets.js" charset="utf-8"></script>
+<blockquote class="blockquote">
+<p>The AI is a collaborator, not an autonomous worker. It can propose an implementation, but the developer still holds the overall context and directs each successive action.</p>
+</blockquote>
+</section>
+</section>
+<section id="vibe-coding-as-a-transitional-stage" class="level2">
+<h2 class="anchored" data-anchor-id="vibe-coding-as-a-transitional-stage">Vibe Coding as a Transitional Stage</h2>
+<section id="what-is-vibe-coding" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-vibe-coding">What is Vibe Coding</h3>
+<p>Two years after declaring English to be the “hottest new programming language”, Andrej Karpathy coined the term <strong>vibe coding</strong>. He described it as a way of programming in which you “fully give in to the vibes, embrace exponentials, and forget that the code even exists.”</p>
+<blockquote class="twitter-tweet blockquote" data-theme="dark">
+<p lang="en" dir="ltr">
+There's a new kind of coding I call "vibe coding", where you fully give in to the vibes, embrace exponentials, and forget that the code even exists. It's possible because the LLMs (e.g.&nbsp;Cursor Composer w Sonnet) are getting too good. Also I just talk to Composer with SuperWhisper…
+</p>
+— Andrej Karpathy (<span class="citation" data-cites="karpathy">@karpathy</span>) <a href="https://x.com/karpathy/status/1886192184808149383?ref_src=twsrc%5Etfw">February 2, 2025</a>
+</blockquote>
+<script async="" src="https://platform.x.com/widgets.js" charset="utf-8"></script>
+<p>Vibe coding reflects the growing capabilities of generative AI tools and their expanding role in software development. In this approach, users express what they want to build through natural-language prompts or speech, and an AI system translates those instructions into executable code. Rather than focusing on syntax or implementation details, the user concentrates on the desired outcome and guides the system through successive iterations.</p>
+<p>However, vibe coding is more than simply using an AI coding assistant. It requires trust in the model and interaction with the resulting software. Therefore, rather than understanding its source code, you primarily engage with it like a final users would have. This conversational cycle continues until the application appears to work as intended.</p>
+<p>By prioritising experimentation over immediate improvements to structure and performance, vibe coding adopts a “build first, refine later” mindset. It can therefore support rapid prototyping, iterative development, and short feedback loops. These qualities are broadly consistent with agile development practices, as they allow developers to test ideas and produce prototypes quickly.</p>
+<p>Speed comes with a trade-off. When users accept generated code without fully reviewing or understanding it, they may accumulate technical debt, introduce hidden vulnerabilities, or create systems that become difficult to maintain. Vibe coding can accelerate the production of a working prototype, but it does not eliminate the need for software engineering discipline.</p>
+</section>
+</section>
+<section id="from-collaboration-to-delegation" class="level2">
+<h2 class="anchored" data-anchor-id="from-collaboration-to-delegation">From Collaboration to Delegation</h2>
+<section id="level-3-delegation" class="level3">
+<h3 class="anchored" data-anchor-id="level-3-delegation">Level 3: Delegation</h3>
+<p>The third generation marks the shift from collaboration to delegation. Instead of guiding the AI step by step, the developer defines an outcome and allows an <strong>autonomous agent</strong> to manage the workflow.</p>
+<p>The agent can inspect a repository, plan changes, modify multiple files, install dependencies, run tests, diagnose failures, and submit a pull request. It may work independently for minutes or hours while the developer focuses on other tasks.</p>
+<p>The level of abstraction is no longer a line of code or a prompt, but an entire task. Human involvement moves from continuous direction to asynchronous supervision: the agent executes the work, while the developer sets the constraints, reviews the results, and remains accountable for the final decision.</p>
+<blockquote class="twitter-tweet blockquote" data-lang="en" data-dnt="true" data-theme="dark">
+<p lang="zxx" dir="ltr">
+<a href="https://t.co/jZKOk8RAsV">https://t.co/jZKOk8RAsV</a>
+</p>
+— Michael Truell (<span class="citation" data-cites="mntruell">@mntruell</span>) <a href="https://x.com/mntruell/status/2026736314272591924?ref_src=twsrc%5Etfw">February 25, 2026</a>
+</blockquote>
+<script async="" src="https://platform.x.com/widgets.js" charset="utf-8"></script>
+</section>
+</section>
+<section id="from-delegation-to-orchestration" class="level2">
+<h2 class="anchored" data-anchor-id="from-delegation-to-orchestration">From Delegation to Orchestration</h2>
+<section id="level-4-orchestration" class="level3">
+<h3 class="anchored" data-anchor-id="level-4-orchestration">Level 4: Orchestration</h3>
+<p>A fourth level is now emerging: <strong>orchestration</strong>. Instead of delegating an entire task to a single agent, a human or coordinating system divides the work among multiple specialised agents, manages dependencies, and routes their outputs through testing and verification.</p>
+<p>At this level, the developer no longer supervises individual tasks but oversees a system of agents working together. The focus shifts from directing execution to designing workflows, setting boundaries, and defining how results will be evaluated.</p>
+<blockquote class="blockquote">
+<p>Autonomy is not binary. It is the gradual transfer of control over increasingly large portions of the development loop.</p>
+</blockquote>
+</section>
+</section>
+<section id="the-factory-and-its-operator" class="level2">
+<h2 class="anchored" data-anchor-id="the-factory-and-its-operator">The Factory and Its Operator</h2>
+<p>To continue the metaphor of AI agent as a digital worker, real world factories builds cars, appliances, etc. Over the last couple of centuries they have refined the production of goods to mostly automate the production lines.</p>
+<section id="the-factory-is-the-system" class="level3">
+<h3 class="anchored" data-anchor-id="the-factory-is-the-system">The factory is the system</h3>
+<p>The factory model offers a useful metaphor to understand this transformation. As AI takes over more of the implementation process, the developer’s primary output is no longer just code. It is the system that reliably produces code.</p>
+<p>That system combines clear specifications, relevant context, capable agents, automated tests, quality gates, and feedback loops. Agents generate the implementation, tests expose failures, and those failures are fed back into the system for correction. Guardrails define what agents can change, which tools they can use, and when human approval is required.</p>
+<p>In this model, the developer resembles the architect of an assembly line rather than a worker at a single station. Their role is to design the workflow, establish quality standards, and ensure that errors are detected before they reach production.</p>
+<p>The central skill is therefore no longer describing every step. It is defining the desired outcome, setting clear constraints, and creating reliable ways to verify the result. The better the production system, the less human intervention each individual task requires.</p>
+<blockquote class="blockquote">
+<p>The developer does not merely produce code. They design the system through which code is produced, tested, corrected, and approved.</p>
+</blockquote>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-factory-model" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-factory-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-factory-model">flowchart TD
+    Dev["👨‍💻 Developer\n(Factory Manager)"]
+
+    subgraph Factory["🏭 The Factory"]
+        direction TB
+        Spec["📋 Specifications\n&amp; Context"] --&gt; Agents["🤖 AI Agents\n(Implementation)"]
+        Agents --&gt; Tests["✅ Tests\n&amp; Quality Gates"]
+        Tests --&gt; FL["🔄 Feedback\nLoops"]
+        FL --&gt; Agents
+        GR["🛡️ Guardrails\n&amp; Constraints"] --&gt; Agents
+    end
+
+    Dev --&gt; Factory
+    Factory --&gt; Code["📦 Production\nCode"]
+
+    style Factory fill:#1a1a2e,stroke:#4a4a8a,color:#fff
+    style Dev fill:#533483,stroke:#7a5ab5,color:#fff
+    style Code fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-factory-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The Factory Model — Developer designs the system, agents produce the code, tests verify the output
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="the-dark-factory" class="level4">
+<h4 class="anchored" data-anchor-id="the-dark-factory">The Dark Factory</h4>
+<p>The <strong>dark factory</strong> mental model extends on the factory model to its logical, but still emerging, conclusion. The term describes a fully automated facility in which machines operate without human workers on the floor. Because no one needs to see, the lights can be switched off. Applied to software development, it represents a production system in which agents could receive objectives, divide the work, write and test the code, correct failures, and deploy the result without human intervention.</p>
+<p>In such a system, developers would no longer supervise each task or approve every pull request. Instead human judgment would be embedded in advance through specifications, policies, quality thresholds, security controls, and escalation rules. Agents would then operate the software factory continuously, involving people only when they encountered a situation outside those predefined boundaries.</p>
+<p>This is not yet another established level of agentic coding. It is an emerging idea about where increasing autonomy might eventually lead. Today’s agents still require human oversight, particularly when requirements are ambiguous, consequences are significant, or correctness cannot be verified automatically. The dark factory should therefore be understood not as the current state of software development, but as its automation frontier.</p>
+<p>The metaphor also exposes an important paradox: switching off the lights does not remove human responsibility. It merely moves human involvement outside the factory. People must still decide what the system should build, which constraints it must respect, how success will be measured, and when production should stop.</p>
+<blockquote class="blockquote">
+<p>The lights go out not because humans have disappeared, but because their judgment has been encoded into the factory itself.</p>
+</blockquote>
+<p>Think of an AI agent as a digital worker made up of five essential parts:</p>
+<ol type="1">
+<li><strong>The model is its brain.</strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Usually powered by a <a href="https://en.wikipedia.org/wiki/Large_language_model">large language model</a>, it examines the situation, reasons about what to do next, and produces a thought, an action, or a response.</p>
+</blockquote>
+<ol start="2" type="1">
+<li><strong>Tools are its hands.</strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>They allow the agent to act in the outside world by calling APIs, running code, searching databases, or asking other agents for help.</p>
+</blockquote>
+<ol start="3" type="1">
+<li><strong>Memory is its notebook.</strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>It helps the agent remember previous interactions, retrieve project-specific instructions, and preserve useful information from one task or session to another.</p>
+</blockquote>
+<ol start="4" type="1">
+<li><strong>Orchestration is its nervous system.</strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>It coordinates the entire process: feeding information to the model activating the right tools, collecting their results, and deciding whether the agent should continue or stop.</p>
+</blockquote>
+<ol start="5" type="1">
+<li><strong>Deployment is its workplace.</strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>It provides the infrastructure the agent needs to operate reliably in the real world, including hosting, identity management, monitoring, security, and production systems.</p>
+</blockquote>
+</section>
+</section>
+</section>
+<section id="harness" class="level2">
+<h2 class="anchored" data-anchor-id="harness">Harness</h2>
+<ul>
+<li>https://www.langchain.com/blog/the-anatomy-of-an-agent-harness</li>
+<li>https://www.datacamp.com/blog/agent-harness</li>
+<li>https://mitchellh.com/writing/my-ai-adoption-journey#step-5-engineer-the-harness</li>
+<li>https://lucumr.pocoo.org/2026/7/4/better-models-worse-tools/
+<ul>
+<li>https://simonwillison.net/2026/Jul/4/better-models-worse-tools/</li>
+</ul></li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 6%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>We view harness engineering as a subset of context engineering. Coined by my cofounder Dex in 12-factor agents, context engineering is a superset of “prompt engineering” and a variety of other techniques for systematically improving AI agents’ reliability. You can find the original talk on here.</td>
+</tr>
+<tr class="even">
+<td>Harness engineering then is the subset of context engineering which primarily involves leveraging harness configuration points to carefully manage the context windows of coding agents. https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="harness-engineering-what-surrounds-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="harness-engineering-what-surrounds-the-model">Harness Engineering: What Surrounds the Model</h2>
+<p>There is a temptation to treat the model as the system. A new model comes out, the agent gets smarter. That intuition is wrong, and it leads to the wrong investments.</p>
+<p><strong>A raw model is not an agent.</strong> It becomes one once a harness gives it state, tool execution, feedback loops, and enforceable constraints. The behaviour developers experience when working with Claude Code, Cursor, Codex, Aider, or Cline is dominated by what the harness does, not just by which model is underneath.</p>
+<p><span class="math display">\[\text{Agent} = \text{Model} + \text{Harness}\]</span></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-harness-anatomy" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-harness-anatomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-harness-anatomy">flowchart TB
+    subgraph Harness["🔧 The Harness"]
+        direction TB
+        IR["📜 Instructions &amp;\nRule Files\n(AGENTS.md, CLAUDE.md)"]
+        Tools["🛠️ Tools\n(APIs, MCP Servers)"]
+        Sandbox["📦 Sandboxes &amp;\nExecution Environments"]
+        Orch["🔀 Orchestration Logic\n(Sub-agents, routing)"]
+        GR["🛡️ Guardrails / Hooks\n(Lifecycle checkpoints)"]
+        Obs["📊 Observability\n(Logs, traces, evals)"]
+    end
+
+    Model["🧠 Model\n(Reasoning Engine)"] --&gt; Harness
+    Harness --&gt; Agent["🤖 Agent\n(Working System)"]
+
+    style Harness fill:#1a1a2e,stroke:#4a4a8a,color:#fff
+    style Model fill:#533483,stroke:#7a5ab5,color:#fff
+    style Agent fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-harness-anatomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Harness Anatomy — Agent = Model + Harness
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="whats-in-the-harness" class="level3">
+<h3 class="anchored" data-anchor-id="whats-in-the-harness">What’s in the Harness</h3>
+<ul>
+<li><strong>Instructions and Rule Files</strong> — the text that defines who the agent is, what it cares about, and what it is forbidden from doing. Includes <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>GEMINI.md</code>, skill files, and sub-agent prompts.</li>
+<li><strong>Tools</strong> — the functions, MCP servers, and APIs the agent can call, plus the prose that tells the model when and how to call them.</li>
+<li><strong>Sandboxes and execution environments</strong> — where the agent’s code actually runs, what it has access to, what it cannot reach.</li>
+<li><strong>Orchestration logic</strong> — sub-agent spawning, model routing, hand-offs between specialists, and the rules that govern when each fires.</li>
+<li><strong>Guardrails / Hooks</strong> — deterministic code that runs at specific lifecycle points: before a tool call, after a file edit, before a commit. Hooks are the place for things the agent should never forget but often does.</li>
+<li><strong>Observability</strong> — logs, traces, evaluations, cost and latency metering. Without observability, there is no way to tell whether the agent is doing well or quietly drifting.</li>
+</ul>
+</section>
+<section id="harness-in-sdlc" class="level3">
+<h3 class="anchored" data-anchor-id="harness-in-sdlc">Harness in SDLC</h3>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-harness-sdlc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-harness-sdlc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-harness-sdlc">flowchart LR
+    subgraph P1["Phase 1\nRequirements &amp; Architecture"]
+        H1["⚙️ Configure\nInstruction files,\ntool access, rules"]
+    end
+    subgraph P2["Phase 2\nImplementation"]
+        H2["▶️ Run\nSandboxes,\nexecution environments,\ntools"]
+    end
+    subgraph P3["Phase 3\nTesting &amp; QA"]
+        H3["🔄 Feedback Loop\nOrchestration logic,\nguardrails → self-correction"]
+    end
+    subgraph P4["Phase 4\nReview, Deploy &amp; Maintain"]
+        H4["👁️ Observe\nHooks, observability,\naudit trails"]
+    end
+    P1 --&gt; P2 --&gt; P3 --&gt; P4
+
+    style P1 fill:#1a2a3d,stroke:#4a6a8a,color:#fff
+    style P2 fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+    style P3 fill:#3d2a1a,stroke:#8a6a4a,color:#fff
+    style P4 fill:#2d1a3d,stroke:#6a4a8a,color:#fff
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-harness-sdlc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The Harness Across SDLC Phases
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Most Agent Failures are Configuration Failures
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When an agent does something wrong, the first instinct is to blame the model. More often, the failure traces back to a missing tool, a vague rule, an absent guardrail, or a context window stuffed with noise. Public benchmarks confirm this: one team moved a coding agent from outside the Top 30 to the Top 5 on Terminal Bench 2.0 by changing <strong>only the harness</strong>, with no model change at all.</p>
+</div>
+</div>
+<ol type="1">
+<li>Requirements, Planning, &amp; Architecture (Configuring the Harness) This is where the harness is configured and calibrated. Before the AI writes any production code, the developer must set up the agent’s environment. • Harness Configuration: Providing the Instructions and Rule Files (e.g., creating the AGENTS.md and defining architectural constraints) that the harness will load and make available to the model. • The Action: The developer defines the tools the agent will have access to (like specific APIs or database schemas) and sets the fundamental rules the agent cannot break.</li>
+<li>Implementation (Running the Harness) During active coding, the harness acts as the boundary that keeps the AI model focused, secure, and productive. • Harness Components Used: Sandboxes, Execution Environments, and Tools. The Action: As the model generates code, it executes it within the harness’s isolated sandbox. If the model needs to read a file or search the web, it uses the tools provided by the harness.</li>
+<li>Testing &amp; QA (The Feedback Loop) Testing in an agentic workflow relies heavily on the harness to facilitate autonomous self-correction. • Harness Components Used: Orchestration Logic and Guardrails. • The Action: When the agent writes a function, the harness provides the execution environment (such as a sandboxed terminal) that allows the automated tests to be executed. If a test fails, the orchestration logic captures the error output from that environment and routes it back to the model, asking it to try again. The harness is what creates this automated ‘think -&gt; act -&gt; observe’ loop.”</li>
+<li>Code Review, Deployment, &amp; Maintenance (Observing the Harness) Even after the code is written, the harness ensures the agent behaves safely in live or near-live environments. • Harness Components Used: Hooks and Observability. • The Action: The harness runs deterministic hooks (e.g., blocking a commit if the agent tries to push a hard-coded password). Furthermore, the observability layer tracks token costs, latency, and agent drift, allowing human engineers to audit exactly why an agent made a specific deployment decision. The transition from ‘vibe coding’ to ‘agentic engineering’ is not simply about the tools you use—a developer can vibe code or apply agentic engineering using the exact same agent. Instead, it is defined by how deliberately you configure and apply the harness. Vibe coding relies on minimal or implicit scaffolding aimed purely at rapid implementation. Agentic engineering relies on clear, extensive harness abstractions that guide the AI from the very first planning document all the way through to production monitoring. The impact of this deliberate configuration is highly measurable. Public benchmarks make the size of the harness effect concrete. On Terminal Bench 2.0, one team moved a coding agent from outside the Top 30 to the Top 5 by changing only the harness, with no model change at all. A separate study at LangChain raised a coding agent’s score on the same benchmark by 13.7 points by tweaking only the system prompt, tools, and middleware around a fixed model. The everyday version of this observation is crucial for teams adopting AI across the SDLC: when an agent does something wrong, the first instinct is to blame the model. More often, the failure traces back to a missing tool, a vague rule, an absent guardrail, or a context window stuffed with noise. Most agent failures, examined honestly, are configuration failures.</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="agent-harness-vs.-ralph-loop-understanding-the-architecture-of-modern-ai-agents" class="level2">
+<h2 class="anchored" data-anchor-id="agent-harness-vs.-ralph-loop-understanding-the-architecture-of-modern-ai-agents">Agent Harness vs.&nbsp;RALPH Loop: Understanding the Architecture of Modern AI Agents</h2>
+<p><em>Intro hint:</em> Explain the confusion: people often mix “how an agent runs” vs “how an agent thinks.” Introduce both terms and why the distinction matters for anyone building or studying agentic systems.</p>
+<section id="why-this-distinction-matters" class="level3">
+<h3 class="anchored" data-anchor-id="why-this-distinction-matters">Why This Distinction Matters</h3>
+<p><em>Hint:</em> Briefly explain that modern AI systems are no longer just prompts—they are structured systems. Emphasize that understanding the difference helps in designing, debugging, and scaling agents.</p>
+</section>
+</section>
+<section id="what-is-an-agent-harness" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-an-agent-harness">What Is an Agent Harness?</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./pi-harness.png" class="img-fluid figure-img"></p>
+<figcaption>Home page for the open source pi agent</figcaption>
+</figure>
+</div>
+<section id="a-practical-definition" class="level3">
+<h3 class="anchored" data-anchor-id="a-practical-definition">A Practical Definition</h3>
+<p><em>Hint:</em> Define the harness as the environment/runtime that enables an agent to operate (tools, execution, memory, constraints).</p>
+</section>
+<section id="core-components-of-an-agent-harness" class="level3">
+<h3 class="anchored" data-anchor-id="core-components-of-an-agent-harness">Core Components of an Agent Harness</h3>
+<p><em>Hint:</em> List and briefly orient the reader on:</p>
+<ul>
+<li>Tooling (APIs, code execution, browsing)</li>
+<li>Memory (state, logs, persistence)</li>
+<li>Control system (loop orchestration)</li>
+<li>Observability (logs, traces)</li>
+<li>Safety/guardrails</li>
+</ul>
+</section>
+<section id="mental-model-the-body-of-the-agent" class="level3">
+<h3 class="anchored" data-anchor-id="mental-model-the-body-of-the-agent">Mental Model: The “Body” of the Agent</h3>
+<p><em>Hint:</em> Use analogy: harness = body/environment, agent = brain. Helps anchor intuition.</p>
+</section>
+</section>
+<section id="what-is-a-react-ralph-loop" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-react-ralph-loop">What Is a ReAct / RALPH Loop?</h2>
+<section id="the-core-idea-iterative-reasoning" class="level3">
+<h3 class="anchored" data-anchor-id="the-core-idea-iterative-reasoning">The Core Idea: Iterative Reasoning</h3>
+<p><em>Hint:</em> Explain that loops define how the agent cycles through thinking and acting.</p>
+</section>
+<section id="the-react-loop-reason-act" class="level3">
+<h3 class="anchored" data-anchor-id="the-react-loop-reason-act">The ReAct Loop (Reason + Act)</h3>
+<p><em>Hint:</em> Introduce the canonical loop: Observe → Think → Act → Observe → repeat Mention it’s the foundation of many modern agents.</p>
+</section>
+<section id="the-ralph-loop-an-extended-reasoning-pattern" class="level3">
+<h3 class="anchored" data-anchor-id="the-ralph-loop-an-extended-reasoning-pattern">The RALPH Loop (An Extended Reasoning Pattern)</h3>
+<p><em>Hint:</em> Explain it as a richer variant (Reason, Act, Learn, Plan, Hypothesize). Highlight that it introduces planning and learning steps.</p>
+</section>
+<section id="mental-model-the-cognitive-cycle" class="level3">
+<h3 class="anchored" data-anchor-id="mental-model-the-cognitive-cycle">Mental Model: The “Cognitive Cycle”</h3>
+<p><em>Hint:</em> Frame loops as the agent’s internal thinking process—like a decision-making rhythm.</p>
+</section>
+</section>
+<section id="how-they-work-together" class="level2">
+<h2 class="anchored" data-anchor-id="how-they-work-together">How They Work Together</h2>
+<section id="the-key-relationship" class="level3">
+<h3 class="anchored" data-anchor-id="the-key-relationship">The Key Relationship</h3>
+<p><em>Hint:</em> State clearly:</p>
+<blockquote class="blockquote">
+<p>The loop runs inside the harness One is <em>behavior</em>, the other is <em>infrastructure</em></p>
+</blockquote>
+</section>
+<section id="putting-it-together-in-a-real-system" class="level3">
+<h3 class="anchored" data-anchor-id="putting-it-together-in-a-real-system">Putting It Together in a Real System</h3>
+<p><em>Hint:</em> Describe a concrete example (e.g., coding agent, research agent). Separate:</p>
+<ul>
+<li>what the harness provides</li>
+<li>how the loop drives actions</li>
+</ul>
+</section>
+<section id="common-confusion-and-why-it-happens" class="level3">
+<h3 class="anchored" data-anchor-id="common-confusion-and-why-it-happens">Common Confusion (and Why It Happens)</h3>
+<p><em>Hint:</em> Explain that frameworks blur the line because they bundle both (e.g., LangChain, AutoGen).</p>
+</section>
+</section>
+<section id="from-theory-to-practice" class="level2">
+<h2 class="anchored" data-anchor-id="from-theory-to-practice">From Theory to Practice</h2>
+<section id="frameworks-as-agent-harnesses" class="level3">
+<h3 class="anchored" data-anchor-id="frameworks-as-agent-harnesses">Frameworks as Agent Harnesses</h3>
+<p><em>Hint:</em> Mention modern tools that implement harnesses (without going too deep): orchestration frameworks, agent platforms.</p>
+</section>
+<section id="research-as-loop-innovation" class="level3">
+<h3 class="anchored" data-anchor-id="research-as-loop-innovation">Research as Loop Innovation</h3>
+<p><em>Hint:</em> Position research work (ReAct, reflection loops, planning methods) as improvements to reasoning patterns—not the infrastructure.</p>
+</section>
+</section>
+<section id="final-takeaway" class="level2">
+<h2 class="anchored" data-anchor-id="final-takeaway">Final Takeaway</h2>
+<section id="the-one-sentence-distinction" class="level3">
+<h3 class="anchored" data-anchor-id="the-one-sentence-distinction">The One-Sentence Distinction</h3>
+<p><em>Hint:</em> Give a crisp takeaway:</p>
+<blockquote class="blockquote">
+<p>Agent harness = where the agent runs Loop (ReAct / RALPH) = how the agent thinks</p>
+</blockquote>
+</section>
+<section id="why-this-will-matter-increasingly" class="level3">
+<h3 class="anchored" data-anchor-id="why-this-will-matter-increasingly">Why This Will Matter Increasingly</h3>
+<p><em>Hint:</em> Brief forward-looking note: as agents get more autonomous, separating system design (harness) from cognition (loop) will be critical.</p>
+</section>
+</section>
+<section id="practical-patterns" class="level2">
+<h2 class="anchored" data-anchor-id="practical-patterns">Practical Patterns</h2>
+<ol type="1">
+<li>Agent-first drafts with tight iteration loops</li>
+</ol>
+<p>Don’t use AI for one-off suggestions. Generate entire first drafts, then refine. The Claude Code team practice: have the model review its own code with a fresh context window. This catches issues before human review.</p>
+<ol start="2" type="1">
+<li>Declarative communication</li>
+</ol>
+<p>Spend 70% of effort on problem definition, 30% on execution. Write comprehensive specs, define success criteria, provide test cases up front. Guide the agent’s goals, not its methods.</p>
+<ol start="3" type="1">
+<li>Automated verification</li>
+</ol>
+<p>If you repeatedly fix the same class of mistake, write a test or lint rule preemptively. Make the agent explain its code and flag potential problems before you review.</p>
+<section id="the-pareto-law" class="level3">
+<h3 class="anchored" data-anchor-id="the-pareto-law">The Pareto Law</h3>
+<p>= https://addyo.substack.com/p/the-80-problem-in-agentic-coding</p>
+<p>Andrej Karpathy Twitter / X</p>
+<p>= Boris Cherney : &gt; “Pretty much 100% of our code is written by Claude Code + Opus 4.5. For me &gt; personally it has been 100% for two+ months now, I don’t even make small edits &gt; by hand. I shipped 22 PRs yesterday and 27 the day before, each one 100% &gt; written by Claude. I think most of the industry will see similar stats in the &gt; coming months - it will take more time for some vs others.”</p>
+<p>…WIP…</p>
+<p>Let AI do 80% of the work and focus your energy on the 20% left.</p>
+<p>The 80% Problem</p>
+<p>A persistent challenge: AI agents can rapidly generate approximately <strong>80% of the code</strong> for a feature, but the remaining 20% — edge cases, error handling, integration points, and subtle correctness requirements — demands deep contextual knowledge that current models often lack.</p>
+<p>The nature of AI errors has evolved from simple syntax mistakes to more insidious <strong>conceptual failures</strong>: wrong assumptions about business logic, missing edge cases, and architectural decisions that create subtle long-term maintenance burdens. These errors are harder to detect because the code “looks right” and may even pass basic tests.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The developers who navigate this challenge most effectively use AI for what it’s good at (rapid implementation of well-specified tasks) while reserving their own attention for what AI struggles with (ambiguous requirements, architectural trade-offs, and correctness verification).</p>
+</div>
+</div>
+</section>
+</section>
+<section id="where-to-start" class="level2">
+<h2 class="anchored" data-anchor-id="where-to-start">Where to Start</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">For Individual Developers</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">For Engineering Leaders</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">For Organizations</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<ol type="1">
+<li><p><strong>Set up an <code>AGENTS.md</code></strong> for the project. Start with ten lines: stack, conventions, hard rules, workflow. Add a rule every time the agent does something it should not do again.</p></li>
+<li><p><strong>Install a set of skills</strong> for your coding agents (like Agents CLI) to build, evaluate, deploy and optimize agents.</p></li>
+<li><p><strong>Pick one repetitive workflow and make it the first agent.</strong> A research workflow, a code review process, a recurring report. Use a coding agent for the prototype, graduate it to a production agent when it earns its keep. Building one agent end to end teaches more than reading about a hundred.</p></li>
+<li><p><strong>Write the tests and evals before generating the code.</strong> Together they are the contract with the AI. A well-written test and eval suite communicates intent more precisely than any natural-language prompt, and turns AI-assisted development from vibe coding into agentic engineering.</p></li>
+<li><p><strong>Review every line the agent produces that is going to ship.</strong> Be skeptical of anything that looks clever. Check imports for real packages. Verify that error handling covers realistic failure modes.</p></li>
+<li><p><strong>Maintain your developer skills.</strong> AI handles the routine so the developer can focus on the challenging. That arrangement only works if foundational skills — debugging, system design, intuition for performance and correctness — stay sharp.</p></li>
+</ol>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<ol type="1">
+<li><p><strong>Make context engineering a first-class engineering practice.</strong> Treat <code>AGENTS.md</code>, system prompts, eval suites, and skill libraries as code: reviewed in pull requests, versioned with the project, owned by named engineers.</p></li>
+<li><p><strong>Set the bar at the eval, not the demo.</strong> A working demo proves an agent can succeed once. A passing eval suite proves it succeeds reliably. Define what you are scoring: task success, tool use quality, trajectory compliance, hallucination, and response quality.</p></li>
+<li><p><strong>Re-shape code review for AI-generated code.</strong> Extra attention to hallucinated dependencies, inadequate error handling, and subtle correctness gaps that look right at a glance.</p></li>
+<li><p><strong>Distinguish prototyping work from production work in team norms.</strong> Vibe coding is the right speed for exploration. Agentic engineering is the right discipline for production. Make the boundary explicit.</p></li>
+<li><p><strong>Invest in harness components as a shared team asset.</strong> Reusable system prompts, skill libraries, MCP server connections, and evaluation harnesses compound across projects. Treat them as infrastructure.</p></li>
+</ol>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<ol type="1">
+<li><p><strong>Treat AI-assisted development as an engineering investment, not a productivity feature.</strong> Rolling out a coding agent without eval coverage, observability, and clear architectural standards produces speed without quality.</p></li>
+<li><p><strong>Invest in the production substrate before scale.</strong> What graduates a vibe-coded prototype to production is operations discipline: trajectory and final-response evals in CI, traces of every agent run, scoped permissions, and security review tuned to generated code’s failure modes.</p></li>
+<li><p><strong>Adopt open standards.</strong> Model Context Protocol (MCP) for tool access and Agent2Agent (A2A) for cross-agent delegation are converging into the connective tissue of multi-agent systems.</p></li>
+<li><p><strong>Plan for hybrid teams of humans and agents.</strong> The strongest production results come from architectures where humans set direction, agents do the implementation, and clear handoff protocols govern the boundary.</p></li>
+<li><p><strong>Reframe hiring and skill development around judgment, not just implementation.</strong> The most valuable engineers in the next several years will be the ones who can direct agents well, not the ones who can write the most code.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<p>——- ####### TO REVIEW ########—————- An AI agent is a software system that perceives a goal, plans steps to reach it, takes actions through tools, observes the results, and iterates until the goal is met or it hits a stopping condition. Where a chatbot produces a response and waits for the next prompt, an agent runs its own loop. You give it a goal at the top, then it decides what to do next at each step.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>The Factory Model: How Coding Agents Changed Software Engineering = https://addyosmani.com/blog/factory-model/ The third golden age of software engineering – thanks to AI, with Grady Booch = https://newsletter.pragmaticengineer.com/p/the-third-golden-age-of-software 5-Day AI Agents: Intensive Vibe Coding Course With Google = https://www.kaggle.com/learn-guide/5-day-agents-vibecoding</p>
+<hr>
+<hr>
+<p>## The Spectrum: Vibe Coding to Agentic Engineering</p>
+<p>Rather than treating vibe coding and agentic engineering as a binary, it is more useful to think of them as endpoints on a spectrum. The key differentiator is not whether you use AI, it’s <strong>how much structure, verification, and human judgment surrounds the AI’s output</strong>.</p>
+<p>By early 2026, Karpathy, himself, acknowledged that the term <em>vibe coding</em> was too narrow, introducing the term <strong>“agentic engineering”</strong> to describe the more disciplined end of the spectrum:</p>
+<blockquote class="twitter-tweet blockquote" data-theme="dark">
+<p lang="en" dir="ltr">
+A lot of people quote tweeted this as 1 year anniversary of vibe coding. Some retrospective -<br><br>I've had a Twitter account for 17 years now (omg) and I still can't predict my tweet engagement basically at all. This was a shower of thoughts throwaway tweet that I just fired off… <a href="https://t.co/yoJPmb1xuK">https://t.co/yoJPmb1xuK</a>
+</p>
+— Andrej Karpathy (<span class="citation" data-cites="karpathy">@karpathy</span>) <a href="https://x.com/karpathy/status/2019137879310836075?ref_src=twsrc%5Etfw">February 4, 2026</a>
+</blockquote>
+<script async="" src="https://platform.x.com/widgets.js" charset="utf-8"></script>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js"> %%| label: fig-spectrum
+ %%| fig-cap: "The Vibe Coding to Agentic Engineering Spectrum"
+ flowchart LR
+     subgraph VC["🌊 Vibe Coding"]
+         V1["Casual NL prompts"]
+         V2["'Does it seem to work?'"]
+         V3["Copy-paste errors to AI"]
+         V4["Minimal code understanding"]
+     end
+     subgraph SAC["🔧 Structured AI-Assisted Coding"]
+         S1["Detailed prompts with examples"]
+         S2["Manual testing &amp; spot-checking"]
+         S3["Developer diagnoses root cause"]
+         S4["Selective review of critical paths"]
+     end
+     subgraph AE["⚙️ Agentic Engineering"]
+         A1["Formal specs, architecture docs"]
+         A2["Automated test suites, CI/CD gates"]
+         A3["Agents self-diagnose within bounds"]
+         A4["Comprehensive architecture review"]
+     end
+     VC --&gt; SAC --&gt; AE
+
+     style VC fill:#3d1a1a,stroke:#8a4a4a,color:#fff
+     style SAC fill:#1a2a3d,stroke:#4a6a8a,color:#fff
+     style AE fill:#1a3d1a,stroke:#4a8a4a,color:#fff
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>## Difference between <a href="./vibe-coding.qmd">vibe coding</a> and agentic engineering</p>
+<p>The single biggest differentiator between the two ends is how outputs get verified. In vibe coding, verification is optional. In agentic engineering, two mechanisms work together:</p>
+<ul>
+<li><strong>Tests</strong> verify the deterministic parts: a function given this input produces that output.</li>
+<li><strong>Evals</strong> verify the non-deterministic parts: did the agent take the right trajectory, choose the right tools, and produce a response that meets the quality bar.</li>
+</ul>
+<p>Without both, the practice is always vibe coding, regardless of how sophisticated the prompts are.</p>
+<p>…WIP</p>
+<p>= what is a well written eval suite? …</p>
+<p>### Why tests matter more than ever</p>
+<p>https://addyosmani.com/blog/factory-model/</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="guillaumegilles/guillaumegilles.github.io" data-repo-id="R_kgDOQVAmCQ" data-category="General" data-category-id="DIC_kwDOQVAmCc4C3-XH" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="https://ggilles.dev/assets/giscus-retro-blackboard.css" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="https://ggilles.dev/assets/giscus-retro-blackboard.css">
+<input type="hidden" id="giscus-alt-theme" value="https://ggilles.dev/assets/giscus-retro-blackboard.css">
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a> · Source on <a href="https://github.com/guillaumegilles/guillaumegilles.github.io"><i class="bi bi-github"></i> GitHub</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>This site respects your privacy — no cookies, no tracking.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
