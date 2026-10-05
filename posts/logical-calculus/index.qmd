@@ -1,0 +1,1007 @@
+---
+title: "A logical calculus of the ideas immanent in nervous activity"
+draft: true
+---
+
+From Neurons to Logic: Rebuilding McCulloch and Pitts’ 1943 Artificial Brain in R
+
+In 1943, before electronic computers became commonplace and decades before deep learning, Warren McCulloch and Walter Pitts asked a radical question: could networks of idealized neurons perform logical computation? Their answer established a bridge between neurophysiology, mathematical logic and computation that still runs through today’s artificial neural networks.
+
+This article reconstructs their central ideas step by step, then implements them with R, tidyverse, ggplot2, tidymodels and Shiny.
+
+1. The paper that connected brains and computation
+
+Warren S. McCulloch and Walter H. Pitts published A Logical Calculus of the Ideas Immanent in Nervous Activity in volume 5 of the Bulletin of Mathematical Biophysics in 1943, pages 115–133. Their objective was not simply to imitate biological neurons. It was to construct a formal calculus capable of describing what networks of idealized neurons could compute.
+
+Their central insight was remarkably bold:
+
+If nervous activity is approximately all-or-none, the state of a neuron can be represented as a proposition that is either true or false.
+
+In modern notation:
+
+xi(t)∈{0,1}x_i(t)\in\{0,1\}
+
+where:
+
+xi(t)=1x_i(t)=1 means that neuron ii fires at time tt;
+xi(t)=0x_i(t)=0 means that it does not fire.
+
+McCulloch and Pitts then showed that networks of such elements could implement logical operations and temporal relationships. For acyclic networks, they established a correspondence between neural circuits and temporal propositional expressions. Networks containing cycles could sustain recurrent activity and therefore refer, indirectly, to events arbitrarily far in the past.
+
+This was one of the first explicit mathematical models of a neural network. It helped establish the conceptual foundations of artificial neural networks, computational neuroscience, automata theory and cybernetics.
+
+2. Two disciplines meet
+
+McCulloch brought neurophysiology, medicine and philosophy to the collaboration. Pitts brought mathematical logic and a deep familiarity with the formal systems associated with Rudolf Carnap, Bertrand Russell and Alfred North Whitehead. The paper explicitly adopted notation from Carnap’s Language II and from Principia Mathematica.
+
+Their collaboration emerged in an intellectual environment shaped by several foundational developments:
+
+formal logic and the attempt to express reasoning symbolically;
+Gödel’s work on formal systems;
+Alan Turing’s 1936 analysis of computability;
+mathematical biophysics, particularly the work of Nicolas Rashevsky;
+discoveries about the all-or-none behavior of action potentials.
+
+McCulloch and Pitts’ originality was to combine these traditions. Rather than treating the brain only as biological tissue, they treated a neural circuit as a formal machine whose state evolves through time.
+
+3. The five assumptions
+
+The 1943 model rests on five simplifying assumptions.
+
+3.1 Neural activity is all-or-none
+
+A neuron is either active or inactive during a time interval:
+
+xi(t)∈{0,1}x_i(t)\in\{0,1\}
+
+This removes the continuous voltage, biochemical dynamics and stochastic behavior of real neurons. It makes the neuron suitable for interpretation as a logical proposition.
+
+3.2 Excitation must reach a fixed threshold
+
+A neuron fires when enough excitatory synapses are simultaneously active. The required number is its threshold, denoted θi\theta_i.
+
+For example, if a neuron receives three excitatory inputs and has threshold 2, it fires whenever at least two inputs are active:
+
+x1+x2+x3≥2x_1+x_2+x_3 \geq 2
+
+The threshold and the connectivity are fixed in the model.
+
+3.3 Synaptic transmission introduces a delay
+
+Input at time tt affects the receiving neuron at time t+1t+1:
+
+inputs at t⟶output at t+1\text{inputs at }t \longrightarrow \text{output at }t+1
+
+The original paper treats synaptic delay as the only significant delay in the system. This converts neural activity into a sequence of discrete states.
+
+3.4 Inhibition is an absolute veto
+
+If any inhibitory input is active, the neuron cannot fire, no matter how many excitatory signals it receives.
+
+This gives the strict activation rule:
+
+xi(t+1)={1,∑j∈Eixj(t)≥θi and ∑k∈Iixk(t)=00,otherwisex_i(t+1)= \begin{cases} 1, & \displaystyle \sum_{j\in E_i}x_j(t)\geq\theta_i \text{ and } \sum_{k\in I_i}x_k(t)=0\\[6pt] 0, & \text{otherwise} \end{cases}
+
+where:
+
+EiE_i is the set of excitatory inputs;
+IiI_i is the set of inhibitory inputs;
+θi\theta_i is the threshold.
+
+The paper also demonstrates that relative and absolute inhibition are equivalent in an extended computational sense: one network can be replaced by another that produces the same result, although possibly after a different number of time steps.
+
+3.5 The network does not change
+
+The network has:
+
+fixed connections;
+fixed thresholds;
+fixed excitatory and inhibitory roles.
+
+There is no optimization algorithm, gradient descent or automatic adjustment of synaptic strengths. McCulloch and Pitts discussed learning as a biological phenomenon, but their formal analysis showed how some effects of alterable synapses could be represented by fixed networks containing recurrent circuits.
+
+This distinction is essential:
+
+The McCulloch-Pitts neuron is a computational unit, not a learning algorithm.
+
+4. A first implementation in R
+
+Let us translate the strict activation rule into R.
+
+mp_neuron <- function(excitatory,
+                      inhibitory = integer(0),
+                      threshold = 1L) {
+
+  if (threshold < 1) {
+    stop("The threshold must be a positive integer.")
+  }
+
+  if (!all(excitatory %in% c(0, 1))) {
+    stop("Excitatory inputs must contain only 0 and 1.")
+  }
+
+  if (!all(inhibitory %in% c(0, 1))) {
+    stop("Inhibitory inputs must contain only 0 and 1.")
+  }
+
+  inhibition_active <- any(inhibitory == 1)
+  excitation_sufficient <- sum(excitatory) >= threshold
+
+  as.integer(excitation_sufficient && !inhibition_active)
+}
+
+
+Some simple tests:
+
+mp_neuron(
+  excitatory = c(1, 1),
+  threshold = 2
+)
+# 1
+
+mp_neuron(
+  excitatory = c(1, 0),
+  threshold = 2
+)
+# 0
+
+mp_neuron(
+  excitatory = c(1, 1),
+  inhibitory = 1,
+  threshold = 2
+)
+# 0
+
+
+The third neuron remains inactive because the inhibitory input has absolute veto power.
+
+5. Visualizing the activation rule
+
+We can enumerate all states of a small neuron using tidyverse.
+
+library(tidyverse)
+
+states <- expand_grid(
+  x1 = 0:1,
+  x2 = 0:1,
+  inhibition = 0:1
+) |>
+  mutate(
+    excitation = x1 + x2,
+    output = pmap_int(
+      list(x1, x2, inhibition),
+      \(a, b, inhibitor) {
+        mp_neuron(
+          excitatory = c(a, b),
+          inhibitory = inhibitor,
+          threshold = 2
+        )
+      }
+    )
+  )
+
+states
+
+
+The resulting table is:
+
+x1	x2	Inhibition	Excitation	Output0	0	0	0	0
+0	1	0	1	0
+1	0	0	1	0
+1	1	0	2	1
+0	0	1	0	0
+0	1	1	1	0
+1	0	1	1	0
+1	1	1	2	0
+
+A simple ggplot2 visualization emphasizes the veto:
+
+states |>
+  mutate(
+    inhibition = factor(
+      inhibition,
+      levels = c(0, 1),
+      labels = c("No inhibition", "Inhibition active")
+    )
+  ) |>
+  ggplot(
+    aes(
+      x = factor(x1),
+      y = factor(x2),
+      fill = factor(output)
+    )
+  ) +
+  geom_tile(color = "white", linewidth = 1.2) +
+  geom_text(
+    aes(label = paste0("y = ", output)),
+    size = 5
+  ) +
+  facet_wrap(~ inhibition) +
+  scale_fill_manual(
+    values = c("0" = "#D9E2F3", "1" = "#2F5597"),
+    name = "Output"
+  ) +
+  labs(
+    title = "A McCulloch-Pitts neuron with threshold 2",
+    subtitle = "An active inhibitory input prevents firing",
+    x = "Input x1",
+    y = "Input x2"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom"
+  )
+
+6. From neurons to logical gates
+
+The central pedagogical insight in the paper is that neural configurations can realize functions of propositional logic. The authors showed how elementary network structures could express conjunction, disjunction and constrained negation, and how larger expressions could be built compositionally from these elements.
+
+6.1 AND
+
+For two inputs, choose a threshold of 2:
+
+y=x1∧x2y=x_1\land x_2
+mp_and <- function(x1, x2) {
+  mp_neuron(
+    excitatory = c(x1, x2),
+    threshold = 2
+  )
+}
+
+x1x_1	x2x_2	AND0	0	0
+0	1	0
+1	0	0
+1	1	1
+6.2 OR
+
+Choose a threshold of 1:
+
+y=x1∨x2y=x_1\lor x_2
+mp_or <- function(x1, x2) {
+  mp_neuron(
+    excitatory = c(x1, x2),
+    threshold = 1
+  )
+}
+
+x1x_1	x2x_2	OR0	0	0
+0	1	1
+1	0	1
+1	1	1
+6.3 NOT
+
+A NOT circuit needs a source of constant excitation and an inhibitory input.
+
+y=¬xy=\neg x
+mp_not <- function(x) {
+  mp_neuron(
+    excitatory = 1,
+    inhibitory = x,
+    threshold = 1
+  )
+}
+
+xx	NOT0	1
+1	0
+
+Here, the constant input activates the neuron unless xx inhibits it.
+
+6.4 Compute all three gates with dplyr
+truth_tables <- expand_grid(
+  x1 = 0:1,
+  x2 = 0:1
+) |>
+  mutate(
+    AND = map2_int(x1, x2, mp_and),
+    OR  = map2_int(x1, x2, mp_or),
+    NOT_x1 = map_int(x1, mp_not)
+  )
+
+truth_tables
+
+
+We can reshape the results for visualization:
+
+truth_long <- truth_tables |>
+  pivot_longer(
+    cols = c(AND, OR, NOT_x1),
+    names_to = "gate",
+    values_to = "output"
+  )
+
+ggplot(
+  truth_long,
+  aes(
+    x = factor(x1),
+    y = factor(x2),
+    fill = factor(output)
+  )
+) +
+  geom_tile(color = "white", linewidth = 1) +
+  geom_text(aes(label = output), size = 5) +
+  facet_wrap(~ gate) +
+  scale_fill_manual(
+    values = c("0" = "#E7EEF8", "1" = "#204A87"),
+    name = "Output"
+  ) +
+  labs(
+    title = "Logical gates constructed from McCulloch-Pitts neurons",
+    x = "x1",
+    y = "x2"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(panel.grid = element_blank())
+
+7. Why one neuron cannot solve XOR
+
+The exclusive OR function is true when exactly one input is active:
+
+x1⊕x2=(x1∧¬x2)∨(¬x1∧x2)x_1\oplus x_2 = (x_1\land\neg x_2) \lor (\neg x_1\land x_2)
+
+Its truth table is:
+
+x1x_1	x2x_2	XOR0	0	0
+0	1	1
+1	0	1
+1	1	0
+
+A single threshold unit cannot implement XOR because the positive and negative cases are not linearly separable. But a network can calculate XOR by composing intermediate logical operations.
+
+A convenient construction is:
+
+h1=x1∨x2h_1=x_1\lor x_2 h2=x1∧x2h_2=x_1\land x_2 y=h1∧¬h2y=h_1\land\neg h_2
+
+Diagrammatically:
+
+x1 ─────┬──> OR ───────────────┐
+        │                       │
+        └──> AND ── inhibitory ─┼──> XOR
+        ┌──>                    │
+        │                       │
+x2 ─────┴───────────────────────┘
+
+
+In R:
+
+mp_xor <- function(x1, x2) {
+  at_least_one <- mp_or(x1, x2)
+  both_active  <- mp_and(x1, x2)
+
+  mp_neuron(
+    excitatory = at_least_one,
+    inhibitory = both_active,
+    threshold = 1
+  )
+}
+
+xor_table <- expand_grid(
+  x1 = 0:1,
+  x2 = 0:1
+) |>
+  mutate(
+    XOR = map2_int(x1, x2, mp_xor)
+  )
+
+xor_table
+
+
+This illustrates one of the paper’s deepest messages:
+
+A simple unit may have limited computational power, while a network of such units can implement much richer functions.
+
+For acyclic networks, McCulloch and Pitts proved both a form of analysis and a form of synthesis: the behavior of a network can be expressed logically, and suitable logical expressions can be realized by networks.
+
+8. The importance of time
+
+The McCulloch-Pitts neuron is not just a static classifier. The model explicitly includes time.
+
+If a neuron AA fires at time tt, a neuron receiving its signal responds, if activated, at t+1t+1:
+
+A(t)=1⇒B(t+1)=1A(t)=1 \Rightarrow B(t+1)=1
+
+A chain of neurons acts as a delay line:
+
+Input(t)  ──>  N1(t+1)  ──>  N2(t+2)  ──>  N3(t+3)
+
+
+This matters because it allows the network to calculate propositions about sequences, not only simultaneous inputs.
+
+For example:
+
+Fire if signal AA occurred one step ago and signal BB is active now.
+
+In modern notation:
+
+y(t)=A(t−1)∧B(t)y(t)=A(t-1)\land B(t)
+
+The original paper formalized these relationships with temporal propositional expressions and a successor operator representing synaptic delay.
+
+Simulating a delay in R
+library(tidyverse)
+
+signal <- tibble(
+  time = 0:9,
+  input = c(0, 1, 0, 0, 1, 1, 0, 0, 1, 0)
+) |>
+  mutate(
+    neuron_1 = lag(input, n = 1, default = 0),
+    neuron_2 = lag(input, n = 2, default = 0),
+    neuron_3 = lag(input, n = 3, default = 0)
+  )
+
+signal
+
+
+Plot the propagation:
+
+signal |>
+  pivot_longer(
+    cols = -time,
+    names_to = "unit",
+    values_to = "state"
+  ) |>
+  mutate(
+    unit = factor(
+      unit,
+      levels = c("input", "neuron_1", "neuron_2", "neuron_3")
+    )
+  ) |>
+  ggplot(aes(time, state, color = unit)) +
+  geom_step(linewidth = 1.1) +
+  geom_point(size = 2) +
+  facet_wrap(~ unit, ncol = 1) +
+  scale_y_continuous(
+    breaks = c(0, 1),
+    limits = c(0, 1)
+  ) +
+  labs(
+    title = "Propagation through a neural delay line",
+    subtitle = "Each connection introduces one time step of delay",
+    x = "Time",
+    y = "Neural state",
+    color = "Unit"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "none")
+
+9. Recurrent networks as memory
+
+An acyclic network only propagates information forward. A recurrent network contains at least one directed cycle.
+
+A simple feedback circuit looks like this:
+
+          ┌──────────────┐
+          │              │
+Input ──> N1 ──> N2 ──> N3
+          ▲              │
+          └──────────────┘
+
+
+Once activity enters the cycle, it can continue circulating even after the original external input disappears. In this sense, the circuit possesses a primitive memory.
+
+McCulloch and Pitts emphasized that cycles change the mathematical character of the problem. Activity may reverberate indefinitely, so the current state can depend on events arbitrarily far in the past. They consequently treated acyclic and cyclic networks separately.
+
+A minimal recurrent simulation
+
+Consider a neuron that becomes active if:
+
+an external trigger is active; or
+the neuron was already active one step earlier;
+
+unless a reset input inhibits it.
+
+m(t+1)=(trigger(t)∨m(t))∧¬reset(t)m(t+1)= \bigl(trigger(t)\lor m(t)\bigr) \land \neg reset(t)
+simulate_memory <- function(trigger, reset) {
+
+  stopifnot(length(trigger) == length(reset))
+
+  n <- length(trigger)
+  memory <- integer(n)
+
+  for (t in seq_len(n - 1)) {
+    memory[t + 1] <- mp_neuron(
+      excitatory = c(trigger[t], memory[t]),
+      inhibitory = reset[t],
+      threshold = 1
+    )
+  }
+
+  tibble(
+    time = seq_len(n),
+    trigger = trigger,
+    reset = reset,
+    memory = memory
+  )
+}
+
+memory_simulation <- simulate_memory(
+  trigger = c(0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+  reset   = c(0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
+)
+
+memory_simulation
+
+
+Visualize it:
+
+memory_simulation |>
+  pivot_longer(
+    cols = -time,
+    names_to = "signal",
+    values_to = "state"
+  ) |>
+  ggplot(aes(time, state, color = signal)) +
+  geom_step(linewidth = 1.2) +
+  geom_point(size = 2) +
+  facet_wrap(~ signal, ncol = 1) +
+  scale_y_continuous(
+    breaks = c(0, 1),
+    limits = c(0, 1)
+  ) +
+  labs(
+    title = "A recurrent McCulloch-Pitts memory circuit",
+    subtitle = "The trigger activates memory; reset inhibits it",
+    x = "Time",
+    y = "State"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "none")
+
+
+This resembles an elementary set-reset latch. It is not memory in the modern computer-engineering sense yet, but it reveals how persistent state can emerge from feedback.
+
+10. McCulloch-Pitts neuron versus modern artificial neuron
+
+Modern presentations often rewrite a threshold neuron as:
+
+y=1(∑j=1pwjxj+b≥0)y= \mathbb{1} \left( \sum_{j=1}^{p}w_jx_j+b\geq 0 \right)
+
+This notation is useful, but it should not be confused with every detail of the strict 1943 model.
+
+Feature	McCulloch-Pitts, 1943	Modern neural networksInputs	Binary	Usually real-valued
+Output	Binary	Often continuous during training
+Excitation	Count of active synapses	Learned weighted sum
+Inhibition	Absolute veto	Usually negative weights
+Threshold	Fixed	Parameters learned indirectly
+Time	Discrete synaptic delays	Architecture-dependent
+Learning	Not part of the basic model	Backpropagation and optimization
+Connectivity	Designed manually	Often learned from data
+Activation	Hard threshold	ReLU, sigmoid, GELU and others
+
+The original model was deliberately idealized. Real neurons have graded membrane potentials, complex dendrites, variable synaptic strengths, plasticity, noise and asynchronous dynamics. The model’s importance lies in its abstraction and computational consequences, not in biological realism.
+
+11. A tidymodels experiment: linear separability
+
+Although tidymodels is not needed to simulate the 1943 model, it can help us connect McCulloch-Pitts neurons with modern statistical learning.
+
+A logistic regression is a linear classifier. It should easily learn AND, but it cannot produce a correct deterministic separation of XOR using only the original inputs x1x_1 and x2x_2.
+
+11.1 Construct repeated training data
+library(tidymodels)
+
+set.seed(1943)
+
+logic_data <- crossing(
+  x1 = 0:1,
+  x2 = 0:1
+) |>
+  mutate(
+    AND = factor(if_else(x1 + x2 == 2, "yes", "no")),
+    XOR = factor(if_else(x1 != x2, "yes", "no"))
+  ) |>
+  slice(rep(1:n(), each = 100))
+
+11.2 Fit a model for AND
+and_spec <- logistic_reg() |>
+  set_engine("glm")
+
+and_fit <- workflow() |>
+  add_formula(AND ~ x1 + x2) |>
+  add_model(and_spec) |>
+  fit(data = logic_data)
+
+and_predictions <- crossing(
+  x1 = 0:1,
+  x2 = 0:1
+) |>
+  bind_cols(
+    predict(and_fit, new_data = crossing(x1 = 0:1, x2 = 0:1)),
+    predict(
+      and_fit,
+      new_data = crossing(x1 = 0:1, x2 = 0:1),
+      type = "prob"
+    )
+  )
+
+and_predictions
+
+
+The linear decision boundary can separate the single positive AND case from the other three cases.
+
+11.3 Fit the same class of model for XOR
+xor_spec <- logistic_reg() |>
+  set_engine("glm")
+
+xor_fit <- workflow() |>
+  add_formula(XOR ~ x1 + x2) |>
+  add_model(xor_spec) |>
+  fit(data = logic_data)
+
+xor_predictions <- crossing(
+  x1 = 0:1,
+  x2 = 0:1
+) |>
+  bind_cols(
+    predict(xor_fit, new_data = crossing(x1 = 0:1, x2 = 0:1)),
+    predict(
+      xor_fit,
+      new_data = crossing(x1 = 0:1, x2 = 0:1),
+      type = "prob"
+    )
+  )
+
+xor_predictions
+
+
+The difficulty is geometric:
+
+x2
+1       XOR=1        XOR=0
+
+0       XOR=0        XOR=1
+        0            1          x1
+
+
+No single straight line separates both positive corners from both negative corners.
+
+But introduce an intermediate feature:
+
+z=x1x2z=x_1x_2
+
+Then XOR becomes:
+
+XOR=x1+x2−2zXOR = x_1 + x_2 - 2z
+
+In R:
+
+logic_data_with_interaction <- logic_data |>
+  mutate(x1_x2 = x1 * x2)
+
+xor_interaction_fit <- workflow() |>
+  add_formula(XOR ~ x1 + x2 + x1_x2) |>
+  add_model(logistic_reg() |> set_engine("glm")) |>
+  fit(data = logic_data_with_interaction)
+
+
+The interaction term plays a role analogous to an intermediate computational unit. This is the key architectural lesson: representation can make a previously inseparable problem separable.
+
+12. An interactive Shiny laboratory
+
+The following Shiny application lets the reader manipulate:
+
+three excitatory inputs;
+two inhibitory inputs;
+the activation threshold.
+
+Create an app.R file:
+
+library(shiny)
+library(tidyverse)
+
+mp_neuron <- function(excitatory,
+                      inhibitory = integer(0),
+                      threshold = 1L) {
+
+  inhibition_active <- any(inhibitory == 1)
+  excitation_sufficient <- sum(excitatory) >= threshold
+
+  as.integer(excitation_sufficient && !inhibition_active)
+}
+
+ui <- fluidPage(
+  titlePanel("McCulloch-Pitts Neuron Laboratory"),
+
+  sidebarLayout(
+    sidebarPanel(
+      h4("Excitatory inputs"),
+
+      checkboxInput("x1", "Input x1", FALSE),
+      checkboxInput("x2", "Input x2", FALSE),
+      checkboxInput("x3", "Input x3", FALSE),
+
+      hr(),
+
+      h4("Inhibitory inputs"),
+
+      checkboxInput("i1", "Inhibitor i1", FALSE),
+      checkboxInput("i2", "Inhibitor i2", FALSE),
+
+      hr(),
+
+      sliderInput(
+        "threshold",
+        "Excitatory threshold",
+        min = 1,
+        max = 3,
+        value = 2,
+        step = 1
+      )
+    ),
+
+    mainPanel(
+      h3("Current computation"),
+      verbatimTextOutput("formula"),
+
+      h3("Neuron state"),
+      uiOutput("state_box"),
+
+      h3("All input combinations"),
+      tableOutput("state_table")
+    )
+  )
+)
+
+server <- function(input, output, session) {
+
+  current_state <- reactive({
+    excitation <- c(
+      as.integer(input$x1),
+      as.integer(input$x2),
+      as.integer(input$x3)
+    )
+
+    inhibition <- c(
+      as.integer(input$i1),
+      as.integer(input$i2)
+    )
+
+    tibble(
+      excitation_sum = sum(excitation),
+      inhibition_active = any(inhibition == 1),
+      threshold = input$threshold,
+      output = mp_neuron(
+        excitatory = excitation,
+        inhibitory = inhibition,
+        threshold = input$threshold
+      )
+    )
+  })
+
+  output$formula <- renderText({
+    state <- current_state()
+
+    paste0(
+      "Excitation = ", state$excitation_sum,
+      "\nThreshold = ", state$threshold,
+      "\nInhibition active = ", state$inhibition_active,
+      "\n\nOutput = ", state$output
+    )
+  })
+
+  output$state_box <- renderUI({
+    state <- current_state()
+
+    color <- if (state$output == 1) {
+      "#2E7D32"
+    } else {
+      "#B71C1C"
+    }
+
+    label <- if (state$output == 1) {
+      "FIRING"
+    } else {
+      "SILENT"
+    }
+
+    div(
+      style = paste0(
+        "background-color:", color, ";",
+        "color:white;",
+        "padding:30px;",
+        "border-radius:10px;",
+        "font-size:28px;",
+        "font-weight:bold;",
+        "text-align:center;"
+      ),
+      label
+    )
+  })
+
+  output$state_table <- renderTable({
+
+    expand_grid(
+      x1 = 0:1,
+      x2 = 0:1,
+      x3 = 0:1,
+      i1 = 0:1,
+      i2 = 0:1
+    ) |>
+      mutate(
+        excitation = x1 + x2 + x3,
+        output = pmap_int(
+          list(x1, x2, x3, i1, i2),
+          \(x1, x2, x3, i1, i2) {
+            mp_neuron(
+              excitatory = c(x1, x2, x3),
+              inhibitory = c(i1, i2),
+              threshold = input$threshold
+            )
+          }
+        )
+      )
+  })
+}
+
+shinyApp(ui, server)
+
+
+Run it with:
+
+shiny::runApp()
+
+
+The application gives learners an immediate intuition for three ideas:
+
+firing depends on a threshold;
+excitation is combinatorial;
+inhibition acts as an absolute veto.
+13. What the paper actually proved
+
+The paper is often summarized as “McCulloch and Pitts invented the artificial neuron.” That description is true but incomplete.
+
+The deeper contribution was a relationship among three objects:
+
+Neural network
+      ⇅
+Temporal logical expression
+      ⇅
+Computational behavior
+
+
+For networks without cycles, the authors established that neural behavior could be expressed in terms of temporal propositional expressions. Conversely, expressions satisfying the required conditions could be realized through networks constructed from elementary neural configurations.
+
+They also developed equivalence results showing that apparently different neurophysiological assumptions could yield computationally equivalent networks:
+
+relative inhibition could be replaced by absolute inhibition;
+extinction could be represented using inhibitory structures;
+temporal summation could be replaced by spatial summation with delay chains;
+alterable synapses could be represented using recurrent circuits.
+
+The equivalence was often “extended” rather than exact, meaning that equivalent networks could produce the same logical result at different times.
+
+This is an early example of a principle now fundamental to computer science:
+
+The same function can be implemented by different physical or logical architectures.
+
+14. What the model does not contain
+
+Several modern ideas are absent from the 1943 model.
+
+No loss function
+
+There is no objective such as:
+
+L(θ)\mathcal{L}(\theta)
+
+to minimize.
+
+No training data
+
+The network is constructed from a logical specification rather than inferred statistically from examples.
+
+No gradient descent
+
+The hard threshold function is not used in a differentiable optimization procedure.
+
+No learned weights
+
+The strict model distinguishes excitatory and inhibitory connections and counts sufficient excitation. Modern presentations using arbitrary real-valued weights are useful generalizations, but they should not be retroactively attributed to every detail of the original paper.
+
+No claim of full biological realism
+
+McCulloch and Pitts explicitly described formal equivalence as different from factual physiological explanation. Their calculus was intended to preserve relevant logical relationships while abstracting away many electrical and chemical mechanisms.
+
+15. From 1943 to modern machine learning
+
+The conceptual lineage can be summarized as follows:
+
+Biological neuron
+        ↓ abstraction
+McCulloch-Pitts logical neuron
+        ↓
+Threshold networks and cybernetics
+        ↓
+Trainable perceptrons
+        ↓
+Multilayer neural networks
+        ↓
+Backpropagation and representation learning
+        ↓
+Deep learning
+
+
+The relationship is intellectual rather than a statement that modern systems are merely enlarged McCulloch-Pitts networks. Contemporary networks use real-valued tensors, learned weights, differentiable activation functions, stochastic optimization and highly specialized architectures. Nevertheless, the 1943 paper introduced several enduring ideas:
+
+computation can emerge from networks of simple units;
+connectivity determines function;
+nonlinear thresholding matters;
+intermediate representations increase expressive power;
+feedback produces state and temporal behavior;
+logical and computational descriptions can be mapped onto physical structures.
+
+The work influenced later developments in cybernetics and neural-network research, and the University of Chicago describes it as a foundational moment in the history of neural networks.
+
+16. A compact R teaching project
+
+A complete classroom or blog companion can use the following structure:
+
+mcculloch-pitts-r/
+├── app.R
+├── R/
+│   ├── mp_neuron.R
+│   ├── logic_gates.R
+│   └── recurrent_network.R
+├── analysis/
+│   ├── 01_truth_tables.R
+│   ├── 02_logic_visualizations.R
+│   ├── 03_xor_tidymodels.R
+│   └── 04_memory_simulation.R
+├── figures/
+└── README.md
+
+
+Recommended packages:
+
+install.packages(
+  c(
+    "tidyverse",
+    "tidymodels",
+    "shiny"
+  )
+)
+
+
+A reproducible Quarto blog article could begin with:
+
+---
+title: "The Neuron That Turned Thought into Logic"
+subtitle: "Rebuilding McCulloch and Pitts' 1943 model in R"
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-tools: true
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+
+That format allows the explanations, equations, executable R code and figures to live in a single reproducible document.
+
+Conclusion: the power of the right abstraction
+
+The McCulloch-Pitts neuron is almost absurdly simple. It has binary states, a fixed threshold, a fixed topology and a severe model of inhibition. It cannot learn. A single unit cannot even calculate XOR.
+
+Yet this apparent weakness is precisely what makes the paper so important.
+
+McCulloch and Pitts did not attempt to reproduce every detail of a biological neuron. They selected just enough structure to show that:
+
+neural events can be represented logically;
+networks of simple units can perform nontrivial computations;
+network topology determines expressive power;
+recurrence introduces memory and temporal dependence;
+different physical organizations can implement equivalent functions.
+
+The lasting lesson is therefore not that the brain is literally a collection of Boolean gates. It is that careful abstraction can expose the computational principles hidden inside a complex physical system.
+
+In 1943, McCulloch and Pitts transformed the neuron from a biological object into a mathematical idea. Modern artificial intelligence still lives, at least in part, inside that transformation.
+
+References
+McCulloch, W. S., and Pitts, W. H. (1943). “A Logical Calculus of the Ideas Immanent in Nervous Activity.” Bulletin of Mathematical Biophysics, 5, 115–133.
+Springer Nature, bibliographic record and later reprint of the article.
+University of Chicago, “Birthplace of Neural Networks: McCulloch & Pitts at UChicago.”
+“The McCulloch-Pitts Neuron,” Classical Foundations of Artificial Neural Networks.

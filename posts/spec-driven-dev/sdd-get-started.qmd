@@ -1,0 +1,289 @@
+---
+title: "Get Started with Spec-Driven Development"
+draft: true
+---
+
+No better than tinkering around to understand concept. The following example follow
+[module 9](https://microsoftlearning.github.io/mslearn-github-copilot-dev/Instructions/Labs/LAB_AK_13_get-started-spec-driven-development.html) of [Microsof Learn introduction to SDD](https://learn.microsoft.com/en-us/training/modules/spec-driven-development-github-spec-kit-greenfield-intro/9-exercise-create-greenfield-application-github-spec-kit).
+
+With the help of custom made [github codespace]() you can jump in:
+- create the codespace
+- follow these instruction
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/guillaumegilles/get-started-spec-driven-development)
+
+## Exercise scenario
+
+You’re a software developer working for a consulting firm. Your firm is moving
+to a spec-driven development methodology using GitHub Spec Kit and GitHub
+Copilot in Visual Studio Code. You’re asked to start using SDD and GitHub Spec
+Kit as soon as possible.
+
+One of your clients, Contoso Corporation, needs you to develop an initial MVP
+version for an RSS feed reader app. Contoso stakeholders documented the project
+goals, initial features, and technical requirements for the app. You’ll use the
+stakeholder documents to generate the constitution, spec, plan, and tasks
+documents, then implement the initial MVP version of the application. Contoso
+has indicated that additional features will be requested after initial sign-off.
+
+Implementing the SDD methodology with GitHub Spec Kit ensures that the MVP app
+is delivered quickly, that it meets stakeholder requirements, and that new
+features can be rolled out seamlessly when needed.
+
+This exercise includes the following tasks:
+
+- Create a project folder and initialize GitHub Spec Kit.
+- Generate the constitution using stakeholder documentation.
+- Generate the `spec.md` file using stakeholder documentation.
+- Generate the `plan.md` file using stakeholder documentation and `spec.md`.
+- Generate the `tasks.md` file using the `spec.md`, `plan.md`, and `constitution.md`.
+- Implement the tasks required for an MVP application.
+
+### Initialize GitHub Spec Kit
+
+The Specify CLI is used to initialize GitHub Spec Kit in a project folder.
+GitHub Spec Kit uses the project folder to store configuration files, templates,
+scripts, and agents that support the spec-driven development workflows.
+
+ ON MacOS or Linux
+
+```sh
+specify init --here --integration copilot --script sh
+```
+
+This command specifies the following parameters:
+
+- `--here`: initializes GitHub Spec Kit in the current directory.
+- `--integration copilot`: configures the project to use GitHub Copilot
+  as the AI assistant.
+- `--script sh` - Specifies that Bash / Zsh scripts will be used.
+
+::: {.callout-tip}
+On Windows you must replace `--script sh` by `--script ps` for PowerShell scripts.
+:::
+
+```sh
+        ███████╗██████╗ ███████╗ ██████╗██╗███████╗██╗   ██╗
+        ██╔════╝██╔══██╗██╔════╝██╔════╝██║██╔════╝╚██╗ ██╔╝
+        ███████╗██████╔╝█████╗  ██║     ██║█████╗   ╚████╔╝
+        ╚════██║██╔═══╝ ██╔══╝  ██║     ██║██╔══╝    ╚██╔╝
+        ███████║██║     ███████╗╚██████╗██║██║        ██║
+        ╚══════╝╚═╝     ╚══════╝ ╚═════╝╚═╝╚═╝        ╚═╝
+        GitHub Spec Kit - Spec-Driven Development Toolkit
+
+Warning: Current directory is not empty (4 items)
+Template files will be merged with existing content and may overwrite existing
+files.
+Do you want to continue? [y/N]:
+
+[...]
+
+Selected coding agent integration: copilot
+Selected script type: sh
+Initialize Specify Project
+├── ● Check required tools (ok)
+├── ● Select coding agent integration (copilot)
+├── ● Select script type (sh)
+├── ● Install integration (GitHub Copilot)
+├── ● Install shared infrastructure (scripts (sh) + templates)
+├── ● Ensure scripts executable (5 updated)
+├── ● Constitution setup (copied from template)
+├── ● Install git extension (existing repo detected; extension installed)
+├── ● Install bundled workflow (speckit installed)
+└── ● Finalize (project ready)
+
+Project ready.
+```
+
+This is normal since the codespace already `devcontainer.json`, README and
+LICENSE files. once answered **y** for _yes_ The `specify init` command
+generates 66 new artifacts and completes the following actions:
+
+- Creates agent prompt files in the .github/agents/ and .github/prompts/ directories.
+- Creates template files in the .specify/memory/ and .specify/templates/ directories.
+- Creates script files in the .specify/scripts/powershell/ directory.
+- Creates a settings.json file in the .vscode/ directory.
+- Displays a success message (“Project ready”).
+- Suggests some optional next steps.
+
+```sh
+ .                        (root)
+ ├── .github/
+ │   ├── agents/          (executable workflows that can be triggered via commands)
+ │   └── prompts/         (prompt files that provide detailed instructions for each of the agent workflows)
+ ├── .specify/            (configuration)
+ │   ├── memory/          (stores the project constitution)
+ │   ├── scripts/bash/    (uses automation utilities (scripts) for creating features, setting up plans, and managing the specification workflow)
+ │   └── templates/       (provides standardized markdown formats for specs, plans, tasks, and checklists to ensure consistent documentation across all features)
+ └── .vscode/             (Visual Studio Code configuration)
+```
+
+```sh
+ specify init .
+                                                 ███████╗██████╗ ███████╗ ██████╗██╗███████╗██╗   ██╗
+                                                 ██╔════╝██╔══██╗██╔════╝██╔════╝██║██╔════╝╚██╗ ██╔╝
+                                                 ███████╗██████╔╝█████╗  ██║     ██║█████╗   ╚████╔╝
+                                                 ╚════██║██╔═══╝ ██╔══╝  ██║     ██║██╔══╝    ╚██╔╝
+                                                 ███████║██║     ███████╗╚██████╗██║██║        ██║
+                                                 ╚══════╝╚═╝     ╚══════╝ ╚═════╝╚═╝╚═╝        ╚═╝
+
+                                                  GitHub Spec Kit - Spec-Driven Development Toolkit
+
+Warning: Current directory is not empty (32 items)
+Template files will be merged with existing content and may overwrite existing files
+Do you want to continue? [y/N]: y
+
+╭────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                    │
+│  Specify Project Setup                                                                                                                             │
+│                                                                                                                                                    │
+│  Project         www                                                                                                                               │
+│  Working Path    /home/guillaume/www                                                                                                               │
+│                                                                                                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Selected coding agent integration: pi
+Selected script type: sh
+⚠  10 shared infrastructure file(s) already exist and were not updated:
+    .specify/scripts/bash/common.sh
+    .specify/scripts/bash/setup-plan.sh
+    .specify/scripts/bash/create-new-feature.sh
+    .specify/scripts/bash/check-prerequisites.sh
+    .specify/scripts/bash/setup-tasks.sh
+    .specify/templates/plan-template.md
+    .specify/templates/constitution-template.md
+    .specify/templates/checklist-template.md
+    .specify/templates/spec-template.md
+    .specify/templates/tasks-template.md
+To refresh shared infrastructure, run specify init --here --force or specify integration upgrade --force.
+Initialize Specify Project
+├── ● Check required tools (ok)
+├── ● Select coding agent integration (pi)
+├── ● Select script type (sh)
+├── ● Install integration (Pi Coding Agent)
+├── ● Install shared infrastructure (scripts (sh) + templates)
+├── ● Ensure scripts executable (0 updated)
+├── ○ Constitution setup (existing file preserved)
+├── ● Install git extension (existing repo detected; extension already installed)
+├── ● Install bundled workflow (already installed)
+└── ● Finalize (project ready)
+
+Project ready.
+
+╭────────────────────────────────────────────────────────────── Agent Folder Security ───────────────────────────────────────────────────────────────╮
+│                                                                                                                                                    │
+│  Some agents may store credentials, auth tokens, or other identifying and private artifacts in the agent folder within your project.               │
+│  Consider adding .pi/ (or parts of it) to .gitignore to prevent accidental credential leakage.                                                     │
+│                                                                                                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────────────────────────────────────────── Next Steps ────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                    │
+│  1. You're already in the project directory!                                                                                                       │
+│  2. Start using slash commands with your coding agent:                                                                                             │
+│     2.1 /speckit.constitution - Establish project principles                                                                                       │
+│     2.2 /speckit.specify - Create baseline specification                                                                                           │
+│     2.3 /speckit.plan - Create implementation plan                                                                                                 │
+│     2.4 /speckit.tasks - Generate actionable tasks                                                                                                 │
+│     2.5 /speckit.implement - Execute implementation                                                                                                │
+│                                                                                                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+╭─────────────────────────────────────────────────────────────── Enhancement Commands ───────────────────────────────────────────────────────────────╮
+│                                                                                                                                                    │
+│  Optional commands that you can use for your specs (improve quality & confidence)                                                                  │
+│                                                                                                                                                    │
+│  ○ /speckit.clarify (optional) - Ask structured questions to de-risk ambiguous areas before planning (run before /speckit.plan if used)            │
+│  ○ /speckit.analyze (optional) - Cross-artifact consistency & alignment report (after /speckit.tasks, before /speckit.implement)                   │
+│  ○ /speckit.checklist (optional) - Generate quality checklists to validate requirements completeness, clarity, and consistency (after              │
+│  /speckit.plan)                                                                                                                                    │
+│                                                                                                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
+
+Inside Copilot chat panel, type `/specify` and you should see autocomplete
+suggestions that show the available commands:
+
+- `/speckit.analyze`: Analyze the project and generate a specification.
+- `/speckit.checklist`: Validate specification completeness.
+- `/speckit.clarify`: Refine specifications through question and answer process.
+- `/speckit.constitution`: Define project governing principles.
+- `/speckit.implement`: Execute the implementation.
+- `/speckit.plan`: Generate technical implementation plans.
+- `/speckit.specify`: Create feature specifications.
+- `/speckit.tasks`: Break down work into actionable tasks.
+- `/speckit.taskstoissues`: Convert the tasks in tasks.md into GitHub issues.
+
+::: {.callout-note}
+If the '`/speckit.`' commands don't appear, try closing and then reopening the
+project’s codespace.
+:::
+
+## Constitution
+
+GitHub Spec Kit includes several resources that help you create and maintain the
+constitution.md file:
+
+- `.specify/memory/constitution.md` file contains a template for the constitution
+  document.
+- `.github/agents/speckit.constitution.agent.md` file contains detailed
+  instructions that are used to generate (or update) the constitution.md file.
+- `.github/prompts/speckit.constitution.prompt.md` file contains a “routing stub”
+  that tells Copilot Chat to run the agent named speckit.constitution when the
+  /speckit.constitution command is invoked.
+- /speckit.constitution command is used to generate a constitution.md file for
+  the project.
+
+
+```sh
+/speckit.constitution
+  --text
+"Code projects emphasize security, maintainability, and code quality. Ensure
+that all principles are specific, actionable, and relevant to the project context."
+  --files
+.StakeholderDocuments/ProjectGoals.md
+.StakeholderDocuments/AppFeatures.md
+.StakeholderDocuments/TechStack.md
+```
+
+## `spec.md`
+
+## `plan.md`
+
+## `tasks.md`
+
+## Implementing
+
+----
+NOTES
+
+- add files to version control to monitor changes at each steps
+- artifacts are created in both `.specify/...` and `.github/...`
+- Note de sécurité : le CLI recommande d'ajouter .github/ (ou une partie) au .gitignore pour éviter de fuiter des tokens/credentials si Copilot les y stocke
+The recommended workflow from here:
+
+┌────────────────────────────────────┬─────────────────────────────────────────────────────────────────────────────────┐
+│ Commande                           │ Rôle                                                                            │
+├────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ /speckit.constitution              │ Établir les principes du projet                                                 │
+├────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ /speckit.specify                   │ Créer la spécification de base (à partir de vos docs .stakeholder-documents/)   │
+├────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ /speckit.clarify (optionnel)       │ Lever les ambiguïtés avant de planifier                                         │
+├────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ /speckit.plan                      │ Créer le plan d'implémentation                                                  │
+├────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ /speckit.checklist (optionnel)     │ Valider la complétude des exigences                                             │
+├────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ /speckit.tasks                     │ Générer les tâches actionables                                                  │
+├────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ /speckit.analyze (optionnel)       │ Rapport de cohérence inter-artefacts                                            │
+├────────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ /speckit.implement                 │ Exécuter l'implémentation
+
+
+
+
+::: {.callout-important}
+Claude Sonnet 4.6 - High
+:::
