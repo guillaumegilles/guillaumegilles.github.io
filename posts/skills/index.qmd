@@ -1,0 +1,452 @@
+---
+title: "From Generalist to Specialist: How Agent Skills Work"
+subtitle: "A practical guide to progressive disclosure, SKILL.md, executable workflows, and portable agent expertise."
+abstract: |
+  The most powerful pattern for managing dynamic context is **Agent Skills**. Skills are reusable markdown files that teach agents how to handle specific tasks automatically. Instead of repeating instructions every time you ask an agent to review a PR or write a commit message, you write a skill once and agents applies it whenever the task comes up.
+date: 2026-06-09
+draft: true
+---
+
+--- #####################
+Skills Ecosystem = https://www.skills.sh/
+Vercel Skills = https://github.com/vercel-labs/skills
+    + https://github.com/vercel-labs/skills
+Skills CLI = https://www.npmjs.com/package/skills
+Layers skills = https://layers.jamiemill.com/
+Zed Skills = https://zed.dev/docs/ai/skills
+--- ###################
+
+## Why Agent Skills?
+
+As model capabilities improve, we are moving from [vibe coding](./vibe-coding.qmd)
+to general-purpose agents that interact with full-fledged computing environments.
+Agents can accomplish complex tasks across domains using local code execution and
+filesystems.
+
+But as these agents become more powerful, we need more composable, scalable, and
+portable ways to equip them with **domain-specific expertise**. Rather than
+embedding every piece of specialized knowledge into the system prompt, skills
+allow the agent to remain a lightweight generalist that flexes into specialist
+roles on demand through **progressive disclosure**:
+
+1. The agent sees only lightweight metadata at startup
+2. Loads full instructions when a task matches
+3. Pulls deep reference material only when explicitly needed
+
+### A rapid Adoption
+
+Agent Skills are becoming the standard for cross-platform portability, because
+they solve four problems that have plagued AI agent development:
+
+1. **[Context rot](./context.qmd#context-rot)** from overloaded prompts
+2. **Absence of procedural memory** for LLMs
+3. **Operational overhead** of multi-agent architectures
+4. **Need for portability** across tools and vendors
+
+Anthropic introduced skills, in octobre 2025, to solve this by packaging
+procedural knowledge and specific context into folders that agents load on
+demand.
+
+> "Building a skill for an agent is like putting together an onboarding guide for a new hire. Instead of building fragmented, custom-designed agents for each use case, anyone can now specialize their agents with composable capabilities by capturing and sharing their procedural knowledge."
+
+Two months later, in december 2025, Anthropic, released Agents Skills as an **open standard** to the community. It means that agent skills are freely available for adoption, implementation and updates, enabling cross-platform portability.
+
+[GitHub Copilot supports Agent Skill - 2025-12-18](https://github.blog/changelog/2025-12-18-github-copilot-now-supports-agent-skills/)
+
+- openAI : <https://github.com/openai/skills/commits/main/?after=a8924c2a35cfa290458852c4fad17c9133054c2e+104>
+
+## Anatomy of Skills
+
+### Where do they live ?
+
+Agent tools uses specific directoryies to host their configuration files, for example, Claude Code uses `.claude/`, OpenAi Codex uses `.codex/`. Let's focus on portability and open standard with `.agent/` directory to house skill definitions.
+
+Skills are **folders** of instructions that agents can discover and each skill lives in a `SKILL.md` file. *Personal* skills are store in `~/.agents/skills` (your home directory) and follow you across all projects. While, *project* related skills are stored in `.agents/skills` inside the root directory of your repository. Anyone who clones the repo gets these skills automatically. This is where team standards live, like your company's brand guidelines, preferred fonts, and colors for web design.
+
+::: {.callout-tips}
+On Windows, personal skills live in `C:/Users/<your-user>/.agents/skills`.
+:::
+
+### `SKILL.md` and the `.agent/` directory
+
+A skill directory contains, at minimum, a `SKILL.md`:
+
+```markdown
+.agents/skills/
+├── skill-name/
+│   ├── SKILL.md          # Required: metadata + instructions
+│   ├── scripts/          # Optional: executable code
+│   ├── references/       # Optional: documentation
+│   ├── assets/           # Optional: templates, resources
+│   └── ...               # Any additional files or directories
+├── another-skill-name/
+│   └── SKILL.md
+└── ...
+```
+
+### `SKILL.md` format
+
+A `SKILL.md` file describes the trigger, the expected inputs and outputs, and any limitations. It must contain YAML frontmatter followed by Markdown content.
+
+#### YAML Frontmatter
+
+YAML frontmatters are required to keep skills lightweight and load on demand. It contains 2 required metadata: `name` and `description`. At startup, the agent pre-loads the `name` and `description` of every installed skill into its systemp prompt.
+
+##### `name`
+
+The first required YAML metadata a `SKILL.md` must have is `name` and it must follow some guidelines:
+
+- Must be 1-64 characters
+- May only contain unicode lowercase alphanumeric characters (`a-z`, `0-9`) and hyphens (`-`)
+- Must not start or end with a hyphen (`-`)
+- Must not contain consecutive hyphens (`--`)
+- Must match the parent directory name
+
+| **Valid** `name` metadata | **Invalid** `name` metadata |
+|---------------------------|-----------------------------|
+| `name: pdf-processing`    | `name: PDF-Processing`      |
+| `name: data-analysis`     | `name: -data`               |
+| `name: code-review`       | `name: code--review`        |
+
+##### `description`
+
+The second required YAML metadata is the `description` field with the following restrictions:
+
+- Must be 1-1024 characters
+- Should describe both what the skill does and when to use it
+- Should include specific keywords that help agents identify relevant tasks
+
+| **Good** example | **Poor** example |
+|---------------------------|-----------------------------|
+| `description: Extracts text and tables from PDF files, fills PDF forms, and merges multiple PDFs. Use when working with PDF documents or when the user mentions PDFs, forms, or document extraction.`    | `description: Helps with PDFs.`  |
+
+Therefore a minimal frontmatter for a `SKILL.md` is:
+
+```yaml
+---
+name: skill-name
+description: A description of what this skill does and when to use it.
+---
+```
+
+##### optional Fields
+
+Agents Skills open standard has **4 more optionnal frontmatter**:
+
+- `license` field specifies the license applied to the skill:
+
+  ```yaml
+  license: Proprietary. LICENSE.txt has complete terms
+  ```
+
+- `compatibility` field an indicate intended product, required system packages, network access needs, etc. It must be 1-500 characters if provided and should only be included if your skill has specific environment requirements
+
+  ```yaml
+  compatibility: Designed for Claude Code (or similar products)
+  ```
+
+  ```yaml
+  compatibility: Requires git, docker, jq, and access to the internet
+  ```
+
+  ```yaml
+  compatibility: Requires Python 3.14+ and uv
+  ```
+
+  :::{.callout-note}
+  Most skills do not need the compatibility field.
+  :::
+
+- `metadata` field
+A map from string keys to string values
+Clients can use this to store additional properties not defined by the Agent Skills spec
+We recommend making your key names reasonably unique to avoid accidental conflicts
+
+```yaml
+metadata:
+  author: example-org
+  version: "1.0"
+```
+
+allowed-tools field
+The optional allowed-tools field:
+A space-separated string of tools that are pre-approved to run
+Experimental. Support for this field may vary between agent implementations
+
+```yaml
+allowed-tools: Bash(git:*) Bash(jq:*) Read
+```
+
+### Markdown Structure
+
+The Markdown body after the frontmatter contains the skill instructions. There are no format restrictions. Write whatever helps agents perform the task effectively.
+Recommended sections:
+Step-by-step instructions
+Examples of inputs and outputs
+Common edge cases
+Note that the agent will load this entire file once it's decided to activate a skill. Consider splitting longer SKILL.md content into referenced files.
+
+### Optional directories
+
+A skill directory may contain any files and directories beyond the required SKILL.md. The conventions below are recommendations for organizing common types of content.
+​
+scripts/
+Contains executable code that agents can run. Scripts should:
+Be self-contained or clearly document dependencies
+Include helpful error messages
+Handle edge cases gracefully
+Supported languages depend on the agent implementation. Common options include Python, Bash, and JavaScript.
+​
+references/
+Contains additional documentation that agents can read when needed:
+REFERENCE.md - Detailed technical reference
+FORMS.md - Form templates or structured data formats
+Domain-specific files (finance.md, legal.md, etc.)
+Keep individual reference files focused. Agents load these on demand, so smaller files mean less use of context.
+​
+assets/
+Contains static resources:
+Templates (document templates, configuration templates)
+Images (diagrams, examples)
+Data files (lookup tables, schemas)
+
+## Preventing Context Rot: Progressive Disclosure
+
+To preserve the LLM context windows, agents load skills progressively, pulling in more detail only as a task calls for it. This is called **progressive disclosure**. It is the core design principle that makes Agent Skills flexible and scalable. Like a well-organized manual that starts with a table of contents, then specific chapters, and finally a detailed appendix, skills let agents load information only as needed.
+
+Skills run in a code execution environment where agent has filesystem access, bash commands, and code execution capabilities.
+
+[context window](./context-window.webp)
+
+1. Metadata are the **first level** of progressive disclosure: with `name`, `description`, and optional fields, it provides just enough information for agents to know when each skill should be used without loading all of it into context. It increase the context windows by roughly ~100 tokens.
+2. The actual body of this file is the **second level** of detail. Agents compares user requests against available skill descriptions and load the skill by reading its full `SKILL.md` into context. It should fit under < 5000 tokens.
+3. As skills grow in complexity, they may contain too much context to fit into a single `SKILL.md`, or context that's relevant only in specific scenarios. In these cases, skills can bundle additional files (those in scripts/, references/, or assets/) within the skill directory and reference them by name from `SKILL.md`. These additional linked files are the **third level** (and beyond) of detail, which agents can choose to navigate and discover only as needed.
+
+| Level |               File                 | Context Window           | # Tokens              |
+|-------|------------------------------------|--------------------------|-----------------------|
+|   1   | `SKILL.md` YAML metadata           | Always loaded            | ~ 100                 |
+|   2   | `SKILL.md` body                    | Load when skill triggers | < 5k                  |
+|   3+  | Bundled files (text, script, data) | Loaded as-needed         | Effectively unlimited |
+
+No practical limit on bundled content: Because files don't consume context until accessed, Skills can include comprehensive API documentation, large datasets, extensive examples, or any reference materials you need. There's no context penalty for bundled content that isn't used.
+
+This filesystem-based model is what makes progressive disclosure work. Claude navigates your Skill like you'd reference specific sections of an onboarding guide, accessing exactly what each task requires.
+
+## Towards a repeatable and deterministic Agent
+
+Skills can also include code for Claude to execute as tools at its discretion.
+
+Large language models excel at many tasks, but certain operations are better suited for traditional code execution. For example, sorting a list via token generation is far more expensive than simply running a sorting algorithm. Beyond efficiency concerns, many applications require the deterministic reliability that only code can provide.
+
+In our example, the PDF skill includes a pre-written Python script that reads a PDF and extracts all form fields. Claude can run this script without loading either the script or the PDF into context. And because code is deterministic, this workflow is consistent and repeatable.
+
+![Skills can also include code for Claude to execute as tools at its discretion based on the nature of the task.](./assets/script.webp)
+
+## Skills Library
+
+- [Anthropic open-source skills](https://github.com/anthropics/skills)
+
+## Good Practices
+
+- Keep your main SKILL.md under 500 lines. Move detailed reference material to separate files.
+- When referencing other files in your skill, use relative paths from the skill root:
+
+  ```markdown
+  See [the reference guide](references/REFERENCE.md) for details.
+
+  Run the extraction script:
+  scripts/extract.py
+  ```
+
+  :::{.callout-note}
+  Keep file references one level deep from SKILL.md. Avoid deeply nested reference chains.
+  :::
+
+## Further Reading
+
+- [Extend Claude with skills](https://code.claude.com/docs/en/skills)
+- [Give ChatGPT and Codex new capabilities and expertise](https://learn.chatgpt.com/docs/build-skills)
+
+## References
+
+- <https://agentskills.io/home>
+- <https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills>
+- <https://www.deeplearning.ai/short-courses/agent-skills-with-anthropic/>
+
+-------------------
+
+```yaml
+---
+title: pr-review
+description: Reviews pull requests for code quality. Use when reviewing PRs or checking code changes.
+---
+
+When reviewing code in this FastAPI projects, check for:
+
+## Code quality
+1. **Readibility and clear naming** - Variables, functions, and classes should
+  have descriptives names.
+2. **Consistent patterns** - Follow the existing router/schema/model patterns in
+  the codebase
+
+[...]
+```
+
+### Example
+
+In the PDF skill shown below, the `SKILL.md` refers to two additional files
+(`reference.md` and `forms.md`) that the skill author chooses to bundle alongside
+the core `SKILL.md`. By moving the form-filling instructions to a separate file
+(`forms.md`), the skill author is able to keep the core of the skill lean,
+trusting that agents will read `forms.md` only when filling out a form.
+
+![You can incorporate more context (via additional files) into your skill that can then be triggered by Claude based on the system prompt.](./assets/anatomy.webp)
+
+When agents matches a skill to your request, you'll see it load in the terminal:
+
+```bash
+🟢 Skill(pr-review)
+   └── Successfully loaded skill
+```
+
+## Developing and evaluating skills
+
+Validation
+Use the skills-ref reference library to validate your skills:
+skills-ref validate ./my-skill
+This checks that your SKILL.md frontmatter is valid and follows all naming conventions.
+
+Some helpful guidelines and tips for getting started with building and testing
+skills.
+
+### Start with Evaluation
+
+In order to identify specific gaps in agents’ capabilities you could run them on
+representative tasks and observing where they struggle or require additional
+context. Then build skills incrementally to address these shortcomings.
+
+### Structure for scale
+
+When the `SKILL.md` file becomes unwieldy, split its content into separate files
+and reference them. If certain contexts are mutually exclusive or rarely used
+together, keeping the paths separate will reduce the token usage.
+
+Finally, code can serve as both executable tools and as documentation. It should
+be clear whether agents should run scripts directly or read them into context as
+reference.
+
+### Think from agent’s perspective
+
+Monitor how agents uses your skill in real scenarios and iterate based on
+observations. Watch for unexpected trajectories or overreliance on certain
+contexts. Pay special attention to the name and description of your skill. Agents
+will use these when deciding whether to trigger the skill in response to its
+current task.
+
+### Iterate with agents
+
+As you work on a task with agents, ask to capture its successful approaches and
+common mistakes into reusable context and code within a skill. If it goes off
+track when using a skill to complete a task, ask it to self-reflect on what went
+wrong.
+
+This process will help you discover what context agents actually needs, instead
+of trying to anticipate it upfront.
+
+::: {.callout-important}
+
+## Security Considerations
+
+Skills provide agents with new capabilities through instructions and code. While
+this makes them powerful, it also means that malicious skills may introduce
+vulnerabilities in the environment where they’re used or direct agents to
+exfiltrate data and take unintended actions.
+
+It is recommended to install skills only from trusted sources. When installing
+a skill from a less-trusted source, thoroughly audit it before use. Start by
+reading the contents of the files bundled in the skill to understand what it
+does, paying particular attention to code dependencies and bundled resources
+like images or scripts.
+
+Similarly, pay attention to instructions or code within the skill that instruct
+agents to connect to potentially untrusted external network sources.
+:::
+
+## Layer 2 —  Tool Definitions
+
+Static instructions tell an agent *how to think*. Skills and tools tell it *what it can do*. This is where you extend the agent beyond pure text generation.
+
+### Function calling — OpenAI
+
+OpenAI's function-calling API lets you describe tools as JSON schemas. The
+model decides when to call one and returns structured arguments you execute
+in your own code.
+
+```python
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_stock_price",
+            "description": "Get the current price for a stock ticker.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "ticker": {"type": "string", "description": "e.g. AAPL"}
+                },
+                "required": ["ticker"]
+            }
+        }
+    }
+]
+```
+
+The model returns `{"name": "get_stock_price", "arguments": {"ticker": "AAPL"}}`;
+you call your real API and feed the result back.
+
+→ [OpenAI — Function calling guide](https://platform.openai.com/docs/guides/function-calling)
+
+### Tool use — Anthropic Claude
+
+Claude uses the same concept under the name *tool use*. The schema is slightly
+different but the mental model is identical: describe a tool, let the model
+decide when to invoke it, execute it yourself, return the result.
+
+```python
+tools = [
+    {
+        "name": "get_stock_price",
+        "description": "Returns the current price for a stock ticker.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "ticker": {"type": "string"}
+            },
+            "required": ["ticker"]
+        }
+    }
+]
+```
+
+→ [Anthropic — Tool use documentation](https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview)
+
+::: {.callout-note}
+
+## The convergence pattern
+
+Both OpenAI and Anthropic tool definitions follow JSON Schema. If you abstract
+your tool registry behind a small adapter, the same tool implementation can be
+exposed to both platforms with a thin translation layer.
+:::
+
+------
+
+- https://www.skills.sh/
+- https://github.com/openai/skills
+- https://github.blog/changelog/2025-12-18-github-copilot-now-supports-agent-skills/
+- https://agentskills.io/specification#license-field
+- https://assistant.posit.co/docs/features/skills/
+- https://anthropic.skilljar.com/introduction-to-agent-skills
+- https://www.deeplearning.ai/courses/agent-skills-with-anthropic
+- https://cloud.google.com/blog/topics/developers-practitioners/level-up-your-agents-announcing-googles-official-skills-repository?hl=en
+- https://env.dev/ai/agent-skills
