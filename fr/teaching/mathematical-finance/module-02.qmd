@@ -1,0 +1,678 @@
+---
+title: "Journée 2 — Emprunts et obligations"
+date-modified: 2026-10-04
+abstract: |
+  Comment mesurer le coût réel d'un financement et valoriser une dette ?
+  Cette journée couvre les tableaux d'amortissement, le taux actuariel
+  et la valorisation des obligations à taux fixe.
+---
+
+## Objectifs de la journée
+
+À la fin de cette journée, vous serez capables de :
+
+- construire un tableau d'amortissement à annuités constantes ou à
+  amortissement constant ;
+- distinguer intérêt, amortissement et annuité à chaque échéance ;
+- comparer plusieurs modalités de remboursement sur les critères coût
+  total, trésorerie et risque ;
+- calculer le taux actuariel d'un emprunt intégrant des frais ;
+- valoriser une obligation à taux fixe ;
+- mesurer la sensibilité du prix d'une obligation aux variations de taux
+  (duration de Macaulay, duration modifiée).
+
+---
+
+## Séquence 1 — Réactivation des acquis
+
+> *Durée : 30 minutes*
+
+### Erreurs fréquentes issues de la Journée 1
+
+::: {.callout-warning}
+## Erreurs à corriger avant de continuer
+
+1. **Confusion capitalisation / actualisation** : « capitaliser » va vers
+   le futur ($C_n = C_0(1+i)^n$) ; « actualiser » revient au présent
+   ($V_0 = V_n / (1+i)^n$).
+2. **Oubli de convertir le taux** : un tableau trimestriel avec un taux
+   annuel exige la conversion en taux trimestriel équivalent.
+3. **Décalage d'une période** : vérifier si le premier versement est en
+   début ou en fin de période avant d'appliquer les formules d'annuités.
+4. **Pourcentage non converti** : $i = 5\,\%$ → utiliser $0{,}05$,
+   *pas* $5$.
+:::
+
+### Quiz de réactivation
+
+Répondez sans calculatrice (ordre de grandeur suffisant) :
+
+1. Un capital de 10 000 € placé 3 ans à 4 % vaut environ combien ?
+2. Quelle est la valeur actuelle de 12 000 € reçus dans 2 ans au taux 6 % ?
+3. Taux mensuel équivalent à 6 % annuel (résultat approché) ?
+4. Valeur actuelle d'une perpétuité de 500 €/an au taux 5 % ?
+
+::: {.callout-caution collapse="true"}
+## Réponses
+
+1. $10\,000 \times (1{,}04)^3 \approx 11\,249$ €
+2. $12\,000 / (1{,}06)^2 \approx 10\,680$ €
+3. $(1{,}06)^{1/12} - 1 \approx 0{,}487\,\%$ (≈ 0,5 %)
+4. $500 / 0{,}05 = 10\,000$ €
+:::
+
+---
+
+## Séquence 2 — Emprunt amortissable à annuités constantes
+
+> *Durée : 1 heure 15*
+
+### Intuition économique
+
+Lorsqu'une entreprise ou un particulier emprunte, chaque échéance remplit
+deux fonctions simultanées : **payer les intérêts** de la période et
+**rembourser une partie du capital**. Le tableau d'amortissement rend
+visible cette décomposition.
+
+### Représentation (ligne du temps)
+
+```
+t = 0          t = 1     t = 2     ...    t = n
+  |              |         |               |
+ C₀             A         A               A
+(montant        (annuité  constante = Intérêts + Amortissement)
+ emprunté)
+```
+
+### Formule de l'annuité constante
+
+::: {.callout-tip}
+## Formule — Annuité d'un emprunt à annuités constantes
+
+Pour un emprunt $C_0$, taux périodique $i$, $n$ échéances :
+
+$$C_0 = A \cdot \frac{1 - (1+i)^{-n}}{i}
+\quad \Longrightarrow \quad
+A = C_0 \cdot \frac{i}{1 - (1+i)^{-n}}$$
+
+**Lecture :** $A$ est l'annuité *constante* qui rembourse exactement le
+capital $C_0$ en $n$ versements au taux $i$.
+:::
+
+::: {.callout-caution collapse="true"}
+## Démonstration — L'annuité est la valeur actuelle inverse
+
+Le montant emprunté $C_0$ est la valeur actuelle de toutes les annuités :
+
+$$C_0 = A \cdot \frac{1-(1+i)^{-n}}{i}$$
+
+On isole $A$ :
+
+$$A = C_0 \cdot \frac{i}{1-(1+i)^{-n}}$$
+
+C'est l'inversion directe de la formule de valeur actuelle des annuités
+de fin de période.
+:::
+
+### Structure d'une échéance
+
+À la période $t$ :
+
+| Composante | Formule |
+|-----------|---------|
+| Intérêts $I_t$ | $CRD_{t-1} \times i$ |
+| Amortissement $Am_t$ | $A - I_t$ |
+| Capital restant dû $CRD_t$ | $CRD_{t-1} - Am_t$ |
+
+### Exemple résolu — Tableau d'amortissement
+
+> Emprunt de **100 000 €** sur **5 ans** au taux annuel de **4 %**,
+> à annuités constantes.
+
+**Calcul de l'annuité :**
+
+$$A = 100\,000 \times \frac{0{,}04}{1-(1{,}04)^{-5}}
+= 100\,000 \times \frac{0{,}04}{0{,}17877}
+\approx 22\,463 \text{ €}$$
+
+**Tableau d'amortissement :**
+
+| Période | CRD début | Intérêts | Amortissement | Annuité | CRD fin |
+|---------|-----------|----------|---------------|---------|---------|
+| 1 | 100 000 | 4 000 | 18 463 | 22 463 | 81 537 |
+| 2 | 81 537 | 3 261 | 19 202 | 22 463 | 62 335 |
+| 3 | 62 335 | 2 493 | 19 970 | 22 463 | 42 365 |
+| 4 | 42 365 | 1 695 | 20 768 | 22 463 | 21 597 |
+| 5 | 21 597 | 864 | 21 599 | 22 463 | 0* |
+
+*Légère différence due aux arrondis (≈ −2 € par ajustement).
+
+**Coût total des intérêts :** $22\,463 \times 5 - 100\,000 = 12\,315$ €
+
+::: {.callout-note}
+## Lecture économique du tableau
+
+- En **début d'emprunt** : les intérêts sont élevés (base = capital total) ;
+  l'amortissement est faible.
+- En **fin d'emprunt** : les intérêts diminuent (CRD réduit) ;
+  l'amortissement représente la quasi-totalité de l'annuité.
+- L'annuité reste *constante*, mais sa composition change chaque année.
+:::
+
+---
+
+## Séquence 3 — Autres modalités de remboursement
+
+> *Durée : 1 heure*
+
+### A. Amortissement constant
+
+::: {.callout-tip}
+## Formule — Amortissement constant
+
+$$Am = \frac{C_0}{n} \quad \text{(identique à chaque période)}$$
+
+L'annuité est **décroissante** :
+
+$$A_t = Am + I_t = \frac{C_0}{n} + CRD_{t-1} \times i$$
+
+**Lecture :** le capital est remboursé à parts égales ; les intérêts baissent
+car le CRD diminue régulièrement. Les premières échéances sont plus élevées
+qu'avec des annuités constantes.
+:::
+
+### B. Emprunt in fine
+
+Le capital est remboursé **intégralement** à la dernière échéance.
+
+Pendant la durée de l'emprunt ($t < n$) :
+
+$$I_t = C_0 \times i \quad \text{(intérêts sur le capital total)}$$
+
+À la dernière période ($t = n$) :
+
+$$Flux_n = C_0 \times i + C_0 = C_0 \times (1 + i)$$
+
+::: {.callout-warning}
+## Risque spécifique à l'emprunt in fine
+
+L'emprunteur doit être certain de disposer de $C_0$ à l'échéance (souvent
+via une épargne parallèle ou une cession d'actif). Le risque de refinancement
+est concentré sur la dernière période.
+:::
+
+### C. Différé d'amortissement
+
+**Différé partiel** : pendant la période de différé, l'emprunteur paie les
+intérêts mais n'amortit pas le capital.
+
+**Différé total** : aucun flux pendant la période de différé ; les intérêts
+sont capitalisés et s'ajoutent au capital. À la fin du différé, le nouveau
+capital à rembourser est $C_0 (1+i)^d$ où $d$ est la durée du différé.
+
+### Comparaison des modalités
+
+| Modalité | Avantage principal | Inconvénient principal |
+|----------|--------------------|------------------------|
+| Annuités constantes | Stabilité budgétaire | Coût d'intérêt significatif en début |
+| Amortissement constant | Coût total généralement inférieur | Échéances initiales plus élevées |
+| In fine | Faibles sorties de trésorerie pendant la durée | Risque élevé à l'échéance |
+| Différé | Soulage la trésorerie initiale | Augmente souvent le coût total |
+
+---
+
+## Séquence 4 — Coût réel du crédit et taux actuariel
+
+> *Durée : 1 heure*
+
+### A. Limite du taux nominal
+
+Le taux nominal ne suffit pas à mesurer le coût réel lorsque l'emprunt
+comporte des frais annexes :
+
+- frais de dossier ;
+- commissions de garantie ;
+- primes d'assurance emprunteur ;
+- versement initial (points) ;
+- pénalités de remboursement anticipé.
+
+### B. Principe du taux actuariel
+
+::: {.callout-note}
+## Définition — Taux actuariel (ou TAEG)
+
+Le taux actuariel $r$ est le taux qui égalise le **montant net effectivement
+reçu** par l'emprunteur et la **valeur actuelle de tous les flux futurs**
+(remboursements + frais) qu'il devra verser :
+
+$$\text{Montant net reçu} = \sum_{t=1}^{n} \frac{Flux_t}{(1+r)^t}$$
+
+**Lecture :** $r$ est le « vrai » coût de l'emprunt, tenant compte de tous
+les flux effectifs, quelle que soit leur date.
+:::
+
+::: {.callout-tip}
+## Calcul pratique — Fonctions Excel
+
+| Besoin | Fonction Excel | Argument clé |
+|--------|---------------|-------------|
+| Valeur actuelle | `VA(taux;npm;vpm)` | Convention de signe |
+| Valeur future | `VC(taux;npm;vpm)` | Idem |
+| Annuité | `VPM(taux;npm;va)` | `va` = montant emprunté |
+| Taux actuariel | `TAUX(npm;vpm;va)` | `va` = montant net reçu |
+| VAN générale | `VAN(taux;flux1:fluxn)` + flux initial | Exclure le flux à $t=0$ |
+| TRI | `TRI(flux0:fluxn)` | Inclure le flux à $t=0$ |
+
+::: {.callout-important}
+## Conventions de signe dans Excel
+
+Les sorties de trésorerie (remboursements) sont **négatives** ; les entrées
+(montant reçu) sont **positives**. Utiliser la même convention tout au long
+du modèle — ne jamais mélanger.
+:::
+:::
+
+### Exemple résolu — Taux actuariel avec frais
+
+> Emprunt nominal : **100 000 €**, taux facial **4 %**, durée **5 ans**,
+> frais de dossier **2 000 €** prélevés à l'origine.
+
+Montant net reçu : $100\,000 - 2\,000 = 98\,000$ €
+
+Annuité inchangée : $A \approx 22\,463$ € (calculée sur 100 000 €)
+
+Le taux actuariel $r$ vérifie :
+
+$$98\,000 = 22\,463 \cdot \frac{1-(1+r)^{-5}}{r}$$
+
+Résolution numérique (Excel `TAUX`) : $r \approx 4{,}46\,\%$
+
+Le coût réel (4,46 %) est supérieur au taux nominal (4 %) car les frais
+réduisent le montant effectivement disponible sans réduire les remboursements.
+
+---
+
+## Séquence 5 — Introduction aux obligations
+
+> *Durée : 1 heure*
+
+### A. Vocabulaire obligataire
+
+::: {.callout-note}
+## Définitions clés
+
+| Terme | Définition |
+|-------|-----------|
+| Valeur nominale $N$ | Capital de référence sur lequel sont calculés les coupons |
+| Prix d'émission | Prix auquel l'obligation est émise (peut différer de $N$) |
+| Prix de remboursement | Montant versé à l'échéance (souvent = $N$) |
+| Coupon $C$ | Intérêt versé chaque période ($C = N \times t_{\text{facial}}$) |
+| Taux facial | Taux d'intérêt nominal de l'obligation |
+| Maturité $n$ | Durée restant jusqu'au remboursement |
+| Rendement actuariel $r$ | Taux qui égalise prix et valeur actuelle des flux |
+| Prime / Décote | Prix $>$ $N$ : prime (surcote) ; prix $<$ $N$ : décote (escompte) |
+:::
+
+### B. Valorisation d'une obligation à taux fixe
+
+::: {.callout-tip}
+## Formule — Prix d'une obligation
+
+$$P_0 = C \cdot \frac{1-(1+r)^{-n}}{r} + \frac{N}{(1+r)^n}$$
+
+où $r$ est le **taux de marché** (rendement exigé) et $C$ le coupon annuel.
+
+**Lecture :** le prix $P_0$ est la valeur actuelle de deux composantes :
+(1) la rente de coupons et (2) le remboursement du nominal à maturité.
+:::
+
+::: {.callout-caution collapse="true"}
+## Démonstration — Décomposition du prix
+
+$$P_0 = \underbrace{\sum_{t=1}^{n} \frac{C}{(1+r)^t}}_{\text{rente de coupons}}
++ \underbrace{\frac{N}{(1+r)^n}}_{\text{remboursement du nominal}}$$
+
+La rente de coupons est une annuité constante ; sa valeur actuelle est
+$C \cdot (1-(1+r)^{-n})/r$. Le remboursement du nominal est un flux unique
+actualisé sur $n$ périodes.
+:::
+
+### C. Relation prix – taux de marché
+
+::: {.callout-important}
+## Règle fondamentale — Relation inverse prix / taux
+
+| Situation | Effet sur le prix |
+|-----------|------------------|
+| Taux de marché $r$ **augmente** | Prix $P_0$ **diminue** |
+| Taux de marché $r$ **diminue** | Prix $P_0$ **augmente** |
+| $r$ = taux facial | $P_0 \approx N$ (obligation au pair) |
+| $r$ < taux facial | $P_0 > N$ (prime) |
+| $r$ > taux facial | $P_0 < N$ (décote) |
+
+La relation est **non linéaire** (convexe) : une baisse de taux d'un point
+augmente le prix *plus* qu'une hausse de taux d'un point ne le baisse.
+:::
+
+### D. Obligation zéro-coupon
+
+Pas de versement intermédiaire : l'obligation ne rembourse que $N$ à maturité.
+
+$$P_0 = \frac{N}{(1+r)^n}$$
+
+C'est l'actualisation pure d'un flux unique.
+
+### Démonstration interactive — Prix obligataire et taux de marché
+
+```{ojs}
+//| echo: false
+viewof coupon = Inputs.range([0, 100], {
+  value: 50, step: 1,
+  label: "Coupon annuel C (€)"
+})
+viewof nominal = Inputs.range([500, 2000], {
+  value: 1000, step: 100,
+  label: "Nominal N (€)"
+})
+viewof maturite = Inputs.range([1, 20], {
+  value: 10, step: 1,
+  label: "Maturité n (années)"
+})
+viewof r_ref = Inputs.range([0.01, 0.15], {
+  value: 0.05, step: 0.001,
+  label: "Taux de marché de référence r"
+})
+
+bondPrice = (r) =>
+  coupon * (1 - (1 + r) ** -maturite) / r + nominal * (1 + r) ** -maturite
+
+curve = Array.from({length: 141}, (_, k) => {
+  const r = 0.01 + k * 0.001
+  return {r, prix: bondPrice(r)}
+})
+
+P0    = bondPrice(r_ref)
+tFacial = coupon / nominal
+status = Math.abs(P0 - nominal) < 1
+  ? "Au pair"
+  : P0 > nominal
+    ? `Prime (+${(P0 - nominal).toFixed(0)} €)`
+    : `Décote (${(P0 - nominal).toFixed(0)} €)`
+
+md`**Prix P₀ = ${P0.toFixed(2)} €** au taux ${(r_ref*100).toFixed(2)} % — *${status}* | Taux facial : ${(tFacial*100).toFixed(2)} %`
+
+Plot.plot({
+  title: "Courbe prix-taux de l'obligation",
+  marks: [
+    Plot.lineY(curve, {x: "r", y: "prix", stroke: "steelblue", strokeWidth: 2}),
+    Plot.dot([{r: r_ref, prix: P0}], {x: "r", y: "prix", fill: "red", r: 6, tip: true}),
+    Plot.ruleY([nominal], {stroke: "gray", strokeDasharray: "4 4"}),
+    Plot.ruleX([tFacial], {stroke: "orange", strokeDasharray: "4 4"})
+  ],
+  x: {label: "Taux de marché r", tickFormat: "%", grid: true},
+  y: {label: "Prix P₀ (€)", grid: true},
+  color: {legend: false},
+  marginBottom: 40
+})
+```
+
+::: {.callout-note}
+## Lire la démonstration
+
+- La **courbe bleue** montre $P_0(r)$ : elle est décroissante et convexe.
+- Le **point rouge** est le prix au taux de référence choisi.
+- La **ligne grise pointillée** marque le nominal $N$.
+- La **ligne orange pointillée** marque le taux facial : à ce taux $r$,
+  l'obligation cote au pair.
+:::
+
+---
+
+## Séquence 6 — Sensibilité obligataire
+
+> *Durée : 45 minutes*
+
+### A. Duration de Macaulay
+
+::: {.callout-note}
+## Définition — Duration de Macaulay $D_M$
+
+La duration est la **durée de vie moyenne pondérée** des flux de l'obligation,
+pondérée par leurs valeurs actuelles :
+
+$$D_M = \frac{\displaystyle\sum_{t=1}^{n} t \cdot \frac{CF_t}{(1+r)^t}}{P_0}$$
+
+**Lecture :** $D_M$ mesure la sensibilité économique de l'obligation. Plus la
+duration est longue, plus l'obligation est sensible aux variations de taux.
+:::
+
+### B. Duration modifiée
+
+::: {.callout-tip}
+## Formule — Duration modifiée $D^*$
+
+$$D^* = \frac{D_M}{1 + r}$$
+
+**Approximation de la variation de prix :**
+
+$$\frac{\Delta P}{P} \approx -D^* \cdot \Delta r$$
+
+**Lecture :** si $D^* = 4$ et le taux augmente de 1 point de pourcentage
+($\Delta r = 0{,}01$), le prix baisse d'environ $4\,\%$.
+:::
+
+::: {.callout-caution collapse="true"}
+## Démonstration — Lien entre duration modifiée et dérivée du prix
+
+Le prix est une fonction du taux : $P(r) = \sum CF_t(1+r)^{-t}$.
+
+Sa dérivée par rapport à $r$ :
+
+$$\frac{dP}{dr} = -\sum_{t=1}^n t \cdot \frac{CF_t}{(1+r)^{t+1}}
+= -\frac{1}{1+r} \sum_{t=1}^n t \cdot \frac{CF_t}{(1+r)^t}
+= -\frac{D_M \cdot P}{1+r} = -D^* \cdot P$$
+
+D'où l'approximation linéaire :
+$$\Delta P \approx \frac{dP}{dr} \cdot \Delta r = -D^* \cdot P \cdot \Delta r
+\quad \Rightarrow \quad \frac{\Delta P}{P} \approx -D^* \cdot \Delta r$$
+:::
+
+::: {.callout-warning}
+## Limites de la duration
+
+La relation prix-taux est **convexe** (non linéaire). La duration modifiée
+fournit une approximation *locale* (tangente) valable pour de petites
+variations de taux. Pour de grandes variations, la convexité doit être prise
+en compte — elle joue toujours en faveur de l'investisseur (le prix remonte
+plus vite qu'il ne baisse pour une même amplitude de variation de taux).
+:::
+
+---
+
+## Séquence 7 — Étude de cas : choisir un financement
+
+> *Durée : 1 heure*
+
+### Situation
+
+> Une PME doit financer un équipement industriel de **600 000 €**.
+> Trois établissements proposent :
+>
+> - **Banque A** : emprunt à annuités constantes, taux 3,8 %, durée 7 ans.
+> - **Banque B** : amortissement constant, taux 3,5 %, durée 7 ans.
+> - **Banque C** : prêt in fine, taux 3,2 %, durée 7 ans,
+>   mais frais initiaux de 6 000 €.
+
+### Travail demandé
+
+Pour chaque financement :
+
+1. Calculez l'annuité (ou le flux) de la première et de la dernière échéance.
+2. Calculez le **coût total des intérêts** sur la durée.
+3. Pour la Banque C, calculez le **taux actuariel** (intégrant les frais).
+4. Comparez la **pression sur la trésorerie** en année 1 et en année 7.
+5. Identifiez les **risques** propres à chaque modalité.
+6. Rédigez une **recommandation** d'une page justifiant le choix retenu.
+
+### Éléments de correction
+
+::: {.callout-caution collapse="true"}
+## Correction indicative
+
+**Banque A — Annuités constantes à 3,8 % sur 7 ans :**
+
+$$A = 600\,000 \times \frac{0{,}038}{1-(1{,}038)^{-7}} \approx 100\,979 \text{ €/an}$$
+
+Coût total des intérêts : $100\,979 \times 7 - 600\,000 \approx 106\,853$ €
+
+**Banque B — Amortissement constant à 3,5 % sur 7 ans :**
+
+$Am = 600\,000 / 7 \approx 85\,714$ €
+
+Année 1 : $A_1 = 85\,714 + 600\,000 \times 0{,}035 = 85\,714 + 21\,000 = 106\,714$ €
+
+Année 7 : $A_7 = 85\,714 + 85\,714 \times 0{,}035 \approx 88\,714$ €
+
+Coût total des intérêts : $\sum I_t = 0{,}035 \times 600\,000 \times (7+1)/2 = 84\,000$ €
+(somme des intérêts d'une série arithmétique)
+
+**Banque C — In fine à 3,2 %, frais 6 000 € :**
+
+Flux annuels : $600\,000 \times 0{,}032 = 19\,200$ €
+
+Flux final : $19\,200 + 600\,000 = 619\,200$ €
+
+Montant net reçu : $594\,000$ €
+
+Taux actuariel $r$ tel que :
+$$594\,000 = 19\,200 \cdot \frac{1-(1+r)^{-7}}{r} + \frac{600\,000}{(1+r)^7}$$
+→ $r \approx 3{,}31\,\%$ (résolution numérique)
+
+**Recommandation possible :**
+
+Banque B offre le coût total le plus faible (84 000 € d'intérêts vs 107 000 €
+pour A). La pression trésorerie en année 1 est légèrement supérieure (~107 000 €
+vs ~101 000 €), mais si la PME dispose de flux d'exploitation suffisants, c'est
+la solution la plus économique. La Banque C présente un risque de refinancement
+à l'échéance (600 000 € à rembourser) ; elle ne se justifie que si la PME a
+un projet de cession d'actif planifié à 7 ans.
+:::
+
+---
+
+## Exercices
+
+### Niveau 1 — Application directe
+
+**Exercice 1.1** — Calculez l'annuité d'un emprunt de **50 000 €** sur **4 ans**
+au taux annuel de **5 %**.
+
+::: {.callout-caution collapse="true"}
+## Solution 1.1
+
+$$A = 50\,000 \times \frac{0{,}05}{1-(1{,}05)^{-4}}
+= 50\,000 \times \frac{0{,}05}{0{,}17729}
+\approx 14\,101 \text{ €}$$
+:::
+
+**Exercice 1.2** — Une obligation de nominal **1 000 €**, coupon annuel **40 €**,
+maturité **3 ans**, est évaluée à un taux de marché de **6 %**. Quel est son prix ?
+Est-elle en prime ou en décote ?
+
+::: {.callout-caution collapse="true"}
+## Solution 1.2
+
+$$P_0 = 40 \cdot \frac{1-(1{,}06)^{-3}}{0{,}06} + \frac{1\,000}{(1{,}06)^3}
+= 40 \times 2{,}6730 + 839{,}62
+= 106{,}92 + 839{,}62 = 946{,}54 \text{ €}$$
+
+$P_0 = 946{,}54 < 1\,000$ → **décote** (taux de marché 6 % > taux facial 4 %).
+:::
+
+---
+
+### Niveau 2 — Problème contextualisé
+
+**Exercice 2.1** — Un particulier contracte un prêt immobilier de **200 000 €**
+sur **20 ans** au taux mensuel équivalent à **2,4 % annuel**. Frais de garantie :
+**1 500 €** prélevés à l'origine.
+
+1. Calculez le taux mensuel équivalent.
+2. Calculez la mensualité constante.
+3. Calculez le taux actuariel mensuel puis annuel.
+
+::: {.callout-caution collapse="true"}
+## Solution 2.1
+
+**1. Taux mensuel équivalent :**
+$$i_m = (1{,}024)^{1/12} - 1 \approx 0{,}1980\,\%$$
+
+**2. Mensualité ($n = 240$ mois) :**
+$$A = 200\,000 \times \frac{0{,}001980}{1-(1{,}001980)^{-240}}
+\approx 200\,000 \times 0{,}004674 \approx 934{,}8 \text{ €/mois}$$
+
+**3. Taux actuariel :**
+
+Montant net reçu : $198\,500$ €
+
+On cherche $r_m$ tel que $198\,500 = 934{,}8 \times (1-(1+r_m)^{-240})/r_m$
+
+→ $r_m \approx 0{,}2001\,\%$ mensuel → $r_a = (1{,}002001)^{12} - 1 \approx 2{,}43\,\%$ annuel
+
+Le TAEG réel est légèrement supérieur au taux affiché.
+:::
+
+---
+
+### Niveau 3 — Étude de cas
+
+**Cas — Analyse obligataire**
+
+Un gestionnaire de portefeuille détient une obligation de nominal **5 000 €**,
+taux facial **3 %**, maturité **8 ans**, achetée au pair (taux de marché = 3 %).
+Les taux remontent brusquement de **+150 points de base** (à 4,5 %).
+
+1. Calculez le nouveau prix de l'obligation.
+2. Calculez la duration de Macaulay (vous pouvez supposer que la duration d'une
+   obligation au pair de maturité $n$ ans, taux $i$, est approchée par
+   $D_M \approx (1+i)/i \cdot (1-(1+i)^{-n})$ — sinon, calculez-la explicitement).
+3. Estimez la variation de prix par la duration modifiée et comparez à la
+   variation réelle.
+4. Que concluez-vous sur la convexité ?
+
+::: {.callout-caution collapse="true"}
+## Correction
+
+**1. Nouveau prix à 4,5 % :**
+$$P_{\text{nouveau}} = 150 \cdot \frac{1-(1{,}045)^{-8}}{0{,}045}
++ \frac{5\,000}{(1{,}045)^8}$$
+$$= 150 \times 6{,}5959 + 5\,000 \times 0{,}7032
+= 989{,}39 + 3\,516 = 4\,505{,}4 \text{ €}$$
+
+Variation réelle : $4\,505{,}4 - 5\,000 = -494{,}6$ € (soit $-9{,}89\,\%$)
+
+**2. Duration de Macaulay (calcul explicite) :**
+
+Pour une obligation au pair ($r$ = taux facial = 3 %, $C = 150$ €, $N = 5\,000$,
+$P_0 = 5\,000$) :
+
+$$D_M = \frac{1}{5\,000} \sum_{t=1}^{8} t \cdot \frac{150}{(1{,}03)^t}
++ 8 \cdot \frac{5\,000}{(1{,}03)^8}$$
+
+Calcul numérique → $D_M \approx 7{,}11$ ans
+
+**3. Estimation par la duration modifiée :**
+
+$$D^* = \frac{7{,}11}{1{,}03} \approx 6{,}90$$
+
+$$\frac{\Delta P}{P} \approx -6{,}90 \times 0{,}015 = -10{,}35\,\%$$
+
+Variation estimée : $-10{,}35\,\% \times 5\,000 = -517{,}5$ €
+
+**4. Conclusion sur la convexité :**
+
+La duration surestime la baisse de prix ($-517$ € estimés vs $-495$ € réels).
+L'écart ($22$ €) est dû à la convexité positive de la courbe prix-taux :
+la relation réelle est plus douce que la tangente linéaire, toujours en
+faveur de l'investisseur.
+:::

@@ -106,6 +106,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var path = window.location.pathname;
+  var isEnTeaching = path.startsWith('/teaching/');
+  var isFrTeaching = path.startsWith('/fr/teaching/');
+
+  function translateTool() {
+    var icon = document.querySelector('.bi-translate');
+    return icon ? icon.closest('.dropdown') : null;
+  }
+
+  // Outside the teaching section: hide the translate tool
+  if (!isEnTeaching && !isFrTeaching) {
+    var tool = translateTool();
+    if (tool) tool.style.display = 'none';
+    return;
+  }
+
+  // Skip RevealJS slides
+  if (document.body.classList.contains('reveal')) return;
+
+  // Courses with full page-for-page FR translations [EN prefix, FR prefix]
+  var fullPairs = [
+    ['/teaching/mathematical-fundamentals/', '/fr/teaching/mathematical-fundamentals/'],
+  ];
+
+  function frCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][0]))
+        return fullPairs[i][1] + p.slice(fullPairs[i][0].length);
+    }
+    var slug = p.replace('/teaching/', '').split('/')[0];
+    return '/fr/teaching/' + slug + '/';
+  }
+
+  function enCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][1]))
+        return fullPairs[i][0] + p.slice(fullPairs[i][1].length);
+    }
+    var slug = p.replace('/fr/teaching/', '').split('/')[0];
+    return '/teaching/' + slug + '/';
+  }
+
+  var enHref = isEnTeaching ? path : enCounterpart(path);
+  var frHref = isFrTeaching ? path : frCounterpart(path);
+
+  var tool = translateTool();
+  if (!tool) return;
+
+  tool.querySelectorAll('a.dropdown-item').forEach(function (a) {
+    var txt = a.textContent.trim();
+    if (txt.includes('English')) a.href = enHref;
+    else if (txt.includes('Français') || txt.includes('francais')) a.href = frHref;
+  });
+});
+</script>
 <meta cr-debug-mode="false">
 <meta cr-remove-header-space="false">
 
@@ -160,12 +217,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
-            <a class="dropdown-item quarto-navbar-tools-item" href="../../teaching/mathematical-fundamentals/index.html">
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../teaching.html">
             🇬🇧 English
             </a>
           </li>
           <li>
-            <a class="dropdown-item quarto-navbar-tools-item" href="../../fr/teaching/mathematical-fundamentals/index.html">
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../fr/teaching.html">
             🇫🇷 Français
             </a>
           </li>
@@ -195,43 +252,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Only show the language switcher on mathematical-fundamentals pages
-  var path = window.location.pathname;
-  var mathFrPath  = '/fr/teaching/mathematical-fundamentals/';
-  var mathEnPath  = '/teaching/mathematical-fundamentals/';
-  var isMathFr = path.startsWith(mathFrPath);
-  var isMathEn = path.startsWith(mathEnPath);
-  if (!isMathFr && !isMathEn) return;
-
-  // Do not show on RevealJS presentation pages
-  if (document.body.classList.contains('reveal')) return;
-
-  var counterpart = isMathFr
-    ? path.replace(/^\/fr/, '')
-    : '/fr' + path;
-  var label = isMathFr ? '🇬🇧 English version' : '🇫🇷 Version française';
-
-  var p = document.createElement('p');
-  p.className = 'lang-switch';
-  var a = document.createElement('a');
-  a.href = counterpart;
-  a.textContent = label;
-  p.appendChild(a);
-
-  // Insert right after the page title (h1.title)
-  var title = document.querySelector('h1.title');
-  if (title && title.parentNode) {
-    title.parentNode.insertBefore(p, title.nextSibling);
-  } else {
-    var content = document.querySelector('#quarto-document-content') ||
-                  document.querySelector('main') ||
-                  document.body;
-    content.insertBefore(p, content.firstChild);
-  }
-});
-</script>
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -304,47 +324,47 @@ document.addEventListener('DOMContentLoaded', function () {
 <p>This is the complete <code>.devcontainer/devcontainer.json</code> for this template. Every key plays a specific role — let’s go through them one by one.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="2,4" data-focus-on="cr-config-1">
+<div class="trigger new-trigger" data-focus-on="cr-config-1" data-highlight="2,4">
 <div class="narrative">
 <p><strong><code>name</code></strong> is just a human-readable label shown in the Codespaces dashboard. <strong><code>image</code></strong> sets the base container. The Microsoft Ubuntu image is a lean starting point with <code>git</code>, <code>curl</code>, and common shell tools — without the bloat of the universal image.</p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="6-13" data-focus-on="cr-config-1">
+<div class="trigger new-trigger" data-focus-on="cr-config-1" data-highlight="6-13">
 <div class="narrative">
 <p><strong><code>features</code></strong> are the magic of dev containers. Each entry is a self-contained install script that layers on top of the base image. Here we pull in two: the official Python feature (which also sets up <code>pip</code>) and the Rocker project’s Quarto CLI feature (which installs the latest <code>quarto</code> binary). </p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="4-5" data-focus-on="cr-config-2">
+<div class="trigger new-trigger" data-focus-on="cr-config-2" data-highlight="4-5">
 <div class="narrative">
 <p><strong><code>hostRequirements</code></strong> asks GitHub to provision a machine with at least 4 CPU cores. Quarto rendering — especially with Jupyter kernels — benefits from extra CPU headroom, so this prevents the codespace from running on the smallest tier. </p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="8" data-focus-on="cr-config-2">
+<div class="trigger new-trigger" data-focus-on="cr-config-2" data-highlight="8">
 <div class="narrative">
 <p><strong><code>waitFor</code></strong> tells the lifecycle to wait until <code>onCreateCommand</code> has finished before running subsequent commands. This ensures the container is fully ready before installing Python packages or starting the preview server. </p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="9" data-focus-on="cr-config-2">
+<div class="trigger new-trigger" data-focus-on="cr-config-2" data-highlight="9">
 <div class="narrative">
 <p><strong><code>updateContentCommand</code></strong> runs every time the codespace content is updated (including on creation). Here it installs all Python packages listed in <code>requirements.txt</code> — so adding a dependency to that file is all you need to do to make it available in your codespace. </p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="10-11" data-focus-on="cr-config-2">
+<div class="trigger new-trigger" data-focus-on="cr-config-2" data-highlight="10-11">
 <div class="narrative">
 <p><strong><code>postAttachCommand</code></strong> runs once VS Code connects to the container. The <code>server</code> key starts a <code>quarto preview</code> process in the background, watching <code>hello.qmd</code> and serving a live preview on port 8000. </p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="13-16" data-focus-on="cr-config-2">
+<div class="trigger new-trigger" data-focus-on="cr-config-2" data-highlight="13-16">
 <div class="narrative">
 <p><strong><code>portsAttributes</code></strong> tells Codespaces what to do when port 8000 is open. <code>"onAutoForward": "openPreview"</code> makes the preview appear directly in the VS Code side panel — no copying URLs, no browser tabs. </p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="1-12" data-focus-on="cr-config-3">
+<div class="trigger new-trigger" data-focus-on="cr-config-3" data-highlight="1-12">
 <div class="narrative">
 <p><strong><code>customizations</code></strong> configures the editor itself. The <code>codespaces.openFiles</code> list causes <code>hello.qmd</code> to open automatically when the workspace loads. The <code>vscode.extensions</code> list pre-installs three extensions: <strong>Quarto</strong> for syntax highlighting and rendering commands, <strong>Python</strong> for IntelliSense, and <strong>Jupyter</strong> for running notebook cells inline. </p>
 </div>
 </div>
-<div class="trigger new-trigger" data-highlight="14" data-focus-on="cr-config-3">
+<div class="trigger new-trigger" data-focus-on="cr-config-3" data-highlight="14">
 <div class="narrative">
 <p><strong><code>forwardPorts</code></strong> ensures port 8000 is always forwarded to your browser, even if <code>portsAttributes</code> automatic forwarding hasn’t triggered yet. This is the safety net that guarantees the preview is always reachable. </p>
 </div>
