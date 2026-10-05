@@ -1,0 +1,737 @@
+---
+title: "Journée 3 — Choix d'investissement"
+date-modified: 2026-10-04
+abstract: |
+  Comment décider aujourd'hui d'un investissement dont les effets financiers
+  s'étendent sur plusieurs années ? Cette journée couvre la construction des
+  flux de trésorerie, la VAN, le TRI et l'analyse du risque.
+---
+
+## Objectifs de la journée
+
+À la fin de cette journée, vous serez capables de :
+
+- construire les flux de trésorerie différentiels d'un projet d'investissement ;
+- calculer et interpréter la valeur actuelle nette (VAN) ;
+- calculer et discuter les limites du taux de rentabilité interne (TRI) ;
+- utiliser le délai de récupération simple et actualisé ;
+- comparer correctement des projets de durées ou de tailles différentes ;
+- mener une analyse de sensibilité et raisonner par scénarios ;
+- formuler une recommandation d'investissement argumentée.
+
+---
+
+## Séquence 1 — Construction des flux de trésorerie
+
+> *Durée : 1 heure*
+
+### Intuition économique
+
+::: {.callout-important}
+## Principe fondamental
+
+Une décision d'investissement se fonde sur les **flux de trésorerie
+différentiels** — les encaissements et décaissements *supplémentaires*
+générés par le projet — et **non** sur le résultat comptable.
+
+**Pourquoi ?** Les amortissements comptables sont une charge non décaissée ;
+ils réduisent le résultat mais ne constituent pas une sortie de trésorerie.
+Seuls les flux réels comptent pour la décision financière.
+:::
+
+### Représentation (ligne du temps)
+
+```
+t = 0          t = 1       t = 2    ...    t = n
+  |              |           |               |
+ −I₀            CF₁         CF₂            CFₙ + VR − ΔBFR
+(investissement) (flux d'exploitation)     (flux terminal)
+```
+
+### A. Flux initial ($t = 0$)
+
+Le flux initial peut comprendre :
+
+- **prix d'acquisition** de l'actif ;
+- **frais d'installation** et de mise en service ;
+- **coûts de formation** directement liés au projet ;
+- **produit de cession** d'un ancien équipement remplacé (entrée) ;
+- **variation initiale du BFR** (besoin en fonds de roulement) ;
+- **conséquences fiscales** éventuelles de la cession.
+
+$$I_0 = \text{Prix d'achat} + \text{Frais} - \text{Produit de cession} + \Delta BFR_0$$
+
+### B. Flux d'exploitation ($1 \leq t \leq n$)
+
+::: {.callout-tip}
+## Formules — Flux de trésorerie d'exploitation
+
+**Présentation simplifiée :**
+
+$$CF_t = \text{Résultat d'exploitation après impôt} + \text{Dotation aux amortissements}$$
+
+**Présentation à partir de l'EBE :**
+
+$$CF_t = EBE - \text{Impôt théorique sur l'EBE} - \Delta BFR_t - \text{Investissements complémentaires}$$
+
+**Lecture :** on ajoute les dotations aux amortissements au résultat net car
+elles ont été déduites fiscalement sans générer de sortie de trésorerie
+(réintégration d'une charge non décaissée).
+:::
+
+### C. Flux terminal ($t = n$)
+
+Il comprend éventuellement :
+
+- **valeur résiduelle** de l'actif (valeur de revente nette) ;
+- **imposition sur la plus-value** de cession ;
+- **récupération du BFR** (le BFR immobilisé est libéré en fin de projet) ;
+- **coûts de fermeture** ou de remise en état du site.
+
+### D. Pièges classiques
+
+::: {.callout-warning}
+## Erreurs fréquentes dans la construction des flux
+
+1. **Amortissements en sortie** : les dotations ne sont pas des décaissements.
+   Ne jamais les inclure comme flux négatif.
+2. **BFR oublié** : toute hausse d'activité génère un besoin supplémentaire
+   en stocks et créances — c'est une sortie de trésorerie au démarrage.
+3. **Double comptage de l'investissement** : ne pas inclure les intérêts de
+   la dette dans les flux si le taux d'actualisation reflète déjà le coût
+   du financement (CMPC).
+4. **Valeur résiduelle omise** : en fin de projet, l'actif a souvent encore
+   une valeur — l'ignorer sous-estime la rentabilité.
+5. **Coûts irrécupérables** (sunk costs) : les coûts déjà engagés et
+   non récupérables ne doivent *jamais* apparaître dans les flux futurs.
+:::
+
+---
+
+## Séquence 2 — Valeur actuelle nette (VAN)
+
+> *Durée : 1 heure*
+
+### Formule et règle de décision
+
+::: {.callout-tip}
+## Formule — Valeur actuelle nette
+
+$$VAN = -I_0 + \sum_{t=1}^{n} \frac{CF_t}{(1+k)^t}$$
+
+où $k$ est le **taux d'actualisation** (coût moyen pondéré du capital ou
+taux de rentabilité exigé).
+
+**Règle de décision :**
+
+| Résultat | Interprétation | Décision |
+|----------|---------------|----------|
+| $VAN > 0$ | Le projet crée de la valeur au-delà du taux exigé | Accepter |
+| $VAN = 0$ | Le projet rémunère exactement au taux exigé | Indifférent |
+| $VAN < 0$ | Le projet ne couvre pas le rendement exigé | Rejeter |
+:::
+
+::: {.callout-note}
+## Interprétation économique de la VAN
+
+Une $VAN = 120\,000$ € signifie que le projet :
+
+1. **rembourse** l'investissement initial $I_0$ ;
+2. **rémunère** les capitaux engagés au taux $k$ sur toute la durée ;
+3. **crée un surplus** de 120 000 € (exprimé en valeur d'aujourd'hui).
+
+Ce surplus enrichit les actionnaires : c'est la création de valeur.
+:::
+
+::: {.callout-caution collapse="true"}
+## Démonstration — Lien entre VAN et valeur créée
+
+Supposons que le projet est financé entièrement par fonds propres au coût $k$.
+Les actionnaires investissent $I_0$ et reçoivent $CF_t$ chaque année. La VAN
+est exactement la valeur présente de leur enrichissement *au-delà* de ce
+qu'ils auraient obtenu en plaçant $I_0$ au taux $k$ :
+
+$$VAN = \underbrace{-I_0}_{\text{mise initiale}}
++ \underbrace{\sum \frac{CF_t}{(1+k)^t}}_{\text{VA des flux reçus}}$$
+
+Si $VAN > 0$, le projet rapporte *plus* que l'alternative de placement
+au taux $k$ — il crée de la valeur nette.
+:::
+
+### Indice de profitabilité
+
+::: {.callout-note}
+## Définition — Indice de profitabilité (IP)
+
+$$IP = \frac{\text{VA des flux futurs}}{I_0} = 1 + \frac{VAN}{I_0}$$
+
+**Lecture :** l'IP mesure la valeur créée *par euro investi*. Il est utile
+quand le budget d'investissement est contraint et qu'il faut hiérarchiser
+des projets de tailles différentes.
+
+::: {.callout-warning}
+## Attention
+
+L'IP peut classer les projets différemment de la VAN. Pour des projets
+mutuellement exclusifs, c'est la **VAN absolue** qui prime, car elle mesure
+l'enrichissement total — pas la rentabilité par euro.
+:::
+:::
+
+---
+
+## Séquence 3 — Taux de rentabilité interne (TRI)
+
+> *Durée : 1 heure*
+
+### Définition
+
+::: {.callout-note}
+## Définition — Taux de rentabilité interne
+
+Le TRI est le taux $r$ qui **annule la VAN** :
+
+$$0 = -I_0 + \sum_{t=1}^{n} \frac{CF_t}{(1+r)^t}$$
+
+**Règle de décision :** le projet est acceptable si $TRI > k$ (taux exigé).
+:::
+
+### Limites du TRI
+
+::: {.callout-important}
+## Quatre limites à connaître
+
+**1. Plusieurs TRI possibles**
+
+Si les flux changent de signe plus d'une fois (ex. : flux positifs puis
+négatifs en fin de projet — coûts de démantèlement), l'équation peut avoir
+plusieurs solutions. Le TRI n'est plus unique ni interprétable.
+
+**2. Absence de TRI**
+
+Certains profils de flux ne permettent pas de trouver un taux qui annule la
+VAN (ex. : projet avec VAN > 0 pour tout taux positif).
+
+**3. Conflit VAN / TRI pour projets mutuellement exclusifs**
+
+Deux projets peuvent être classés différemment selon le critère retenu :
+
+| Projet | VAN à 10 % | TRI |
+|--------|-----------|-----|
+| A | 80 000 € | 25 % |
+| B | 120 000 € | 18 % |
+
+La VAN choisit B (enrichissement absolu supérieur) ; le TRI choisit A
+(rendement relatif supérieur). Pour des projets de tailles ou durées
+différentes, ce conflit est fréquent.
+
+**4. Hypothèse de réinvestissement**
+
+Le TRI suppose implicitement que les flux intermédiaires sont réinvestis
+au taux $r$ lui-même — hypothèse souvent irréaliste si $r$ est élevé.
+La VAN suppose implicitement un réinvestissement au taux $k$, ce qui est
+plus réaliste (coût d'opportunité).
+:::
+
+::: {.callout-important}
+## Message central
+
+En cas de contradiction entre VAN et TRI pour des projets **mutuellement
+exclusifs**, la **VAN est le critère prioritaire** : elle mesure directement
+l'enrichissement en valeur absolue, ce qui est l'objectif de la firme.
+:::
+
+### Démonstration interactive — VAN et TRI
+
+```{ojs}
+//| echo: false
+I0_d3 = 10000
+cashflows_d3 = [3000, 3500, 4000, 4000, 3000]
+
+viewof k_d3 = Inputs.range([0.00, 0.50], {
+  value: 0.10, step: 0.005,
+  label: "Taux d'actualisation k"
+})
+
+npv_d3 = (rate) =>
+  -I0_d3 + cashflows_d3.reduce((sum, cf, t) => sum + cf / (1 + rate) ** (t + 1), 0)
+
+vanCurve_d3 = Array.from({length: 101}, (_, j) => ({
+  k: j * 0.005,
+  van: npv_d3(j * 0.005)
+}))
+
+currentVAN_d3 = npv_d3(k_d3)
+
+tri_d3 = (() => {
+  let lo = 0.0001, hi = 0.9999
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2
+    npv_d3(mid) > 0 ? (lo = mid) : (hi = mid)
+  }
+  return (lo + hi) / 2
+})()
+
+vanSign = currentVAN_d3 >= 0 ? "✅ Projet acceptable" : "❌ Projet rejeté"
+
+md`**VAN au taux ${(k_d3*100).toFixed(1)} % = ${currentVAN_d3.toFixed(0)} €** — ${vanSign}
+| **TRI ≈ ${(tri_d3*100).toFixed(2)} %**`
+
+Plot.plot({
+  title: "Courbe VAN(k) — le TRI est le zéro de la courbe",
+  marks: [
+    Plot.lineY(vanCurve_d3, {x: "k", y: "van", stroke: "steelblue", strokeWidth: 2}),
+    Plot.ruleY([0], {stroke: "gray"}),
+    Plot.dot([{k: tri_d3, van: 0}],
+      {x: "k", y: "van", fill: "red", r: 7, tip: true, title: "TRI"}),
+    Plot.dot([{k: k_d3, van: currentVAN_d3}],
+      {x: "k", y: "van", fill: "royalblue", r: 5, tip: true})
+  ],
+  x: {label: "Taux d'actualisation k", tickFormat: "%", grid: true},
+  y: {label: "VAN (€)", grid: true},
+  marginBottom: 40
+})
+```
+
+::: {.callout-note}
+## Lire la démonstration
+
+- La **courbe bleue** montre $VAN(k)$ : décroissante (un taux plus élevé
+  pénalise les flux futurs).
+- Le **point rouge** marque le TRI : à ce taux, $VAN = 0$.
+- Le **point bleu** marque la VAN au taux choisi par le curseur.
+- La zone au-dessus de la ligne grise ($VAN > 0$) correspond aux taux
+  acceptables pour ce projet.
+:::
+
+---
+
+## Séquence 4 — Délai de récupération et comparaison de projets
+
+> *Durée : 45 minutes*
+
+### A. Délai de récupération simple (DRS)
+
+Le DRS est le temps nécessaire pour récupérer $I_0$ grâce aux flux cumulés :
+
+$$DRS : \quad \sum_{t=1}^{DRS} CF_t \geq I_0$$
+
+### B. Délai de récupération actualisé (DRA)
+
+Même logique, mais avec des flux préalablement actualisés au taux $k$ :
+
+$$DRA : \quad \sum_{t=1}^{DRA} \frac{CF_t}{(1+k)^t} \geq I_0$$
+
+### C. Intérêt et limites
+
+| Critère | Intérêt | Limite |
+|---------|---------|--------|
+| DRS | Simple, intuitif, mesure la liquidité | Ignore les flux au-delà du délai ; ignore la valeur temps |
+| DRA | Corrige la valeur temps | Ignore toujours les flux tardifs |
+| Les deux | Pertinents en environnement très risqué | Ne mesurent pas la création de valeur |
+
+### D. Comparaison de projets de durées différentes
+
+Lorsque deux projets mutuellement exclusifs ont des durées différentes,
+la VAN brute n'est pas comparable directement (un projet plus long peut
+avoir une VAN plus élevée simplement parce qu'il dure plus longtemps).
+
+::: {.callout-tip}
+## Formule — Annuité équivalente (AE)
+
+$$AE = VAN \times \frac{k}{1-(1+k)^{-n}}$$
+
+**Lecture :** l'AE est la rente annuelle constante équivalente à la VAN
+du projet. Elle permet de comparer des projets de durées différentes sur
+une base annuelle homogène.
+:::
+
+---
+
+## Séquence 5 — Analyse du risque
+
+> *Durée : 1 heure 15*
+
+### A. Analyse de sensibilité
+
+L'analyse de sensibilité consiste à faire varier **une hypothèse à la fois**
+et à observer l'impact sur la VAN.
+
+Variables typiquement testées :
+
+- volume de ventes ;
+- prix de vente unitaire ;
+- coût variable unitaire ;
+- investissement initial $I_0$ ;
+- besoin en fonds de roulement ;
+- valeur résiduelle ;
+- taux d'actualisation $k$.
+
+### B. Valeur seuil (break-even)
+
+Pour chaque hypothèse, on cherche la valeur critique qui rend $VAN = 0$ :
+
+| Valeur seuil | Question |
+|-------------|---------|
+| Prix minimal | En dessous de quel prix le projet n'est-il plus rentable ? |
+| Volume minimal | Combien d'unités faut-il vendre au minimum ? |
+| $I_0$ maximal | Jusqu'à quel investissement initial le projet reste-t-il rentable ? |
+| Taux critique | Au-delà de quel taux la VAN devient-elle négative ? (= TRI) |
+
+### C. Analyse par scénarios
+
+On construit trois scénarios cohérents (plusieurs hypothèses varient ensemble) :
+
+| Scénario | Description | Probabilité |
+|----------|-------------|-------------|
+| Pessimiste | Toutes les hypothèses défavorables | $p_1$ |
+| Central | Hypothèses de référence | $p_2$ |
+| Optimiste | Toutes les hypothèses favorables | $p_3$ |
+
+::: {.callout-tip}
+## Formules — VAN espérée et dispersion
+
+**Espérance :**
+
+$$E(VAN) = \sum_{s=1}^{m} p_s \cdot VAN_s$$
+
+**Variance :**
+
+$$\sigma^2(VAN) = \sum_{s=1}^{m} p_s \cdot (VAN_s - E(VAN))^2$$
+
+**Écart-type :**
+
+$$\sigma(VAN) = \sqrt{\sigma^2(VAN)}$$
+
+**Lecture :** $E(VAN)$ mesure la rentabilité moyenne espérée ; $\sigma(VAN)$
+mesure la dispersion — c'est une mesure du risque.
+:::
+
+### D. Limites de l'espérance
+
+::: {.callout-warning}
+## Deux projets peuvent avoir la même VAN espérée et des risques très différents
+
+Examinez toujours :
+
+- le **scénario défavorable** (quelle est la perte maximale ?) ;
+- l'**amplitude** des résultats ($VAN_{max} - VAN_{min}$) ;
+- la **probabilité de VAN négative** ($\sum p_s$ pour les scénarios où
+  $VAN_s < 0$) ;
+- la **capacité financière** de l'entreprise à absorber un échec.
+
+Un projet avec $E(VAN) = 100\,000$ € et $\sigma = 80\,000$ € est très
+différent d'un projet avec $E(VAN) = 100\,000$ € et $\sigma = 10\,000$ €.
+:::
+
+---
+
+## Séquence 6 — Cas intégrateur : automatisation logistique
+
+> *Durée : 1 heure 15*
+
+### Contexte
+
+> Une entreprise envisage d'automatiser une partie de son processus logistique.
+>
+> **Données d'entrée :**
+>
+> | Paramètre | Valeur |
+> |-----------|--------|
+> | Investissement initial (robots + logiciel) | 850 000 € |
+> | Frais d'installation | 50 000 € |
+> | Hausse initiale du BFR | 40 000 € |
+> | Durée économique | 5 ans |
+> | Économies annuelles (scénario central) | 280 000 €/an |
+> | Coûts annuels de maintenance | 30 000 €/an |
+> | Valeur résiduelle nette (après impôt) | 60 000 € |
+> | Taux d'actualisation (CMPC) | 8 % |
+> | Taux d'imposition | 25 % |
+
+### Étape 1 — Modélisation des flux
+
+**Flux initial ($t = 0$) :**
+
+$$I_0 = 850\,000 + 50\,000 + 40\,000 = 940\,000 \text{ €}$$
+
+**Flux annuels d'exploitation ($t = 1$ à $5$) :**
+
+Économies nettes avant amortissement : $280\,000 - 30\,000 = 250\,000$ €
+
+Dotation annuelle : $(850\,000 + 50\,000) / 5 = 180\,000$ €
+
+Résultat d'exploitation : $250\,000 - 180\,000 = 70\,000$ €
+
+Impôt (25 %) : $17\,500$ €
+
+Résultat net : $52\,500$ €
+
+$$CF_t = 52\,500 + 180\,000 = 232\,500 \text{ €/an}$$
+
+**Flux terminal ($t = 5$) :**
+
+$$CF_5^{\text{total}} = 232\,500 + 60\,000 + 40\,000 = 332\,500 \text{ €}$$
+
+*(valeur résiduelle + récupération du BFR)*
+
+### Étape 2 — Évaluation
+
+$$VAN = -940\,000 + 232\,500 \times \frac{1-(1{,}08)^{-4}}{0{,}08}
++ \frac{332\,500}{(1{,}08)^5}$$
+
+$$= -940\,000 + 232\,500 \times 3{,}3121 + 332\,500 \times 0{,}6806$$
+
+$$= -940\,000 + 770\,063 + 226\,300 \approx 56\,363 \text{ €}$$
+
+$VAN \approx 56\,363 > 0$ → le projet crée de la valeur.
+
+$$IP = 1 + \frac{56\,363}{940\,000} \approx 1{,}060$$
+
+**TRI :** résolution numérique → $TRI \approx 9{,}5\,\%$
+
+**Délai de récupération simple :**
+
+$CF$ cumulés : $232\,500$ (an 1), $465\,000$ (an 2), $697\,500$ (an 3),
+$930\,000$ (an 4), $1\,262\,500$ (an 5)
+
+$DRS \approx 4{,}04$ ans (légèrement supérieur à 4 ans)
+
+### Étape 3 — Analyse du risque
+
+| Scénario | Économies | $VAN$ | Probabilité |
+|----------|----------|-------|------------|
+| Pessimiste | 200 000 €/an | −138 000 € | 25 % |
+| Central | 280 000 €/an | +56 000 € | 50 % |
+| Optimiste | 360 000 €/an | +250 000 € | 25 % |
+
+$$E(VAN) = 0{,}25 \times (-138\,000) + 0{,}50 \times 56\,000
++ 0{,}25 \times 250\,000 = 55\,000 \text{ €}$$
+
+$$\sigma(VAN) = \sqrt{0{,}25 \times (-138\,000 - 55\,000)^2
++ 0{,}50 \times (56\,000 - 55\,000)^2
++ 0{,}25 \times (250\,000 - 55\,000)^2} \approx 136\,000 \text{ €}$$
+
+Variable critique : les **économies réalisées**. Une baisse de 30 % (de
+280 000 € à 196 000 €) fait basculer la VAN en négatif.
+
+### Étape 4 — Recommandation
+
+::: {.callout-tip}
+## Modèle de note de recommandation
+
+**Le projet crée-t-il de la valeur ?** Oui — VAN centrale ≈ +56 000 € (TRI ≈ 9,5 %
+> CMPC de 8 %). La VAN espérée (55 000 €) confirme ce résultat en probabilité.
+
+**Principal facteur de risque :** le niveau des économies réalisées. En scénario
+pessimiste (−25 % d'économies), la VAN devient négative. La probabilité de VAN
+< 0 est d'environ 25 %.
+
+**Hypothèse à sécuriser avant décision :** vérifier contractuellement les gains
+de productivité attendus (bench auprès du fournisseur, visites de sites de
+référence) avant engagement.
+
+**Décision recommandée :** investir, sous réserve de sécuriser l'hypothèse
+d'économies sur l'année 1 (pilote sur un entrepôt avant déploiement complet).
+:::
+
+---
+
+## Séquence 7 — Évaluation finale et synthèse
+
+> *Durée : 30 minutes*
+
+### Grille de décision — Les 8 réflexes
+
+::: {.callout-tip}
+## Grille de décision financière
+
+| Étape | Action |
+|-------|--------|
+| 1 | **Identifier les flux différentiels** (entrées et sorties réelles) |
+| 2 | **Positionner les flux dans le temps** sur une ligne du temps |
+| 3 | **Choisir un taux cohérent** (CMPC, taux exigé, taux sans risque + prime) |
+| 4 | **Actualiser tous les flux** à la date de référence |
+| 5 | **Calculer plusieurs indicateurs** (VAN, TRI, DRS, IP) |
+| 6 | **Tester les hypothèses** (sensibilité, scénarios, valeurs seuils) |
+| 7 | **Apprécier les risques non quantifiés** (stratégiques, réglementaires…) |
+| 8 | **Formuler une recommandation** claire, nuancée, argumentée |
+:::
+
+::: {.callout-note}
+## Question de synthèse
+
+**Pourquoi une décision financière ne peut-elle pas être fondée sur un
+indicateur unique ?**
+
+Parce que chaque indicateur répond à une question différente :
+
+- La **VAN** mesure l'enrichissement absolu — mais elle ne tient pas compte
+  du risque ni de la taille relative du projet.
+- Le **TRI** mesure le rendement relatif — mais peut être multiple, absent,
+  ou conduire à des décisions erronées pour des projets de tailles différentes.
+- Le **délai de récupération** mesure la liquidité — mais ignore la valeur
+  créée après le délai.
+- L'**IP** mesure la rentabilité par euro investi — mais peut classer
+  différemment de la VAN.
+
+Une décision robuste combine plusieurs indicateurs, teste les hypothèses
+critiques et intègre des facteurs qualitatifs non modélisables.
+:::
+
+---
+
+## Exercices
+
+### Niveau 1 — Application directe
+
+**Exercice 1.1** — Un projet nécessite un investissement de **80 000 €** et
+génère les flux suivants : 30 000 € en an 1, 35 000 € en an 2, 40 000 € en an 3.
+Le taux d'actualisation est de **10 %**. Calculez la VAN et le DRS.
+
+::: {.callout-caution collapse="true"}
+## Solution 1.1
+
+**VAN :**
+
+$$VAN = -80\,000 + \frac{30\,000}{1{,}1} + \frac{35\,000}{1{,}1^2}
++ \frac{40\,000}{1{,}1^3}$$
+
+$$= -80\,000 + 27\,273 + 28\,926 + 30\,053 = +6\,252 \text{ €}$$
+
+$VAN > 0$ → projet acceptable.
+
+**DRS :**
+
+Flux cumulés : 30 000 (an 1) ; 65 000 (an 2) ; 105 000 (an 3)
+
+Le seuil de 80 000 € est dépassé entre l'an 2 et l'an 3.
+
+$$DRS = 2 + \frac{80\,000 - 65\,000}{40\,000} = 2 + 0{,}375 = 2{,}375 \text{ ans}$$
+:::
+
+---
+
+### Niveau 2 — Problème contextualisé
+
+**Exercice 2.1** — Deux projets mutuellement exclusifs sont présentés au
+comité d'investissement. Le taux exigé est **12 %**.
+
+| An | Projet A | Projet B |
+|----|----------|---------|
+| 0 | −100 000 € | −150 000 € |
+| 1 | 50 000 € | 40 000 € |
+| 2 | 50 000 € | 60 000 € |
+| 3 | 50 000 € | 80 000 € |
+| 4 | — | 60 000 € |
+
+1. Calculez la VAN de chaque projet.
+2. Calculez l'annuité équivalente de chaque projet.
+3. Quel projet recommandez-vous ? Justifiez.
+
+::: {.callout-caution collapse="true"}
+## Solution 2.1
+
+**Projet A ($n = 3$ ans) :**
+
+$$VAN_A = -100\,000 + 50\,000 \times \frac{1-(1{,}12)^{-3}}{0{,}12}
+= -100\,000 + 50\,000 \times 2{,}4018 = +20\,090 \text{ €}$$
+
+$$AE_A = 20\,090 \times \frac{0{,}12}{1-(1{,}12)^{-3}} = 20\,090 \times 0{,}4163 \approx 8\,360 \text{ €/an}$$
+
+**Projet B ($n = 4$ ans) :**
+
+$$VAN_B = -150\,000 + \frac{40\,000}{1{,}12} + \frac{60\,000}{1{,}12^2}
++ \frac{80\,000}{1{,}12^3} + \frac{60\,000}{1{,}12^4}$$
+
+$$= -150\,000 + 35\,714 + 47\,832 + 56\,966 + 38\,131 = +28\,643 \text{ €}$$
+
+$$AE_B = 28\,643 \times \frac{0{,}12}{1-(1{,}12)^{-4}}
+= 28\,643 \times 0{,}3292 \approx 9\,431 \text{ €/an}$$
+
+**Recommandation :**
+
+La VAN absolue favorise B ($28\,643 > 20\,090$). L'annuité équivalente
+confirme ce classement ($9\,431 > 8\,360$). Choisir le **Projet B**.
+:::
+
+---
+
+### Niveau 3 — Étude de cas
+
+**Cas — Note de recommandation d'investissement**
+
+Une PME du secteur agroalimentaire envisage d'acquérir une nouvelle ligne
+d'embouteillage pour 500 000 €. Les données prévisionnelles sont les suivantes :
+
+- Frais d'installation : 20 000 €
+- Hausse du BFR à l'ouverture : 30 000 €
+- Durée économique : 6 ans (amortissement linéaire)
+- Revenus supplémentaires annuels : 180 000 €
+- Coûts variables supplémentaires : 60 000 €/an
+- Valeur résiduelle brute à 6 ans : 40 000 € (pas de plus-value imposable)
+- Taux d'imposition : 25 %
+- Taux d'actualisation : 9 %
+
+**Scénarios :**
+
+| Scénario | Revenus supplémentaires | Probabilité |
+|----------|------------------------|------------|
+| Pessimiste | 140 000 €/an | 30 % |
+| Central | 180 000 €/an | 50 % |
+| Optimiste | 220 000 €/an | 20 % |
+
+**Travail demandé :**
+
+1. Construisez les flux de trésorerie (flux initial, annuels, terminal).
+2. Calculez la VAN, le TRI et le DRS du scénario central.
+3. Calculez la VAN dans les trois scénarios.
+4. Calculez l'espérance et l'écart-type de la VAN.
+5. Identifiez la variable critique et la valeur seuil des revenus.
+6. Rédigez une note de recommandation (10 lignes maximum).
+
+::: {.callout-caution collapse="true"}
+## Correction indicative
+
+**1. Flux initial :**
+$I_0 = 500\,000 + 20\,000 + 30\,000 = 550\,000$ €
+
+**Dotation annuelle :** $(500\,000 + 20\,000) / 6 \approx 86\,667$ €
+
+**Flux d'exploitation (scénario central) :**
+Revenus nets : $180\,000 - 60\,000 = 120\,000$ €
+Résultat d'exploitation : $120\,000 - 86\,667 = 33\,333$ €
+Impôt : $8\,333$ €
+Résultat net : $25\,000$ €
+$CF_t = 25\,000 + 86\,667 = 111\,667$ €/an
+
+**Flux terminal :** $CF_6^{\text{total}} = 111\,667 + 40\,000 + 30\,000 = 181\,667$ €
+
+**2. VAN centrale :**
+$$VAN = -550\,000 + 111\,667 \times \frac{1-(1{,}09)^{-5}}{0{,}09}
++ \frac{181\,667}{(1{,}09)^6}$$
+$$\approx -550\,000 + 111\,667 \times 3{,}8897 + 181\,667 \times 0{,}5963$$
+$$\approx -550\,000 + 434\,325 + 108\,286 \approx -7\,389 \text{ €}$$
+
+$VAN < 0$ dans le scénario central (légèrement) → projet à risque.
+
+$TRI \approx 8{,}4\,\%$ (légèrement inférieur au taux exigé de 9 %)
+
+**3–4. Scénarios :**
+
+| Scénario | $VAN$ | $p$ | $p \times VAN$ |
+|----------|------|-----|---------------|
+| Pessimiste | −120 000 € | 30 % | −36 000 € |
+| Central | −7 000 € | 50 % | −3 500 € |
+| Optimiste | +106 000 € | 20 % | +21 200 € |
+
+$E(VAN) \approx -18\,300$ € → en espérance, le projet détruit de la valeur.
+
+**5. Valeur seuil :** revenus seuil ≈ 186 000 €/an pour atteindre $VAN = 0$.
+
+**6. Recommandation :** La VAN centrale et espérée sont légèrement négatives ;
+le projet présente un profil risqué (probabilité de VAN < 0 = 80 %). Avant
+tout engagement, il est indispensable de renforcer les hypothèses de revenus
+par des contrats fermes ou des études de marché approfondies. En l'état, la
+recommandation est de **ne pas investir** ou de renégocier le prix d'acquisition
+sous le seuil de 543 000 € pour restaurer la rentabilité au taux exigé.
+:::

@@ -69,11 +69,62 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
-<script async="" src="https://hypothes.is/embed.js"></script>
 <script>
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    document.body.classList.add('hypothesis-enabled');
+document.addEventListener('DOMContentLoaded', function () {
+  var path = window.location.pathname;
+  var isEnTeaching = path.startsWith('/teaching/');
+  var isFrTeaching = path.startsWith('/fr/teaching/');
+
+  function translateTool() {
+    var icon = document.querySelector('.bi-translate');
+    return icon ? icon.closest('.dropdown') : null;
+  }
+
+  // Outside the teaching section: hide the translate tool
+  if (!isEnTeaching && !isFrTeaching) {
+    var tool = translateTool();
+    if (tool) tool.style.display = 'none';
+    return;
+  }
+
+  // Skip RevealJS slides
+  if (document.body.classList.contains('reveal')) return;
+
+  // Courses with full page-for-page FR translations [EN prefix, FR prefix]
+  var fullPairs = [
+    ['/teaching/mathematical-fundamentals/', '/fr/teaching/mathematical-fundamentals/'],
+  ];
+
+  function frCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][0]))
+        return fullPairs[i][1] + p.slice(fullPairs[i][0].length);
+    }
+    var slug = p.replace('/teaching/', '').split('/')[0];
+    return '/fr/teaching/' + slug + '/';
+  }
+
+  function enCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][1]))
+        return fullPairs[i][0] + p.slice(fullPairs[i][1].length);
+    }
+    var slug = p.replace('/fr/teaching/', '').split('/')[0];
+    return '/teaching/' + slug + '/';
+  }
+
+  var enHref = isEnTeaching ? path : enCounterpart(path);
+  var frHref = isFrTeaching ? path : frCounterpart(path);
+
+  var tool = translateTool();
+  if (!tool) return;
+
+  tool.querySelectorAll('a.dropdown-item').forEach(function (a) {
+    var txt = a.textContent.trim();
+    if (txt.includes('English')) a.href = enHref;
+    else if (txt.includes('Français') || txt.includes('francais')) a.href = frHref;
   });
+});
 </script>
 
 
@@ -126,12 +177,12 @@ ul.task-list li input[type="checkbox"] {
       <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
-            <a class="dropdown-item quarto-navbar-tools-item" href="../../../teaching/mathematical-fundamentals/index.html">
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../../teaching.html">
             🇬🇧 English
             </a>
           </li>
           <li>
-            <a class="dropdown-item quarto-navbar-tools-item" href="../../../fr/teaching/mathematical-fundamentals/index.html">
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../../fr/teaching.html">
             🇫🇷 Français
             </a>
           </li>
@@ -164,43 +215,6 @@ ul.task-list li input[type="checkbox"] {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Only show the language switcher on mathematical-fundamentals pages
-  var path = window.location.pathname;
-  var mathFrPath  = '/fr/teaching/mathematical-fundamentals/';
-  var mathEnPath  = '/teaching/mathematical-fundamentals/';
-  var isMathFr = path.startsWith(mathFrPath);
-  var isMathEn = path.startsWith(mathEnPath);
-  if (!isMathFr && !isMathEn) return;
-
-  // Do not show on RevealJS presentation pages
-  if (document.body.classList.contains('reveal')) return;
-
-  var counterpart = isMathFr
-    ? path.replace(/^\/fr/, '')
-    : '/fr' + path;
-  var label = isMathFr ? '🇬🇧 English version' : '🇫🇷 Version française';
-
-  var p = document.createElement('p');
-  p.className = 'lang-switch';
-  var a = document.createElement('a');
-  a.href = counterpart;
-  a.textContent = label;
-  p.appendChild(a);
-
-  // Insert right after the page title (h1.title)
-  var title = document.querySelector('h1.title');
-  if (title && title.parentNode) {
-    title.parentNode.insertBefore(p, title.nextSibling);
-  } else {
-    var content = document.querySelector('#quarto-document-content') ||
-                  document.querySelector('main') ||
-                  document.body;
-    content.insertBefore(p, content.firstChild);
-  }
-});
-</script>
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -593,6 +607,24 @@ https://github.com/brandonhimpfen/awesome-ai-research-papers
 </tr>
 </tbody>
 </table>
+<hr>
+<p>https://lnkd.in/p/eGDTgNnq</p>
+<p>Cette semaine, j’ai eu le plaisir d’être invité à présenter l’histoire de l’IA, de 1943 à aujourd’hui, au Barcelona AI Summit.</p>
+<p>Une histoire fascinante… et surtout une histoire faite de cycles de hype, de déceptions, de breakthroughs et de renaissances.</p>
+<p>Pour ceux qui n’ont pas pu assister à la conférence, voici les grandes étapes:</p>
+<p>1943 : Le premier neurone artificiel Warren McCulloch et Walter Pitts proposent le premier modèle mathématique de neurone artificiel.</p>
+<p>1958 : Le Perceptron Frank Rosenblatt développe le Perceptron, l’un des premiers modèles capables d’apprendre à partir de données. La première grande hype autour des réseaux de neurones commence.</p>
+<p>1969 : Premier Hiver de l’IA Minsky et Papert montrent les limites fondamentales des Perceptrons simples, notamment leur incapacité à résoudre le problème du XOR. L’enthousiasme retombe et les réseaux de neurones entrent progressivement dans une longue période de désintérêt.</p>
+<p>1986 : La renaissance des réseaux de neurones Rumelhart, Hinton et Williams publient les travaux qui popularisent la backpropagation, permettant enfin d’entraîner efficacement des réseaux comportant plusieurs couches.</p>
+<p>Années 1990–2000 : CNNs &amp; RNNs Les réseaux convolutifs et récurrents permettent de s’attaquer à des problèmes beaucoup plus complexes : vision, reconnaissance de caractères, parole, séquences…</p>
+<p>1999 : L’arrivée des GPUs NVIDIA introduit la GeForce 256 et popularise le terme GPU. À l’époque, personne n’imagine encore que ces processeurs conçus pour accélérer les jeux vidéo deviendront l’un des moteurs essentiels de l’IA moderne. wn 2006, CUDA permet aux chercheurs en IA de commencer a utiliser les GPUs pour leur travaux.</p>
+<p>2012 : AlexNet, le moment de bascule. AlexNet remporte la compétition ImageNet 2012 avec un écart spectaculaire par rapport aux approches précédentes. Pour la première fois, l’efficacité des deep neural networks + GPU + big data devient impossible à ignorer.</p>
+<p>À partir de là, tout s’accélère.</p>
+<p>2012–2017 : Le Deep Learning explose Vision, speech, traduction, recommandation… Les performances progressent rapidement et l’industrie commence à réaliser que les réseaux neuronaux peuvent réellement résoudre des problèmes jusqu’ici hors de portée.</p>
+<p>2017 : le Transformer Le papier Attention Is All You Need introduit le Transformer : une architecture qui abandonne la récurrence au profit de l’attention et permet notamment une bien meilleure parallélisation de l’entraînement.</p>
+<p>2022 : ChatGPT Le 30 novembre 2022, ChatGPT est rendu public. Et soudain, l’IA ne devient plus seulement une technologie pour chercheurs, ingénieurs et grandes entreprises. Elle devient une interface que tout le monde peut utiliser.</p>
+<p>The rest is history.</p>
+<p>Le nombre limité de carcateres sur LInkedin m’empeche de donner plus de détails, alors si vous n’avez pas pu assister à la conférence, je vais laisser en commentaire le slide deck complet qui reprend cette histoire, étape par étape.</p>
 
 
 </section>

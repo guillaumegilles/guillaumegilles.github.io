@@ -76,6 +76,63 @@ ul.task-list li input[type="checkbox"] {
     document.body.classList.add('hypothesis-enabled');
   });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var path = window.location.pathname;
+  var isEnTeaching = path.startsWith('/teaching/');
+  var isFrTeaching = path.startsWith('/fr/teaching/');
+
+  function translateTool() {
+    var icon = document.querySelector('.bi-translate');
+    return icon ? icon.closest('.dropdown') : null;
+  }
+
+  // Outside the teaching section: hide the translate tool
+  if (!isEnTeaching && !isFrTeaching) {
+    var tool = translateTool();
+    if (tool) tool.style.display = 'none';
+    return;
+  }
+
+  // Skip RevealJS slides
+  if (document.body.classList.contains('reveal')) return;
+
+  // Courses with full page-for-page FR translations [EN prefix, FR prefix]
+  var fullPairs = [
+    ['/teaching/mathematical-fundamentals/', '/fr/teaching/mathematical-fundamentals/'],
+  ];
+
+  function frCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][0]))
+        return fullPairs[i][1] + p.slice(fullPairs[i][0].length);
+    }
+    var slug = p.replace('/teaching/', '').split('/')[0];
+    return '/fr/teaching/' + slug + '/';
+  }
+
+  function enCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][1]))
+        return fullPairs[i][0] + p.slice(fullPairs[i][1].length);
+    }
+    var slug = p.replace('/fr/teaching/', '').split('/')[0];
+    return '/teaching/' + slug + '/';
+  }
+
+  var enHref = isEnTeaching ? path : enCounterpart(path);
+  var frHref = isFrTeaching ? path : frCounterpart(path);
+
+  var tool = translateTool();
+  if (!tool) return;
+
+  tool.querySelectorAll('a.dropdown-item').forEach(function (a) {
+    var txt = a.textContent.trim();
+    if (txt.includes('English')) a.href = enHref;
+    else if (txt.includes('Français') || txt.includes('francais')) a.href = frHref;
+  });
+});
+</script>
 
 
 <meta property="og:title" content="Guillaume Gilles - Data Description">
@@ -127,12 +184,12 @@ ul.task-list li input[type="checkbox"] {
       <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
-            <a class="dropdown-item quarto-navbar-tools-item" href="../../teaching/mathematical-fundamentals/index.html">
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../teaching.html">
             🇬🇧 English
             </a>
           </li>
           <li>
-            <a class="dropdown-item quarto-navbar-tools-item" href="../../fr/teaching/mathematical-fundamentals/index.html">
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../fr/teaching.html">
             🇫🇷 Français
             </a>
           </li>
@@ -272,43 +329,6 @@ ul.task-list li input[type="checkbox"] {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Only show the language switcher on mathematical-fundamentals pages
-  var path = window.location.pathname;
-  var mathFrPath  = '/fr/teaching/mathematical-fundamentals/';
-  var mathEnPath  = '/teaching/mathematical-fundamentals/';
-  var isMathFr = path.startsWith(mathFrPath);
-  var isMathEn = path.startsWith(mathEnPath);
-  if (!isMathFr && !isMathEn) return;
-
-  // Do not show on RevealJS presentation pages
-  if (document.body.classList.contains('reveal')) return;
-
-  var counterpart = isMathFr
-    ? path.replace(/^\/fr/, '')
-    : '/fr' + path;
-  var label = isMathFr ? '🇬🇧 English version' : '🇫🇷 Version française';
-
-  var p = document.createElement('p');
-  p.className = 'lang-switch';
-  var a = document.createElement('a');
-  a.href = counterpart;
-  a.textContent = label;
-  p.appendChild(a);
-
-  // Insert right after the page title (h1.title)
-  var title = document.querySelector('h1.title');
-  if (title && title.parentNode) {
-    title.parentNode.insertBefore(p, title.nextSibling);
-  } else {
-    var content = document.querySelector('#quarto-document-content') ||
-                  document.querySelector('main') ||
-                  document.body;
-    content.insertBefore(p, content.firstChild);
-  }
-});
-</script>
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">

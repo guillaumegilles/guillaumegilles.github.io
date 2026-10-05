@@ -76,7 +76,93 @@ ul.task-list li input[type="checkbox"] {
     document.body.classList.add('hypothesis-enabled');
   });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var path = window.location.pathname;
+  var isEnTeaching = path.startsWith('/teaching/');
+  var isFrTeaching = path.startsWith('/fr/teaching/');
 
+  function translateTool() {
+    var icon = document.querySelector('.bi-translate');
+    return icon ? icon.closest('.dropdown') : null;
+  }
+
+  // Outside the teaching section: hide the translate tool
+  if (!isEnTeaching && !isFrTeaching) {
+    var tool = translateTool();
+    if (tool) tool.style.display = 'none';
+    return;
+  }
+
+  // Skip RevealJS slides
+  if (document.body.classList.contains('reveal')) return;
+
+  // Courses with full page-for-page FR translations [EN prefix, FR prefix]
+  var fullPairs = [
+    ['/teaching/mathematical-fundamentals/', '/fr/teaching/mathematical-fundamentals/'],
+  ];
+
+  function frCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][0]))
+        return fullPairs[i][1] + p.slice(fullPairs[i][0].length);
+    }
+    var slug = p.replace('/teaching/', '').split('/')[0];
+    return '/fr/teaching/' + slug + '/';
+  }
+
+  function enCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][1]))
+        return fullPairs[i][0] + p.slice(fullPairs[i][1].length);
+    }
+    var slug = p.replace('/fr/teaching/', '').split('/')[0];
+    return '/teaching/' + slug + '/';
+  }
+
+  var enHref = isEnTeaching ? path : enCounterpart(path);
+  var frHref = isFrTeaching ? path : frCounterpart(path);
+
+  var tool = translateTool();
+  if (!tool) return;
+
+  tool.querySelectorAll('a.dropdown-item').forEach(function (a) {
+    var txt = a.textContent.trim();
+    if (txt.includes('English')) a.href = enHref;
+    else if (txt.includes('Français') || txt.includes('francais')) a.href = frHref;
+  });
+});
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta property="og:title" content="Guillaume Gilles - Mathematical Fundamentals">
 <meta property="og:description" content="Provides the essential mathematical tools to analyse and solve quantitative problems in finance, economics, and management.">
@@ -127,12 +213,12 @@ ul.task-list li input[type="checkbox"] {
       <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
-            <a class="dropdown-item quarto-navbar-tools-item" href="../../teaching/mathematical-fundamentals/index.html">
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../teaching.html">
             🇬🇧 English
             </a>
           </li>
           <li>
-            <a class="dropdown-item quarto-navbar-tools-item" href="../../fr/teaching/mathematical-fundamentals/index.html">
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../fr/teaching.html">
             🇫🇷 Français
             </a>
           </li>
@@ -173,43 +259,43 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/mathematical-fundamentals/module-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2️⃣ Mastering Equations for Better Decision-Making</span></a>
+ <span class="menu-text">Mastering Equations for Better Decision-Making</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/mathematical-fundamentals/module-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">3️⃣ Curve Analysis in Economics and Management</span></a>
+ <span class="menu-text">Curve Analysis in Economics and Management</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/mathematical-fundamentals/module-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4️⃣ Introduction to Financial-Mathematics Tools</span></a>
+ <span class="menu-text">Introduction to Financial-Mathematics Tools</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/mathematical-fundamentals/module-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5️⃣ Application of Financial Mathematics</span></a>
+ <span class="menu-text">Application of Financial Mathematics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/mathematical-fundamentals/module-6.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">6️⃣ Functions Useful in Economics and Management</span></a>
+ <span class="menu-text">Functions Useful in Economics and Management</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/mathematical-fundamentals/module-7.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">7️⃣ Introduction to Optimization</span></a>
+ <span class="menu-text">Introduction to Optimization</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/mathematical-fundamentals/module-8.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">8️⃣ Revision and Final-Exam Preparation</span></a>
+ <span class="menu-text">Revision and Final-Exam Preparation</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -245,7 +331,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#start-here" id="toc-start-here" class="nav-link active" data-scroll-target="#start-here">Start Here</a></li>
+  <li><a href="#welcome-to-ms01-001-g-mathematical-fundamentals" id="toc-welcome-to-ms01-001-g-mathematical-fundamentals" class="nav-link active" data-scroll-target="#welcome-to-ms01-001-g-mathematical-fundamentals">Welcome to MS01-001-G: Mathematical Fundamentals</a></li>
   <li><a href="#course-information" id="toc-course-information" class="nav-link" data-scroll-target="#course-information">Course Information</a></li>
   <li><a href="#general-presentation" id="toc-general-presentation" class="nav-link" data-scroll-target="#general-presentation">General Presentation</a></li>
   <li><a href="#targeted-competencies" id="toc-targeted-competencies" class="nav-link" data-scroll-target="#targeted-competencies">Targeted Competencies</a></li>
@@ -253,57 +339,21 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#glossary" id="toc-glossary" class="nav-link" data-scroll-target="#glossary">Glossary</a></li>
   </ul></li>
-  <li><a href="#learning-progress" id="toc-learning-progress" class="nav-link" data-scroll-target="#learning-progress">Learning Progress</a></li>
-  <li><a href="#assessment" id="toc-assessment" class="nav-link" data-scroll-target="#assessment">Assessment</a></li>
+  <li><a href="#assessment" id="toc-assessment" class="nav-link" data-scroll-target="#assessment">Assessment</a>
+  <ul class="collapse">
+  <li><a href="#precision-of-numerical-answers" id="toc-precision-of-numerical-answers" class="nav-link" data-scroll-target="#precision-of-numerical-answers">Precision of Numerical Answers</a></li>
   <li><a href="#expected-personal-work" id="toc-expected-personal-work" class="nav-link" data-scroll-target="#expected-personal-work">Expected Personal Work</a></li>
+  </ul></li>
   <li><a href="#recommended-literature" id="toc-recommended-literature" class="nav-link" data-scroll-target="#recommended-literature">Recommended Literature</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Only show the language switcher on mathematical-fundamentals pages
-  var path = window.location.pathname;
-  var mathFrPath  = '/fr/teaching/mathematical-fundamentals/';
-  var mathEnPath  = '/teaching/mathematical-fundamentals/';
-  var isMathFr = path.startsWith(mathFrPath);
-  var isMathEn = path.startsWith(mathEnPath);
-  if (!isMathFr && !isMathEn) return;
-
-  // Do not show on RevealJS presentation pages
-  if (document.body.classList.contains('reveal')) return;
-
-  var counterpart = isMathFr
-    ? path.replace(/^\/fr/, '')
-    : '/fr' + path;
-  var label = isMathFr ? '🇬🇧 English version' : '🇫🇷 Version française';
-
-  var p = document.createElement('p');
-  p.className = 'lang-switch';
-  var a = document.createElement('a');
-  a.href = counterpart;
-  a.textContent = label;
-  p.appendChild(a);
-
-  // Insert right after the page title (h1.title)
-  var title = document.querySelector('h1.title');
-  if (title && title.parentNode) {
-    title.parentNode.insertBefore(p, title.nextSibling);
-  } else {
-    var content = document.querySelector('#quarto-document-content') ||
-                  document.querySelector('main') ||
-                  document.body;
-    content.insertBefore(p, content.firstChild);
-  }
-});
-</script>
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Mathematical Fundamentals</h1>
-<p class="subtitle lead">MS01-001-G</p>
 </div>
 
 <div>
@@ -331,64 +381,17 @@ document.addEventListener('DOMContentLoaded', function () {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled" title="Welcome to the course">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Welcome to the course
-</div>
-</div>
-<div class="callout-body-container callout-body">
+<section id="welcome-to-ms01-001-g-mathematical-fundamentals" class="level2">
+<h2 class="anchored" data-anchor-id="welcome-to-ms01-001-g-mathematical-fundamentals">Welcome to MS01-001-G: Mathematical Fundamentals</h2>
 <p>This course will help you develop the mathematical reasoning and calculation skills needed to solve quantitative problems in finance, economics, and management.</p>
 <p>Throughout the course, you will learn to:</p>
 <ul>
-<li>perform calculations accurately;</li>
-<li>translate practical problems into mathematical expressions;</li>
-<li>choose an appropriate calculation method;</li>
-<li>interpret equations, functions, graphs, and numerical results;</li>
-<li>use mathematical tools to support managerial decisions.</li>
+<li>Perform calculations accurately;</li>
+<li>Translate practical problems into mathematical expressions;</li>
+<li>Choose an appropriate calculation method;</li>
+<li>Interpret equations, functions, graphs, and numerical results;</li>
+<li>Use mathematical tools to support managerial decisions.</li>
 </ul>
-</div>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="image.jpg" class="img-fluid figure-img"></p>
-<figcaption>Formulas on an old blackboard</figcaption>
-</figure>
-</div>
-<section id="start-here" class="level2">
-<h2 class="anchored" data-anchor-id="start-here">Start Here</h2>
-<p>Before beginning the first module:</p>
-<ol type="1">
-<li>Review the <a href="#course-information">Course Information</a> section below for a complete overview of the syllabus.</li>
-<li>Read the <a href="learning-guide.qmd">Learning Guide</a> to understand how to study each module effectively and how to build an error log.</li>
-<li>Complete the Diagnostic Activity at the top of <a href="../../teaching/mathematical-fundamentals/module-1.html">Module 1</a> to identify any gaps before reading the theory.</li>
-<li>Bookmark the <a href="../../teaching/mathematical-fundamentals/glossary.html">Glossary</a> for symbol and term lookups across all modules.</li>
-<li>Bookmark the <a href="../../teaching/mathematical-fundamentals/formula-sheet.html">Formula Sheet</a> for quick formula reference during revision and exam preparation.</li>
-</ol>
-<div class="callout callout-style-default callout-tip callout-titled" title="How to study each module">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-How to study each module
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Each module follows the same learning sequence:</p>
-<ol type="1">
-<li><strong>Diagnose</strong> — attempt the Diagnostic Activity to surface gaps.</li>
-<li><strong>Understand</strong> — read the Core Concepts section and definitions.</li>
-<li><strong>Observe</strong> — study the Worked Example step by step.</li>
-<li><strong>Practise</strong> — attempt the Guided Practice (use the hint before the solution).</li>
-<li><strong>Experiment</strong> — interact with the simulation and answer the Investigation questions.</li>
-<li><strong>Apply</strong> — work through the Applied Problem and Common Errors.</li>
-</ol>
-</div>
-</div>
 </section>
 <section id="course-information" class="level2">
 <h2 class="anchored" data-anchor-id="course-information">Course Information</h2>
@@ -405,13 +408,13 @@ How to study each module
 </section>
 <section id="general-presentation" class="level2">
 <h2 class="anchored" data-anchor-id="general-presentation">General Presentation</h2>
-<p>This course in <em>Mathematical Fundamentals and Data Analysis</em> aims to give students the mathematical tools needed to analyse and solve quantitative problems, whether financial, economic, or managerial:</p>
+<p>This course in <em>Mathematical Fundamentals</em> aims to give students the mathematical tools needed to analyse and solve quantitative problems, whether financial, economic, or managerial:</p>
 <ul>
-<li>manipulating algebraic expressions;</li>
-<li>solving first- and second-degree equations and inequalities to model economic questions;</li>
-<li>graphically visualising and interpreting economic functions;</li>
-<li>sequences and the usual functions;</li>
-<li>simple optimization for strategic decision-making.</li>
+<li>Manipulating algebraic expressions;</li>
+<li>Solving first- and second-degree equations and inequalities to model economic questions;</li>
+<li>Graphically visualising and interpreting economic functions;</li>
+<li>Sequences and the usual functions;</li>
+<li>Simple optimization for strategic decision-making.</li>
 </ul>
 </section>
 <section id="targeted-competencies" class="level2">
@@ -431,9 +434,8 @@ How to study each module
 <h4 class="anchored" data-anchor-id="module-1-essential-mathematical-calculations-for-economics-and-management">Module 1 — <a href="../../teaching/mathematical-fundamentals/module-1.html">Essential Mathematical Calculations for Economics and Management</a></h4>
 <blockquote class="blockquote">
 <p>Fundamental operations and properties of real numbers (order of operations, absolute value, powers, square roots, fractions, percentages, index numbers, and the proportionality rule).</p>
-</blockquote>
 <p><strong>Application question</strong>: How can we calculate and interpret a change in price, revenue, cost, or market share?</p>
-<hr>
+</blockquote>
 </section>
 <section id="module-2-mastering-equations-for-better-decision-making" class="level4">
 <h4 class="anchored" data-anchor-id="module-2-mastering-equations-for-better-decision-making">Module 2 — <a href="../../teaching/mathematical-fundamentals/module-2.html">Mastering Equations for Better Decision-Making</a></h4>
@@ -441,7 +443,6 @@ How to study each module
 <p>Factoring, expanding, notable identities, and solving first-degree equations.</p>
 </blockquote>
 <p><strong>Application question</strong>: At what sales volume does a company reach its break-even point?</p>
-<hr>
 </section>
 <section id="module-3-curve-analysis-in-economics-and-management" class="level4">
 <h4 class="anchored" data-anchor-id="module-3-curve-analysis-in-economics-and-management">Module 3 — <a href="../../teaching/mathematical-fundamentals/module-3.html">Curve Analysis in Economics and Management</a></h4>
@@ -449,7 +450,6 @@ How to study each module
 <p>Graphical representation (reading a graph, lines, sign, sense of variation, parity), intersection of two lines, first-degree systems of equations and inequalities.</p>
 </blockquote>
 <p><strong>Application question</strong>: At what level of activity do two pricing or cost models produce the same result?</p>
-<hr>
 </section>
 <section id="module-4-introduction-to-financial-mathematics-tools" class="level4">
 <h4 class="anchored" data-anchor-id="module-4-introduction-to-financial-mathematics-tools">Module 4 — <a href="../../teaching/mathematical-fundamentals/module-4.html">Introduction to Financial-Mathematics Tools</a></h4>
@@ -457,7 +457,6 @@ How to study each module
 <p>Study of numerical sequences (general definition, arithmetic sequences, geometric sequences).</p>
 </blockquote>
 <p><strong>Application question</strong>: How can we model a quantity that grows by a fixed amount or by a fixed percentage?</p>
-<hr>
 </section>
 <section id="module-5-application-of-financial-mathematics" class="level4">
 <h4 class="anchored" data-anchor-id="module-5-application-of-financial-mathematics">Module 5 — <a href="../../teaching/mathematical-fundamentals/module-5.html">Application of Financial Mathematics</a></h4>
@@ -465,7 +464,6 @@ How to study each module
 <p>Simple and compound interest.</p>
 </blockquote>
 <p><strong>Application question</strong>: How does capitalisation frequency affect the future value of an investment?</p>
-<hr>
 </section>
 <section id="module-6-functions-useful-in-economics-and-management" class="level4">
 <h4 class="anchored" data-anchor-id="module-6-functions-useful-in-economics-and-management">Module 6 — <a href="../../teaching/mathematical-fundamentals/module-6.html">Functions Useful in Economics and Management</a></h4>
@@ -473,7 +471,6 @@ How to study each module
 <p>Single-variable functions (meaning, domain of definition, forbidden values) and the usual functions (affine, polynomial, logarithm, exponential); simple and general second-degree equations.</p>
 </blockquote>
 <p><strong>Application question</strong>: Which type of function best represents a given economic or managerial phenomenon?</p>
-<hr>
 </section>
 <section id="module-7-introduction-to-optimization" class="level4">
 <h4 class="anchored" data-anchor-id="module-7-introduction-to-optimization">Module 7 — <a href="../../teaching/mathematical-fundamentals/module-7.html">Introduction to Optimization</a></h4>
@@ -481,7 +478,6 @@ How to study each module
 <p>Average and instantaneous rates of change, an intuitive presentation of the derivative, applied to affine and polynomial functions.</p>
 </blockquote>
 <p><strong>Application question</strong>: Which price, quantity, or production level maximises profit or minimises cost?</p>
-<hr>
 </section>
 <section id="module-8-revision-and-final-exam-preparation" class="level4">
 <h4 class="anchored" data-anchor-id="module-8-revision-and-final-exam-preparation">Module 8 — <a href="../../teaching/mathematical-fundamentals/module-8.html">Revision and Final-Exam Preparation</a></h4>
@@ -489,7 +485,6 @@ How to study each module
 <p>General revision and consolidation of what has been learned.</p>
 </blockquote>
 <p><strong>Application question</strong>: Can you identify the appropriate mathematical method without being told which module the problem comes from?</p>
-<hr>
 </section>
 <section id="glossary" class="level3">
 <h3 class="anchored" data-anchor-id="glossary"><a href="../../teaching/mathematical-fundamentals/glossary.html">Glossary</a></h3>
@@ -498,22 +493,17 @@ How to study each module
 </blockquote>
 </section>
 </section>
-<section id="learning-progress" class="level2">
-<h2 class="anchored" data-anchor-id="learning-progress">Learning Progress</h2>
-<p>Use this checklist to track your progress through the course.</p>
-<ul class="task-list">
-<li><label><input type="checkbox">Module 1: Numerical calculations</label></li>
-<li><label><input type="checkbox">Module 2: Algebra and equations</label></li>
-<li><label><input type="checkbox">Module 3: Graphs, systems, and inequalities</label></li>
-<li><label><input type="checkbox">Module 4: Numerical sequences</label></li>
-<li><label><input type="checkbox">Module 5: Financial mathematics</label></li>
-<li><label><input type="checkbox">Module 6: Common functions</label></li>
-<li><label><input type="checkbox">Module 7: Derivatives and optimisation</label></li>
-<li><label><input type="checkbox">Module 8: Revision and exam preparation</label></li>
-</ul>
-</section>
 <section id="assessment" class="level2">
 <h2 class="anchored" data-anchor-id="assessment">Assessment</h2>
+<section id="precision-of-numerical-answers" class="level3">
+<h3 class="anchored" data-anchor-id="precision-of-numerical-answers">Precision of Numerical Answers</h3>
+<p>Some questions will ask for a numerical answer, for example solving for an equilibrium price.</p>
+<ul>
+<li>If the answer is rational, enter an exact answer. For example: <span class="math inline">\(3/4\)</span>, <span class="math inline">\(0.125\)</span> or <span class="math inline">\(519\)</span>.</li>
+<li>If the answer is rational, but has a repeating decimal, you may alternatively enter any approximation within <span class="math inline">\(0.1%\)</span> of the correct answer. For example: <span class="math inline">\(1/9\)</span> or <span class="math inline">\(8.66667\)</span>.</li>
+<li>Otherwise, enter any approximation within <span class="math inline">\(0.1%\)</span> of the correct answer. For example: <span class="math inline">\(1.414\)</span> to represent <span class="math inline">\(\sqrt{2}\)</span>.</li>
+</ul>
+<p>When in doubt, enter more decimal places than you think you need. It never hurts to put more decimal places.</p>
 <table class="table">
 <colgroup>
 <col style="width: 21%">
@@ -545,12 +535,13 @@ How to study each module
 </tbody>
 </table>
 </section>
-<section id="expected-personal-work" class="level2">
-<h2 class="anchored" data-anchor-id="expected-personal-work">Expected Personal Work</h2>
+<section id="expected-personal-work" class="level3">
+<h3 class="anchored" data-anchor-id="expected-personal-work">Expected Personal Work</h3>
 <ul>
 <li>Complete the associated work and exercises before each class session.</li>
 <li><strong>Workload</strong>: 50 hours.</li>
 </ul>
+</section>
 </section>
 <section id="recommended-literature" class="level2">
 <h2 class="anchored" data-anchor-id="recommended-literature">Recommended Literature</h2>
