@@ -1,37 +1,57 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  // Only show the language switcher on mathematical-fundamentals pages
   var path = window.location.pathname;
-  var mathFrPath  = '/fr/teaching/mathematical-fundamentals/';
-  var mathEnPath  = '/teaching/mathematical-fundamentals/';
-  var isMathFr = path.startsWith(mathFrPath);
-  var isMathEn = path.startsWith(mathEnPath);
-  if (!isMathFr && !isMathEn) return;
+  var isEnTeaching = path.startsWith('/teaching/');
+  var isFrTeaching = path.startsWith('/fr/teaching/');
 
-  // Do not show on RevealJS presentation pages
+  function translateTool() {
+    var icon = document.querySelector('.bi-translate');
+    return icon ? icon.closest('.dropdown') : null;
+  }
+
+  // Outside the teaching section: hide the translate tool
+  if (!isEnTeaching && !isFrTeaching) {
+    var tool = translateTool();
+    if (tool) tool.style.display = 'none';
+    return;
+  }
+
+  // Skip RevealJS slides
   if (document.body.classList.contains('reveal')) return;
 
-  var counterpart = isMathFr
-    ? path.replace(/^\/fr/, '')
-    : '/fr' + path;
-  var label = isMathFr ? '🇬🇧 English version' : '🇫🇷 Version française';
+  // Courses with full page-for-page FR translations [EN prefix, FR prefix]
+  var fullPairs = [
+    ['/teaching/mathematical-fundamentals/', '/fr/teaching/mathematical-fundamentals/'],
+  ];
 
-  var p = document.createElement('p');
-  p.className = 'lang-switch';
-  var a = document.createElement('a');
-  a.href = counterpart;
-  a.textContent = label;
-  p.appendChild(a);
-
-  // Insert right after the page title (h1.title)
-  var title = document.querySelector('h1.title');
-  if (title && title.parentNode) {
-    title.parentNode.insertBefore(p, title.nextSibling);
-  } else {
-    var content = document.querySelector('#quarto-document-content') ||
-                  document.querySelector('main') ||
-                  document.body;
-    content.insertBefore(p, content.firstChild);
+  function frCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][0]))
+        return fullPairs[i][1] + p.slice(fullPairs[i][0].length);
+    }
+    var slug = p.replace('/teaching/', '').split('/')[0];
+    return '/fr/teaching/' + slug + '/';
   }
+
+  function enCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][1]))
+        return fullPairs[i][0] + p.slice(fullPairs[i][1].length);
+    }
+    var slug = p.replace('/fr/teaching/', '').split('/')[0];
+    return '/teaching/' + slug + '/';
+  }
+
+  var enHref = isEnTeaching ? path : enCounterpart(path);
+  var frHref = isFrTeaching ? path : frCounterpart(path);
+
+  var tool = translateTool();
+  if (!tool) return;
+
+  tool.querySelectorAll('a.dropdown-item').forEach(function (a) {
+    var txt = a.textContent.trim();
+    if (txt.includes('English')) a.href = enHref;
+    else if (txt.includes('Français') || txt.includes('francais')) a.href = frHref;
+  });
 });
 </script>
