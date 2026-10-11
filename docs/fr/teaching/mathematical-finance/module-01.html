@@ -177,6 +177,9 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 <script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -349,8 +352,9 @@ window.Quarto = {
   <li><a href="#intuition-économique" id="toc-intuition-économique" class="nav-link" data-scroll-target="#intuition-économique">Intuition économique</a></li>
   <li><a href="#diagnostic-initial" id="toc-diagnostic-initial" class="nav-link" data-scroll-target="#diagnostic-initial">Diagnostic initial</a></li>
   </ul></li>
-  <li><a href="#intérêts-simples-et-intérêts-composés" id="toc-intérêts-simples-et-intérêts-composés" class="nav-link" data-scroll-target="#intérêts-simples-et-intérêts-composés">Intérêts simples et intérêts composés</a>
+  <li><a href="#séquence-2-intérêts-simples-et-intérêts-composés" id="toc-séquence-2-intérêts-simples-et-intérêts-composés" class="nav-link" data-scroll-target="#séquence-2-intérêts-simples-et-intérêts-composés">Séquence 2 — Intérêts simples et intérêts composés</a>
   <ul class="collapse">
+  <li><a href="#exploration-numérique" id="toc-exploration-numérique" class="nav-link" data-scroll-target="#exploration-numérique">Exploration numérique</a></li>
   <li><a href="#représentation-ligne-du-temps" id="toc-représentation-ligne-du-temps" class="nav-link" data-scroll-target="#représentation-ligne-du-temps">Représentation (ligne du temps)</a></li>
   <li><a href="#a.-intérêts-simples" id="toc-a.-intérêts-simples" class="nav-link" data-scroll-target="#a.-intérêts-simples">A. Intérêts simples</a></li>
   <li><a href="#b.-intérêts-composés" id="toc-b.-intérêts-composés" class="nav-link" data-scroll-target="#b.-intérêts-composés">B. Intérêts composés</a></li>
@@ -360,15 +364,17 @@ window.Quarto = {
   <li><a href="#séquence-3-actualisation-et-équivalence-financière" id="toc-séquence-3-actualisation-et-équivalence-financière" class="nav-link" data-scroll-target="#séquence-3-actualisation-et-équivalence-financière">Séquence 3 — Actualisation et équivalence financière</a>
   <ul class="collapse">
   <li><a href="#intuition-économique-1" id="toc-intuition-économique-1" class="nav-link" data-scroll-target="#intuition-économique-1">Intuition économique</a></li>
+  <li><a href="#exploration-numérique-1" id="toc-exploration-numérique-1" class="nav-link" data-scroll-target="#exploration-numérique-1">Exploration numérique</a></li>
   <li><a href="#représentation-ligne-du-temps-1" id="toc-représentation-ligne-du-temps-1" class="nav-link" data-scroll-target="#représentation-ligne-du-temps-1">Représentation (ligne du temps)</a></li>
   <li><a href="#a.-valeur-actuelle" id="toc-a.-valeur-actuelle" class="nav-link" data-scroll-target="#a.-valeur-actuelle">A. Valeur actuelle</a></li>
   <li><a href="#b.-équivalence-financière" id="toc-b.-équivalence-financière" class="nav-link" data-scroll-target="#b.-équivalence-financière">B. Équivalence financière</a></li>
-  <li><a href="#exemple-décisionnel" id="toc-exemple-décisionnel" class="nav-link" data-scroll-target="#exemple-décisionnel">Exemple décisionnel</a></li>
+  <li><a href="#exemple-résolu-décision-darbitrage" id="toc-exemple-résolu-décision-darbitrage" class="nav-link" data-scroll-target="#exemple-résolu-décision-darbitrage">Exemple résolu — Décision d’arbitrage</a></li>
   <li><a href="#démonstration-interactive-capitalisation-vs-actualisation" id="toc-démonstration-interactive-capitalisation-vs-actualisation" class="nav-link" data-scroll-target="#démonstration-interactive-capitalisation-vs-actualisation">Démonstration interactive — Capitalisation vs Actualisation</a></li>
   </ul></li>
   <li><a href="#séquence-4-taux-proportionnels-et-taux-équivalents" id="toc-séquence-4-taux-proportionnels-et-taux-équivalents" class="nav-link" data-scroll-target="#séquence-4-taux-proportionnels-et-taux-équivalents">Séquence 4 — Taux proportionnels et taux équivalents</a>
   <ul class="collapse">
   <li><a href="#intuition-économique-2" id="toc-intuition-économique-2" class="nav-link" data-scroll-target="#intuition-économique-2">Intuition économique</a></li>
+  <li><a href="#exploration-numérique-2" id="toc-exploration-numérique-2" class="nav-link" data-scroll-target="#exploration-numérique-2">Exploration numérique</a></li>
   <li><a href="#a.-taux-proportionnel" id="toc-a.-taux-proportionnel" class="nav-link" data-scroll-target="#a.-taux-proportionnel">A. Taux proportionnel</a></li>
   <li><a href="#b.-taux-équivalent" id="toc-b.-taux-équivalent" class="nav-link" data-scroll-target="#b.-taux-équivalent">B. Taux équivalent</a></li>
   <li><a href="#c.-taux-annuel-effectif-global-taeg" id="toc-c.-taux-annuel-effectif-global-taeg" class="nav-link" data-scroll-target="#c.-taux-annuel-effectif-global-taeg">C. Taux annuel effectif global (TAEG)</a></li>
@@ -377,16 +383,17 @@ window.Quarto = {
   <li><a href="#séquence-5-annuités-constantes" id="toc-séquence-5-annuités-constantes" class="nav-link" data-scroll-target="#séquence-5-annuités-constantes">Séquence 5 — Annuités constantes</a>
   <ul class="collapse">
   <li><a href="#intuition-économique-3" id="toc-intuition-économique-3" class="nav-link" data-scroll-target="#intuition-économique-3">Intuition économique</a></li>
+  <li><a href="#exploration-numérique-3" id="toc-exploration-numérique-3" class="nav-link" data-scroll-target="#exploration-numérique-3">Exploration numérique</a></li>
   <li><a href="#a.-annuités-de-fin-de-période-terme-échu" id="toc-a.-annuités-de-fin-de-période-terme-échu" class="nav-link" data-scroll-target="#a.-annuités-de-fin-de-période-terme-échu">A. Annuités de fin de période (terme échu)</a></li>
+  <li><a href="#exemple-résolu-2" id="toc-exemple-résolu-2" class="nav-link" data-scroll-target="#exemple-résolu-2">Exemple résolu</a></li>
   <li><a href="#b.-annuités-de-début-de-période-terme-à-échoir" id="toc-b.-annuités-de-début-de-période-terme-à-échoir" class="nav-link" data-scroll-target="#b.-annuités-de-début-de-période-terme-à-échoir">B. Annuités de début de période (terme à échoir)</a></li>
   <li><a href="#c.-annuités-différées" id="toc-c.-annuités-différées" class="nav-link" data-scroll-target="#c.-annuités-différées">C. Annuités différées</a></li>
   <li><a href="#d.-perpétuités" id="toc-d.-perpétuités" class="nav-link" data-scroll-target="#d.-perpétuités">D. Perpétuités</a></li>
   </ul></li>
   <li><a href="#séquence-6-cas-pratique-constituer-un-capital" id="toc-séquence-6-cas-pratique-constituer-un-capital" class="nav-link" data-scroll-target="#séquence-6-cas-pratique-constituer-un-capital">Séquence 6 — Cas pratique : constituer un capital</a>
   <ul class="collapse">
-  <li><a href="#situation" id="toc-situation" class="nav-link" data-scroll-target="#situation">Situation</a></li>
-  <li><a href="#question-principale-calcul-de-lannuité-nécessaire" id="toc-question-principale-calcul-de-lannuité-nécessaire" class="nav-link" data-scroll-target="#question-principale-calcul-de-lannuité-nécessaire">Question principale — Calcul de l’annuité nécessaire</a></li>
-  <li><a href="#questions-subsidiaires" id="toc-questions-subsidiaires" class="nav-link" data-scroll-target="#questions-subsidiaires">Questions subsidiaires</a></li>
+  <li><a href="#étape-1-calcul-de-lannuité-nécessaire-question-principale" id="toc-étape-1-calcul-de-lannuité-nécessaire-question-principale" class="nav-link" data-scroll-target="#étape-1-calcul-de-lannuité-nécessaire-question-principale">Étape 1 — Calcul de l’annuité nécessaire (question principale)</a></li>
+  <li><a href="#étape-2-tester-les-variantes-questions-subsidiaires" id="toc-étape-2-tester-les-variantes-questions-subsidiaires" class="nav-link" data-scroll-target="#étape-2-tester-les-variantes-questions-subsidiaires">Étape 2 — Tester les variantes (questions subsidiaires)</a></li>
   </ul></li>
   <li><a href="#séquence-7-synthèse-et-erreurs-fréquentes" id="toc-séquence-7-synthèse-et-erreurs-fréquentes" class="nav-link" data-scroll-target="#séquence-7-synthèse-et-erreurs-fréquentes">Séquence 7 — Synthèse et erreurs fréquentes</a>
   <ul class="collapse">
@@ -418,7 +425,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modifié</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">4 octobre 2026</p>
+      <p class="date-modified">11 octobre 2026</p>
     </div>
   </div>
     
@@ -445,6 +452,19 @@ window.Quarto = {
 <li>valoriser une suite d’annuités constantes (fin, début, différées, perpétuité) ;</li>
 <li>résoudre des problèmes d’épargne et de constitution de capital.</li>
 </ul>
+<div id="rule-ligne-temps" class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Règle d’or — La ligne du temps avant toute formule
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Avant le moindre calcul, tracez la ligne du temps : placez chaque flux à sa date et repérez la date à laquelle vous voulez l’évaluer. Ce n’est qu’ensuite que l’on choisit de capitaliser (aller vers le futur) ou d’actualiser (revenir vers le présent). Cette règle vaut pour toute la journée ; elle est détaillée en cinq questions dans la Séquence 5.</p>
+</div>
+</div>
 </section>
 <section id="introduction-et-diagnostic" class="level2">
 <h2 class="anchored" data-anchor-id="introduction-et-diagnostic">Introduction et diagnostic</h2>
@@ -492,11 +512,129 @@ window.Quarto = {
 </ul>
 </section>
 </section>
-<section id="intérêts-simples-et-intérêts-composés" class="level2">
-<h2 class="anchored" data-anchor-id="intérêts-simples-et-intérêts-composés">Intérêts simples et intérêts composés</h2>
+<section id="séquence-2-intérêts-simples-et-intérêts-composés" class="level2">
+<h2 class="anchored" data-anchor-id="séquence-2-intérêts-simples-et-intérêts-composés">Séquence 2 — Intérêts simples et intérêts composés</h2>
 <blockquote class="blockquote">
 <p><em>Durée : 1 heure</em></p>
 </blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Situation concrète
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Léa vient de recevoir une prime de <strong>10 000 €</strong> dont elle n’aura pas besoin avant <strong>10 ans</strong>. Sa banque lui propose deux placements au même taux de <strong>3 % par an</strong>. Le livret « Simple » verse chaque année 3 % de la somme de départ, soit 300 €, que Léa garde de côté sans les replacer. Le compte à terme « Cumul » ajoute chaque année les intérêts au capital, si bien que l’année suivante les 3 % portent sur un montant plus élevé. Le conseiller assure que « c’est le même taux, donc à peu près le même résultat ».</p>
+<p><strong>Quelle offre Léa doit-elle choisir, et quel écart cela représente-t-il au bout de 10 ans ?</strong></p>
+</div>
+</div>
+<section id="exploration-numérique" class="level3">
+<h3 class="anchored" data-anchor-id="exploration-numérique">Exploration numérique</h3>
+<p><em>Règle d’or : tracez d’abord la ligne du temps (voir <a href="#rule-ligne-temps">Règle d’or</a>).</em></p>
+<p>Suivons les deux placements année par année. Avec le livret « Simple », Léa reçoit toujours 300 € (3 % de 10 000 €) : on <strong>ajoute</strong> 300 € chaque année. Avec le compte « Cumul », on <strong>multiplie</strong> chaque année le solde de l’année précédente par 1,03 : la première année, 10 000 × 1,03 = 10 300 € ; la deuxième, 10 300 × 1,03 = 10 609 € ; et ainsi de suite.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Année</th>
+<th style="text-align: right;">« Simple » (€)</th>
+<th style="text-align: right;">« Cumul » (€)</th>
+<th style="text-align: right;">Écart (€)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10 000</td>
+<td style="text-align: right;">10 000</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10 300</td>
+<td style="text-align: right;">10 300</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">10 600</td>
+<td style="text-align: right;">10 609</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">10 900</td>
+<td style="text-align: right;">10 927</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">11 200</td>
+<td style="text-align: right;">11 255</td>
+<td style="text-align: right;">55</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">11 500</td>
+<td style="text-align: right;">11 593</td>
+<td style="text-align: right;">93</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">11 800</td>
+<td style="text-align: right;">11 941</td>
+<td style="text-align: right;">141</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">12 100</td>
+<td style="text-align: right;">12 299</td>
+<td style="text-align: right;">199</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">12 400</td>
+<td style="text-align: right;">12 668</td>
+<td style="text-align: right;">268</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">12 700</td>
+<td style="text-align: right;">13 048</td>
+<td style="text-align: right;">348</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">13 000</td>
+<td style="text-align: right;">13 439</td>
+<td style="text-align: right;">439</td>
+</tr>
+</tbody>
+</table>
+<p><em>Valeurs arrondies à l’euro.</em></p>
+<p><strong>Réponse à Léa :</strong> au bout de 10 ans, le compte « Cumul » lui rapporte <strong>13 439 €</strong> contre <strong>13 000 €</strong> pour le livret « Simple », soit <strong>439 €</strong> de plus. Le conseiller se trompe : même taux ne veut pas dire même résultat. Léa a intérêt à choisir « Cumul », et l’écart se creuse d’année en année.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Observez le schéma
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>La colonne « Simple » augmente toujours du <strong>même montant</strong> (+300 €) : on part de 10 000 € et on ajoute <span class="math inline">\(t\)</span> fois 300 €, soit <span class="math inline">\(10\,000 \times (1 + t
+\times 0{,}03)\)</span>.</li>
+<li>La colonne « Cumul » est multipliée chaque année par le <strong>même facteur</strong> (× 1,03) : après <span class="math inline">\(t\)</span> années, on a multiplié <span class="math inline">\(t\)</span> fois par 1,03, soit <span class="math inline">\(10\,000 \times 1{,}03^t\)</span>.</li>
+<li>L’écart grandit de plus en plus vite : chaque année, les intérêts déjà gagnés <strong>produisent à leur tour des intérêts</strong>.</li>
+</ul>
+<p>En remplaçant 10 000 € par un capital <span class="math inline">\(C_0\)</span>, 3 % par un taux <span class="math inline">\(i\)</span> et la durée par <span class="math inline">\(n\)</span>, on obtient les deux formules générales ci-dessous : <span class="math inline">\(C_0(1 + ni)\)</span> d’un côté, <span class="math inline">\(C_0(1+i)^n\)</span> de l’autre.</p>
+</div>
+</div>
+</section>
 <section id="représentation-ligne-du-temps" class="level3">
 <h3 class="anchored" data-anchor-id="représentation-ligne-du-temps">Représentation (ligne du temps)</h3>
 <pre><code>t = 0          t = 1          t = 2          ...    t = n
@@ -521,6 +659,29 @@ window.Quarto = {
 <p><strong>Lecture :</strong> les intérêts sont calculés <em>uniquement</em> sur le capital initial <span class="math inline">\(C_0\)</span>, à chaque période. Ils ne s’accumulent pas.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Explication en langage clair
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ce que calcule cette formule</strong> : la valeur acquise au bout de <code>n</code> périodes par un capital placé à intérêts simples, ainsi que le total des intérêts gagnés.</p>
+<p><strong>Rôle de chaque paramètre</strong> :</p>
+<ul>
+<li><code>C_n</code> : le capital disponible à la fin du placement, intérêts compris.</li>
+<li><code>C_0</code> : la somme placée au départ, seule base de calcul des intérêts.</li>
+<li><code>n</code> : le nombre de périodes pendant lesquelles l’argent reste placé.</li>
+<li><code>i</code> : le taux d’intérêt par période, exprimé en décimal (0,03 pour 3 %).</li>
+<li><code>I</code> : le total des intérêts perçus, de même montant à chaque période.</li>
+</ul>
+<p><strong>Ce que signifie le résultat</strong> : <code>C_n</code> indique ce que l’épargnant récupère à l’échéance lorsque les intérêts ne sont jamais réinvestis, comme les 13 000 € du livret « Simple » de Léa.</p>
+<p><strong>Intuition directionnelle</strong> : si la durée <code>n</code> augmente d’une période, le capital <code>C_n</code> augmente toujours du même montant, <code>C_0</code> × <code>i</code>, soit 300 € par an pour Léa.</p>
+</div>
+</div>
 </section>
 <section id="b.-intérêts-composés" class="level3">
 <h3 class="anchored" data-anchor-id="b.-intérêts-composés">B. Intérêts composés</h3>
@@ -539,8 +700,31 @@ window.Quarto = {
 <p><strong>Lecture :</strong> à chaque période, les intérêts s’ajoutent au capital et produisent eux-mêmes des intérêts lors des périodes suivantes. C’est l’effet des <strong>intérêts composés</strong> (ou « intérêts sur intérêts »).</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Explication en langage clair
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ce que calcule cette formule</strong> : la valeur acquise au bout de <code>n</code> périodes par un capital placé à intérêts composés, ainsi que le total des intérêts cumulés.</p>
+<p><strong>Rôle de chaque paramètre</strong> :</p>
+<ul>
+<li><code>C_n</code> : le capital final, intérêts et intérêts sur intérêts compris.</li>
+<li><code>C_0</code> : la somme placée au départ.</li>
+<li><code>i</code> : le taux par période, en décimal, appliqué chaque fois au capital courant.</li>
+<li><code>n</code> : le nombre de périodes de capitalisation, qui figure en exposant.</li>
+<li><code>I</code> : le total des intérêts gagnés, y compris ceux produits par les intérêts déjà capitalisés.</li>
+</ul>
+<p><strong>Ce que signifie le résultat</strong> : <code>C_n</code> est ce que l’épargnant récupère quand les intérêts sont réinvestis à chaque période, comme les 13 439 € du compte « Cumul » de Léa.</p>
+<p><strong>Intuition directionnelle</strong> : si la durée <code>n</code> augmente, <code>C_n</code> augmente de plus en plus vite, car chaque période ajoute des intérêts sur un capital déjà grossi.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -549,7 +733,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>À la fin de la période 1 : <span class="math inline">\(C_1 = C_0 + C_0 \cdot i = C_0(1+i)\)</span></p>
 <p>À la fin de la période 2 : <span class="math inline">\(C_2 = C_1(1+i) = C_0(1+i)^2\)</span></p>
@@ -601,6 +785,19 @@ window.Quarto = {
 </ul>
 </div>
 </div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Définition — Intérêts simples et intérêts composés
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un placement est à <strong>intérêts simples</strong> lorsque les intérêts de chaque période sont calculés sur le seul capital initial <span class="math inline">\(C_0\)</span>. Il est à <strong>intérêts composés</strong> lorsque les intérêts de chaque période sont ajoutés au capital et portent eux-mêmes intérêt aux périodes suivantes (capital courant <span class="math inline">\(C_{t-1}\)</span>).</p>
+</div>
+</div>
 </section>
 <section id="exemple-résolu" class="level3">
 <h3 class="anchored" data-anchor-id="exemple-résolu">Exemple résolu</h3>
@@ -612,6 +809,35 @@ window.Quarto = {
 <p><strong>Intérêts composés :</strong></p>
 <p><span class="math display">\[C_5 = 20\,000 \times (1{,}04)^5 = 20\,000 \times 1{,}21665 \approx 24\,333 \text{ €}\]</span></p>
 <p>L’écart (333 €) représente les intérêts générés par les intérêts capitalisés.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Interprétation économique
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Les intérêts composés récompensent la <strong>patience</strong> : plus l’argent reste placé longtemps, plus les intérêts sur intérêts pèsent dans le résultat. Si la durée double, l’écart fait bien plus que doubler : sur 20 ans à 3 %, les 10 000 € de Léa deviendraient 18 061 € en composé contre 16 000 € en simple, soit un écart d’environ 2 061 € (contre 439 € sur 10 ans). Pour un épargnant, il faut donc privilégier la capitalisation et commencer tôt ; pour un emprunteur, la même mécanique joue contre lui : une dette dont les intérêts ne sont pas payés grossit de plus en plus vite.</p>
+</div>
+</div>
+<div id="err-s2" class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Erreur fréquente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>L’intuition piège</strong> : « 3 % par an pendant 10 ans, cela fait 30 % de gain, quel que soit le placement. »</p>
+<p><strong>Pourquoi c’est faux</strong> : ce calcul additionne les taux, ce qui n’est vrai qu’en intérêts simples ; en intérêts composés, chaque année les 3 % portent sur un capital déjà augmenté des intérêts passés.</p>
+<p><strong>Le bon raisonnement</strong> : en composé, on multiplie le capital par 1,03 chaque année, soit 1,03 puissance 10 ≈ 1,344 au bout de 10 ans, donc un gain de 34,4 % et non 30 %.</p>
+<p><strong>Astuce mémo</strong> : en composé, on multiplie, on n’additionne pas.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -639,9 +865,82 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><em>Durée : 1 heure</em></p>
 </blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Situation concrète
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un client doit vous régler une facture et vous propose deux options : <strong>1 000 € aujourd’hui</strong> ou <strong>1 100 € dans un an</strong>. Les 100 € de plus sont tentants, mais il faut attendre. De votre côté, vous pouvez placer votre trésorerie sans risque à <strong>5 % par an</strong>. Le montant le plus élevé n’est donc pas forcément le meilleur : tout dépend de ce que vous pourriez faire de l’argent entre-temps.</p>
+<p><strong>Quelle offre devez-vous accepter ?</strong></p>
+</div>
+</div>
 <section id="intuition-économique-1" class="level3">
 <h3 class="anchored" data-anchor-id="intuition-économique-1">Intuition économique</h3>
 <p>Si la capitalisation répond à « combien vaut un capital <em>dans le futur</em> ? », l’actualisation répond à « combien vaut un capital futur <em>aujourd’hui</em> ? »</p>
+</section>
+<section id="exploration-numérique-1" class="level3">
+<h3 class="anchored" data-anchor-id="exploration-numérique-1">Exploration numérique</h3>
+<p><em>Règle d’or : tracez d’abord la ligne du temps (voir <a href="#rule-ligne-temps">Règle d’or</a>).</em></p>
+<p>Les deux montants ne sont pas disponibles à la même date : pour les comparer, il faut les placer sur la même date. On peut le faire de deux façons.</p>
+<p><strong>Façon 1 — Avancer dans le temps (dans un an).</strong> Si vous acceptez 1 000 € aujourd’hui et les placez à 5 % :</p>
+<p><span class="math display">\[1\,000 \times 1{,}05 = 1\,050 \text{ € dans un an}\]</span></p>
+<p>1 050 € &lt; 1 100 € : attendre le paiement du client rapporte 50 € de plus.</p>
+<p><strong>Façon 2 — Reculer dans le temps (aujourd’hui).</strong> Quelle somme faudrait-il placer aujourd’hui à 5 % pour obtenir 1 100 € dans un an ? On fait le chemin inverse, en divisant au lieu de multiplier :</p>
+<p><span class="math display">\[1\,100 \div 1{,}05 \approx 1\,047{,}62 \text{ € aujourd'hui}\]</span></p>
+<p>1 047,62 € &gt; 1 000 € : la promesse de 1 100 € vaut davantage, aujourd’hui, que les 1 000 € proposés.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 29%">
+<col style="width: 28%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Comparaison</th>
+<th style="text-align: right;">1 000 € aujourd’hui</th>
+<th style="text-align: right;">1 100 € dans un an</th>
+<th>Meilleure offre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>À la date 1 (capitaliser)</td>
+<td style="text-align: right;">1 050,00 €</td>
+<td style="text-align: right;">1 100,00 €</td>
+<td>1 100 € dans un an</td>
+</tr>
+<tr class="even">
+<td>À la date 0 (actualiser)</td>
+<td style="text-align: right;">1 000,00 €</td>
+<td style="text-align: right;">1 047,62 €</td>
+<td>1 100 € dans un an</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Réponse :</strong> les deux méthodes donnent la même conclusion — il faut <strong>accepter 1 100 € dans un an</strong>. Attention, ce résultat dépend du taux : il faudrait un placement à plus de 10 % (1 100 / 1 000 = 1,10) pour que les 1 000 € immédiats deviennent préférables.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Observez le schéma
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Avancer d’un an, c’est <strong>multiplier</strong> par 1,05 ; reculer d’un an, c’est <strong>diviser</strong> par 1,05 : l’actualisation est l’opération inverse de la capitalisation.</li>
+<li>Si les 1 100 € étaient versés dans <strong>deux</strong> ans, il faudrait reculer deux fois : <span class="math inline">\(1\,100 \div 1{,}05 \div 1{,}05 = 1\,100 / 1{,}05^2 \approx 997{,}73\)</span> €, et l’offre deviendrait moins intéressante que 1 000 € aujourd’hui.</li>
+<li>Plus généralement, ramener aujourd’hui une somme <span class="math inline">\(V_n\)</span> disponible dans <span class="math inline">\(n\)</span> années revient à diviser <span class="math inline">\(n\)</span> fois par <span class="math inline">\((1+i)\)</span> : diviser par <span class="math inline">\((1+i)^n\)</span>, c’est <strong>remonter le temps</strong>.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="représentation-ligne-du-temps-1" class="level3">
 <h3 class="anchored" data-anchor-id="représentation-ligne-du-temps-1">Représentation (ligne du temps)</h3>
@@ -667,6 +966,29 @@ window.Quarto = {
 <p><strong>Lecture :</strong> <span class="math inline">\(V_0\)</span> est la valeur <em>aujourd’hui</em> d’une somme <span class="math inline">\(V_n\)</span> disponible dans <span class="math inline">\(n\)</span> périodes. Le facteur <span class="math inline">\((1+i)^{-n}\)</span> est toujours inférieur à 1 : une somme future vaut moins aujourd’hui.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Explication en langage clair
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ce que calcule cette formule</strong> : ce que vaut aujourd’hui une somme qui ne sera disponible que dans <code>n</code> périodes.</p>
+<p><strong>Rôle de chaque paramètre</strong> :</p>
+<ul>
+<li><code>V_0</code> : la valeur actuelle, c’est-à-dire la somme qu’il faudrait placer aujourd’hui pour obtenir <code>V_n</code> à l’échéance.</li>
+<li><code>V_n</code> : le montant futur, encaissé ou payé à la date <code>n</code>.</li>
+<li><code>i</code> : le taux d’actualisation par période, qui mesure le coût d’opportunité de l’attente.</li>
+<li><code>n</code> : le nombre de périodes qui séparent aujourd’hui de la date du flux.</li>
+<li><code>a_n</code> : le facteur d’actualisation, inférieur à 1, par lequel on multiplie <code>V_n</code> pour obtenir <code>V_0</code>.</li>
+</ul>
+<p><strong>Ce que signifie le résultat</strong> : <code>V_0</code> est le prix équitable aujourd’hui d’un flux futur ; dans la situation concrète, 1 100 € dans un an valent environ 1 047,62 € aujourd’hui au taux de 5 %.</p>
+<p><strong>Intuition directionnelle</strong> : si le taux <code>i</code> ou la durée <code>n</code> augmente, la valeur actuelle <code>V_0</code> diminue, car l’attente coûte plus cher.</p>
+</div>
+</div>
 </section>
 <section id="b.-équivalence-financière" class="level3">
 <h3 class="anchored" data-anchor-id="b.-équivalence-financière">B. Équivalence financière</h3>
@@ -685,8 +1007,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="exemple-décisionnel" class="level3">
-<h3 class="anchored" data-anchor-id="exemple-décisionnel">Exemple décisionnel</h3>
+<section id="exemple-résolu-décision-darbitrage" class="level3">
+<h3 class="anchored" data-anchor-id="exemple-résolu-décision-darbitrage">Exemple résolu — Décision d’arbitrage</h3>
 <blockquote class="blockquote">
 <p>Une entreprise doit choisir entre :</p>
 <ul>
@@ -698,6 +1020,35 @@ window.Quarto = {
 <p><strong>Valeur actuelle du paiement différé :</strong></p>
 <p><span class="math display">\[VA = \frac{52\,000}{(1{,}05)^2} = \frac{52\,000}{1{,}1025} \approx 47\,166 \text{ €}\]</span></p>
 <p><span class="math inline">\(47\,166 &lt; 48\,000\)</span> : le paiement différé a une valeur actuelle <em>inférieure</em>. Toutes choses égales par ailleurs, il est financièrement préférable.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Interprétation économique
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le taux d’actualisation mesure ce que l’argent pourrait rapporter ailleurs : c’est le <strong>coût d’opportunité</strong> de l’attente. Si ce taux augmente, la valeur actuelle des sommes futures baisse, et les paiements immédiats deviennent relativement plus attractifs : avec un placement à plus de 10 %, il faudrait, dans la situation concrète, préférer les 1 000 € immédiats. Pour décider (encaisser tôt ou tard, payer comptant ou à crédit), un gestionnaire ramène donc toujours les flux à une même date, au taux qui reflète son propre coût de l’argent.</p>
+</div>
+</div>
+<div id="err-s3" class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Erreur fréquente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>L’intuition piège</strong> : « 1 100 € dans un an, c’est plus que 1 000 € aujourd’hui, donc c’est forcément mieux. »</p>
+<p><strong>Pourquoi c’est faux</strong> : on compare deux montants qui ne sont pas exprimés à la même date ; un euro disponible aujourd’hui peut être placé et vaut donc plus qu’un euro futur.</p>
+<p><strong>Le bon raisonnement</strong> : ramener les deux montants à une date commune (actualiser 1 100 € à aujourd’hui ou capitaliser 1 000 € dans un an) avant de les comparer.</p>
+<p><strong>Astuce mémo</strong> : on ne compare et on n’additionne que des euros de même date.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -722,40 +1073,40 @@ window.Quarto = {
 <section id="démonstration-interactive-capitalisation-vs-actualisation" class="level3">
 <h3 class="anchored" data-anchor-id="démonstration-interactive-capitalisation-vs-actualisation">Démonstration interactive — Capitalisation vs Actualisation</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="239" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 238;"><span id="cb3-239"><a href="#cb3-239" aria-hidden="true" tabindex="-1"></a>viewof C0_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">100</span><span class="op">,</span> <span class="dv">20000</span>]<span class="op">,</span> {</span>
-<span id="cb3-240"><a href="#cb3-240" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb3-241"><a href="#cb3-241" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Capital initial C₀ (€)"</span></span>
-<span id="cb3-242"><a href="#cb3-242" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb3-243"><a href="#cb3-243" aria-hidden="true" tabindex="-1"></a>viewof i_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="fl">0.20</span>]<span class="op">,</span> {</span>
-<span id="cb3-244"><a href="#cb3-244" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span></span>
-<span id="cb3-245"><a href="#cb3-245" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Taux d'intérêt i (annuel)"</span></span>
-<span id="cb3-246"><a href="#cb3-246" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb3-247"><a href="#cb3-247" aria-hidden="true" tabindex="-1"></a>viewof n_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {</span>
-<span id="cb3-248"><a href="#cb3-248" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
-<span id="cb3-249"><a href="#cb3-249" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Nombre de périodes n"</span></span>
-<span id="cb3-250"><a href="#cb3-250" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb3-251"><a href="#cb3-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-252"><a href="#cb3-252" aria-hidden="true" tabindex="-1"></a>data_s3 <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> n_s3 <span class="op">+</span> <span class="dv">1</span>}<span class="op">,</span> (_<span class="op">,</span> t) <span class="kw">=&gt;</span> [</span>
-<span id="cb3-253"><a href="#cb3-253" aria-hidden="true" tabindex="-1"></a>  {t<span class="op">,</span> <span class="dt">valeur</span><span class="op">:</span> C0_s3 <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> t<span class="op">,</span>                          <span class="dt">serie</span><span class="op">:</span> <span class="st">"Capitalisation (Cₙ)"</span>}<span class="op">,</span></span>
-<span id="cb3-254"><a href="#cb3-254" aria-hidden="true" tabindex="-1"></a>  {t<span class="op">,</span> <span class="dt">valeur</span><span class="op">:</span> C0_s3 <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> n_s3 <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> (n_s3 <span class="op">-</span> t)<span class="op">,</span> <span class="dt">serie</span><span class="op">:</span> <span class="st">"Actualisation (V₀)"</span>}</span>
-<span id="cb3-255"><a href="#cb3-255" aria-hidden="true" tabindex="-1"></a>])<span class="op">.</span><span class="fu">flat</span>()</span>
-<span id="cb3-256"><a href="#cb3-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-257"><a href="#cb3-257" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb3-258"><a href="#cb3-258" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Valeur du capital selon la perspective choisie"</span><span class="op">,</span></span>
-<span id="cb3-259"><a href="#cb3-259" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb3-260"><a href="#cb3-260" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(data_s3<span class="op">,</span> Plot<span class="op">.</span><span class="fu">groupX</span>({<span class="dt">y</span><span class="op">:</span> <span class="st">"first"</span>}<span class="op">,</span> {</span>
-<span id="cb3-261"><a href="#cb3-261" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"valeur"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"serie"</span><span class="op">,</span></span>
-<span id="cb3-262"><a href="#cb3-262" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span></span>
-<span id="cb3-263"><a href="#cb3-263" aria-hidden="true" tabindex="-1"></a>    }))<span class="op">,</span></span>
-<span id="cb3-264"><a href="#cb3-264" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([C0_s3]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"gray"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4"</span><span class="op">,</span></span>
-<span id="cb3-265"><a href="#cb3-265" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"C₀"</span>})<span class="op">,</span></span>
-<span id="cb3-266"><a href="#cb3-266" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
-<span id="cb3-267"><a href="#cb3-267" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
-<span id="cb3-268"><a href="#cb3-268" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
-<span id="cb3-269"><a href="#cb3-269" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Période t"</span><span class="op">,</span> <span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`t=</span><span class="sc">${</span>d<span class="sc">}</span><span class="vs">`</span>}<span class="op">,</span></span>
-<span id="cb3-270"><a href="#cb3-270" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Valeur (€)"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
-<span id="cb3-271"><a href="#cb3-271" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span></span>
-<span id="cb3-272"><a href="#cb3-272" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="519" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 518;"><span id="cb3-519"><a href="#cb3-519" aria-hidden="true" tabindex="-1"></a>viewof C0_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">100</span><span class="op">,</span> <span class="dv">20000</span>]<span class="op">,</span> {</span>
+<span id="cb3-520"><a href="#cb3-520" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb3-521"><a href="#cb3-521" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Capital initial C₀ (€)"</span></span>
+<span id="cb3-522"><a href="#cb3-522" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb3-523"><a href="#cb3-523" aria-hidden="true" tabindex="-1"></a>viewof i_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="fl">0.20</span>]<span class="op">,</span> {</span>
+<span id="cb3-524"><a href="#cb3-524" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span></span>
+<span id="cb3-525"><a href="#cb3-525" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Taux d'intérêt i (annuel)"</span></span>
+<span id="cb3-526"><a href="#cb3-526" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb3-527"><a href="#cb3-527" aria-hidden="true" tabindex="-1"></a>viewof n_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {</span>
+<span id="cb3-528"><a href="#cb3-528" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb3-529"><a href="#cb3-529" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Nombre de périodes n"</span></span>
+<span id="cb3-530"><a href="#cb3-530" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb3-531"><a href="#cb3-531" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-532"><a href="#cb3-532" aria-hidden="true" tabindex="-1"></a>data_s3 <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> n_s3 <span class="op">+</span> <span class="dv">1</span>}<span class="op">,</span> (_<span class="op">,</span> t) <span class="kw">=&gt;</span> [</span>
+<span id="cb3-533"><a href="#cb3-533" aria-hidden="true" tabindex="-1"></a>  {t<span class="op">,</span> <span class="dt">valeur</span><span class="op">:</span> C0_s3 <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> t<span class="op">,</span>                          <span class="dt">serie</span><span class="op">:</span> <span class="st">"Capitalisation (Cₙ)"</span>}<span class="op">,</span></span>
+<span id="cb3-534"><a href="#cb3-534" aria-hidden="true" tabindex="-1"></a>  {t<span class="op">,</span> <span class="dt">valeur</span><span class="op">:</span> C0_s3 <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> n_s3 <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> (n_s3 <span class="op">-</span> t)<span class="op">,</span> <span class="dt">serie</span><span class="op">:</span> <span class="st">"Actualisation (V₀)"</span>}</span>
+<span id="cb3-535"><a href="#cb3-535" aria-hidden="true" tabindex="-1"></a>])<span class="op">.</span><span class="fu">flat</span>()</span>
+<span id="cb3-536"><a href="#cb3-536" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-537"><a href="#cb3-537" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb3-538"><a href="#cb3-538" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Valeur du capital selon la perspective choisie"</span><span class="op">,</span></span>
+<span id="cb3-539"><a href="#cb3-539" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb3-540"><a href="#cb3-540" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(data_s3<span class="op">,</span> Plot<span class="op">.</span><span class="fu">groupX</span>({<span class="dt">y</span><span class="op">:</span> <span class="st">"first"</span>}<span class="op">,</span> {</span>
+<span id="cb3-541"><a href="#cb3-541" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"valeur"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"serie"</span><span class="op">,</span></span>
+<span id="cb3-542"><a href="#cb3-542" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb3-543"><a href="#cb3-543" aria-hidden="true" tabindex="-1"></a>    }))<span class="op">,</span></span>
+<span id="cb3-544"><a href="#cb3-544" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([C0_s3]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"gray"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4"</span><span class="op">,</span></span>
+<span id="cb3-545"><a href="#cb3-545" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"C₀"</span>})<span class="op">,</span></span>
+<span id="cb3-546"><a href="#cb3-546" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
+<span id="cb3-547"><a href="#cb3-547" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
+<span id="cb3-548"><a href="#cb3-548" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb3-549"><a href="#cb3-549" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Période t"</span><span class="op">,</span> <span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`t=</span><span class="sc">${</span>d<span class="sc">}</span><span class="vs">`</span>}<span class="op">,</span></span>
+<span id="cb3-550"><a href="#cb3-550" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Valeur (€)"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb3-551"><a href="#cb3-551" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span></span>
+<span id="cb3-552"><a href="#cb3-552" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -807,6 +1158,7 @@ window.Quarto = {
 <li>La barre <strong>orange</strong> (Actualisation) montre <span class="math inline">\(V_0 = C_n / (1+i)^{n-t}\)</span> : vue depuis la date <span class="math inline">\(n\)</span>, la valeur <em>actuelle</em> d’un flux futur <em>décroît</em> plus on s’éloigne dans le temps.</li>
 <li>La ligne pointillée indique <span class="math inline">\(C_0\)</span> de départ.</li>
 </ul>
+<p>Choix technique (T-IV) : OJS, car il s’agit d’arithmétique pure et la réponse est instantanée.</p>
 </div>
 </div>
 <hr>
@@ -817,9 +1169,129 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><em>Durée : 1 heure</em></p>
 </blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Situation concrète
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Vous financez un véhicule utilitaire de <strong>10 000 €</strong> remboursable en une seule fois au bout d’un an. L’organisme A affiche un taux de <strong>9 % par an</strong>, les intérêts étant calculés une seule fois, en fin d’année. L’organisme B affiche <strong>0,75 % par mois</strong>, les intérêts étant ajoutés à la dette chaque mois. Le commercial de B vous rassure : « 0,75 % fois 12, cela fait 9 %, c’est exactement la même chose ».</p>
+<p><strong>Ces deux offres vous coûteront-elles vraiment le même montant ?</strong></p>
+</div>
+</div>
 <section id="intuition-économique-2" class="level3">
 <h3 class="anchored" data-anchor-id="intuition-économique-2">Intuition économique</h3>
 <p>Un même taux peut s’exprimer sur des périodicités différentes (mensuelle, trimestrielle, annuelle…). Deux conventions existent, avec des implications très différentes.</p>
+</section>
+<section id="exploration-numérique-2" class="level3">
+<h3 class="anchored" data-anchor-id="exploration-numérique-2">Exploration numérique</h3>
+<p><em>Règle d’or : tracez d’abord la ligne du temps (voir <a href="#rule-ligne-temps">Règle d’or</a>).</em></p>
+<p>Suivons la dette chez l’organisme B mois par mois. Chaque mois, on ajoute 0,75 % à la dette : on la <strong>multiplie par 1,0075</strong>. Le premier mois, les intérêts valent 10 000 × 0,0075 = 75 € ; le deuxième, ils portent sur 10 075 € et valent déjà 75,56 €. À titre de comparaison, la dernière colonne indique la dette si l’on ajoutait seulement 75 € par mois, sans intérêts sur les intérêts (c’est ce qu’affirme le commercial).</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 53%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Mois</th>
+<th style="text-align: right;">Dette chez B, intérêts capitalisés (€)</th>
+<th style="text-align: right;">Dette si +75 € par mois (€)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10 000,00</td>
+<td style="text-align: right;">10 000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10 075,00</td>
+<td style="text-align: right;">10 075</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">10 150,56</td>
+<td style="text-align: right;">10 150</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">10 226,69</td>
+<td style="text-align: right;">10 225</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">10 303,39</td>
+<td style="text-align: right;">10 300</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">10 380,67</td>
+<td style="text-align: right;">10 375</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">10 458,52</td>
+<td style="text-align: right;">10 450</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">10 536,96</td>
+<td style="text-align: right;">10 525</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">10 615,99</td>
+<td style="text-align: right;">10 600</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10 695,61</td>
+<td style="text-align: right;">10 675</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10 775,83</td>
+<td style="text-align: right;">10 750</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">10 856,64</td>
+<td style="text-align: right;">10 825</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">10 938,07</td>
+<td style="text-align: right;">10 900</td>
+</tr>
+</tbody>
+</table>
+<p>Le douzième mois, les intérêts atteignent 81,42 € (contre 75 € le premier mois), car ils portent sur une dette déjà gonflée des intérêts précédents.</p>
+<p><strong>Réponse :</strong> au bout d’un an, vous devrez <strong>10 938,07 €</strong> à l’organisme B, contre <strong>10 900 €</strong> à l’organisme A. L’offre B coûte environ <strong>38 € de plus</strong> : les deux offres ne sont pas équivalentes. En réalité, 0,75 % par mois correspond à un coût annuel de 938,07 / 10 000 ≈ <strong>9,38 %</strong>, et non 9 %.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Observez le schéma
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Multiplier 12 fois par 1,0075 revient à multiplier par <span class="math inline">\(1{,}0075^{12} \approx 1{,}0938\)</span> : le taux annuel réellement subi est <span class="math inline">\(1{,}0075^{12} - 1 \approx 9{,}38\,\%\)</span>.</li>
+<li>Multiplier 0,75 % par 12 (le calcul du commercial) donne 9 % : cela correspond à la colonne « +75 € par mois », qui <strong>oublie</strong> les intérêts sur les intérêts.</li>
+<li>Pour qu’un taux mensuel <span class="math inline">\(i_m\)</span> donne <em>exactement</em> 9 % sur un an, il faudrait donc <span class="math inline">\((1 + i_m)^{12} = 1{,}09\)</span>, c’est-à-dire <span class="math inline">\(i_m = 1{,}09^{1/12} - 1 \approx 0{,}721\,\%\)</span> : on prend la <strong>racine douzième</strong>, on ne divise pas par 12.</li>
+</ul>
+<p>La division par 12 définit le taux <em>proportionnel</em> ; la racine définit le taux <em>équivalent</em>. Ce sont les deux conventions formalisées ci-dessous.</p>
+</div>
+</div>
 </section>
 <section id="a.-taux-proportionnel" class="level3">
 <h3 class="anchored" data-anchor-id="a.-taux-proportionnel">A. Taux proportionnel</h3>
@@ -836,6 +1308,27 @@ window.Quarto = {
 <p>Le taux mensuel <strong>proportionnel</strong> au taux annuel <span class="math inline">\(i_a\)</span> est :</p>
 <p><span class="math display">\[i_m = \frac{i_a}{12}\]</span></p>
 <p><strong>Logique :</strong> on divise simplement le taux annuel par le nombre de périodes. Cette convention <em>ignore</em> la capitalisation infra-annuelle.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Explication en langage clair
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ce que calcule cette formule</strong> : un taux mensuel obtenu en divisant simplement le taux annuel par 12.</p>
+<p><strong>Rôle de chaque paramètre</strong> :</p>
+<ul>
+<li><code>i_m</code> : le taux mensuel proportionnel, appliqué chaque mois.</li>
+<li><code>i_a</code> : le taux annuel affiché par le prêteur ou la banque.</li>
+<li><code>12</code> : le nombre de mois dans l’année, par lequel on divise le taux annuel.</li>
+</ul>
+<p><strong>Ce que signifie le résultat</strong> : <code>i_m</code> est un taux de convention qui ne redonne le taux annuel affiché que si les intérêts mensuels ne sont pas capitalisés (0,75 % par mois pour 9 % par an).</p>
+<p><strong>Intuition directionnelle</strong> : si le taux annuel <code>i_a</code> augmente, <code>i_m</code> augmente dans la même proportion, mais l’écart avec le coût réel des intérêts capitalisés chaque mois se creuse aussi.</p>
 </div>
 </div>
 </section>
@@ -860,8 +1353,30 @@ window.Quarto = {
 <p><strong>Lecture :</strong> placer au taux mensuel équivalent pendant 12 mois donne <em>exactement</em> le même résultat que placer au taux annuel <span class="math inline">\(i_a\)</span> pendant 1 an.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Explication en langage clair
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ce que calcule cette formule</strong> : le taux par sous-période qui, capitalisé sur toute l’année, donne exactement le même résultat que le taux annuel.</p>
+<p><strong>Rôle de chaque paramètre</strong> :</p>
+<ul>
+<li><code>i_m</code> : le taux mensuel équivalent, appliqué et capitalisé chaque mois.</li>
+<li><code>i_a</code> : le taux annuel de référence que l’on veut reproduire.</li>
+<li><code>i_p</code> : le taux équivalent pour une sous-période quelconque (mois, trimestre, semestre).</li>
+<li><code>m</code> : le nombre de sous-périodes dans l’année, qui vaut 12 dans les deux premières égalités (mois) et 4 pour des trimestres.</li>
+</ul>
+<p><strong>Ce que signifie le résultat</strong> : <code>i_p</code> est le seul taux par sous-période qui rend deux offres réellement comparables, puisque 9 % par an équivaut à environ 0,721 % par mois, et non 0,75 %.</p>
+<p><strong>Intuition directionnelle</strong> : si le nombre de sous-périodes <code>m</code> augmente, le taux équivalent <code>i_p</code> devient un peu plus petit que la simple division par <code>m</code>, car des intérêts capitalisés plus souvent produisent davantage d’intérêts.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-30-contents" aria-controls="callout-30" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -870,7 +1385,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div id="callout-30" class="callout-30-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>On cherche <span class="math inline">\(i_p\)</span> tel que placer <span class="math inline">\(C_0\)</span> pendant <span class="math inline">\(m\)</span> sous-périodes au taux <span class="math inline">\(i_p\)</span> donne le même résultat que placer <span class="math inline">\(C_0\)</span> pendant 1 an au taux <span class="math inline">\(i_a\)</span> :</p>
 <p><span class="math display">\[C_0(1 + i_p)^m = C_0(1 + i_a)\]</span></p>
@@ -878,6 +1393,19 @@ window.Quarto = {
 <p>Pour <span class="math inline">\(m = 12\)</span> (mensuel) : <span class="math inline">\(i_m = (1 + i_a)^{1/12} - 1\)</span></p>
 <p>Pour <span class="math inline">\(m = 4\)</span> (trimestriel) : <span class="math inline">\(i_t = (1 + i_a)^{1/4} - 1\)</span></p>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Définition — Taux équivalents
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Deux taux relatifs à des périodes différentes sont <strong>équivalents</strong> lorsque, appliqués en intérêts composés au même capital pendant la même durée, ils produisent la même valeur acquise : <span class="math inline">\((1 + i_p)^m = 1 + i_a\)</span>, où <span class="math inline">\(m\)</span> est le nombre de sous-périodes dans l’année.</p>
 </div>
 </div>
 </section>
@@ -893,6 +1421,35 @@ window.Quarto = {
 </blockquote>
 <p><span class="math display">\[i_a = (1{,}005)^{12} - 1 \approx 0{,}0617 = 6{,}17\,\%\]</span></p>
 <p>Le taux annuel effectif est <strong>6,17 %</strong>, et non 6 % (qui serait le taux proportionnel <span class="math inline">\(0{,}5\% \times 12\)</span>). L’écart (0,17 point) représente l’effet de la capitalisation mensuelle.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Interprétation économique
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Un taux affiché ne dit rien du coût réel tant que l’on ne connaît pas la fréquence de capitalisation. Si les intérêts sont capitalisés plus souvent (chaque mois, chaque jour), le coût annuel effectif augmente, à taux affiché identique ; l’écart grandit aussi avec le niveau du taux. Pour comparer deux offres de crédit ou de placement, il faut donc les convertir sur une même période avec des taux <strong>équivalents</strong> — c’est précisément le rôle du TAEG que les prêteurs doivent afficher : dans la situation concrète, 9,38 % pour B contre 9 % pour A.</p>
+</div>
+</div>
+<div id="err-s4" class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Erreur fréquente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>L’intuition piège</strong> : « 9 % par an, c’est 0,75 % par mois : il suffit de diviser par 12. »</p>
+<p><strong>Pourquoi c’est faux</strong> : diviser par 12 donne le taux proportionnel, qui ignore que les intérêts mensuels produisent eux-mêmes des intérêts les mois suivants ; 0,75 % par mois capitalisé donne en réalité 9,38 % sur l’année.</p>
+<p><strong>Le bon raisonnement</strong> : pour obtenir le même résultat sur un an, le taux mensuel doit vérifier « (1 + taux mensuel) puissance 12 = 1 + taux annuel », ce qui donne le taux équivalent.</p>
+<p><strong>Astuce mémo</strong> : diviser donne le proportionnel, la racine donne l’équivalent.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -935,6 +1492,20 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><em>Durée : 1 heure 15</em></p>
 </blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Situation concrète
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Thomas veut réunir <strong>30 000 €</strong> d’apport pour acheter un appartement dans <strong>5 ans</strong>. Il peut mettre de côté <strong>5 000 € par an</strong>, versés à la fin de chaque année sur un placement rémunéré à <strong>3 %</strong>. Cinq versements de 5 000 € font 25 000 € : il lui manque 5 000 € sur le papier, mais les intérêts vont travailler pour lui. Reste à savoir s’ils suffiront à combler l’écart.</p>
+<p><strong>Les versements de Thomas lui permettront-ils d’atteindre son objectif ?</strong></p>
+</div>
+</div>
 <section id="intuition-économique-3" class="level3">
 <h3 class="anchored" data-anchor-id="intuition-économique-3">Intuition économique</h3>
 <p>Une <strong>annuité</strong> est un flux financier constant (versement ou encaissement) répété à intervalles réguliers. La question est : quelle est la valeur <em>totale</em> de ces flux, ramenée à une date commune ?</p>
@@ -956,6 +1527,161 @@ window.Quarto = {
 <li>Le taux et les flux sont-ils sur la <strong>même périodicité</strong> ?</li>
 <li>Doit-on <strong>capitaliser</strong> (aller vers le futur) ou <strong>actualiser</strong> (revenir vers le présent) ?</li>
 </ol>
+</div>
+</div>
+</section>
+<section id="exploration-numérique-3" class="level3">
+<h3 class="anchored" data-anchor-id="exploration-numérique-3">Exploration numérique</h3>
+<p><em>Règle d’or : tracez d’abord la ligne du temps (voir <a href="#rule-ligne-temps">Règle d’or</a>).</em></p>
+<p>Appliquons la règle d’or au projet de Thomas : date d’évaluation <span class="math inline">\(t = 5\)</span> (le jour de l’achat), versements en <strong>fin</strong> d’année, pas de différé, taux et versements annuels, et l’on <strong>capitalise</strong> vers le futur.</p>
+<p><strong>Année par année.</strong> Chaque année, le solde rapporte 3 %, puis Thomas ajoute 5 000 €.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 29%">
+<col style="width: 20%">
+<col style="width: 15%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Année</th>
+<th style="text-align: right;">Solde en début d’année (€)</th>
+<th style="text-align: right;">Intérêts à 3 % (€)</th>
+<th style="text-align: right;">Versement (€)</th>
+<th style="text-align: right;">Solde en fin d’année (€)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0,00</td>
+<td style="text-align: right;">0,00</td>
+<td style="text-align: right;">5 000</td>
+<td style="text-align: right;">5 000,00</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5 000,00</td>
+<td style="text-align: right;">150,00</td>
+<td style="text-align: right;">5 000</td>
+<td style="text-align: right;">10 150,00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">10 150,00</td>
+<td style="text-align: right;">304,50</td>
+<td style="text-align: right;">5 000</td>
+<td style="text-align: right;">15 454,50</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">15 454,50</td>
+<td style="text-align: right;">463,64</td>
+<td style="text-align: right;">5 000</td>
+<td style="text-align: right;">20 918,14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">20 918,14</td>
+<td style="text-align: right;">627,54</td>
+<td style="text-align: right;">5 000</td>
+<td style="text-align: right;">26 545,68</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Versement par versement.</strong> On peut aussi suivre chaque versement jusqu’à <span class="math inline">\(t = 5\)</span> : le premier travaille 4 ans, le deuxième 3 ans… le dernier, versé le jour même, ne travaille pas du tout.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Versement</th>
+<th style="text-align: right;">Années de placement</th>
+<th style="text-align: right;">Valeur à <span class="math inline">\(t = 5\)</span> (€)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fin d’année 1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5 000 × 1,03 × 1,03 × 1,03 × 1,03 = 5 627,54</td>
+</tr>
+<tr class="even">
+<td>Fin d’année 2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5 000 × 1,03 × 1,03 × 1,03 = 5 463,64</td>
+</tr>
+<tr class="odd">
+<td>Fin d’année 3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5 000 × 1,03 × 1,03 = 5 304,50</td>
+</tr>
+<tr class="even">
+<td>Fin d’année 4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5 000 × 1,03 = 5 150,00</td>
+</tr>
+<tr class="odd">
+<td>Fin d’année 5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5 000,00</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><strong>26 545,68</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Réponse à Thomas :</strong> non, ses versements ne suffisent pas. Il disposera de <strong>26 545,68 €</strong>, soit environ <strong>3 454 € de moins</strong> que les 30 000 € visés : les intérêts (1 545,68 €) ne comblent qu’une partie de l’écart. Comme le total est proportionnel au versement, il devrait verser 30 000 / 26 545,68 × 5 000 ≈ <strong>5 650,64 € par an</strong> pour atteindre son objectif.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  V0["t = 0 : valeur actuelle V0 = 22 898,54 EUR"]
+  F1["t = 1 : versement 5 000 EUR"]
+  F2["t = 2 : versement 5 000 EUR"]
+  F3["t = 3 : versement 5 000 EUR"]
+  F4["t = 4 : versement 5 000 EUR"]
+  F5["t = 5 : versement 5 000 EUR"]
+  VN["t = 5 : valeur acquise Vn = 26 545,68 EUR"]
+  V0 &lt;-.-&gt;|"/ 1,03^1"| F1
+  V0 &lt;-.-&gt;|"/ 1,03^2"| F2
+  V0 &lt;-.-&gt;|"/ 1,03^3"| F3
+  V0 &lt;-.-&gt;|"/ 1,03^4"| F4
+  V0 &lt;-.-&gt;|"/ 1,03^5"| F5
+  F1 --&gt;|"x 1,03^4"| VN
+  F2 --&gt;|"x 1,03^3"| VN
+  F3 --&gt;|"x 1,03^2"| VN
+  F4 --&gt;|"x 1,03^1"| VN
+  F5 --&gt;|"x 1,03^0"| VN
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><em>Ligne du temps des versements de Thomas : les cinq versements de 5 000 € (dates 1 à 5) sont capitalisés jusqu’à la date 5, où ils valent 26 545,68 €, ou actualisés jusqu’à la date 0, où ils valent 5 000 × (1 − 1,03^−5) / 0,03 ≈ 22 898,54 €.</em></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Astuce</span>Observez le schéma
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Les deux tableaux donnent le même total : la valeur acquise est la <strong>somme des valeurs capitalisées</strong> de chaque versement.</li>
+<li>Chaque ligne du second tableau est la précédente multipliée (ou divisée) par 1,03 : le total est une <strong>somme géométrique</strong>.</li>
+</ul>
+<p><span class="math display">\[5\,000 \times \left(1 + 1{,}03 + 1{,}03^2 + 1{,}03^3 + 1{,}03^4\right) = 5\,000 \times 5{,}30914 \approx 26\,545{,}68 \text{ €}\]</span></p>
+<ul>
+<li>Une somme géométrique de raison <span class="math inline">\(1{,}03\)</span> et de 5 termes se calcule en une seule opération : <span class="math inline">\(\dfrac{1{,}03^5 - 1}{0{,}03} \approx 5{,}30914\)</span>.</li>
+</ul>
+<p>En remplaçant 5 000 € par un versement <span class="math inline">\(A\)</span>, 3 % par un taux <span class="math inline">\(i\)</span> et 5 par <span class="math inline">\(n\)</span>, on obtient la formule de la valeur acquise des annuités de fin de période.</p>
 </div>
 </div>
 </section>
@@ -981,8 +1707,31 @@ window.Quarto = {
 <p><strong>Lecture :</strong> <span class="math inline">\(A\)</span> est le montant de chaque versement, <span class="math inline">\(i\)</span> le taux périodique, <span class="math inline">\(n\)</span> le nombre de versements. Les formules donnent la valeur <em>équivalente</em> de tous les versements à la date choisie.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Explication en langage clair
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ce que calcule cette formule</strong> : la valeur totale d’une suite de versements identiques en fin de période, soit à la date du dernier versement (<code>V_n</code>), soit une période avant le premier (<code>V_0</code>).</p>
+<p><strong>Rôle de chaque paramètre</strong> :</p>
+<ul>
+<li><code>V_n</code> : la valeur acquise, somme de tous les versements capitalisés jusqu’à la date <code>n</code>.</li>
+<li><code>V_0</code> : la valeur actuelle, somme de tous les versements actualisés à la date 0.</li>
+<li><code>A</code> : le montant constant de chaque versement.</li>
+<li><code>i</code> : le taux par période, de même périodicité que les versements.</li>
+<li><code>n</code> : le nombre de versements, égal au nombre de périodes.</li>
+</ul>
+<p><strong>Ce que signifie le résultat</strong> : <code>V_n</code> est le capital constitué (26 545,68 € pour Thomas) et <code>V_0</code> le montant unique d’aujourd’hui équivalent à tous les versements (22 898,54 € pour Thomas).</p>
+<p><strong>Intuition directionnelle</strong> : si le taux <code>i</code> augmente, la valeur acquise <code>V_n</code> augmente tandis que la valeur actuelle <code>V_0</code> diminue.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-40-contents" aria-controls="callout-40" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -991,7 +1740,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div id="callout-40" class="callout-40-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>La valeur actuelle est la somme des valeurs actuelles de chaque versement :</p>
 <p><span class="math display">\[V_0 = \frac{A}{(1+i)^1} + \frac{A}{(1+i)^2} + \cdots + \frac{A}{(1+i)^n}\]</span></p>
@@ -999,6 +1748,61 @@ window.Quarto = {
 <p><span class="math display">\[V_0 = \frac{A}{1+i} \cdot \frac{1 - (1/(1+i))^n}{1 - 1/(1+i)}
      = A \cdot \frac{1 - (1+i)^{-n}}{i}\]</span></p>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Définition — Annuités constantes de fin de période
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une suite d’<strong>annuités constantes de fin de période</strong> (terme échu) est une suite de <span class="math inline">\(n\)</span> flux de même montant <span class="math inline">\(A\)</span>, versés aux dates <span class="math inline">\(t = 1, 2, \dots, n\)</span>, la période des flux étant celle du taux <span class="math inline">\(i\)</span>. Sa <strong>valeur acquise</strong> <span class="math inline">\(V_n\)</span> est évaluée à la date du dernier flux ; sa <strong>valeur actuelle</strong> <span class="math inline">\(V_0\)</span>, une période avant le premier flux.</p>
+</div>
+</div>
+</section>
+<section id="exemple-résolu-2" class="level3">
+<h3 class="anchored" data-anchor-id="exemple-résolu-2">Exemple résolu</h3>
+<blockquote class="blockquote">
+<p>Une PME s’engage à verser <strong>2 000 €</strong> à la fin de chaque année pendant <strong>4 ans</strong>. Le taux est de <strong>5 %</strong>.</p>
+</blockquote>
+<p><strong>Valeur actuelle</strong> (ce que représente l’engagement aujourd’hui) :</p>
+<p><span class="math display">\[V_0 = 2\,000 \times \frac{1 - 1{,}05^{-4}}{0{,}05}
+     = 2\,000 \times 3{,}54595 \approx 7\,091{,}90 \text{ €}\]</span></p>
+<p><strong>Valeur acquise</strong> (à la date du dernier versement) :</p>
+<p><span class="math display">\[V_4 = 2\,000 \times \frac{1{,}05^{4} - 1}{0{,}05}
+     = 2\,000 \times 4{,}31013 \approx 8\,620{,}25 \text{ €}\]</span></p>
+<p>Vérification : <span class="math inline">\(7\,091{,}90 \times 1{,}05^4 \approx 8\,620{,}25\)</span> €. Les deux valeurs décrivent les mêmes flux, vus à deux dates différentes.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Interprétation économique
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Une annuité transforme un effort régulier en un capital (valeur acquise) ou résume une suite d’engagements en un montant unique d’aujourd’hui (valeur actuelle). Pour Thomas, les intérêts ne représentent que 1 545,68 € sur 26 545,68 € : sur une durée courte et à taux faible, c’est surtout l’épargne qui fait le capital. Si la durée s’allonge, la valeur acquise augmente plus vite que le nombre de versements : avec un sixième versement de 5 000 €, il atteindrait environ 32 342 €. Pour décider, il dispose donc de trois leviers : verser davantage (environ 5 651 € par an), attendre plus longtemps, ou trouver un meilleur taux.</p>
+</div>
+</div>
+<div id="err-s5" class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Avertissement</span>Erreur fréquente
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>L’intuition piège</strong> : « Il y a 5 versements, donc la formule d’annuité s’applique telle quelle, que l’on verse en début ou en fin d’année. »</p>
+<p><strong>Pourquoi c’est faux</strong> : la formule standard suppose des versements en fin de période ; si l’on verse en début de période, chaque versement travaille une année de plus et la valeur acquise est multipliée par (1 + i).</p>
+<p><strong>Le bon raisonnement</strong> : tracer la ligne du temps, repérer la date du premier et du dernier flux, puis choisir la formule (terme échu ou terme à échoir) et la date d’évaluation correspondantes.</p>
+<p><strong>Astuce mémo</strong> : dessine la ligne du temps — où tombe le premier flux ?</p>
 </div>
 </div>
 </section>
@@ -1021,6 +1825,30 @@ window.Quarto = {
 <p><span class="math display">\[V_n = A \cdot \frac{(1+i)^n - 1}{i} \cdot (1+i)\]</span></p>
 <p><span class="math display">\[V_0 = A \cdot \frac{1 - (1+i)^{-n}}{i} \cdot (1+i)\]</span></p>
 <p><strong>Lecture :</strong> il suffit de multiplier les formules de fin de période par <span class="math inline">\((1+i)\)</span> pour obtenir celles de début de période.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Explication en langage clair
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ce que calcule cette formule</strong> : la valeur totale d’une suite de versements identiques effectués en début de période, chaque versement travaillant une période de plus qu’en fin de période.</p>
+<p><strong>Rôle de chaque paramètre</strong> :</p>
+<ul>
+<li><code>V_n</code> : la valeur acquise, évaluée à la date <code>n</code>, une période après le dernier versement.</li>
+<li><code>V_0</code> : la valeur actuelle, évaluée à la date du premier versement.</li>
+<li><code>A</code> : le montant constant de chaque versement.</li>
+<li><code>i</code> : le taux par période, de même périodicité que les versements.</li>
+<li><code>n</code> : le nombre de versements.</li>
+<li><code>(1 + i)</code> : le facteur qui ajoute la période de capitalisation supplémentaire gagnée par chaque versement.</li>
+</ul>
+<p><strong>Ce que signifie le résultat</strong> : le résultat est toujours supérieur à celui des versements de fin de période ; si Thomas versait en début d’année, il disposerait de 26 545,68 × 1,03 ≈ 27 342 € au bout de 5 ans.</p>
+<p><strong>Intuition directionnelle</strong> : si le taux <code>i</code> augmente, l’avantage de verser en début de période augmente, car la période de capitalisation supplémentaire rapporte davantage.</p>
 </div>
 </div>
 </section>
@@ -1051,6 +1879,29 @@ window.Quarto = {
 <p><strong>Lecture :</strong> quand <span class="math inline">\(n \to \infty\)</span>, le facteur <span class="math inline">\(1-(1+i)^{-n} \to 1\)</span>, donc <span class="math inline">\(V_0 \to A/i\)</span>. La perpétuité croissante correspond au modèle de Gordon-Shapiro utilisé en évaluation d’actions.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Explication en langage clair
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Ce que calcule cette formule</strong> : la valeur actuelle d’une suite infinie de versements, constants ou croissant à un rythme régulier.</p>
+<p><strong>Rôle de chaque paramètre</strong> :</p>
+<ul>
+<li><code>V_0</code> : la valeur actuelle de tous les versements futurs, évaluée une période avant le premier.</li>
+<li><code>A</code> : le montant constant de chaque versement de la perpétuité constante.</li>
+<li><code>i</code> : le taux d’actualisation par période.</li>
+<li><code>A_1</code> : le premier versement de la perpétuité croissante, reçu à la fin de la première période.</li>
+<li><code>g</code> : le taux de croissance des versements, qui doit rester inférieur à <code>i</code>.</li>
+</ul>
+<p><strong>Ce que signifie le résultat</strong> : <code>V_0</code> est le prix maximal à payer aujourd’hui pour un revenu sans fin ; par exemple, 1 000 € par an à 4 % valent 25 000 €.</p>
+<p><strong>Intuition directionnelle</strong> : si le taux <code>i</code> augmente ou si la croissance <code>g</code> diminue, la valeur <code>V_0</code> baisse, et elle explose lorsque <code>g</code> se rapproche de <code>i</code>.</p>
+</div>
+</div>
 <hr>
 </section>
 </section>
@@ -1059,21 +1910,29 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><em>Durée : 1 heure</em></p>
 </blockquote>
-<section id="situation" class="level3">
-<h3 class="anchored" data-anchor-id="situation">Situation</h3>
-<blockquote class="blockquote">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Contexte
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>Une entreprise souhaite constituer dans <strong>8 ans</strong> une réserve de <strong>500 000 €</strong> destinée au remplacement de son système d’information.</p>
 <p>Les versements sont effectués en <strong>fin d’année</strong>. Le placement rapporte <strong>3,5 %</strong> par an.</p>
-</blockquote>
-</section>
-<section id="question-principale-calcul-de-lannuité-nécessaire" class="level3">
-<h3 class="anchored" data-anchor-id="question-principale-calcul-de-lannuité-nécessaire">Question principale — Calcul de l’annuité nécessaire</h3>
+</div>
+</div>
+<p><em>Règle d’or : tracez d’abord la ligne du temps (voir <a href="#rule-ligne-temps">Règle d’or</a>).</em></p>
+<section id="étape-1-calcul-de-lannuité-nécessaire-question-principale" class="level3">
+<h3 class="anchored" data-anchor-id="étape-1-calcul-de-lannuité-nécessaire-question-principale">Étape 1 — Calcul de l’annuité nécessaire (question principale)</h3>
 <p>On cherche <span class="math inline">\(A\)</span> tel que <span class="math inline">\(V_n = 500\,000\)</span> avec <span class="math inline">\(n = 8\)</span> et <span class="math inline">\(i = 0{,}035\)</span>.</p>
 <p>On inverse la formule de valeur acquise des annuités de fin de période :</p>
 <p><span class="math display">\[A = V_n \times \frac{i}{(1+i)^n - 1}\]</span></p>
 <p><span class="math display">\[A = 500\,000 \times \frac{0{,}035}{(1{,}035)^8 - 1}
-   = 500\,000 \times \frac{0{,}035}{0{,}3168}
-   \approx 55\,244 \text{ €}\]</span></p>
+   = 500\,000 \times \frac{0{,}035}{0{,}316809}
+   \approx 55\,238 \text{ €}\]</span></p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1084,22 +1943,41 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Vérifiez que <span class="math inline">\(55\,244 \times \frac{(1{,}035)^8 - 1}{0{,}035} \approx 500\,000\)</span>. Tout modèle Excel doit comporter ce type de cellule de contrôle.</p>
+<p>Vérifiez que <span class="math inline">\(55\,238 \times \frac{(1{,}035)^8 - 1}{0{,}035} \approx 500\,000\)</span>. Tout modèle Excel doit comporter ce type de cellule de contrôle.</p>
 </div>
 </div>
 </section>
-<section id="questions-subsidiaires" class="level3">
-<h3 class="anchored" data-anchor-id="questions-subsidiaires">Questions subsidiaires</h3>
+<section id="étape-2-tester-les-variantes-questions-subsidiaires" class="level3">
+<h3 class="anchored" data-anchor-id="étape-2-tester-les-variantes-questions-subsidiaires">Étape 2 — Tester les variantes (questions subsidiaires)</h3>
 <p><strong>Q2 — Versements en début d’année :</strong></p>
 <p><span class="math display">\[A_{\text{début}} = V_n \times \frac{i}{(1+i)^n - 1} \times \frac{1}{1+i}
-\approx 55\,244 / 1{,}035 \approx 53\,373 \text{ €}\]</span></p>
-<p>Verser en début d’année permet d’économiser environ 1 871 € par an.</p>
+\approx 55\,238 / 1{,}035 \approx 53\,370 \text{ €}\]</span></p>
+<p>Verser en début d’année permet d’économiser environ 1 868 € par an.</p>
 <p><strong>Q3 — Taux limité à 2 % :</strong></p>
-<p><span class="math display">\[A = 500\,000 \times \frac{0{,}02}{(1{,}02)^8 - 1} \approx 58\,258 \text{ €}\]</span></p>
+<p><span class="math display">\[A = 500\,000 \times \frac{0{,}02}{(1{,}02)^8 - 1} \approx 58\,255 \text{ €}\]</span></p>
 <p>Un taux plus faible impose des versements plus élevés (la capitalisation travaille moins).</p>
 <p><strong>Q4 — Versements fixes de 50 000 € :</strong></p>
-<p><span class="math display">\[V_8 = 50\,000 \times \frac{(1{,}035)^8 - 1}{0{,}035} \approx 452\,849 \text{ €}\]</span></p>
-<p>Ces versements ne suffisent pas : il manquerait environ 47 151 €.</p>
+<p><span class="math display">\[V_8 = 50\,000 \times \frac{(1{,}035)^8 - 1}{0{,}035} \approx 452\,584 \text{ €}\]</span></p>
+<p>Ces versements ne suffisent pas : il manquerait environ 47 416 €.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Cadre de décision
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Si</strong> l’objectif est un capital futur à une date fixe, <strong>alors</strong> on inverse la formule de valeur acquise pour trouver le versement périodique <span class="math inline">\(A\)</span>.</li>
+<li><strong>Si</strong> les versements peuvent être effectués en début de période, <strong>alors</strong> chaque versement travaille une période de plus et l’effort annuel est divisé par <span class="math inline">\((1+i)\)</span>.</li>
+<li><strong>Si</strong> le taux de placement baisse, <strong>alors</strong> l’effort d’épargne augmente : il faut prévoir une marge de sécurité sur le taux retenu.</li>
+<li><strong>Si</strong> le versement est imposé par la trésorerie, <strong>alors</strong> on calcule la valeur acquise, on la compare à l’objectif et l’on comble l’écart en allongeant la durée ou en augmentant les versements.</li>
+<li><strong>Si</strong> un montant est retenu, <strong>alors</strong> on le contrôle par la formule inverse avant de le présenter.</li>
+</ul>
+</div>
+</div>
 <hr>
 </section>
 </section>
@@ -1135,13 +2013,13 @@ window.Quarto = {
 <ul>
 <li>Utiliser <span class="math inline">\(5\)</span> au lieu de <span class="math inline">\(0{,}05\)</span> pour un taux de 5 %.</li>
 <li>Mélanger un taux mensuel avec une durée exprimée en années (sans conversion).</li>
-<li>Oublier les intérêts composés (utiliser la formule simple quand la période &gt; 1 an).</li>
-<li>Décaler les flux d’une période (erreur de ±1 dans l’exposant).</li>
-<li>Confondre taux proportionnel et taux équivalent.</li>
+<li>Oublier les intérêts composés (utiliser la formule simple quand la période &gt; 1 an) — <a href="#err-s2">voir Séquence 2</a>.</li>
+<li>Décaler les flux d’une période (erreur de ±1 dans l’exposant) — <a href="#err-s5">voir Séquence 5</a>.</li>
+<li>Confondre taux proportionnel et taux équivalent — <a href="#err-s4">voir Séquence 4</a>.</li>
 </ul>
 <p><strong>Erreurs de raisonnement</strong></p>
 <ul>
-<li>Additionner directement des flux de dates différentes.</li>
+<li>Additionner directement des flux de dates différentes — <a href="#err-s3">voir Séquence 3</a>.</li>
 <li>Ne pas tracer la ligne du temps avant de calculer.</li>
 <li>Oublier de vérifier la cohérence entre la périodicité du taux et celle des flux.</li>
 </ul>
@@ -1175,7 +2053,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="niveau-1-application-directe">Niveau 1 — Application directe</h3>
 <p><strong>Exercice 1.1</strong> — Un capital de <strong>15 000 €</strong> est placé pendant <strong>6 ans</strong> au taux annuel de <strong>3 %</strong> en intérêts composés. Calculez la valeur acquise <span class="math inline">\(C_6\)</span>.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-53-contents" aria-controls="callout-53" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1184,7 +2062,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-23" class="callout-23-contents callout-collapse collapse">
+<div id="callout-53" class="callout-53-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><span class="math display">\[C_6 = 15\,000 \times (1{,}03)^6 = 15\,000 \times 1{,}1941 \approx 17\,911 \text{ €}\]</span></p>
 </div>
@@ -1192,7 +2070,7 @@ window.Quarto = {
 </div>
 <p><strong>Exercice 1.2</strong> — Quelle somme faut-il placer aujourd’hui pour obtenir <strong>25 000 €</strong> dans <strong>4 ans</strong>, si le taux annuel est <strong>4,5 %</strong> ?</p>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-54-contents" aria-controls="callout-54" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1201,7 +2079,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-24" class="callout-24-contents callout-collapse collapse">
+<div id="callout-54" class="callout-54-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><span class="math display">\[V_0 = \frac{25\,000}{(1{,}045)^4} = \frac{25\,000}{1{,}1925} \approx 20\,966 \text{ €}\]</span></p>
 </div>
@@ -1209,7 +2087,7 @@ window.Quarto = {
 </div>
 <p><strong>Exercice 1.3</strong> — Un taux mensuel de <strong>0,8 %</strong> correspond à quel taux annuel effectif ?</p>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-55-contents" aria-controls="callout-55" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1218,7 +2096,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-25" class="callout-25-contents callout-collapse collapse">
+<div id="callout-55" class="callout-55-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><span class="math display">\[i_a = (1{,}008)^{12} - 1 \approx 0{,}1003 = 10{,}03\,\%\]</span></p>
 <p>(Et non <span class="math inline">\(0{,}8\% \times 12 = 9{,}6\,\%\)</span> qui serait le taux proportionnel.)</p>
@@ -1258,7 +2136,7 @@ window.Quarto = {
 </table>
 <p>Quelle offre est la plus avantageuse ?</p>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-56-contents" aria-controls="callout-56" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1267,7 +2145,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-26" class="callout-26-contents callout-collapse collapse">
+<div id="callout-56" class="callout-56-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>Offre A</strong> — taux mensuel proportionnel <span class="math inline">\(4{,}8\% / 12 = 0{,}4\,\%\)</span></p>
 <p>Taux annuel effectif : <span class="math display">\[i_A = (1{,}004)^{12} - 1 \approx 4{,}91\,\%\]</span></p>
@@ -1293,7 +2171,7 @@ window.Quarto = {
 <li>Rédigez une recommandation d’une phrase.</li>
 </ol>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-27-contents" aria-controls="callout-27" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-57-contents" aria-controls="callout-57" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1302,7 +2180,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-27" class="callout-27-contents callout-collapse collapse">
+<div id="callout-57" class="callout-57-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><strong>1. Taux mensuel équivalent :</strong> <span class="math display">\[i_m = (1{,}03)^{1/12} - 1 \approx 0{,}2466\,\%\]</span></p>
 <p><strong>2. Capital à 65 ans (<span class="math inline">\(n = 360\)</span> mois) :</strong> <span class="math display">\[V_{360} = 800 \times \frac{(1{,}002466)^{360} - 1}{0{,}002466}
@@ -1323,7 +2201,7 @@ window.Quarto = {
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBDMF9zMyA9IElucHV0cy5yYW5nZShbMTAwLCAyMDAwMF0sIHtcbiAgdmFsdWU6IDEwMDAsIHN0ZXA6IDEwMCxcbiAgbGFiZWw6IFwiQ2FwaXRhbCBpbml0aWFsIEPigoAgKOKCrClcIlxufSlcbnZpZXdvZiBpX3MzID0gSW5wdXRzLnJhbmdlKFswLjAxLCAwLjIwXSwge1xuICB2YWx1ZTogMC4wNSwgc3RlcDogMC4wMDEsXG4gIGxhYmVsOiBcIlRhdXggZCdpbnTDqXLDqnQgaSAoYW5udWVsKVwiXG59KVxudmlld29mIG5fczMgPSBJbnB1dHMucmFuZ2UoWzEsIDIwXSwge1xuICB2YWx1ZTogMTAsIHN0ZXA6IDEsXG4gIGxhYmVsOiBcIk5vbWJyZSBkZSBww6lyaW9kZXMgblwiXG59KVxuXG5kYXRhX3MzID0gQXJyYXkuZnJvbSh7bGVuZ3RoOiBuX3MzICsgMX0sIChfLCB0KSA9PiBbXG4gIHt0LCB2YWxldXI6IEMwX3MzICogKDEgKyBpX3MzKSAqKiB0LCAgICAgICAgICAgICAgICAgICAgICAgICAgc2VyaWU6IFwiQ2FwaXRhbGlzYXRpb24gKEPigpkpXCJ9LFxuICB7dCwgdmFsZXVyOiBDMF9zMyAqICgxICsgaV9zMykgKiogbl9zMyAvICgxICsgaV9zMykgKiogKG5fczMgLSB0KSwgc2VyaWU6IFwiQWN0dWFsaXNhdGlvbiAoVuKCgClcIn1cbl0pLmZsYXQoKVxuXG5QbG90LnBsb3Qoe1xuICB0aXRsZTogXCJWYWxldXIgZHUgY2FwaXRhbCBzZWxvbiBsYSBwZXJzcGVjdGl2ZSBjaG9pc2llXCIsXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5iYXJZKGRhdGFfczMsIFBsb3QuZ3JvdXBYKHt5OiBcImZpcnN0XCJ9LCB7XG4gICAgICB4OiBcInRcIiwgeTogXCJ2YWxldXJcIiwgZmlsbDogXCJzZXJpZVwiLFxuICAgICAgdGlwOiB0cnVlXG4gICAgfSkpLFxuICAgIFBsb3QucnVsZVkoW0MwX3MzXSwge3N0cm9rZTogXCJncmF5XCIsIHN0cm9rZURhc2hhcnJheTogXCI0XCIsXG4gICAgICBsYWJlbDogXCJD4oKAXCJ9KSxcbiAgICBQbG90LnJ1bGVZKFswXSlcbiAgXSxcbiAgY29sb3I6IHtsZWdlbmQ6IHRydWV9LFxuICB4OiB7bGFiZWw6IFwiUMOpcmlvZGUgdFwiLCB0aWNrRm9ybWF0OiBkID0+IGB0PSR7ZH1gfSxcbiAgeToge2xhYmVsOiBcIlZhbGV1ciAo4oKsKVwiLCBncmlkOiB0cnVlfSxcbiAgbWFyZ2luQm90dG9tOiA0MFxufSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnQzBfczMnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnaV9zMycpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCduX3MzJykifV19
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBDMF9zMyA9IElucHV0cy5yYW5nZShbMTAwLCAyMDAwMF0sIHtcbiAgdmFsdWU6IDEwMDAsIHN0ZXA6IDEwMCxcbiAgbGFiZWw6IFwiQ2FwaXRhbCBpbml0aWFsIEPigoAgKOKCrClcIlxufSlcbnZpZXdvZiBpX3MzID0gSW5wdXRzLnJhbmdlKFswLjAxLCAwLjIwXSwge1xuICB2YWx1ZTogMC4wNSwgc3RlcDogMC4wMDEsXG4gIGxhYmVsOiBcIlRhdXggZCdpbnTDqXLDqnQgaSAoYW5udWVsKVwiXG59KVxudmlld29mIG5fczMgPSBJbnB1dHMucmFuZ2UoWzEsIDIwXSwge1xuICB2YWx1ZTogMSwgc3RlcDogMSxcbiAgbGFiZWw6IFwiTm9tYnJlIGRlIHDDqXJpb2RlcyBuXCJcbn0pXG5cbmRhdGFfczMgPSBBcnJheS5mcm9tKHtsZW5ndGg6IG5fczMgKyAxfSwgKF8sIHQpID0+IFtcbiAge3QsIHZhbGV1cjogQzBfczMgKiAoMSArIGlfczMpICoqIHQsICAgICAgICAgICAgICAgICAgICAgICAgICBzZXJpZTogXCJDYXBpdGFsaXNhdGlvbiAoQ+KCmSlcIn0sXG4gIHt0LCB2YWxldXI6IEMwX3MzICogKDEgKyBpX3MzKSAqKiBuX3MzIC8gKDEgKyBpX3MzKSAqKiAobl9zMyAtIHQpLCBzZXJpZTogXCJBY3R1YWxpc2F0aW9uIChW4oKAKVwifVxuXSkuZmxhdCgpXG5cblBsb3QucGxvdCh7XG4gIHRpdGxlOiBcIlZhbGV1ciBkdSBjYXBpdGFsIHNlbG9uIGxhIHBlcnNwZWN0aXZlIGNob2lzaWVcIixcbiAgbWFya3M6IFtcbiAgICBQbG90LmJhclkoZGF0YV9zMywgUGxvdC5ncm91cFgoe3k6IFwiZmlyc3RcIn0sIHtcbiAgICAgIHg6IFwidFwiLCB5OiBcInZhbGV1clwiLCBmaWxsOiBcInNlcmllXCIsXG4gICAgICB0aXA6IHRydWVcbiAgICB9KSksXG4gICAgUGxvdC5ydWxlWShbQzBfczNdLCB7c3Ryb2tlOiBcImdyYXlcIiwgc3Ryb2tlRGFzaGFycmF5OiBcIjRcIixcbiAgICAgIGxhYmVsOiBcIkPigoBcIn0pLFxuICAgIFBsb3QucnVsZVkoWzBdKVxuICBdLFxuICBjb2xvcjoge2xlZ2VuZDogdHJ1ZX0sXG4gIHg6IHtsYWJlbDogXCJQw6lyaW9kZSB0XCIsIHRpY2tGb3JtYXQ6IGQgPT4gYHQ9JHtkfWB9LFxuICB5OiB7bGFiZWw6IFwiVmFsZXVyICjigqwpXCIsIGdyaWQ6IHRydWV9LFxuICBtYXJnaW5Cb3R0b206IDQwXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdDMF9zMycpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdpX3MzJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ25fczMnKSJ9XX0=
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
