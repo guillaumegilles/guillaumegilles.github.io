@@ -16,8 +16,12 @@ lang: en
 ```
 
 - No `date`; use `date-modified` (site convention).
-- `draft: true` is inherited from `modules/_metadata.yml`, not set per
-  file.
+- `draft: true` and `filters: [shinylive]` are inherited from
+  `modules/_metadata.yml`; do not set them per file.
+- Render a draft module for review with
+  `PROFILE_README_RUNNING=1 quarto render <file> -M draft:false`
+  (`PROFILE_README_RUNNING=1` stops the post-render hook from pushing to
+  the GitHub profile repo).
 
 ## Section order (fixed)
 
@@ -32,7 +36,11 @@ lang: en
 | 7 | `## Proof / derivation` | ≥ 1 `.callout-caution collapse="true"` |
 | 8 | `## Visual intuition` | Geometric or visual reading (T-VII) |
 | 9 | `## Interactive demo` | Shinylive block (required M3, M5, M9) **or** `.callout-important` `TODO:` |
-| 10 | `## Exercises` | ≥ 1 by-hand and ≥ 1 Excel exercise; each a `.callout-caution collapse="true"` with solution |
+| 10 | `## Exercises` | ≥ 1 by-hand and ≥ 1 Excel exercise; each a `.callout-caution collapse="true"` with solution; the callout title carries the track tag, e.g. `#### Exercise 1 (by hand) — title` or `#### Exercise 3 (Excel) — title` |
+
+`## Time plan` is a table with one row per block whose first cell starts
+with `Theory`, `Excel` or `Exercises` and whose second cell is the
+minutes (an integer), for example `| Theory | 70 |`.
 | 11 | `## Common mistakes` | `.callout-warning`, ≥ 1 item |
 | 12 | `## Further reading` | ≥ 1 OpenStax and ≥ 1 Khan Academy entry |
 

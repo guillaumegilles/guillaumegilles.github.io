@@ -191,3 +191,11 @@ disjoint files; the glossary is the only shared file (append-only).
 3. Confirm the franchise names **Harbour** and **Campus** (cosmetic).
 4. `index.qmd` is live with dead links today; decide whether a quick
    interim fix is wanted before publish (plan assumes not).
+   *Resolved by T051: `index.qmd` rewritten, all links resolve.*
+5. **French parity follow-up (FR-038, Constitution VI; T057).** Open a
+   new feature to translate these 14 pages into `fr/teaching/
+   data-description/` and wire them into the language switcher:
+   `index.qmd`; `modules/module-01.qmd` … `modules/module-10.qmd`;
+   `modules/dataset.qmd`; `modules/glossary.qmd`;
+   `modules/excel-functions.qmd`. Until then the deviation in
+   Complexity Tracking stands.

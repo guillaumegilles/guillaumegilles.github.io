@@ -55,6 +55,36 @@ supplied this PDF and it is free/open-licensed).
 | Contingency tables (M8) | Authored in-course; §3.4 cited as "optional, probability framing — skim" |
 | Scatter plot (M8) | §13.1 and §13.3 figures; authored in-course |
 
+### Citation check against the PDF (T046, 2026-10-11)
+
+Method: `pdftotext -f 1 -l 12 -layout` on the PDF's table of contents,
+compared with every `| OpenStax` row in `module-01…10.qmd`.
+
+| Module | Cited | Section number and title | Book pages (TOC) |
+|---|---|---|---|
+| M1 | §1.1, §1.2, §1.3 | match | 5–10, 10–22, 22–30 |
+| M2 | §2.1 (bar, pie, tables) | match | 46–65 |
+| M3 | §2.1 (histograms, polygons) | match | 46–65 |
+| M4 | §2.3, §2.4, §2.5 | match | 74–78, 78–79, 79–80 (fixed) |
+| M5 | §2.2 | match | 65–74 (fixed) |
+| M6 | §2.7 | match | 82–90 (fixed) |
+| M7 | §2.6 | match | 80–82 (fixed) |
+| M8 | §13.1, §13.3, §3.4 | match; §3.4 title completed to *Contingency Tables and Probability Trees* | 536–538, 539–542, 153–164 (fixed) |
+| M9 | §13.1, §13.3, §13.4, §13.6, §13.7 | match | 536–538, 539–542, 542–556, 559–561, 561–570 (fixed) |
+| M10 | Chapter 2 Review, Chapter 13 Review | match | from p. 90, from p. 570 (fixed) |
+
+Result: no module cites a non-existent section. Page ranges were wrong in
+M4–M10 (they did not follow the TOC) and were corrected, with the
+"~N pages" estimates recomputed from the ranges. No inference section
+(§13.2) is cited.
+
+Licence (PDF front matter, p. ii): *Introductory Business Statistics
+2e*, senior contributing authors Alexander Holmes, Barbara Illowsky,
+Susan Dean; OpenStax, Rice University; © 2026 Rice University;
+CC BY-NC-SA 4.0. The course cites sections and does not reproduce
+OpenStax text, figures or exercises; attribution is still given under
+each further-reading table and in the syllabus (T049).
+
 ## 2. Khan Academy references
 
 **Method**: `fetch` returned no content (client-rendered site). A web
@@ -83,6 +113,17 @@ headless browser (rejected — disproportionate for a reading list).
 
 **Follow-up for the owner** (cannot be automated here): open each unit
 link once before publication; tracked as a task in the final phase.
+
+### Audit (T047, 2026-10-11)
+
+- All 11 Khan Academy links in `module-01…10.qmd` point to the course
+  root `https://www.khanacademy.org/math/statistics-probability`; units
+  and lessons are named in plain text only. No deeper link exists.
+- `grep -rniE "<iframe|<script|youtube|<embed"` over
+  `teaching/data-description/**/*.qmd` returns nothing: no embeds or
+  third-party scripts (Constitution IV). Shinylive blocks are
+  first-party and run in the browser.
+- `verified_on` is still pending: owner action T048.
 
 ## 3. Statistical conventions
 
@@ -168,6 +209,26 @@ All figures were redistributed to 180.
 **Rationale**: Heavier theory in M1, M3, M4, M6, M9 (new vocabulary or
 dense formulas); heavier lab in M2, M3, M5, M8 (new Excel tooling);
 exercises weigh most in M7 (univariate synthesis) and M10.
+
+### Pilot findings (Module 3, 2026-10-07)
+
+Module 3 was authored and checked first (tasks T017–T024). What it taught
+us, for the other nine modules:
+
+| # | Finding | Action |
+|---|---|---|
+| 1 | **The old session pages never rendered their Shinylive demos**: none declared `filters: - shinylive`. | `filters: [shinylive]` is now set once in `modules/_metadata.yml`. Check the M5 and M9 demos explicitly. |
+| 2 | The checker needs the time plan as a table (`\| Theory \| 70 \|`) and exercise titles tagged `(by hand)` / `(Excel)`. | Added to `contracts/module-page-contract.md`. |
+| 3 | Excel's Histogram chart labels bins as $(a, b]$; the course uses $[a, b[$. PivotTable grouping follows the course convention. | Warning callout in M3. Repeat the point wherever a module builds a chart from Excel bins. |
+| 4 | Feature 005 printed the Harbour 30-day $Q_1$ as 506.60; the exact value is 506.605, which Excel displays as 506.61. | Modules use 506.61 (see `data-model.md`). |
+| 5 | The M3 written content is ~1,200 words for theory, example, derivation and visual intuition (about 8 min of reading) plus 5 exercises. | Time budget kept: the 70-minute slot is a live lecture (board work, the demo, questions). Pages are lecture support, not scripts. |
+| 6 | Demo data should be generated from the CSV, never typed. | Done with a script in M3; repeat for M5, M6, M9 and compare against the CSV. |
+| 7 | Rendering writes blank draft pages into `docs/`. | Harmless; they are overwritten at publish (F). |
+
+**Not yet done:** a human read-through timed against the 70/60/50 plan.
+The checks above are proxies (word counts, exercise counts); the owner
+should still read Module 3 once with a timer before the other modules
+reuse the template.
 
 ## 6. Exam coverage
 
