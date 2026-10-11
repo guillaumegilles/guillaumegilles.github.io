@@ -165,8 +165,22 @@ A "major concept section" is defined as each top-level **Séquence** heading in 
 | Module | Séquences (Major Concept Sections) | Count |
 |--------|-------------------------------------|-------|
 | Module 1 (Journée 1) | Séquence 2: Intérêts simples et composés; Séquence 3: Actualisation et équivalence; Séquence 4: Taux proportionnels et équivalents; Séquence 5: Annuités constantes; Séquence 6: Cas pratique -- constituer un capital | 5 |
-| Module 2 (Journée 2) | Séquence 2: Emprunt amortissable; Séquence 3: Autres modalités; Séquence 4: Coût réel du crédit; Séquence 5: Introduction aux obligations; Séquence 6: Sensibilité obligataire | 5 |
+| Module 2 (Journée 2) | Séquence 2: Emprunt amortissable; Séquence 3: Autres modalités; Séquence 4: Coût réel du crédit; Séquence 5: Introduction aux obligations; Séquence 6: Sensibilité obligataire; Séquence 7: Étude de cas -- choisir un financement | 6 |
 | Module 3 (Journée 3) | Séquence 2: VAN; Séquence 3: TRI; Séquence 4: Délai de récupération; Séquence 5: Analyse du risque; Séquence 6: Cas intégrateur | 5 |
-| **Total** | | **15** |
+| **Total** | | **16** |
 
-Requirements FR-001, FR-002, FR-006 and Success Criteria SC-001, SC-002 apply to these 15 sections.
+**Classification (resolved during task generation)**: Module 2's Séquence 6
+(*Sensibilité obligataire*) introduces new concepts (duration, convexity) and
+US2 scenario 2 requires a full ladder for Duration, so it is a **concept**
+section. Module 2's case study is Séquence 7, which is its **synthesis**
+section. This yields:
+
+- **13 concept sections** (7-step ladder + Erreur fréquente): M1 S2-S5,
+  M2 S2-S6, M3 S2-S5.
+- **3 synthesis sections** (3-step pattern, no Erreur fréquente): M1 S6,
+  M2 S7, M3 S6.
+
+Wherever this spec says "Séquence 6 (synthesis)", read "the synthesis
+section of the module" (Séquence 7 for Module 2).
+
+Requirements FR-001, FR-002, FR-006 and Success Criteria SC-001, SC-002 apply to these 16 sections.

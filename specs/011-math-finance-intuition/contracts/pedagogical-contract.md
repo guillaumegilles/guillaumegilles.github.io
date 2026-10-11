@@ -12,9 +12,9 @@ This contract defines the mandatory internal structure for every major concept s
 
 ---
 
-## Concept Section Contract (Séquences 2-5)
+## Concept Section Contract (Séquences 2-5, plus Module 2 Séquence 6)
 
-**Applies to**: 13 sections (5 in Module 1, 5 in Module 2, 3 in Module 3 — Séquences 2, 3, 4, 5 only)
+**Applies to**: 13 sections — Module 1 Séquences 2-5 (4), Module 2 Séquences 2-6 (5, including *Sensibilité obligataire*), Module 3 Séquences 2-5 (4)
 
 ### Required Structure (7 Steps in Order)
 
@@ -48,9 +48,9 @@ This contract defines the mandatory internal structure for every major concept s
 
 ---
 
-## Synthesis Section Contract (Séquence 6)
+## Synthesis Section Contract (Séquence 6; Séquence 7 in Module 2)
 
-**Applies to**: 3 sections (Module 1: Cas pratique; Module 2: Sensibilité obligataire; Module 3: Cas intégrateur)
+**Applies to**: 3 sections (Module 1 Séquence 6: Cas pratique; Module 2 Séquence 7: Étude de cas — choisir un financement; Module 3 Séquence 6: Cas intégrateur)
 
 ### Required Structure (3 Steps in Order)
 

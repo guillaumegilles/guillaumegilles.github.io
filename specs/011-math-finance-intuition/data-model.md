@@ -16,9 +16,9 @@ Represents a course day file (Journée 1, 2, or 3).
 | `id` | String | Enum: "01", "02", "03" | Module identifier |
 | `title` | String | Required | Display title (e.g., "Journée 1 — Calculer et comparer des flux financiers") |
 | `file_path` | String | Required, pattern: `module-0{id}.qmd` | Source file path |
-| `sequences` | List[Sequence] | Length = 5 | Ordered list of major concept sections |
+| `sequences` | List[Sequence] | Length = 5 (6 for Module 2) | Ordered list of major concept sections |
 
-**Relationships**: Contains 5 Sequences (Séquences 2-6)
+**Relationships**: Contains 5 Sequences (Séquences 2-6); Module 2 contains 6 (Séquences 2-7)
 
 **Validation Rules**:
 - File must exist at `fr/teaching/mathematical-finance/module-0{id}.qmd`
@@ -28,13 +28,13 @@ Represents a course day file (Journée 1, 2, or 3).
 ---
 
 ### 2. Sequence
-Represents a major concept section (Séquence 2-6 within a module).
+Represents a major concept section (Séquence 2-6 within a module; 2-7 for Module 2).
 
 | Field | Type | Constraints | Description |
 |-------|------|-------------|-------------|
-| `number` | Integer | Enum: 2, 3, 4, 5, 6 | Séquence number |
+| `number` | Integer | Enum: 2, 3, 4, 5, 6, 7 | Séquence number (7 only in Module 2) |
 | `title` | String | Required | Section title (e.g., "Intérêts simples et composés") |
-| `type` | String | Enum: "concept", "synthesis" | "concept" for Séquences 2-5; "synthesis" for Séquence 6 |
+| `type` | String | Enum: "concept", "synthesis" | "concept" for Séquences 2-5 and Module 2 Séquence 6; "synthesis" for Séquence 6 (Module 1, 3) and Séquence 7 (Module 2) |
 | `ladder_steps` | Integer | 7 if concept, 3 if synthesis | Number of abstraction ladder steps |
 | `concrete_case` | ConcreteCase | Required | Opening narrative scenario |
 | `formula_boxes` | List[FormulaBox] | Min 1 for concept type | Formulas introduced in this section |
@@ -46,8 +46,8 @@ Represents a major concept section (Séquence 2-6 within a module).
 **Relationships**: Belongs to Module; contains FormulaBoxes, ConcreteCase, optional ErreurFrequente, InteractiveDemo, VisualDiagram
 
 **Validation Rules**:
-- **Concept type (Séquences 2-5)**: Must have all 7 ladder steps in order; must have concrete_case before first formula_box; must have erreur_frequente; must have regle_or_reinforcement = true
-- **Synthesis type (Séquence 6)**: Must follow 3-step pattern (Situation → Application → Synthèse); exempt from erreur_frequente; regle_or_reinforcement = true
+- **Concept type (Séquences 2-5, Module 2 Séquence 6)**: Must have all 7 ladder steps in order; must have concrete_case before first formula_box; must have erreur_frequente; must have regle_or_reinforcement = true
+- **Synthesis type (Séquence 6; Module 2 Séquence 7)**: Must follow 3-step pattern (Situation → Application → Synthèse); exempt from erreur_frequente; regle_or_reinforcement = true
 - ConcreteCase must appear before first FormulaBox in rendered order
 
 ---
@@ -293,8 +293,8 @@ Edit .qmd
 | Entity | Target Count | Source |
 |--------|--------------|--------|
 | Module | 3 | Existing |
-| Sequence (concept) | 13 | 5+5+5 - 2 synthesis = 13 |
-| Sequence (synthesis) | 3 | 1 per module (Séquence 6) |
+| Sequence (concept) | 13 | M1 S2-S5 (4) + M2 S2-S6 (5) + M3 S2-S5 (4) |
+| Sequence (synthesis) | 3 | M1 S6, M2 S7, M3 S6 |
 | ConcreteCase | 13 | 1 per concept sequence |
 | FormulaBox | ~30 | ~10 per module (estimate) |
 | Explanation | ~30 | 1 per FormulaBox |

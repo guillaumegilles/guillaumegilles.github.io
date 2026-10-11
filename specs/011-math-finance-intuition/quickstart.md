@@ -205,17 +205,30 @@ git commit -m "feat: intuition-first pedagogy for mathematical finance course
 
 ## Success Criteria Summary
 
-| Check | Target | Command |
-|-------|--------|---------|
-| Module renders | 3/3 exit 0 | `quarto render` |
-| Concrete cases | ≥ 13 | `grep "Situation concrète\|Cas réel" module-0*.qmd \| wc -l` |
-| Formula explanations | ≥ 30 | `grep "Explication en langage clair" module-0*.qmd \| wc -l` |
-| Erreur fréquente | 13 | `grep "Erreur fréquente" module-0*.qmd \| wc -l` |
-| Interactive demos | 4 | `grep "shinylive-python\|ojs" module-0*.qmd \| wc -l` |
-| Glossary intuition fields | 141+ | `grep "Ce que ça représente\|Pourquoi ça importe\|Intuition clé" glossaire.qmd \| wc -l` |
-| Formulaire reminders | 10 | `grep "Cette formule répond à" formulaire.qmd \| wc -l` |
-| Browser demos work | 4/4 functional | Manual |
-| Visual diagrams render | 4/4 present | Manual |
+Targets updated with the actual numbers measured on 2026-10-11 (T064).
+
+| Check | Target | Actual | Command |
+|-------|--------|--------|---------|
+| Renders (3 modules + glossaire + formulaire) | 5/5 exit 0 | 5/5, no warning | `quarto render <file>.qmd` |
+| Concrete cases | 13 (+1 for M2 S6b) | 14 (4 / 6 / 4) | `grep "Situation concrète\|Cas réel" module-0*.qmd \| wc -l` |
+| Formula explanations | = formula-box audit (drafts.md T038) | 21 (8 / 6 / 7), 21 boxes | `grep "Explication en langage clair" module-0*.qmd \| wc -l` |
+| Erreur fréquente | 13, none in synthesis | 13 (4 / 5 / 4) | `grep "^## Erreur fréquente" module-0*.qmd \| wc -l` |
+| Interactive demos | 4 (2 OJS + 2 Shinylive) | 4: OJS M1 S3, OJS M2 S5, Shinylive M3 S3 + S5 | `grep '^```{ojs}\|^```{shinylive-python}' module-0*.qmd` |
+| Règle d'or | ≥ 4 | 25 (12 / 7 / 6) | `grep "Règle d'or\|ligne du temps avant toute formule" module-0*.qmd` |
+| Glossary intuition fields | ≥ 198 (66 entries × 3) | 198 (33 symbols + 33 terms) | `grep "Ce que ça représente\|Pourquoi ça importe\|Intuition clé" glossaire.qmd \| wc -l` |
+| Formulaire reminders | 10 | 10 | `grep "Cette formule répond à" formulaire.qmd \| wc -l` |
+| Browser demos work | 4/4 functional | 4/4 mounted (headless Chromium: 3 OJS sliders M1, 4 M2, 2 Shinylive viewers M3); interactive use still to try by hand | Manual |
+| Visual diagrams render | 4/4 present | 4/4: annuity flowchart (M1), duration bars + convexity lines (M2, `xychart`), VAN profile in the Shinylive VAN–TRI app (M3) | Manual |
+
+The plan's earlier estimates ("~30" explanations, "47+" glossary entries)
+are superseded: the course has 21 formula-bearing boxes and 66 glossary
+entries.
+
+**Sandbox render note**: without write access to `~/.cache` and
+`~/.local/share`, render with `XDG_CACHE_HOME`, `XDG_DATA_HOME` and
+`JUPYTER_RUNTIME_DIR` pointing to `/tmp`, after copying `~/.cache/quarto`
+into the new cache (it holds Deno's `std/io` module needed by the Shinylive
+filter offline) and linking `~/.cache/shinylive`.
 
 ---
 
@@ -237,3 +250,47 @@ git commit -m "feat: intuition-first pedagogy for mathematical finance course
 2. If checks fail → Fix issues, re-run validation
 3. Run `/speckit-analyze` to verify spec/plan/tasks alignment
 4. Create English stubs per Constitution VI (deferred, separate task)
+
+---
+
+## Baseline
+
+Recorded 2026-10-11 (T001–T003), before any content change.
+
+### Renders (T001)
+
+Quarto 1.10.19. Single-file renders with `--quiet` of `module-01.qmd`,
+`module-02.qmd`, `module-03.qmd`, `glossaire.qmd`, `formulaire.qmd`: no
+output printed. (Exit codes were masked by a pipe in the baseline run; the
+first reliably checked renders, after US1, all exit 0.)
+
+**Note**: renders need write access to `~/.cache/quarto` (sass cache). In a
+sandbox without it, every render fails with `ERROR: unable to open database
+file` — this is environmental, not a content error.
+
+### Structural counts (T002)
+
+| Check | Baseline | Target |
+|-------|----------|--------|
+| `Situation concrète\|Cas réel` (modules) | 0 | 13 |
+| `Explication en langage clair` (modules) | 0 | 1 per formula box |
+| `Erreur fréquente` (modules) | 0 | 13 |
+| `shinylive-python\|{ojs}` (modules) | 3 (OJS: M1 S3, M2 S5, M3 S3) | ≥ 4 |
+| `Règle d'or\|ligne du temps avant toute formule` (modules) | 1 (M1 S5) | ≥ 4 |
+| Glossary 3-field lines | 0 | ≥ 198 |
+| `Cette formule répond à` (formulaire) | 0 | 10 |
+
+### Shinylive (T003)
+
+- Extension present: `_extensions/quarto-ext/shinylive/_extension.yml`
+  (v0.2.0, contributes filter `shinylive.lua`).
+- Python package `shinylive` 0.8.6 installed in `.venv/`.
+- No page or `_metadata.yml` currently enables the filter: existing
+  `{shinylive-python}` blocks (e.g. `teaching/data-description/modules/module-03.qmd`)
+  render as plain `<pre class="{shinylive-python}">` code, not as apps.
+- Snippet to add to the front matter of `module-03.qmd` (T049):
+
+  ```yaml
+  filters:
+    - shinylive
+  ```
