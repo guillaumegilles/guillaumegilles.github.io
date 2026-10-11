@@ -358,6 +358,17 @@ All functions from previous modules; quick-reference sheet (already exists as `E
 | 6 | How many **Shinylive** interactive apps per module? | (a) One per module (b) Only for the hardest visualisations | Currently M3 has one histogram builder — replicate the pattern for M5 (boxplot builder) and M9 (scatter + regression line) |
 | 7 | Case study: keep **The Wandering Fork** dataset or extend it? | (a) Same 30-day dataset (b) Add a second franchise for M8–M10 bivariate comparison | Adding a second franchise would make M10 synthesis more realistic |
 
+### Response
+
+1. **a**: keep excel as a *woven* skill through the course
+2. **a**: conceptual
+3. **a**: weighted mean leave inside module 4
+4. **b**: leave it for next course
+5. Focus on all english course. a French translation will later be added, ounce the course is completed.
+6. **b**: for the hardest visualisations.
+7. **b**: add a second franchise for M8–M10 bivariate comparison and expand the dataset to include more variables
+and days.
+
 ---
 
 ## Textbook chapter alignment summary
@@ -415,9 +426,9 @@ All links are under **Statistics and Probability** (<https://www.khanacademy.org
 
 ## Next steps
 
-- [ ] Decide the 7 open design questions above
-- [ ] Confirm module filenames convention: `module-01.qmd` inside `modules/` subdirectory
-- [ ] Register all 10 modules in `_quarto.yml` sidebar
-- [ ] Identify which existing `session-*.qmd` files can be refactored (vs rewritten from scratch)
-- [ ] Build the extended Wandering Fork dataset (second franchise) if Question 7 → option b
-- [ ] Add Khan Academy links as a "Further reading" collapsible at the bottom of each module page
+- [x] Decide the 7 open design questions above
+- [x] Filenames convention: `module-01.qmd` inside `modules/` subdirectory
+- [] Register all 10 modules in `_quarto.yml` sidebar
+- [] Identify which existing `session-*.qmd` files can be refactored (vs rewritten from scratch)
+- [] Build the extended Wandering Fork dataset (second franchise) if Question 7 → option b
+- [] Add Khan Academy links as a "Further reading" collapsible at the bottom of each module page
