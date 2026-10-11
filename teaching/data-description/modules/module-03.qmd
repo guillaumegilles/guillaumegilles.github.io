@@ -1,0 +1,535 @@
+---
+title: "Module 3 — Organising quantitative data: histograms and cumulative curves"
+subtitle: "Data Description | Part I — Organising data"
+date-modified: 2026-10-07
+lang: en
+---
+
+**The business question.** The owner of the Harbour truck is planning
+how much food to prepare. Each day brings a different revenue, to the
+cent, so a list of 30 or 120 numbers tells her nothing at a glance. How
+is daily revenue *distributed*? Are most days clustered around €600, or
+spread all over the place? And on how many days do we earn less than
+€500? This module turns a long column of continuous numbers into a
+short table and three pictures that answer these questions.
+
+## Learning objectives
+
+By the end of this module, you will be able to:
+
+- Explain why a continuous variable must be grouped into classes before
+  it can be summarised in a frequency table.
+- Choose a sensible number of classes and a class width, and write the
+  classes with the half-open convention $[L_i, L_i + h[$.
+- Build a class table with counts, relative frequencies and cumulative
+  frequencies, by hand and in Excel.
+- Draw and read a histogram, a frequency polygon and a cumulative
+  frequency curve, including a histogram with unequal class widths.
+- Read a percentile or a share of observations off the cumulative curve.
+
+## Time plan
+
+| Block | Minutes | What you do |
+|---|---:|---|
+| Theory | 70 | Classes, frequencies, histogram, polygon, cumulative curve |
+| Excel lab | 60 | `COUNTIFS` class table, histogram chart, PivotTable grouping |
+| Exercises | 50 | Three by-hand and two Excel exercises |
+| **Total** | **180** | |
+
+## Theory
+
+::: {.callout-note}
+#### Definition — class (grouped) frequency table
+When almost every value of a continuous variable is different, a plain
+frequency table lists each value once and says nothing useful. The fix
+is to cut the range of values into $k$ consecutive **classes**
+(intervals) of width $h$ and count how many observations fall into each
+one. Classes are written **half-open**, $[L_i, L_i + h[$: the lower
+bound belongs to the class, the upper bound belongs to the next class.
+So every value lands in exactly one class.
+:::
+
+In plain words: a class table trades precision for readability. You
+lose the exact values, but you can finally *see* where the data sit.
+
+### How many classes, how wide?
+
+::: {.callout-tip}
+#### Rule of thumb — Sturges' rule
+For $n$ observations, a good number of classes is about
+$$
+k \approx 1 + 3.3 \log_{10}(n),
+\qquad
+h \approx \frac{\text{max} - \text{min}}{k},
+$$
+then round $h$ to a convenient number (10, 50, 100 …) and start the
+first class at a round number at or below the minimum.
+:::
+
+In plain words: more data can support more classes, but slowly. Thirty
+days give about 6 classes; 120 days give about 8. Too few classes hide
+the shape; too many make a ragged picture where each bar holds only one
+or two days.
+
+For the first 30 Harbour days, revenue runs from €407.59 to €886.56, a
+range of €478.97. Sturges gives $k \approx 5.9$ and $h \approx 82$, which
+we round to **$h = 100$** with the first class starting at 400. That
+gives five classes.
+
+### Frequencies in a class table
+
+::: {.callout-tip}
+#### Formulas — counts, shares and running totals
+For class $i$, with $n_i$ the number of observations in it and $n$ the
+total number of observations:
+$$
+f_i = \frac{n_i}{n},
+\qquad
+N_i^{+} = \sum_{j=1}^{i} n_j,
+\qquad
+F_i^{+} = \frac{N_i^{+}}{n}.
+$$
+:::
+
+In plain words: $n_i$ is a count; $f_i$ is its share of the total (often
+written as a percentage); $N_i^{+}$ and $F_i^{+}$ are the running totals
+of counts and shares up to and including class $i$. The last one answers
+"how many days earned **less than the upper bound** of this class?".
+
+### The histogram
+
+::: {.callout-note}
+#### Definition — histogram
+A **histogram** draws one rectangle per class, with the rectangles
+touching each other (the variable is continuous, so there are no gaps).
+The **area** of a rectangle is proportional to the number of
+observations in the class. When all classes have the same width $h$,
+area is proportional to height, so the height is simply $n_i$. When the
+widths differ, the height must be the **density**
+$$
+\text{height}_i = \frac{n_i}{h_i}.
+$$
+:::
+
+In plain words: your eye reads *area*, not height. A wide class holds
+more days than a narrow one of the same height, so for unequal widths we
+divide the count by the width to keep the picture honest.
+
+### Frequency polygon and cumulative curve
+
+- The **frequency polygon** joins the points (class midpoint, $n_i$)
+  with straight lines. It carries the same information as the histogram
+  but is easier to superimpose for two distributions.
+- The **cumulative frequency curve** (also called the *ogive*) joins the
+  points (class **upper bound**, $F_i^{+}$) and starts at $0\%$ on the
+  lower bound of the first class. It never goes down and ends at $100\%$.
+
+::: {.callout-tip}
+#### Formula — reading a percentile on the cumulative curve
+If the share $p$ you are looking for lies between $F_{i-1}^{+}$ and
+$F_i^{+}$ in class $[L_i, L_i + h[$, linear interpolation gives
+$$
+x_p \approx L_i + h \times
+\frac{p - F_{i-1}^{+}}{F_i^{+} - F_{i-1}^{+}}.
+$$
+:::
+
+In plain words: inside a class we assume the observations are spread
+evenly, so the curve is a straight line there. Find the class where the
+curve crosses $p$, then move along that straight segment.
+
+## Worked example
+
+We use the **first 30 trading days of Harbour** (sheet `harbour_30d`).
+The class table for `daily_revenue_eur` with $h = 100$ and $n = 30$ is:
+
+| Class (€) | $n_i$ | $N_i^{+}$ | $f_i$ (%) | $F_i^{+}$ (%) |
+|---|---:|---:|---:|---:|
+| [400, 500[ | 6 | 6 | 20.0 | 20.0 |
+| [500, 600[ | 6 | 12 | 20.0 | 40.0 |
+| [600, 700[ | 8 | 20 | 26.7 | 66.7 |
+| [700, 800[ | 7 | 27 | 23.3 | 90.0 |
+| [800, 900[ | 3 | 30 | 10.0 | 100.0 |
+
+**Step 1 — the histogram.** All five classes have width 100, so the bar
+heights are the counts 6, 6, 8, 7, 3. The tallest bar is [600, 700[:
+that is where the largest group of trading days sits.
+
+**Step 2 — the frequency polygon.** The class midpoints are
+450, 550, 650, 750 and 850. Plot (450, 6), (550, 6), (650, 8), (750, 7),
+(850, 3) and join them with straight lines.
+
+**Step 3 — the cumulative curve.** Plot the upper bounds against
+$F_i^{+}$: (500, 20%), (600, 40%), (700, 66.7%), (800, 90%),
+(900, 100%), starting from (400, 0%). Reading at 600 tells us that
+**40%** of the days earned less than €600.
+
+**Step 4 — reading the curve.** Where does the curve cross 50%? Between
+600 (40%) and 700 (66.7%), so
+$$
+x_{50} \approx 600 + 100 \times \frac{50 - 40}{66.7 - 40} \approx 637.5.
+$$
+The exact median of the 30 values is €643.63, so the curve reading is
+within €6. For the third quartile, $p = 75\%$ lies between 700 (66.7%)
+and 800 (90%): $x_{75} \approx 700 + 100 \times
+\frac{75 - 66.7}{90 - 66.7} \approx 735.7$ (the exact value, computed in
+Module 5, is €729.99).
+
+::: {.callout-important}
+#### Exam tip
+A cumulative curve is read at **upper bounds**. A polygon is read at
+**midpoints**. Mixing them up is the most common error on this topic.
+:::
+
+## Using Excel
+
+The sheet `harbour_30d` of `wandering-fork.xlsx` has the same 16 columns
+as the main table; `daily_revenue_eur` is column N, rows 2 to 31. The
+complete list of function names, with their French equivalents, is on
+the [Excel functions](excel-functions.qmd) page.
+
+| Concept | Excel function or steps |
+|---|---|
+| Class bounds | Type the lower bounds 400, 500, … in column R and the upper bounds in column S (each upper bound is the next lower bound) |
+| Count $n_i$ (column T) | `=COUNTIFS($N$2:$N$31,">="&R2,$N$2:$N$31,"<"&S2)`, then copy down |
+| Relative frequency $f_i$ (column U) | `=T2/COUNT($N$2:$N$31)`, formatted as a percentage |
+| Cumulative count $N_i^{+}$ (column V) | In the first row `=T2`; below, `=V2+T3` (running sum), then copy down |
+| Cumulative share $F_i^{+}$ (column W) | `=V2/COUNT($N$2:$N$31)`, formatted as a percentage |
+| Same count in one step | `=COUNTIFS($N$2:$N$31,"<"&S2)` gives $N_i^{+}$ directly |
+| Histogram | Select the revenue column → **Insert → Chart → Histogram**, then **Format Axis → Bin width** = 100 |
+| PivotTable grouping | Insert a PivotTable, put `daily_revenue_eur` in **Rows** and `day` in **Values** (Count), then right-click a row → **Group** with *Starting at* 400, *Ending at* 900, *By* 100 |
+| Frequency polygon | **Insert → Chart → Line** (or Scatter with straight lines) using the midpoints and counts |
+| Cumulative curve | **Insert → Chart → Scatter with Straight Lines** using the upper bounds and $F_i^{+}$ |
+
+For the **full table** (120 days per franchise) use the Excel Table
+`tblFork` and add the franchise as one more condition, for example:
+
+```text
+=COUNTIFS(tblFork[franchise],"Harbour",
+          tblFork[daily_revenue_eur],">="&R2,
+          tblFork[daily_revenue_eur],"<"&S2)
+```
+
+(Type it on one line in Excel; it is split here only for reading.)
+
+::: {.callout-warning}
+#### Excel's Histogram chart draws its bins the other way round
+In many Excel versions the built-in Histogram chart labels its bins as
+$(400, 500]$: the **upper** bound belongs to the class. Our convention is
+$[400, 500[$. With revenue to the cent a value of exactly 500.00 is rare,
+but a number such as 500 or 600 *can* occur in other data. When in
+doubt, trust your `COUNTIFS` table, not the chart labels. The PivotTable
+grouping follows our convention (a value of exactly 500 goes into the
+class starting at 500).
+:::
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — the cumulative curve must reach 100% (click to expand)
+By definition $N_k^{+} = \sum_{j=1}^{k} n_j$, summed over **all** $k$
+classes. The classes are consecutive and half-open, so every observation
+falls in exactly one class and the class counts add up to the total:
+$$
+N_k^{+} = \sum_{j=1}^{k} n_j = n
+\quad\Longrightarrow\quad
+F_k^{+} = \frac{N_k^{+}}{n} = \frac{n}{n} = 100\%.
+$$
+For the first 30 Harbour days, $N_5^{+} = 6+6+8+7+3 = 30 = n$, so
+$F_5^{+} = 100\%$. Whatever class bounds you choose, the cumulative
+curve always finishes in the top-right corner. If it does not, a class
+is missing or an observation fell outside your classes — a quick way to
+check your own table.
+:::
+
+## Visual intuition
+
+Think of the histogram as a **pile of sand** poured on the revenue axis.
+The area of each bar is the amount of sand in that class, and the total
+area is the whole sample (the 30 days). If every class has the same
+width, a taller bar means more sand. If a class is twice as wide and you
+keep the same height, you have silently doubled its sand: the picture
+lies. Dividing the count by the width ($n_i/h_i$) keeps the amount of
+sand honest.
+
+The cumulative curve is the same pile seen from another angle: at any
+revenue $x$, its height is the share of sand lying to the **left** of
+$x$. Where the histogram has a tall bar, the curve climbs steeply; where
+the histogram is nearly empty, the curve is nearly flat.
+
+## Interactive demo — build your own histogram
+
+Drag the bin-width slider and watch the same days regroup into wider or
+narrower classes. Switch between the 30-day Harbour subset, all 120
+Harbour days, and all 120 Campus days to see how the shape changes. Notice
+that Campus has a long tail to the right: a few very high-revenue days
+stretch the picture.
+
+```{shinylive-python}
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 600
+
+from math import floor, log10
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+HARBOUR_120 = [
+    460.48, 500.02, 418.65, 508.80, 646.19, 785.79, 719.66, 478.04,
+    669.00, 666.42, 614.83, 520.99, 725.66, 886.56, 691.50, 744.92,
+    614.75, 700.41, 692.60, 764.59, 856.52, 641.07, 407.59, 437.31,
+    434.58, 587.06, 742.99, 841.83, 559.53, 531.91, 387.93, 328.04,
+    68.26, 302.75, 324.42, 365.85, 417.09, 446.87, 435.07, 569.91,
+    416.06, 246.84, 630.10, 374.12, 1000.00, 504.27, 206.82, 180.95,
+    70.19, 406.16, 273.57, 384.50, 51.21, 314.63, 328.44, 517.13,
+    147.56, 275.44, 469.52, 333.34, 343.64, 185.77, 382.81, 84.07,
+    440.31, 261.95, 61.17, 441.58, 664.67, 644.39, 75.42, 453.04,
+    623.77, 261.15, 104.94, 401.36, 389.79, 270.44, 321.17, 1050.00,
+    311.41, 393.14, 66.17, 413.06, 484.42, 80.44, 204.27, 227.49,
+    291.01, 382.51, 119.97, 549.51, 401.30, 137.45, 271.02, 267.04,
+    329.19, 634.78, 297.20, 166.48, 164.03, 363.36, 247.18, 462.55,
+    657.88, 67.08, 474.32, 607.24, 178.05, 346.90, 317.60, 208.79,
+    331.38, 315.26, 335.38, 273.53, 227.29, 187.58, 620.20, 116.27,
+]
+
+CAMPUS_120 = [
+    1089.40, 1335.48, 540.03, 598.76, 377.74, 170.84, 23.85, 368.83,
+    599.66, 432.71, 478.40, 572.40, 299.09, 186.26, 556.11, 356.11,
+    658.89, 697.39, 361.09, 277.62, 172.24, 870.03, 1407.59, 448.33,
+    715.64, 267.68, 114.21, 323.14, 396.69, 742.01, 1114.89, 741.91,
+    275.82, 245.21, 55.06, 346.24, 598.12, 989.43, 295.85, 138.44,
+    267.00, 72.34, 898.08, 384.09, 291.95, 472.05, 667.05, 79.47,
+    26.57, 1135.89, 951.18, 403.89, 427.84, 156.30, 181.88, 30.58,
+    241.99, 380.60, 318.68, 446.42, 413.63, 159.43, 121.60, 577.01,
+    493.92, 436.74, 529.14, 524.11, 35.80, 234.09, 359.34, 269.31,
+    246.10, 270.87, 747.84, 436.33, 180.67, 402.41, 348.79, 717.81,
+    399.38, 864.08, 171.61, 213.40, 333.03, 566.94, 519.92, 439.65,
+    568.41, 251.73, 49.02, 950.12, 345.89, 569.65, 483.54, 251.10,
+    227.23, 198.44, 849.86, 1000.56, 621.45, 441.41, 574.90, 93.29,
+    204.87, 521.04, 268.06, 859.15, 949.10, 175.90, 179.84, 208.10,
+    1062.98, 761.06, 773.08, 278.86, 245.06, 127.26, 63.49, 1362.93,
+]
+
+DATASETS = {
+    "harbour30": ("Harbour, first 30 days", HARBOUR_120[:30]),
+    "harbour120": ("Harbour, all 120 days", HARBOUR_120),
+    "campus120": ("Campus, all 120 days", CAMPUS_120),
+}
+
+
+def make_bins(values, width):
+    lo = int(floor(min(values) / width) * width)
+    hi = int((floor(max(values) / width) + 1) * width)
+    return np.arange(lo, hi + width, width)
+
+
+def draw(values, width, title):
+    bins = make_bins(values, width)
+    fig, ax = plt.subplots(figsize=(7, 4))
+    fig.patch.set_facecolor(BG)
+    ax.set_facecolor(BG)
+    for spine in ax.spines.values():
+        spine.set_edgecolor(FG)
+    ax.tick_params(colors=FG)
+    ax.hist(values, bins=bins, color='steelblue', edgecolor=BG, alpha=0.9)
+    ax.set_xlabel("Daily revenue (EUR)", color=FG)
+    ax.set_ylabel("Number of days", color=FG)
+    ax.set_title(title, color=FG)
+    ax.grid(alpha=0.15, color=FG, axis='y')
+    fig.tight_layout()
+    return fig
+
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 12px;
+               font-family: sans-serif; margin: 0; }}
+        .form-label, label {{ color: {FG} !important; }}
+        .form-range {{ accent-color: steelblue; width: 100%; }}
+        .info-box {{ background: #152119; border-radius: 6px;
+                    padding: 10px 14px; margin: 8px 0;
+                    border-left: 3px solid steelblue;
+                    font-family: monospace; font-size: 0.9em; }}
+    """),
+    ui.h5("Histogram builder: The Wandering Fork's daily revenue",
+          style=f"color:{FG}"),
+    ui.input_radio_buttons(
+        "data", "Data:",
+        {key: label for key, (label, _) in DATASETS.items()},
+        selected="harbour30", inline=True,
+    ),
+    ui.input_slider("bin_width", "Bin width (EUR):",
+                    min=25, max=400, value=100, step=25),
+    ui.output_ui("info"),
+    ui.output_plot("plot", height="340px"),
+)
+
+
+def server(input, output, session):
+    @output
+    @render.ui
+    def info():
+        label, values = DATASETS[input.data()]
+        w = input.bin_width()
+        n = len(values)
+        k = len(make_bins(values, w)) - 1
+        sturges = 1 + 3.3 * log10(n)
+        suggested = (max(values) - min(values)) / sturges
+        return ui.HTML(f"""
+            <div class='info-box'>
+                n = <strong style='color:darkorange'>{n}</strong> days |
+                bin width = <strong style='color:darkorange'>{w}</strong> EUR
+                &rarr; <strong style='color:darkorange'>{k}</strong> classes<br>
+                Sturges suggests about {sturges:.1f} classes, i.e. a width
+                near {suggested:.0f} EUR.
+            </div>
+        """)
+
+    @output
+    @render.plot
+    def plot():
+        label, values = DATASETS[input.data()]
+        return draw(values, input.bin_width(), label)
+
+
+app = App(app_ui, server)
+```
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 (by hand) — Reading the cumulative curve (click for solution)
+Use the worked-example table (Harbour, first 30 days). What percentage
+of trading days earned **at least** €700?
+
+**Solution.** The curve gives $F^{+}(700) = 66.7\%$ of days **below**
+€700, so at least €700 means
+$100\% - 66.7\% = 33.3\%$. Check with the counts directly:
+$(7 + 3)/30 = 33.3\%$.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 (by hand) — Unequal class widths (click for solution)
+Suppose the last two classes are merged into one class [700, 900[ of
+width 200, which holds $7 + 3 = 10$ days. The first class [400, 500[ has
+width 100 and holds 6 days. What heights should the two bars have so
+that their **areas** are comparable? Which bar looks taller?
+
+**Solution.** Use the density $n_i/h_i$.
+
+- [400, 500[: $6/100 = 0.06$ days per euro.
+- [700, 900[: $10/200 = 0.05$ days per euro.
+
+The merged bar is drawn at height $0.05$ — about 83% of the height of
+the first bar, even though it holds more days (10 versus 6), because it
+is twice as wide. Had we plotted the raw count 10, the merged class
+would look almost twice as tall as it should.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 (by hand) — Polygon points (click for solution)
+What is the midpoint of the class [600, 700[, and which point does the
+frequency polygon plot for it? What is the point for the cumulative
+curve at the end of that class?
+
+**Solution.** The midpoint is $(600 + 700)/2 = 650$ and
+$n_{[600,700[} = 8$, so the polygon plots **(650, 8)**. The cumulative
+curve plots the **upper bound** against the running share:
+**(700, 66.7%)**.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 4 (Excel) — A skewed distribution (click for solution)
+In `wandering-fork.xlsx`, build a class table for the **Campus**
+`daily_revenue_eur` over all 120 days with classes of width 200 starting
+at 0. Use `COUNTIFS` on `tblFork`. Add relative and cumulative
+frequencies. What share of days earned less than €600, and how does the
+shape differ from Harbour's?
+
+**Solution.** The formula for the class in row 2 is:
+
+```text
+=COUNTIFS(tblFork[franchise],"Campus",
+          tblFork[daily_revenue_eur],">="&R2,
+          tblFork[daily_revenue_eur],"<"&S2)
+```
+
+You should obtain:
+
+| Class (€) | $n_i$ | $N_i^{+}$ | $f_i$ (%) | $F_i^{+}$ (%) |
+|---|---:|---:|---:|---:|
+| [0, 200[ | 25 | 25 | 20.8 | 20.8 |
+| [200, 400[ | 37 | 62 | 30.8 | 51.7 |
+| [400, 600[ | 30 | 92 | 25.0 | 76.7 |
+| [600, 800[ | 11 | 103 | 9.2 | 85.8 |
+| [800, 1000[ | 9 | 112 | 7.5 | 93.3 |
+| [1000, 1200[ | 5 | 117 | 4.2 | 97.5 |
+| [1200, 1400[ | 2 | 119 | 1.7 | 99.2 |
+| [1400, 1600[ | 1 | 120 | 0.8 | 100.0 |
+
+**76.7%** of Campus days earned less than €600. The tallest class is
+[200, 400[ (37 days), and more than three days in four sit below €600,
+but eight days (6.7%) earned €1,000 or more, up to €1,407.59. The
+histogram has a tall peak on the left and a **long tail to the right**.
+Harbour's revenue is more compact, with only a mild tail. We will give
+this shape a name in Module 7.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 5 (Excel) — Group with a PivotTable (click for solution)
+Using all 120 **Harbour** days, build the class table with a PivotTable
+that groups `daily_revenue_eur` from 0 to 1,100 by steps of 100. What
+share of days earned between €500 and €700?
+
+**Solution.** Filter `franchise` = Harbour, put `daily_revenue_eur` in
+**Rows** and `day` in **Values** (set to *Count*), then right-click →
+**Group** (*Starting at* 0, *Ending at* 1100, *By* 100). The counts
+are:
+
+| Class (€) | 0–99 | 100–199 | 200–299 | 300–399 | 400–499 | 500–599 |
+|---|---:|---:|---:|---:|---:|---:|
+| Days | 9 | 11 | 17 | 24 | 21 | 10 |
+
+| Class (€) | 600–699 | 700–799 | 800–899 | 900–999 | 1000–1099 |
+|---|---:|---:|---:|---:|---:|
+| Days | 16 | 7 | 3 | 0 | 2 |
+
+They add up to 120 (the PivotTable does not show the empty 900–999
+group). Days between €500 and €700 are the classes 500–599 and
+600–699: $(10 + 16)/120 = 21.7\%$.
+:::
+
+## Common mistakes
+
+::: {.callout-warning}
+#### Watch out
+- **Plotting the raw count for unequal widths.** Use the density
+  $n_i/h_i$, otherwise wide classes look too large.
+- **Mixing up the plotting positions.** Polygon points use the class
+  **midpoint**; the cumulative curve uses the class **upper bound**.
+- **Overlapping or gappy classes.** Write them half-open, $[L, L+h[$, so
+  each value belongs to exactly one class.
+- **Too few or too many classes.** Two classes hide the shape; 40 classes
+  on 30 observations draw noise. Start from Sturges' rule and adjust.
+- **Leaving gaps between histogram bars.** The variable is continuous:
+  bars touch. Gaps belong to bar charts of *categories* (Module 2).
+:::
+
+## Further reading
+
+| Source | Where | What it adds | Time | Verified |
+|---|---|---|---|---|
+| OpenStax IBS 2e | §2.1 *Display Data*, the parts on histograms, frequency polygons and time series graphs (book pages 46–65) | A second explanation of class tables and histograms with more examples | about 20 pages | checked against the PDF contents (T046) |
+| Khan Academy | Unit *Displaying and comparing quantitative data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for the lessons on histograms and cumulative graphs | Short videos and practice questions on reading and building histograms | about 30–45 min (estimate) | link check pending (T048) |
+
+OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean,
+*Introductory Business Statistics 2e*, OpenStax, Rice University,
+<https://openstax.org/details/books/introductory-business-statistics-2e>,
+licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.

@@ -1,0 +1,423 @@
+---
+title: "Module 6 — Dispersion"
+subtitle: "Data Description | Part II — Summarising one variable"
+date-modified: 2026-10-08
+lang: en
+---
+
+**The business question.** "The Wandering Fork" has a mean daily
+revenue of €628.34 (Harbour, 30 days) — but two businesses can share
+the exact same mean and still be very different to run: one reliably
+steady, the other wildly erratic. **Dispersion indicators** measure
+exactly that variability, and they are what turns "the average day"
+into "the average day, ± how much".
+
+## Learning objectives
+
+By the end of this module, you will be able to:
+
+- Compute the range and the interquartile range.
+- Compute the sample variance and sample standard deviation, using
+  both the definitional and the shortcut (computational) formula.
+- Compute and interpret the coefficient of variation.
+- Use the interactive calculator below to see how editing a sample
+  changes its dispersion indicators live.
+
+## Time plan
+
+| Block | Minutes | What you do |
+|---|---:|---|
+| Theory | 75 | Range, IQR, sample variance, sample standard deviation, coefficient of variation, shortcut formula |
+| Excel lab | 50 | `VAR.S`, `STDEV.S`, `VAR.P`, `STDEV.P`, `SUMSQ`, CV formula |
+| Exercises | 55 | Three by-hand and three Excel exercises |
+| **Total** | **180** | |
+
+## Theory
+
+### Range and interquartile range
+
+::: {.callout-note}
+#### Definition — range and interquartile range
+The **range** is $\max - \min$: simple, but sensitive to a single
+extreme value. The **interquartile range** $IQR = Q_3-Q_1$ (Module 5)
+measures the spread of only the central 50% of the data, making it
+more robust to extreme values.
+:::
+
+In plain words: the range uses only the two most extreme values; the
+IQR uses the middle 50%, so a single outlier cannot distort it.
+
+### Sample variance and standard deviation
+
+::: {.callout-tip}
+#### Formula — sample variance and standard deviation
+For a sample of $n$ values $x_1,\dots,x_n$ with mean $\bar{x}$, the
+**sample variance** is
+$$
+s^2 = \frac{1}{n-1}\sum_{i=1}^{n} (x_i-\bar{x})^2,
+$$
+i.e. the average squared distance of each observation from the mean
+(with $n-1$, not $n$, correcting for the fact that $\bar{x}$ is itself
+estimated from the same sample). The **sample standard deviation**
+$s=\sqrt{s^2}$ returns to the original unit (€, not €²).
+:::
+
+In plain words: measure how far each observation is from the mean,
+square those distances (so they are all positive), average them (with
+$n-1$), and take the square root to get back to the original unit.
+
+::: {.callout-warning}
+#### Why $n-1$ and not $n$?
+The sample mean $\bar{x}$ is computed from the same data, so the
+deviations $(x_i-\bar{x})$ are not fully independent — they sum to
+zero. Using $n-1$ (Bessel's correction) makes $s^2$ an unbiased
+estimator of the true population variance. In this descriptive
+statistics course, we use the **sample** formulas (`.S`) by default
+because real business data are almost always samples. The population
+variants (`.P`) are shown for completeness.
+:::
+
+### Coefficient of variation
+
+::: {.callout-tip}
+#### Formula — coefficient of variation
+$$
+CV = \frac{s}{\bar{x}} \times 100\%.
+$$
+Because it is unit-free, $CV$ is the only dispersion indicator that
+lets you compare the *relative* variability of two variables measured
+on different scales or units (e.g., revenue in € vs. customer count).
+:::
+
+In plain words: divide the standard deviation by the mean and express
+as a percentage. A $CV$ of 20% means the typical deviation from the
+mean is about 20% of the mean itself.
+
+### Shortcut (computational) formula for variance
+
+::: {.callout-tip}
+#### Formula — variance shortcut
+$$
+s^2 = \frac{1}{n-1}\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right).
+$$
+This needs only $\sum x_i^2$ and $\bar{x}$ — one pass over the data
+instead of first computing every deviation $(x_i-\bar{x})$ and then
+squaring it. In Excel, use `SUMSQ(range)` for $\sum x_i^2$.
+:::
+
+## Worked example
+
+Using "The Wandering Fork"'s `daily_revenue_eur` ($n=30$,
+$\bar{x}=628.34$), verified in `data-model.md`:
+
+| Statistic | Value |
+|---|---:|
+| Range | 478.97 |
+| Sample variance $s^2$ | 18,793.33 |
+| Sample std. dev. $s$ | 137.09 |
+| Coefficient of variation $CV$ | 21.82% |
+
+**Step 1 — range.** $886.56 - 407.59 = 478.97$: over the 30-day
+period, the best day out-earned the worst by almost €480.
+
+**Step 2 — variance and standard deviation.** Squaring each day's
+deviation from $\bar{x}=628.34$, summing, and dividing by $n-1=29$
+gives $s^2 = 18{,}793.33$ €²; taking the square root gives
+$s = 137.09$ €. On a typical day, revenue is about €137 away from
+the €628.34 average, in either direction.
+
+**Step 3 — coefficient of variation.** $CV = 137.09/628.34 \times
+100\% = 21.82\%$ — using the guide below, a moderate level of
+relative variability: noticeably variable, but not wildly erratic day
+to day.
+
+**Step 4 — shortcut formula check.** $\sum x_i^2 = 12{,}389{,}403.98$,
+$n\bar{x}^2 = 30 \times 628.3417^2 = 11{,}844{,}397.50$, difference
+$= 545{,}006.48$, divided by $29 = 18{,}793.33$ — identical to the
+definitional result. Keep the mean unrounded here: with
+$\bar{x}=628.34$ the result drifts to about $18{,}795$, because the
+shortcut subtracts two very large, nearly equal numbers.
+
+### Interpreting $CV$
+
+| $CV$ range | Interpretation |
+|---|---|
+| $CV < 15\%$ | Low relative variability — data is tightly clustered around the mean |
+| $15\% \le CV \le 35\%$ | Moderate relative variability — noticeable but not extreme |
+| $CV > 35\%$ | High relative variability — data is widely spread relative to the mean |
+
+"The Wandering Fork"'s $CV = 21.82\%$ falls in the **moderate** band.
+
+## Using Excel
+
+The complete list of function names, with their French equivalents, is
+on the [Excel functions](excel-functions.qmd) page.
+
+| Concept | Excel function / steps |
+|---|---|
+| Range | `=MAX(range)-MIN(range)` |
+| Sample variance | `=VAR.S(range)` |
+| Sample standard deviation | `=STDEV.S(range)` |
+| Population variance | `=VAR.P(range)` |
+| Population standard deviation | `=STDEV.P(range)` |
+| Coefficient of variation | `=STDEV.S(range)/AVERAGE(range)` |
+| Interquartile range | `=QUARTILE.EXC(range,3)-QUARTILE.EXC(range,1)` |
+| Sum of squares (for shortcut) | `=SUMSQ(range)` |
+
+> **Sample vs population**: This is a descriptive statistics course.
+> We use the **sample** formulas (`.S`) by default because real
+> business data are almost always samples. The population variants
+> (`.P`) are shown for completeness.
+
+For the **full table** (120 days per franchise) use the Excel Table
+`tblFork` and add the franchise as one more condition, for example
+`=VAR.S(FILTER(tblFork[daily_revenue_eur], tblFork[franchise]="Harbour"))`.
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — the variance shortcut (computational) formula (click to expand)
+Starting from the definitional formula and expanding the square:
+$$
+\sum_{i=1}^{n}(x_i-\bar{x})^2
+= \sum_{i=1}^n x_i^2 - 2\bar{x}\sum_{i=1}^n x_i + n\bar{x}^2.
+$$
+Since $\sum_{i=1}^n x_i = n\bar{x}$, the middle term becomes
+$-2\bar{x}(n\bar{x}) = -2n\bar{x}^2$, so
+$$
+\sum_{i=1}^{n}(x_i-\bar{x})^2
+= \sum_{i=1}^n x_i^2 - 2n\bar{x}^2 + n\bar{x}^2
+= \sum_{i=1}^n x_i^2 - n\bar{x}^2.
+$$
+Dividing by $n-1$ gives the **shortcut formula**
+$$
+s^2 = \frac{1}{n-1}\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right),
+$$
+which needs only $\sum x_i^2$ and $\bar{x}$ — one pass over the data
+instead of first computing every deviation $(x_i-\bar{x})$ and then
+squaring it. Both formulas give the identical result, $s^2=18{,}793.33$,
+for "The Wandering Fork"; the shortcut form is simply faster to
+compute by hand or with `SUMPRODUCT`/`SUMSQ` in Excel.
+:::
+
+## Visual intuition
+
+Variance is literally the **average squared distance** from the
+mean: picture each of the 30 days as a point on a number line at its
+revenue value, and $\bar{x}=628.34$ as a fixed pivot. Variance
+answers "on average, how far (squared) do the points sit from the
+pivot?" — a wide, flat spread of points gives a large variance; a
+tight cluster around the pivot gives a small one.
+
+## Interactive demo — central tendency & dispersion calculator
+
+Edit the six values below and watch the mean, variance, standard
+deviation, and coefficient of variation update live. Starting values
+are a 6-day sample of "The Wandering Fork"'s `daily_revenue_eur`.
+
+```{shinylive-python}
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 560
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
+        .form-label {{ color: {FG} !important; }}
+        .form-range {{ accent-color: steelblue; width: 100%; }}
+        .info-box {{
+            background: #152119; border-radius: 6px; padding: 10px 14px;
+            margin: 8px 0; border-left: 3px solid steelblue;
+            font-family: monospace; font-size: 0.9em;
+        }}
+    """),
+    ui.h5("🧮 Central tendency & dispersion calculator", style=f"color:{FG}"),
+    ui.p(
+        "Move the sliders to change a 6-day revenue sample; the mean, "
+        "variance, standard deviation, and CV recompute live.",
+        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
+    ),
+    ui.input_slider("d1", "Day 1 (€):", min=300, max=950, value=460.48, step=1),
+    ui.input_slider("d2", "Day 2 (€):", min=300, max=950, value=500.02, step=1),
+    ui.input_slider("d3", "Day 3 (€):", min=300, max=950, value=418.65, step=1),
+    ui.input_slider("d4", "Day 4 (€):", min=300, max=950, value=785.79, step=1),
+    ui.input_slider("d5", "Day 5 (€):", min=300, max=950, value=719.66, step=1),
+    ui.input_slider("d6", "Day 6 (€):", min=300, max=950, value=886.56, step=1),
+    ui.output_ui("info"),
+    ui.output_plot("plot", height="280px"),
+)
+
+def server(input, output, session):
+    def sample():
+        return np.array([input.d1(), input.d2(), input.d3(), input.d4(), input.d5(), input.d6()], dtype=float)
+
+    @output
+    @render.ui
+    def info():
+        x = sample()
+        mean = x.mean()
+        median = float(np.median(x))
+        var = x.var(ddof=1)
+        std = x.std(ddof=1)
+        cv = std / mean * 100 if mean else 0
+        return ui.HTML(f"""
+            <div class='info-box'>
+                Mean = <strong style='color:darkorange'>{mean:.2f}</strong> &nbsp;|&nbsp;
+                Median = <strong style='color:darkorange'>{median:.2f}</strong><br>
+                Variance (s²) = {var:.2f} &nbsp;|&nbsp;
+                Std. dev. (s) = {std:.2f} &nbsp;|&nbsp;
+                CV = {cv:.2f}%
+            </div>
+        """)
+
+    @output
+    @render.plot
+    def plot():
+        x = sample()
+        mean = x.mean()
+
+        fig, ax = plt.subplots(figsize=(7, 3.2))
+        fig.patch.set_facecolor(BG)
+        ax.set_facecolor(BG)
+        for spine in ax.spines.values():
+            spine.set_edgecolor(FG)
+        ax.tick_params(colors=FG)
+
+        days = np.arange(1, 7)
+        ax.scatter(days, x, color='steelblue', zorder=5, s=70)
+        ax.axhline(mean, color='darkorange', lw=1.8, linestyle='--', label=f'Mean = {mean:.2f}')
+        for d, v in zip(days, x):
+            ax.plot([d, d], [mean, v], color=FG, lw=1, alpha=0.5)
+        ax.set_xticks(days)
+        ax.set_xlabel("Day", color=FG)
+        ax.set_ylabel("Revenue (€)", color=FG)
+        ax.set_title("Deviations from the mean", color=FG)
+        ax.legend(fontsize=8.5, facecolor=BG, edgecolor='none', labelcolor=FG)
+        ax.grid(alpha=0.15, color=FG)
+        plt.tight_layout()
+        return fig
+
+app = App(app_ui, server)
+```
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 (by hand) — Shortcut formula (click for solution)
+A sample of $n=5$ values has $\sum x_i = 100$ and $\sum x_i^2 = 2140$.
+Find the sample variance.
+
+**Solution.** $\bar{x}=100/5=20$. Shortcut formula:
+$s^2 = \frac{1}{n-1}\left(\sum x_i^2 - n\bar{x}^2\right)
+= \frac{1}{4}(2140 - 5\times400) = \frac{1}{4}(2140-2000) = 35$.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 (by hand) — Comparing variability across units (click for solution)
+"The Wandering Fork"'s `items_sold` has mean $74.40$ and sample
+standard deviation $16.22$ (from `data-model.md`). Which variable —
+`daily_revenue_eur` or `items_sold` — has higher *relative*
+variability?
+
+**Solution.** $CV_{\text{revenue}} = 137.09/628.34 = 21.82\%$;
+$CV_{\text{items}} = 16.22/74.40 = 21.80\%$. The two are almost
+identical (about 21.8%) even though the raw units (€ vs. items sold)
+are completely different — exactly the kind of comparison only $CV$,
+not $s$ alone, can make fairly.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 (by hand) — Effect of an outlier on the range (click for solution)
+If one exceptionally bad day of $\text{daily\_revenue\_eur}=150$
+replaced the current minimum (407.59), how would the range change,
+and would the standard deviation be affected in the same direction?
+
+**Solution.** New range $= 886.56 - 150 = 736.56$ (up from 478.97) —
+the range, using only two values, reacts strongly to a single extreme
+point. The standard deviation would also increase (an extra-large
+deviation from the mean adds to $\sum(x_i-\bar{x})^2$), but by a much
+smaller relative amount, since it accounts for all 30 days rather
+than just the two most extreme.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 4 (Excel) — Dispersion for Campus revenue (click for solution)
+In `wandering-fork.xlsx`, filter `franchise` to "Campus" and compute
+the range, sample variance, sample standard deviation, and $CV$ for
+`daily_revenue_eur` (120 days). How do they compare to Harbour's?
+
+**Solution.** Campus 120-day: range = 1383.74, $s^2 = 94{,}511.80$,
+$s = 307.43$, $CV = 67.56\%$. Over the same 120 days, Harbour has
+range = 998.79, $s = 216.01$, $CV = 52.24\%$. Campus has higher
+absolute and relative dispersion than Harbour (range 1384 vs 999, $CV$
+67.6% vs 52.2%) — consistent with the right-skewed, event-driven
+revenue pattern.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 5 (Excel) — Shortcut formula with `SUMSQ` (click for solution)
+Using the Harbour 30-day `daily_revenue_eur` data, verify the
+shortcut formula: compute `=SUMSQ(range)` and `=AVERAGE(range)`,
+then apply the shortcut formula manually. Confirm it matches
+`=VAR.S(range)`.
+
+**Solution.** `SUMSQ` = 12,389,403.98, `AVERAGE` = 628.3417, $n=30$.
+Shortcut: $(12{,}389{,}403.98 - 30 \times 628.3417^2) / 29 =
+18{,}793.33$, matching `VAR.S` exactly (point to the `AVERAGE` cell
+rather than typing 628.34, or rounding shifts the result).
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 6 (Excel) — Payroll skew: dispersion (click for solution)
+Open `payroll-skew.csv`. Compute the range, sample standard deviation,
+and $CV$ for the 11 salaries. Why is the $CV$ so high?
+
+**Solution.** Range = 154,834, $s = 44{,}788$, $CV = 94.8\%$. The $CV$
+is close to 100% because the standard deviation (driven by the CEO's
+€180,000 salary) is almost as large as the mean (€47,231) — a
+hallmark of extreme right skew where the mean is pulled far above the
+bulk of the data.
+:::
+
+## Common mistakes
+
+::: {.callout-warning}
+#### Watch out
+- **Using `VAR.P`/`STDEV.P` when you need `VAR.S`/`STDEV.S`.** The
+  course standard is the sample formulas (denominator $n-1$). The
+  population variants (denominator $n$) are for when you have the
+  *entire* population — rare in business.
+- **Forgetting the square root.** Variance is in squared units (€²);
+  standard deviation is in the original unit (€). Always report the
+  one that matches your interpretation.
+- **Computing $CV$ with the median instead of the mean.** $CV =
+  s/\bar{x}$, not $s/Me$. The mean is the balance point that pairs
+  with variance.
+- **Using the range as your only dispersion measure.** The range
+  ignores everything between min and max; always report $s$ or $IQR$
+  alongside it.
+- **Comparing standard deviations across different units.** €137 vs
+  16 items — meaningless without $CV$. Always use $CV$ for
+  cross-variable or cross-dataset comparisons.
+:::
+
+## Further reading
+
+| Source | Where | What it adds | Time | Verified |
+|---|---|---|---|---|
+| OpenStax IBS 2e | §2.7 *Measures of the Spread of the Data* (book pages 82–90) | Sample variance, standard deviation, grouped formulas, Chebyshev, Empirical Rule, CV | ~8 pages | checked against the PDF contents (T046) |
+| Khan Academy | Unit *Summarizing quantitative data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on variance, standard deviation, and coefficient of variation | Short videos and practice on dispersion measures | ~30–45 min (estimate) | link check pending (T048) |
+
+OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean,
+*Introductory Business Statistics 2e*, OpenStax, Rice University,
+<https://openstax.org/details/books/introductory-business-statistics-2e>,
+licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
