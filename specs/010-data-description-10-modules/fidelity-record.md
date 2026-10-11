@@ -211,7 +211,7 @@ New locations are under `teaching/data-description/modules/`.
 | S12 § Visual/geometric intuition | intuition | module-10.qmd § Visual intuition | adapted | Rewritten as whole-course consolidation |
 | S12 Exercise 1 — Reading the summary table | exercise | module-10.qmd Exercise 3 | adapted | Lakeside Bakery walkthrough |
 | S12 Exercise 2 — Predicting from the regression line | exercise | module-10.qmd Exercise 2 (d) | adapted | Now on Campus customers → revenue |
-| S12 Exercise 3 — Contingency table consistency | exercise | module-10.qmd Exercise 2 (a) | adapted | |
+| S12 Exercise 3 — Contingency table consistency | exercise | module-10.qmd Exercise 2 (a) | adapted | Rebuilt on Campus 120 days as weather × revenue-class row profiles; the old link to a temperature–revenue correlation was dropped because the new dataset keeps that correlation weak (\|r\| ≤ 0.35) |
 | S12 § Mock exam — Sessions 1–12 | exam | module-10.qmd § Mock exam — Modules 1–9 | adapted | Originally re-authored; every answer maps to a module |
 | S12 Q1–Q7 (MCQ) | exam | module-10.qmd Q1–Q10 | adapted | Rewritten for module mapping; extended to 10 MCQ |
 | S12 Part B Exercise | exam | module-10.qmd Exercises 1–3 | adapted | Split into three computational problems |
