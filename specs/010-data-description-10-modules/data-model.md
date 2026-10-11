@@ -90,8 +90,13 @@ keep their names and units so migrated examples still read naturally.
 6. Weather × promo conditional profiles differ visibly (largest
    row-profile gap ≥ 15 percentage points) in at least one franchise.
 7. At least one outlier by the $1.5\times$IQR rule per franchise.
-8. Every category appears at least 5 times (no empty cells in contingency
-   tables).
+8. Every category appears at least 5 times per franchise (no empty cells in
+   contingency tables). Exception: `month` = Aug has only 3 rows because the
+   120-day window ends on 3 August; `month` is not used in contingency
+   exercises.
+
+Note: the legacy Harbour 30-day Q1 is 506.605, shown as 506.61 by Excel;
+feature 005 printed 506.60. Modules use 506.61.
 
 ### Dataset files
 

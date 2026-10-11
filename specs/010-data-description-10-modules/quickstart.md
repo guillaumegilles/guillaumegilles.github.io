@@ -111,3 +111,17 @@ mock exam.
 `verify_dataset.py`, `check_modules.py` and `fidelity-record.md` are
 authored during implementation (see `/speckit-tasks`). They live in the
 feature directory and are not part of the site build.
+
+## Results — final run (T054, 2026-10-11)
+
+| Scenario | Result | Notes |
+|---|---|---|
+| V1 Render | **not verified** | `quarto render teaching/data-description` made no progress in 5 min inside the agent sandbox (killed by `timeout`); owner to run locally (T053) |
+| V2 Dataset invariants | PASS | `verify_dataset.py`: all 8 invariants OK; legacy Harbour 30-day figures match (Q1 prints 506.61: exact value 506.605, rounding) |
+| V3 Quoted numbers | PASS (scripted) | Every dataset figure in M1–M10 recomputed with pandas from `wandering-fork.csv` / `lakeside-bakery.csv` and corrected where wrong (M1–M9 by audit, M10 Lakeside table and solutions rewritten) |
+| V4 Module contract | PASS | `check_modules.py` on `module-01…10.qmd`: 10 × "Structure checks passed", total 1,800 min; only line-length WARNs on headings, LaTeX and long formulas |
+| V5 Fidelity | PASS | `fidelity-record.md` rebuilt from `HEAD` headings: one row per section and callout of S1–S12; every adapted/dropped row has a reason |
+| V6 Orphans | PASS | No `session-*.qmd` or `excel-worksheet*.qmd` under `teaching/data-description`; the only `session-NN` hits in `_quarto.yml` belong to `decision-making-stat` |
+| V7 Drafts | n/a | `modules/_metadata.yml` already removed; publishing lands with the `index.qmd` rewrite (T051/T052) |
+| V9 Navigation | PASS | `index.qmd` links M1–M10 and the three reference pages directly (1 click); sidebar equals contract §2 |
+| V10 References | PASS / pending | OpenStax sections verified against PDF TOC (research §1); Khan Academy links are course-root only, browser check pending (T048) |
