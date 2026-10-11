@@ -1,0 +1,329 @@
+---
+title: "Module 8 — Bivariate I: contingency tables and scatter plots"
+subtitle: "Data Description | Part III — Two variables and synthesis"
+date-modified: 2026-10-08
+lang: en
+---
+
+**The business question.** Every univariate indicator so far described
+**one** variable at a time. The real question behind "The Wandering
+Fork"'s trading is whether two variables move together — does warmer
+weather really bring more revenue? Do promotions work better on sunny
+days? This module introduces the two graphical tools for answering
+that: the contingency table (for two qualitative-or-grouped variables)
+and the scatter plot (for two quantitative variables).
+
+## Learning objectives
+
+By the end of this module, you will be able to:
+
+- Build and read a contingency table crossing two variables.
+- Compute row and column marginal distributions from a contingency
+  table.
+- Build a scatter plot of two quantitative variables and describe the
+  pattern it shows.
+- Compute a **conditional distribution** — the distribution of one
+  variable restricted to a single modality of the other — and use it
+  to compare sub-groups fairly.
+- Distinguish "a visible pattern" from "a proven relationship" —
+  formalised numerically in Module 9.
+
+## Time plan
+
+| Block | Minutes | What you do |
+|---|---:|---|
+| Theory | 60 | Contingency table, marginal distributions, conditional distributions, scatter plot |
+| Excel lab | 60 | `COUNTIFS`, PivotTable (two fields), XY scatter chart |
+| Exercises | 60 | Three by-hand and four Excel exercises |
+| **Total** | **180** | |
+
+## Theory
+
+### Contingency table
+
+::: {.callout-note}
+#### Definition — contingency table
+A **contingency table** (or cross-tabulation) crosses the modalities
+of two variables observed on the same individuals: cell $(i,j)$ holds
+the count $n_{ij}$ of individuals with modality $i$ of the first
+variable **and** modality $j$ of the second. The **row margin**
+$n_{i\cdot} = \sum_j n_{ij}$ and **column margin**
+$n_{\cdot j} = \sum_i n_{ij}$ recover each variable's own (univariate)
+frequency table from the same data.
+:::
+
+In plain words: a contingency table is a two-dimensional frequency
+table. The margins are the row and column totals — they give you back
+the one-variable frequency tables you already know.
+
+### Conditional distribution
+
+::: {.callout-note}
+#### Definition — conditional distribution
+A **conditional distribution** is the distribution of one variable
+*restricted* to a single modality of the other — one row (or one
+column), rescaled to its own row (or column) total instead of the
+grand total $n$. It answers "given this category, how is the other
+variable distributed?", which the raw counts alone cannot, since row
+totals differ in size.
+:::
+
+In plain words: to compare Sunny vs Rainy days fairly, don't compare
+raw counts (Sunny has more days total). Instead, compute percentages
+*within* each weather type — that's the conditional distribution.
+
+### Scatter plot
+
+::: {.callout-note}
+#### Definition — scatter plot
+A **scatter plot** places one point per individual, using one
+quantitative variable for the $x$-coordinate and another for the
+$y$-coordinate. It is the standard first look at a possible
+relationship between two quantitative variables, before computing
+any numerical summary.
+:::
+
+In plain words: each day becomes a dot at (temperature, revenue). The
+cloud of dots shows the pattern — upward trend, downward trend,
+curved, or no pattern at all.
+
+## Worked example
+
+### Contingency table — `weather` × `daily_revenue_eur` class
+
+From "The Wandering Fork"'s Harbour 30-day subset
+(`wandering-fork.xlsx`, sheet `harbour_30d`):
+
+| Weather \ Revenue class | [400,500[ | [500,600[ | [600,700[ | [700,800[ | [800,900[ | Row total |
+|---|---:|---:|---:|---:|---:|---:|
+| Sunny | 0 | 3 | 6 | 3 | 1 | 13 |
+| Cloudy | 3 | 2 | 2 | 3 | 2 | 12 |
+| Rainy | 3 | 1 | 0 | 1 | 0 | 5 |
+| **Column total** | **6** | **6** | **8** | **7** | **3** | **30** |
+
+**Step 1 — check the margins.** The row totals (13, 12, 5) match
+Module 2's `weather` frequency table exactly, and the column totals
+(6, 6, 8, 7, 3) match Module 3's `daily_revenue_eur` class table
+exactly — both are recovered as marginal distributions of the same
+30 rows, confirming the table was built correctly.
+
+**Step 2 — read the pattern.** All 6 days in the lowest revenue class
+[400,500[ were either Cloudy or Rainy — zero Sunny days earned under
+€500. Conversely, Sunny days account for 10 of the 18 days earning
+€600 or more, including 6 of the 8 days in [600,700[. This is a
+first, purely visual hint that better weather is associated with
+higher revenue.
+
+**Step 3 — conditional distribution.** Restricting to Sunny days
+only (row total 13) and rescaling each cell by 13 instead of 30 gives
+the *conditional* distribution of revenue class **given Sunny**:
+$0\%, 23.1\%, 46.2\%, 23.1\%, 7.7\%$ for the five classes (rounded;
+they sum to $100\%$ before rounding) — compare
+this to the *unconditional* column percentages from Module 3
+(20.0%, 20.0%, 26.7%, 23.3%, 10.0%): Sunny days are visibly shifted
+toward the higher revenue classes, confirming the pattern from Step 2
+with actual percentages instead of raw counts.
+
+### Scatter plot — `temperature_c` vs `daily_revenue_eur`
+
+Plotting `temperature_c` (x-axis) against `daily_revenue_eur`
+(y-axis) for all 30 Harbour days shows points trending upward and to
+the right: as temperature rises, revenue tends to rise too, though
+the points do not fall on a perfect line — there is visible scatter
+around the trend.
+
+## Using Excel
+
+The sheet `harbour_30d` of `wandering-fork.xlsx` has the data. The
+complete list of function names, with their French equivalents, is on
+the [Excel functions](excel-functions.qmd) page.
+
+| Concept | Excel function / steps |
+|---|---|
+| Contingency table | Select the two columns → **Insert → PivotTable**, one variable in Rows, the other in Columns, `Count` in Values |
+| Row/column margins | The PivotTable's own "Grand Total" row and column |
+| Conditional distribution | In the PivotTable, right-click Values → **Show Values As** → **% of Row Total** (or Column Total) |
+| Scatter plot | Select the two quantitative columns → **Insert → Chart → Scatter (X Y)** |
+| Two-way `COUNTIFS` | `=COUNTIFS(range1, criterion1, range2, criterion2, …)` for cell counts |
+
+For the **full table** (120 days per franchise) use the Excel Table
+`tblFork` and add the franchise as one more condition, for example
+`=COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny",tblFork[daily_revenue_eur],">=600",tblFork[daily_revenue_eur],"<700")`.
+
+## Proof / derivation
+
+::: {.callout-caution collapse="true"}
+#### Derivation — marginal totals recover the univariate frequency table (click to expand)
+Let $n_{ij}$ be the contingency table's cell counts, with row
+modalities $i=1,\dots,r$ and column modalities $j=1,\dots,c$. Every
+one of the $n$ individuals is counted in exactly one cell, so summing
+across all columns for a fixed row $i$ recovers that row modality's
+total univariate count:
+$$
+n_{i\cdot} = \sum_{j=1}^{c} n_{ij}.
+$$
+For "The Wandering Fork", row $i=\text{Sunny}$:
+$0+3+6+3+1 = 13$, matching Module 2's Sunny count exactly — this is
+not a coincidence but a direct consequence of the contingency table
+partitioning the same 30 rows both by `weather` and, independently,
+by `daily_revenue_eur` class.
+:::
+
+## Visual intuition
+
+A contingency table is a two-dimensional histogram: instead of one
+row of class counts (Module 3), we now have a *grid* of counts, and
+reading down a single column or across a single row projects the
+two-dimensional picture back onto one axis — exactly recovering the
+one-variable-at-a-time view from Modules 2–3. A scatter plot's
+"upward-and-to-the-right" shape is the visual signature of a positive
+relationship; Module 9 replaces "shape" with a single number, the
+correlation coefficient.
+
+## Interactive demo
+
+::: {.callout-important}
+TODO: an interactive contingency table builder (drag categories,
+see conditional distributions update) would be a good Shinylive demo
+for this module.
+:::
+
+## Exercises
+
+::: {.callout-caution collapse="true"}
+#### Exercise 1 (by hand) — Reading a contingency table (click for solution)
+Out of the 12 Cloudy days, what proportion earned in the top two
+revenue classes ([700,800[ or [800,900[)?
+
+**Solution.** Cloudy row: $3+2=5$ days in the top two classes out of
+12 Cloudy days total, i.e. $5/12 \approx 41.7\%$.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 2 (by hand) — Column margin check (click for solution)
+Verify that the column total for [600,700[ (8) is consistent with
+Module 3's class frequency table.
+
+**Solution.** Column [600,700[: $6\,(\text{Sunny}) + 2\,(\text{Cloudy})
++ 0\,(\text{Rainy}) = 8$, matching Module 3's $n_{[600,700[}=8$
+exactly.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 3 (by hand) — Describing a scatter plot (click for solution)
+Without computing any number, how would you describe the scatter
+plot of `temperature_c` vs. `daily_revenue_eur` — direction, and is
+the relationship perfectly linear?
+
+**Solution.** The direction is positive (points trend upward to the
+right). The relationship is not perfectly linear — there is visible
+scatter of points around any trend line one might draw, meaning
+other factors besides temperature also influence daily revenue.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 4 (Excel) — Build the contingency table for Campus (click for solution)
+In `wandering-fork.xlsx`, filter `franchise` to "Campus" and build a
+PivotTable crossing `weather` (Rows) with `daily_revenue_eur` class
+(Columns, grouped in €100 bins). What are the row totals? Do they
+match Module 2's Campus `weather` frequencies?
+
+**Solution.** Campus 120-day row totals: Sunny 50, Cloudy 48, Rainy
+22 (total 120). These match the Campus `weather` frequencies from
+Module 2 (Sunny 41.7%, Cloudy 40.0%, Rainy 18.3%).
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 5 (Excel) — Conditional distribution: revenue given promo (click for solution)
+Using the full 240-row `tblFork`, build a PivotTable with `promo_active`
+(Rows) and `daily_revenue_eur` class (Columns, €100 bins). Show
+values as **% of Row Total**. Compare the conditional distributions
+for "Yes" vs "No" promo. Is revenue higher when a promo is active?
+
+**Solution.** There are 26 promo days and 214 non-promo days. Summing
+the row percentages: below €200, 15.4% (Yes) vs 19.2% (No); €400 or
+more, 53.8% vs 48.1%; €600 or more, 23.1% vs 23.4%. Promo days have
+slightly less mass in the lowest classes, but the top of the two
+distributions is almost identical. The difference is small and rests
+on only 26 days — and it is descriptive, not causal (other factors
+may drive both promo and revenue).
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 6 (Excel) — Scatter plot: foot traffic vs revenue (click for solution)
+Create a scatter plot of `foot_traffic` (x) vs `daily_revenue_eur` (y)
+for Harbour 120 days. Describe the direction, form, and strength of
+the pattern.
+
+**Solution.** Strong positive linear trend: more foot traffic
+clearly associates with higher revenue. The points cluster tightly
+around an upward line — much tighter than temperature vs revenue.
+This visually confirms the $r \ge 0.80$ correlation from the dataset
+design.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Exercise 7 (Excel) — Harbour vs Campus: weather and revenue (click for solution)
+For each franchise (120 days each), compute the conditional share of
+days with `daily_revenue_eur` of €500 or more **given** each
+`weather` category. Is the weather–revenue association equally strong
+at both trucks?
+
+**Solution.** For Harbour and Sunny:
+
+```text
+=COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny",
+          tblFork[daily_revenue_eur],">=500")
+ /COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny")
+```
+
+| Weather | Harbour | Campus |
+|---|---:|---:|
+| Sunny | 25/53 = 47.2% | 19/50 = 38.0% |
+| Cloudy | 11/42 = 26.2% | 18/48 = 37.5% |
+| Rainy | 2/25 = 8.0% | 6/22 = 27.3% |
+
+At Harbour the share falls sharply from Sunny to Rainy (47.2% to
+8.0%): weather is strongly associated with revenue. At Campus the
+three shares are much closer (38.0%, 37.5%, 27.3%): the association
+is weaker, so other factors (such as nearby events) matter more
+there.
+:::
+
+## Common mistakes
+
+::: {.callout-warning}
+#### Watch out
+- **Using raw counts to compare rows with different totals.** Always
+  use conditional distributions (% of row/column total) for fair
+  comparison.
+- **Confusing marginal and conditional distributions.** Marginal =
+  overall (ignoring the other variable); conditional = given a
+  specific value of the other variable.
+- **Reading a scatter plot as proof of causation.** A pattern only
+  shows association; Module 9 quantifies the linear association, but
+  neither proves causation.
+- **Forgetting to group continuous variables for contingency tables.**
+  `daily_revenue_eur` must be binned (e.g., €100 classes) before
+  crossing with `weather` — PivotTable grouping does this
+  automatically.
+- **Using a line chart instead of a scatter plot for two quantitative
+  variables.** Line charts imply a sequence (time); scatter plots
+  show the relationship between two variables measured on the same
+  individuals.
+:::
+
+## Further reading
+
+| Source | Where | What it adds | Time | Verified |
+|---|---|---|---|---|
+| OpenStax IBS 2e | §13.1 *The Correlation Coefficient r* (book pages 536–538) | Correlation concept, scatter plots | ~2 pages | checked against the PDF contents (T046) |
+| OpenStax IBS 2e | §13.3 *Linear Equations* (book pages 539–542) | Linear relationship basics | ~3 pages | checked against the PDF contents (T046) |
+| OpenStax IBS 2e | §3.4 *Contingency Tables and Probability Trees* (book pages 153–164) | Contingency tables, conditional distributions (probability framing — skim) | ~11 pages | checked against the PDF contents (T046) |
+| Khan Academy | Unit *Analyzing categorical data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on two-way tables and conditional distributions | Short videos and practice on contingency tables | ~30–45 min (estimate) | link check pending (T048) |
+| Khan Academy | Unit *Exploring bivariate numerical data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on scatter plots and correlation | Short videos and practice on scatter plots | ~30–45 min (estimate) | link check pending (T048) |
+
+OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean,
+*Introductory Business Statistics 2e*, OpenStax, Rice University,
+<https://openstax.org/details/books/introductory-business-statistics-2e>,
+licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
