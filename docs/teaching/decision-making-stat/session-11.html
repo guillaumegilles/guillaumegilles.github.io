@@ -2,19 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.537">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="M. Kachour">
-<meta name="dcterms.date" content="2026-10-05">
 
-<title>Guillaume Gilles - Session 11 — ANOVA Test</title>
+<title>Session 11 — ANOVA Test – Guillaume Gilles</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -34,16 +38,17 @@ ul.task-list li input[type="checkbox"] {
 <meta name="quarto:offset" content="../../">
 <link href="../../teaching/decision-making-stat/session-12.html" rel="next">
 <link href="../../teaching/decision-making-stat/session-10.html" rel="prev">
-<link href="../../assets/favicon.png" rel="icon" type="image/png">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
+<link href="../../assets/profile.jpeg" rel="icon" type="image/jpeg">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-1c3d7007041861d2ced64e43bb764f6c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -136,8 +141,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -150,7 +155,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -166,17 +171,17 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="Guillaume Gilles - Session 11 — ANOVA Test">
+<meta property="og:title" content="Session 11 — ANOVA Test – Guillaume Gilles">
 <meta property="og:description" content="Decision Making Statistics — S04">
 <meta property="og:image" content="https://ggilles.dev/teaching/decision-making-stat/assets/og-image.jpg">
 <meta property="og:site_name" content="Guillaume Gilles">
-<meta name="twitter:title" content="Guillaume Gilles - Session 11 — ANOVA Test">
+<meta name="twitter:title" content="Session 11 — ANOVA Test – Guillaume Gilles">
 <meta name="twitter:description" content="Decision Making Statistics — S04">
 <meta name="twitter:image" content="https://ggilles.dev/teaching/decision-making-stat/assets/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -184,11 +189,12 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../assets/profile.jpeg" alt="" class="navbar-logo">
+    <img src="../../assets/profile.jpeg" alt="" class="navbar-logo light-content">
+    <img src="../../assets/profile.jpeg" alt="" class="navbar-logo dark-content">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -207,10 +213,10 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
     <div class="dropdown">
-      <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
-      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
+      <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
             <a class="dropdown-item quarto-navbar-tools-item" href="../../teaching.html">
             🇬🇧 English
@@ -228,11 +234,11 @@ window.Quarto = {
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/decision-making-stat/session-11.html">Session 11 — ANOVA Test</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -349,30 +355,30 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
-  <li><a href="#introductory-example" id="toc-introductory-example" class="nav-link" data-scroll-target="#introductory-example"><span class="header-section-number">1.1</span> Introductory example</a></li>
-  <li><a href="#why-not-use-multiple-t-tests" id="toc-why-not-use-multiple-t-tests" class="nav-link" data-scroll-target="#why-not-use-multiple-t-tests"><span class="header-section-number">1.2</span> Why not use multiple t-tests?</a></li>
-  <li><a href="#advantages-and-limitation" id="toc-advantages-and-limitation" class="nav-link" data-scroll-target="#advantages-and-limitation"><span class="header-section-number">1.3</span> Advantages and limitation</a></li>
+  <li><a href="#introductory-example" id="toc-introductory-example" class="nav-link" data-scroll-target="#introductory-example">Introductory example</a></li>
+  <li><a href="#why-not-use-multiple-t-tests" id="toc-why-not-use-multiple-t-tests" class="nav-link" data-scroll-target="#why-not-use-multiple-t-tests">Why not use multiple t-tests?</a></li>
+  <li><a href="#advantages-and-limitation" id="toc-advantages-and-limitation" class="nav-link" data-scroll-target="#advantages-and-limitation">Advantages and limitation</a></li>
   </ul></li>
-  <li><a href="#anova-test-formulation" id="toc-anova-test-formulation" class="nav-link" data-scroll-target="#anova-test-formulation"><span class="header-section-number">2</span> ANOVA test formulation</a>
+  <li><a href="#anova-test-formulation" id="toc-anova-test-formulation" class="nav-link" data-scroll-target="#anova-test-formulation">ANOVA test formulation</a>
   <ul class="collapse">
-  <li><a href="#hypotheses" id="toc-hypotheses" class="nav-link" data-scroll-target="#hypotheses"><span class="header-section-number">2.1</span> Hypotheses</a></li>
-  <li><a href="#notations" id="toc-notations" class="nav-link" data-scroll-target="#notations"><span class="header-section-number">2.2</span> Notations</a></li>
+  <li><a href="#hypotheses" id="toc-hypotheses" class="nav-link" data-scroll-target="#hypotheses">Hypotheses</a></li>
+  <li><a href="#notations" id="toc-notations" class="nav-link" data-scroll-target="#notations">Notations</a></li>
   </ul></li>
-  <li><a href="#variance-decomposition" id="toc-variance-decomposition" class="nav-link" data-scroll-target="#variance-decomposition"><span class="header-section-number">3</span> Variance decomposition</a>
+  <li><a href="#variance-decomposition" id="toc-variance-decomposition" class="nav-link" data-scroll-target="#variance-decomposition">Variance decomposition</a>
   <ul class="collapse">
-  <li><a href="#between-group-variability" id="toc-between-group-variability" class="nav-link" data-scroll-target="#between-group-variability"><span class="header-section-number">3.1</span> Between-group variability</a></li>
-  <li><a href="#within-group-variability" id="toc-within-group-variability" class="nav-link" data-scroll-target="#within-group-variability"><span class="header-section-number">3.2</span> Within-group variability</a></li>
-  <li><a href="#average-squares-and-test-statistic" id="toc-average-squares-and-test-statistic" class="nav-link" data-scroll-target="#average-squares-and-test-statistic"><span class="header-section-number">3.3</span> Average squares and test statistic</a></li>
-  <li><a href="#decision-rule" id="toc-decision-rule" class="nav-link" data-scroll-target="#decision-rule"><span class="header-section-number">3.4</span> Decision rule</a></li>
+  <li><a href="#between-group-variability" id="toc-between-group-variability" class="nav-link" data-scroll-target="#between-group-variability">Between-group variability</a></li>
+  <li><a href="#within-group-variability" id="toc-within-group-variability" class="nav-link" data-scroll-target="#within-group-variability">Within-group variability</a></li>
+  <li><a href="#average-squares-and-test-statistic" id="toc-average-squares-and-test-statistic" class="nav-link" data-scroll-target="#average-squares-and-test-statistic">Average squares and test statistic</a></li>
+  <li><a href="#decision-rule" id="toc-decision-rule" class="nav-link" data-scroll-target="#decision-rule">Decision rule</a></li>
   </ul></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">4</span> Conclusion</a></li>
-  <li><a href="#application-exercise" id="toc-application-exercise" class="nav-link" data-scroll-target="#application-exercise"><span class="header-section-number">5</span> Application exercise</a>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#application-exercise" id="toc-application-exercise" class="nav-link" data-scroll-target="#application-exercise">Application exercise</a>
   <ul class="collapse">
-  <li><a href="#anova-on-academic-performance-by-baccalauréat-type" id="toc-anova-on-academic-performance-by-baccalauréat-type" class="nav-link" data-scroll-target="#anova-on-academic-performance-by-baccalauréat-type"><span class="header-section-number">5.1</span> ANOVA on academic performance by baccalauréat type</a></li>
-  <li><a href="#exercise-2-effect-of-training-method-on-exam-scores" id="toc-exercise-2-effect-of-training-method-on-exam-scores" class="nav-link" data-scroll-target="#exercise-2-effect-of-training-method-on-exam-scores"><span class="header-section-number">5.2</span> Exercise 2 — Effect of training method on exam scores</a></li>
-  <li><a href="#exercise-3-effect-of-fertiliser-type-on-crop-yield" id="toc-exercise-3-effect-of-fertiliser-type-on-crop-yield" class="nav-link" data-scroll-target="#exercise-3-effect-of-fertiliser-type-on-crop-yield"><span class="header-section-number">5.3</span> Exercise 3 — Effect of fertiliser type on crop yield</a></li>
+  <li><a href="#anova-on-academic-performance-by-baccalauréat-type" id="toc-anova-on-academic-performance-by-baccalauréat-type" class="nav-link" data-scroll-target="#anova-on-academic-performance-by-baccalauréat-type">ANOVA on academic performance by baccalauréat type</a></li>
+  <li><a href="#exercise-2-effect-of-training-method-on-exam-scores" id="toc-exercise-2-effect-of-training-method-on-exam-scores" class="nav-link" data-scroll-target="#exercise-2-effect-of-training-method-on-exam-scores">Exercise 2 — Effect of training method on exam scores</a></li>
+  <li><a href="#exercise-3-effect-of-fertiliser-type-on-crop-yield" id="toc-exercise-3-effect-of-fertiliser-type-on-crop-yield" class="nav-link" data-scroll-target="#exercise-3-effect-of-fertiliser-type-on-crop-yield">Exercise 3 — Effect of fertiliser type on crop yield</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -390,19 +396,7 @@ window.Quarto = {
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>M. Kachour </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">October 5, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -413,12 +407,12 @@ window.Quarto = {
 
 
 <p>This session introduces the <strong>ANOVA test</strong>, a method used to compare several group means with a single global test.</p>
-<section id="introduction" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<section id="introductory-example" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="introductory-example"><span class="header-section-number">1.1</span> Introductory example</h3>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="introductory-example" class="level3">
+<h3 class="anchored" data-anchor-id="introductory-example">Introductory example</h3>
 <p>We want to study the effect of four Merchandising Display systems on sales in stores. A test in one store for five weeks gives the following values (sales in thousands of euros):</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 8%">
 <col style="width: 18%">
@@ -480,7 +474,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition
+<span class="screen-reader-only">Note</span>Definition
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -493,8 +487,8 @@ Definition
 </div>
 </div>
 </section>
-<section id="why-not-use-multiple-t-tests" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="why-not-use-multiple-t-tests"><span class="header-section-number">1.2</span> Why not use multiple t-tests?</h3>
+<section id="why-not-use-multiple-t-tests" class="level3">
+<h3 class="anchored" data-anchor-id="why-not-use-multiple-t-tests">Why not use multiple t-tests?</h3>
 <p>With <span class="math inline">\(4\)</span> groups, there are <span class="math inline">\(6\)</span> pairwise comparisons. If each comparison is performed at the <span class="math inline">\(5\%\)</span> level, the probability of accepting <span class="math inline">\(H_0\)</span> six times is:</p>
 <p><span class="math display">\[
 (0.95)^6 \approx 0.735
@@ -509,7 +503,7 @@ Definition
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important remark
+<span class="screen-reader-only">Warning</span>Important remark
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -517,15 +511,15 @@ Important remark
 </div>
 </div>
 </section>
-<section id="advantages-and-limitation" class="level3" data-number="1.3">
-<h3 data-number="1.3" class="anchored" data-anchor-id="advantages-and-limitation"><span class="header-section-number">1.3</span> Advantages and limitation</h3>
+<section id="advantages-and-limitation" class="level3">
+<h3 class="anchored" data-anchor-id="advantages-and-limitation">Advantages and limitation</h3>
 <div class="callout callout-style-default callout-tip callout-titled" title="Why ANOVA is useful">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Why ANOVA is useful
+<span class="screen-reader-only">Tip</span>Why ANOVA is useful
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -542,7 +536,7 @@ Why ANOVA is useful
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Limitation
+<span class="screen-reader-only">Warning</span>Limitation
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -551,17 +545,17 @@ Limitation
 </div>
 </section>
 </section>
-<section id="anova-test-formulation" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="anova-test-formulation"><span class="header-section-number">2</span> ANOVA test formulation</h2>
-<section id="hypotheses" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="hypotheses"><span class="header-section-number">2.1</span> Hypotheses</h3>
+<section id="anova-test-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="anova-test-formulation">ANOVA test formulation</h2>
+<section id="hypotheses" class="level3">
+<h3 class="anchored" data-anchor-id="hypotheses">Hypotheses</h3>
 <div class="callout callout-style-default callout-note callout-titled" title="Hypotheses">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Hypotheses
+<span class="screen-reader-only">Note</span>Hypotheses
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -574,8 +568,8 @@ H_1:\text{ at least two means are different}
 </div>
 </div>
 </section>
-<section id="notations" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="notations"><span class="header-section-number">2.2</span> Notations</h3>
+<section id="notations" class="level3">
+<h3 class="anchored" data-anchor-id="notations">Notations</h3>
 <ul>
 <li><span class="math inline">\(k\)</span>: number of groups,</li>
 <li><span class="math inline">\(n_j\)</span>: number of observations in group <span class="math inline">\(j\)</span>,</li>
@@ -590,7 +584,7 @@ H_1:\text{ at least two means are different}
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important remark
+<span class="screen-reader-only">Warning</span>Important remark
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -599,17 +593,17 @@ Important remark
 </div>
 </section>
 </section>
-<section id="variance-decomposition" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="variance-decomposition"><span class="header-section-number">3</span> Variance decomposition</h2>
-<section id="between-group-variability" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="between-group-variability"><span class="header-section-number">3.1</span> Between-group variability</h3>
+<section id="variance-decomposition" class="level2">
+<h2 class="anchored" data-anchor-id="variance-decomposition">Variance decomposition</h2>
+<section id="between-group-variability" class="level3">
+<h3 class="anchored" data-anchor-id="between-group-variability">Between-group variability</h3>
 <div class="callout callout-style-default callout-tip callout-titled" title="Sum of squares between groups">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Sum of squares between groups
+<span class="screen-reader-only">Tip</span>Sum of squares between groups
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -619,15 +613,15 @@ SSD_{inter}=\sum_{j=1}^{k} n_j(\bar{x}_j-\bar{x})^2
 </div>
 </div>
 </section>
-<section id="within-group-variability" class="level3" data-number="3.2">
-<h3 data-number="3.2" class="anchored" data-anchor-id="within-group-variability"><span class="header-section-number">3.2</span> Within-group variability</h3>
+<section id="within-group-variability" class="level3">
+<h3 class="anchored" data-anchor-id="within-group-variability">Within-group variability</h3>
 <div class="callout callout-style-default callout-tip callout-titled" title="Sum of squares within groups">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Sum of squares within groups
+<span class="screen-reader-only">Tip</span>Sum of squares within groups
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -639,15 +633,15 @@ SSD_{intra}=\sum_{j=1}^{k}\sum_{i=1}^{n_j}(x_{i,j}-\bar{x}_j)^2
 </div>
 </div>
 </section>
-<section id="average-squares-and-test-statistic" class="level3" data-number="3.3">
-<h3 data-number="3.3" class="anchored" data-anchor-id="average-squares-and-test-statistic"><span class="header-section-number">3.3</span> Average squares and test statistic</h3>
+<section id="average-squares-and-test-statistic" class="level3">
+<h3 class="anchored" data-anchor-id="average-squares-and-test-statistic">Average squares and test statistic</h3>
 <div class="callout callout-style-default callout-tip callout-titled" title="ANOVA formulas">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-ANOVA formulas
+<span class="screen-reader-only">Tip</span>ANOVA formulas
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -671,15 +665,15 @@ U_{obs} \sim \mathcal{F}(v_1,v_2)
 <li><span class="math inline">\(v_2=n-k\)</span> denominator degrees of freedom.</li>
 </ul>
 </section>
-<section id="decision-rule" class="level3" data-number="3.4">
-<h3 data-number="3.4" class="anchored" data-anchor-id="decision-rule"><span class="header-section-number">3.4</span> Decision rule</h3>
+<section id="decision-rule" class="level3">
+<h3 class="anchored" data-anchor-id="decision-rule">Decision rule</h3>
 <div class="callout callout-style-default callout-tip callout-titled" title="Right-tailed Fisher test">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Right-tailed Fisher test
+<span class="screen-reader-only">Tip</span>Right-tailed Fisher test
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -696,7 +690,7 @@ U_{obs}&gt;f
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exam tip
+<span class="screen-reader-only">Important</span>Exam tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -712,30 +706,30 @@ Exam tip
 </div>
 </section>
 </section>
-<section id="conclusion" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">4</span> Conclusion</h2>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <ul>
 <li><strong><span class="math inline">\(H_0\)</span> rejected</strong>: the data confirm that all means are not equal, so there is a link between the variables.</li>
 <li><strong><span class="math inline">\(H_0\)</span> not rejected</strong>: the data do not confirm a difference between the means at the chosen risk level.</li>
 </ul>
 </section>
-<section id="application-exercise" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="application-exercise"><span class="header-section-number">5</span> Application exercise</h2>
-<section id="anova-on-academic-performance-by-baccalauréat-type" class="level3" data-number="5.1">
-<h3 data-number="5.1" class="anchored" data-anchor-id="anova-on-academic-performance-by-baccalauréat-type"><span class="header-section-number">5.1</span> ANOVA on academic performance by baccalauréat type</h3>
+<section id="application-exercise" class="level2">
+<h2 class="anchored" data-anchor-id="application-exercise">Application exercise</h2>
+<section id="anova-on-academic-performance-by-baccalauréat-type" class="level3">
+<h3 class="anchored" data-anchor-id="anova-on-academic-performance-by-baccalauréat-type">ANOVA on academic performance by baccalauréat type</h3>
 <div class="callout callout-style-default callout-caution callout-titled" title="Exercise">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercise
+<span class="screen-reader-only">Caution</span>Exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>A data analyst at a French business school wants to determine whether academic performance of first-year students depends on their baccalauréat type (Bac ES, Bac S, or Bac STG).</p>
 <p>He observes 18 first-year students: 7 from Bac ES, 6 from Bac S, and 5 from Bac STG. Performance is measured by the average grade across all subjects.</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Bac ES</th>
@@ -785,12 +779,12 @@ Exercise
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled" title="Solution">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution
+<span class="screen-reader-only">Caution</span>Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -859,7 +853,7 @@ f=F_{5\%}(2,15)\approx 3.68
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Interpretation caution
+<span class="screen-reader-only">Warning</span>Interpretation caution
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -870,20 +864,20 @@ Interpretation caution
 </div>
 </div>
 </section>
-<section id="exercise-2-effect-of-training-method-on-exam-scores" class="level3" data-number="5.2">
-<h3 data-number="5.2" class="anchored" data-anchor-id="exercise-2-effect-of-training-method-on-exam-scores"><span class="header-section-number">5.2</span> Exercise 2 — Effect of training method on exam scores</h3>
+<section id="exercise-2-effect-of-training-method-on-exam-scores" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2-effect-of-training-method-on-exam-scores">Exercise 2 — Effect of training method on exam scores</h3>
 <div class="callout callout-style-default callout-caution callout-titled" title="Exercise">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercise
+<span class="screen-reader-only">Caution</span>Exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>A training manager tests three teaching methods (A: traditional classroom, B: online self-paced, C: blended learning) on groups of employees. The exam scores (out of 20) are:</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Traditional (A)</th>
@@ -928,12 +922,12 @@ Exercise
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled" title="Solution">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution
+<span class="screen-reader-only">Caution</span>Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -988,20 +982,20 @@ f=F_{5\%}(2,14)\approx 3.74
 </div>
 </div>
 </section>
-<section id="exercise-3-effect-of-fertiliser-type-on-crop-yield" class="level3" data-number="5.3">
-<h3 data-number="5.3" class="anchored" data-anchor-id="exercise-3-effect-of-fertiliser-type-on-crop-yield"><span class="header-section-number">5.3</span> Exercise 3 — Effect of fertiliser type on crop yield</h3>
+<section id="exercise-3-effect-of-fertiliser-type-on-crop-yield" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3-effect-of-fertiliser-type-on-crop-yield">Exercise 3 — Effect of fertiliser type on crop yield</h3>
 <div class="callout callout-style-default callout-caution callout-titled" title="Exercise">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercise
+<span class="screen-reader-only">Caution</span>Exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>An agronomist tests four types of fertiliser (A, B, C, D) on plots of identical size. The yield (in kg) measured over five plots per fertiliser is:</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Fert. A</th>
@@ -1047,12 +1041,12 @@ Exercise
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled" title="Solution">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution
+<span class="screen-reader-only">Caution</span>Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1112,43 +1106,58 @@ F_{5\%}(3,16)\approx 3.24 \qquad \text{and} \qquad F_{1\%}(3,16)\approx 5.29
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
@@ -1156,157 +1165,184 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
       return codeEl.innerText;
     }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
     }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ggilles\.dev");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        return container.innerHTML
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      return note.innerHTML;
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -1314,188 +1350,164 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a 10="" href="../../teaching/decision-making-stat/session-10.html" class="pagination-link  aria-label=" session="" —="" practical="" work:="" statistical="" inference="" in="" excel"="">
+      <a href="../../teaching/decision-making-stat/session-10.html" class="pagination-link" aria-label="Session 10 — Practical Work: Statistical Inference in Excel">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Session 10 — Practical Work: Statistical Inference in Excel</span>
       </a>          
   </div>

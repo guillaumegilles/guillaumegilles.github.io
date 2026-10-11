@@ -488,6 +488,33 @@ iframe[src*="github.com/sponsors"] {
   overflow: visible;
 }
 
+// ─── Drop Cap ───────────────────────────────────────────────────────────
+
+// Opt-in via `body-classes: drop-cap` (set for all posts in posts/_metadata.yml).
+// Only the first paragraph that is a *direct* child of <main> is targeted:
+// Quarto wraps each heading in a <section>, so a descendant selector would
+// put a drop cap on every section, callout, and the abstract.
+body.drop-cap #quarto-document-content > p:first-of-type::first-letter {
+  float: left;
+  font-size: 4.2em;
+  line-height: 0.8;
+  font-weight: 600;
+  color: $phosphor-green;
+  text-shadow: 0 0 12px rgba($phosphor-green, 0.4);
+  margin: 0.08em 0.1em 0 0;
+
+  // Native drop cap where supported (Chrome/Edge/Safari): snaps the letter
+  // exactly to 3 lines instead of relying on tuned float metrics.
+  @supports (initial-letter: 3) or (-webkit-initial-letter: 3) {
+    float: none;
+    font-size: inherit;
+    line-height: inherit;
+    -webkit-initial-letter: 3;
+    initial-letter: 3;
+    margin: 0 0.15em 0 0;
+  }
+}
+
 // ─── Language switcher — injected by assets/lang-switch.html ────────
 
 .lang-switch {
