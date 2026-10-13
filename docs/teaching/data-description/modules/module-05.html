@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -140,6 +175,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -725,100 +762,76 @@ Me \approx 600 + \frac{15-12}{8}\times 100 = 637.5,
 <section id="interactive-demo-boxplot-from-quartiles" class="level2">
 <h2 class="anchored" data-anchor-id="interactive-demo-boxplot-from-quartiles">Interactive demo — boxplot from quartiles</h2>
 <p>Drag each slider to set the five-number summary and watch the boxplot redraw. Starting values are “The Wandering Fork”’s verified statistics.</p>
-<pre class="{shinylive-python}"><code>#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 560
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="248" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 247;"><span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> start <span class="op">=</span> [[<span class="st">"vmin"</span><span class="op">,</span> <span class="st">"Minimum"</span><span class="op">,</span> <span class="fl">407.59</span>]<span class="op">,</span> [<span class="st">"q1"</span><span class="op">,</span> <span class="st">"Q1"</span><span class="op">,</span> <span class="fl">506.61</span>]<span class="op">,</span></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>                 [<span class="st">"med"</span><span class="op">,</span> <span class="st">"Median"</span><span class="op">,</span> <span class="fl">643.63</span>]<span class="op">,</span> [<span class="st">"q3"</span><span class="op">,</span> <span class="st">"Q3"</span><span class="op">,</span> <span class="fl">729.99</span>]<span class="op">,</span></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>                 [<span class="st">"vmax"</span><span class="op">,</span> <span class="st">"Maximum"</span><span class="op">,</span> <span class="fl">886.56</span>]]<span class="op">;</span></span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="ojs-demo"&gt;</span></span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p&gt;Move the sliders (kept in min ≤ Q1 ≤ median ≤ Q3 ≤ max order) to</span></span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a><span class="vs">      see the boxplot and IQR/fences update live.&lt;/p&gt;</span></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;form&gt;</span><span class="sc">${</span>start<span class="op">.</span><span class="fu">map</span>(([name<span class="op">,</span> label<span class="op">,</span> v]) <span class="kw">=&gt;</span> <span class="fu">html</span><span class="vs">`&lt;div&gt;&lt;label&gt;</span><span class="sc">${</span>label<span class="sc">}</span><span class="vs">:</span></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;input type="range" name="</span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">" min="300" max="900" step="0.01"</span></span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a><span class="vs">        value="</span><span class="sc">${</span>v<span class="sc">}</span><span class="vs">"&gt; &lt;output&gt;</span><span class="sc">${</span>v<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">&lt;/output&gt;&lt;/label&gt;&lt;/div&gt;`</span>)<span class="sc">}</span><span class="vs">&lt;/form&gt;</span></span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="ojs-demo-info"&gt;&lt;/p&gt;</span></span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="ojs-demo-chart"&gt;&lt;/div&gt;</span></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> form <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"form"</span>)<span class="op">;</span></span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">redraw</span>() {</span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> inputs <span class="op">=</span> [<span class="op">...</span>form<span class="op">.</span><span class="fu">querySelectorAll</span>(<span class="st">"input"</span>)]<span class="op">;</span></span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>    inputs<span class="op">.</span><span class="fu">forEach</span>(el <span class="kw">=&gt;</span> {</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>      el<span class="op">.</span><span class="at">parentNode</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"output"</span>)<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> el<span class="op">.</span><span class="at">valueAsNumber</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> [vmin<span class="op">,</span> q1<span class="op">,</span> med<span class="op">,</span> q3<span class="op">,</span> vmax] <span class="op">=</span> inputs<span class="op">.</span><span class="fu">map</span>(el <span class="kw">=&gt;</span> el<span class="op">.</span><span class="at">valueAsNumber</span>)</span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">-</span> b)<span class="op">;</span></span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> iqr <span class="op">=</span> q3 <span class="op">-</span> q1<span class="op">,</span> lo <span class="op">=</span> q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> iqr<span class="op">,</span> hi <span class="op">=</span> q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> iqr<span class="op">;</span></span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> outlier <span class="op">=</span> vmin <span class="op">&lt;</span> lo <span class="op">||</span> vmax <span class="op">&gt;</span> hi<span class="op">;</span></span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".ojs-demo-info"</span>)<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span></span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>      <span class="vs">`IQR = </span><span class="sc">${</span>iqr<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> · Lower fence = </span><span class="sc">${</span>lo<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> ·</span></span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a><span class="vs">       Upper fence = </span><span class="sc">${</span>hi<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">&lt;br&gt;</span><span class="sc">${</span>outlier</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>         <span class="op">?</span> <span class="st">"⚠️ min/max beyond fences — would be plotted as outliers"</span></span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>         <span class="op">:</span> <span class="st">"✅ no outliers"</span><span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> W <span class="op">=</span> <span class="dv">660</span><span class="op">,</span> Ht <span class="op">=</span> <span class="dv">220</span><span class="op">,</span> L <span class="op">=</span> <span class="dv">30</span><span class="op">,</span> R <span class="op">=</span> <span class="dv">30</span><span class="op">;</span></span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x <span class="op">=</span> v <span class="kw">=&gt;</span> L <span class="op">+</span> (v <span class="op">-</span> <span class="dv">300</span>) <span class="op">*</span> (W <span class="op">-</span> L <span class="op">-</span> R) <span class="op">/</span> <span class="dv">600</span><span class="op">;</span></span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> yc <span class="op">=</span> <span class="dv">105</span><span class="op">,</span> bh <span class="op">=</span> <span class="dv">50</span><span class="op">;</span></span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> g <span class="op">=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span>W <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" y="18" text-anchor="middle" fill="currentColor"</span></span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a><span class="vs">      font-size="14"&gt;Boxplot from the five-number summary&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> v <span class="op">=</span> <span class="dv">300</span><span class="op">;</span> v <span class="op">&lt;=</span> <span class="dv">900</span><span class="op">;</span> v <span class="op">+=</span> <span class="dv">100</span>) {</span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(v)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(v)<span class="sc">}</span><span class="vs">" y1="40" y2="170"</span></span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="currentColor" stroke-opacity="0.15"/&gt;</span></span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(v)<span class="sc">}</span><span class="vs">" y="190" text-anchor="middle" fill="currentColor"</span></span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a><span class="vs">        font-size="11"&gt;</span><span class="sc">${</span>v<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(vmin)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(q1)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>yc<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>yc<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="currentColor" stroke-width="1.5"/&gt;</span></span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(q3)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(vmax)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>yc<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>yc<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="currentColor" stroke-width="1.5"/&gt;</span></span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(vmin)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(vmin)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>yc <span class="op">-</span> <span class="dv">15</span><span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>yc <span class="op">+</span> <span class="dv">15</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="currentColor" stroke-width="1.5"/&gt;</span></span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(vmax)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(vmax)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>yc <span class="op">-</span> <span class="dv">15</span><span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>yc <span class="op">+</span> <span class="dv">15</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="currentColor" stroke-width="1.5"/&gt;</span></span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;rect x="</span><span class="sc">${</span><span class="fu">x</span>(q1)<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>yc <span class="op">-</span> bh <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" width="</span><span class="sc">${</span><span class="fu">x</span>(q3) <span class="op">-</span> <span class="fu">x</span>(q1)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a><span class="vs">        height="</span><span class="sc">${</span>bh<span class="sc">}</span><span class="vs">" fill="steelblue" stroke="currentColor"/&gt;</span></span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(med)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(med)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>yc <span class="op">-</span> bh <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a><span class="vs">        y2="</span><span class="sc">${</span>yc <span class="op">+</span> bh <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" stroke="darkorange" stroke-width="3"/&gt;</span></span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;text x="</span><span class="sc">${</span>W <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" y="212" text-anchor="middle" fill="currentColor"</span></span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a><span class="vs">        font-size="12"&gt;Value&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".ojs-demo-chart"</span>)<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>      <span class="vs">`&lt;svg viewBox="0 0 </span><span class="sc">${</span>W<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>Ht<span class="sc">}</span><span class="vs">" width="100%" role="img"</span></span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a><span class="vs">        aria-label="Boxplot from the five-number summary"&gt;</span><span class="sc">${</span>g<span class="sc">}</span><span class="vs">&lt;/svg&gt;`</span><span class="op">;</span></span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>  form<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> redraw)<span class="op">;</span></span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>  <span class="fu">redraw</span>()<span class="op">;</span></span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="expression">
 
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-
-BG = '#1C2E22'
-FG = '#D2CCC0'
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
-        .form-label {{ color: {FG} !important; }}
-        .form-range {{ accent-color: steelblue; width: 100%; }}
-        .info-box {{
-            background: #152119; border-radius: 6px; padding: 10px 14px;
-            margin: 8px 0; border-left: 3px solid steelblue;
-            font-family: monospace; font-size: 0.9em;
-        }}
-    """),
-    ui.h5("📦 Boxplot from the five-number summary", style=f"color:{FG}"),
-    ui.p(
-        "Move the sliders (kept in min ≤ Q1 ≤ median ≤ Q3 ≤ max order) "
-        "to see the boxplot and IQR/fences update live.",
-        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
-    ),
-    ui.input_slider("vmin", "Minimum:", min=300, max=900, value=407.59, step=1),
-    ui.input_slider("q1", "Q1:", min=300, max=900, value=506.61, step=1),
-    ui.input_slider("med", "Median:", min=300, max=900, value=643.63, step=1),
-    ui.input_slider("q3", "Q3:", min=300, max=900, value=729.99, step=1),
-    ui.input_slider("vmax", "Maximum:", min=300, max=900, value=886.56, step=1),
-    ui.output_ui("info"),
-    ui.output_plot("plot", height="300px"),
-)
-
-def server(input, output, session):
-    def ordered():
-        vals = sorted([input.vmin(), input.q1(), input.med(), input.q3(), input.vmax()])
-        return vals
-
-    @output
-    @render.ui
-    def info():
-        vmin, q1, med, q3, vmax = ordered()
-        iqr = q3 - q1
-        lo_fence = q1 - 1.5 * iqr
-        hi_fence = q3 + 1.5 * iqr
-        outlier = vmin &lt; lo_fence or vmax &gt; hi_fence
-        tag = "⚠️ min/max beyond fences — would be plotted as outliers" if outlier else "✅ no outliers"
-        return ui.HTML(f"""
-            &lt;div class='info-box'&gt;
-                IQR = {iqr:.2f} &amp;nbsp;|&amp;nbsp;
-                Lower fence = {lo_fence:.2f} &amp;nbsp;|&amp;nbsp;
-                Upper fence = {hi_fence:.2f}&lt;br&gt;{tag}
-            &lt;/div&gt;
-        """)
-
-    @output
-    @render.plot
-    def plot():
-        vmin, q1, med, q3, vmax = ordered()
-
-        fig, ax = plt.subplots(figsize=(7, 2.6))
-        fig.patch.set_facecolor(BG)
-        ax.set_facecolor(BG)
-        for spine in ax.spines.values():
-            spine.set_edgecolor(FG)
-        ax.tick_params(colors=FG)
-
-        box = ax.bxp(
-            [{
-                'med': med, 'q1': q1, 'q3': q3,
-                'whislo': vmin, 'whishi': vmax,
-                'fliers': [],
-            }],
-            vert=False, widths=0.5, patch_artist=True,
-        )
-        for patch in box['boxes']:
-            patch.set_facecolor('steelblue')
-            patch.set_edgecolor(FG)
-        for line_group in ('whiskers', 'caps', 'medians'):
-            for line in box[line_group]:
-                line.set_color(FG)
-        ax.set_yticks([])
-        ax.set_xlabel("Value", color=FG)
-        ax.set_title("Boxplot from the five-number summary", color=FG)
-        ax.grid(alpha=0.15, color=FG, axis='x')
-        plt.tight_layout()
-        return fig
-
-app = App(app_ui, server)</code></pre>
+</div>
+</div>
+</div>
 </section>
 <section id="exercises" class="level2">
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
@@ -987,6 +1000,17 @@ Q_1 \approx 500 + \frac{7.5-6}{6}\times100 = 525.
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IntcbiAgY29uc3Qgc3RhcnQgPSBbW1widm1pblwiLCBcIk1pbmltdW1cIiwgNDA3LjU5XSwgW1wicTFcIiwgXCJRMVwiLCA1MDYuNjFdLFxuICAgICAgICAgICAgICAgICBbXCJtZWRcIiwgXCJNZWRpYW5cIiwgNjQzLjYzXSwgW1wicTNcIiwgXCJRM1wiLCA3MjkuOTldLFxuICAgICAgICAgICAgICAgICBbXCJ2bWF4XCIsIFwiTWF4aW11bVwiLCA4ODYuNTZdXTtcbiAgY29uc3Qgcm9vdCA9IGh0bWxgPGRpdiBjbGFzcz1cIm9qcy1kZW1vXCI+XG4gICAgPHA+TW92ZSB0aGUgc2xpZGVycyAoa2VwdCBpbiBtaW4g4omkIFExIOKJpCBtZWRpYW4g4omkIFEzIOKJpCBtYXggb3JkZXIpIHRvXG4gICAgICBzZWUgdGhlIGJveHBsb3QgYW5kIElRUi9mZW5jZXMgdXBkYXRlIGxpdmUuPC9wPlxuICAgIDxmb3JtPiR7c3RhcnQubWFwKChbbmFtZSwgbGFiZWwsIHZdKSA9PiBodG1sYDxkaXY+PGxhYmVsPiR7bGFiZWx9OlxuICAgICAgPGlucHV0IHR5cGU9XCJyYW5nZVwiIG5hbWU9XCIke25hbWV9XCIgbWluPVwiMzAwXCIgbWF4PVwiOTAwXCIgc3RlcD1cIjAuMDFcIlxuICAgICAgICB2YWx1ZT1cIiR7dn1cIj4gPG91dHB1dD4ke3YudG9GaXhlZCgyKX08L291dHB1dD48L2xhYmVsPjwvZGl2PmApfTwvZm9ybT5cbiAgICA8cCBjbGFzcz1cIm9qcy1kZW1vLWluZm9cIj48L3A+XG4gICAgPGRpdiBjbGFzcz1cIm9qcy1kZW1vLWNoYXJ0XCI+PC9kaXY+XG4gIDwvZGl2PmA7XG4gIGNvbnN0IGZvcm0gPSByb290LnF1ZXJ5U2VsZWN0b3IoXCJmb3JtXCIpO1xuXG4gIGZ1bmN0aW9uIHJlZHJhdygpIHtcbiAgICBjb25zdCBpbnB1dHMgPSBbLi4uZm9ybS5xdWVyeVNlbGVjdG9yQWxsKFwiaW5wdXRcIildO1xuICAgIGlucHV0cy5mb3JFYWNoKGVsID0+IHtcbiAgICAgIGVsLnBhcmVudE5vZGUucXVlcnlTZWxlY3RvcihcIm91dHB1dFwiKS50ZXh0Q29udGVudCA9IGVsLnZhbHVlQXNOdW1iZXIudG9GaXhlZCgyKTtcbiAgICB9KTtcbiAgICBjb25zdCBbdm1pbiwgcTEsIG1lZCwgcTMsIHZtYXhdID0gaW5wdXRzLm1hcChlbCA9PiBlbC52YWx1ZUFzTnVtYmVyKVxuICAgICAgLnNvcnQoKGEsIGIpID0+IGEgLSBiKTtcbiAgICBjb25zdCBpcXIgPSBxMyAtIHExLCBsbyA9IHExIC0gMS41ICogaXFyLCBoaSA9IHEzICsgMS41ICogaXFyO1xuICAgIGNvbnN0IG91dGxpZXIgPSB2bWluIDwgbG8gfHwgdm1heCA+IGhpO1xuICAgIHJvb3QucXVlcnlTZWxlY3RvcihcIi5vanMtZGVtby1pbmZvXCIpLmlubmVySFRNTCA9XG4gICAgICBgSVFSID0gJHtpcXIudG9GaXhlZCgyKX0gwrcgTG93ZXIgZmVuY2UgPSAke2xvLnRvRml4ZWQoMil9IMK3XG4gICAgICAgVXBwZXIgZmVuY2UgPSAke2hpLnRvRml4ZWQoMil9PGJyPiR7b3V0bGllclxuICAgICAgICAgPyBcIuKaoO+4jyBtaW4vbWF4IGJleW9uZCBmZW5jZXMg4oCUIHdvdWxkIGJlIHBsb3R0ZWQgYXMgb3V0bGllcnNcIlxuICAgICAgICAgOiBcIuKchSBubyBvdXRsaWVyc1wifWA7XG5cbiAgICBjb25zdCBXID0gNjYwLCBIdCA9IDIyMCwgTCA9IDMwLCBSID0gMzA7XG4gICAgY29uc3QgeCA9IHYgPT4gTCArICh2IC0gMzAwKSAqIChXIC0gTCAtIFIpIC8gNjAwO1xuICAgIGNvbnN0IHljID0gMTA1LCBiaCA9IDUwO1xuICAgIGxldCBnID0gYDx0ZXh0IHg9XCIke1cgLyAyfVwiIHk9XCIxOFwiIHRleHQtYW5jaG9yPVwibWlkZGxlXCIgZmlsbD1cImN1cnJlbnRDb2xvclwiXG4gICAgICBmb250LXNpemU9XCIxNFwiPkJveHBsb3QgZnJvbSB0aGUgZml2ZS1udW1iZXIgc3VtbWFyeTwvdGV4dD5gO1xuICAgIGZvciAobGV0IHYgPSAzMDA7IHYgPD0gOTAwOyB2ICs9IDEwMCkge1xuICAgICAgZyArPSBgPGxpbmUgeDE9XCIke3godil9XCIgeDI9XCIke3godil9XCIgeTE9XCI0MFwiIHkyPVwiMTcwXCJcbiAgICAgICAgc3Ryb2tlPVwiY3VycmVudENvbG9yXCIgc3Ryb2tlLW9wYWNpdHk9XCIwLjE1XCIvPlxuICAgICAgICA8dGV4dCB4PVwiJHt4KHYpfVwiIHk9XCIxOTBcIiB0ZXh0LWFuY2hvcj1cIm1pZGRsZVwiIGZpbGw9XCJjdXJyZW50Q29sb3JcIlxuICAgICAgICBmb250LXNpemU9XCIxMVwiPiR7dn08L3RleHQ+YDtcbiAgICB9XG4gICAgZyArPSBgPGxpbmUgeDE9XCIke3godm1pbil9XCIgeDI9XCIke3gocTEpfVwiIHkxPVwiJHt5Y31cIiB5Mj1cIiR7eWN9XCJcbiAgICAgICAgc3Ryb2tlPVwiY3VycmVudENvbG9yXCIgc3Ryb2tlLXdpZHRoPVwiMS41XCIvPlxuICAgICAgPGxpbmUgeDE9XCIke3gocTMpfVwiIHgyPVwiJHt4KHZtYXgpfVwiIHkxPVwiJHt5Y31cIiB5Mj1cIiR7eWN9XCJcbiAgICAgICAgc3Ryb2tlPVwiY3VycmVudENvbG9yXCIgc3Ryb2tlLXdpZHRoPVwiMS41XCIvPlxuICAgICAgPGxpbmUgeDE9XCIke3godm1pbil9XCIgeDI9XCIke3godm1pbil9XCIgeTE9XCIke3ljIC0gMTV9XCIgeTI9XCIke3ljICsgMTV9XCJcbiAgICAgICAgc3Ryb2tlPVwiY3VycmVudENvbG9yXCIgc3Ryb2tlLXdpZHRoPVwiMS41XCIvPlxuICAgICAgPGxpbmUgeDE9XCIke3godm1heCl9XCIgeDI9XCIke3godm1heCl9XCIgeTE9XCIke3ljIC0gMTV9XCIgeTI9XCIke3ljICsgMTV9XCJcbiAgICAgICAgc3Ryb2tlPVwiY3VycmVudENvbG9yXCIgc3Ryb2tlLXdpZHRoPVwiMS41XCIvPlxuICAgICAgPHJlY3QgeD1cIiR7eChxMSl9XCIgeT1cIiR7eWMgLSBiaCAvIDJ9XCIgd2lkdGg9XCIke3gocTMpIC0geChxMSl9XCJcbiAgICAgICAgaGVpZ2h0PVwiJHtiaH1cIiBmaWxsPVwic3RlZWxibHVlXCIgc3Ryb2tlPVwiY3VycmVudENvbG9yXCIvPlxuICAgICAgPGxpbmUgeDE9XCIke3gobWVkKX1cIiB4Mj1cIiR7eChtZWQpfVwiIHkxPVwiJHt5YyAtIGJoIC8gMn1cIlxuICAgICAgICB5Mj1cIiR7eWMgKyBiaCAvIDJ9XCIgc3Ryb2tlPVwiZGFya29yYW5nZVwiIHN0cm9rZS13aWR0aD1cIjNcIi8+XG4gICAgICA8dGV4dCB4PVwiJHtXIC8gMn1cIiB5PVwiMjEyXCIgdGV4dC1hbmNob3I9XCJtaWRkbGVcIiBmaWxsPVwiY3VycmVudENvbG9yXCJcbiAgICAgICAgZm9udC1zaXplPVwiMTJcIj5WYWx1ZTwvdGV4dD5gO1xuICAgIHJvb3QucXVlcnlTZWxlY3RvcihcIi5vanMtZGVtby1jaGFydFwiKS5pbm5lckhUTUwgPVxuICAgICAgYDxzdmcgdmlld0JveD1cIjAgMCAke1d9ICR7SHR9XCIgd2lkdGg9XCIxMDAlXCIgcm9sZT1cImltZ1wiXG4gICAgICAgIGFyaWEtbGFiZWw9XCJCb3hwbG90IGZyb20gdGhlIGZpdmUtbnVtYmVyIHN1bW1hcnlcIj4ke2d9PC9zdmc+YDtcbiAgfVxuICBmb3JtLmFkZEV2ZW50TGlzdGVuZXIoXCJpbnB1dFwiLCByZWRyYXcpO1xuICByZWRyYXcoKTtcbiAgcmV0dXJuIHJvb3Q7XG59XG4ifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/data-description/modules";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -140,6 +175,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -391,6 +428,7 @@ window.Quarto = {
   <li><a href="#time-plan" id="toc-time-plan" class="nav-link" data-scroll-target="#time-plan">Time plan</a></li>
   <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory">Theory</a>
   <ul class="collapse">
+  <li><a href="#same-mean-different-days" id="toc-same-mean-different-days" class="nav-link" data-scroll-target="#same-mean-different-days">Same mean, different days</a></li>
   <li><a href="#range-and-interquartile-range" id="toc-range-and-interquartile-range" class="nav-link" data-scroll-target="#range-and-interquartile-range">Range and interquartile range</a></li>
   <li><a href="#sample-variance-and-standard-deviation" id="toc-sample-variance-and-standard-deviation" class="nav-link" data-scroll-target="#sample-variance-and-standard-deviation">Sample variance and standard deviation</a></li>
   <li><a href="#coefficient-of-variation" id="toc-coefficient-of-variation" class="nav-link" data-scroll-target="#coefficient-of-variation">Coefficient of variation</a></li>
@@ -400,12 +438,17 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#interpreting-cv" id="toc-interpreting-cv" class="nav-link" data-scroll-target="#interpreting-cv">Interpreting <span class="math inline">\(CV\)</span></a></li>
   </ul></li>
-  <li><a href="#using-excel" id="toc-using-excel" class="nav-link" data-scroll-target="#using-excel">Using Excel</a></li>
   <li><a href="#proof-derivation" id="toc-proof-derivation" class="nav-link" data-scroll-target="#proof-derivation">Proof / derivation</a></li>
   <li><a href="#visual-intuition" id="toc-visual-intuition" class="nav-link" data-scroll-target="#visual-intuition">Visual intuition</a></li>
   <li><a href="#interactive-demo-central-tendency-dispersion-calculator" id="toc-interactive-demo-central-tendency-dispersion-calculator" class="nav-link" data-scroll-target="#interactive-demo-central-tendency-dispersion-calculator">Interactive demo — central tendency &amp; dispersion calculator</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   <li><a href="#common-mistakes" id="toc-common-mistakes" class="nav-link" data-scroll-target="#common-mistakes">Common mistakes</a></li>
+  <li><a href="#exit-check" id="toc-exit-check" class="nav-link" data-scroll-target="#exit-check">Exit check</a></li>
+  <li><a href="#homework-excel-lab" id="toc-homework-excel-lab" class="nav-link" data-scroll-target="#homework-excel-lab">Homework — Excel lab</a>
+  <ul class="collapse">
+  <li><a href="#using-excel" id="toc-using-excel" class="nav-link" data-scroll-target="#using-excel">Using Excel</a></li>
+  <li><a href="#step-0-check-your-class-results" id="toc-step-0-check-your-class-results" class="nav-link" data-scroll-target="#step-0-check-your-class-results">Step 0 — check your class results</a></li>
+  </ul></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
   </ul>
 </nav>
@@ -428,7 +471,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 8, 2026</p>
+      <p class="date-modified">October 13, 2026</p>
     </div>
   </div>
     
@@ -439,14 +482,16 @@ window.Quarto = {
 </header>
 
 
-<p><strong>The business question.</strong> “The Wandering Fork” has a mean daily revenue of €628.34 (Harbour, 30 days) — but two businesses can share the exact same mean and still be very different to run: one reliably steady, the other wildly erratic. <strong>Dispersion indicators</strong> measure exactly that variability, and they are what turns “the average day” into “the average day, ± how much”.</p>
+<p><strong>The business question.</strong> “The Wandering Fork” has a mean daily revenue of €628.34 (Harbour, 30 days) — but two businesses can share the exact same mean and still be very different to run: one reliably steady, the other wildly erratic. <strong>Dispersion indicators</strong> measure exactly that variability, and they are what turns “the average day” into “the average day, ± how much”. We start with two trucks small enough to compute by hand, and only then write the formulas.</p>
 <section id="learning-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this module, you will be able to:</p>
 <ul>
-<li>Compute the range and the interquartile range.</li>
-<li>Compute the sample variance and sample standard deviation, using both the definitional and the shortcut (computational) formula.</li>
-<li>Compute and interpret the coefficient of variation.</li>
+<li>Explain in one sentence what the range, the interquartile range, the standard deviation <span class="math inline">\(s\)</span> and the coefficient of variation <span class="math inline">\(CV\)</span> measure.</li>
+<li>Compute the range, the sample variance <span class="math inline">\(s^2\)</span> and the sample standard deviation <span class="math inline">\(s\)</span> by hand with a deviation table.</li>
+<li>Read the variance formula aloud as a sentence, and write <span class="math inline">\(\sum\)</span> notation for a sum described in words.</li>
+<li>Compute and interpret the coefficient of variation to compare variability across different means or units.</li>
+<li>Use the shortcut (computational) formula and explain why the mean must not be rounded in it.</li>
 <li>Use the interactive calculator below to see how editing a sample changes its dispersion indicators live.</li>
 </ul>
 </section>
@@ -467,32 +512,318 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td>Theory</td>
-<td style="text-align: right;">75</td>
-<td>Range, IQR, sample variance, sample standard deviation, coefficient of variation, shortcut formula</td>
+<td>Hook</td>
+<td style="text-align: right;">10</td>
+<td>Two trucks, same mean — which is riskier to run?</td>
 </tr>
 <tr class="even">
-<td>Excel lab</td>
-<td style="text-align: right;">50</td>
-<td><code>VAR.S</code>, <code>STDEV.S</code>, <code>VAR.P</code>, <code>STDEV.P</code>, <code>SUMSQ</code>, CV formula</td>
+<td>Concrete build</td>
+<td style="text-align: right;">45</td>
+<td>Range on both trucks, IQR recall, deviation table, sum-to-zero, square, average with <span class="math inline">\(n-1\)</span>, square root</td>
 </tr>
 <tr class="odd">
-<td>Exercises</td>
-<td style="text-align: right;">55</td>
-<td>Three by-hand and three Excel exercises</td>
+<td>Notation</td>
+<td style="text-align: right;">25</td>
+<td>Notation decoders for <span class="math inline">\(s^2\)</span> and <span class="math inline">\(s\)</span>; formula ↔︎ words; reading <span class="math inline">\(\sum\)</span></td>
 </tr>
 <tr class="even">
+<td>Relative spread</td>
+<td style="text-align: right;">20</td>
+<td><span class="math inline">\(CV\)</span> from “is €200 a lot?”; shortcut formula on Truck A</td>
+</tr>
+<tr class="odd">
+<td>Worked example</td>
+<td style="text-align: right;">20</td>
+<td>Harbour 30-day values; interpretation; visual intuition and demo</td>
+</tr>
+<tr class="even">
+<td>Practice</td>
+<td style="text-align: right;">45</td>
+<td>By-hand exercises 1–5</td>
+</tr>
+<tr class="odd">
+<td>Exit check</td>
+<td style="text-align: right;">10</td>
+<td>Five concept and notation questions</td>
+</tr>
+<tr class="even">
+<td>Excel preview</td>
+<td style="text-align: right;">5</td>
+<td>Instructor shows <code>STDEV.S</code> reproducing the hand result; homework briefing</td>
+</tr>
+<tr class="odd">
 <td><strong>Total</strong></td>
 <td style="text-align: right;"><strong>180</strong></td>
 <td></td>
 </tr>
 </tbody>
 </table>
+<p>The Excel lab is now <a href="#homework-excel-lab">homework</a>, done after class.</p>
 </section>
 <section id="theory" class="level2">
 <h2 class="anchored" data-anchor-id="theory">Theory</h2>
+<section id="same-mean-different-days" class="level3">
+<h3 class="anchored" data-anchor-id="same-mean-different-days">Same mean, different days</h3>
+<p>Two Wandering Fork trucks recorded their revenue over the same five days. The numbers are a simplified extract chosen so that you can compute everything by hand.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Day</th>
+<th style="text-align: right;">Truck A “Steady” (€)</th>
+<th style="text-align: right;">Truck B “Erratic” (€)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: right;">590</td>
+<td style="text-align: right;">370</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: right;">610</td>
+<td style="text-align: right;">470</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: right;">630</td>
+<td style="text-align: right;">670</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: right;">630</td>
+<td style="text-align: right;">720</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: right;">640</td>
+<td style="text-align: right;">870</td>
+</tr>
+<tr class="even">
+<td><strong>Mean</strong></td>
+<td style="text-align: right;"><strong>620</strong></td>
+<td style="text-align: right;"><strong>620</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Both trucks earn <strong>€620 on an average day</strong>. Which one would you rather manage — and what would you tell the bank about each one’s revenue? Look at the figure before computing anything (start with step 1).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="72" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 71;"><span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>truckA <span class="op">=</span> [<span class="dv">590</span><span class="op">,</span> <span class="dv">610</span><span class="op">,</span> <span class="dv">630</span><span class="op">,</span> <span class="dv">630</span><span class="op">,</span> <span class="dv">640</span>]</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>truckB <span class="op">=</span> [<span class="dv">370</span><span class="op">,</span> <span class="dv">470</span><span class="op">,</span> <span class="dv">670</span><span class="op">,</span> <span class="dv">720</span><span class="op">,</span> <span class="dv">870</span>]</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">stats</span>(xs) {</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> n <span class="op">=</span> xs<span class="op">.</span><span class="at">length</span><span class="op">;</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> mean <span class="op">=</span> xs<span class="op">.</span><span class="fu">reduce</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">+</span> b<span class="op">,</span> <span class="dv">0</span>) <span class="op">/</span> n<span class="op">;</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> dev <span class="op">=</span> xs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> x <span class="op">-</span> mean)<span class="op">;</span></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sq <span class="op">=</span> dev<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d <span class="op">*</span> d)<span class="op">;</span></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sumDev <span class="op">=</span> dev<span class="op">.</span><span class="fu">reduce</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">+</span> b<span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> ss <span class="op">=</span> sq<span class="op">.</span><span class="fu">reduce</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">+</span> b<span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> s2 <span class="op">=</span> ss <span class="op">/</span> (n <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {n<span class="op">,</span> mean<span class="op">,</span> dev<span class="op">,</span> sq<span class="op">,</span> sumDev<span class="op">,</span> ss<span class="op">,</span> s2<span class="op">,</span> <span class="dt">s</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(s2)}<span class="op">;</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>fmt <span class="op">=</span> v <span class="kw">=&gt;</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(v)<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">"en-US"</span>)</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>signed <span class="op">=</span> v <span class="kw">=&gt;</span> (v <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">"+"</span> <span class="op">:</span> v <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">"−"</span> <span class="op">:</span> <span class="st">""</span>) <span class="op">+</span> <span class="fu">fmt</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(v))</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>viewof step <span class="op">=</span> {</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> labels <span class="op">=</span> [<span class="st">"1 · Dots"</span><span class="op">,</span> <span class="st">"2 · Deviations"</span><span class="op">,</span> <span class="st">"3 · Squares"</span>]<span class="op">;</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> form <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;form class="ojs-step-picker"&gt;Show: </span><span class="sc">${</span>labels<span class="op">.</span><span class="fu">map</span>((l<span class="op">,</span> i) <span class="kw">=&gt;</span></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html</span><span class="vs">`&lt;label&gt; &lt;input type="radio" name="step" value="</span><span class="sc">${</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>i <span class="op">===</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">"checked"</span> <span class="op">:</span> <span class="st">""</span><span class="sc">}</span><span class="vs">&gt; </span><span class="sc">${</span>l<span class="sc">}</span><span class="vs"> &lt;/label&gt;`</span>)<span class="sc">}</span><span class="vs">&lt;/form&gt;`</span><span class="op">;</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>  form<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  form<span class="op">.</span><span class="at">oninput</span> <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>    form<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="op">+</span>form<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"input:checked"</span>)<span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> form<span class="op">;</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="103" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 102;"><span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> W <span class="op">=</span> <span class="dv">660</span><span class="op">,</span> BLUE <span class="op">=</span> <span class="st">"steelblue"</span><span class="op">,</span> ORANGE <span class="op">=</span> <span class="st">"darkorange"</span><span class="op">;</span></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> POS <span class="op">=</span> <span class="st">"#5cb85c"</span><span class="op">,</span> NEG <span class="op">=</span> <span class="st">"#d9534f"</span><span class="op">;</span></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> trucks <span class="op">=</span> [[<span class="st">"Truck A"</span><span class="op">,</span> <span class="fu">stats</span>(truckA)<span class="op">,</span> truckA]<span class="op">,</span></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>                  [<span class="st">"Truck B"</span><span class="op">,</span> <span class="fu">stats</span>(truckB)<span class="op">,</span> truckB]]<span class="op">;</span></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> g <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (step <span class="op">&lt;</span> <span class="dv">3</span>) {</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x <span class="op">=</span> v <span class="kw">=&gt;</span> <span class="dv">90</span> <span class="op">+</span> (v <span class="op">-</span> <span class="dv">340</span>) <span class="op">*</span> (W <span class="op">-</span> <span class="dv">120</span>) <span class="op">/</span> (<span class="dv">900</span> <span class="op">-</span> <span class="dv">340</span>)<span class="op">;</span></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> H <span class="op">=</span> <span class="dv">340</span><span class="op">,</span> rowH <span class="op">=</span> <span class="dv">22</span><span class="op">;</span></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>    trucks<span class="op">.</span><span class="fu">forEach</span>(([name<span class="op">,</span> st<span class="op">,</span> xs]<span class="op">,</span> k) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> top <span class="op">=</span> <span class="dv">40</span> <span class="op">+</span> k <span class="op">*</span> <span class="dv">145</span><span class="op">;</span></span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;text x="10" y="</span><span class="sc">${</span>top <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> rowH <span class="op">+</span> <span class="dv">5</span><span class="sc">}</span><span class="vs">" fill="currentColor"</span></span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a><span class="vs">        font-weight="bold"&gt;</span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(st<span class="op">.</span><span class="at">mean</span>)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(st<span class="op">.</span><span class="at">mean</span>)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>top <span class="op">-</span> <span class="dv">18</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a><span class="vs">        y2="</span><span class="sc">${</span>top <span class="op">+</span> <span class="dv">5</span> <span class="op">*</span> rowH <span class="op">-</span> <span class="dv">8</span><span class="sc">}</span><span class="vs">" stroke="</span><span class="sc">${</span>ORANGE<span class="sc">}</span><span class="vs">" stroke-width="2"</span></span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke-dasharray="6 4"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(st<span class="op">.</span><span class="at">mean</span>) <span class="op">+</span> <span class="dv">6</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>top <span class="op">-</span> <span class="dv">8</span><span class="sc">}</span><span class="vs">" fill="</span><span class="sc">${</span>ORANGE<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a><span class="vs">        font-size="12"&gt;mean = </span><span class="sc">${</span><span class="fu">fmt</span>(st<span class="op">.</span><span class="at">mean</span>)<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>      xs<span class="op">.</span><span class="fu">forEach</span>((v<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> y <span class="op">=</span> top <span class="op">+</span> i <span class="op">*</span> rowH<span class="op">;</span></span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> d <span class="op">=</span> st<span class="op">.</span><span class="at">dev</span>[i]<span class="op">;</span></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (step <span class="op">===</span> <span class="dv">2</span> <span class="op">&amp;&amp;</span> d <span class="op">!==</span> <span class="dv">0</span>) {</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>          <span class="kw">const</span> c <span class="op">=</span> d <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> POS <span class="op">:</span> NEG<span class="op">;</span></span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>          g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(st<span class="op">.</span><span class="at">mean</span>)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(v)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>y<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>y<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a><span class="vs">            stroke="</span><span class="sc">${</span>c<span class="sc">}</span><span class="vs">" stroke-width="3"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>          g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(v) <span class="op">+</span> (d <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> <span class="dv">10</span> <span class="op">:</span> <span class="op">-</span><span class="dv">10</span>)<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>y <span class="op">+</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a><span class="vs">            text-anchor="</span><span class="sc">${</span>d <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">"start"</span> <span class="op">:</span> <span class="st">"end"</span><span class="sc">}</span><span class="vs">" fill="</span><span class="sc">${</span>c<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a><span class="vs">            font-size="12"&gt;</span><span class="sc">${</span><span class="fu">signed</span>(d)<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>        g <span class="op">+=</span> <span class="vs">`&lt;circle cx="</span><span class="sc">${</span><span class="fu">x</span>(v)<span class="sc">}</span><span class="vs">" cy="</span><span class="sc">${</span>y<span class="sc">}</span><span class="vs">" r="6" fill="</span><span class="sc">${</span>BLUE<span class="sc">}</span><span class="vs">"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (step <span class="op">===</span> <span class="dv">2</span>) {</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>        g <span class="op">+=</span> <span class="vs">`&lt;text x="10" y="</span><span class="sc">${</span>top <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> rowH <span class="op">+</span> <span class="dv">22</span><span class="sc">}</span><span class="vs">" fill="currentColor"</span></span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a><span class="vs">          font-size="12"&gt;sum = </span><span class="sc">${</span><span class="fu">fmt</span>(st<span class="op">.</span><span class="at">sumDev</span>)<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> t <span class="op">=</span> <span class="dv">400</span><span class="op">;</span> t <span class="op">&lt;=</span> <span class="dv">900</span><span class="op">;</span> t <span class="op">+=</span> <span class="dv">100</span>) {</span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>H <span class="op">-</span> <span class="dv">30</span><span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>H <span class="op">-</span> <span class="dv">24</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="currentColor"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>H <span class="op">-</span> <span class="dv">10</span><span class="sc">}</span><span class="vs">" text-anchor="middle"</span></span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a><span class="vs">        fill="currentColor" font-size="12"&gt;€</span><span class="sc">${</span>t<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(<span class="dv">340</span>)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(<span class="dv">900</span>)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>H <span class="op">-</span> <span class="dv">30</span><span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>H <span class="op">-</span> <span class="dv">30</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a><span class="vs">      stroke="currentColor"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;svg viewBox="0 0 </span><span class="sc">${</span>W<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>H<span class="sc">}</span><span class="vs">" width="100%" role="img"</span></span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a><span class="vs">      aria-label="Daily revenue of Truck A and Truck B around their mean"&gt;</span></span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>g<span class="sc">}</span><span class="vs">&lt;/svg&gt;`</span><span class="op">;</span></span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> k <span class="op">=</span> <span class="fl">0.45</span><span class="op">,</span> H <span class="op">=</span> <span class="dv">270</span><span class="op">;</span></span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> baselines <span class="op">=</span> [<span class="dv">70</span><span class="op">,</span> <span class="dv">245</span>]<span class="op">;</span></span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>  trucks<span class="op">.</span><span class="fu">forEach</span>(([name<span class="op">,</span> st]<span class="op">,</span> t) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> base <span class="op">=</span> baselines[t]<span class="op">;</span></span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="10" y="</span><span class="sc">${</span>base <span class="op">-</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">" fill="currentColor"</span></span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a><span class="vs">      font-weight="bold"&gt;</span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> cx <span class="op">=</span> <span class="dv">90</span><span class="op">;</span></span>
+<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a>    st<span class="op">.</span><span class="at">dev</span><span class="op">.</span><span class="fu">forEach</span>(d <span class="kw">=&gt;</span> {</span>
+<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> side <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(d) <span class="op">*</span> k<span class="op">;</span></span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;rect x="</span><span class="sc">${</span>cx<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>base <span class="op">-</span> side<span class="sc">}</span><span class="vs">" width="</span><span class="sc">${</span>side<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a><span class="vs">        height="</span><span class="sc">${</span>side<span class="sc">}</span><span class="vs">" fill="</span><span class="sc">${</span>d <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> POS <span class="op">:</span> NEG<span class="sc">}</span><span class="vs">" fill-opacity="0.45"</span></span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="</span><span class="sc">${</span>d <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> POS <span class="op">:</span> NEG<span class="sc">}</span><span class="vs">"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a>      cx <span class="op">+=</span> side <span class="op">+</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> avg <span class="op">=</span> st<span class="op">.</span><span class="at">s</span> <span class="op">*</span> k<span class="op">;</span></span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a>    cx <span class="op">+=</span> <span class="dv">30</span><span class="op">;</span></span>
+<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;rect x="</span><span class="sc">${</span>cx<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>base <span class="op">-</span> avg<span class="sc">}</span><span class="vs">" width="</span><span class="sc">${</span>avg<span class="sc">}</span><span class="vs">" height="</span><span class="sc">${</span>avg<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a><span class="vs">      fill="none" stroke="</span><span class="sc">${</span>ORANGE<span class="sc">}</span><span class="vs">" stroke-width="2"</span></span>
+<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a><span class="vs">      stroke-dasharray="5 3"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="90" y="</span><span class="sc">${</span>base <span class="op">+</span> <span class="dv">16</span><span class="sc">}</span><span class="vs">" fill="</span><span class="sc">${</span>ORANGE<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a><span class="vs">      font-size="12"&gt;dashed: the average square, side s = </span><span class="sc">${</span><span class="fu">fmt</span>(st<span class="op">.</span><span class="at">s</span>)<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;svg viewBox="0 0 </span><span class="sc">${</span>W<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>H<span class="sc">}</span><span class="vs">" width="100%" role="img"</span></span>
+<span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a><span class="vs">    aria-label="Squared deviations of Truck A and Truck B drawn as squares"&gt;</span></span>
+<span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>g<span class="sc">}</span><span class="vs">&lt;/svg&gt;`</span><span class="op">;</span></span>
+<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="183" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 182;"><span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a <span class="op">=</span> <span class="fu">stats</span>(truckA)<span class="op">,</span> b <span class="op">=</span> <span class="fu">stats</span>(truckB)<span class="op">;</span></span>
+<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> line <span class="op">=</span> (name<span class="op">,</span> st) <span class="kw">=&gt;</span> step <span class="op">===</span> <span class="dv">1</span></span>
+<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a>    <span class="op">?</span> <span class="vs">`</span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">: values from €</span><span class="sc">${</span><span class="fu">fmt</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="op">...</span>(name <span class="op">===</span> <span class="st">"Truck A"</span> <span class="op">?</span> truckA <span class="op">:</span> truckB)))<span class="sc">}</span><span class="vs"> to €</span><span class="sc">${</span><span class="fu">fmt</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>(name <span class="op">===</span> <span class="st">"Truck A"</span> <span class="op">?</span> truckA <span class="op">:</span> truckB)))<span class="sc">}</span><span class="vs">, mean €</span><span class="sc">${</span><span class="fu">fmt</span>(st<span class="op">.</span><span class="at">mean</span>)<span class="sc">}</span><span class="vs">.`</span></span>
+<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span> step <span class="op">===</span> <span class="dv">2</span></span>
+<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a>    <span class="op">?</span> <span class="vs">`</span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">: deviations </span><span class="sc">${</span>st<span class="op">.</span><span class="at">dev</span><span class="op">.</span><span class="fu">map</span>(signed)<span class="op">.</span><span class="fu">join</span>(<span class="st">", "</span>)<span class="sc">}</span><span class="vs"> — sum = </span><span class="sc">${</span><span class="fu">fmt</span>(st<span class="op">.</span><span class="at">sumDev</span>)<span class="sc">}</span><span class="vs">.`</span></span>
+<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span> <span class="vs">`</span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">: squares </span><span class="sc">${</span>st<span class="op">.</span><span class="at">sq</span><span class="op">.</span><span class="fu">map</span>(fmt)<span class="op">.</span><span class="fu">join</span>(<span class="st">" + "</span>)<span class="sc">}</span><span class="vs"> = </span><span class="sc">${</span><span class="fu">fmt</span>(st<span class="op">.</span><span class="at">ss</span>)<span class="sc">}</span><span class="vs">; ÷ </span><span class="sc">${</span>st<span class="op">.</span><span class="at">n</span> <span class="op">-</span> <span class="dv">1</span><span class="sc">}</span><span class="vs"> = </span><span class="sc">${</span><span class="fu">fmt</span>(st<span class="op">.</span><span class="at">s2</span>)<span class="sc">}</span><span class="vs"> = s², so s = </span><span class="sc">${</span><span class="fu">fmt</span>(st<span class="op">.</span><span class="at">s</span>)<span class="sc">}</span><span class="vs">.`</span><span class="op">;</span></span>
+<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;p&gt;&lt;em&gt;</span><span class="sc">${</span><span class="fu">line</span>(<span class="st">"Truck A"</span><span class="op">,</span> a)<span class="sc">}</span><span class="vs">&lt;br&gt;</span><span class="sc">${</span><span class="fu">line</span>(<span class="st">"Truck B"</span><span class="op">,</span> b)<span class="sc">}</span><span class="vs">&lt;/em&gt;&lt;/p&gt;`</span><span class="op">;</span></span>
+<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
 <section id="range-and-interquartile-range" class="level3">
 <h3 class="anchored" data-anchor-id="range-and-interquartile-range">Range and interquartile range</h3>
+<p><strong>Try it.</strong> For each truck, find the best day, the worst day and the gap between them.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Truck</th>
+<th style="text-align: right;">Max (€)</th>
+<th style="text-align: right;">Min (€)</th>
+<th style="text-align: right;">Max − Min (€)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A “Steady”</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+<tr class="even">
+<td>B “Erratic”</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Try it — check your answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Truck A: <span class="math inline">\(640 - 590 = 50\)</span>. Truck B: <span class="math inline">\(870 - 370 = 500\)</span>. Truck B’s best and worst days are <strong>10 times</strong> further apart than Truck A’s, even though both average €620.</p>
+</div>
+</div>
+</div>
+<p><strong>See it.</strong> In step 1 of the figure, Truck B’s dots stretch across almost the whole axis; Truck A’s huddle around the mean line.</p>
+<p>In plain words: the range uses only the two most extreme values; the IQR uses the middle 50%, so a single outlier cannot distort it.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -506,10 +837,186 @@ window.Quarto = {
 <p>The <strong>range</strong> is <span class="math inline">\(\max - \min\)</span>: simple, but sensitive to a single extreme value. The <strong>interquartile range</strong> <span class="math inline">\(IQR = Q_3-Q_1\)</span> (Module 5) measures the spread of only the central 50% of the data, making it more robust to extreme values.</p>
 </div>
 </div>
-<p>In plain words: the range uses only the two most extreme values; the IQR uses the middle 50%, so a single outlier cannot distort it.</p>
+<p><strong>Recall.</strong> You computed <span class="math inline">\(Q_1\)</span> and <span class="math inline">\(Q_3\)</span> in <a href="../../../teaching/data-description/modules/module-05.html">Module 5</a>; the IQR is simply the gap between them, read off the boxplot as the length of the box.</p>
 </section>
 <section id="sample-variance-and-standard-deviation" class="level3">
 <h3 class="anchored" data-anchor-id="sample-variance-and-standard-deviation">Sample variance and standard deviation</h3>
+<p>The range looks at two days only. To use <strong>every</strong> day, measure how far each day is from the mean.</p>
+<p><strong>Try it.</strong> Complete the deviation table for Truck A (<span class="math inline">\(n = 5\)</span>, <span class="math inline">\(\bar{x} = 620\)</span>), working column by column.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Day <span class="math inline">\(i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(x_i\)</span> (€)</th>
+<th style="text-align: right;"><span class="math inline">\(x_i-\bar{x}\)</span> (€)</th>
+<th style="text-align: right;"><span class="math inline">\((x_i-\bar{x})^2\)</span> (€²)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: right;">590</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: right;">610</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: right;">630</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: right;">630</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: right;">640</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>3,100</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Fill the deviation column <span class="math inline">\(x_i-\bar{x}\)</span>, then add it up. What do you notice?</li>
+<li>Square each deviation and add up the squares.</li>
+<li>Divide that total by <span class="math inline">\(n-1 = 4\)</span>.</li>
+<li>Take the square root of the result.</li>
+</ol>
+<p>Your turn: build the same table for Truck B.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Try it — check your answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Truck A</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Day <span class="math inline">\(i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(x_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(x_i-\bar{x}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\((x_i-\bar{x})^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: right;">590</td>
+<td style="text-align: right;">−30</td>
+<td style="text-align: right;">900</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: right;">610</td>
+<td style="text-align: right;">−10</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: right;">630</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: right;">630</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: right;">640</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">400</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>3,100</strong></td>
+<td style="text-align: right;"><strong>0</strong></td>
+<td style="text-align: right;"><strong>1,600</strong></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(1{,}600 / 4 = 400\)</span> €², and <span class="math inline">\(\sqrt{400} = 20\)</span> €.</p>
+<p><strong>Truck B</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Day <span class="math inline">\(i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(x_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(x_i-\bar{x}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\((x_i-\bar{x})^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: right;">370</td>
+<td style="text-align: right;">−250</td>
+<td style="text-align: right;">62,500</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: right;">470</td>
+<td style="text-align: right;">−150</td>
+<td style="text-align: right;">22,500</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: right;">670</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">2,500</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: right;">720</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">10,000</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: right;">870</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">62,500</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>3,100</strong></td>
+<td style="text-align: right;"><strong>0</strong></td>
+<td style="text-align: right;"><strong>160,000</strong></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(160{,}000 / 4 = 40{,}000\)</span> €², and <span class="math inline">\(\sqrt{40{,}000} = 200\)</span> €. On a typical day Truck B is about €200 away from its mean; Truck A only about €20.</p>
+</div>
+</div>
+</div>
+<p><strong>Why is the deviation total always 0?</strong> The mean is the balance point of the data: the days above it exactly offset the days below it. So the plain average of the deviations is always 0 and tells you nothing. Squaring removes the signs — every distance counts as positive — and gives big misses more weight than small ones.</p>
+<p><strong>Why divide by 4 and not 5?</strong> Suppose you know Truck A’s first four deviations: −30, −10, 10, 10. Because the total must be 0, the fifth deviation <em>has</em> to be +20. Only 4 of the 5 deviations are free to vary, so we average over <span class="math inline">\(n-1 = 4\)</span>.</p>
+<p><strong>See it.</strong> Step 2 of the figure draws each deviation as a bar from the mean (sum = 0). Step 3 draws each squared deviation as a square: the variance is the size of the “average square”, and <span class="math inline">\(s\)</span> is its side.</p>
+<p>In plain words: measure how far each observation is from the mean, square those distances (so they are all positive), average them (with <span class="math inline">\(n-1\)</span>), and take the square root to get back to the original unit.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -525,7 +1032,80 @@ s^2 = \frac{1}{n-1}\sum_{i=1}^{n} (x_i-\bar{x})^2,
 \]</span> i.e.&nbsp;the average squared distance of each observation from the mean (with <span class="math inline">\(n-1\)</span>, not <span class="math inline">\(n\)</span>, correcting for the fact that <span class="math inline">\(\bar{x}\)</span> is itself estimated from the same sample). The <strong>sample standard deviation</strong> <span class="math inline">\(s=\sqrt{s^2}\)</span> returns to the original unit (€, not €²).</p>
 </div>
 </div>
-<p>In plain words: measure how far each observation is from the mean, square those distances (so they are all positive), average them (with <span class="math inline">\(n-1\)</span>), and take the square root to get back to the original unit.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Notation decoder — sample variance and standard deviation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Read aloud</th>
+<th>In our example (Truck A)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(n\)</span></td>
+<td>“n”</td>
+<td>5 days</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(x_i\)</span></td>
+<td>“x sub i”</td>
+<td>the value on day <span class="math inline">\(i\)</span>, e.g.&nbsp;<span class="math inline">\(x_1 = 590\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\bar{x}\)</span></td>
+<td>“x-bar”</td>
+<td>the mean, 620</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(x_i-\bar{x}\)</span></td>
+<td>“x sub i minus x-bar”</td>
+<td>the deviation column: −30, −10, 10, 10, 20</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\((x_i-\bar{x})^2\)</span></td>
+<td>“… squared”</td>
+<td>the squares column: 900, 100, 100, 100, 400</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sum_{i=1}^{n}\)</span></td>
+<td>“add up, for i from 1 to n”</td>
+<td>the Total row: 1,600</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\frac{1}{n-1}\)</span></td>
+<td>“divided by n minus 1”</td>
+<td>÷ 4</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(s^2\)</span></td>
+<td>“s squared”</td>
+<td>400 €²</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(s=\sqrt{s^2}\)</span></td>
+<td>“s”</td>
+<td>20 €</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Whole formula as a sentence:</strong> “the sample variance is the sum, over all <span class="math inline">\(n\)</span> days, of each day’s squared distance from the mean, divided by <span class="math inline">\(n-1\)</span>; the standard deviation is its square root.”</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -542,6 +1122,31 @@ s^2 = \frac{1}{n-1}\sum_{i=1}^{n} (x_i-\bar{x})^2,
 </section>
 <section id="coefficient-of-variation" class="level3">
 <h3 class="anchored" data-anchor-id="coefficient-of-variation">Coefficient of variation</h3>
+<p><strong>Try it.</strong> Truck B’s standard deviation is €200. Is that a lot?</p>
+<ol type="1">
+<li>Compute <span class="math inline">\(s / \bar{x} \times 100\%\)</span> for Truck A and Truck B.</li>
+<li>A coffee cart in the same fleet has a mean of €62 and <span class="math inline">\(s = €20\)</span> — exactly Truck A’s <span class="math inline">\(s\)</span>. Is it as steady as Truck A?</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Try it — check your answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Truck A: <span class="math inline">\(20/620 \times 100\% = 3.23\%\)</span>. Truck B: <span class="math inline">\(200/620 \times 100\% = 32.26\%\)</span>.</li>
+<li>Coffee cart: <span class="math inline">\(20/62 \times 100\% = 32.26\%\)</span> — the same relative variability as the <em>erratic</em> Truck B. A €20 swing is tiny next to €620 but huge next to €62. The size of <span class="math inline">\(s\)</span> only means something relative to the mean.</li>
+</ol>
+</div>
+</div>
+</div>
+<p>In plain words: divide the standard deviation by the mean and express as a percentage. A <span class="math inline">\(CV\)</span> of 20% means the typical deviation from the mean is about 20% of the mean itself.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -557,10 +1162,84 @@ CV = \frac{s}{\bar{x}} \times 100\%.
 \]</span> Because it is unit-free, <span class="math inline">\(CV\)</span> is the only dispersion indicator that lets you compare the <em>relative</em> variability of two variables measured on different scales or units (e.g., revenue in € vs.&nbsp;customer count).</p>
 </div>
 </div>
-<p>In plain words: divide the standard deviation by the mean and express as a percentage. A <span class="math inline">\(CV\)</span> of 20% means the typical deviation from the mean is about 20% of the mean itself.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Notation decoder — coefficient of variation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Read aloud</th>
+<th>In our example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(CV\)</span></td>
+<td>“coefficient of variation”</td>
+<td>3.23% (A), 32.26% (B)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(s\)</span></td>
+<td>“s”</td>
+<td>20 € (A), 200 € (B)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\bar{x}\)</span></td>
+<td>“x-bar”</td>
+<td>620 € for both</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\times 100\%\)</span></td>
+<td>“as a percentage”</td>
+<td>0.0323 → 3.23%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Whole formula as a sentence:</strong> “the coefficient of variation is the standard deviation expressed as a percentage of the mean.” The € cancel out, which is why <span class="math inline">\(CV\)</span> has no unit.</p>
+</div>
+</div>
 </section>
 <section id="shortcut-computational-formula-for-variance" class="level3">
 <h3 class="anchored" data-anchor-id="shortcut-computational-formula-for-variance">Shortcut (computational) formula for variance</h3>
+<p><strong>Try it.</strong> Compute Truck A’s variance a second way, without any deviation.</p>
+<ol type="1">
+<li>Square each value and add the squares: <span class="math inline">\(590^2 + 610^2 + 630^2 +
+630^2 + 640^2\)</span>.</li>
+<li>Compute <span class="math inline">\(n\bar{x}^2 = 5 \times 620^2\)</span>.</li>
+<li>Subtract, then divide by <span class="math inline">\(n-1 = 4\)</span>.</li>
+<li>Redo step 2 with a rounded mean of 621. What happens?</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Try it — check your answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><span class="math inline">\(348{,}100 + 372{,}100 + 396{,}900 + 396{,}900 + 409{,}600 =
+1{,}923{,}600\)</span>.</li>
+<li><span class="math inline">\(5 \times 384{,}400 = 1{,}922{,}000\)</span>.</li>
+<li><span class="math inline">\((1{,}923{,}600 - 1{,}922{,}000)/4 = 1{,}600/4 = 400\)</span> — the same <span class="math inline">\(s^2\)</span> as the deviation table.</li>
+<li><span class="math inline">\(5 \times 621^2 = 1{,}928{,}205\)</span>, so the result becomes <span class="math inline">\((1{,}923{,}600 - 1{,}928{,}205)/4 = -1{,}151.25\)</span>: a <strong>negative</strong> variance, which is impossible. The shortcut subtracts two large, nearly equal numbers, so a tiny rounding of <span class="math inline">\(\bar{x}\)</span> ruins it. Always keep the mean unrounded.</li>
+</ol>
+</div>
+</div>
+</div>
+<p>In plain words: square every value and add them up, subtract <span class="math inline">\(n\)</span> times the squared mean, and divide by <span class="math inline">\(n-1\)</span>. Same answer, no deviation column.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -574,6 +1253,55 @@ CV = \frac{s}{\bar{x}} \times 100\%.
 <p><span class="math display">\[
 s^2 = \frac{1}{n-1}\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right).
 \]</span> This needs only <span class="math inline">\(\sum x_i^2\)</span> and <span class="math inline">\(\bar{x}\)</span> — one pass over the data instead of first computing every deviation <span class="math inline">\((x_i-\bar{x})\)</span> and then squaring it. In Excel, use <code>SUMSQ(range)</code> for <span class="math inline">\(\sum x_i^2\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Notation decoder — variance shortcut
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Read aloud</th>
+<th>In our example (Truck A)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\sum_{i=1}^{n} x_i^2\)</span></td>
+<td>“sum of x sub i squared”</td>
+<td>square first, then add: 1,923,600</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\left(\sum_{i=1}^{n} x_i\right)^2\)</span></td>
+<td>“square of the sum” — <strong>not</strong> the same!</td>
+<td>add first, then square: <span class="math inline">\(3{,}100^2 = 9{,}610{,}000\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(n\bar{x}^2\)</span></td>
+<td>“n times x-bar squared”</td>
+<td><span class="math inline">\(5 \times 620^2 = 1{,}922{,}000\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\frac{1}{n-1}\)</span></td>
+<td>“divided by n minus 1”</td>
+<td>÷ 4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Whole formula as a sentence:</strong> “the variance is the sum of the squared values minus <span class="math inline">\(n\)</span> times the squared mean, divided by <span class="math inline">\(n-1\)</span>.”</p>
 </div>
 </div>
 </section>
@@ -643,8 +1371,291 @@ s^2 = \frac{1}{n-1}\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right).
 <p>“The Wandering Fork”’s <span class="math inline">\(CV = 21.82\%\)</span> falls in the <strong>moderate</strong> band.</p>
 </section>
 </section>
-<section id="using-excel" class="level2">
-<h2 class="anchored" data-anchor-id="using-excel">Using Excel</h2>
+<section id="proof-derivation" class="level2">
+<h2 class="anchored" data-anchor-id="proof-derivation">Proof / derivation</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Derivation — the variance shortcut (computational) formula (click to expand)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Starting from the definitional formula and expanding the square: <span class="math display">\[
+\sum_{i=1}^{n}(x_i-\bar{x})^2
+= \sum_{i=1}^n x_i^2 - 2\bar{x}\sum_{i=1}^n x_i + n\bar{x}^2.
+\]</span> Since <span class="math inline">\(\sum_{i=1}^n x_i = n\bar{x}\)</span>, the middle term becomes <span class="math inline">\(-2\bar{x}(n\bar{x}) = -2n\bar{x}^2\)</span>, so <span class="math display">\[
+\sum_{i=1}^{n}(x_i-\bar{x})^2
+= \sum_{i=1}^n x_i^2 - 2n\bar{x}^2 + n\bar{x}^2
+= \sum_{i=1}^n x_i^2 - n\bar{x}^2.
+\]</span> Dividing by <span class="math inline">\(n-1\)</span> gives the <strong>shortcut formula</strong> <span class="math display">\[
+s^2 = \frac{1}{n-1}\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right),
+\]</span> which needs only <span class="math inline">\(\sum x_i^2\)</span> and <span class="math inline">\(\bar{x}\)</span> — one pass over the data instead of first computing every deviation <span class="math inline">\((x_i-\bar{x})\)</span> and then squaring it. Both formulas give the identical result, <span class="math inline">\(s^2=18{,}793.33\)</span>, for “The Wandering Fork”; the shortcut form is simply faster to compute by hand or with <code>SUMPRODUCT</code>/<code>SUMSQ</code> in Excel.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="visual-intuition" class="level2">
+<h2 class="anchored" data-anchor-id="visual-intuition">Visual intuition</h2>
+<p>Variance is literally the <strong>average squared distance</strong> from the mean: picture each of the 30 days as a point on a number line at its revenue value, and <span class="math inline">\(\bar{x}=628.34\)</span> as a fixed pivot. Variance answers “on average, how far (squared) do the points sit from the pivot?” — a wide, flat spread of points gives a large variance; a tight cluster around the pivot gives a small one.</p>
+<p>Step 3 of the two-truck figure makes this literal: each square’s area is one squared deviation, the variance is their total divided by <span class="math inline">\(n-1\)</span> — the “average square” — and the standard deviation <span class="math inline">\(s\)</span> is the side of that average square. Truck B’s average square is 100 times larger in area than Truck A’s, but only 10 times wider.</p>
+</section>
+<section id="interactive-demo-central-tendency-dispersion-calculator" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-demo-central-tendency-dispersion-calculator">Interactive demo — central tendency &amp; dispersion calculator</h2>
+<p>Move the six sliders below and watch the mean, variance, standard deviation, and coefficient of variation update live. Starting values are a 6-day sample of “The Wandering Fork”’s <code>daily_revenue_eur</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="537" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 536;"><span id="cb4-537"><a href="#cb4-537" aria-hidden="true" tabindex="-1"></a>viewof days <span class="op">=</span> {</span>
+<span id="cb4-538"><a href="#cb4-538" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> start <span class="op">=</span> [<span class="fl">460.48</span><span class="op">,</span> <span class="fl">500.02</span><span class="op">,</span> <span class="fl">418.65</span><span class="op">,</span> <span class="fl">785.79</span><span class="op">,</span> <span class="fl">719.66</span><span class="op">,</span> <span class="fl">886.56</span>]<span class="op">;</span></span>
+<span id="cb4-539"><a href="#cb4-539" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> form <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;form class="ojs-calculator"&gt;</span><span class="sc">${</span>start<span class="op">.</span><span class="fu">map</span>((v<span class="op">,</span> i) <span class="kw">=&gt;</span></span>
+<span id="cb4-540"><a href="#cb4-540" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html</span><span class="vs">`&lt;div&gt;&lt;label&gt;Day </span><span class="sc">${</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="vs"> (€):</span></span>
+<span id="cb4-541"><a href="#cb4-541" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;input type="range" min="300" max="950" step="0.01" value="</span><span class="sc">${</span>v<span class="sc">}</span><span class="vs">"&gt;</span></span>
+<span id="cb4-542"><a href="#cb4-542" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;output&gt;</span><span class="sc">${</span>v<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">&lt;/output&gt;&lt;/label&gt;&lt;/div&gt;`</span>)<span class="sc">}</span><span class="vs">&lt;/form&gt;`</span><span class="op">;</span></span>
+<span id="cb4-543"><a href="#cb4-543" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> inputs <span class="op">=</span> [<span class="op">...</span>form<span class="op">.</span><span class="fu">querySelectorAll</span>(<span class="st">"input"</span>)]<span class="op">;</span></span>
+<span id="cb4-544"><a href="#cb4-544" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> outs <span class="op">=</span> [<span class="op">...</span>form<span class="op">.</span><span class="fu">querySelectorAll</span>(<span class="st">"output"</span>)]<span class="op">;</span></span>
+<span id="cb4-545"><a href="#cb4-545" aria-hidden="true" tabindex="-1"></a>  form<span class="op">.</span><span class="at">value</span> <span class="op">=</span> start<span class="op">.</span><span class="fu">slice</span>()<span class="op">;</span></span>
+<span id="cb4-546"><a href="#cb4-546" aria-hidden="true" tabindex="-1"></a>  form<span class="op">.</span><span class="at">oninput</span> <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb4-547"><a href="#cb4-547" aria-hidden="true" tabindex="-1"></a>    form<span class="op">.</span><span class="at">value</span> <span class="op">=</span> inputs<span class="op">.</span><span class="fu">map</span>(el <span class="kw">=&gt;</span> el<span class="op">.</span><span class="at">valueAsNumber</span>)<span class="op">;</span></span>
+<span id="cb4-548"><a href="#cb4-548" aria-hidden="true" tabindex="-1"></a>    outs<span class="op">.</span><span class="fu">forEach</span>((o<span class="op">,</span> i) <span class="kw">=&gt;</span> { o<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> form<span class="op">.</span><span class="at">value</span>[i]<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="op">;</span> })<span class="op">;</span></span>
+<span id="cb4-549"><a href="#cb4-549" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb4-550"><a href="#cb4-550" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> form<span class="op">;</span></span>
+<span id="cb4-551"><a href="#cb4-551" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="557" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 556;"><span id="cb5-557"><a href="#cb5-557" aria-hidden="true" tabindex="-1"></a>calc <span class="op">=</span> {</span>
+<span id="cb5-558"><a href="#cb5-558" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> n <span class="op">=</span> days<span class="op">.</span><span class="at">length</span><span class="op">;</span></span>
+<span id="cb5-559"><a href="#cb5-559" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> mean <span class="op">=</span> days<span class="op">.</span><span class="fu">reduce</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">+</span> b<span class="op">,</span> <span class="dv">0</span>) <span class="op">/</span> n<span class="op">;</span></span>
+<span id="cb5-560"><a href="#cb5-560" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sorted <span class="op">=</span> [<span class="op">...</span>days]<span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">-</span> b)<span class="op">;</span></span>
+<span id="cb5-561"><a href="#cb5-561" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> median <span class="op">=</span> (sorted[n <span class="op">/</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span>] <span class="op">+</span> sorted[n <span class="op">/</span> <span class="dv">2</span>]) <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb5-562"><a href="#cb5-562" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> s2 <span class="op">=</span> days<span class="op">.</span><span class="fu">reduce</span>((a<span class="op">,</span> x) <span class="kw">=&gt;</span> a <span class="op">+</span> (x <span class="op">-</span> mean) <span class="op">**</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">0</span>) <span class="op">/</span> (n <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb5-563"><a href="#cb5-563" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> s <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(s2)<span class="op">;</span></span>
+<span id="cb5-564"><a href="#cb5-564" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {n<span class="op">,</span> mean<span class="op">,</span> median<span class="op">,</span> s2<span class="op">,</span> s<span class="op">,</span> <span class="dt">cv</span><span class="op">:</span> mean <span class="op">?</span> s <span class="op">/</span> mean <span class="op">*</span> <span class="dv">100</span> <span class="op">:</span> <span class="dv">0</span>}<span class="op">;</span></span>
+<span id="cb5-565"><a href="#cb5-565" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-566"><a href="#cb5-566" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-567"><a href="#cb5-567" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;p&gt;&lt;strong&gt;Mean&lt;/strong&gt; = </span><span class="sc">${</span>calc<span class="op">.</span><span class="at">mean</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> ·</span></span>
+<span id="cb5-568"><a href="#cb5-568" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;strong&gt;Median&lt;/strong&gt; = </span><span class="sc">${</span>calc<span class="op">.</span><span class="at">median</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">&lt;br&gt;</span></span>
+<span id="cb5-569"><a href="#cb5-569" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;strong&gt;Variance&lt;/strong&gt; s² = </span><span class="sc">${</span>calc<span class="op">.</span><span class="at">s2</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> ·</span></span>
+<span id="cb5-570"><a href="#cb5-570" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;strong&gt;Std. dev.&lt;/strong&gt; s = </span><span class="sc">${</span>calc<span class="op">.</span><span class="at">s</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> ·</span></span>
+<span id="cb5-571"><a href="#cb5-571" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;strong&gt;CV&lt;/strong&gt; = </span><span class="sc">${</span>calc<span class="op">.</span><span class="at">cv</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">%&lt;/p&gt;`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="575" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 574;"><span id="cb6-575"><a href="#cb6-575" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb6-576"><a href="#cb6-576" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> W <span class="op">=</span> <span class="dv">660</span><span class="op">,</span> H <span class="op">=</span> <span class="dv">300</span><span class="op">,</span> L <span class="op">=</span> <span class="dv">60</span><span class="op">,</span> R <span class="op">=</span> <span class="dv">20</span><span class="op">,</span> T <span class="op">=</span> <span class="dv">30</span><span class="op">,</span> B <span class="op">=</span> <span class="dv">40</span><span class="op">;</span></span>
+<span id="cb6-577"><a href="#cb6-577" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> x <span class="op">=</span> d <span class="kw">=&gt;</span> L <span class="op">+</span> (d <span class="op">-</span> <span class="fl">0.5</span>) <span class="op">*</span> (W <span class="op">-</span> L <span class="op">-</span> R) <span class="op">/</span> <span class="dv">6</span><span class="op">;</span></span>
+<span id="cb6-578"><a href="#cb6-578" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> y <span class="op">=</span> v <span class="kw">=&gt;</span> T <span class="op">+</span> (<span class="dv">950</span> <span class="op">-</span> v) <span class="op">*</span> (H <span class="op">-</span> T <span class="op">-</span> B) <span class="op">/</span> (<span class="dv">950</span> <span class="op">-</span> <span class="dv">300</span>)<span class="op">;</span></span>
+<span id="cb6-579"><a href="#cb6-579" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> g <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb6-580"><a href="#cb6-580" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> v <span class="op">=</span> <span class="dv">300</span><span class="op">;</span> v <span class="op">&lt;=</span> <span class="dv">900</span><span class="op">;</span> v <span class="op">+=</span> <span class="dv">100</span>) {</span>
+<span id="cb6-581"><a href="#cb6-581" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span>L<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span>W <span class="op">-</span> R<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span><span class="fu">y</span>(v)<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span><span class="fu">y</span>(v)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb6-582"><a href="#cb6-582" aria-hidden="true" tabindex="-1"></a><span class="vs">      stroke="currentColor" stroke-opacity="0.15"/&gt;`</span><span class="op">;</span></span>
+<span id="cb6-583"><a href="#cb6-583" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span>L <span class="op">-</span> <span class="dv">8</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(v) <span class="op">+</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">" text-anchor="end"</span></span>
+<span id="cb6-584"><a href="#cb6-584" aria-hidden="true" tabindex="-1"></a><span class="vs">      fill="currentColor" font-size="12"&gt;€</span><span class="sc">${</span>v<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb6-585"><a href="#cb6-585" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-586"><a href="#cb6-586" aria-hidden="true" tabindex="-1"></a>  days<span class="op">.</span><span class="fu">forEach</span>((v<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb6-587"><a href="#cb6-587" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(i <span class="op">+</span> <span class="dv">1</span>)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(i <span class="op">+</span> <span class="dv">1</span>)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span><span class="fu">y</span>(calc<span class="op">.</span><span class="at">mean</span>)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb6-588"><a href="#cb6-588" aria-hidden="true" tabindex="-1"></a><span class="vs">      y2="</span><span class="sc">${</span><span class="fu">y</span>(v)<span class="sc">}</span><span class="vs">" stroke="currentColor" stroke-opacity="0.5"/&gt;`</span><span class="op">;</span></span>
+<span id="cb6-589"><a href="#cb6-589" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;circle cx="</span><span class="sc">${</span><span class="fu">x</span>(i <span class="op">+</span> <span class="dv">1</span>)<span class="sc">}</span><span class="vs">" cy="</span><span class="sc">${</span><span class="fu">y</span>(v)<span class="sc">}</span><span class="vs">" r="7" fill="steelblue"/&gt;`</span><span class="op">;</span></span>
+<span id="cb6-590"><a href="#cb6-590" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(i <span class="op">+</span> <span class="dv">1</span>)<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>H <span class="op">-</span> <span class="dv">15</span><span class="sc">}</span><span class="vs">" text-anchor="middle"</span></span>
+<span id="cb6-591"><a href="#cb6-591" aria-hidden="true" tabindex="-1"></a><span class="vs">      fill="currentColor" font-size="12"&gt;Day </span><span class="sc">${</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb6-592"><a href="#cb6-592" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb6-593"><a href="#cb6-593" aria-hidden="true" tabindex="-1"></a>  g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span>L<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span>W <span class="op">-</span> R<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span><span class="fu">y</span>(calc<span class="op">.</span><span class="at">mean</span>)<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span><span class="fu">y</span>(calc<span class="op">.</span><span class="at">mean</span>)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb6-594"><a href="#cb6-594" aria-hidden="true" tabindex="-1"></a><span class="vs">    stroke="darkorange" stroke-width="2" stroke-dasharray="6 4"/&gt;`</span><span class="op">;</span></span>
+<span id="cb6-595"><a href="#cb6-595" aria-hidden="true" tabindex="-1"></a>  g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span>W <span class="op">-</span> R<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(calc<span class="op">.</span><span class="at">mean</span>) <span class="op">-</span> <span class="dv">6</span><span class="sc">}</span><span class="vs">" text-anchor="end"</span></span>
+<span id="cb6-596"><a href="#cb6-596" aria-hidden="true" tabindex="-1"></a><span class="vs">    fill="darkorange" font-size="12"&gt;mean = </span><span class="sc">${</span>calc<span class="op">.</span><span class="at">mean</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb6-597"><a href="#cb6-597" aria-hidden="true" tabindex="-1"></a>  g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span>W <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" y="18" text-anchor="middle" fill="currentColor"</span></span>
+<span id="cb6-598"><a href="#cb6-598" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size="14"&gt;Deviations from the mean&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb6-599"><a href="#cb6-599" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;svg viewBox="0 0 </span><span class="sc">${</span>W<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>H<span class="sc">}</span><span class="vs">" width="100%" role="img"</span></span>
+<span id="cb6-600"><a href="#cb6-600" aria-hidden="true" tabindex="-1"></a><span class="vs">    aria-label="Six daily revenues and their deviations from the mean"&gt;</span></span>
+<span id="cb6-601"><a href="#cb6-601" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>g<span class="sc">}</span><span class="vs">&lt;/svg&gt;`</span><span class="op">;</span></span>
+<span id="cb6-602"><a href="#cb6-602" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise 1 (by hand) — Shortcut formula (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>A sample of <span class="math inline">\(n=5\)</span> values has <span class="math inline">\(\sum x_i = 100\)</span> and <span class="math inline">\(\sum x_i^2 = 2140\)</span>. Find the sample variance.</p>
+<p><strong>Solution.</strong> <span class="math inline">\(\bar{x}=100/5=20\)</span>. Shortcut formula: <span class="math inline">\(s^2 = \frac{1}{n-1}\left(\sum x_i^2 - n\bar{x}^2\right)
+= \frac{1}{4}(2140 - 5\times400) = \frac{1}{4}(2140-2000) = 35\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise 2 (by hand) — Comparing variability across units (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>“The Wandering Fork”’s <code>items_sold</code> has mean <span class="math inline">\(74.40\)</span> and sample standard deviation <span class="math inline">\(16.22\)</span> (from <code>data-model.md</code>). Which variable — <code>daily_revenue_eur</code> or <code>items_sold</code> — has higher <em>relative</em> variability?</p>
+<p><strong>Solution.</strong> <span class="math inline">\(CV_{\text{revenue}} = 137.09/628.34 = 21.82\%\)</span>; <span class="math inline">\(CV_{\text{items}} = 16.22/74.40 = 21.80\%\)</span>. The two are almost identical (about 21.8%) even though the raw units (€ vs.&nbsp;items sold) are completely different — exactly the kind of comparison only <span class="math inline">\(CV\)</span>, not <span class="math inline">\(s\)</span> alone, can make fairly.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise 3 (by hand) — Effect of an outlier on the range (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If one exceptionally bad day of <span class="math inline">\(\text{daily\_revenue\_eur}=150\)</span> replaced the current minimum (407.59), how would the range change, and would the standard deviation be affected in the same direction?</p>
+<p><strong>Solution.</strong> New range <span class="math inline">\(= 886.56 - 150 = 736.56\)</span> (up from 478.97) — the range, using only two values, reacts strongly to a single extreme point. The standard deviation would also increase (an extra-large deviation from the mean adds to <span class="math inline">\(\sum(x_i-\bar{x})^2\)</span>), but by a much smaller relative amount, since it accounts for all 30 days rather than just the two most extreme.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise 4 (by hand) — Formula to words (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li><p>Read <span class="math inline">\(\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2\)</span> aloud as one sentence. Which indicator is it?</p></li>
+<li><p>For <span class="math inline">\(x_1=4\)</span>, <span class="math inline">\(x_2=6\)</span>, <span class="math inline">\(x_3=8\)</span>, compute <span class="math inline">\(\sum_{i=1}^{3} x_i\)</span> and <span class="math inline">\(\sum_{i=1}^{3} x_i^2\)</span>. Is <span class="math inline">\(\left(\sum x_i\right)^2\)</span> equal to <span class="math inline">\(\sum x_i^2\)</span>?</p></li>
+</ol>
+<p><strong>Solution.</strong> (a) “Take each observation’s distance from the mean, square it, add up the <span class="math inline">\(n\)</span> squares, and divide by <span class="math inline">\(n-1\)</span>.” It is the sample variance <span class="math inline">\(s^2\)</span>. (b) <span class="math inline">\(\sum x_i = 4+6+8 = 18\)</span>; <span class="math inline">\(\sum x_i^2 = 16+36+64 = 116\)</span>. But <span class="math inline">\(\left(\sum x_i\right)^2 = 18^2 = 324 \neq 116\)</span>: “square then add” is not “add then square” — the most common slip in the shortcut formula.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise 5 (by hand) — Words to formula (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Write in symbols:</p>
+<ol type="a">
+<li>“add up the squares of all <span class="math inline">\(n\)</span> observations”;</li>
+<li>“the standard deviation as a percentage of the mean”;</li>
+<li>“the distance between the 3rd observation and the mean”.</li>
+</ol>
+<p><strong>Solution.</strong> (a) <span class="math inline">\(\sum_{i=1}^{n} x_i^2\)</span>. (b) <span class="math inline">\(CV = \dfrac{s}{\bar{x}} \times 100\%\)</span>. (c) <span class="math inline">\(x_3-\bar{x}\)</span> (negative if the 3rd observation is below the mean).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="common-mistakes" class="level2">
+<h2 class="anchored" data-anchor-id="common-mistakes">Common mistakes</h2>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Watch out
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Using <code>VAR.P</code>/<code>STDEV.P</code> when you need <code>VAR.S</code>/<code>STDEV.S</code>.</strong> The course standard is the sample formulas (denominator <span class="math inline">\(n-1\)</span>). The population variants (denominator <span class="math inline">\(n\)</span>) are for when you have the <em>entire</em> population — rare in business.</li>
+<li><strong>Forgetting the square root.</strong> Variance is in squared units (€²); standard deviation is in the original unit (€). Always report the one that matches your interpretation.</li>
+<li><strong>Computing <span class="math inline">\(CV\)</span> with the median instead of the mean.</strong> <span class="math inline">\(CV =
+s/\bar{x}\)</span>, not <span class="math inline">\(s/Me\)</span>. The mean is the balance point that pairs with variance.</li>
+<li><strong>Using the range as your only dispersion measure.</strong> The range ignores everything between min and max; always report <span class="math inline">\(s\)</span> or <span class="math inline">\(IQR\)</span> alongside it.</li>
+<li><strong>Comparing standard deviations across different units.</strong> €137 vs 16 items — meaningless without <span class="math inline">\(CV\)</span>. Always use <span class="math inline">\(CV\)</span> for cross-variable or cross-dataset comparisons.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="exit-check" class="level2">
+<h2 class="anchored" data-anchor-id="exit-check">Exit check</h2>
+<p>Five minutes, no calculator needed except for question 4.</p>
+<ol type="1">
+<li>In one sentence, what does the standard deviation <span class="math inline">\(s\)</span> measure?</li>
+<li>Why does <span class="math inline">\(\sum(x_i-\bar{x})\)</span> always equal 0?</li>
+<li>Read <span class="math inline">\(s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2\)</span> aloud as a sentence.</li>
+<li>Compute <span class="math inline">\(s^2\)</span> for the values 2, 4, 4, 6, 9.</li>
+<li>You want to compare the spread of revenue (in €) with the spread of items sold. Which indicator do you use, and why?</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exit check — answers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-20" class="callout-20-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>The typical distance between an observation and the mean, in the original unit (e.g., “on a typical day, revenue is about €137 away from the average”).</li>
+<li>The mean is the balance point: deviations above it exactly cancel deviations below it.</li>
+<li>“The sum, over all <span class="math inline">\(n\)</span> observations, of each squared distance from the mean, divided by <span class="math inline">\(n-1\)</span>.”</li>
+<li><span class="math inline">\(\bar{x} = 25/5 = 5\)</span>; deviations −3, −1, −1, 1, 4; squares 9, 1, 1, 1, 16; total 28; <span class="math inline">\(s^2 = 28/4 = 7\)</span>.</li>
+<li>The coefficient of variation <span class="math inline">\(CV = s/\bar{x}\times100\%\)</span>: it has no unit, so € and items can be compared.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="homework-excel-lab" class="level2">
+<h2 class="anchored" data-anchor-id="homework-excel-lab">Homework — Excel lab</h2>
+<p>Reproduce, in Excel, every indicator you computed by hand in class, with <code>VAR.S</code>, <code>STDEV.S</code>, <code>SUMSQ</code> and a <span class="math inline">\(CV\)</span> formula, then apply them to the full dataset.</p>
+<p><strong>Estimated time:</strong> about 50–60 minutes. Any spreadsheet application works, at home or in a campus computer room.</p>
+<p><strong>Follow-up:</strong> a 10-minute debrief at the start of <a href="../../../teaching/data-description/modules/module-07.html">Module 7</a>. Bring your Step 0 results and any question on Homework 1–3.</p>
+<section id="using-excel" class="level3">
+<h3 class="anchored" data-anchor-id="using-excel">Using Excel</h3>
 <p>The complete list of function names, with their French equivalents, is on the <a href="../../../teaching/data-description/modules/excel-functions.html">Excel functions</a> page.</p>
 <table class="caption-top table">
 <thead>
@@ -693,262 +1704,127 @@ s^2 = \frac{1}{n-1}\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right).
 </blockquote>
 <p>For the <strong>full table</strong> (120 days per franchise) use the Excel Table <code>tblFork</code> and add the franchise as one more condition, for example <code>=VAR.S(FILTER(tblFork[daily_revenue_eur], tblFork[franchise]="Harbour"))</code>.</p>
 </section>
-<section id="proof-derivation" class="level2">
-<h2 class="anchored" data-anchor-id="proof-derivation">Proof / derivation</h2>
+<section id="step-0-check-your-class-results" class="level3">
+<h3 class="anchored" data-anchor-id="step-0-check-your-class-results">Step 0 — check your class results</h3>
+<ol type="1">
+<li>Type Truck A’s five values (590, 610, 630, 630, 640) in <code>A2:A6</code> and Truck B’s (370, 470, 670, 720, 870) in <code>B2:B6</code>.</li>
+<li>Below each column, compute <code>=AVERAGE(A2:A6)</code>, <code>=MAX(A2:A6)-MIN(A2:A6)</code>, <code>=VAR.S(A2:A6)</code>, <code>=STDEV.S(A2:A6)</code> and <code>=STDEV.S(A2:A6)/AVERAGE(A2:A6)</code> (format as a percentage). Repeat for column B.</li>
+<li>For Truck A, check the shortcut formula: <code>=(SUMSQ(A2:A6)-COUNT(A2:A6)*AVERAGE(A2:A6)^2)/(COUNT(A2:A6)-1)</code>.</li>
+<li>Compare every result with your hand-computed deviation table.</li>
+</ol>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-21-contents" aria-controls="callout-21" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Derivation — the variance shortcut (computational) formula (click to expand)
+<span class="screen-reader-only">Caution</span>Step 0 — expected results
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-21" class="callout-21-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Starting from the definitional formula and expanding the square: <span class="math display">\[
-\sum_{i=1}^{n}(x_i-\bar{x})^2
-= \sum_{i=1}^n x_i^2 - 2\bar{x}\sum_{i=1}^n x_i + n\bar{x}^2.
-\]</span> Since <span class="math inline">\(\sum_{i=1}^n x_i = n\bar{x}\)</span>, the middle term becomes <span class="math inline">\(-2\bar{x}(n\bar{x}) = -2n\bar{x}^2\)</span>, so <span class="math display">\[
-\sum_{i=1}^{n}(x_i-\bar{x})^2
-= \sum_{i=1}^n x_i^2 - 2n\bar{x}^2 + n\bar{x}^2
-= \sum_{i=1}^n x_i^2 - n\bar{x}^2.
-\]</span> Dividing by <span class="math inline">\(n-1\)</span> gives the <strong>shortcut formula</strong> <span class="math display">\[
-s^2 = \frac{1}{n-1}\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right),
-\]</span> which needs only <span class="math inline">\(\sum x_i^2\)</span> and <span class="math inline">\(\bar{x}\)</span> — one pass over the data instead of first computing every deviation <span class="math inline">\((x_i-\bar{x})\)</span> and then squaring it. Both formulas give the identical result, <span class="math inline">\(s^2=18{,}793.33\)</span>, for “The Wandering Fork”; the shortcut form is simply faster to compute by hand or with <code>SUMPRODUCT</code>/<code>SUMSQ</code> in Excel.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="visual-intuition" class="level2">
-<h2 class="anchored" data-anchor-id="visual-intuition">Visual intuition</h2>
-<p>Variance is literally the <strong>average squared distance</strong> from the mean: picture each of the 30 days as a point on a number line at its revenue value, and <span class="math inline">\(\bar{x}=628.34\)</span> as a fixed pivot. Variance answers “on average, how far (squared) do the points sit from the pivot?” — a wide, flat spread of points gives a large variance; a tight cluster around the pivot gives a small one.</p>
-</section>
-<section id="interactive-demo-central-tendency-dispersion-calculator" class="level2">
-<h2 class="anchored" data-anchor-id="interactive-demo-central-tendency-dispersion-calculator">Interactive demo — central tendency &amp; dispersion calculator</h2>
-<p>Edit the six values below and watch the mean, variance, standard deviation, and coefficient of variation update live. Starting values are a 6-day sample of “The Wandering Fork”’s <code>daily_revenue_eur</code>.</p>
-<pre class="{shinylive-python}"><code>#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 560
-
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
-
-BG = '#1C2E22'
-FG = '#D2CCC0'
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
-        .form-label {{ color: {FG} !important; }}
-        .form-range {{ accent-color: steelblue; width: 100%; }}
-        .info-box {{
-            background: #152119; border-radius: 6px; padding: 10px 14px;
-            margin: 8px 0; border-left: 3px solid steelblue;
-            font-family: monospace; font-size: 0.9em;
-        }}
-    """),
-    ui.h5("🧮 Central tendency &amp; dispersion calculator", style=f"color:{FG}"),
-    ui.p(
-        "Move the sliders to change a 6-day revenue sample; the mean, "
-        "variance, standard deviation, and CV recompute live.",
-        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
-    ),
-    ui.input_slider("d1", "Day 1 (€):", min=300, max=950, value=460.48, step=1),
-    ui.input_slider("d2", "Day 2 (€):", min=300, max=950, value=500.02, step=1),
-    ui.input_slider("d3", "Day 3 (€):", min=300, max=950, value=418.65, step=1),
-    ui.input_slider("d4", "Day 4 (€):", min=300, max=950, value=785.79, step=1),
-    ui.input_slider("d5", "Day 5 (€):", min=300, max=950, value=719.66, step=1),
-    ui.input_slider("d6", "Day 6 (€):", min=300, max=950, value=886.56, step=1),
-    ui.output_ui("info"),
-    ui.output_plot("plot", height="280px"),
-)
-
-def server(input, output, session):
-    def sample():
-        return np.array([input.d1(), input.d2(), input.d3(), input.d4(), input.d5(), input.d6()], dtype=float)
-
-    @output
-    @render.ui
-    def info():
-        x = sample()
-        mean = x.mean()
-        median = float(np.median(x))
-        var = x.var(ddof=1)
-        std = x.std(ddof=1)
-        cv = std / mean * 100 if mean else 0
-        return ui.HTML(f"""
-            &lt;div class='info-box'&gt;
-                Mean = &lt;strong style='color:darkorange'&gt;{mean:.2f}&lt;/strong&gt; &amp;nbsp;|&amp;nbsp;
-                Median = &lt;strong style='color:darkorange'&gt;{median:.2f}&lt;/strong&gt;&lt;br&gt;
-                Variance (s²) = {var:.2f} &amp;nbsp;|&amp;nbsp;
-                Std. dev. (s) = {std:.2f} &amp;nbsp;|&amp;nbsp;
-                CV = {cv:.2f}%
-            &lt;/div&gt;
-        """)
-
-    @output
-    @render.plot
-    def plot():
-        x = sample()
-        mean = x.mean()
-
-        fig, ax = plt.subplots(figsize=(7, 3.2))
-        fig.patch.set_facecolor(BG)
-        ax.set_facecolor(BG)
-        for spine in ax.spines.values():
-            spine.set_edgecolor(FG)
-        ax.tick_params(colors=FG)
-
-        days = np.arange(1, 7)
-        ax.scatter(days, x, color='steelblue', zorder=5, s=70)
-        ax.axhline(mean, color='darkorange', lw=1.8, linestyle='--', label=f'Mean = {mean:.2f}')
-        for d, v in zip(days, x):
-            ax.plot([d, d], [mean, v], color=FG, lw=1, alpha=0.5)
-        ax.set_xticks(days)
-        ax.set_xlabel("Day", color=FG)
-        ax.set_ylabel("Revenue (€)", color=FG)
-        ax.set_title("Deviations from the mean", color=FG)
-        ax.legend(fontsize=8.5, facecolor=BG, edgecolor='none', labelcolor=FG)
-        ax.grid(alpha=0.15, color=FG)
-        plt.tight_layout()
-        return fig
-
-app = App(app_ui, server)</code></pre>
-</section>
-<section id="exercises" class="level2">
-<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 1 (by hand) — Shortcut formula (click for solution)
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>A sample of <span class="math inline">\(n=5\)</span> values has <span class="math inline">\(\sum x_i = 100\)</span> and <span class="math inline">\(\sum x_i^2 = 2140\)</span>. Find the sample variance.</p>
-<p><strong>Solution.</strong> <span class="math inline">\(\bar{x}=100/5=20\)</span>. Shortcut formula: <span class="math inline">\(s^2 = \frac{1}{n-1}\left(\sum x_i^2 - n\bar{x}^2\right)
-= \frac{1}{4}(2140 - 5\times400) = \frac{1}{4}(2140-2000) = 35\)</span>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Indicator</th>
+<th style="text-align: right;">Truck A</th>
+<th style="text-align: right;">Truck B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mean</td>
+<td style="text-align: right;">620</td>
+<td style="text-align: right;">620</td>
+</tr>
+<tr class="even">
+<td>Range</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">500</td>
+</tr>
+<tr class="odd">
+<td><code>VAR.S</code></td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">40,000</td>
+</tr>
+<tr class="even">
+<td><code>STDEV.S</code></td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(CV\)</span></td>
+<td style="text-align: right;">3.23%</td>
+<td style="text-align: right;">32.26%</td>
+</tr>
+<tr class="even">
+<td>Shortcut formula</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">40,000</td>
+</tr>
+</tbody>
+</table>
+<p>If your shortcut cell is off, check that it references the <code>AVERAGE</code> cell rather than a rounded mean you typed in.</p>
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 2 (by hand) — Comparing variability across units (click for solution)
+<span class="screen-reader-only">Caution</span>Homework 1 (Excel) — Dispersion for Campus revenue (click for solution)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>“The Wandering Fork”’s <code>items_sold</code> has mean <span class="math inline">\(74.40\)</span> and sample standard deviation <span class="math inline">\(16.22\)</span> (from <code>data-model.md</code>). Which variable — <code>daily_revenue_eur</code> or <code>items_sold</code> — has higher <em>relative</em> variability?</p>
-<p><strong>Solution.</strong> <span class="math inline">\(CV_{\text{revenue}} = 137.09/628.34 = 21.82\%\)</span>; <span class="math inline">\(CV_{\text{items}} = 16.22/74.40 = 21.80\%\)</span>. The two are almost identical (about 21.8%) even though the raw units (€ vs.&nbsp;items sold) are completely different — exactly the kind of comparison only <span class="math inline">\(CV\)</span>, not <span class="math inline">\(s\)</span> alone, can make fairly.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 3 (by hand) — Effect of an outlier on the range (click for solution)
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>If one exceptionally bad day of <span class="math inline">\(\text{daily\_revenue\_eur}=150\)</span> replaced the current minimum (407.59), how would the range change, and would the standard deviation be affected in the same direction?</p>
-<p><strong>Solution.</strong> New range <span class="math inline">\(= 886.56 - 150 = 736.56\)</span> (up from 478.97) — the range, using only two values, reacts strongly to a single extreme point. The standard deviation would also increase (an extra-large deviation from the mean adds to <span class="math inline">\(\sum(x_i-\bar{x})^2\)</span>), but by a much smaller relative amount, since it accounts for all 30 days rather than just the two most extreme.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 4 (Excel) — Dispersion for Campus revenue (click for solution)
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div id="callout-22" class="callout-22-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>In <code>wandering-fork.xlsx</code>, filter <code>franchise</code> to “Campus” and compute the range, sample variance, sample standard deviation, and <span class="math inline">\(CV\)</span> for <code>daily_revenue_eur</code> (120 days). How do they compare to Harbour’s?</p>
+<p><strong>How to.</strong> Filter <code>franchise</code> to “Campus”, or wrap the range in <code>FILTER(tblFork[daily_revenue_eur], tblFork[franchise]="Campus")</code> inside each function; use <code>MAX</code>−<code>MIN</code>, <code>VAR.S</code>, <code>STDEV.S</code> and <code>STDEV.S/AVERAGE</code>, then repeat with “Harbour” to compare.</p>
 <p><strong>Solution.</strong> Campus 120-day: range = 1383.74, <span class="math inline">\(s^2 = 94{,}511.80\)</span>, <span class="math inline">\(s = 307.43\)</span>, <span class="math inline">\(CV = 67.56\%\)</span>. Over the same 120 days, Harbour has range = 998.79, <span class="math inline">\(s = 216.01\)</span>, <span class="math inline">\(CV = 52.24\%\)</span>. Campus has higher absolute and relative dispersion than Harbour (range 1384 vs 999, <span class="math inline">\(CV\)</span> 67.6% vs 52.2%) — consistent with the right-skewed, event-driven revenue pattern.</p>
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 5 (Excel) — Shortcut formula with <code>SUMSQ</code> (click for solution)
+<span class="screen-reader-only">Caution</span>Homework 2 (Excel) — Shortcut formula with <code>SUMSQ</code> (click for solution)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div id="callout-23" class="callout-23-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Using the Harbour 30-day <code>daily_revenue_eur</code> data, verify the shortcut formula: compute <code>=SUMSQ(range)</code> and <code>=AVERAGE(range)</code>, then apply the shortcut formula manually. Confirm it matches <code>=VAR.S(range)</code>.</p>
+<p><strong>How to.</strong> Put <code>=SUMSQ(range)</code>, <code>=AVERAGE(range)</code> and <code>=COUNT(range)</code> in three cells, type the shortcut formula pointing to those three cells, and put <code>=VAR.S(range)</code> in a fourth cell to compare.</p>
 <p><strong>Solution.</strong> <code>SUMSQ</code> = 12,389,403.98, <code>AVERAGE</code> = 628.3417, <span class="math inline">\(n=30\)</span>. Shortcut: <span class="math inline">\((12{,}389{,}403.98 - 30 \times 628.3417^2) / 29 =
 18{,}793.33\)</span>, matching <code>VAR.S</code> exactly (point to the <code>AVERAGE</code> cell rather than typing 628.34, or rounding shifts the result).</p>
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 6 (Excel) — Payroll skew: dispersion (click for solution)
+<span class="screen-reader-only">Caution</span>Homework 3 (Excel) — Payroll skew: dispersion (click for solution)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div id="callout-24" class="callout-24-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Open <code>payroll-skew.csv</code>. Compute the range, sample standard deviation, and <span class="math inline">\(CV\)</span> for the 11 salaries. Why is the <span class="math inline">\(CV\)</span> so high?</p>
+<p><strong>How to.</strong> Open the CSV, select the 11 salaries, and use <code>MAX</code>−<code>MIN</code>, <code>STDEV.S</code> and <code>STDEV.S/AVERAGE</code>; format the <span class="math inline">\(CV\)</span> cell as a percentage.</p>
 <p><strong>Solution.</strong> Range = 154,834, <span class="math inline">\(s = 44{,}788\)</span>, <span class="math inline">\(CV = 94.8\%\)</span>. The <span class="math inline">\(CV\)</span> is close to 100% because the standard deviation (driven by the CEO’s €180,000 salary) is almost as large as the mean (€47,231) — a hallmark of extreme right skew where the mean is pulled far above the bulk of the data.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="common-mistakes" class="level2">
-<h2 class="anchored" data-anchor-id="common-mistakes">Common mistakes</h2>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Watch out
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><strong>Using <code>VAR.P</code>/<code>STDEV.P</code> when you need <code>VAR.S</code>/<code>STDEV.S</code>.</strong> The course standard is the sample formulas (denominator <span class="math inline">\(n-1\)</span>). The population variants (denominator <span class="math inline">\(n\)</span>) are for when you have the <em>entire</em> population — rare in business.</li>
-<li><strong>Forgetting the square root.</strong> Variance is in squared units (€²); standard deviation is in the original unit (€). Always report the one that matches your interpretation.</li>
-<li><strong>Computing <span class="math inline">\(CV\)</span> with the median instead of the mean.</strong> <span class="math inline">\(CV =
-s/\bar{x}\)</span>, not <span class="math inline">\(s/Me\)</span>. The mean is the balance point that pairs with variance.</li>
-<li><strong>Using the range as your only dispersion measure.</strong> The range ignores everything between min and max; always report <span class="math inline">\(s\)</span> or <span class="math inline">\(IQR\)</span> alongside it.</li>
-<li><strong>Comparing standard deviations across different units.</strong> €137 vs 16 items — meaningless without <span class="math inline">\(CV\)</span>. Always use <span class="math inline">\(CV\)</span> for cross-variable or cross-dataset comparisons.</li>
-</ul>
-</div>
-</div>
 </section>
 <section id="further-reading" class="level2">
 <h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
@@ -985,6 +1861,17 @@ s/\bar{x}\)</span>, not <span class="math inline">\(s/Me\)</span>. The mean is t
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InRydWNrQSA9IFs1OTAsIDYxMCwgNjMwLCA2MzAsIDY0MF1cbnRydWNrQiA9IFszNzAsIDQ3MCwgNjcwLCA3MjAsIDg3MF1cblxuZnVuY3Rpb24gc3RhdHMoeHMpIHtcbiAgY29uc3QgbiA9IHhzLmxlbmd0aDtcbiAgY29uc3QgbWVhbiA9IHhzLnJlZHVjZSgoYSwgYikgPT4gYSArIGIsIDApIC8gbjtcbiAgY29uc3QgZGV2ID0geHMubWFwKHggPT4geCAtIG1lYW4pO1xuICBjb25zdCBzcSA9IGRldi5tYXAoZCA9PiBkICogZCk7XG4gIGNvbnN0IHN1bURldiA9IGRldi5yZWR1Y2UoKGEsIGIpID0+IGEgKyBiLCAwKTtcbiAgY29uc3Qgc3MgPSBzcS5yZWR1Y2UoKGEsIGIpID0+IGEgKyBiLCAwKTtcbiAgY29uc3QgczIgPSBzcyAvIChuIC0gMSk7XG4gIHJldHVybiB7biwgbWVhbiwgZGV2LCBzcSwgc3VtRGV2LCBzcywgczIsIHM6IE1hdGguc3FydChzMil9O1xufVxuXG5mbXQgPSB2ID0+IE1hdGgucm91bmQodikudG9Mb2NhbGVTdHJpbmcoXCJlbi1VU1wiKVxuc2lnbmVkID0gdiA9PiAodiA+IDAgPyBcIitcIiA6IHYgPCAwID8gXCLiiJJcIiA6IFwiXCIpICsgZm10KE1hdGguYWJzKHYpKVxuXG52aWV3b2Ygc3RlcCA9IHtcbiAgY29uc3QgbGFiZWxzID0gW1wiMSDCtyBEb3RzXCIsIFwiMiDCtyBEZXZpYXRpb25zXCIsIFwiMyDCtyBTcXVhcmVzXCJdO1xuICBjb25zdCBmb3JtID0gaHRtbGA8Zm9ybSBjbGFzcz1cIm9qcy1zdGVwLXBpY2tlclwiPlNob3c6ICR7bGFiZWxzLm1hcCgobCwgaSkgPT5cbiAgICBodG1sYDxsYWJlbD4gPGlucHV0IHR5cGU9XCJyYWRpb1wiIG5hbWU9XCJzdGVwXCIgdmFsdWU9XCIke2kgKyAxfVwiXG4gICAgICAke2kgPT09IDAgPyBcImNoZWNrZWRcIiA6IFwiXCJ9PiAke2x9IDwvbGFiZWw+YCl9PC9mb3JtPmA7XG4gIGZvcm0udmFsdWUgPSAxO1xuICBmb3JtLm9uaW5wdXQgPSAoKSA9PiB7XG4gICAgZm9ybS52YWx1ZSA9ICtmb3JtLnF1ZXJ5U2VsZWN0b3IoXCJpbnB1dDpjaGVja2VkXCIpLnZhbHVlO1xuICB9O1xuICByZXR1cm4gZm9ybTtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IntcbiAgY29uc3QgVyA9IDY2MCwgQkxVRSA9IFwic3RlZWxibHVlXCIsIE9SQU5HRSA9IFwiZGFya29yYW5nZVwiO1xuICBjb25zdCBQT1MgPSBcIiM1Y2I4NWNcIiwgTkVHID0gXCIjZDk1MzRmXCI7XG4gIGNvbnN0IHRydWNrcyA9IFtbXCJUcnVjayBBXCIsIHN0YXRzKHRydWNrQSksIHRydWNrQV0sXG4gICAgICAgICAgICAgICAgICBbXCJUcnVjayBCXCIsIHN0YXRzKHRydWNrQiksIHRydWNrQl1dO1xuICBsZXQgZyA9IFwiXCI7XG5cbiAgaWYgKHN0ZXAgPCAzKSB7XG4gICAgY29uc3QgeCA9IHYgPT4gOTAgKyAodiAtIDM0MCkgKiAoVyAtIDEyMCkgLyAoOTAwIC0gMzQwKTtcbiAgICBjb25zdCBIID0gMzQwLCByb3dIID0gMjI7XG4gICAgdHJ1Y2tzLmZvckVhY2goKFtuYW1lLCBzdCwgeHNdLCBrKSA9PiB7XG4gICAgICBjb25zdCB0b3AgPSA0MCArIGsgKiAxNDU7XG4gICAgICBnICs9IGA8dGV4dCB4PVwiMTBcIiB5PVwiJHt0b3AgKyAyICogcm93SCArIDV9XCIgZmlsbD1cImN1cnJlbnRDb2xvclwiXG4gICAgICAgIGZvbnQtd2VpZ2h0PVwiYm9sZFwiPiR7bmFtZX08L3RleHQ+YDtcbiAgICAgIGcgKz0gYDxsaW5lIHgxPVwiJHt4KHN0Lm1lYW4pfVwiIHgyPVwiJHt4KHN0Lm1lYW4pfVwiIHkxPVwiJHt0b3AgLSAxOH1cIlxuICAgICAgICB5Mj1cIiR7dG9wICsgNSAqIHJvd0ggLSA4fVwiIHN0cm9rZT1cIiR7T1JBTkdFfVwiIHN0cm9rZS13aWR0aD1cIjJcIlxuICAgICAgICBzdHJva2UtZGFzaGFycmF5PVwiNiA0XCIvPmA7XG4gICAgICBnICs9IGA8dGV4dCB4PVwiJHt4KHN0Lm1lYW4pICsgNn1cIiB5PVwiJHt0b3AgLSA4fVwiIGZpbGw9XCIke09SQU5HRX1cIlxuICAgICAgICBmb250LXNpemU9XCIxMlwiPm1lYW4gPSAke2ZtdChzdC5tZWFuKX08L3RleHQ+YDtcbiAgICAgIHhzLmZvckVhY2goKHYsIGkpID0+IHtcbiAgICAgICAgY29uc3QgeSA9IHRvcCArIGkgKiByb3dIO1xuICAgICAgICBjb25zdCBkID0gc3QuZGV2W2ldO1xuICAgICAgICBpZiAoc3RlcCA9PT0gMiAmJiBkICE9PSAwKSB7XG4gICAgICAgICAgY29uc3QgYyA9IGQgPiAwID8gUE9TIDogTkVHO1xuICAgICAgICAgIGcgKz0gYDxsaW5lIHgxPVwiJHt4KHN0Lm1lYW4pfVwiIHgyPVwiJHt4KHYpfVwiIHkxPVwiJHt5fVwiIHkyPVwiJHt5fVwiXG4gICAgICAgICAgICBzdHJva2U9XCIke2N9XCIgc3Ryb2tlLXdpZHRoPVwiM1wiLz5gO1xuICAgICAgICAgIGcgKz0gYDx0ZXh0IHg9XCIke3godikgKyAoZCA+IDAgPyAxMCA6IC0xMCl9XCIgeT1cIiR7eSArIDR9XCJcbiAgICAgICAgICAgIHRleHQtYW5jaG9yPVwiJHtkID4gMCA/IFwic3RhcnRcIiA6IFwiZW5kXCJ9XCIgZmlsbD1cIiR7Y31cIlxuICAgICAgICAgICAgZm9udC1zaXplPVwiMTJcIj4ke3NpZ25lZChkKX08L3RleHQ+YDtcbiAgICAgICAgfVxuICAgICAgICBnICs9IGA8Y2lyY2xlIGN4PVwiJHt4KHYpfVwiIGN5PVwiJHt5fVwiIHI9XCI2XCIgZmlsbD1cIiR7QkxVRX1cIi8+YDtcbiAgICAgIH0pO1xuICAgICAgaWYgKHN0ZXAgPT09IDIpIHtcbiAgICAgICAgZyArPSBgPHRleHQgeD1cIjEwXCIgeT1cIiR7dG9wICsgMiAqIHJvd0ggKyAyMn1cIiBmaWxsPVwiY3VycmVudENvbG9yXCJcbiAgICAgICAgICBmb250LXNpemU9XCIxMlwiPnN1bSA9ICR7Zm10KHN0LnN1bURldil9PC90ZXh0PmA7XG4gICAgICB9XG4gICAgfSk7XG4gICAgZm9yIChsZXQgdCA9IDQwMDsgdCA8PSA5MDA7IHQgKz0gMTAwKSB7XG4gICAgICBnICs9IGA8bGluZSB4MT1cIiR7eCh0KX1cIiB4Mj1cIiR7eCh0KX1cIiB5MT1cIiR7SCAtIDMwfVwiIHkyPVwiJHtIIC0gMjR9XCJcbiAgICAgICAgc3Ryb2tlPVwiY3VycmVudENvbG9yXCIvPmA7XG4gICAgICBnICs9IGA8dGV4dCB4PVwiJHt4KHQpfVwiIHk9XCIke0ggLSAxMH1cIiB0ZXh0LWFuY2hvcj1cIm1pZGRsZVwiXG4gICAgICAgIGZpbGw9XCJjdXJyZW50Q29sb3JcIiBmb250LXNpemU9XCIxMlwiPuKCrCR7dH08L3RleHQ+YDtcbiAgICB9XG4gICAgZyArPSBgPGxpbmUgeDE9XCIke3goMzQwKX1cIiB4Mj1cIiR7eCg5MDApfVwiIHkxPVwiJHtIIC0gMzB9XCIgeTI9XCIke0ggLSAzMH1cIlxuICAgICAgc3Ryb2tlPVwiY3VycmVudENvbG9yXCIvPmA7XG4gICAgcmV0dXJuIGh0bWxgPHN2ZyB2aWV3Qm94PVwiMCAwICR7V30gJHtIfVwiIHdpZHRoPVwiMTAwJVwiIHJvbGU9XCJpbWdcIlxuICAgICAgYXJpYS1sYWJlbD1cIkRhaWx5IHJldmVudWUgb2YgVHJ1Y2sgQSBhbmQgVHJ1Y2sgQiBhcm91bmQgdGhlaXIgbWVhblwiPlxuICAgICAgJHtnfTwvc3ZnPmA7XG4gIH1cblxuICBjb25zdCBrID0gMC40NSwgSCA9IDI3MDtcbiAgY29uc3QgYmFzZWxpbmVzID0gWzcwLCAyNDVdO1xuICB0cnVja3MuZm9yRWFjaCgoW25hbWUsIHN0XSwgdCkgPT4ge1xuICAgIGNvbnN0IGJhc2UgPSBiYXNlbGluZXNbdF07XG4gICAgZyArPSBgPHRleHQgeD1cIjEwXCIgeT1cIiR7YmFzZSAtIDR9XCIgZmlsbD1cImN1cnJlbnRDb2xvclwiXG4gICAgICBmb250LXdlaWdodD1cImJvbGRcIj4ke25hbWV9PC90ZXh0PmA7XG4gICAgbGV0IGN4ID0gOTA7XG4gICAgc3QuZGV2LmZvckVhY2goZCA9PiB7XG4gICAgICBjb25zdCBzaWRlID0gTWF0aC5hYnMoZCkgKiBrO1xuICAgICAgZyArPSBgPHJlY3QgeD1cIiR7Y3h9XCIgeT1cIiR7YmFzZSAtIHNpZGV9XCIgd2lkdGg9XCIke3NpZGV9XCJcbiAgICAgICAgaGVpZ2h0PVwiJHtzaWRlfVwiIGZpbGw9XCIke2QgPiAwID8gUE9TIDogTkVHfVwiIGZpbGwtb3BhY2l0eT1cIjAuNDVcIlxuICAgICAgICBzdHJva2U9XCIke2QgPiAwID8gUE9TIDogTkVHfVwiLz5gO1xuICAgICAgY3ggKz0gc2lkZSArIDEwO1xuICAgIH0pO1xuICAgIGNvbnN0IGF2ZyA9IHN0LnMgKiBrO1xuICAgIGN4ICs9IDMwO1xuICAgIGcgKz0gYDxyZWN0IHg9XCIke2N4fVwiIHk9XCIke2Jhc2UgLSBhdmd9XCIgd2lkdGg9XCIke2F2Z31cIiBoZWlnaHQ9XCIke2F2Z31cIlxuICAgICAgZmlsbD1cIm5vbmVcIiBzdHJva2U9XCIke09SQU5HRX1cIiBzdHJva2Utd2lkdGg9XCIyXCJcbiAgICAgIHN0cm9rZS1kYXNoYXJyYXk9XCI1IDNcIi8+YDtcbiAgICBnICs9IGA8dGV4dCB4PVwiOTBcIiB5PVwiJHtiYXNlICsgMTZ9XCIgZmlsbD1cIiR7T1JBTkdFfVwiXG4gICAgICBmb250LXNpemU9XCIxMlwiPmRhc2hlZDogdGhlIGF2ZXJhZ2Ugc3F1YXJlLCBzaWRlIHMgPSAke2ZtdChzdC5zKX08L3RleHQ+YDtcbiAgfSk7XG4gIHJldHVybiBodG1sYDxzdmcgdmlld0JveD1cIjAgMCAke1d9ICR7SH1cIiB3aWR0aD1cIjEwMCVcIiByb2xlPVwiaW1nXCJcbiAgICBhcmlhLWxhYmVsPVwiU3F1YXJlZCBkZXZpYXRpb25zIG9mIFRydWNrIEEgYW5kIFRydWNrIEIgZHJhd24gYXMgc3F1YXJlc1wiPlxuICAgICR7Z308L3N2Zz5gO1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoie1xuICBjb25zdCBhID0gc3RhdHModHJ1Y2tBKSwgYiA9IHN0YXRzKHRydWNrQik7XG4gIGNvbnN0IGxpbmUgPSAobmFtZSwgc3QpID0+IHN0ZXAgPT09IDFcbiAgICA/IGAke25hbWV9OiB2YWx1ZXMgZnJvbSDigqwke2ZtdChNYXRoLm1pbiguLi4obmFtZSA9PT0gXCJUcnVjayBBXCIgPyB0cnVja0EgOiB0cnVja0IpKSl9IHRvIOKCrCR7Zm10KE1hdGgubWF4KC4uLihuYW1lID09PSBcIlRydWNrIEFcIiA/IHRydWNrQSA6IHRydWNrQikpKX0sIG1lYW4g4oKsJHtmbXQoc3QubWVhbil9LmBcbiAgICA6IHN0ZXAgPT09IDJcbiAgICA/IGAke25hbWV9OiBkZXZpYXRpb25zICR7c3QuZGV2Lm1hcChzaWduZWQpLmpvaW4oXCIsIFwiKX0g4oCUIHN1bSA9ICR7Zm10KHN0LnN1bURldil9LmBcbiAgICA6IGAke25hbWV9OiBzcXVhcmVzICR7c3Quc3EubWFwKGZtdCkuam9pbihcIiArIFwiKX0gPSAke2ZtdChzdC5zcyl9OyDDtyAke3N0Lm4gLSAxfSA9ICR7Zm10KHN0LnMyKX0gPSBzwrIsIHNvIHMgPSAke2ZtdChzdC5zKX0uYDtcbiAgcmV0dXJuIGh0bWxgPHA+PGVtPiR7bGluZShcIlRydWNrIEFcIiwgYSl9PGJyPiR7bGluZShcIlRydWNrIEJcIiwgYil9PC9lbT48L3A+YDtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBkYXlzID0ge1xuICBjb25zdCBzdGFydCA9IFs0NjAuNDgsIDUwMC4wMiwgNDE4LjY1LCA3ODUuNzksIDcxOS42NiwgODg2LjU2XTtcbiAgY29uc3QgZm9ybSA9IGh0bWxgPGZvcm0gY2xhc3M9XCJvanMtY2FsY3VsYXRvclwiPiR7c3RhcnQubWFwKCh2LCBpKSA9PlxuICAgIGh0bWxgPGRpdj48bGFiZWw+RGF5ICR7aSArIDF9ICjigqwpOlxuICAgICAgPGlucHV0IHR5cGU9XCJyYW5nZVwiIG1pbj1cIjMwMFwiIG1heD1cIjk1MFwiIHN0ZXA9XCIwLjAxXCIgdmFsdWU9XCIke3Z9XCI+XG4gICAgICA8b3V0cHV0PiR7di50b0ZpeGVkKDIpfTwvb3V0cHV0PjwvbGFiZWw+PC9kaXY+YCl9PC9mb3JtPmA7XG4gIGNvbnN0IGlucHV0cyA9IFsuLi5mb3JtLnF1ZXJ5U2VsZWN0b3JBbGwoXCJpbnB1dFwiKV07XG4gIGNvbnN0IG91dHMgPSBbLi4uZm9ybS5xdWVyeVNlbGVjdG9yQWxsKFwib3V0cHV0XCIpXTtcbiAgZm9ybS52YWx1ZSA9IHN0YXJ0LnNsaWNlKCk7XG4gIGZvcm0ub25pbnB1dCA9ICgpID0+IHtcbiAgICBmb3JtLnZhbHVlID0gaW5wdXRzLm1hcChlbCA9PiBlbC52YWx1ZUFzTnVtYmVyKTtcbiAgICBvdXRzLmZvckVhY2goKG8sIGkpID0+IHsgby50ZXh0Q29udGVudCA9IGZvcm0udmFsdWVbaV0udG9GaXhlZCgyKTsgfSk7XG4gIH07XG4gIHJldHVybiBmb3JtO1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC01IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiY2FsYyA9IHtcbiAgY29uc3QgbiA9IGRheXMubGVuZ3RoO1xuICBjb25zdCBtZWFuID0gZGF5cy5yZWR1Y2UoKGEsIGIpID0+IGEgKyBiLCAwKSAvIG47XG4gIGNvbnN0IHNvcnRlZCA9IFsuLi5kYXlzXS5zb3J0KChhLCBiKSA9PiBhIC0gYik7XG4gIGNvbnN0IG1lZGlhbiA9IChzb3J0ZWRbbiAvIDIgLSAxXSArIHNvcnRlZFtuIC8gMl0pIC8gMjtcbiAgY29uc3QgczIgPSBkYXlzLnJlZHVjZSgoYSwgeCkgPT4gYSArICh4IC0gbWVhbikgKiogMiwgMCkgLyAobiAtIDEpO1xuICBjb25zdCBzID0gTWF0aC5zcXJ0KHMyKTtcbiAgcmV0dXJuIHtuLCBtZWFuLCBtZWRpYW4sIHMyLCBzLCBjdjogbWVhbiA/IHMgLyBtZWFuICogMTAwIDogMH07XG59XG5cbmh0bWxgPHA+PHN0cm9uZz5NZWFuPC9zdHJvbmc+ID0gJHtjYWxjLm1lYW4udG9GaXhlZCgyKX0gwrdcbiAgPHN0cm9uZz5NZWRpYW48L3N0cm9uZz4gPSAke2NhbGMubWVkaWFuLnRvRml4ZWQoMil9PGJyPlxuICA8c3Ryb25nPlZhcmlhbmNlPC9zdHJvbmc+IHPCsiA9ICR7Y2FsYy5zMi50b0ZpeGVkKDIpfSDCt1xuICA8c3Ryb25nPlN0ZC4gZGV2Ljwvc3Ryb25nPiBzID0gJHtjYWxjLnMudG9GaXhlZCgyKX0gwrdcbiAgPHN0cm9uZz5DVjwvc3Ryb25nPiA9ICR7Y2FsYy5jdi50b0ZpeGVkKDIpfSU8L3A+YFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC02IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoie1xuICBjb25zdCBXID0gNjYwLCBIID0gMzAwLCBMID0gNjAsIFIgPSAyMCwgVCA9IDMwLCBCID0gNDA7XG4gIGNvbnN0IHggPSBkID0+IEwgKyAoZCAtIDAuNSkgKiAoVyAtIEwgLSBSKSAvIDY7XG4gIGNvbnN0IHkgPSB2ID0+IFQgKyAoOTUwIC0gdikgKiAoSCAtIFQgLSBCKSAvICg5NTAgLSAzMDApO1xuICBsZXQgZyA9IFwiXCI7XG4gIGZvciAobGV0IHYgPSAzMDA7IHYgPD0gOTAwOyB2ICs9IDEwMCkge1xuICAgIGcgKz0gYDxsaW5lIHgxPVwiJHtMfVwiIHgyPVwiJHtXIC0gUn1cIiB5MT1cIiR7eSh2KX1cIiB5Mj1cIiR7eSh2KX1cIlxuICAgICAgc3Ryb2tlPVwiY3VycmVudENvbG9yXCIgc3Ryb2tlLW9wYWNpdHk9XCIwLjE1XCIvPmA7XG4gICAgZyArPSBgPHRleHQgeD1cIiR7TCAtIDh9XCIgeT1cIiR7eSh2KSArIDR9XCIgdGV4dC1hbmNob3I9XCJlbmRcIlxuICAgICAgZmlsbD1cImN1cnJlbnRDb2xvclwiIGZvbnQtc2l6ZT1cIjEyXCI+4oKsJHt2fTwvdGV4dD5gO1xuICB9XG4gIGRheXMuZm9yRWFjaCgodiwgaSkgPT4ge1xuICAgIGcgKz0gYDxsaW5lIHgxPVwiJHt4KGkgKyAxKX1cIiB4Mj1cIiR7eChpICsgMSl9XCIgeTE9XCIke3koY2FsYy5tZWFuKX1cIlxuICAgICAgeTI9XCIke3kodil9XCIgc3Ryb2tlPVwiY3VycmVudENvbG9yXCIgc3Ryb2tlLW9wYWNpdHk9XCIwLjVcIi8+YDtcbiAgICBnICs9IGA8Y2lyY2xlIGN4PVwiJHt4KGkgKyAxKX1cIiBjeT1cIiR7eSh2KX1cIiByPVwiN1wiIGZpbGw9XCJzdGVlbGJsdWVcIi8+YDtcbiAgICBnICs9IGA8dGV4dCB4PVwiJHt4KGkgKyAxKX1cIiB5PVwiJHtIIC0gMTV9XCIgdGV4dC1hbmNob3I9XCJtaWRkbGVcIlxuICAgICAgZmlsbD1cImN1cnJlbnRDb2xvclwiIGZvbnQtc2l6ZT1cIjEyXCI+RGF5ICR7aSArIDF9PC90ZXh0PmA7XG4gIH0pO1xuICBnICs9IGA8bGluZSB4MT1cIiR7TH1cIiB4Mj1cIiR7VyAtIFJ9XCIgeTE9XCIke3koY2FsYy5tZWFuKX1cIiB5Mj1cIiR7eShjYWxjLm1lYW4pfVwiXG4gICAgc3Ryb2tlPVwiZGFya29yYW5nZVwiIHN0cm9rZS13aWR0aD1cIjJcIiBzdHJva2UtZGFzaGFycmF5PVwiNiA0XCIvPmA7XG4gIGcgKz0gYDx0ZXh0IHg9XCIke1cgLSBSfVwiIHk9XCIke3koY2FsYy5tZWFuKSAtIDZ9XCIgdGV4dC1hbmNob3I9XCJlbmRcIlxuICAgIGZpbGw9XCJkYXJrb3JhbmdlXCIgZm9udC1zaXplPVwiMTJcIj5tZWFuID0gJHtjYWxjLm1lYW4udG9GaXhlZCgyKX08L3RleHQ+YDtcbiAgZyArPSBgPHRleHQgeD1cIiR7VyAvIDJ9XCIgeT1cIjE4XCIgdGV4dC1hbmNob3I9XCJtaWRkbGVcIiBmaWxsPVwiY3VycmVudENvbG9yXCJcbiAgICBmb250LXNpemU9XCIxNFwiPkRldmlhdGlvbnMgZnJvbSB0aGUgbWVhbjwvdGV4dD5gO1xuICByZXR1cm4gaHRtbGA8c3ZnIHZpZXdCb3g9XCIwIDAgJHtXfSAke0h9XCIgd2lkdGg9XCIxMDAlXCIgcm9sZT1cImltZ1wiXG4gICAgYXJpYS1sYWJlbD1cIlNpeCBkYWlseSByZXZlbnVlcyBhbmQgdGhlaXIgZGV2aWF0aW9ucyBmcm9tIHRoZSBtZWFuXCI+XG4gICAgJHtnfTwvc3ZnPmA7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3N0ZXAnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnZGF5cycpIn1dfQ==
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/data-description/modules";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -140,6 +175,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -711,111 +748,102 @@ b = \frac{\text{Cov}(X,Y)}{s_X^2}, \qquad a = \bar{y} - b\,\bar{x}.
 </section>
 <section id="interactive-demo-scatter-plot-correlation" class="level2">
 <h2 class="anchored" data-anchor-id="interactive-demo-scatter-plot-correlation">Interactive demo — scatter plot &amp; correlation</h2>
-<p>Drag any point to see the correlation coefficient and regression line update live. Starting positions are 8 days sampled from “The Wandering Fork” (<code>temperature_c</code>, <code>daily_revenue_eur</code>).</p>
-<pre class="{shinylive-python}"><code>#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 560
+<p>Pick a day, move its temperature or revenue slider, and watch the correlation coefficient and regression line update live (the selected point is circled in orange). Starting positions are 8 days sampled from “The Wandering Fork” (<code>temperature_c</code>, <code>daily_revenue_eur</code>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="236" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 235;"><span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> DAYS <span class="op">=</span> [<span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">9</span><span class="op">,</span> <span class="dv">14</span><span class="op">,</span> <span class="dv">21</span><span class="op">,</span> <span class="dv">28</span>]<span class="op">;</span></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> temps <span class="op">=</span> [<span class="fl">21.9</span><span class="op">,</span> <span class="fl">20.4</span><span class="op">,</span> <span class="fl">16.4</span><span class="op">,</span> <span class="fl">21.1</span><span class="op">,</span> <span class="fl">23.6</span><span class="op">,</span> <span class="fl">24.3</span><span class="op">,</span> <span class="fl">23.5</span><span class="op">,</span> <span class="fl">24.5</span>]<span class="op">;</span></span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> revs <span class="op">=</span> [<span class="fl">460.48</span><span class="op">,</span> <span class="fl">500.02</span><span class="op">,</span> <span class="fl">418.65</span><span class="op">,</span> <span class="fl">785.79</span><span class="op">,</span> <span class="fl">669.00</span><span class="op">,</span> <span class="fl">886.56</span><span class="op">,</span> <span class="fl">856.52</span><span class="op">,</span> <span class="fl">841.83</span>]<span class="op">;</span></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="ojs-demo"&gt;</span></span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;form&gt;</span></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;label&gt;Point to edit (day):</span></span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;select name="point"&gt;</span><span class="sc">${</span>DAYS<span class="op">.</span><span class="fu">map</span>((d<span class="op">,</span> i) <span class="kw">=&gt;</span></span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>          <span class="fu">html</span><span class="vs">`&lt;option value="</span><span class="sc">${</span>i<span class="sc">}</span><span class="vs">"&gt;Day </span><span class="sc">${</span>d<span class="sc">}</span><span class="vs">&lt;/option&gt;`</span>)<span class="sc">}</span><span class="vs">&lt;/select&gt;&lt;/label&gt;</span></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div&gt;&lt;label&gt;Temperature (°C):</span></span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;input type="range" name="temp" min="10" max="32" step="0.1"</span></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a><span class="vs">          value="</span><span class="sc">${</span>temps[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">"&gt; &lt;output name="tout"&gt;</span><span class="sc">${</span>temps[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">&lt;/output&gt;&lt;/label&gt;&lt;/div&gt;</span></span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div&gt;&lt;label&gt;Revenue (€):</span></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;input type="range" name="rev" min="350" max="950" step="0.01"</span></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a><span class="vs">          value="</span><span class="sc">${</span>revs[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">"&gt; &lt;output name="rout"&gt;</span><span class="sc">${</span>revs[<span class="dv">0</span>]<span class="sc">}</span><span class="vs">&lt;/output&gt;&lt;/label&gt;&lt;/div&gt;</span></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/form&gt;</span></span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="ojs-demo-info"&gt;&lt;/p&gt;</span></span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="ojs-demo-chart"&gt;&lt;/div&gt;</span></span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> form <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"form"</span>)<span class="op">;</span></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> mean <span class="op">=</span> a <span class="kw">=&gt;</span> a<span class="op">.</span><span class="fu">reduce</span>((s<span class="op">,</span> v) <span class="kw">=&gt;</span> s <span class="op">+</span> v<span class="op">,</span> <span class="dv">0</span>) <span class="op">/</span> a<span class="op">.</span><span class="at">length</span><span class="op">;</span></span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">redraw</span>() {</span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> n <span class="op">=</span> temps<span class="op">.</span><span class="at">length</span><span class="op">,</span> mx <span class="op">=</span> <span class="fu">mean</span>(temps)<span class="op">,</span> my <span class="op">=</span> <span class="fu">mean</span>(revs)<span class="op">;</span></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> sxy <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> sxx <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> syy <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>      sxy <span class="op">+=</span> (temps[i] <span class="op">-</span> mx) <span class="op">*</span> (revs[i] <span class="op">-</span> my)<span class="op">;</span></span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>      sxx <span class="op">+=</span> (temps[i] <span class="op">-</span> mx) <span class="op">**</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>      syy <span class="op">+=</span> (revs[i] <span class="op">-</span> my) <span class="op">**</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> r <span class="op">=</span> sxy <span class="op">/</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(sxx <span class="op">*</span> syy)<span class="op">,</span> b <span class="op">=</span> sxy <span class="op">/</span> sxx<span class="op">,</span> a <span class="op">=</span> my <span class="op">-</span> b <span class="op">*</span> mx<span class="op">;</span></span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a>    form<span class="op">.</span><span class="at">tout</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> (<span class="op">+</span>form<span class="op">.</span><span class="at">temp</span><span class="op">.</span><span class="at">value</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>    form<span class="op">.</span><span class="at">rout</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> (<span class="op">+</span>form<span class="op">.</span><span class="at">rev</span><span class="op">.</span><span class="at">value</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".ojs-demo-info"</span>)<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span></span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>      <span class="vs">`r = &lt;strong&gt;</span><span class="sc">${</span>r<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt; · r² = &lt;strong&gt;</span><span class="sc">${</span>(r <span class="op">*</span> r)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt;&lt;br&gt;</span></span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a><span class="vs">       Regression line: revenue = </span><span class="sc">${</span>a<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> + </span><span class="sc">${</span>b<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> × temperature`</span><span class="op">;</span></span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> W <span class="op">=</span> <span class="dv">660</span><span class="op">,</span> Ht <span class="op">=</span> <span class="dv">360</span><span class="op">,</span> L <span class="op">=</span> <span class="dv">60</span><span class="op">,</span> R <span class="op">=</span> <span class="dv">20</span><span class="op">,</span> T <span class="op">=</span> <span class="dv">30</span><span class="op">,</span> B <span class="op">=</span> <span class="dv">45</span><span class="op">;</span></span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x <span class="op">=</span> t <span class="kw">=&gt;</span> L <span class="op">+</span> (t <span class="op">-</span> <span class="dv">10</span>) <span class="op">*</span> (W <span class="op">-</span> L <span class="op">-</span> R) <span class="op">/</span> <span class="dv">22</span><span class="op">;</span></span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> y <span class="op">=</span> v <span class="kw">=&gt;</span> T <span class="op">+</span> (<span class="dv">950</span> <span class="op">-</span> v) <span class="op">*</span> (Ht <span class="op">-</span> T <span class="op">-</span> B) <span class="op">/</span> <span class="dv">600</span><span class="op">;</span></span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> clip <span class="op">=</span> v <span class="kw">=&gt;</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">350</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">950</span><span class="op">,</span> v))<span class="op">;</span></span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> g <span class="op">=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span>W <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" y="18" text-anchor="middle" fill="currentColor"</span></span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a><span class="vs">      font-size="14"&gt;The Wandering Fork — temperature vs. revenue&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> t <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> t <span class="op">&lt;=</span> <span class="dv">32</span><span class="op">;</span> t <span class="op">+=</span> <span class="dv">2</span>) {</span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span>T<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span>Ht <span class="op">-</span> B<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="currentColor" stroke-opacity="0.12"/&gt;</span></span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>Ht <span class="op">-</span> B <span class="op">+</span> <span class="dv">16</span><span class="sc">}</span><span class="vs">" text-anchor="middle"</span></span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a><span class="vs">        fill="currentColor" font-size="11"&gt;</span><span class="sc">${</span>t<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> v <span class="op">=</span> <span class="dv">400</span><span class="op">;</span> v <span class="op">&lt;=</span> <span class="dv">900</span><span class="op">;</span> v <span class="op">+=</span> <span class="dv">100</span>) {</span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span>L<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span>W <span class="op">-</span> R<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span><span class="fu">y</span>(v)<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span><span class="fu">y</span>(v)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="currentColor" stroke-opacity="0.12"/&gt;</span></span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;text x="</span><span class="sc">${</span>L <span class="op">-</span> <span class="dv">6</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(v) <span class="op">+</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">" text-anchor="end"</span></span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a><span class="vs">        fill="currentColor" font-size="11"&gt;€</span><span class="sc">${</span>v<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x0 <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">10</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="op">...</span>temps) <span class="op">-</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x1 <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">32</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>temps) <span class="op">+</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(x0)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span><span class="fu">y</span>(<span class="fu">clip</span>(a <span class="op">+</span> b <span class="op">*</span> x0))<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(x1)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a><span class="vs">      y2="</span><span class="sc">${</span><span class="fu">y</span>(<span class="fu">clip</span>(a <span class="op">+</span> b <span class="op">*</span> x1))<span class="sc">}</span><span class="vs">" stroke="darkorange" stroke-width="2"/&gt;`</span><span class="op">;</span></span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> sel <span class="op">=</span> <span class="op">+</span>form<span class="op">.</span><span class="at">point</span><span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>    temps<span class="op">.</span><span class="fu">forEach</span>((t<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;circle cx="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" cy="</span><span class="sc">${</span><span class="fu">y</span>(revs[i])<span class="sc">}</span><span class="vs">" r="</span><span class="sc">${</span>i <span class="op">===</span> sel <span class="op">?</span> <span class="dv">9</span> <span class="op">:</span> <span class="dv">7</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a><span class="vs">        fill="steelblue" stroke="</span><span class="sc">${</span>i <span class="op">===</span> sel <span class="op">?</span> <span class="st">"darkorange"</span> <span class="op">:</span> <span class="st">"none"</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke-width="2"/&gt;`</span><span class="op">;</span></span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span>W <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>Ht <span class="op">-</span> <span class="dv">6</span><span class="sc">}</span><span class="vs">" text-anchor="middle"</span></span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a><span class="vs">      fill="currentColor" font-size="12"&gt;Temperature (°C)&lt;/text&gt;</span></span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;text x="14" y="</span><span class="sc">${</span>Ht <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" text-anchor="middle" fill="currentColor"</span></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a><span class="vs">      font-size="12" transform="rotate(-90 14 </span><span class="sc">${</span>Ht <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">)"&gt;Daily revenue (€)&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".ojs-demo-chart"</span>)<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span></span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>      <span class="vs">`&lt;svg viewBox="0 0 </span><span class="sc">${</span>W<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>Ht<span class="sc">}</span><span class="vs">" width="100%" role="img"</span></span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a><span class="vs">        aria-label="Scatter plot of temperature and revenue with regression line"&gt;</span><span class="sc">${</span>g<span class="sc">}</span><span class="vs">&lt;/svg&gt;`</span><span class="op">;</span></span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>  form<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> e <span class="kw">=&gt;</span> {</span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> i <span class="op">=</span> <span class="op">+</span>form<span class="op">.</span><span class="at">point</span><span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (e<span class="op">.</span><span class="at">target</span><span class="op">.</span><span class="at">name</span> <span class="op">===</span> <span class="st">"point"</span>) {</span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>      form<span class="op">.</span><span class="at">temp</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> temps[i]<span class="op">;</span></span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a>      form<span class="op">.</span><span class="at">rev</span><span class="op">.</span><span class="at">value</span> <span class="op">=</span> revs[i]<span class="op">;</span></span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>      temps[i] <span class="op">=</span> <span class="op">+</span>form<span class="op">.</span><span class="at">temp</span><span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>      revs[i] <span class="op">=</span> <span class="op">+</span>form<span class="op">.</span><span class="at">rev</span><span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>    <span class="fu">redraw</span>()<span class="op">;</span></span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>  <span class="fu">redraw</span>()<span class="op">;</span></span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="expression">
 
-from shiny import App, render, ui, reactive
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
-
-BG = '#1C2E22'
-FG = '#D2CCC0'
-
-DAYS = [1, 2, 3, 6, 9, 14, 21, 28]
-TEMP0 = [21.9, 20.4, 16.4, 21.1, 23.6, 24.3, 23.5, 24.5]
-REV0 = [460.48, 500.02, 418.65, 785.79, 669.00, 886.56, 856.52, 841.83]
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
-        .form-label {{ color: {FG} !important; }}
-        .form-range {{ accent-color: steelblue; width: 100%; }}
-        .info-box {{
-            background: #152119; border-radius: 6px; padding: 10px 14px;
-            margin: 8px 0; border-left: 3px solid steelblue;
-            font-family: monospace; font-size: 0.9em;
-        }}
-    """),
-    ui.h5("📈 Scatter plot &amp; correlation — 8 sampled days", style=f"color:{FG}"),
-    ui.p(
-        "Move a point's temperature or revenue and watch r, r², and "
-        "the regression line update live.",
-        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
-    ),
-    ui.input_select("point", "Point to edit (day):", {str(d): f"Day {d}" for d in DAYS}),
-    ui.input_slider("temp", "Temperature (°C):", min=10, max=32, value=21.9, step=0.1),
-    ui.input_slider("rev", "Revenue (€):", min=350, max=950, value=460.48, step=1),
-    ui.output_ui("info"),
-    ui.output_plot("plot", height="340px"),
-)
-
-def server(input, output, session):
-    temps = reactive.Value(list(TEMP0))
-    revs = reactive.Value(list(REV0))
-
-    @reactive.Effect
-    def _update_point():
-        idx = DAYS.index(int(input.point()))
-        t, r = list(temps()), list(revs())
-        t[idx] = input.temp()
-        r[idx] = input.rev()
-        temps.set(t)
-        revs.set(r)
-
-    @reactive.Effect
-    @reactive.event(input.point)
-    def _reset_sliders():
-        idx = DAYS.index(int(input.point()))
-        ui.update_slider("temp", value=temps()[idx])
-        ui.update_slider("rev", value=revs()[idx])
-
-    @output
-    @render.ui
-    def info():
-        x = np.array(temps())
-        y = np.array(revs())
-        r = float(np.corrcoef(x, y)[0, 1])
-        b = np.cov(x, y, ddof=1)[0, 1] / x.var(ddof=1)
-        a = y.mean() - b * x.mean()
-        return ui.HTML(f"""
-            &lt;div class='info-box'&gt;
-                r = &lt;strong style='color:darkorange'&gt;{r:.3f}&lt;/strong&gt; &amp;nbsp;|&amp;nbsp;
-                r&amp;sup2; = &lt;strong style='color:darkorange'&gt;{r**2:.3f}&lt;/strong&gt;&lt;br&gt;
-                Regression line: revenue = {a:.2f} + {b:.2f} × temperature
-            &lt;/div&gt;
-        """)
-
-    @output
-    @render.plot
-    def plot():
-        x = np.array(temps())
-        y = np.array(revs())
-        b = np.cov(x, y, ddof=1)[0, 1] / x.var(ddof=1)
-        a = y.mean() - b * x.mean()
-
-        fig, ax = plt.subplots(figsize=(7, 4))
-        fig.patch.set_facecolor(BG)
-        ax.set_facecolor(BG)
-        for spine in ax.spines.values():
-            spine.set_edgecolor(FG)
-        ax.tick_params(colors=FG)
-
-        ax.scatter(x, y, color='steelblue', zorder=5, s=70)
-        xs = np.linspace(min(x) - 1, max(x) + 1, 100)
-        ax.plot(xs, a + b * xs, color='darkorange', lw=2, label=f'ŷ = {a:.1f} + {b:.1f}x')
-        ax.set_xlabel("Temperature (°C)", color=FG)
-        ax.set_ylabel("Daily revenue (€)", color=FG)
-        ax.set_title("The Wandering Fork — temperature vs. revenue", color=FG)
-        ax.legend(fontsize=8.5, facecolor=BG, edgecolor='none', labelcolor=FG)
-        ax.grid(alpha=0.15, color=FG)
-        plt.tight_layout()
-        return fig
-
-app = App(app_ui, server)</code></pre>
+</div>
+</div>
+</div>
 </section>
 <section id="exercises" class="level2">
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
@@ -1008,6 +1036,17 @@ app = App(app_ui, server)</code></pre>
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IntcbiAgY29uc3QgREFZUyA9IFsxLCAyLCAzLCA2LCA5LCAxNCwgMjEsIDI4XTtcbiAgY29uc3QgdGVtcHMgPSBbMjEuOSwgMjAuNCwgMTYuNCwgMjEuMSwgMjMuNiwgMjQuMywgMjMuNSwgMjQuNV07XG4gIGNvbnN0IHJldnMgPSBbNDYwLjQ4LCA1MDAuMDIsIDQxOC42NSwgNzg1Ljc5LCA2NjkuMDAsIDg4Ni41NiwgODU2LjUyLCA4NDEuODNdO1xuICBjb25zdCByb290ID0gaHRtbGA8ZGl2IGNsYXNzPVwib2pzLWRlbW9cIj5cbiAgICA8Zm9ybT5cbiAgICAgIDxsYWJlbD5Qb2ludCB0byBlZGl0IChkYXkpOlxuICAgICAgICA8c2VsZWN0IG5hbWU9XCJwb2ludFwiPiR7REFZUy5tYXAoKGQsIGkpID0+XG4gICAgICAgICAgaHRtbGA8b3B0aW9uIHZhbHVlPVwiJHtpfVwiPkRheSAke2R9PC9vcHRpb24+YCl9PC9zZWxlY3Q+PC9sYWJlbD5cbiAgICAgIDxkaXY+PGxhYmVsPlRlbXBlcmF0dXJlICjCsEMpOlxuICAgICAgICA8aW5wdXQgdHlwZT1cInJhbmdlXCIgbmFtZT1cInRlbXBcIiBtaW49XCIxMFwiIG1heD1cIjMyXCIgc3RlcD1cIjAuMVwiXG4gICAgICAgICAgdmFsdWU9XCIke3RlbXBzWzBdfVwiPiA8b3V0cHV0IG5hbWU9XCJ0b3V0XCI+JHt0ZW1wc1swXX08L291dHB1dD48L2xhYmVsPjwvZGl2PlxuICAgICAgPGRpdj48bGFiZWw+UmV2ZW51ZSAo4oKsKTpcbiAgICAgICAgPGlucHV0IHR5cGU9XCJyYW5nZVwiIG5hbWU9XCJyZXZcIiBtaW49XCIzNTBcIiBtYXg9XCI5NTBcIiBzdGVwPVwiMC4wMVwiXG4gICAgICAgICAgdmFsdWU9XCIke3JldnNbMF19XCI+IDxvdXRwdXQgbmFtZT1cInJvdXRcIj4ke3JldnNbMF19PC9vdXRwdXQ+PC9sYWJlbD48L2Rpdj5cbiAgICA8L2Zvcm0+XG4gICAgPHAgY2xhc3M9XCJvanMtZGVtby1pbmZvXCI+PC9wPlxuICAgIDxkaXYgY2xhc3M9XCJvanMtZGVtby1jaGFydFwiPjwvZGl2PlxuICA8L2Rpdj5gO1xuICBjb25zdCBmb3JtID0gcm9vdC5xdWVyeVNlbGVjdG9yKFwiZm9ybVwiKTtcbiAgY29uc3QgbWVhbiA9IGEgPT4gYS5yZWR1Y2UoKHMsIHYpID0+IHMgKyB2LCAwKSAvIGEubGVuZ3RoO1xuXG4gIGZ1bmN0aW9uIHJlZHJhdygpIHtcbiAgICBjb25zdCBuID0gdGVtcHMubGVuZ3RoLCBteCA9IG1lYW4odGVtcHMpLCBteSA9IG1lYW4ocmV2cyk7XG4gICAgbGV0IHN4eSA9IDAsIHN4eCA9IDAsIHN5eSA9IDA7XG4gICAgZm9yIChsZXQgaSA9IDA7IGkgPCBuOyBpKyspIHtcbiAgICAgIHN4eSArPSAodGVtcHNbaV0gLSBteCkgKiAocmV2c1tpXSAtIG15KTtcbiAgICAgIHN4eCArPSAodGVtcHNbaV0gLSBteCkgKiogMjtcbiAgICAgIHN5eSArPSAocmV2c1tpXSAtIG15KSAqKiAyO1xuICAgIH1cbiAgICBjb25zdCByID0gc3h5IC8gTWF0aC5zcXJ0KHN4eCAqIHN5eSksIGIgPSBzeHkgLyBzeHgsIGEgPSBteSAtIGIgKiBteDtcbiAgICBmb3JtLnRvdXQudmFsdWUgPSAoK2Zvcm0udGVtcC52YWx1ZSkudG9GaXhlZCgxKTtcbiAgICBmb3JtLnJvdXQudmFsdWUgPSAoK2Zvcm0ucmV2LnZhbHVlKS50b0ZpeGVkKDIpO1xuICAgIHJvb3QucXVlcnlTZWxlY3RvcihcIi5vanMtZGVtby1pbmZvXCIpLmlubmVySFRNTCA9XG4gICAgICBgciA9IDxzdHJvbmc+JHtyLnRvRml4ZWQoMyl9PC9zdHJvbmc+IMK3IHLCsiA9IDxzdHJvbmc+JHsociAqIHIpLnRvRml4ZWQoMyl9PC9zdHJvbmc+PGJyPlxuICAgICAgIFJlZ3Jlc3Npb24gbGluZTogcmV2ZW51ZSA9ICR7YS50b0ZpeGVkKDIpfSArICR7Yi50b0ZpeGVkKDIpfSDDlyB0ZW1wZXJhdHVyZWA7XG5cbiAgICBjb25zdCBXID0gNjYwLCBIdCA9IDM2MCwgTCA9IDYwLCBSID0gMjAsIFQgPSAzMCwgQiA9IDQ1O1xuICAgIGNvbnN0IHggPSB0ID0+IEwgKyAodCAtIDEwKSAqIChXIC0gTCAtIFIpIC8gMjI7XG4gICAgY29uc3QgeSA9IHYgPT4gVCArICg5NTAgLSB2KSAqIChIdCAtIFQgLSBCKSAvIDYwMDtcbiAgICBjb25zdCBjbGlwID0gdiA9PiBNYXRoLm1heCgzNTAsIE1hdGgubWluKDk1MCwgdikpO1xuICAgIGxldCBnID0gYDx0ZXh0IHg9XCIke1cgLyAyfVwiIHk9XCIxOFwiIHRleHQtYW5jaG9yPVwibWlkZGxlXCIgZmlsbD1cImN1cnJlbnRDb2xvclwiXG4gICAgICBmb250LXNpemU9XCIxNFwiPlRoZSBXYW5kZXJpbmcgRm9yayDigJQgdGVtcGVyYXR1cmUgdnMuIHJldmVudWU8L3RleHQ+YDtcbiAgICBmb3IgKGxldCB0ID0gMTA7IHQgPD0gMzI7IHQgKz0gMikge1xuICAgICAgZyArPSBgPGxpbmUgeDE9XCIke3godCl9XCIgeDI9XCIke3godCl9XCIgeTE9XCIke1R9XCIgeTI9XCIke0h0IC0gQn1cIlxuICAgICAgICBzdHJva2U9XCJjdXJyZW50Q29sb3JcIiBzdHJva2Utb3BhY2l0eT1cIjAuMTJcIi8+XG4gICAgICAgIDx0ZXh0IHg9XCIke3godCl9XCIgeT1cIiR7SHQgLSBCICsgMTZ9XCIgdGV4dC1hbmNob3I9XCJtaWRkbGVcIlxuICAgICAgICBmaWxsPVwiY3VycmVudENvbG9yXCIgZm9udC1zaXplPVwiMTFcIj4ke3R9PC90ZXh0PmA7XG4gICAgfVxuICAgIGZvciAobGV0IHYgPSA0MDA7IHYgPD0gOTAwOyB2ICs9IDEwMCkge1xuICAgICAgZyArPSBgPGxpbmUgeDE9XCIke0x9XCIgeDI9XCIke1cgLSBSfVwiIHkxPVwiJHt5KHYpfVwiIHkyPVwiJHt5KHYpfVwiXG4gICAgICAgIHN0cm9rZT1cImN1cnJlbnRDb2xvclwiIHN0cm9rZS1vcGFjaXR5PVwiMC4xMlwiLz5cbiAgICAgICAgPHRleHQgeD1cIiR7TCAtIDZ9XCIgeT1cIiR7eSh2KSArIDR9XCIgdGV4dC1hbmNob3I9XCJlbmRcIlxuICAgICAgICBmaWxsPVwiY3VycmVudENvbG9yXCIgZm9udC1zaXplPVwiMTFcIj7igqwke3Z9PC90ZXh0PmA7XG4gICAgfVxuICAgIGNvbnN0IHgwID0gTWF0aC5tYXgoMTAsIE1hdGgubWluKC4uLnRlbXBzKSAtIDEpO1xuICAgIGNvbnN0IHgxID0gTWF0aC5taW4oMzIsIE1hdGgubWF4KC4uLnRlbXBzKSArIDEpO1xuICAgIGcgKz0gYDxsaW5lIHgxPVwiJHt4KHgwKX1cIiB5MT1cIiR7eShjbGlwKGEgKyBiICogeDApKX1cIiB4Mj1cIiR7eCh4MSl9XCJcbiAgICAgIHkyPVwiJHt5KGNsaXAoYSArIGIgKiB4MSkpfVwiIHN0cm9rZT1cImRhcmtvcmFuZ2VcIiBzdHJva2Utd2lkdGg9XCIyXCIvPmA7XG4gICAgY29uc3Qgc2VsID0gK2Zvcm0ucG9pbnQudmFsdWU7XG4gICAgdGVtcHMuZm9yRWFjaCgodCwgaSkgPT4ge1xuICAgICAgZyArPSBgPGNpcmNsZSBjeD1cIiR7eCh0KX1cIiBjeT1cIiR7eShyZXZzW2ldKX1cIiByPVwiJHtpID09PSBzZWwgPyA5IDogN31cIlxuICAgICAgICBmaWxsPVwic3RlZWxibHVlXCIgc3Ryb2tlPVwiJHtpID09PSBzZWwgPyBcImRhcmtvcmFuZ2VcIiA6IFwibm9uZVwifVwiXG4gICAgICAgIHN0cm9rZS13aWR0aD1cIjJcIi8+YDtcbiAgICB9KTtcbiAgICBnICs9IGA8dGV4dCB4PVwiJHtXIC8gMn1cIiB5PVwiJHtIdCAtIDZ9XCIgdGV4dC1hbmNob3I9XCJtaWRkbGVcIlxuICAgICAgZmlsbD1cImN1cnJlbnRDb2xvclwiIGZvbnQtc2l6ZT1cIjEyXCI+VGVtcGVyYXR1cmUgKMKwQyk8L3RleHQ+XG4gICAgICA8dGV4dCB4PVwiMTRcIiB5PVwiJHtIdCAvIDJ9XCIgdGV4dC1hbmNob3I9XCJtaWRkbGVcIiBmaWxsPVwiY3VycmVudENvbG9yXCJcbiAgICAgIGZvbnQtc2l6ZT1cIjEyXCIgdHJhbnNmb3JtPVwicm90YXRlKC05MCAxNCAke0h0IC8gMn0pXCI+RGFpbHkgcmV2ZW51ZSAo4oKsKTwvdGV4dD5gO1xuICAgIHJvb3QucXVlcnlTZWxlY3RvcihcIi5vanMtZGVtby1jaGFydFwiKS5pbm5lckhUTUwgPVxuICAgICAgYDxzdmcgdmlld0JveD1cIjAgMCAke1d9ICR7SHR9XCIgd2lkdGg9XCIxMDAlXCIgcm9sZT1cImltZ1wiXG4gICAgICAgIGFyaWEtbGFiZWw9XCJTY2F0dGVyIHBsb3Qgb2YgdGVtcGVyYXR1cmUgYW5kIHJldmVudWUgd2l0aCByZWdyZXNzaW9uIGxpbmVcIj4ke2d9PC9zdmc+YDtcbiAgfVxuXG4gIGZvcm0uYWRkRXZlbnRMaXN0ZW5lcihcImlucHV0XCIsIGUgPT4ge1xuICAgIGNvbnN0IGkgPSArZm9ybS5wb2ludC52YWx1ZTtcbiAgICBpZiAoZS50YXJnZXQubmFtZSA9PT0gXCJwb2ludFwiKSB7XG4gICAgICBmb3JtLnRlbXAudmFsdWUgPSB0ZW1wc1tpXTtcbiAgICAgIGZvcm0ucmV2LnZhbHVlID0gcmV2c1tpXTtcbiAgICB9IGVsc2Uge1xuICAgICAgdGVtcHNbaV0gPSArZm9ybS50ZW1wLnZhbHVlO1xuICAgICAgcmV2c1tpXSA9ICtmb3JtLnJldi52YWx1ZTtcbiAgICB9XG4gICAgcmVkcmF3KCk7XG4gIH0pO1xuICByZWRyYXcoKTtcbiAgcmV0dXJuIHJvb3Q7XG59XG4ifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/data-description/modules";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
