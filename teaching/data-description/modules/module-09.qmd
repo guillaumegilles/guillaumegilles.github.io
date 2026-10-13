@@ -227,115 +227,101 @@ cloud of points.
 
 ## Interactive demo — scatter plot & correlation
 
-Drag any point to see the correlation coefficient and regression
-line update live. Starting positions are 8 days sampled from "The
+Pick a day, move its temperature or revenue slider, and watch the
+correlation coefficient and regression line update live (the selected
+point is circled in orange). Starting positions are 8 days sampled from "The
 Wandering Fork" (`temperature_c`, `daily_revenue_eur`).
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 560
+```{ojs}
+//| echo: false
+{
+  const DAYS = [1, 2, 3, 6, 9, 14, 21, 28];
+  const temps = [21.9, 20.4, 16.4, 21.1, 23.6, 24.3, 23.5, 24.5];
+  const revs = [460.48, 500.02, 418.65, 785.79, 669.00, 886.56, 856.52, 841.83];
+  const root = html`<div class="ojs-demo">
+    <form>
+      <label>Point to edit (day):
+        <select name="point">${DAYS.map((d, i) =>
+          html`<option value="${i}">Day ${d}</option>`)}</select></label>
+      <div><label>Temperature (°C):
+        <input type="range" name="temp" min="10" max="32" step="0.1"
+          value="${temps[0]}"> <output name="tout">${temps[0]}</output></label></div>
+      <div><label>Revenue (€):
+        <input type="range" name="rev" min="350" max="950" step="0.01"
+          value="${revs[0]}"> <output name="rout">${revs[0]}</output></label></div>
+    </form>
+    <p class="ojs-demo-info"></p>
+    <div class="ojs-demo-chart"></div>
+  </div>`;
+  const form = root.querySelector("form");
+  const mean = a => a.reduce((s, v) => s + v, 0) / a.length;
 
-from shiny import App, render, ui, reactive
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
+  function redraw() {
+    const n = temps.length, mx = mean(temps), my = mean(revs);
+    let sxy = 0, sxx = 0, syy = 0;
+    for (let i = 0; i < n; i++) {
+      sxy += (temps[i] - mx) * (revs[i] - my);
+      sxx += (temps[i] - mx) ** 2;
+      syy += (revs[i] - my) ** 2;
+    }
+    const r = sxy / Math.sqrt(sxx * syy), b = sxy / sxx, a = my - b * mx;
+    form.tout.value = (+form.temp.value).toFixed(1);
+    form.rout.value = (+form.rev.value).toFixed(2);
+    root.querySelector(".ojs-demo-info").innerHTML =
+      `r = <strong>${r.toFixed(3)}</strong> · r² = <strong>${(r * r).toFixed(3)}</strong><br>
+       Regression line: revenue = ${a.toFixed(2)} + ${b.toFixed(2)} × temperature`;
 
-BG = '#1C2E22'
-FG = '#D2CCC0'
+    const W = 660, Ht = 360, L = 60, R = 20, T = 30, B = 45;
+    const x = t => L + (t - 10) * (W - L - R) / 22;
+    const y = v => T + (950 - v) * (Ht - T - B) / 600;
+    const clip = v => Math.max(350, Math.min(950, v));
+    let g = `<text x="${W / 2}" y="18" text-anchor="middle" fill="currentColor"
+      font-size="14">The Wandering Fork — temperature vs. revenue</text>`;
+    for (let t = 10; t <= 32; t += 2) {
+      g += `<line x1="${x(t)}" x2="${x(t)}" y1="${T}" y2="${Ht - B}"
+        stroke="currentColor" stroke-opacity="0.12"/>
+        <text x="${x(t)}" y="${Ht - B + 16}" text-anchor="middle"
+        fill="currentColor" font-size="11">${t}</text>`;
+    }
+    for (let v = 400; v <= 900; v += 100) {
+      g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"
+        stroke="currentColor" stroke-opacity="0.12"/>
+        <text x="${L - 6}" y="${y(v) + 4}" text-anchor="end"
+        fill="currentColor" font-size="11">€${v}</text>`;
+    }
+    const x0 = Math.max(10, Math.min(...temps) - 1);
+    const x1 = Math.min(32, Math.max(...temps) + 1);
+    g += `<line x1="${x(x0)}" y1="${y(clip(a + b * x0))}" x2="${x(x1)}"
+      y2="${y(clip(a + b * x1))}" stroke="darkorange" stroke-width="2"/>`;
+    const sel = +form.point.value;
+    temps.forEach((t, i) => {
+      g += `<circle cx="${x(t)}" cy="${y(revs[i])}" r="${i === sel ? 9 : 7}"
+        fill="steelblue" stroke="${i === sel ? "darkorange" : "none"}"
+        stroke-width="2"/>`;
+    });
+    g += `<text x="${W / 2}" y="${Ht - 6}" text-anchor="middle"
+      fill="currentColor" font-size="12">Temperature (°C)</text>
+      <text x="14" y="${Ht / 2}" text-anchor="middle" fill="currentColor"
+      font-size="12" transform="rotate(-90 14 ${Ht / 2})">Daily revenue (€)</text>`;
+    root.querySelector(".ojs-demo-chart").innerHTML =
+      `<svg viewBox="0 0 ${W} ${Ht}" width="100%" role="img"
+        aria-label="Scatter plot of temperature and revenue with regression line">${g}</svg>`;
+  }
 
-DAYS = [1, 2, 3, 6, 9, 14, 21, 28]
-TEMP0 = [21.9, 20.4, 16.4, 21.1, 23.6, 24.3, 23.5, 24.5]
-REV0 = [460.48, 500.02, 418.65, 785.79, 669.00, 886.56, 856.52, 841.83]
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
-        .form-label {{ color: {FG} !important; }}
-        .form-range {{ accent-color: steelblue; width: 100%; }}
-        .info-box {{
-            background: #152119; border-radius: 6px; padding: 10px 14px;
-            margin: 8px 0; border-left: 3px solid steelblue;
-            font-family: monospace; font-size: 0.9em;
-        }}
-    """),
-    ui.h5("📈 Scatter plot & correlation — 8 sampled days", style=f"color:{FG}"),
-    ui.p(
-        "Move a point's temperature or revenue and watch r, r², and "
-        "the regression line update live.",
-        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
-    ),
-    ui.input_select("point", "Point to edit (day):", {str(d): f"Day {d}" for d in DAYS}),
-    ui.input_slider("temp", "Temperature (°C):", min=10, max=32, value=21.9, step=0.1),
-    ui.input_slider("rev", "Revenue (€):", min=350, max=950, value=460.48, step=1),
-    ui.output_ui("info"),
-    ui.output_plot("plot", height="340px"),
-)
-
-def server(input, output, session):
-    temps = reactive.Value(list(TEMP0))
-    revs = reactive.Value(list(REV0))
-
-    @reactive.Effect
-    def _update_point():
-        idx = DAYS.index(int(input.point()))
-        t, r = list(temps()), list(revs())
-        t[idx] = input.temp()
-        r[idx] = input.rev()
-        temps.set(t)
-        revs.set(r)
-
-    @reactive.Effect
-    @reactive.event(input.point)
-    def _reset_sliders():
-        idx = DAYS.index(int(input.point()))
-        ui.update_slider("temp", value=temps()[idx])
-        ui.update_slider("rev", value=revs()[idx])
-
-    @output
-    @render.ui
-    def info():
-        x = np.array(temps())
-        y = np.array(revs())
-        r = float(np.corrcoef(x, y)[0, 1])
-        b = np.cov(x, y, ddof=1)[0, 1] / x.var(ddof=1)
-        a = y.mean() - b * x.mean()
-        return ui.HTML(f"""
-            <div class='info-box'>
-                r = <strong style='color:darkorange'>{r:.3f}</strong> &nbsp;|&nbsp;
-                r&sup2; = <strong style='color:darkorange'>{r**2:.3f}</strong><br>
-                Regression line: revenue = {a:.2f} + {b:.2f} × temperature
-            </div>
-        """)
-
-    @output
-    @render.plot
-    def plot():
-        x = np.array(temps())
-        y = np.array(revs())
-        b = np.cov(x, y, ddof=1)[0, 1] / x.var(ddof=1)
-        a = y.mean() - b * x.mean()
-
-        fig, ax = plt.subplots(figsize=(7, 4))
-        fig.patch.set_facecolor(BG)
-        ax.set_facecolor(BG)
-        for spine in ax.spines.values():
-            spine.set_edgecolor(FG)
-        ax.tick_params(colors=FG)
-
-        ax.scatter(x, y, color='steelblue', zorder=5, s=70)
-        xs = np.linspace(min(x) - 1, max(x) + 1, 100)
-        ax.plot(xs, a + b * xs, color='darkorange', lw=2, label=f'ŷ = {a:.1f} + {b:.1f}x')
-        ax.set_xlabel("Temperature (°C)", color=FG)
-        ax.set_ylabel("Daily revenue (€)", color=FG)
-        ax.set_title("The Wandering Fork — temperature vs. revenue", color=FG)
-        ax.legend(fontsize=8.5, facecolor=BG, edgecolor='none', labelcolor=FG)
-        ax.grid(alpha=0.15, color=FG)
-        plt.tight_layout()
-        return fig
-
-app = App(app_ui, server)
+  form.addEventListener("input", e => {
+    const i = +form.point.value;
+    if (e.target.name === "point") {
+      form.temp.value = temps[i];
+      form.rev.value = revs[i];
+    } else {
+      temps[i] = +form.temp.value;
+      revs[i] = +form.rev.value;
+    }
+    redraw();
+  });
+  redraw();
+  return root;
+}
 ```
 
 ## Exercises

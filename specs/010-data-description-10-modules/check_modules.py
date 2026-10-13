@@ -85,13 +85,16 @@ def check_file(path):
             if total != 180:
                 errors.append(f"Time plan sums to {total} min, expected 180 (theory={theory}, excel={excel}, exercises={exercises})")
         else:
-            # Try table format: | Theory | 70 | ... (labels may be Theory/Excel lab/Exercises)
-            table_nums = re.findall(r"\|\s*(?:Theory|Excel lab|Exercises)\s*\|\s*(\d+)", time_text, re.IGNORECASE)
-            if len(table_nums) >= 3:
-                theory, excel, exercises = map(int, table_nums[:3])
-                total = theory + excel + exercises
+            # Table format: sum every block row whose second cell is an
+            # integer, except the Total row (tolerates extra rows such as
+            # "Homework debrief", added by feature 012).
+            table_rows = re.findall(r"^\|\s*([^|]+?)\s*\|\s*(\d+)\s*\|", time_text, re.MULTILINE)
+            table_rows = [(label, int(m)) for label, m in table_rows if "total" not in label.lower()]
+            if len(table_rows) >= 3:
+                total = sum(m for _, m in table_rows)
                 if total != 180:
-                    errors.append(f"Time plan sums to {total} min, expected 180 (theory={theory}, excel={excel}, exercises={exercises})")
+                    detail = ", ".join(f"{label}={m}" for label, m in table_rows)
+                    errors.append(f"Time plan sums to {total} min, expected 180 ({detail})")
             else:
                 warnings.append("Time plan format not recognized (expected 'X / Y / Z' or table with Theory/Excel lab/Exercises rows)")
     else:
@@ -115,10 +118,10 @@ def check_file(path):
         errors.append("Further reading section missing")
 
     # 6. Demo or TODO callout
-    has_demo = "shinylive-python" in text
+    has_demo = "shinylive-python" in text or "{ojs}" in text
     has_todo = 'TODO:' in text or 'TODO :' in text
     if not has_demo and not has_todo:
-        errors.append("No interactive demo (shinylive-python) and no TODO callout")
+        errors.append("No interactive demo (shinylive-python or ojs) and no TODO callout")
 
     # 7. No inline style= or <style> blocks (outside code blocks)
     lines = text.split("\n")

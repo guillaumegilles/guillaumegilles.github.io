@@ -244,101 +244,71 @@ Drag each slider to set the five-number summary and watch the
 boxplot redraw. Starting values are "The Wandering Fork"'s verified
 statistics.
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 560
+```{ojs}
+//| echo: false
+{
+  const start = [["vmin", "Minimum", 407.59], ["q1", "Q1", 506.61],
+                 ["med", "Median", 643.63], ["q3", "Q3", 729.99],
+                 ["vmax", "Maximum", 886.56]];
+  const root = html`<div class="ojs-demo">
+    <p>Move the sliders (kept in min ≤ Q1 ≤ median ≤ Q3 ≤ max order) to
+      see the boxplot and IQR/fences update live.</p>
+    <form>${start.map(([name, label, v]) => html`<div><label>${label}:
+      <input type="range" name="${name}" min="300" max="900" step="0.01"
+        value="${v}"> <output>${v.toFixed(2)}</output></label></div>`)}</form>
+    <p class="ojs-demo-info"></p>
+    <div class="ojs-demo-chart"></div>
+  </div>`;
+  const form = root.querySelector("form");
 
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+  function redraw() {
+    const inputs = [...form.querySelectorAll("input")];
+    inputs.forEach(el => {
+      el.parentNode.querySelector("output").textContent = el.valueAsNumber.toFixed(2);
+    });
+    const [vmin, q1, med, q3, vmax] = inputs.map(el => el.valueAsNumber)
+      .sort((a, b) => a - b);
+    const iqr = q3 - q1, lo = q1 - 1.5 * iqr, hi = q3 + 1.5 * iqr;
+    const outlier = vmin < lo || vmax > hi;
+    root.querySelector(".ojs-demo-info").innerHTML =
+      `IQR = ${iqr.toFixed(2)} · Lower fence = ${lo.toFixed(2)} ·
+       Upper fence = ${hi.toFixed(2)}<br>${outlier
+         ? "⚠️ min/max beyond fences — would be plotted as outliers"
+         : "✅ no outliers"}`;
 
-BG = '#1C2E22'
-FG = '#D2CCC0'
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
-        .form-label {{ color: {FG} !important; }}
-        .form-range {{ accent-color: steelblue; width: 100%; }}
-        .info-box {{
-            background: #152119; border-radius: 6px; padding: 10px 14px;
-            margin: 8px 0; border-left: 3px solid steelblue;
-            font-family: monospace; font-size: 0.9em;
-        }}
-    """),
-    ui.h5("📦 Boxplot from the five-number summary", style=f"color:{FG}"),
-    ui.p(
-        "Move the sliders (kept in min ≤ Q1 ≤ median ≤ Q3 ≤ max order) "
-        "to see the boxplot and IQR/fences update live.",
-        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
-    ),
-    ui.input_slider("vmin", "Minimum:", min=300, max=900, value=407.59, step=1),
-    ui.input_slider("q1", "Q1:", min=300, max=900, value=506.61, step=1),
-    ui.input_slider("med", "Median:", min=300, max=900, value=643.63, step=1),
-    ui.input_slider("q3", "Q3:", min=300, max=900, value=729.99, step=1),
-    ui.input_slider("vmax", "Maximum:", min=300, max=900, value=886.56, step=1),
-    ui.output_ui("info"),
-    ui.output_plot("plot", height="300px"),
-)
-
-def server(input, output, session):
-    def ordered():
-        vals = sorted([input.vmin(), input.q1(), input.med(), input.q3(), input.vmax()])
-        return vals
-
-    @output
-    @render.ui
-    def info():
-        vmin, q1, med, q3, vmax = ordered()
-        iqr = q3 - q1
-        lo_fence = q1 - 1.5 * iqr
-        hi_fence = q3 + 1.5 * iqr
-        outlier = vmin < lo_fence or vmax > hi_fence
-        tag = "⚠️ min/max beyond fences — would be plotted as outliers" if outlier else "✅ no outliers"
-        return ui.HTML(f"""
-            <div class='info-box'>
-                IQR = {iqr:.2f} &nbsp;|&nbsp;
-                Lower fence = {lo_fence:.2f} &nbsp;|&nbsp;
-                Upper fence = {hi_fence:.2f}<br>{tag}
-            </div>
-        """)
-
-    @output
-    @render.plot
-    def plot():
-        vmin, q1, med, q3, vmax = ordered()
-
-        fig, ax = plt.subplots(figsize=(7, 2.6))
-        fig.patch.set_facecolor(BG)
-        ax.set_facecolor(BG)
-        for spine in ax.spines.values():
-            spine.set_edgecolor(FG)
-        ax.tick_params(colors=FG)
-
-        box = ax.bxp(
-            [{
-                'med': med, 'q1': q1, 'q3': q3,
-                'whislo': vmin, 'whishi': vmax,
-                'fliers': [],
-            }],
-            vert=False, widths=0.5, patch_artist=True,
-        )
-        for patch in box['boxes']:
-            patch.set_facecolor('steelblue')
-            patch.set_edgecolor(FG)
-        for line_group in ('whiskers', 'caps', 'medians'):
-            for line in box[line_group]:
-                line.set_color(FG)
-        ax.set_yticks([])
-        ax.set_xlabel("Value", color=FG)
-        ax.set_title("Boxplot from the five-number summary", color=FG)
-        ax.grid(alpha=0.15, color=FG, axis='x')
-        plt.tight_layout()
-        return fig
-
-app = App(app_ui, server)
+    const W = 660, Ht = 220, L = 30, R = 30;
+    const x = v => L + (v - 300) * (W - L - R) / 600;
+    const yc = 105, bh = 50;
+    let g = `<text x="${W / 2}" y="18" text-anchor="middle" fill="currentColor"
+      font-size="14">Boxplot from the five-number summary</text>`;
+    for (let v = 300; v <= 900; v += 100) {
+      g += `<line x1="${x(v)}" x2="${x(v)}" y1="40" y2="170"
+        stroke="currentColor" stroke-opacity="0.15"/>
+        <text x="${x(v)}" y="190" text-anchor="middle" fill="currentColor"
+        font-size="11">${v}</text>`;
+    }
+    g += `<line x1="${x(vmin)}" x2="${x(q1)}" y1="${yc}" y2="${yc}"
+        stroke="currentColor" stroke-width="1.5"/>
+      <line x1="${x(q3)}" x2="${x(vmax)}" y1="${yc}" y2="${yc}"
+        stroke="currentColor" stroke-width="1.5"/>
+      <line x1="${x(vmin)}" x2="${x(vmin)}" y1="${yc - 15}" y2="${yc + 15}"
+        stroke="currentColor" stroke-width="1.5"/>
+      <line x1="${x(vmax)}" x2="${x(vmax)}" y1="${yc - 15}" y2="${yc + 15}"
+        stroke="currentColor" stroke-width="1.5"/>
+      <rect x="${x(q1)}" y="${yc - bh / 2}" width="${x(q3) - x(q1)}"
+        height="${bh}" fill="steelblue" stroke="currentColor"/>
+      <line x1="${x(med)}" x2="${x(med)}" y1="${yc - bh / 2}"
+        y2="${yc + bh / 2}" stroke="darkorange" stroke-width="3"/>
+      <text x="${W / 2}" y="212" text-anchor="middle" fill="currentColor"
+        font-size="12">Value</text>`;
+    root.querySelector(".ojs-demo-chart").innerHTML =
+      `<svg viewBox="0 0 ${W} ${Ht}" width="100%" role="img"
+        aria-label="Boxplot from the five-number summary">${g}</svg>`;
+  }
+  form.addEventListener("input", redraw);
+  redraw();
+  return root;
+}
 ```
 
 ## Exercises

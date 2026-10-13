@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -140,6 +175,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -771,140 +808,126 @@ F_k^{+} = \frac{N_k^{+}}{n} = \frac{n}{n} = 100\%.
 <section id="interactive-demo-build-your-own-histogram" class="level2">
 <h2 class="anchored" data-anchor-id="interactive-demo-build-your-own-histogram">Interactive demo — build your own histogram</h2>
 <p>Drag the bin-width slider and watch the same days regroup into wider or narrower classes. Switch between the 30-day Harbour subset, all 120 Harbour days, and all 120 Campus days to see how the shape changes. Notice that Campus has a long tail to the right: a few very high-revenue days stretch the picture.</p>
-<pre class="{shinylive-python}"><code>#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 600
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="269" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 268;"><span id="cb2-269"><a href="#cb2-269" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb2-270"><a href="#cb2-270" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> HARBOUR_120 <span class="op">=</span> [</span>
+<span id="cb2-271"><a href="#cb2-271" aria-hidden="true" tabindex="-1"></a>    <span class="fl">460.48</span><span class="op">,</span> <span class="fl">500.02</span><span class="op">,</span> <span class="fl">418.65</span><span class="op">,</span> <span class="fl">508.80</span><span class="op">,</span> <span class="fl">646.19</span><span class="op">,</span> <span class="fl">785.79</span><span class="op">,</span> <span class="fl">719.66</span><span class="op">,</span> <span class="fl">478.04</span><span class="op">,</span></span>
+<span id="cb2-272"><a href="#cb2-272" aria-hidden="true" tabindex="-1"></a>    <span class="fl">669.00</span><span class="op">,</span> <span class="fl">666.42</span><span class="op">,</span> <span class="fl">614.83</span><span class="op">,</span> <span class="fl">520.99</span><span class="op">,</span> <span class="fl">725.66</span><span class="op">,</span> <span class="fl">886.56</span><span class="op">,</span> <span class="fl">691.50</span><span class="op">,</span> <span class="fl">744.92</span><span class="op">,</span></span>
+<span id="cb2-273"><a href="#cb2-273" aria-hidden="true" tabindex="-1"></a>    <span class="fl">614.75</span><span class="op">,</span> <span class="fl">700.41</span><span class="op">,</span> <span class="fl">692.60</span><span class="op">,</span> <span class="fl">764.59</span><span class="op">,</span> <span class="fl">856.52</span><span class="op">,</span> <span class="fl">641.07</span><span class="op">,</span> <span class="fl">407.59</span><span class="op">,</span> <span class="fl">437.31</span><span class="op">,</span></span>
+<span id="cb2-274"><a href="#cb2-274" aria-hidden="true" tabindex="-1"></a>    <span class="fl">434.58</span><span class="op">,</span> <span class="fl">587.06</span><span class="op">,</span> <span class="fl">742.99</span><span class="op">,</span> <span class="fl">841.83</span><span class="op">,</span> <span class="fl">559.53</span><span class="op">,</span> <span class="fl">531.91</span><span class="op">,</span> <span class="fl">387.93</span><span class="op">,</span> <span class="fl">328.04</span><span class="op">,</span></span>
+<span id="cb2-275"><a href="#cb2-275" aria-hidden="true" tabindex="-1"></a>    <span class="fl">68.26</span><span class="op">,</span> <span class="fl">302.75</span><span class="op">,</span> <span class="fl">324.42</span><span class="op">,</span> <span class="fl">365.85</span><span class="op">,</span> <span class="fl">417.09</span><span class="op">,</span> <span class="fl">446.87</span><span class="op">,</span> <span class="fl">435.07</span><span class="op">,</span> <span class="fl">569.91</span><span class="op">,</span></span>
+<span id="cb2-276"><a href="#cb2-276" aria-hidden="true" tabindex="-1"></a>    <span class="fl">416.06</span><span class="op">,</span> <span class="fl">246.84</span><span class="op">,</span> <span class="fl">630.10</span><span class="op">,</span> <span class="fl">374.12</span><span class="op">,</span> <span class="fl">1000.00</span><span class="op">,</span> <span class="fl">504.27</span><span class="op">,</span> <span class="fl">206.82</span><span class="op">,</span> <span class="fl">180.95</span><span class="op">,</span></span>
+<span id="cb2-277"><a href="#cb2-277" aria-hidden="true" tabindex="-1"></a>    <span class="fl">70.19</span><span class="op">,</span> <span class="fl">406.16</span><span class="op">,</span> <span class="fl">273.57</span><span class="op">,</span> <span class="fl">384.50</span><span class="op">,</span> <span class="fl">51.21</span><span class="op">,</span> <span class="fl">314.63</span><span class="op">,</span> <span class="fl">328.44</span><span class="op">,</span> <span class="fl">517.13</span><span class="op">,</span></span>
+<span id="cb2-278"><a href="#cb2-278" aria-hidden="true" tabindex="-1"></a>    <span class="fl">147.56</span><span class="op">,</span> <span class="fl">275.44</span><span class="op">,</span> <span class="fl">469.52</span><span class="op">,</span> <span class="fl">333.34</span><span class="op">,</span> <span class="fl">343.64</span><span class="op">,</span> <span class="fl">185.77</span><span class="op">,</span> <span class="fl">382.81</span><span class="op">,</span> <span class="fl">84.07</span><span class="op">,</span></span>
+<span id="cb2-279"><a href="#cb2-279" aria-hidden="true" tabindex="-1"></a>    <span class="fl">440.31</span><span class="op">,</span> <span class="fl">261.95</span><span class="op">,</span> <span class="fl">61.17</span><span class="op">,</span> <span class="fl">441.58</span><span class="op">,</span> <span class="fl">664.67</span><span class="op">,</span> <span class="fl">644.39</span><span class="op">,</span> <span class="fl">75.42</span><span class="op">,</span> <span class="fl">453.04</span><span class="op">,</span></span>
+<span id="cb2-280"><a href="#cb2-280" aria-hidden="true" tabindex="-1"></a>    <span class="fl">623.77</span><span class="op">,</span> <span class="fl">261.15</span><span class="op">,</span> <span class="fl">104.94</span><span class="op">,</span> <span class="fl">401.36</span><span class="op">,</span> <span class="fl">389.79</span><span class="op">,</span> <span class="fl">270.44</span><span class="op">,</span> <span class="fl">321.17</span><span class="op">,</span> <span class="fl">1050.00</span><span class="op">,</span></span>
+<span id="cb2-281"><a href="#cb2-281" aria-hidden="true" tabindex="-1"></a>    <span class="fl">311.41</span><span class="op">,</span> <span class="fl">393.14</span><span class="op">,</span> <span class="fl">66.17</span><span class="op">,</span> <span class="fl">413.06</span><span class="op">,</span> <span class="fl">484.42</span><span class="op">,</span> <span class="fl">80.44</span><span class="op">,</span> <span class="fl">204.27</span><span class="op">,</span> <span class="fl">227.49</span><span class="op">,</span></span>
+<span id="cb2-282"><a href="#cb2-282" aria-hidden="true" tabindex="-1"></a>    <span class="fl">291.01</span><span class="op">,</span> <span class="fl">382.51</span><span class="op">,</span> <span class="fl">119.97</span><span class="op">,</span> <span class="fl">549.51</span><span class="op">,</span> <span class="fl">401.30</span><span class="op">,</span> <span class="fl">137.45</span><span class="op">,</span> <span class="fl">271.02</span><span class="op">,</span> <span class="fl">267.04</span><span class="op">,</span></span>
+<span id="cb2-283"><a href="#cb2-283" aria-hidden="true" tabindex="-1"></a>    <span class="fl">329.19</span><span class="op">,</span> <span class="fl">634.78</span><span class="op">,</span> <span class="fl">297.20</span><span class="op">,</span> <span class="fl">166.48</span><span class="op">,</span> <span class="fl">164.03</span><span class="op">,</span> <span class="fl">363.36</span><span class="op">,</span> <span class="fl">247.18</span><span class="op">,</span> <span class="fl">462.55</span><span class="op">,</span></span>
+<span id="cb2-284"><a href="#cb2-284" aria-hidden="true" tabindex="-1"></a>    <span class="fl">657.88</span><span class="op">,</span> <span class="fl">67.08</span><span class="op">,</span> <span class="fl">474.32</span><span class="op">,</span> <span class="fl">607.24</span><span class="op">,</span> <span class="fl">178.05</span><span class="op">,</span> <span class="fl">346.90</span><span class="op">,</span> <span class="fl">317.60</span><span class="op">,</span> <span class="fl">208.79</span><span class="op">,</span></span>
+<span id="cb2-285"><a href="#cb2-285" aria-hidden="true" tabindex="-1"></a>    <span class="fl">331.38</span><span class="op">,</span> <span class="fl">315.26</span><span class="op">,</span> <span class="fl">335.38</span><span class="op">,</span> <span class="fl">273.53</span><span class="op">,</span> <span class="fl">227.29</span><span class="op">,</span> <span class="fl">187.58</span><span class="op">,</span> <span class="fl">620.20</span><span class="op">,</span> <span class="fl">116.27</span></span>
+<span id="cb2-286"><a href="#cb2-286" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
+<span id="cb2-287"><a href="#cb2-287" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> CAMPUS_120 <span class="op">=</span> [</span>
+<span id="cb2-288"><a href="#cb2-288" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1089.40</span><span class="op">,</span> <span class="fl">1335.48</span><span class="op">,</span> <span class="fl">540.03</span><span class="op">,</span> <span class="fl">598.76</span><span class="op">,</span> <span class="fl">377.74</span><span class="op">,</span> <span class="fl">170.84</span><span class="op">,</span> <span class="fl">23.85</span><span class="op">,</span> <span class="fl">368.83</span><span class="op">,</span></span>
+<span id="cb2-289"><a href="#cb2-289" aria-hidden="true" tabindex="-1"></a>    <span class="fl">599.66</span><span class="op">,</span> <span class="fl">432.71</span><span class="op">,</span> <span class="fl">478.40</span><span class="op">,</span> <span class="fl">572.40</span><span class="op">,</span> <span class="fl">299.09</span><span class="op">,</span> <span class="fl">186.26</span><span class="op">,</span> <span class="fl">556.11</span><span class="op">,</span> <span class="fl">356.11</span><span class="op">,</span></span>
+<span id="cb2-290"><a href="#cb2-290" aria-hidden="true" tabindex="-1"></a>    <span class="fl">658.89</span><span class="op">,</span> <span class="fl">697.39</span><span class="op">,</span> <span class="fl">361.09</span><span class="op">,</span> <span class="fl">277.62</span><span class="op">,</span> <span class="fl">172.24</span><span class="op">,</span> <span class="fl">870.03</span><span class="op">,</span> <span class="fl">1407.59</span><span class="op">,</span> <span class="fl">448.33</span><span class="op">,</span></span>
+<span id="cb2-291"><a href="#cb2-291" aria-hidden="true" tabindex="-1"></a>    <span class="fl">715.64</span><span class="op">,</span> <span class="fl">267.68</span><span class="op">,</span> <span class="fl">114.21</span><span class="op">,</span> <span class="fl">323.14</span><span class="op">,</span> <span class="fl">396.69</span><span class="op">,</span> <span class="fl">742.01</span><span class="op">,</span> <span class="fl">1114.89</span><span class="op">,</span> <span class="fl">741.91</span><span class="op">,</span></span>
+<span id="cb2-292"><a href="#cb2-292" aria-hidden="true" tabindex="-1"></a>    <span class="fl">275.82</span><span class="op">,</span> <span class="fl">245.21</span><span class="op">,</span> <span class="fl">55.06</span><span class="op">,</span> <span class="fl">346.24</span><span class="op">,</span> <span class="fl">598.12</span><span class="op">,</span> <span class="fl">989.43</span><span class="op">,</span> <span class="fl">295.85</span><span class="op">,</span> <span class="fl">138.44</span><span class="op">,</span></span>
+<span id="cb2-293"><a href="#cb2-293" aria-hidden="true" tabindex="-1"></a>    <span class="fl">267.00</span><span class="op">,</span> <span class="fl">72.34</span><span class="op">,</span> <span class="fl">898.08</span><span class="op">,</span> <span class="fl">384.09</span><span class="op">,</span> <span class="fl">291.95</span><span class="op">,</span> <span class="fl">472.05</span><span class="op">,</span> <span class="fl">667.05</span><span class="op">,</span> <span class="fl">79.47</span><span class="op">,</span></span>
+<span id="cb2-294"><a href="#cb2-294" aria-hidden="true" tabindex="-1"></a>    <span class="fl">26.57</span><span class="op">,</span> <span class="fl">1135.89</span><span class="op">,</span> <span class="fl">951.18</span><span class="op">,</span> <span class="fl">403.89</span><span class="op">,</span> <span class="fl">427.84</span><span class="op">,</span> <span class="fl">156.30</span><span class="op">,</span> <span class="fl">181.88</span><span class="op">,</span> <span class="fl">30.58</span><span class="op">,</span></span>
+<span id="cb2-295"><a href="#cb2-295" aria-hidden="true" tabindex="-1"></a>    <span class="fl">241.99</span><span class="op">,</span> <span class="fl">380.60</span><span class="op">,</span> <span class="fl">318.68</span><span class="op">,</span> <span class="fl">446.42</span><span class="op">,</span> <span class="fl">413.63</span><span class="op">,</span> <span class="fl">159.43</span><span class="op">,</span> <span class="fl">121.60</span><span class="op">,</span> <span class="fl">577.01</span><span class="op">,</span></span>
+<span id="cb2-296"><a href="#cb2-296" aria-hidden="true" tabindex="-1"></a>    <span class="fl">493.92</span><span class="op">,</span> <span class="fl">436.74</span><span class="op">,</span> <span class="fl">529.14</span><span class="op">,</span> <span class="fl">524.11</span><span class="op">,</span> <span class="fl">35.80</span><span class="op">,</span> <span class="fl">234.09</span><span class="op">,</span> <span class="fl">359.34</span><span class="op">,</span> <span class="fl">269.31</span><span class="op">,</span></span>
+<span id="cb2-297"><a href="#cb2-297" aria-hidden="true" tabindex="-1"></a>    <span class="fl">246.10</span><span class="op">,</span> <span class="fl">270.87</span><span class="op">,</span> <span class="fl">747.84</span><span class="op">,</span> <span class="fl">436.33</span><span class="op">,</span> <span class="fl">180.67</span><span class="op">,</span> <span class="fl">402.41</span><span class="op">,</span> <span class="fl">348.79</span><span class="op">,</span> <span class="fl">717.81</span><span class="op">,</span></span>
+<span id="cb2-298"><a href="#cb2-298" aria-hidden="true" tabindex="-1"></a>    <span class="fl">399.38</span><span class="op">,</span> <span class="fl">864.08</span><span class="op">,</span> <span class="fl">171.61</span><span class="op">,</span> <span class="fl">213.40</span><span class="op">,</span> <span class="fl">333.03</span><span class="op">,</span> <span class="fl">566.94</span><span class="op">,</span> <span class="fl">519.92</span><span class="op">,</span> <span class="fl">439.65</span><span class="op">,</span></span>
+<span id="cb2-299"><a href="#cb2-299" aria-hidden="true" tabindex="-1"></a>    <span class="fl">568.41</span><span class="op">,</span> <span class="fl">251.73</span><span class="op">,</span> <span class="fl">49.02</span><span class="op">,</span> <span class="fl">950.12</span><span class="op">,</span> <span class="fl">345.89</span><span class="op">,</span> <span class="fl">569.65</span><span class="op">,</span> <span class="fl">483.54</span><span class="op">,</span> <span class="fl">251.10</span><span class="op">,</span></span>
+<span id="cb2-300"><a href="#cb2-300" aria-hidden="true" tabindex="-1"></a>    <span class="fl">227.23</span><span class="op">,</span> <span class="fl">198.44</span><span class="op">,</span> <span class="fl">849.86</span><span class="op">,</span> <span class="fl">1000.56</span><span class="op">,</span> <span class="fl">621.45</span><span class="op">,</span> <span class="fl">441.41</span><span class="op">,</span> <span class="fl">574.90</span><span class="op">,</span> <span class="fl">93.29</span><span class="op">,</span></span>
+<span id="cb2-301"><a href="#cb2-301" aria-hidden="true" tabindex="-1"></a>    <span class="fl">204.87</span><span class="op">,</span> <span class="fl">521.04</span><span class="op">,</span> <span class="fl">268.06</span><span class="op">,</span> <span class="fl">859.15</span><span class="op">,</span> <span class="fl">949.10</span><span class="op">,</span> <span class="fl">175.90</span><span class="op">,</span> <span class="fl">179.84</span><span class="op">,</span> <span class="fl">208.10</span><span class="op">,</span></span>
+<span id="cb2-302"><a href="#cb2-302" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1062.98</span><span class="op">,</span> <span class="fl">761.06</span><span class="op">,</span> <span class="fl">773.08</span><span class="op">,</span> <span class="fl">278.86</span><span class="op">,</span> <span class="fl">245.06</span><span class="op">,</span> <span class="fl">127.26</span><span class="op">,</span> <span class="fl">63.49</span><span class="op">,</span> <span class="fl">1362.93</span></span>
+<span id="cb2-303"><a href="#cb2-303" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
+<span id="cb2-304"><a href="#cb2-304" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> DATASETS <span class="op">=</span> {</span>
+<span id="cb2-305"><a href="#cb2-305" aria-hidden="true" tabindex="-1"></a>    <span class="dt">harbour30</span><span class="op">:</span> [<span class="st">"Harbour, first 30 days"</span><span class="op">,</span> HARBOUR_120<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">30</span>)]<span class="op">,</span></span>
+<span id="cb2-306"><a href="#cb2-306" aria-hidden="true" tabindex="-1"></a>    <span class="dt">harbour120</span><span class="op">:</span> [<span class="st">"Harbour, all 120 days"</span><span class="op">,</span> HARBOUR_120]<span class="op">,</span></span>
+<span id="cb2-307"><a href="#cb2-307" aria-hidden="true" tabindex="-1"></a>    <span class="dt">campus120</span><span class="op">:</span> [<span class="st">"Campus, all 120 days"</span><span class="op">,</span> CAMPUS_120]</span>
+<span id="cb2-308"><a href="#cb2-308" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb2-309"><a href="#cb2-309" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="ojs-demo"&gt;</span></span>
+<span id="cb2-310"><a href="#cb2-310" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;form&gt;</span></span>
+<span id="cb2-311"><a href="#cb2-311" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;p&gt;Data:</span></span>
+<span id="cb2-312"><a href="#cb2-312" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;label&gt;&lt;input type="radio" name="hist-data" value="harbour30" checked&gt;</span></span>
+<span id="cb2-313"><a href="#cb2-313" aria-hidden="true" tabindex="-1"></a><span class="vs">          Harbour, first 30 days&lt;/label&gt;</span></span>
+<span id="cb2-314"><a href="#cb2-314" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;label&gt;&lt;input type="radio" name="hist-data" value="harbour120"&gt;</span></span>
+<span id="cb2-315"><a href="#cb2-315" aria-hidden="true" tabindex="-1"></a><span class="vs">          Harbour, all 120 days&lt;/label&gt;</span></span>
+<span id="cb2-316"><a href="#cb2-316" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;label&gt;&lt;input type="radio" name="hist-data" value="campus120"&gt;</span></span>
+<span id="cb2-317"><a href="#cb2-317" aria-hidden="true" tabindex="-1"></a><span class="vs">          Campus, all 120 days&lt;/label&gt;</span></span>
+<span id="cb2-318"><a href="#cb2-318" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/p&gt;</span></span>
+<span id="cb2-319"><a href="#cb2-319" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;label&gt;Bin width (EUR):</span></span>
+<span id="cb2-320"><a href="#cb2-320" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;input type="range" name="width" min="25" max="400" step="25"</span></span>
+<span id="cb2-321"><a href="#cb2-321" aria-hidden="true" tabindex="-1"></a><span class="vs">          value="100"&gt; &lt;output&gt;100&lt;/output&gt;&lt;/label&gt;</span></span>
+<span id="cb2-322"><a href="#cb2-322" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/form&gt;</span></span>
+<span id="cb2-323"><a href="#cb2-323" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="ojs-demo-info"&gt;&lt;/p&gt;</span></span>
+<span id="cb2-324"><a href="#cb2-324" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div class="ojs-demo-chart"&gt;&lt;/div&gt;</span></span>
+<span id="cb2-325"><a href="#cb2-325" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb2-326"><a href="#cb2-326" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> form <span class="op">=</span> <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"form"</span>)<span class="op">;</span></span>
+<span id="cb2-327"><a href="#cb2-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-328"><a href="#cb2-328" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">redraw</span>() {</span>
+<span id="cb2-329"><a href="#cb2-329" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> key <span class="op">=</span> form<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"input[name=hist-data]:checked"</span>)<span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb2-330"><a href="#cb2-330" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> [label<span class="op">,</span> values] <span class="op">=</span> DATASETS[key]<span class="op">;</span></span>
+<span id="cb2-331"><a href="#cb2-331" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> w <span class="op">=</span> <span class="op">+</span>form<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"input[name=width]"</span>)<span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb2-332"><a href="#cb2-332" aria-hidden="true" tabindex="-1"></a>    form<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"output"</span>)<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> w<span class="op">;</span></span>
+<span id="cb2-333"><a href="#cb2-333" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> n <span class="op">=</span> values<span class="op">.</span><span class="at">length</span><span class="op">,</span> vmin <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="op">...</span>values)<span class="op">,</span> vmax <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>values)<span class="op">;</span></span>
+<span id="cb2-334"><a href="#cb2-334" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> lo <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(vmin <span class="op">/</span> w) <span class="op">*</span> w<span class="op">;</span></span>
+<span id="cb2-335"><a href="#cb2-335" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> hi <span class="op">=</span> (<span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(vmax <span class="op">/</span> w) <span class="op">+</span> <span class="dv">1</span>) <span class="op">*</span> w<span class="op">;</span></span>
+<span id="cb2-336"><a href="#cb2-336" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> k <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>((hi <span class="op">-</span> lo) <span class="op">/</span> w)<span class="op">;</span></span>
+<span id="cb2-337"><a href="#cb2-337" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> counts <span class="op">=</span> <span class="kw">new</span> <span class="bu">Array</span>(k)<span class="op">.</span><span class="fu">fill</span>(<span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb2-338"><a href="#cb2-338" aria-hidden="true" tabindex="-1"></a>    values<span class="op">.</span><span class="fu">forEach</span>(v <span class="kw">=&gt;</span> { counts[<span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(k <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>((v <span class="op">-</span> lo) <span class="op">/</span> w))] <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span> })<span class="op">;</span></span>
+<span id="cb2-339"><a href="#cb2-339" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> sturges <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> <span class="fl">3.3</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">log10</span>(n)<span class="op">;</span></span>
+<span id="cb2-340"><a href="#cb2-340" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> suggested <span class="op">=</span> (vmax <span class="op">-</span> vmin) <span class="op">/</span> sturges<span class="op">;</span></span>
+<span id="cb2-341"><a href="#cb2-341" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".ojs-demo-info"</span>)<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span></span>
+<span id="cb2-342"><a href="#cb2-342" aria-hidden="true" tabindex="-1"></a>      <span class="vs">`n = &lt;strong&gt;</span><span class="sc">${</span>n<span class="sc">}</span><span class="vs">&lt;/strong&gt; days · bin width = &lt;strong&gt;</span><span class="sc">${</span>w<span class="sc">}</span><span class="vs">&lt;/strong&gt; EUR</span></span>
+<span id="cb2-343"><a href="#cb2-343" aria-hidden="true" tabindex="-1"></a><span class="vs">       → &lt;strong&gt;</span><span class="sc">${</span>k<span class="sc">}</span><span class="vs">&lt;/strong&gt; classes&lt;br&gt;Sturges suggests about</span></span>
+<span id="cb2-344"><a href="#cb2-344" aria-hidden="true" tabindex="-1"></a><span class="vs">       </span><span class="sc">${</span>sturges<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs"> classes, i.e. a width near</span></span>
+<span id="cb2-345"><a href="#cb2-345" aria-hidden="true" tabindex="-1"></a><span class="vs">       </span><span class="sc">${</span>suggested<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="sc">}</span><span class="vs"> EUR.`</span><span class="op">;</span></span>
+<span id="cb2-346"><a href="#cb2-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-347"><a href="#cb2-347" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> W <span class="op">=</span> <span class="dv">660</span><span class="op">,</span> Ht <span class="op">=</span> <span class="dv">340</span><span class="op">,</span> L <span class="op">=</span> <span class="dv">50</span><span class="op">,</span> R <span class="op">=</span> <span class="dv">15</span><span class="op">,</span> T <span class="op">=</span> <span class="dv">30</span><span class="op">,</span> B <span class="op">=</span> <span class="dv">45</span><span class="op">;</span></span>
+<span id="cb2-348"><a href="#cb2-348" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cmax <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>counts)<span class="op">;</span></span>
+<span id="cb2-349"><a href="#cb2-349" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x <span class="op">=</span> v <span class="kw">=&gt;</span> L <span class="op">+</span> (v <span class="op">-</span> lo) <span class="op">*</span> (W <span class="op">-</span> L <span class="op">-</span> R) <span class="op">/</span> (hi <span class="op">-</span> lo)<span class="op">;</span></span>
+<span id="cb2-350"><a href="#cb2-350" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> y <span class="op">=</span> c <span class="kw">=&gt;</span> Ht <span class="op">-</span> B <span class="op">-</span> c <span class="op">*</span> (Ht <span class="op">-</span> T <span class="op">-</span> B) <span class="op">/</span> cmax<span class="op">;</span></span>
+<span id="cb2-351"><a href="#cb2-351" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> g <span class="op">=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span>W <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" y="18" text-anchor="middle"</span></span>
+<span id="cb2-352"><a href="#cb2-352" aria-hidden="true" tabindex="-1"></a><span class="vs">      fill="currentColor" font-size="14"&gt;</span><span class="sc">${</span>label<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-353"><a href="#cb2-353" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> step <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">1</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">ceil</span>(cmax <span class="op">/</span> <span class="dv">6</span>))<span class="op">;</span></span>
+<span id="cb2-354"><a href="#cb2-354" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> c <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> c <span class="op">&lt;=</span> cmax<span class="op">;</span> c <span class="op">+=</span> step) {</span>
+<span id="cb2-355"><a href="#cb2-355" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span>L<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span>W <span class="op">-</span> R<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span><span class="fu">y</span>(c)<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span><span class="fu">y</span>(c)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-356"><a href="#cb2-356" aria-hidden="true" tabindex="-1"></a><span class="vs">        stroke="currentColor" stroke-opacity="0.15"/&gt;</span></span>
+<span id="cb2-357"><a href="#cb2-357" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;text x="</span><span class="sc">${</span>L <span class="op">-</span> <span class="dv">6</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(c) <span class="op">+</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">" text-anchor="end"</span></span>
+<span id="cb2-358"><a href="#cb2-358" aria-hidden="true" tabindex="-1"></a><span class="vs">        fill="currentColor" font-size="11"&gt;</span><span class="sc">${</span>c<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-359"><a href="#cb2-359" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-360"><a href="#cb2-360" aria-hidden="true" tabindex="-1"></a>    counts<span class="op">.</span><span class="fu">forEach</span>((c<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-361"><a href="#cb2-361" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> x0 <span class="op">=</span> <span class="fu">x</span>(lo <span class="op">+</span> i <span class="op">*</span> w)<span class="op">,</span> x1 <span class="op">=</span> <span class="fu">x</span>(lo <span class="op">+</span> (i <span class="op">+</span> <span class="dv">1</span>) <span class="op">*</span> w)<span class="op">;</span></span>
+<span id="cb2-362"><a href="#cb2-362" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;rect x="</span><span class="sc">${</span>x0<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(c)<span class="sc">}</span><span class="vs">" width="</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">0</span><span class="op">,</span> x1 <span class="op">-</span> x0 <span class="op">-</span> <span class="dv">1</span>)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-363"><a href="#cb2-363" aria-hidden="true" tabindex="-1"></a><span class="vs">        height="</span><span class="sc">${</span><span class="fu">y</span>(<span class="dv">0</span>) <span class="op">-</span> <span class="fu">y</span>(c)<span class="sc">}</span><span class="vs">" fill="steelblue" fill-opacity="0.9"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-364"><a href="#cb2-364" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb2-365"><a href="#cb2-365" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> tick <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">ceil</span>((hi <span class="op">-</span> lo) <span class="op">/</span> w <span class="op">/</span> <span class="dv">8</span>) <span class="op">*</span> w<span class="op">;</span></span>
+<span id="cb2-366"><a href="#cb2-366" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> v <span class="op">=</span> lo<span class="op">;</span> v <span class="op">&lt;=</span> hi<span class="op">;</span> v <span class="op">+=</span> tick) {</span>
+<span id="cb2-367"><a href="#cb2-367" aria-hidden="true" tabindex="-1"></a>      g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(v)<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>Ht <span class="op">-</span> B <span class="op">+</span> <span class="dv">16</span><span class="sc">}</span><span class="vs">" text-anchor="middle"</span></span>
+<span id="cb2-368"><a href="#cb2-368" aria-hidden="true" tabindex="-1"></a><span class="vs">        fill="currentColor" font-size="11"&gt;</span><span class="sc">${</span>v<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-369"><a href="#cb2-369" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-370"><a href="#cb2-370" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span>W <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>Ht <span class="op">-</span> <span class="dv">6</span><span class="sc">}</span><span class="vs">" text-anchor="middle"</span></span>
+<span id="cb2-371"><a href="#cb2-371" aria-hidden="true" tabindex="-1"></a><span class="vs">      fill="currentColor" font-size="12"&gt;Daily revenue (EUR)&lt;/text&gt;</span></span>
+<span id="cb2-372"><a href="#cb2-372" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;text x="14" y="</span><span class="sc">${</span>Ht <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" text-anchor="middle" fill="currentColor"</span></span>
+<span id="cb2-373"><a href="#cb2-373" aria-hidden="true" tabindex="-1"></a><span class="vs">      font-size="12" transform="rotate(-90 14 </span><span class="sc">${</span>Ht <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">)"&gt;Number of days&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-374"><a href="#cb2-374" aria-hidden="true" tabindex="-1"></a>    <span class="bu">root</span><span class="op">.</span><span class="fu">querySelector</span>(<span class="st">".ojs-demo-chart"</span>)<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span></span>
+<span id="cb2-375"><a href="#cb2-375" aria-hidden="true" tabindex="-1"></a>      <span class="vs">`&lt;svg viewBox="0 0 </span><span class="sc">${</span>W<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>Ht<span class="sc">}</span><span class="vs">" width="100%" role="img"</span></span>
+<span id="cb2-376"><a href="#cb2-376" aria-hidden="true" tabindex="-1"></a><span class="vs">        aria-label="Histogram of daily revenue"&gt;</span><span class="sc">${</span>g<span class="sc">}</span><span class="vs">&lt;/svg&gt;`</span><span class="op">;</span></span>
+<span id="cb2-377"><a href="#cb2-377" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-378"><a href="#cb2-378" aria-hidden="true" tabindex="-1"></a>  form<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> redraw)<span class="op">;</span></span>
+<span id="cb2-379"><a href="#cb2-379" aria-hidden="true" tabindex="-1"></a>  <span class="fu">redraw</span>()<span class="op">;</span></span>
+<span id="cb2-380"><a href="#cb2-380" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb2-381"><a href="#cb2-381" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="expression">
 
-from math import floor, log10
-
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
-
-BG = '#1C2E22'
-FG = '#D2CCC0'
-
-HARBOUR_120 = [
-    460.48, 500.02, 418.65, 508.80, 646.19, 785.79, 719.66, 478.04,
-    669.00, 666.42, 614.83, 520.99, 725.66, 886.56, 691.50, 744.92,
-    614.75, 700.41, 692.60, 764.59, 856.52, 641.07, 407.59, 437.31,
-    434.58, 587.06, 742.99, 841.83, 559.53, 531.91, 387.93, 328.04,
-    68.26, 302.75, 324.42, 365.85, 417.09, 446.87, 435.07, 569.91,
-    416.06, 246.84, 630.10, 374.12, 1000.00, 504.27, 206.82, 180.95,
-    70.19, 406.16, 273.57, 384.50, 51.21, 314.63, 328.44, 517.13,
-    147.56, 275.44, 469.52, 333.34, 343.64, 185.77, 382.81, 84.07,
-    440.31, 261.95, 61.17, 441.58, 664.67, 644.39, 75.42, 453.04,
-    623.77, 261.15, 104.94, 401.36, 389.79, 270.44, 321.17, 1050.00,
-    311.41, 393.14, 66.17, 413.06, 484.42, 80.44, 204.27, 227.49,
-    291.01, 382.51, 119.97, 549.51, 401.30, 137.45, 271.02, 267.04,
-    329.19, 634.78, 297.20, 166.48, 164.03, 363.36, 247.18, 462.55,
-    657.88, 67.08, 474.32, 607.24, 178.05, 346.90, 317.60, 208.79,
-    331.38, 315.26, 335.38, 273.53, 227.29, 187.58, 620.20, 116.27,
-]
-
-CAMPUS_120 = [
-    1089.40, 1335.48, 540.03, 598.76, 377.74, 170.84, 23.85, 368.83,
-    599.66, 432.71, 478.40, 572.40, 299.09, 186.26, 556.11, 356.11,
-    658.89, 697.39, 361.09, 277.62, 172.24, 870.03, 1407.59, 448.33,
-    715.64, 267.68, 114.21, 323.14, 396.69, 742.01, 1114.89, 741.91,
-    275.82, 245.21, 55.06, 346.24, 598.12, 989.43, 295.85, 138.44,
-    267.00, 72.34, 898.08, 384.09, 291.95, 472.05, 667.05, 79.47,
-    26.57, 1135.89, 951.18, 403.89, 427.84, 156.30, 181.88, 30.58,
-    241.99, 380.60, 318.68, 446.42, 413.63, 159.43, 121.60, 577.01,
-    493.92, 436.74, 529.14, 524.11, 35.80, 234.09, 359.34, 269.31,
-    246.10, 270.87, 747.84, 436.33, 180.67, 402.41, 348.79, 717.81,
-    399.38, 864.08, 171.61, 213.40, 333.03, 566.94, 519.92, 439.65,
-    568.41, 251.73, 49.02, 950.12, 345.89, 569.65, 483.54, 251.10,
-    227.23, 198.44, 849.86, 1000.56, 621.45, 441.41, 574.90, 93.29,
-    204.87, 521.04, 268.06, 859.15, 949.10, 175.90, 179.84, 208.10,
-    1062.98, 761.06, 773.08, 278.86, 245.06, 127.26, 63.49, 1362.93,
-]
-
-DATASETS = {
-    "harbour30": ("Harbour, first 30 days", HARBOUR_120[:30]),
-    "harbour120": ("Harbour, all 120 days", HARBOUR_120),
-    "campus120": ("Campus, all 120 days", CAMPUS_120),
-}
-
-
-def make_bins(values, width):
-    lo = int(floor(min(values) / width) * width)
-    hi = int((floor(max(values) / width) + 1) * width)
-    return np.arange(lo, hi + width, width)
-
-
-def draw(values, width, title):
-    bins = make_bins(values, width)
-    fig, ax = plt.subplots(figsize=(7, 4))
-    fig.patch.set_facecolor(BG)
-    ax.set_facecolor(BG)
-    for spine in ax.spines.values():
-        spine.set_edgecolor(FG)
-    ax.tick_params(colors=FG)
-    ax.hist(values, bins=bins, color='steelblue', edgecolor=BG, alpha=0.9)
-    ax.set_xlabel("Daily revenue (EUR)", color=FG)
-    ax.set_ylabel("Number of days", color=FG)
-    ax.set_title(title, color=FG)
-    ax.grid(alpha=0.15, color=FG, axis='y')
-    fig.tight_layout()
-    return fig
-
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px;
-               font-family: sans-serif; margin: 0; }}
-        .form-label, label {{ color: {FG} !important; }}
-        .form-range {{ accent-color: steelblue; width: 100%; }}
-        .info-box {{ background: #152119; border-radius: 6px;
-                    padding: 10px 14px; margin: 8px 0;
-                    border-left: 3px solid steelblue;
-                    font-family: monospace; font-size: 0.9em; }}
-    """),
-    ui.h5("Histogram builder: The Wandering Fork's daily revenue",
-          style=f"color:{FG}"),
-    ui.input_radio_buttons(
-        "data", "Data:",
-        {key: label for key, (label, _) in DATASETS.items()},
-        selected="harbour30", inline=True,
-    ),
-    ui.input_slider("bin_width", "Bin width (EUR):",
-                    min=25, max=400, value=100, step=25),
-    ui.output_ui("info"),
-    ui.output_plot("plot", height="340px"),
-)
-
-
-def server(input, output, session):
-    @output
-    @render.ui
-    def info():
-        label, values = DATASETS[input.data()]
-        w = input.bin_width()
-        n = len(values)
-        k = len(make_bins(values, w)) - 1
-        sturges = 1 + 3.3 * log10(n)
-        suggested = (max(values) - min(values)) / sturges
-        return ui.HTML(f"""
-            &lt;div class='info-box'&gt;
-                n = &lt;strong style='color:darkorange'&gt;{n}&lt;/strong&gt; days |
-                bin width = &lt;strong style='color:darkorange'&gt;{w}&lt;/strong&gt; EUR
-                &amp;rarr; &lt;strong style='color:darkorange'&gt;{k}&lt;/strong&gt; classes&lt;br&gt;
-                Sturges suggests about {sturges:.1f} classes, i.e. a width
-                near {suggested:.0f} EUR.
-            &lt;/div&gt;
-        """)
-
-    @output
-    @render.plot
-    def plot():
-        label, values = DATASETS[input.data()]
-        return draw(values, input.bin_width(), label)
-
-
-app = App(app_ui, server)</code></pre>
+</div>
+</div>
+</div>
 </section>
 <section id="exercises" class="level2">
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
@@ -1177,6 +1200,17 @@ app = App(app_ui, server)</code></pre>
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IntcbiAgY29uc3QgSEFSQk9VUl8xMjAgPSBbXG4gICAgNDYwLjQ4LCA1MDAuMDIsIDQxOC42NSwgNTA4LjgwLCA2NDYuMTksIDc4NS43OSwgNzE5LjY2LCA0NzguMDQsXG4gICAgNjY5LjAwLCA2NjYuNDIsIDYxNC44MywgNTIwLjk5LCA3MjUuNjYsIDg4Ni41NiwgNjkxLjUwLCA3NDQuOTIsXG4gICAgNjE0Ljc1LCA3MDAuNDEsIDY5Mi42MCwgNzY0LjU5LCA4NTYuNTIsIDY0MS4wNywgNDA3LjU5LCA0MzcuMzEsXG4gICAgNDM0LjU4LCA1ODcuMDYsIDc0Mi45OSwgODQxLjgzLCA1NTkuNTMsIDUzMS45MSwgMzg3LjkzLCAzMjguMDQsXG4gICAgNjguMjYsIDMwMi43NSwgMzI0LjQyLCAzNjUuODUsIDQxNy4wOSwgNDQ2Ljg3LCA0MzUuMDcsIDU2OS45MSxcbiAgICA0MTYuMDYsIDI0Ni44NCwgNjMwLjEwLCAzNzQuMTIsIDEwMDAuMDAsIDUwNC4yNywgMjA2LjgyLCAxODAuOTUsXG4gICAgNzAuMTksIDQwNi4xNiwgMjczLjU3LCAzODQuNTAsIDUxLjIxLCAzMTQuNjMsIDMyOC40NCwgNTE3LjEzLFxuICAgIDE0Ny41NiwgMjc1LjQ0LCA0NjkuNTIsIDMzMy4zNCwgMzQzLjY0LCAxODUuNzcsIDM4Mi44MSwgODQuMDcsXG4gICAgNDQwLjMxLCAyNjEuOTUsIDYxLjE3LCA0NDEuNTgsIDY2NC42NywgNjQ0LjM5LCA3NS40MiwgNDUzLjA0LFxuICAgIDYyMy43NywgMjYxLjE1LCAxMDQuOTQsIDQwMS4zNiwgMzg5Ljc5LCAyNzAuNDQsIDMyMS4xNywgMTA1MC4wMCxcbiAgICAzMTEuNDEsIDM5My4xNCwgNjYuMTcsIDQxMy4wNiwgNDg0LjQyLCA4MC40NCwgMjA0LjI3LCAyMjcuNDksXG4gICAgMjkxLjAxLCAzODIuNTEsIDExOS45NywgNTQ5LjUxLCA0MDEuMzAsIDEzNy40NSwgMjcxLjAyLCAyNjcuMDQsXG4gICAgMzI5LjE5LCA2MzQuNzgsIDI5Ny4yMCwgMTY2LjQ4LCAxNjQuMDMsIDM2My4zNiwgMjQ3LjE4LCA0NjIuNTUsXG4gICAgNjU3Ljg4LCA2Ny4wOCwgNDc0LjMyLCA2MDcuMjQsIDE3OC4wNSwgMzQ2LjkwLCAzMTcuNjAsIDIwOC43OSxcbiAgICAzMzEuMzgsIDMxNS4yNiwgMzM1LjM4LCAyNzMuNTMsIDIyNy4yOSwgMTg3LjU4LCA2MjAuMjAsIDExNi4yN1xuICBdO1xuICBjb25zdCBDQU1QVVNfMTIwID0gW1xuICAgIDEwODkuNDAsIDEzMzUuNDgsIDU0MC4wMywgNTk4Ljc2LCAzNzcuNzQsIDE3MC44NCwgMjMuODUsIDM2OC44MyxcbiAgICA1OTkuNjYsIDQzMi43MSwgNDc4LjQwLCA1NzIuNDAsIDI5OS4wOSwgMTg2LjI2LCA1NTYuMTEsIDM1Ni4xMSxcbiAgICA2NTguODksIDY5Ny4zOSwgMzYxLjA5LCAyNzcuNjIsIDE3Mi4yNCwgODcwLjAzLCAxNDA3LjU5LCA0NDguMzMsXG4gICAgNzE1LjY0LCAyNjcuNjgsIDExNC4yMSwgMzIzLjE0LCAzOTYuNjksIDc0Mi4wMSwgMTExNC44OSwgNzQxLjkxLFxuICAgIDI3NS44MiwgMjQ1LjIxLCA1NS4wNiwgMzQ2LjI0LCA1OTguMTIsIDk4OS40MywgMjk1Ljg1LCAxMzguNDQsXG4gICAgMjY3LjAwLCA3Mi4zNCwgODk4LjA4LCAzODQuMDksIDI5MS45NSwgNDcyLjA1LCA2NjcuMDUsIDc5LjQ3LFxuICAgIDI2LjU3LCAxMTM1Ljg5LCA5NTEuMTgsIDQwMy44OSwgNDI3Ljg0LCAxNTYuMzAsIDE4MS44OCwgMzAuNTgsXG4gICAgMjQxLjk5LCAzODAuNjAsIDMxOC42OCwgNDQ2LjQyLCA0MTMuNjMsIDE1OS40MywgMTIxLjYwLCA1NzcuMDEsXG4gICAgNDkzLjkyLCA0MzYuNzQsIDUyOS4xNCwgNTI0LjExLCAzNS44MCwgMjM0LjA5LCAzNTkuMzQsIDI2OS4zMSxcbiAgICAyNDYuMTAsIDI3MC44NywgNzQ3Ljg0LCA0MzYuMzMsIDE4MC42NywgNDAyLjQxLCAzNDguNzksIDcxNy44MSxcbiAgICAzOTkuMzgsIDg2NC4wOCwgMTcxLjYxLCAyMTMuNDAsIDMzMy4wMywgNTY2Ljk0LCA1MTkuOTIsIDQzOS42NSxcbiAgICA1NjguNDEsIDI1MS43MywgNDkuMDIsIDk1MC4xMiwgMzQ1Ljg5LCA1NjkuNjUsIDQ4My41NCwgMjUxLjEwLFxuICAgIDIyNy4yMywgMTk4LjQ0LCA4NDkuODYsIDEwMDAuNTYsIDYyMS40NSwgNDQxLjQxLCA1NzQuOTAsIDkzLjI5LFxuICAgIDIwNC44NywgNTIxLjA0LCAyNjguMDYsIDg1OS4xNSwgOTQ5LjEwLCAxNzUuOTAsIDE3OS44NCwgMjA4LjEwLFxuICAgIDEwNjIuOTgsIDc2MS4wNiwgNzczLjA4LCAyNzguODYsIDI0NS4wNiwgMTI3LjI2LCA2My40OSwgMTM2Mi45M1xuICBdO1xuICBjb25zdCBEQVRBU0VUUyA9IHtcbiAgICBoYXJib3VyMzA6IFtcIkhhcmJvdXIsIGZpcnN0IDMwIGRheXNcIiwgSEFSQk9VUl8xMjAuc2xpY2UoMCwgMzApXSxcbiAgICBoYXJib3VyMTIwOiBbXCJIYXJib3VyLCBhbGwgMTIwIGRheXNcIiwgSEFSQk9VUl8xMjBdLFxuICAgIGNhbXB1czEyMDogW1wiQ2FtcHVzLCBhbGwgMTIwIGRheXNcIiwgQ0FNUFVTXzEyMF1cbiAgfTtcbiAgY29uc3Qgcm9vdCA9IGh0bWxgPGRpdiBjbGFzcz1cIm9qcy1kZW1vXCI+XG4gICAgPGZvcm0+XG4gICAgICA8cD5EYXRhOlxuICAgICAgICA8bGFiZWw+PGlucHV0IHR5cGU9XCJyYWRpb1wiIG5hbWU9XCJoaXN0LWRhdGFcIiB2YWx1ZT1cImhhcmJvdXIzMFwiIGNoZWNrZWQ+XG4gICAgICAgICAgSGFyYm91ciwgZmlyc3QgMzAgZGF5czwvbGFiZWw+XG4gICAgICAgIDxsYWJlbD48aW5wdXQgdHlwZT1cInJhZGlvXCIgbmFtZT1cImhpc3QtZGF0YVwiIHZhbHVlPVwiaGFyYm91cjEyMFwiPlxuICAgICAgICAgIEhhcmJvdXIsIGFsbCAxMjAgZGF5czwvbGFiZWw+XG4gICAgICAgIDxsYWJlbD48aW5wdXQgdHlwZT1cInJhZGlvXCIgbmFtZT1cImhpc3QtZGF0YVwiIHZhbHVlPVwiY2FtcHVzMTIwXCI+XG4gICAgICAgICAgQ2FtcHVzLCBhbGwgMTIwIGRheXM8L2xhYmVsPlxuICAgICAgPC9wPlxuICAgICAgPGxhYmVsPkJpbiB3aWR0aCAoRVVSKTpcbiAgICAgICAgPGlucHV0IHR5cGU9XCJyYW5nZVwiIG5hbWU9XCJ3aWR0aFwiIG1pbj1cIjI1XCIgbWF4PVwiNDAwXCIgc3RlcD1cIjI1XCJcbiAgICAgICAgICB2YWx1ZT1cIjEwMFwiPiA8b3V0cHV0PjEwMDwvb3V0cHV0PjwvbGFiZWw+XG4gICAgPC9mb3JtPlxuICAgIDxwIGNsYXNzPVwib2pzLWRlbW8taW5mb1wiPjwvcD5cbiAgICA8ZGl2IGNsYXNzPVwib2pzLWRlbW8tY2hhcnRcIj48L2Rpdj5cbiAgPC9kaXY+YDtcbiAgY29uc3QgZm9ybSA9IHJvb3QucXVlcnlTZWxlY3RvcihcImZvcm1cIik7XG5cbiAgZnVuY3Rpb24gcmVkcmF3KCkge1xuICAgIGNvbnN0IGtleSA9IGZvcm0ucXVlcnlTZWxlY3RvcihcImlucHV0W25hbWU9aGlzdC1kYXRhXTpjaGVja2VkXCIpLnZhbHVlO1xuICAgIGNvbnN0IFtsYWJlbCwgdmFsdWVzXSA9IERBVEFTRVRTW2tleV07XG4gICAgY29uc3QgdyA9ICtmb3JtLnF1ZXJ5U2VsZWN0b3IoXCJpbnB1dFtuYW1lPXdpZHRoXVwiKS52YWx1ZTtcbiAgICBmb3JtLnF1ZXJ5U2VsZWN0b3IoXCJvdXRwdXRcIikudGV4dENvbnRlbnQgPSB3O1xuICAgIGNvbnN0IG4gPSB2YWx1ZXMubGVuZ3RoLCB2bWluID0gTWF0aC5taW4oLi4udmFsdWVzKSwgdm1heCA9IE1hdGgubWF4KC4uLnZhbHVlcyk7XG4gICAgY29uc3QgbG8gPSBNYXRoLmZsb29yKHZtaW4gLyB3KSAqIHc7XG4gICAgY29uc3QgaGkgPSAoTWF0aC5mbG9vcih2bWF4IC8gdykgKyAxKSAqIHc7XG4gICAgY29uc3QgayA9IE1hdGgucm91bmQoKGhpIC0gbG8pIC8gdyk7XG4gICAgY29uc3QgY291bnRzID0gbmV3IEFycmF5KGspLmZpbGwoMCk7XG4gICAgdmFsdWVzLmZvckVhY2godiA9PiB7IGNvdW50c1tNYXRoLm1pbihrIC0gMSwgTWF0aC5mbG9vcigodiAtIGxvKSAvIHcpKV0gKz0gMTsgfSk7XG4gICAgY29uc3Qgc3R1cmdlcyA9IDEgKyAzLjMgKiBNYXRoLmxvZzEwKG4pO1xuICAgIGNvbnN0IHN1Z2dlc3RlZCA9ICh2bWF4IC0gdm1pbikgLyBzdHVyZ2VzO1xuICAgIHJvb3QucXVlcnlTZWxlY3RvcihcIi5vanMtZGVtby1pbmZvXCIpLmlubmVySFRNTCA9XG4gICAgICBgbiA9IDxzdHJvbmc+JHtufTwvc3Ryb25nPiBkYXlzIMK3IGJpbiB3aWR0aCA9IDxzdHJvbmc+JHt3fTwvc3Ryb25nPiBFVVJcbiAgICAgICDihpIgPHN0cm9uZz4ke2t9PC9zdHJvbmc+IGNsYXNzZXM8YnI+U3R1cmdlcyBzdWdnZXN0cyBhYm91dFxuICAgICAgICR7c3R1cmdlcy50b0ZpeGVkKDEpfSBjbGFzc2VzLCBpLmUuIGEgd2lkdGggbmVhclxuICAgICAgICR7c3VnZ2VzdGVkLnRvRml4ZWQoMCl9IEVVUi5gO1xuXG4gICAgY29uc3QgVyA9IDY2MCwgSHQgPSAzNDAsIEwgPSA1MCwgUiA9IDE1LCBUID0gMzAsIEIgPSA0NTtcbiAgICBjb25zdCBjbWF4ID0gTWF0aC5tYXgoLi4uY291bnRzKTtcbiAgICBjb25zdCB4ID0gdiA9PiBMICsgKHYgLSBsbykgKiAoVyAtIEwgLSBSKSAvIChoaSAtIGxvKTtcbiAgICBjb25zdCB5ID0gYyA9PiBIdCAtIEIgLSBjICogKEh0IC0gVCAtIEIpIC8gY21heDtcbiAgICBsZXQgZyA9IGA8dGV4dCB4PVwiJHtXIC8gMn1cIiB5PVwiMThcIiB0ZXh0LWFuY2hvcj1cIm1pZGRsZVwiXG4gICAgICBmaWxsPVwiY3VycmVudENvbG9yXCIgZm9udC1zaXplPVwiMTRcIj4ke2xhYmVsfTwvdGV4dD5gO1xuICAgIGNvbnN0IHN0ZXAgPSBNYXRoLm1heCgxLCBNYXRoLmNlaWwoY21heCAvIDYpKTtcbiAgICBmb3IgKGxldCBjID0gMDsgYyA8PSBjbWF4OyBjICs9IHN0ZXApIHtcbiAgICAgIGcgKz0gYDxsaW5lIHgxPVwiJHtMfVwiIHgyPVwiJHtXIC0gUn1cIiB5MT1cIiR7eShjKX1cIiB5Mj1cIiR7eShjKX1cIlxuICAgICAgICBzdHJva2U9XCJjdXJyZW50Q29sb3JcIiBzdHJva2Utb3BhY2l0eT1cIjAuMTVcIi8+XG4gICAgICAgIDx0ZXh0IHg9XCIke0wgLSA2fVwiIHk9XCIke3koYykgKyA0fVwiIHRleHQtYW5jaG9yPVwiZW5kXCJcbiAgICAgICAgZmlsbD1cImN1cnJlbnRDb2xvclwiIGZvbnQtc2l6ZT1cIjExXCI+JHtjfTwvdGV4dD5gO1xuICAgIH1cbiAgICBjb3VudHMuZm9yRWFjaCgoYywgaSkgPT4ge1xuICAgICAgY29uc3QgeDAgPSB4KGxvICsgaSAqIHcpLCB4MSA9IHgobG8gKyAoaSArIDEpICogdyk7XG4gICAgICBnICs9IGA8cmVjdCB4PVwiJHt4MH1cIiB5PVwiJHt5KGMpfVwiIHdpZHRoPVwiJHtNYXRoLm1heCgwLCB4MSAtIHgwIC0gMSl9XCJcbiAgICAgICAgaGVpZ2h0PVwiJHt5KDApIC0geShjKX1cIiBmaWxsPVwic3RlZWxibHVlXCIgZmlsbC1vcGFjaXR5PVwiMC45XCIvPmA7XG4gICAgfSk7XG4gICAgY29uc3QgdGljayA9IE1hdGguY2VpbCgoaGkgLSBsbykgLyB3IC8gOCkgKiB3O1xuICAgIGZvciAobGV0IHYgPSBsbzsgdiA8PSBoaTsgdiArPSB0aWNrKSB7XG4gICAgICBnICs9IGA8dGV4dCB4PVwiJHt4KHYpfVwiIHk9XCIke0h0IC0gQiArIDE2fVwiIHRleHQtYW5jaG9yPVwibWlkZGxlXCJcbiAgICAgICAgZmlsbD1cImN1cnJlbnRDb2xvclwiIGZvbnQtc2l6ZT1cIjExXCI+JHt2fTwvdGV4dD5gO1xuICAgIH1cbiAgICBnICs9IGA8dGV4dCB4PVwiJHtXIC8gMn1cIiB5PVwiJHtIdCAtIDZ9XCIgdGV4dC1hbmNob3I9XCJtaWRkbGVcIlxuICAgICAgZmlsbD1cImN1cnJlbnRDb2xvclwiIGZvbnQtc2l6ZT1cIjEyXCI+RGFpbHkgcmV2ZW51ZSAoRVVSKTwvdGV4dD5cbiAgICAgIDx0ZXh0IHg9XCIxNFwiIHk9XCIke0h0IC8gMn1cIiB0ZXh0LWFuY2hvcj1cIm1pZGRsZVwiIGZpbGw9XCJjdXJyZW50Q29sb3JcIlxuICAgICAgZm9udC1zaXplPVwiMTJcIiB0cmFuc2Zvcm09XCJyb3RhdGUoLTkwIDE0ICR7SHQgLyAyfSlcIj5OdW1iZXIgb2YgZGF5czwvdGV4dD5gO1xuICAgIHJvb3QucXVlcnlTZWxlY3RvcihcIi5vanMtZGVtby1jaGFydFwiKS5pbm5lckhUTUwgPVxuICAgICAgYDxzdmcgdmlld0JveD1cIjAgMCAke1d9ICR7SHR9XCIgd2lkdGg9XCIxMDAlXCIgcm9sZT1cImltZ1wiXG4gICAgICAgIGFyaWEtbGFiZWw9XCJIaXN0b2dyYW0gb2YgZGFpbHkgcmV2ZW51ZVwiPiR7Z308L3N2Zz5gO1xuICB9XG4gIGZvcm0uYWRkRXZlbnRMaXN0ZW5lcihcImlucHV0XCIsIHJlZHJhdyk7XG4gIHJlZHJhdygpO1xuICByZXR1cm4gcm9vdDtcbn1cbiJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/data-description/modules";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

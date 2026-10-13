@@ -265,23 +265,10 @@ Harbour days, and all 120 Campus days to see how the shape changes. Notice
 that Campus has a long tail to the right: a few very high-revenue days
 stretch the picture.
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 600
-
-from math import floor, log10
-
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
-
-BG = '#1C2E22'
-FG = '#D2CCC0'
-
-HARBOUR_120 = [
+```{ojs}
+//| echo: false
+{
+  const HARBOUR_120 = [
     460.48, 500.02, 418.65, 508.80, 646.19, 785.79, 719.66, 478.04,
     669.00, 666.42, 614.83, 520.99, 725.66, 886.56, 691.50, 744.92,
     614.75, 700.41, 692.60, 764.59, 856.52, 641.07, 407.59, 437.31,
@@ -296,10 +283,9 @@ HARBOUR_120 = [
     291.01, 382.51, 119.97, 549.51, 401.30, 137.45, 271.02, 267.04,
     329.19, 634.78, 297.20, 166.48, 164.03, 363.36, 247.18, 462.55,
     657.88, 67.08, 474.32, 607.24, 178.05, 346.90, 317.60, 208.79,
-    331.38, 315.26, 335.38, 273.53, 227.29, 187.58, 620.20, 116.27,
-]
-
-CAMPUS_120 = [
+    331.38, 315.26, 335.38, 273.53, 227.29, 187.58, 620.20, 116.27
+  ];
+  const CAMPUS_120 = [
     1089.40, 1335.48, 540.03, 598.76, 377.74, 170.84, 23.85, 368.83,
     599.66, 432.71, 478.40, 572.40, 299.09, 186.26, 556.11, 356.11,
     658.89, 697.39, 361.09, 277.62, 172.24, 870.03, 1407.59, 448.33,
@@ -314,92 +300,86 @@ CAMPUS_120 = [
     568.41, 251.73, 49.02, 950.12, 345.89, 569.65, 483.54, 251.10,
     227.23, 198.44, 849.86, 1000.56, 621.45, 441.41, 574.90, 93.29,
     204.87, 521.04, 268.06, 859.15, 949.10, 175.90, 179.84, 208.10,
-    1062.98, 761.06, 773.08, 278.86, 245.06, 127.26, 63.49, 1362.93,
-]
+    1062.98, 761.06, 773.08, 278.86, 245.06, 127.26, 63.49, 1362.93
+  ];
+  const DATASETS = {
+    harbour30: ["Harbour, first 30 days", HARBOUR_120.slice(0, 30)],
+    harbour120: ["Harbour, all 120 days", HARBOUR_120],
+    campus120: ["Campus, all 120 days", CAMPUS_120]
+  };
+  const root = html`<div class="ojs-demo">
+    <form>
+      <p>Data:
+        <label><input type="radio" name="hist-data" value="harbour30" checked>
+          Harbour, first 30 days</label>
+        <label><input type="radio" name="hist-data" value="harbour120">
+          Harbour, all 120 days</label>
+        <label><input type="radio" name="hist-data" value="campus120">
+          Campus, all 120 days</label>
+      </p>
+      <label>Bin width (EUR):
+        <input type="range" name="width" min="25" max="400" step="25"
+          value="100"> <output>100</output></label>
+    </form>
+    <p class="ojs-demo-info"></p>
+    <div class="ojs-demo-chart"></div>
+  </div>`;
+  const form = root.querySelector("form");
 
-DATASETS = {
-    "harbour30": ("Harbour, first 30 days", HARBOUR_120[:30]),
-    "harbour120": ("Harbour, all 120 days", HARBOUR_120),
-    "campus120": ("Campus, all 120 days", CAMPUS_120),
+  function redraw() {
+    const key = form.querySelector("input[name=hist-data]:checked").value;
+    const [label, values] = DATASETS[key];
+    const w = +form.querySelector("input[name=width]").value;
+    form.querySelector("output").textContent = w;
+    const n = values.length, vmin = Math.min(...values), vmax = Math.max(...values);
+    const lo = Math.floor(vmin / w) * w;
+    const hi = (Math.floor(vmax / w) + 1) * w;
+    const k = Math.round((hi - lo) / w);
+    const counts = new Array(k).fill(0);
+    values.forEach(v => { counts[Math.min(k - 1, Math.floor((v - lo) / w))] += 1; });
+    const sturges = 1 + 3.3 * Math.log10(n);
+    const suggested = (vmax - vmin) / sturges;
+    root.querySelector(".ojs-demo-info").innerHTML =
+      `n = <strong>${n}</strong> days · bin width = <strong>${w}</strong> EUR
+       → <strong>${k}</strong> classes<br>Sturges suggests about
+       ${sturges.toFixed(1)} classes, i.e. a width near
+       ${suggested.toFixed(0)} EUR.`;
+
+    const W = 660, Ht = 340, L = 50, R = 15, T = 30, B = 45;
+    const cmax = Math.max(...counts);
+    const x = v => L + (v - lo) * (W - L - R) / (hi - lo);
+    const y = c => Ht - B - c * (Ht - T - B) / cmax;
+    let g = `<text x="${W / 2}" y="18" text-anchor="middle"
+      fill="currentColor" font-size="14">${label}</text>`;
+    const step = Math.max(1, Math.ceil(cmax / 6));
+    for (let c = 0; c <= cmax; c += step) {
+      g += `<line x1="${L}" x2="${W - R}" y1="${y(c)}" y2="${y(c)}"
+        stroke="currentColor" stroke-opacity="0.15"/>
+        <text x="${L - 6}" y="${y(c) + 4}" text-anchor="end"
+        fill="currentColor" font-size="11">${c}</text>`;
+    }
+    counts.forEach((c, i) => {
+      const x0 = x(lo + i * w), x1 = x(lo + (i + 1) * w);
+      g += `<rect x="${x0}" y="${y(c)}" width="${Math.max(0, x1 - x0 - 1)}"
+        height="${y(0) - y(c)}" fill="steelblue" fill-opacity="0.9"/>`;
+    });
+    const tick = Math.ceil((hi - lo) / w / 8) * w;
+    for (let v = lo; v <= hi; v += tick) {
+      g += `<text x="${x(v)}" y="${Ht - B + 16}" text-anchor="middle"
+        fill="currentColor" font-size="11">${v}</text>`;
+    }
+    g += `<text x="${W / 2}" y="${Ht - 6}" text-anchor="middle"
+      fill="currentColor" font-size="12">Daily revenue (EUR)</text>
+      <text x="14" y="${Ht / 2}" text-anchor="middle" fill="currentColor"
+      font-size="12" transform="rotate(-90 14 ${Ht / 2})">Number of days</text>`;
+    root.querySelector(".ojs-demo-chart").innerHTML =
+      `<svg viewBox="0 0 ${W} ${Ht}" width="100%" role="img"
+        aria-label="Histogram of daily revenue">${g}</svg>`;
+  }
+  form.addEventListener("input", redraw);
+  redraw();
+  return root;
 }
-
-
-def make_bins(values, width):
-    lo = int(floor(min(values) / width) * width)
-    hi = int((floor(max(values) / width) + 1) * width)
-    return np.arange(lo, hi + width, width)
-
-
-def draw(values, width, title):
-    bins = make_bins(values, width)
-    fig, ax = plt.subplots(figsize=(7, 4))
-    fig.patch.set_facecolor(BG)
-    ax.set_facecolor(BG)
-    for spine in ax.spines.values():
-        spine.set_edgecolor(FG)
-    ax.tick_params(colors=FG)
-    ax.hist(values, bins=bins, color='steelblue', edgecolor=BG, alpha=0.9)
-    ax.set_xlabel("Daily revenue (EUR)", color=FG)
-    ax.set_ylabel("Number of days", color=FG)
-    ax.set_title(title, color=FG)
-    ax.grid(alpha=0.15, color=FG, axis='y')
-    fig.tight_layout()
-    return fig
-
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px;
-               font-family: sans-serif; margin: 0; }}
-        .form-label, label {{ color: {FG} !important; }}
-        .form-range {{ accent-color: steelblue; width: 100%; }}
-        .info-box {{ background: #152119; border-radius: 6px;
-                    padding: 10px 14px; margin: 8px 0;
-                    border-left: 3px solid steelblue;
-                    font-family: monospace; font-size: 0.9em; }}
-    """),
-    ui.h5("Histogram builder: The Wandering Fork's daily revenue",
-          style=f"color:{FG}"),
-    ui.input_radio_buttons(
-        "data", "Data:",
-        {key: label for key, (label, _) in DATASETS.items()},
-        selected="harbour30", inline=True,
-    ),
-    ui.input_slider("bin_width", "Bin width (EUR):",
-                    min=25, max=400, value=100, step=25),
-    ui.output_ui("info"),
-    ui.output_plot("plot", height="340px"),
-)
-
-
-def server(input, output, session):
-    @output
-    @render.ui
-    def info():
-        label, values = DATASETS[input.data()]
-        w = input.bin_width()
-        n = len(values)
-        k = len(make_bins(values, w)) - 1
-        sturges = 1 + 3.3 * log10(n)
-        suggested = (max(values) - min(values)) / sturges
-        return ui.HTML(f"""
-            <div class='info-box'>
-                n = <strong style='color:darkorange'>{n}</strong> days |
-                bin width = <strong style='color:darkorange'>{w}</strong> EUR
-                &rarr; <strong style='color:darkorange'>{k}</strong> classes<br>
-                Sturges suggests about {sturges:.1f} classes, i.e. a width
-                near {suggested:.0f} EUR.
-            </div>
-        """)
-
-    @output
-    @render.plot
-    def plot():
-        label, values = DATASETS[input.data()]
-        return draw(values, input.bin_width(), label)
-
-
-app = App(app_ui, server)
 ```
 
 ## Exercises
