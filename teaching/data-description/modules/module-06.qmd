@@ -1,7 +1,7 @@
 ---
 title: "Module 6 — Dispersion"
 subtitle: "Data Description | Part II — Summarising one variable"
-date-modified: 2026-10-08
+date-modified: 2026-10-13
 lang: en
 ---
 
@@ -10,16 +10,23 @@ revenue of €628.34 (Harbour, 30 days) — but two businesses can share
 the exact same mean and still be very different to run: one reliably
 steady, the other wildly erratic. **Dispersion indicators** measure
 exactly that variability, and they are what turns "the average day"
-into "the average day, ± how much".
+into "the average day, ± how much". We start with two trucks small
+enough to compute by hand, and only then write the formulas.
 
 ## Learning objectives
 
 By the end of this module, you will be able to:
 
-- Compute the range and the interquartile range.
-- Compute the sample variance and sample standard deviation, using
-  both the definitional and the shortcut (computational) formula.
-- Compute and interpret the coefficient of variation.
+- Explain in one sentence what the range, the interquartile range, the
+  standard deviation $s$ and the coefficient of variation $CV$ measure.
+- Compute the range, the sample variance $s^2$ and the sample standard
+  deviation $s$ by hand with a deviation table.
+- Read the variance formula aloud as a sentence, and write $\sum$
+  notation for a sum described in words.
+- Compute and interpret the coefficient of variation to compare
+  variability across different means or units.
+- Use the shortcut (computational) formula and explain why the mean
+  must not be rounded in it.
 - Use the interactive calculator below to see how editing a sample
   changes its dispersion indicators live.
 
@@ -27,14 +34,186 @@ By the end of this module, you will be able to:
 
 | Block | Minutes | What you do |
 |---|---:|---|
-| Theory | 75 | Range, IQR, sample variance, sample standard deviation, coefficient of variation, shortcut formula |
-| Excel lab | 50 | `VAR.S`, `STDEV.S`, `VAR.P`, `STDEV.P`, `SUMSQ`, CV formula |
-| Exercises | 55 | Three by-hand and three Excel exercises |
+| Hook | 10 | Two trucks, same mean — which is riskier to run? |
+| Concrete build | 45 | Range on both trucks, IQR recall, deviation table, sum-to-zero, square, average with $n-1$, square root |
+| Notation | 25 | Notation decoders for $s^2$ and $s$; formula ↔ words; reading $\sum$ |
+| Relative spread | 20 | $CV$ from "is €200 a lot?"; shortcut formula on Truck A |
+| Worked example | 20 | Harbour 30-day values; interpretation; visual intuition and demo |
+| Practice | 45 | By-hand exercises 1–5 |
+| Exit check | 10 | Five concept and notation questions |
+| Excel preview | 5 | Instructor shows `STDEV.S` reproducing the hand result; homework briefing |
 | **Total** | **180** | |
+
+The Excel lab is now [homework](#homework-excel-lab), done after class.
 
 ## Theory
 
+### Same mean, different days
+
+Two Wandering Fork trucks recorded their revenue over the same five
+days. The numbers are a simplified extract chosen so that you can
+compute everything by hand.
+
+| Day | Truck A "Steady" (€) | Truck B "Erratic" (€) |
+|---|---:|---:|
+| 1 | 590 | 370 |
+| 2 | 610 | 470 |
+| 3 | 630 | 670 |
+| 4 | 630 | 720 |
+| 5 | 640 | 870 |
+| **Mean** | **620** | **620** |
+
+Both trucks earn **€620 on an average day**. Which one would you rather
+manage — and what would you tell the bank about each one's revenue?
+Look at the figure before computing anything (start with step 1).
+
+```{ojs}
+//| echo: false
+truckA = [590, 610, 630, 630, 640]
+truckB = [370, 470, 670, 720, 870]
+
+function stats(xs) {
+  const n = xs.length;
+  const mean = xs.reduce((a, b) => a + b, 0) / n;
+  const dev = xs.map(x => x - mean);
+  const sq = dev.map(d => d * d);
+  const sumDev = dev.reduce((a, b) => a + b, 0);
+  const ss = sq.reduce((a, b) => a + b, 0);
+  const s2 = ss / (n - 1);
+  return {n, mean, dev, sq, sumDev, ss, s2, s: Math.sqrt(s2)};
+}
+
+fmt = v => Math.round(v).toLocaleString("en-US")
+signed = v => (v > 0 ? "+" : v < 0 ? "−" : "") + fmt(Math.abs(v))
+
+viewof step = {
+  const labels = ["1 · Dots", "2 · Deviations", "3 · Squares"];
+  const form = html`<form class="ojs-step-picker">Show: ${labels.map((l, i) =>
+    html`<label> <input type="radio" name="step" value="${i + 1}"
+      ${i === 0 ? "checked" : ""}> ${l} </label>`)}</form>`;
+  form.value = 1;
+  form.oninput = () => {
+    form.value = +form.querySelector("input:checked").value;
+  };
+  return form;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const W = 660, BLUE = "steelblue", ORANGE = "darkorange";
+  const POS = "#5cb85c", NEG = "#d9534f";
+  const trucks = [["Truck A", stats(truckA), truckA],
+                  ["Truck B", stats(truckB), truckB]];
+  let g = "";
+
+  if (step < 3) {
+    const x = v => 90 + (v - 340) * (W - 120) / (900 - 340);
+    const H = 340, rowH = 22;
+    trucks.forEach(([name, st, xs], k) => {
+      const top = 40 + k * 145;
+      g += `<text x="10" y="${top + 2 * rowH + 5}" fill="currentColor"
+        font-weight="bold">${name}</text>`;
+      g += `<line x1="${x(st.mean)}" x2="${x(st.mean)}" y1="${top - 18}"
+        y2="${top + 5 * rowH - 8}" stroke="${ORANGE}" stroke-width="2"
+        stroke-dasharray="6 4"/>`;
+      g += `<text x="${x(st.mean) + 6}" y="${top - 8}" fill="${ORANGE}"
+        font-size="12">mean = ${fmt(st.mean)}</text>`;
+      xs.forEach((v, i) => {
+        const y = top + i * rowH;
+        const d = st.dev[i];
+        if (step === 2 && d !== 0) {
+          const c = d > 0 ? POS : NEG;
+          g += `<line x1="${x(st.mean)}" x2="${x(v)}" y1="${y}" y2="${y}"
+            stroke="${c}" stroke-width="3"/>`;
+          g += `<text x="${x(v) + (d > 0 ? 10 : -10)}" y="${y + 4}"
+            text-anchor="${d > 0 ? "start" : "end"}" fill="${c}"
+            font-size="12">${signed(d)}</text>`;
+        }
+        g += `<circle cx="${x(v)}" cy="${y}" r="6" fill="${BLUE}"/>`;
+      });
+      if (step === 2) {
+        g += `<text x="10" y="${top + 2 * rowH + 22}" fill="currentColor"
+          font-size="12">sum = ${fmt(st.sumDev)}</text>`;
+      }
+    });
+    for (let t = 400; t <= 900; t += 100) {
+      g += `<line x1="${x(t)}" x2="${x(t)}" y1="${H - 30}" y2="${H - 24}"
+        stroke="currentColor"/>`;
+      g += `<text x="${x(t)}" y="${H - 10}" text-anchor="middle"
+        fill="currentColor" font-size="12">€${t}</text>`;
+    }
+    g += `<line x1="${x(340)}" x2="${x(900)}" y1="${H - 30}" y2="${H - 30}"
+      stroke="currentColor"/>`;
+    return html`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"
+      aria-label="Daily revenue of Truck A and Truck B around their mean">
+      ${g}</svg>`;
+  }
+
+  const k = 0.45, H = 270;
+  const baselines = [70, 245];
+  trucks.forEach(([name, st], t) => {
+    const base = baselines[t];
+    g += `<text x="10" y="${base - 4}" fill="currentColor"
+      font-weight="bold">${name}</text>`;
+    let cx = 90;
+    st.dev.forEach(d => {
+      const side = Math.abs(d) * k;
+      g += `<rect x="${cx}" y="${base - side}" width="${side}"
+        height="${side}" fill="${d > 0 ? POS : NEG}" fill-opacity="0.45"
+        stroke="${d > 0 ? POS : NEG}"/>`;
+      cx += side + 10;
+    });
+    const avg = st.s * k;
+    cx += 30;
+    g += `<rect x="${cx}" y="${base - avg}" width="${avg}" height="${avg}"
+      fill="none" stroke="${ORANGE}" stroke-width="2"
+      stroke-dasharray="5 3"/>`;
+    g += `<text x="90" y="${base + 16}" fill="${ORANGE}"
+      font-size="12">dashed: the average square, side s = ${fmt(st.s)}</text>`;
+  });
+  return html`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"
+    aria-label="Squared deviations of Truck A and Truck B drawn as squares">
+    ${g}</svg>`;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const a = stats(truckA), b = stats(truckB);
+  const line = (name, st) => step === 1
+    ? `${name}: values from €${fmt(Math.min(...(name === "Truck A" ? truckA : truckB)))} to €${fmt(Math.max(...(name === "Truck A" ? truckA : truckB)))}, mean €${fmt(st.mean)}.`
+    : step === 2
+    ? `${name}: deviations ${st.dev.map(signed).join(", ")} — sum = ${fmt(st.sumDev)}.`
+    : `${name}: squares ${st.sq.map(fmt).join(" + ")} = ${fmt(st.ss)}; ÷ ${st.n - 1} = ${fmt(st.s2)} = s², so s = ${fmt(st.s)}.`;
+  return html`<p><em>${line("Truck A", a)}<br>${line("Truck B", b)}</em></p>`;
+}
+```
+
 ### Range and interquartile range
+
+**Try it.** For each truck, find the best day, the worst day and the
+gap between them.
+
+| Truck | Max (€) | Min (€) | Max − Min (€) |
+|---|---:|---:|---:|
+| A "Steady" | ? | ? | ? |
+| B "Erratic" | ? | ? | ? |
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+Truck A: $640 - 590 = 50$. Truck B: $870 - 370 = 500$. Truck B's best
+and worst days are **10 times** further apart than Truck A's, even
+though both average €620.
+:::
+
+**See it.** In step 1 of the figure, Truck B's dots stretch across
+almost the whole axis; Truck A's huddle around the mean line.
+
+In plain words: the range uses only the two most extreme values; the
+IQR uses the middle 50%, so a single outlier cannot distort it.
 
 ::: {.callout-note}
 #### Definition — range and interquartile range
@@ -44,10 +223,84 @@ measures the spread of only the central 50% of the data, making it
 more robust to extreme values.
 :::
 
-In plain words: the range uses only the two most extreme values; the
-IQR uses the middle 50%, so a single outlier cannot distort it.
+**Recall.** You computed $Q_1$ and $Q_3$ in
+[Module 5](module-05.qmd); the IQR is simply the gap between them, read
+off the boxplot as the length of the box.
 
 ### Sample variance and standard deviation
+
+The range looks at two days only. To use **every** day, measure how far
+each day is from the mean.
+
+**Try it.** Complete the deviation table for Truck A
+($n = 5$, $\bar{x} = 620$), working column by column.
+
+| Day $i$ | $x_i$ (€) | $x_i-\bar{x}$ (€) | $(x_i-\bar{x})^2$ (€²) |
+|---|---:|---:|---:|
+| 1 | 590 | ? | ? |
+| 2 | 610 | ? | ? |
+| 3 | 630 | ? | ? |
+| 4 | 630 | ? | ? |
+| 5 | 640 | ? | ? |
+| **Total** | **3,100** | **?** | **?** |
+
+1. Fill the deviation column $x_i-\bar{x}$, then add it up. What do you
+   notice?
+2. Square each deviation and add up the squares.
+3. Divide that total by $n-1 = 4$.
+4. Take the square root of the result.
+
+Your turn: build the same table for Truck B.
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+**Truck A**
+
+| Day $i$ | $x_i$ | $x_i-\bar{x}$ | $(x_i-\bar{x})^2$ |
+|---|---:|---:|---:|
+| 1 | 590 | −30 | 900 |
+| 2 | 610 | −10 | 100 |
+| 3 | 630 | 10 | 100 |
+| 4 | 630 | 10 | 100 |
+| 5 | 640 | 20 | 400 |
+| **Total** | **3,100** | **0** | **1,600** |
+
+$1{,}600 / 4 = 400$ €², and $\sqrt{400} = 20$ €.
+
+**Truck B**
+
+| Day $i$ | $x_i$ | $x_i-\bar{x}$ | $(x_i-\bar{x})^2$ |
+|---|---:|---:|---:|
+| 1 | 370 | −250 | 62,500 |
+| 2 | 470 | −150 | 22,500 |
+| 3 | 670 | 50 | 2,500 |
+| 4 | 720 | 100 | 10,000 |
+| 5 | 870 | 250 | 62,500 |
+| **Total** | **3,100** | **0** | **160,000** |
+
+$160{,}000 / 4 = 40{,}000$ €², and $\sqrt{40{,}000} = 200$ €. On a
+typical day Truck B is about €200 away from its mean; Truck A only
+about €20.
+:::
+
+**Why is the deviation total always 0?** The mean is the balance point
+of the data: the days above it exactly offset the days below it. So
+the plain average of the deviations is always 0 and tells you nothing.
+Squaring removes the signs — every distance counts as positive — and
+gives big misses more weight than small ones.
+
+**Why divide by 4 and not 5?** Suppose you know Truck A's first four
+deviations: −30, −10, 10, 10. Because the total must be 0, the fifth
+deviation *has* to be +20. Only 4 of the 5 deviations are free to vary,
+so we average over $n-1 = 4$.
+
+**See it.** Step 2 of the figure draws each deviation as a bar from the
+mean (sum = 0). Step 3 draws each squared deviation as a square: the
+variance is the size of the "average square", and $s$ is its side.
+
+In plain words: measure how far each observation is from the mean,
+square those distances (so they are all positive), average them (with
+$n-1$), and take the square root to get back to the original unit.
 
 ::: {.callout-tip}
 #### Formula — sample variance and standard deviation
@@ -62,9 +315,24 @@ estimated from the same sample). The **sample standard deviation**
 $s=\sqrt{s^2}$ returns to the original unit (€, not €²).
 :::
 
-In plain words: measure how far each observation is from the mean,
-square those distances (so they are all positive), average them (with
-$n-1$), and take the square root to get back to the original unit.
+::: {.callout-note}
+#### Notation decoder — sample variance and standard deviation
+| Symbol | Read aloud | In our example (Truck A) |
+|---|---|---|
+| $n$ | "n" | 5 days |
+| $x_i$ | "x sub i" | the value on day $i$, e.g. $x_1 = 590$ |
+| $\bar{x}$ | "x-bar" | the mean, 620 |
+| $x_i-\bar{x}$ | "x sub i minus x-bar" | the deviation column: −30, −10, 10, 10, 20 |
+| $(x_i-\bar{x})^2$ | "… squared" | the squares column: 900, 100, 100, 100, 400 |
+| $\sum_{i=1}^{n}$ | "add up, for i from 1 to n" | the Total row: 1,600 |
+| $\frac{1}{n-1}$ | "divided by n minus 1" | ÷ 4 |
+| $s^2$ | "s squared" | 400 €² |
+| $s=\sqrt{s^2}$ | "s" | 20 € |
+
+**Whole formula as a sentence:** "the sample variance is the sum, over
+all $n$ days, of each day's squared distance from the mean, divided by
+$n-1$; the standard deviation is its square root."
+:::
 
 ::: {.callout-warning}
 #### Why $n-1$ and not $n$?
@@ -79,6 +347,26 @@ variants (`.P`) are shown for completeness.
 
 ### Coefficient of variation
 
+**Try it.** Truck B's standard deviation is €200. Is that a lot?
+
+1. Compute $s / \bar{x} \times 100\%$ for Truck A and Truck B.
+2. A coffee cart in the same fleet has a mean of €62 and $s = €20$ —
+   exactly Truck A's $s$. Is it as steady as Truck A?
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+1. Truck A: $20/620 \times 100\% = 3.23\%$. Truck B:
+   $200/620 \times 100\% = 32.26\%$.
+2. Coffee cart: $20/62 \times 100\% = 32.26\%$ — the same relative
+   variability as the *erratic* Truck B. A €20 swing is tiny next to
+   €620 but huge next to €62. The size of $s$ only means something
+   relative to the mean.
+:::
+
+In plain words: divide the standard deviation by the mean and express
+as a percentage. A $CV$ of 20% means the typical deviation from the
+mean is about 20% of the mean itself.
+
 ::: {.callout-tip}
 #### Formula — coefficient of variation
 $$
@@ -89,11 +377,47 @@ lets you compare the *relative* variability of two variables measured
 on different scales or units (e.g., revenue in € vs. customer count).
 :::
 
-In plain words: divide the standard deviation by the mean and express
-as a percentage. A $CV$ of 20% means the typical deviation from the
-mean is about 20% of the mean itself.
+::: {.callout-note}
+#### Notation decoder — coefficient of variation
+| Symbol | Read aloud | In our example |
+|---|---|---|
+| $CV$ | "coefficient of variation" | 3.23% (A), 32.26% (B) |
+| $s$ | "s" | 20 € (A), 200 € (B) |
+| $\bar{x}$ | "x-bar" | 620 € for both |
+| $\times 100\%$ | "as a percentage" | 0.0323 → 3.23% |
+
+**Whole formula as a sentence:** "the coefficient of variation is the
+standard deviation expressed as a percentage of the mean." The € cancel
+out, which is why $CV$ has no unit.
+:::
 
 ### Shortcut (computational) formula for variance
+
+**Try it.** Compute Truck A's variance a second way, without any
+deviation.
+
+1. Square each value and add the squares: $590^2 + 610^2 + 630^2 +
+   630^2 + 640^2$.
+2. Compute $n\bar{x}^2 = 5 \times 620^2$.
+3. Subtract, then divide by $n-1 = 4$.
+4. Redo step 2 with a rounded mean of 621. What happens?
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+1. $348{,}100 + 372{,}100 + 396{,}900 + 396{,}900 + 409{,}600 =
+   1{,}923{,}600$.
+2. $5 \times 384{,}400 = 1{,}922{,}000$.
+3. $(1{,}923{,}600 - 1{,}922{,}000)/4 = 1{,}600/4 = 400$ — the same
+   $s^2$ as the deviation table.
+4. $5 \times 621^2 = 1{,}928{,}205$, so the result becomes
+   $(1{,}923{,}600 - 1{,}928{,}205)/4 = -1{,}151.25$: a **negative**
+   variance, which is impossible. The shortcut subtracts two large,
+   nearly equal numbers, so a tiny rounding of $\bar{x}$ ruins it.
+   Always keep the mean unrounded.
+:::
+
+In plain words: square every value and add them up, subtract $n$ times
+the squared mean, and divide by $n-1$. Same answer, no deviation column.
 
 ::: {.callout-tip}
 #### Formula — variance shortcut
@@ -103,6 +427,19 @@ $$
 This needs only $\sum x_i^2$ and $\bar{x}$ — one pass over the data
 instead of first computing every deviation $(x_i-\bar{x})$ and then
 squaring it. In Excel, use `SUMSQ(range)` for $\sum x_i^2$.
+:::
+
+::: {.callout-note}
+#### Notation decoder — variance shortcut
+| Symbol | Read aloud | In our example (Truck A) |
+|---|---|---|
+| $\sum_{i=1}^{n} x_i^2$ | "sum of x sub i squared" | square first, then add: 1,923,600 |
+| $\left(\sum_{i=1}^{n} x_i\right)^2$ | "square of the sum" — **not** the same! | add first, then square: $3{,}100^2 = 9{,}610{,}000$ |
+| $n\bar{x}^2$ | "n times x-bar squared" | $5 \times 620^2 = 1{,}922{,}000$ |
+| $\frac{1}{n-1}$ | "divided by n minus 1" | ÷ 4 |
+
+**Whole formula as a sentence:** "the variance is the sum of the
+squared values minus $n$ times the squared mean, divided by $n-1$."
 :::
 
 ## Worked example
@@ -148,31 +485,6 @@ shortcut subtracts two very large, nearly equal numbers.
 
 "The Wandering Fork"'s $CV = 21.82\%$ falls in the **moderate** band.
 
-## Using Excel
-
-The complete list of function names, with their French equivalents, is
-on the [Excel functions](excel-functions.qmd) page.
-
-| Concept | Excel function / steps |
-|---|---|
-| Range | `=MAX(range)-MIN(range)` |
-| Sample variance | `=VAR.S(range)` |
-| Sample standard deviation | `=STDEV.S(range)` |
-| Population variance | `=VAR.P(range)` |
-| Population standard deviation | `=STDEV.P(range)` |
-| Coefficient of variation | `=STDEV.S(range)/AVERAGE(range)` |
-| Interquartile range | `=QUARTILE.EXC(range,3)-QUARTILE.EXC(range,1)` |
-| Sum of squares (for shortcut) | `=SUMSQ(range)` |
-
-> **Sample vs population**: This is a descriptive statistics course.
-> We use the **sample** formulas (`.S`) by default because real
-> business data are almost always samples. The population variants
-> (`.P`) are shown for completeness.
-
-For the **full table** (120 days per franchise) use the Excel Table
-`tblFork` and add the franchise as one more condition, for example
-`=VAR.S(FILTER(tblFork[daily_revenue_eur], tblFork[franchise]="Harbour"))`.
-
 ## Proof / derivation
 
 ::: {.callout-caution collapse="true"}
@@ -209,104 +521,86 @@ answers "on average, how far (squared) do the points sit from the
 pivot?" — a wide, flat spread of points gives a large variance; a
 tight cluster around the pivot gives a small one.
 
+Step 3 of the two-truck figure makes this literal: each square's area
+is one squared deviation, the variance is their total divided by
+$n-1$ — the "average square" — and the standard deviation $s$ is the
+side of that average square. Truck B's average square is 100 times
+larger in area than Truck A's, but only 10 times wider.
+
 ## Interactive demo — central tendency & dispersion calculator
 
-Edit the six values below and watch the mean, variance, standard
+Move the six sliders below and watch the mean, variance, standard
 deviation, and coefficient of variation update live. Starting values
 are a 6-day sample of "The Wandering Fork"'s `daily_revenue_eur`.
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 560
+```{ojs}
+//| echo: false
+viewof days = {
+  const start = [460.48, 500.02, 418.65, 785.79, 719.66, 886.56];
+  const form = html`<form class="ojs-calculator">${start.map((v, i) =>
+    html`<div><label>Day ${i + 1} (€):
+      <input type="range" min="300" max="950" step="0.01" value="${v}">
+      <output>${v.toFixed(2)}</output></label></div>`)}</form>`;
+  const inputs = [...form.querySelectorAll("input")];
+  const outs = [...form.querySelectorAll("output")];
+  form.value = start.slice();
+  form.oninput = () => {
+    form.value = inputs.map(el => el.valueAsNumber);
+    outs.forEach((o, i) => { o.textContent = form.value[i].toFixed(2); });
+  };
+  return form;
+}
+```
 
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
+```{ojs}
+//| echo: false
+calc = {
+  const n = days.length;
+  const mean = days.reduce((a, b) => a + b, 0) / n;
+  const sorted = [...days].sort((a, b) => a - b);
+  const median = (sorted[n / 2 - 1] + sorted[n / 2]) / 2;
+  const s2 = days.reduce((a, x) => a + (x - mean) ** 2, 0) / (n - 1);
+  const s = Math.sqrt(s2);
+  return {n, mean, median, s2, s, cv: mean ? s / mean * 100 : 0};
+}
 
-BG = '#1C2E22'
-FG = '#D2CCC0'
+html`<p><strong>Mean</strong> = ${calc.mean.toFixed(2)} ·
+  <strong>Median</strong> = ${calc.median.toFixed(2)}<br>
+  <strong>Variance</strong> s² = ${calc.s2.toFixed(2)} ·
+  <strong>Std. dev.</strong> s = ${calc.s.toFixed(2)} ·
+  <strong>CV</strong> = ${calc.cv.toFixed(2)}%</p>`
+```
 
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
-        .form-label {{ color: {FG} !important; }}
-        .form-range {{ accent-color: steelblue; width: 100%; }}
-        .info-box {{
-            background: #152119; border-radius: 6px; padding: 10px 14px;
-            margin: 8px 0; border-left: 3px solid steelblue;
-            font-family: monospace; font-size: 0.9em;
-        }}
-    """),
-    ui.h5("🧮 Central tendency & dispersion calculator", style=f"color:{FG}"),
-    ui.p(
-        "Move the sliders to change a 6-day revenue sample; the mean, "
-        "variance, standard deviation, and CV recompute live.",
-        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
-    ),
-    ui.input_slider("d1", "Day 1 (€):", min=300, max=950, value=460.48, step=1),
-    ui.input_slider("d2", "Day 2 (€):", min=300, max=950, value=500.02, step=1),
-    ui.input_slider("d3", "Day 3 (€):", min=300, max=950, value=418.65, step=1),
-    ui.input_slider("d4", "Day 4 (€):", min=300, max=950, value=785.79, step=1),
-    ui.input_slider("d5", "Day 5 (€):", min=300, max=950, value=719.66, step=1),
-    ui.input_slider("d6", "Day 6 (€):", min=300, max=950, value=886.56, step=1),
-    ui.output_ui("info"),
-    ui.output_plot("plot", height="280px"),
-)
-
-def server(input, output, session):
-    def sample():
-        return np.array([input.d1(), input.d2(), input.d3(), input.d4(), input.d5(), input.d6()], dtype=float)
-
-    @output
-    @render.ui
-    def info():
-        x = sample()
-        mean = x.mean()
-        median = float(np.median(x))
-        var = x.var(ddof=1)
-        std = x.std(ddof=1)
-        cv = std / mean * 100 if mean else 0
-        return ui.HTML(f"""
-            <div class='info-box'>
-                Mean = <strong style='color:darkorange'>{mean:.2f}</strong> &nbsp;|&nbsp;
-                Median = <strong style='color:darkorange'>{median:.2f}</strong><br>
-                Variance (s²) = {var:.2f} &nbsp;|&nbsp;
-                Std. dev. (s) = {std:.2f} &nbsp;|&nbsp;
-                CV = {cv:.2f}%
-            </div>
-        """)
-
-    @output
-    @render.plot
-    def plot():
-        x = sample()
-        mean = x.mean()
-
-        fig, ax = plt.subplots(figsize=(7, 3.2))
-        fig.patch.set_facecolor(BG)
-        ax.set_facecolor(BG)
-        for spine in ax.spines.values():
-            spine.set_edgecolor(FG)
-        ax.tick_params(colors=FG)
-
-        days = np.arange(1, 7)
-        ax.scatter(days, x, color='steelblue', zorder=5, s=70)
-        ax.axhline(mean, color='darkorange', lw=1.8, linestyle='--', label=f'Mean = {mean:.2f}')
-        for d, v in zip(days, x):
-            ax.plot([d, d], [mean, v], color=FG, lw=1, alpha=0.5)
-        ax.set_xticks(days)
-        ax.set_xlabel("Day", color=FG)
-        ax.set_ylabel("Revenue (€)", color=FG)
-        ax.set_title("Deviations from the mean", color=FG)
-        ax.legend(fontsize=8.5, facecolor=BG, edgecolor='none', labelcolor=FG)
-        ax.grid(alpha=0.15, color=FG)
-        plt.tight_layout()
-        return fig
-
-app = App(app_ui, server)
+```{ojs}
+//| echo: false
+{
+  const W = 660, H = 300, L = 60, R = 20, T = 30, B = 40;
+  const x = d => L + (d - 0.5) * (W - L - R) / 6;
+  const y = v => T + (950 - v) * (H - T - B) / (950 - 300);
+  let g = "";
+  for (let v = 300; v <= 900; v += 100) {
+    g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"
+      stroke="currentColor" stroke-opacity="0.15"/>`;
+    g += `<text x="${L - 8}" y="${y(v) + 4}" text-anchor="end"
+      fill="currentColor" font-size="12">€${v}</text>`;
+  }
+  days.forEach((v, i) => {
+    g += `<line x1="${x(i + 1)}" x2="${x(i + 1)}" y1="${y(calc.mean)}"
+      y2="${y(v)}" stroke="currentColor" stroke-opacity="0.5"/>`;
+    g += `<circle cx="${x(i + 1)}" cy="${y(v)}" r="7" fill="steelblue"/>`;
+    g += `<text x="${x(i + 1)}" y="${H - 15}" text-anchor="middle"
+      fill="currentColor" font-size="12">Day ${i + 1}</text>`;
+  });
+  g += `<line x1="${L}" x2="${W - R}" y1="${y(calc.mean)}" y2="${y(calc.mean)}"
+    stroke="darkorange" stroke-width="2" stroke-dasharray="6 4"/>`;
+  g += `<text x="${W - R}" y="${y(calc.mean) - 6}" text-anchor="end"
+    fill="darkorange" font-size="12">mean = ${calc.mean.toFixed(2)}</text>`;
+  g += `<text x="${W / 2}" y="18" text-anchor="middle" fill="currentColor"
+    font-size="14">Deviations from the mean</text>`;
+  return html`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"
+    aria-label="Six daily revenues and their deviations from the mean">
+    ${g}</svg>`;
+}
 ```
 
 ## Exercises
@@ -350,42 +644,34 @@ than just the two most extreme.
 :::
 
 ::: {.callout-caution collapse="true"}
-#### Exercise 4 (Excel) — Dispersion for Campus revenue (click for solution)
-In `wandering-fork.xlsx`, filter `franchise` to "Campus" and compute
-the range, sample variance, sample standard deviation, and $CV$ for
-`daily_revenue_eur` (120 days). How do they compare to Harbour's?
+#### Exercise 4 (by hand) — Formula to words (click for solution)
+(a) Read $\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2$ aloud as one
+sentence. Which indicator is it?
 
-**Solution.** Campus 120-day: range = 1383.74, $s^2 = 94{,}511.80$,
-$s = 307.43$, $CV = 67.56\%$. Over the same 120 days, Harbour has
-range = 998.79, $s = 216.01$, $CV = 52.24\%$. Campus has higher
-absolute and relative dispersion than Harbour (range 1384 vs 999, $CV$
-67.6% vs 52.2%) — consistent with the right-skewed, event-driven
-revenue pattern.
+(b) For $x_1=4$, $x_2=6$, $x_3=8$, compute $\sum_{i=1}^{3} x_i$ and
+$\sum_{i=1}^{3} x_i^2$. Is $\left(\sum x_i\right)^2$ equal to
+$\sum x_i^2$?
+
+**Solution.** (a) "Take each observation's distance from the mean,
+square it, add up the $n$ squares, and divide by $n-1$." It is the
+sample variance $s^2$.
+(b) $\sum x_i = 4+6+8 = 18$; $\sum x_i^2 = 16+36+64 = 116$. But
+$\left(\sum x_i\right)^2 = 18^2 = 324 \neq 116$: "square then add" is
+not "add then square" — the most common slip in the shortcut formula.
 :::
 
 ::: {.callout-caution collapse="true"}
-#### Exercise 5 (Excel) — Shortcut formula with `SUMSQ` (click for solution)
-Using the Harbour 30-day `daily_revenue_eur` data, verify the
-shortcut formula: compute `=SUMSQ(range)` and `=AVERAGE(range)`,
-then apply the shortcut formula manually. Confirm it matches
-`=VAR.S(range)`.
+#### Exercise 5 (by hand) — Words to formula (click for solution)
+Write in symbols:
 
-**Solution.** `SUMSQ` = 12,389,403.98, `AVERAGE` = 628.3417, $n=30$.
-Shortcut: $(12{,}389{,}403.98 - 30 \times 628.3417^2) / 29 =
-18{,}793.33$, matching `VAR.S` exactly (point to the `AVERAGE` cell
-rather than typing 628.34, or rounding shifts the result).
-:::
+(a) "add up the squares of all $n$ observations";
+(b) "the standard deviation as a percentage of the mean";
+(c) "the distance between the 3rd observation and the mean".
 
-::: {.callout-caution collapse="true"}
-#### Exercise 6 (Excel) — Payroll skew: dispersion (click for solution)
-Open `payroll-skew.csv`. Compute the range, sample standard deviation,
-and $CV$ for the 11 salaries. Why is the $CV$ so high?
-
-**Solution.** Range = 154,834, $s = 44{,}788$, $CV = 94.8\%$. The $CV$
-is close to 100% because the standard deviation (driven by the CEO's
-€180,000 salary) is almost as large as the mean (€47,231) — a
-hallmark of extreme right skew where the mean is pulled far above the
-bulk of the data.
+**Solution.** (a) $\sum_{i=1}^{n} x_i^2$.
+(b) $CV = \dfrac{s}{\bar{x}} \times 100\%$.
+(c) $x_3-\bar{x}$ (negative if the 3rd observation is below the
+mean).
 :::
 
 ## Common mistakes
@@ -408,6 +694,150 @@ bulk of the data.
 - **Comparing standard deviations across different units.** €137 vs
   16 items — meaningless without $CV$. Always use $CV$ for
   cross-variable or cross-dataset comparisons.
+:::
+
+## Exit check
+
+Five minutes, no calculator needed except for question 4.
+
+1. In one sentence, what does the standard deviation $s$ measure?
+2. Why does $\sum(x_i-\bar{x})$ always equal 0?
+3. Read $s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2$ aloud as a
+   sentence.
+4. Compute $s^2$ for the values 2, 4, 4, 6, 9.
+5. You want to compare the spread of revenue (in €) with the spread of
+   items sold. Which indicator do you use, and why?
+
+::: {.callout-caution collapse="true"}
+#### Exit check — answers
+1. The typical distance between an observation and the mean, in the
+   original unit (e.g., "on a typical day, revenue is about €137 away
+   from the average").
+2. The mean is the balance point: deviations above it exactly cancel
+   deviations below it.
+3. "The sum, over all $n$ observations, of each squared distance from
+   the mean, divided by $n-1$."
+4. $\bar{x} = 25/5 = 5$; deviations −3, −1, −1, 1, 4; squares 9, 1, 1,
+   1, 16; total 28; $s^2 = 28/4 = 7$.
+5. The coefficient of variation $CV = s/\bar{x}\times100\%$: it has no
+   unit, so € and items can be compared.
+:::
+
+## Homework — Excel lab
+
+Reproduce, in Excel, every indicator you computed by hand in class,
+with `VAR.S`, `STDEV.S`, `SUMSQ` and a $CV$ formula, then apply them to
+the full dataset.
+
+**Estimated time:** about 50–60 minutes. Any spreadsheet application
+works, at home or in a campus computer room.
+
+**Follow-up:** a 10-minute debrief at the start of
+[Module 7](module-07.qmd). Bring your Step 0 results and any question
+on Homework 1–3.
+
+### Using Excel
+
+The complete list of function names, with their French equivalents, is
+on the [Excel functions](excel-functions.qmd) page.
+
+| Concept | Excel function / steps |
+|---|---|
+| Range | `=MAX(range)-MIN(range)` |
+| Sample variance | `=VAR.S(range)` |
+| Sample standard deviation | `=STDEV.S(range)` |
+| Population variance | `=VAR.P(range)` |
+| Population standard deviation | `=STDEV.P(range)` |
+| Coefficient of variation | `=STDEV.S(range)/AVERAGE(range)` |
+| Interquartile range | `=QUARTILE.EXC(range,3)-QUARTILE.EXC(range,1)` |
+| Sum of squares (for shortcut) | `=SUMSQ(range)` |
+
+> **Sample vs population**: This is a descriptive statistics course.
+> We use the **sample** formulas (`.S`) by default because real
+> business data are almost always samples. The population variants
+> (`.P`) are shown for completeness.
+
+For the **full table** (120 days per franchise) use the Excel Table
+`tblFork` and add the franchise as one more condition, for example
+`=VAR.S(FILTER(tblFork[daily_revenue_eur], tblFork[franchise]="Harbour"))`.
+
+### Step 0 — check your class results
+
+1. Type Truck A's five values (590, 610, 630, 630, 640) in `A2:A6` and
+   Truck B's (370, 470, 670, 720, 870) in `B2:B6`.
+2. Below each column, compute `=AVERAGE(A2:A6)`,
+   `=MAX(A2:A6)-MIN(A2:A6)`, `=VAR.S(A2:A6)`, `=STDEV.S(A2:A6)` and
+   `=STDEV.S(A2:A6)/AVERAGE(A2:A6)` (format as a percentage). Repeat
+   for column B.
+3. For Truck A, check the shortcut formula:
+   `=(SUMSQ(A2:A6)-COUNT(A2:A6)*AVERAGE(A2:A6)^2)/(COUNT(A2:A6)-1)`.
+4. Compare every result with your hand-computed deviation table.
+
+::: {.callout-caution collapse="true"}
+#### Step 0 — expected results
+| Indicator | Truck A | Truck B |
+|---|---:|---:|
+| Mean | 620 | 620 |
+| Range | 50 | 500 |
+| `VAR.S` | 400 | 40,000 |
+| `STDEV.S` | 20 | 200 |
+| $CV$ | 3.23% | 32.26% |
+| Shortcut formula | 400 | 40,000 |
+
+If your shortcut cell is off, check that it references the `AVERAGE`
+cell rather than a rounded mean you typed in.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Homework 1 (Excel) — Dispersion for Campus revenue (click for solution)
+In `wandering-fork.xlsx`, filter `franchise` to "Campus" and compute
+the range, sample variance, sample standard deviation, and $CV$ for
+`daily_revenue_eur` (120 days). How do they compare to Harbour's?
+
+**How to.** Filter `franchise` to "Campus", or wrap the range in
+`FILTER(tblFork[daily_revenue_eur], tblFork[franchise]="Campus")`
+inside each function; use `MAX`−`MIN`, `VAR.S`, `STDEV.S` and
+`STDEV.S/AVERAGE`, then repeat with "Harbour" to compare.
+
+**Solution.** Campus 120-day: range = 1383.74, $s^2 = 94{,}511.80$,
+$s = 307.43$, $CV = 67.56\%$. Over the same 120 days, Harbour has
+range = 998.79, $s = 216.01$, $CV = 52.24\%$. Campus has higher
+absolute and relative dispersion than Harbour (range 1384 vs 999, $CV$
+67.6% vs 52.2%) — consistent with the right-skewed, event-driven
+revenue pattern.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Homework 2 (Excel) — Shortcut formula with `SUMSQ` (click for solution)
+Using the Harbour 30-day `daily_revenue_eur` data, verify the
+shortcut formula: compute `=SUMSQ(range)` and `=AVERAGE(range)`,
+then apply the shortcut formula manually. Confirm it matches
+`=VAR.S(range)`.
+
+**How to.** Put `=SUMSQ(range)`, `=AVERAGE(range)` and
+`=COUNT(range)` in three cells, type the shortcut formula pointing to
+those three cells, and put `=VAR.S(range)` in a fourth cell to compare.
+
+**Solution.** `SUMSQ` = 12,389,403.98, `AVERAGE` = 628.3417, $n=30$.
+Shortcut: $(12{,}389{,}403.98 - 30 \times 628.3417^2) / 29 =
+18{,}793.33$, matching `VAR.S` exactly (point to the `AVERAGE` cell
+rather than typing 628.34, or rounding shifts the result).
+:::
+
+::: {.callout-caution collapse="true"}
+#### Homework 3 (Excel) — Payroll skew: dispersion (click for solution)
+Open `payroll-skew.csv`. Compute the range, sample standard deviation,
+and $CV$ for the 11 salaries. Why is the $CV$ so high?
+
+**How to.** Open the CSV, select the 11 salaries, and use
+`MAX`−`MIN`, `STDEV.S` and `STDEV.S/AVERAGE`; format the $CV$ cell as
+a percentage.
+
+**Solution.** Range = 154,834, $s = 44{,}788$, $CV = 94.8\%$. The $CV$
+is close to 100% because the standard deviation (driven by the CEO's
+€180,000 salary) is almost as large as the mean (€47,231) — a
+hallmark of extreme right skew where the mean is pulled far above the
+bulk of the data.
 :::
 
 ## Further reading
