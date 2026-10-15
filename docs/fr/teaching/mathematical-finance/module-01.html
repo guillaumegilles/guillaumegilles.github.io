@@ -406,7 +406,7 @@ window.Quarto = {
   <li><a href="#niveau-3-étude-de-cas" id="toc-niveau-3-étude-de-cas" class="nav-link" data-scroll-target="#niveau-3-étude-de-cas">Niveau 3 — Étude de cas</a></li>
   </ul></li>
   </ul>
-</nav>
+<div class="quarto-other-links"><h2>Autres liens</h2><ul><li><a href="./slides/module-01.html"><i class="bi bi-file-earmark-slides"></i>Slides</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -637,9 +637,25 @@ window.Quarto = {
 </section>
 <section id="représentation-ligne-du-temps" class="level3">
 <h3 class="anchored" data-anchor-id="représentation-ligne-du-temps">Représentation (ligne du temps)</h3>
-<pre><code>t = 0          t = 1          t = 2          ...    t = n
-  |--------------|--------------|------------- ... ---|
-  C₀                                                  Cₙ</code></pre>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    t0["t = 0&lt;br/&gt;C₀"]
+    t1["t = 1"]
+    t2["t = 2"]
+    tn["t = n&lt;br/&gt;Cₙ"]
+    t0 --&gt;|"(1+i)"| t1
+    t1 --&gt;|"(1+i)"| t2
+    t2 -.-&gt;|"..."| tn
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <p>Un capital <span class="math inline">\(C_0\)</span> placé à la date 0 produit un capital <span class="math inline">\(C_n\)</span> à la date <span class="math inline">\(n\)</span>.</p>
 </section>
 <section id="a.-intérêts-simples" class="level3">
@@ -944,10 +960,23 @@ window.Quarto = {
 </section>
 <section id="représentation-ligne-du-temps-1" class="level3">
 <h3 class="anchored" data-anchor-id="représentation-ligne-du-temps-1">Représentation (ligne du temps)</h3>
-<pre><code>t = 0          t = 1          ...    t = n
-  |&lt;------------|&lt;------------- ... --|
-  V₀                                  Vₙ
-  (valeur actuelle)             (valeur future)</code></pre>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart RL
+    t0["t = 0&lt;br/&gt;V₀&lt;br/&gt;(valeur actuelle)"]
+    t1["t = 1"]
+    tn["t = n&lt;br/&gt;Vₙ&lt;br/&gt;(valeur future)"]
+    tn --&gt;|"/ (1+i)"| t1
+    t1 --&gt;|"/ (1+i)"| t0
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 </section>
 <section id="a.-valeur-actuelle" class="level3">
 <h3 class="anchored" data-anchor-id="a.-valeur-actuelle">A. Valeur actuelle</h3>
@@ -1073,40 +1102,40 @@ window.Quarto = {
 <section id="démonstration-interactive-capitalisation-vs-actualisation" class="level3">
 <h3 class="anchored" data-anchor-id="démonstration-interactive-capitalisation-vs-actualisation">Démonstration interactive — Capitalisation vs Actualisation</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="519" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 518;"><span id="cb3-519"><a href="#cb3-519" aria-hidden="true" tabindex="-1"></a>viewof C0_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">100</span><span class="op">,</span> <span class="dv">20000</span>]<span class="op">,</span> {</span>
-<span id="cb3-520"><a href="#cb3-520" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb3-521"><a href="#cb3-521" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Capital initial C₀ (€)"</span></span>
-<span id="cb3-522"><a href="#cb3-522" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb3-523"><a href="#cb3-523" aria-hidden="true" tabindex="-1"></a>viewof i_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="fl">0.20</span>]<span class="op">,</span> {</span>
-<span id="cb3-524"><a href="#cb3-524" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span></span>
-<span id="cb3-525"><a href="#cb3-525" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Taux d'intérêt i (annuel)"</span></span>
-<span id="cb3-526"><a href="#cb3-526" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb3-527"><a href="#cb3-527" aria-hidden="true" tabindex="-1"></a>viewof n_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {</span>
-<span id="cb3-528"><a href="#cb3-528" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
-<span id="cb3-529"><a href="#cb3-529" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Nombre de périodes n"</span></span>
-<span id="cb3-530"><a href="#cb3-530" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb3-531"><a href="#cb3-531" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-532"><a href="#cb3-532" aria-hidden="true" tabindex="-1"></a>data_s3 <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> n_s3 <span class="op">+</span> <span class="dv">1</span>}<span class="op">,</span> (_<span class="op">,</span> t) <span class="kw">=&gt;</span> [</span>
-<span id="cb3-533"><a href="#cb3-533" aria-hidden="true" tabindex="-1"></a>  {t<span class="op">,</span> <span class="dt">valeur</span><span class="op">:</span> C0_s3 <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> t<span class="op">,</span>                          <span class="dt">serie</span><span class="op">:</span> <span class="st">"Capitalisation (Cₙ)"</span>}<span class="op">,</span></span>
-<span id="cb3-534"><a href="#cb3-534" aria-hidden="true" tabindex="-1"></a>  {t<span class="op">,</span> <span class="dt">valeur</span><span class="op">:</span> C0_s3 <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> n_s3 <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> (n_s3 <span class="op">-</span> t)<span class="op">,</span> <span class="dt">serie</span><span class="op">:</span> <span class="st">"Actualisation (V₀)"</span>}</span>
-<span id="cb3-535"><a href="#cb3-535" aria-hidden="true" tabindex="-1"></a>])<span class="op">.</span><span class="fu">flat</span>()</span>
-<span id="cb3-536"><a href="#cb3-536" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-537"><a href="#cb3-537" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb3-538"><a href="#cb3-538" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Valeur du capital selon la perspective choisie"</span><span class="op">,</span></span>
-<span id="cb3-539"><a href="#cb3-539" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb3-540"><a href="#cb3-540" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(data_s3<span class="op">,</span> Plot<span class="op">.</span><span class="fu">groupX</span>({<span class="dt">y</span><span class="op">:</span> <span class="st">"first"</span>}<span class="op">,</span> {</span>
-<span id="cb3-541"><a href="#cb3-541" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"valeur"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"serie"</span><span class="op">,</span></span>
-<span id="cb3-542"><a href="#cb3-542" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span></span>
-<span id="cb3-543"><a href="#cb3-543" aria-hidden="true" tabindex="-1"></a>    }))<span class="op">,</span></span>
-<span id="cb3-544"><a href="#cb3-544" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([C0_s3]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"gray"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4"</span><span class="op">,</span></span>
-<span id="cb3-545"><a href="#cb3-545" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"C₀"</span>})<span class="op">,</span></span>
-<span id="cb3-546"><a href="#cb3-546" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
-<span id="cb3-547"><a href="#cb3-547" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
-<span id="cb3-548"><a href="#cb3-548" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
-<span id="cb3-549"><a href="#cb3-549" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Période t"</span><span class="op">,</span> <span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`t=</span><span class="sc">${</span>d<span class="sc">}</span><span class="vs">`</span>}<span class="op">,</span></span>
-<span id="cb3-550"><a href="#cb3-550" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Valeur (€)"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
-<span id="cb3-551"><a href="#cb3-551" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span></span>
-<span id="cb3-552"><a href="#cb3-552" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="530" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 529;"><span id="cb1-530"><a href="#cb1-530" aria-hidden="true" tabindex="-1"></a>viewof C0_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">100</span><span class="op">,</span> <span class="dv">20000</span>]<span class="op">,</span> {</span>
+<span id="cb1-531"><a href="#cb1-531" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb1-532"><a href="#cb1-532" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Capital initial C₀ (€)"</span></span>
+<span id="cb1-533"><a href="#cb1-533" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-534"><a href="#cb1-534" aria-hidden="true" tabindex="-1"></a>viewof i_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="fl">0.20</span>]<span class="op">,</span> {</span>
+<span id="cb1-535"><a href="#cb1-535" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span></span>
+<span id="cb1-536"><a href="#cb1-536" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Taux d'intérêt i (annuel)"</span></span>
+<span id="cb1-537"><a href="#cb1-537" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-538"><a href="#cb1-538" aria-hidden="true" tabindex="-1"></a>viewof n_s3 <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {</span>
+<span id="cb1-539"><a href="#cb1-539" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb1-540"><a href="#cb1-540" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Nombre de périodes n"</span></span>
+<span id="cb1-541"><a href="#cb1-541" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-542"><a href="#cb1-542" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-543"><a href="#cb1-543" aria-hidden="true" tabindex="-1"></a>data_s3 <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> n_s3 <span class="op">+</span> <span class="dv">1</span>}<span class="op">,</span> (_<span class="op">,</span> t) <span class="kw">=&gt;</span> [</span>
+<span id="cb1-544"><a href="#cb1-544" aria-hidden="true" tabindex="-1"></a>  {t<span class="op">,</span> <span class="dt">valeur</span><span class="op">:</span> C0_s3 <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> t<span class="op">,</span>                          <span class="dt">serie</span><span class="op">:</span> <span class="st">"Capitalisation (Cₙ)"</span>}<span class="op">,</span></span>
+<span id="cb1-545"><a href="#cb1-545" aria-hidden="true" tabindex="-1"></a>  {t<span class="op">,</span> <span class="dt">valeur</span><span class="op">:</span> C0_s3 <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> n_s3 <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> i_s3) <span class="op">**</span> (n_s3 <span class="op">-</span> t)<span class="op">,</span> <span class="dt">serie</span><span class="op">:</span> <span class="st">"Actualisation (V₀)"</span>}</span>
+<span id="cb1-546"><a href="#cb1-546" aria-hidden="true" tabindex="-1"></a>])<span class="op">.</span><span class="fu">flat</span>()</span>
+<span id="cb1-547"><a href="#cb1-547" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-548"><a href="#cb1-548" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb1-549"><a href="#cb1-549" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Valeur du capital selon la perspective choisie"</span><span class="op">,</span></span>
+<span id="cb1-550"><a href="#cb1-550" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb1-551"><a href="#cb1-551" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(data_s3<span class="op">,</span> Plot<span class="op">.</span><span class="fu">groupX</span>({<span class="dt">y</span><span class="op">:</span> <span class="st">"first"</span>}<span class="op">,</span> {</span>
+<span id="cb1-552"><a href="#cb1-552" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"valeur"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"serie"</span><span class="op">,</span></span>
+<span id="cb1-553"><a href="#cb1-553" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb1-554"><a href="#cb1-554" aria-hidden="true" tabindex="-1"></a>    }))<span class="op">,</span></span>
+<span id="cb1-555"><a href="#cb1-555" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([C0_s3]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"gray"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4"</span><span class="op">,</span></span>
+<span id="cb1-556"><a href="#cb1-556" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"C₀"</span>})<span class="op">,</span></span>
+<span id="cb1-557"><a href="#cb1-557" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
+<span id="cb1-558"><a href="#cb1-558" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
+<span id="cb1-559"><a href="#cb1-559" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb1-560"><a href="#cb1-560" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Période t"</span><span class="op">,</span> <span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`t=</span><span class="sc">${</span>d<span class="sc">}</span><span class="vs">`</span>}<span class="op">,</span></span>
+<span id="cb1-561"><a href="#cb1-561" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Valeur (€)"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb1-562"><a href="#cb1-562" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span></span>
+<span id="cb1-563"><a href="#cb1-563" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -1687,9 +1716,28 @@ window.Quarto = {
 </section>
 <section id="a.-annuités-de-fin-de-période-terme-échu" class="level3">
 <h3 class="anchored" data-anchor-id="a.-annuités-de-fin-de-période-terme-échu">A. Annuités de fin de période (terme échu)</h3>
-<pre><code>t = 0    t = 1    t = 2    ...    t = n
-  |--------|--------|--------- ... ----|
-            A        A                 A</code></pre>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    t0["t = 0"]
+    t1["t = 1&lt;br/&gt;A"]
+    t2["t = 2&lt;br/&gt;A"]
+    tn_1["t = n-1&lt;br/&gt;A"]
+    tn["t = n&lt;br/&gt;A"]
+    t0 --&gt; t1
+    t1 --&gt; t2
+    t2 -.-&gt; tn_1
+    tn_1 --&gt; tn
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Les versements ont lieu aux dates <span class="math inline">\(t = 1, 2, \dots, n\)</span> (fin de période).</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1808,9 +1856,28 @@ window.Quarto = {
 </section>
 <section id="b.-annuités-de-début-de-période-terme-à-échoir" class="level3">
 <h3 class="anchored" data-anchor-id="b.-annuités-de-début-de-période-terme-à-échoir">B. Annuités de début de période (terme à échoir)</h3>
-<pre><code>t = 0    t = 1    t = 2    ...    t = n-1
-  |--------|--------|--------- ... ----|
-  A        A        A                  A</code></pre>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    t0["t = 0&lt;br/&gt;A"]
+    t1["t = 1&lt;br/&gt;A"]
+    t2["t = 2&lt;br/&gt;A"]
+    tn_1["t = n-1&lt;br/&gt;A"]
+    tn["t = n"]
+    t0 --&gt; t1
+    t1 --&gt; t2
+    t2 -.-&gt; tn_1
+    tn_1 --&gt; tn
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Les versements ont lieu aux dates <span class="math inline">\(t = 0, 1, \dots, n-1\)</span> (début de période).</p>
 <p>Chaque versement est avancé d’une période par rapport au cas précédent, donc il bénéficie d’une période de capitalisation supplémentaire.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1988,17 +2055,35 @@ window.Quarto = {
 </blockquote>
 <section id="carte-mentale-du-cours" class="level3">
 <h3 class="anchored" data-anchor-id="carte-mentale-du-cours">Carte mentale du cours</h3>
-<pre><code>                        Valeur temps de l'argent
-                               │
-          ┌────────────────────┼────────────────────┐
-     Capitalisation       Actualisation          Taux
-     C_n = C_0(1+i)^n   V_0 = V_n/(1+i)^n    ┌──┴──┐
-                                            Propor. Équiv.
-                                               │
-                                           Annuités
-                              ┌────────────────┼──────────────┐
-                           Fin période    Début période   Perpétuité
-                           V_0 = A·(…)   V_0 = A·(…)·(1+i)  A/i</code></pre>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">mindmap
+  root((Valeur temps&lt;br/&gt;de l'argent))
+    Capitalisation
+      C_n = C_0(1+i)^n
+    Actualisation
+      V_0 = V_n/(1+i)^n
+    Taux
+      Proportionnel
+        i_p = i_a / m
+      Équivalent
+        i_p = (1+i_a)^(1/m) - 1
+    Annuités
+      Fin de période
+        V_0 = A·(1-(1+i)^-n)/i
+      Début de période
+        V_0 = A·(1-(1+i)^-n)/i · (1+i)
+      Perpétuité
+        V_0 = A/i
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2081,7 +2166,7 @@ window.Quarto = {
 </div>
 <div id="callout-54" class="callout-54-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><span class="math display">\[V_0 = \frac{25\,000}{(1{,}045)^4} = \frac{25\,000}{1{,}1925} \approx 20\,966 \text{ €}\]</span></p>
+<p><span class="math display">\[V_0 = \frac{25\,000}{(1{,}045)^4} = \frac{25\,000}{1{,}192519} \approx 20\,964 \text{ €}\]</span></p>
 </div>
 </div>
 </div>
@@ -2130,7 +2215,7 @@ window.Quarto = {
 <tr class="odd">
 <td>C</td>
 <td>4,6 %</td>
-<td>Trimestriel équivalent</td>
+<td>Trimestriel proportionnel</td>
 </tr>
 </tbody>
 </table>
@@ -2150,7 +2235,7 @@ window.Quarto = {
 <p><strong>Offre A</strong> — taux mensuel proportionnel <span class="math inline">\(4{,}8\% / 12 = 0{,}4\,\%\)</span></p>
 <p>Taux annuel effectif : <span class="math display">\[i_A = (1{,}004)^{12} - 1 \approx 4{,}91\,\%\]</span></p>
 <p><strong>Offre B</strong> — déjà sur base annuelle : <span class="math inline">\(i_B = 4{,}70\,\%\)</span></p>
-<p><strong>Offre C</strong> — taux trimestriel équivalent <span class="math inline">\(4{,}6\,\% / 4 = 1{,}15\,\%\)</span></p>
+<p><strong>Offre C</strong> — taux trimestriel proportionnel <span class="math inline">\(4{,}6\,\% / 4 = 1{,}15\,\%\)</span></p>
 <p>Taux annuel effectif : <span class="math display">\[i_C = (1{,}0115)^{4} - 1 \approx 4{,}67\,\%\]</span></p>
 <p>Classement : <strong>A (4,91 %) &gt; B (4,70 %) &gt; C (4,67 %)</strong></p>
 <p>L’offre A est la plus avantageuse malgré un taux affiché inférieur à B, parce que sa capitalisation mensuelle génère un taux effectif plus élevé.</p>
@@ -2184,13 +2269,13 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p><strong>1. Taux mensuel équivalent :</strong> <span class="math display">\[i_m = (1{,}03)^{1/12} - 1 \approx 0{,}2466\,\%\]</span></p>
 <p><strong>2. Capital à 65 ans (<span class="math inline">\(n = 360\)</span> mois) :</strong> <span class="math display">\[V_{360} = 800 \times \frac{(1{,}002466)^{360} - 1}{0{,}002466}
-\approx 800 \times 563{,}3 \approx 450\,640 \text{ €}\]</span></p>
-<p><strong>3. Rente mensuelle pendant 20 ans (<span class="math inline">\(n = 240\)</span> mois) :</strong> <span class="math display">\[A = 450\,640 \times \frac{0{,}002466}{1 - (1{,}002466)^{-240}}
-\approx 450\,640 \times 0{,}005543 \approx 2\,497 \text{ €/mois}\]</span></p>
+\approx 800 \times 578{,}71 \approx 462\,970 \text{ €}\]</span></p>
+<p><strong>3. Rente mensuelle pendant 20 ans (<span class="math inline">\(n = 240\)</span> mois) :</strong> <span class="math display">\[A = 462\,970 \times \frac{0{,}002466}{1 - (1{,}002466)^{-240}}
+\approx 462\,970 \times 0{,}005526 \approx 2\,558 \text{ €/mois}\]</span></p>
 <p><strong>4. Impact d’un taux de 4 % :</strong> <span class="math display">\[i_m = (1{,}04)^{1/12} - 1 \approx 0{,}3274\,\%\]</span> <span class="math display">\[V_{360} \approx 800 \times \frac{(1{,}003274)^{360} - 1}{0{,}003274}
-\approx 800 \times 693{,}6 \approx 554\,880 \text{ €}\]</span></p>
-<p>Soit un gain de +104 240 € par rapport au scénario à 3 %.</p>
-<p><strong>5. Recommandation :</strong> À 3 % de rendement annuel et 800 €/mois de versement, le plan permet de constituer environ 451 000 € en 30 ans, générant une rente d’environ 2 500 €/mois pendant 20 ans ; une hausse d’un point de taux augmenterait ce capital de plus de 100 000 €, ce qui justifie d’arbitrer vers des supports plus dynamiques si le profil de risque le permet.</p>
+\approx 800 \times 685{,}27 \approx 548\,216 \text{ €}\]</span></p>
+<p>Soit un gain d’environ +85 246 € par rapport au scénario à 3 %.</p>
+<p><strong>5. Recommandation :</strong> À 3 % de rendement annuel et 800 €/mois de versement, le plan permet de constituer environ 463 000 € en 30 ans, générant une rente d’environ 2 560 €/mois pendant 20 ans ; une hausse d’un point de taux augmenterait ce capital d’environ 85 000 € (près de 20 %), ce qui justifie d’arbitrer vers des supports plus dynamiques si le profil de risque le permet.</p>
 </div>
 </div>
 </div>

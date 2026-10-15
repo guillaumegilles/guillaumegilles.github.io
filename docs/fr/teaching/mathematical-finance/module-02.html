@@ -630,11 +630,25 @@ window.Quarto = {
 </section>
 <section id="représentation-ligne-du-temps" class="level3">
 <h3 class="anchored" data-anchor-id="représentation-ligne-du-temps">Représentation (ligne du temps)</h3>
-<pre><code>t = 0          t = 1     t = 2     ...    t = n
-  |              |         |               |
- C₀             A         A               A
-(montant        (annuité  constante = Intérêts + Amortissement)
- emprunté)</code></pre>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    t0["t = 0&lt;br/&gt;C₀&lt;br/&gt;(montant emprunté)"]
+    t1["t = 1&lt;br/&gt;A&lt;br/&gt;(annuité = Intérêts + Amortissement)"]
+    t2["t = 2&lt;br/&gt;A"]
+    tn["t = n&lt;br/&gt;A"]
+    t0 --&gt; t1
+    t1 --&gt; t2
+    t2 -.-&gt; tn
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 </section>
 <section id="formule-de-lannuité-constante" class="level3">
 <h3 class="anchored" data-anchor-id="formule-de-lannuité-constante">Formule de l’annuité constante</h3>
@@ -1692,40 +1706,40 @@ A = C_0 \cdot \frac{i}{1 - (1+i)^{-n}}\]</span></p>
 <section id="démonstration-interactive-prix-obligataire-et-taux-de-marché" class="level3">
 <h3 class="anchored" data-anchor-id="démonstration-interactive-prix-obligataire-et-taux-de-marché">Démonstration interactive — Prix obligataire et taux de marché</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="840" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 839;"><span id="cb2-840"><a href="#cb2-840" aria-hidden="true" tabindex="-1"></a>viewof coupon <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span> {</span>
-<span id="cb2-841"><a href="#cb2-841" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
-<span id="cb2-842"><a href="#cb2-842" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Coupon annuel C (€)"</span></span>
-<span id="cb2-843"><a href="#cb2-843" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb2-844"><a href="#cb2-844" aria-hidden="true" tabindex="-1"></a>viewof nominal <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">500</span><span class="op">,</span> <span class="dv">2000</span>]<span class="op">,</span> {</span>
-<span id="cb2-845"><a href="#cb2-845" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb2-846"><a href="#cb2-846" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Nominal N (€)"</span></span>
-<span id="cb2-847"><a href="#cb2-847" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb2-848"><a href="#cb2-848" aria-hidden="true" tabindex="-1"></a>viewof maturite <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {</span>
-<span id="cb2-849"><a href="#cb2-849" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
-<span id="cb2-850"><a href="#cb2-850" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Maturité n (années)"</span></span>
-<span id="cb2-851"><a href="#cb2-851" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb2-852"><a href="#cb2-852" aria-hidden="true" tabindex="-1"></a>viewof r_ref <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="fl">0.15</span>]<span class="op">,</span> {</span>
-<span id="cb2-853"><a href="#cb2-853" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="fl">0.06</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span></span>
-<span id="cb2-854"><a href="#cb2-854" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Taux de marché de référence r"</span></span>
-<span id="cb2-855"><a href="#cb2-855" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb2-856"><a href="#cb2-856" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-857"><a href="#cb2-857" aria-hidden="true" tabindex="-1"></a>bondPrice <span class="op">=</span> (r) <span class="kw">=&gt;</span></span>
-<span id="cb2-858"><a href="#cb2-858" aria-hidden="true" tabindex="-1"></a>  coupon <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> (<span class="dv">1</span> <span class="op">+</span> r) <span class="op">**</span> <span class="op">-</span>maturite) <span class="op">/</span> r <span class="op">+</span> nominal <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> r) <span class="op">**</span> <span class="op">-</span>maturite</span>
-<span id="cb2-859"><a href="#cb2-859" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-860"><a href="#cb2-860" aria-hidden="true" tabindex="-1"></a>curve <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> <span class="dv">141</span>}<span class="op">,</span> (_<span class="op">,</span> k) <span class="kw">=&gt;</span> {</span>
-<span id="cb2-861"><a href="#cb2-861" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> r <span class="op">=</span> <span class="fl">0.01</span> <span class="op">+</span> k <span class="op">*</span> <span class="fl">0.001</span></span>
-<span id="cb2-862"><a href="#cb2-862" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {r<span class="op">,</span> <span class="dt">prix</span><span class="op">:</span> <span class="fu">bondPrice</span>(r)}</span>
-<span id="cb2-863"><a href="#cb2-863" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb2-864"><a href="#cb2-864" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-865"><a href="#cb2-865" aria-hidden="true" tabindex="-1"></a>P0    <span class="op">=</span> <span class="fu">bondPrice</span>(r_ref)</span>
-<span id="cb2-866"><a href="#cb2-866" aria-hidden="true" tabindex="-1"></a>tFacial <span class="op">=</span> coupon <span class="op">/</span> nominal</span>
-<span id="cb2-867"><a href="#cb2-867" aria-hidden="true" tabindex="-1"></a>status <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(P0 <span class="op">-</span> nominal) <span class="op">&lt;</span> <span class="dv">1</span></span>
-<span id="cb2-868"><a href="#cb2-868" aria-hidden="true" tabindex="-1"></a>  <span class="op">?</span> <span class="st">"Au pair"</span></span>
-<span id="cb2-869"><a href="#cb2-869" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span> P0 <span class="op">&gt;</span> nominal</span>
-<span id="cb2-870"><a href="#cb2-870" aria-hidden="true" tabindex="-1"></a>    <span class="op">?</span> <span class="vs">`Prime (+</span><span class="sc">${</span>(P0 <span class="op">-</span> nominal)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="sc">}</span><span class="vs"> €)`</span></span>
-<span id="cb2-871"><a href="#cb2-871" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span> <span class="vs">`Décote (</span><span class="sc">${</span>(P0 <span class="op">-</span> nominal)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="sc">}</span><span class="vs"> €)`</span></span>
-<span id="cb2-872"><a href="#cb2-872" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-873"><a href="#cb2-873" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`**Prix P₀ = </span><span class="sc">${</span>P0<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> €** au taux </span><span class="sc">${</span>(r_ref<span class="op">*</span><span class="dv">100</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> % — *</span><span class="sc">${</span>status<span class="sc">}</span><span class="vs">* | Taux facial : </span><span class="sc">${</span>(tFacial<span class="op">*</span><span class="dv">100</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> %`</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="843" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 842;"><span id="cb1-843"><a href="#cb1-843" aria-hidden="true" tabindex="-1"></a>viewof coupon <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span> {</span>
+<span id="cb1-844"><a href="#cb1-844" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb1-845"><a href="#cb1-845" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Coupon annuel C (€)"</span></span>
+<span id="cb1-846"><a href="#cb1-846" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-847"><a href="#cb1-847" aria-hidden="true" tabindex="-1"></a>viewof nominal <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">500</span><span class="op">,</span> <span class="dv">2000</span>]<span class="op">,</span> {</span>
+<span id="cb1-848"><a href="#cb1-848" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb1-849"><a href="#cb1-849" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Nominal N (€)"</span></span>
+<span id="cb1-850"><a href="#cb1-850" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-851"><a href="#cb1-851" aria-hidden="true" tabindex="-1"></a>viewof maturite <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">1</span><span class="op">,</span> <span class="dv">20</span>]<span class="op">,</span> {</span>
+<span id="cb1-852"><a href="#cb1-852" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb1-853"><a href="#cb1-853" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Maturité n (années)"</span></span>
+<span id="cb1-854"><a href="#cb1-854" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-855"><a href="#cb1-855" aria-hidden="true" tabindex="-1"></a>viewof r_ref <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.01</span><span class="op">,</span> <span class="fl">0.15</span>]<span class="op">,</span> {</span>
+<span id="cb1-856"><a href="#cb1-856" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="fl">0.06</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.001</span><span class="op">,</span></span>
+<span id="cb1-857"><a href="#cb1-857" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Taux de marché de référence r"</span></span>
+<span id="cb1-858"><a href="#cb1-858" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-859"><a href="#cb1-859" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-860"><a href="#cb1-860" aria-hidden="true" tabindex="-1"></a>bondPrice <span class="op">=</span> (r) <span class="kw">=&gt;</span></span>
+<span id="cb1-861"><a href="#cb1-861" aria-hidden="true" tabindex="-1"></a>  coupon <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> (<span class="dv">1</span> <span class="op">+</span> r) <span class="op">**</span> <span class="op">-</span>maturite) <span class="op">/</span> r <span class="op">+</span> nominal <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> r) <span class="op">**</span> <span class="op">-</span>maturite</span>
+<span id="cb1-862"><a href="#cb1-862" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-863"><a href="#cb1-863" aria-hidden="true" tabindex="-1"></a>curve <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> <span class="dv">141</span>}<span class="op">,</span> (_<span class="op">,</span> k) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-864"><a href="#cb1-864" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> r <span class="op">=</span> <span class="fl">0.01</span> <span class="op">+</span> k <span class="op">*</span> <span class="fl">0.001</span></span>
+<span id="cb1-865"><a href="#cb1-865" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {r<span class="op">,</span> <span class="dt">prix</span><span class="op">:</span> <span class="fu">bondPrice</span>(r)}</span>
+<span id="cb1-866"><a href="#cb1-866" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-867"><a href="#cb1-867" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-868"><a href="#cb1-868" aria-hidden="true" tabindex="-1"></a>P0    <span class="op">=</span> <span class="fu">bondPrice</span>(r_ref)</span>
+<span id="cb1-869"><a href="#cb1-869" aria-hidden="true" tabindex="-1"></a>tFacial <span class="op">=</span> coupon <span class="op">/</span> nominal</span>
+<span id="cb1-870"><a href="#cb1-870" aria-hidden="true" tabindex="-1"></a>status <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(P0 <span class="op">-</span> nominal) <span class="op">&lt;</span> <span class="dv">1</span></span>
+<span id="cb1-871"><a href="#cb1-871" aria-hidden="true" tabindex="-1"></a>  <span class="op">?</span> <span class="st">"Au pair"</span></span>
+<span id="cb1-872"><a href="#cb1-872" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span> P0 <span class="op">&gt;</span> nominal</span>
+<span id="cb1-873"><a href="#cb1-873" aria-hidden="true" tabindex="-1"></a>    <span class="op">?</span> <span class="vs">`Prime (+</span><span class="sc">${</span>(P0 <span class="op">-</span> nominal)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="sc">}</span><span class="vs"> €)`</span></span>
+<span id="cb1-874"><a href="#cb1-874" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span> <span class="vs">`Décote (</span><span class="sc">${</span>(P0 <span class="op">-</span> nominal)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="sc">}</span><span class="vs"> €)`</span></span>
+<span id="cb1-875"><a href="#cb1-875" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-876"><a href="#cb1-876" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`**Prix P₀ = </span><span class="sc">${</span>P0<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> €** au taux </span><span class="sc">${</span>(r_ref<span class="op">*</span><span class="dv">100</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> % — *</span><span class="sc">${</span>status<span class="sc">}</span><span class="vs">* | Taux facial : </span><span class="sc">${</span>(tFacial<span class="op">*</span><span class="dv">100</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> %`</span></span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -1796,19 +1810,19 @@ A = C_0 \cdot \frac{i}{1 - (1+i)^{-n}}\]</span></p>
 </div>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="875" data-source-offset="-967"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 874;"><span id="cb3-875"><a href="#cb3-875" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb3-876"><a href="#cb3-876" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Courbe prix-taux de l'obligation"</span><span class="op">,</span></span>
-<span id="cb3-877"><a href="#cb3-877" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb3-878"><a href="#cb3-878" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(curve<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"r"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"prix"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
-<span id="cb3-879"><a href="#cb3-879" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>([{<span class="dt">r</span><span class="op">:</span> r_ref<span class="op">,</span> <span class="dt">prix</span><span class="op">:</span> P0}]<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"r"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"prix"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">r</span><span class="op">:</span> <span class="dv">6</span><span class="op">,</span> <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span>})<span class="op">,</span></span>
-<span id="cb3-880"><a href="#cb3-880" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([nominal]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"gray"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4 4"</span>})<span class="op">,</span></span>
-<span id="cb3-881"><a href="#cb3-881" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([tFacial]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"orange"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4 4"</span>})</span>
-<span id="cb3-882"><a href="#cb3-882" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
-<span id="cb3-883"><a href="#cb3-883" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Taux de marché r"</span><span class="op">,</span> <span class="dt">tickFormat</span><span class="op">:</span> <span class="st">"%"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
-<span id="cb3-884"><a href="#cb3-884" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Prix P₀ (€)"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
-<span id="cb3-885"><a href="#cb3-885" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">false</span>}<span class="op">,</span></span>
-<span id="cb3-886"><a href="#cb3-886" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span></span>
-<span id="cb3-887"><a href="#cb3-887" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="878" data-source-offset="-967"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 877;"><span id="cb2-878"><a href="#cb2-878" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb2-879"><a href="#cb2-879" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Courbe prix-taux de l'obligation"</span><span class="op">,</span></span>
+<span id="cb2-880"><a href="#cb2-880" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb2-881"><a href="#cb2-881" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">lineY</span>(curve<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"r"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"prix"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb2-882"><a href="#cb2-882" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>([{<span class="dt">r</span><span class="op">:</span> r_ref<span class="op">,</span> <span class="dt">prix</span><span class="op">:</span> P0}]<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"r"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"prix"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">r</span><span class="op">:</span> <span class="dv">6</span><span class="op">,</span> <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span>})<span class="op">,</span></span>
+<span id="cb2-883"><a href="#cb2-883" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([nominal]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"gray"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4 4"</span>})<span class="op">,</span></span>
+<span id="cb2-884"><a href="#cb2-884" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([tFacial]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"orange"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"4 4"</span>})</span>
+<span id="cb2-885"><a href="#cb2-885" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
+<span id="cb2-886"><a href="#cb2-886" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Taux de marché r"</span><span class="op">,</span> <span class="dt">tickFormat</span><span class="op">:</span> <span class="st">"%"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb2-887"><a href="#cb2-887" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Prix P₀ (€)"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb2-888"><a href="#cb2-888" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">false</span>}<span class="op">,</span></span>
+<span id="cb2-889"><a href="#cb2-889" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">40</span></span>
+<span id="cb2-890"><a href="#cb2-890" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-11" data-nodetype="expression">
