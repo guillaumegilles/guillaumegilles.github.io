@@ -5,6 +5,10 @@ abstract: |
   Comment rendre comparables des sommes encaissées ou décaissées à des dates
   différentes ? Cette première session pose les fondations du raisonnement
   financier : capitalisation, actualisation, conversion de taux et annuités.
+other-links:
+  - text: Slides
+    icon: file-earmark-slides
+    href: ./slides/module-01.html
 ---
 
 ## Objectifs de la journée
@@ -137,10 +141,15 @@ $C_0(1 + ni)$ d'un côté, $C_0(1+i)^n$ de l'autre.
 
 ### Représentation (ligne du temps)
 
-```
-t = 0          t = 1          t = 2          ...    t = n
-  |--------------|--------------|------------- ... ---|
-  C₀                                                  Cₙ
+```{mermaid}
+flowchart LR
+    t0["t = 0<br/>C₀"]
+    t1["t = 1"]
+    t2["t = 2"]
+    tn["t = n<br/>Cₙ"]
+    t0 -->|"(1+i)"| t1
+    t1 -->|"(1+i)"| t2
+    t2 -.->|"..."| tn
 ```
 
 Un capital $C_0$ placé à la date 0 produit un capital $C_n$ à la date $n$.
@@ -395,11 +404,13 @@ faudrait un placement à plus de 10 % (1 100 / 1 000 = 1,10) pour que les
 
 ### Représentation (ligne du temps)
 
-```
-t = 0          t = 1          ...    t = n
-  |<------------|<------------- ... --|
-  V₀                                  Vₙ
-  (valeur actuelle)             (valeur future)
+```{mermaid}
+flowchart RL
+    t0["t = 0<br/>V₀<br/>(valeur actuelle)"]
+    t1["t = 1"]
+    tn["t = n<br/>Vₙ<br/>(valeur future)"]
+    tn -->|"/ (1+i)"| t1
+    t1 -->|"/ (1+i)"| t0
 ```
 
 ### A. Valeur actuelle
@@ -932,11 +943,20 @@ on obtient la formule de la valeur acquise des annuités de fin de période.
 
 ### A. Annuités de fin de période (terme échu)
 
+```{mermaid}
+flowchart LR
+    t0["t = 0"]
+    t1["t = 1<br/>A"]
+    t2["t = 2<br/>A"]
+    tn_1["t = n-1<br/>A"]
+    tn["t = n<br/>A"]
+    t0 --> t1
+    t1 --> t2
+    t2 -.-> tn_1
+    tn_1 --> tn
 ```
-t = 0    t = 1    t = 2    ...    t = n
-  |--------|--------|--------- ... ----|
-            A        A                 A
-```
+
+Les versements ont lieu aux dates $t = 1, 2, \dots, n$ (fin de période).
 
 ::: {.callout-tip}
 ## Formules — Annuités de fin de période
@@ -1054,11 +1074,20 @@ la date d'évaluation correspondantes.
 
 ### B. Annuités de début de période (terme à échoir)
 
+```{mermaid}
+flowchart LR
+    t0["t = 0<br/>A"]
+    t1["t = 1<br/>A"]
+    t2["t = 2<br/>A"]
+    tn_1["t = n-1<br/>A"]
+    tn["t = n"]
+    t0 --> t1
+    t1 --> t2
+    t2 -.-> tn_1
+    tn_1 --> tn
 ```
-t = 0    t = 1    t = 2    ...    t = n-1
-  |--------|--------|--------- ... ----|
-  A        A        A                  A
-```
+
+Les versements ont lieu aux dates $t = 0, 1, \dots, n-1$ (début de période).
 
 Chaque versement est avancé d'une période par rapport au cas précédent, donc
 il bénéficie d'une période de capitalisation supplémentaire.
@@ -1238,18 +1267,25 @@ Ces versements ne suffisent pas : il manquerait environ 47 416 €.
 
 ### Carte mentale du cours
 
-```
-                        Valeur temps de l'argent
-                               │
-          ┌────────────────────┼────────────────────┐
-     Capitalisation       Actualisation          Taux
-     C_n = C_0(1+i)^n   V_0 = V_n/(1+i)^n    ┌──┴──┐
-                                            Propor. Équiv.
-                                               │
-                                           Annuités
-                              ┌────────────────┼──────────────┐
-                           Fin période    Début période   Perpétuité
-                           V_0 = A·(…)   V_0 = A·(…)·(1+i)  A/i
+```{mermaid}
+mindmap
+  root((Valeur temps<br/>de l'argent))
+    Capitalisation
+      C_n = C_0(1+i)^n
+    Actualisation
+      V_0 = V_n/(1+i)^n
+    Taux
+      Proportionnel
+        i_p = i_a / m
+      Équivalent
+        i_p = (1+i_a)^(1/m) - 1
+    Annuités
+      Fin de période
+        V_0 = A·(1-(1+i)^-n)/i
+      Début de période
+        V_0 = A·(1-(1+i)^-n)/i · (1+i)
+      Perpétuité
+        V_0 = A/i
 ```
 
 ::: {.callout-warning}
@@ -1305,7 +1341,7 @@ dans **4 ans**, si le taux annuel est **4,5 %** ?
 ::: {.callout-caution collapse="true"}
 ## Solution 1.2
 
-$$V_0 = \frac{25\,000}{(1{,}045)^4} = \frac{25\,000}{1{,}1925} \approx 20\,966 \text{ €}$$
+$$V_0 = \frac{25\,000}{(1{,}045)^4} = \frac{25\,000}{1{,}192519} \approx 20\,964 \text{ €}$$
 :::
 
 **Exercice 1.3** — Un taux mensuel de **0,8 %** correspond à quel taux annuel
@@ -1330,7 +1366,7 @@ base annuelle effective :
 |-------|-------------|-------------|
 | A | 4,8 % | Mensuel proportionnel |
 | B | 4,7 % | Annuel |
-| C | 4,6 % | Trimestriel équivalent |
+| C | 4,6 % | Trimestriel proportionnel |
 
 Quelle offre est la plus avantageuse ?
 
@@ -1344,7 +1380,7 @@ $$i_A = (1{,}004)^{12} - 1 \approx 4{,}91\,\%$$
 
 **Offre B** — déjà sur base annuelle : $i_B = 4{,}70\,\%$
 
-**Offre C** — taux trimestriel équivalent $4{,}6\,\% / 4 = 1{,}15\,\%$
+**Offre C** — taux trimestriel proportionnel $4{,}6\,\% / 4 = 1{,}15\,\%$
 
 Taux annuel effectif :
 $$i_C = (1{,}0115)^{4} - 1 \approx 4{,}67\,\%$$
@@ -1380,23 +1416,23 @@ $$i_m = (1{,}03)^{1/12} - 1 \approx 0{,}2466\,\%$$
 
 **2. Capital à 65 ans ($n = 360$ mois) :**
 $$V_{360} = 800 \times \frac{(1{,}002466)^{360} - 1}{0{,}002466}
-\approx 800 \times 563{,}3 \approx 450\,640 \text{ €}$$
+\approx 800 \times 578{,}71 \approx 462\,970 \text{ €}$$
 
 **3. Rente mensuelle pendant 20 ans ($n = 240$ mois) :**
-$$A = 450\,640 \times \frac{0{,}002466}{1 - (1{,}002466)^{-240}}
-\approx 450\,640 \times 0{,}005543 \approx 2\,497 \text{ €/mois}$$
+$$A = 462\,970 \times \frac{0{,}002466}{1 - (1{,}002466)^{-240}}
+\approx 462\,970 \times 0{,}005526 \approx 2\,558 \text{ €/mois}$$
 
 **4. Impact d'un taux de 4 % :**
 $$i_m = (1{,}04)^{1/12} - 1 \approx 0{,}3274\,\%$$
 $$V_{360} \approx 800 \times \frac{(1{,}003274)^{360} - 1}{0{,}003274}
-\approx 800 \times 693{,}6 \approx 554\,880 \text{ €}$$
+\approx 800 \times 685{,}27 \approx 548\,216 \text{ €}$$
 
-Soit un gain de +104 240 € par rapport au scénario à 3 %.
+Soit un gain d'environ +85 246 € par rapport au scénario à 3 %.
 
 **5. Recommandation :**
 À 3 % de rendement annuel et 800 €/mois de versement, le plan permet de
-constituer environ 451 000 € en 30 ans, générant une rente d'environ 2 500 €/mois
-pendant 20 ans ; une hausse d'un point de taux augmenterait ce capital de
-plus de 100 000 €, ce qui justifie d'arbitrer vers des supports plus
+constituer environ 463 000 € en 30 ans, générant une rente d'environ 2 560 €/mois
+pendant 20 ans ; une hausse d'un point de taux augmenterait ce capital
+d'environ 85 000 € (près de 20 %), ce qui justifie d'arbitrer vers des supports plus
 dynamiques si le profil de risque le permet.
 :::
