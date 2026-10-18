@@ -28,7 +28,7 @@ The instructor opens the deck for the current day on a projector and teaches fro
 2. **Given** a theory block (e.g. bilan fonctionnel, RNR, FPNR), **When** the instructor reaches its end, **Then** a worked numeric example follows before any exercise that uses the concept.
 3. **Given** the deck reaches an exercise, **When** it is shown, **Then** the slide gives the case name, the task, the data needed (or where to find it), the team format and the time allowed.
 4. **Given** the end of a day, **When** the instructor shows the last slides, **Then** a recap of the day's key points and a preview of the next day appear.
-5. **Given** the three decks together, **When** the instructor adds up the planned timings, **Then** they fit the course's three days.
+5. **Given** the three decks together, **When** the instructor adds up the planned timings of non-optional blocks, **Then** each day totals 6 hours and the course totals 18 hours.
 
 ---
 
@@ -91,11 +91,11 @@ After each day, a student opens the day's deck on the course site and reviews it
 
 ### Edge Cases
 
-- **Facts that can't be confirmed**: some facts in the folder disagree and no current source settles them (default rates for the new scale, the X threshold of 20/21/23 months, the current consolidation thresholds). The slide must show the value with its source and date, or mark it as "to be verified" for the instructor. It must not present an unverified figure as current.
-- **Missing case data**: the CONCOURSMANIA/LECTRA statements are not in the énoncé, and the exam's annex 2 is image-only. Students need the figures as readable data before the case is used.
+- **Facts that can't be confirmed**: some facts in the folder disagree (default rates for the new scale, the X threshold of 20/21/23 months, the current consolidation thresholds). They are checked against current official sources (FR-014a). If no official source settles a fact, the slide shows the most recent folder value with its date and an instructor-facing "à vérifier" marker, and never presents it as current.
+- **Missing case data**: the CONCOURSMANIA/LECTRA statements are not in the énoncé. They are retrieved from the companies' published 2016 accounts (FR-017a). If a statement can't be found, the case uses the figures it can reconcile with the answer key, and the slide says so. The exam's annex 2 is image-only but out of scope here.
 - **Answer keys use outdated assumptions**: the existing keys use a 33⅓ % tax rate. The answer-key documents used in class must be recomputed with the convention taught, or the exercise slide must state that the key uses the old rate.
 - **A day runs short or long**: the deck must mark which blocks are optional or can be cut, so the instructor can adjust without breaking prerequisites.
-- **Third-party material**: BdF institutional images, BdF videos and Vernimmen excerpts are third-party content. They must carry their source. Material that cannot be republished publicly must not appear on the public deck.
+- **Third-party material**: BdF institutional images, BdF videos and Vernimmen excerpts are third-party content. They are rebuilt, linked or briefly quoted with a source, never embedded as-is (FR-022). If an official video link cannot be found, the slide gives the video's title and publisher so the instructor can find it.
 - **Reading on a small screen**: wide tables (cote d'activité, consolidation methods, liquidity risk matrix) must stay readable when a student reviews the deck on a laptop.
 
 ## Requirements *(mandatory)*
@@ -108,10 +108,10 @@ After each day, a student opens the day's deck on the course site and reviews it
 - **FR-002**: Each day's slides MUST open with an agenda with timings and 3–6 measurable learning objectives, and MUST close with a recap and a preview of the next day.
 - **FR-003**: The days MUST follow the original deck's progression, extended with fundamentals:
   - **Day 1**: fundamentals (reading the bilan and compte de résultat, SIG, CAF, bilan fonctionnel, FRNG/BFR/TN, ratios, rentabilité and effet de levier).
-  - **Day 2**: the Banque de France and its cotation, groups and consolidation, steps 1–3 (environnement and SWOT, examen critique, performances and RNR).
-  - **Day 3**: steps 4–6 (structure financière and FPNR, liquidité, décision de cotation), the real-case focus boxes and a wrap-up.
-- **FR-003a**: Each topic block MUST point to the quest from the published syllabus (`modules/01…09`) that serves as its in-class activity, where one fits. A quest with no matching block (e.g. Business Model Canvas, regulatory watch, ESG) MUST get at least a short lecture-input slide in the most relevant day, or be listed in the coverage map as not supported by the deck.
-- **FR-004**: Planned timings on the slides MUST add up to the course's total duration. Optional or cuttable blocks MUST be marked as such.
+  - **Day 2**: the Banque de France and its cotation, groups and consolidation, steps 1–3 (environnement and SWOT with a short Business Model Canvas input block, examen critique, performances and RNR).
+  - **Day 3**: steps 4–6 (structure financière and FPNR, liquidité, décision de cotation), short input blocks for regulatory watch and ESG, the real-case focus boxes and a wrap-up.
+- **FR-003a**: Each topic block MUST point to the quest from the published syllabus (`modules/01…09`) that serves as its in-class activity, where one fits. The three quests with no matching block MUST each get a short input block of 3–5 slides: Business Model Canvas (Q5), placed with step 1 on Day 2; regulatory watch (Q7) and ESG/extra-financial reporting (Q9), both on Day 3. Each input block MUST state the quest's goal, give the minimum concepts needed to start it, and link to the quest page.
+- **FR-004**: Each day MUST be planned for 6 hours of teaching (reference schedule 9:00–12:00 and 13:30–16:30), 18 hours in total. Each day's agenda timings MUST add up to 6 hours, excluding optional blocks. Blocks that would push a day past 6 hours MUST be marked optional or cuttable.
 - **FR-005**: Within each topic block, slides MUST follow the order: concept → formula with plain-language explanation → worked example → exercise brief.
 
 **Content from the original deck (inseec-analyse-financiere.pptx)**
@@ -128,12 +128,14 @@ After each day, a student opens the day's deck on the course site and reviews it
 - **FR-012**: Each ratio and aggregate MUST have exactly one definition across the deck, matching the course formula sheet. Where the sources disagree (C6), the chosen definition is recorded in the coverage map.
 - **FR-013**: Year-dependent figures (firm counts, distributions, thresholds, default rates, horizons) MUST show their source and date. Outdated regulatory references MUST be updated or labelled as historical (C7).
 - **FR-014**: Old-scale default rates MUST NOT be presented as applying to the current scale (C3).
+- **FR-014a**: Facts that are missing, outdated or conflicting in the folder MUST be verified against current official sources (Banque de France, Légifrance, ANC, IFRS Foundation) and cited on the slide with publisher and date. This covers at least: default rates for the current scale, the cote X threshold, the rating horizon, the number of rated firms, consolidation thresholds, the accounting rules replacing CRC 99-02, and whether proportional consolidation is still allowed. The coverage map MUST record each verified fact, its source and the date it was checked.
 
 **Material from the other files**
 
 - **FR-015**: The deck MUST include a fundamentals block: bilan and compte de résultat reading, SIG, CAF by both methods, bilan fonctionnel with the crédit-bail retraitement, FRNG/BFR/TN and their ratios. It is sourced from the lecture notes, ratio handout and formula sheet in the folder.
 - **FR-016**: The deck MUST include rentabilité économique and financière and the effet de levier, with the leverage identity derived step by step.
 - **FR-017**: The deck MUST include exercise briefs for the existing cases that have answer keys: CONCOURSMANIA/LECTRA, CP1 SWOT, CP2 RNR, CP3 FPNR, CP4 endettement retraité. Each brief is placed after the theory it needs, with readable data.
+- **FR-017a**: For the CONCOURSMANIA/LECTRA case, the 2016 bilan and compte de résultat of both companies MUST be retrieved from their published annual accounts and given to students as readable tables, with the source cited. The existing answer key is kept. Any gap between the retrieved figures and the key's totals MUST be recorded in the coverage map and fixed in the key or flagged on the exercise slide.
 - **FR-018**: The deck MUST include at least three "focus" boxes from recent real cases in the folder (e.g. Orpéa and IFRS 16, Casino and the 6× dette/EBE threshold, gross vs net debt in France). Each box names its source and date.
 - **FR-019**: The deck MUST include a short "what changed" slide on lease accounting (IFRS 16) linked to the off-balance-sheet retraitement, and a mention of the extra-financial reporting shift (DPEF → CSRD).
 - **FR-020**: The coverage map MUST list every file in the folder as used, partly used or not used, with a reason. The not-used files include duplicates, outdated items and the misplaced AI paper.
@@ -141,7 +143,7 @@ After each day, a student opens the day's deck on the course site and reviews it
 **Solutions and audience**
 
 - **FR-021**: The decks MUST NOT contain exercise solutions. Each exercise brief MUST name the answer-key document the instructor uses (existing corrigé or newly written key). The coverage map MUST list, for each exercise, its answer key and whether that key matches the tax-rate convention taught.
-- **FR-022**: Third-party images, videos and excerpts MUST carry their source. Third-party material that cannot be published publicly MUST be excluded from the public deck.
+- **FR-022**: The decks MUST NOT embed third-party images or videos. Content from Banque de France documents and presentations MUST be rebuilt as original text, tables or diagrams, each with a source line (publisher and year). The two BdF videos MUST be linked to their official public location, not embedded. Vernimmen material MUST be limited to short quoted figures or ideas with a citation (letter number and date).
 
 **Site integration**
 
@@ -164,7 +166,7 @@ After each day, a student opens the day's deck on the course site and reviews it
 
 ### Measurable Outcomes
 
-- **SC-001**: In a dry run, the instructor teaches each of the three days from its deck, opening no other file except the answer-key documents named on the exercise slides, within ±15 minutes of the planned day length.
+- **SC-001**: In a dry run, the instructor teaches each of the three days from its deck, opening no other file except the answer-key documents named on the exercise slides, within ±15 minutes of the 6-hour day.
 - **SC-002**: 100 % of the original deck's text slides on cotation and the six steps are accounted for in the coverage map, and 100 % of the folder's files have a verdict.
 - **SC-003**: A fact-check of every number, scale and regulatory reference finds zero figures presented as current that are outdated, and zero conflicting definitions of the same ratio across the deck.
 - **SC-004**: Zero slides consist only of an unreadable picture of text. Every rebuilt table is readable from the back of a classroom and on a laptop screen.
@@ -174,13 +176,13 @@ After each day, a student opens the day's deck on the course site and reviews it
 
 ## Assumptions
 
-- Audience: INSEEC MSc finance students (four programmes listed in the syllabus) with basic accounting knowledge. The course is taught in French over three in-person days of about 6 hours each, as stated in the syllabus.
+- Audience: INSEEC MSc finance students (four programmes listed in the syllabus) with basic accounting knowledge. The course is taught in French over three in-person days of 6 hours each (18 hours), as stated in the syllabus.
 - The Banque de France six-step analysis of consolidated accounts stays the course backbone, as in the original deck and the syllabus.
 - The slides are the in-class lecture support. The existing web pages (theory pages, quests, formula sheet) stay the reference.
 - The existing exams (`examen-1h`, `examen-final`, `Exam INSEEC`) are not rewritten in this feature. The deck may include one exam-briefing slide.
 - Existing case answer keys are reused. Where they rely on the 33⅓ % tax rate, the figures are recomputed or flagged.
-- The current French corporate tax rate (25 %) and the BdF scale in force since 2022 are the reference for "current". Facts not found in the folder are verified against official current sources while the deck is being written.
-- The two short BdF videos in the folder may be shown in class. Whether they are embedded publicly depends on their reuse rights.
+- The current French corporate tax rate (25 %) and the BdF scale in force since 2022 are the reference for "current". Facts not found in the folder, or outdated there, are verified against current official sources while the deck is being written (FR-014a). This requires web access during writing.
+- The two short BdF videos in the folder are shown in class from their official public location.
 - Learner-facing improvements to the web pages (glossary, navigation fixes, etc.) are covered by spec 013. This feature only adds the links the slides need.
 
 ## Clarifications
@@ -190,4 +192,9 @@ After each day, a student opens the day's deck on the course site and reviews it
 - Q: Which storyline should the days follow? → A: Hybrid (option C). The days follow the original deck's progression, extended with fundamentals (Day 1 fundamentals; Day 2 BdF, cotation, consolidation, steps 1–3; Day 3 steps 4–6, cotation decision, focus cases). Each block points to the matching syllabus quest as its in-class activity (FR-003, FR-003a).
 - Q: How should the slides be split? → A: One deck per day, 3 decks (FR-001).
 - Q: Where do exercise solutions live? → A: Not in the slides. The instructor uses the answer-key documents, and each exercise slide names its key (FR-021, SC-001, SC-005).
+- Q: How should the decks handle third-party material (BdF images, BdF videos, Vernimmen excerpts)? → A: Rebuild everything as original text, tables and diagrams with a source line; link to the official videos rather than embedding them; only short quoted Vernimmen figures with citation (FR-022).
+- Q: Should facts missing or outdated in the folder be checked against current official sources outside it? → A: Yes. Verify and update them from current official sources (BdF, Légifrance, ANC, IFRS Foundation) and cite them on the slide (FR-014a).
+- Q: How much should the decks cover the quests with no lecture block (BMC, regulatory watch, ESG)? → A: A short input block of 3–5 slides each: BMC with step 1 on Day 2; regulatory watch and ESG on Day 3 (FR-003a).
+- Q: How do students get the missing data for the CONCOURSMANIA/LECTRA case? → A: Retrieve both companies' 2016 statements from their published annual accounts, present them as readable tables, and keep the existing answer key (FR-017a).
+- Q: How long does each course day run? → A: 6 hours of teaching (9:00–12:00, 13:30–16:30), 18 hours in total; blocks beyond that are marked optional (FR-004, SC-001).
 - Exercices and answer-key must be recomputed at 25 % tax rate.
