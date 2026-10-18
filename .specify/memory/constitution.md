@@ -1,13 +1,27 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version change: 1.4.1 → 1.5.0 (MINOR — added T-VIII Course Syllabus principle)
-Modified principles: none
-Added sections:
-  - T-VIII. Course Syllabus (index.qmd as syllabus + required literature section)
+Version change: 1.5.1 → 2.0.0 (MAJOR — redefinition of callout semantics
+  in Principle V, of language declaration in Principle VI, and of proof
+  markup in T-VI)
+Modified principles:
+  - V. Minimal & Contained Styling — callout table reduced to content
+    roles (note = definition, tip = formula, caution = proof), plus
+    warning (common mistakes) and important (TODO markers); exercises and
+    answers are no longer callouts.
+  - VI. Bilingual Content Strategy — `lang:` declared once per directory
+    in `_metadata.yml`, not in every `.qmd` file.
+  - T-II. Pedagogical Structure — "collapsible solutions" now means
+    folded `<details class="answer">` blocks.
+  - T-VI. Proof and Demonstration — `.callout-caution`; collapsing is
+    optional.
+Added sections: none
 Removed sections: none
 Templates requiring updates:
-  - .specify/templates/plan-template.md ✅ (Constitution Check: add T-VIII gate)
+  - .specify/templates/plan-template.md ⚠ pending (line 57: "`lang:` front
+    matter set on all files" → "language set by directory `_metadata.yml`";
+    line 65: "collapsible formal proof" → "formal proof in
+    `.callout-caution`")
   - .specify/templates/spec-template.md ✅ (no changes needed)
   - .specify/templates/tasks-template.md ✅ (no changes needed)
 Follow-up TODOs: none
@@ -68,26 +82,48 @@ All custom CSS/SCSS MUST live in `assets/dark.scss`. Inline `style=`
 attributes and page-level `<style>` blocks MUST NOT be used. The
 Cloudflare Worker (`worker/`) is a separate deployment artifact and MUST
 NOT be entangled with Quarto build steps. Math MUST use standard LaTeX
-syntax (`$...$` / `$$...$$`). Callout blocks MUST use Quarto's native
-`.callout-*` divs with consistent semantics across the whole site:
+syntax (`$...$` / `$$...$$`).
+
+Callout blocks MUST use Quarto's native `.callout-*` divs and are
+reserved for a small set of content roles, so that a box always signals
+one of them:
 
 | Type | Use for |
 |---|---|
-| `.callout-note` | Definitions, background information |
-| `.callout-tip` | Key formulas, practical shortcuts |
-| `.callout-warning` | Remarks, caveats, common mistakes |
-| `.callout-important` | Exam tips, critical rules |
-| `.callout-caution` | Exercises (with `collapse="true"` for solutions) |
+| `.callout-note` | Definitions |
+| `.callout-tip` | Formulas |
+| `.callout-caution` | Proofs and derivations |
+| `.callout-warning` | Common mistakes (at most one block per page) |
+| `.callout-important` | `TODO:` markers for missing content (T-IV) |
 
-**Rationale**: A single styling entry point and consistent callout semantics
-prevent conflicting overrides and ensure readers can rely on visual cues
-having the same meaning across blog posts and teaching pages.
+Everything else MUST NOT be a callout:
+
+- **Exercises** use Quarto's exercise block (`::: {#exr-<slug>
+  name="…"}`), with the statement visible.
+- **Answers and solutions** (Try-it answers, exercise and homework
+  solutions, exit-check answers) are folded in
+  `<details class="answer">` with a `<summary>` line.
+- **Explanations, notation decoders, remarks and background** are plain
+  prose, headings and tables.
+
+The styling of `.theorem.exercise` and `details.answer` lives in
+`assets/dark.scss` like every other rule.
+
+**Rationale**: When most blocks on a page are boxed, no box stands out.
+Limiting callouts to definitions, formulas and proofs (plus mistakes and
+TODOs) keeps them meaningful, and a single styling entry point prevents
+conflicting overrides across blog posts and teaching pages.
 
 ### VI. Bilingual Content Strategy (EN + FR Parity)
 
 The site is fully bilingual — every published page MUST exist in both
-English and French. Content language MUST be declared via `lang:` in
-every `.qmd` file's front matter (`lang: fr` or `lang: en`).
+English and French. Content language MUST be declared once per directory
+in a `_metadata.yml` file (`lang: en` in `teaching/_metadata.yml` and
+`posts/_metadata.yml`, `lang: fr` in `fr/teaching/_metadata.yml`, and
+likewise for any new top-level directory). A `.qmd` file MUST NOT repeat
+the inherited `lang:`; it MAY set `lang:` only to override its
+directory's language, and pages outside any such directory MUST declare
+it in their own front matter.
 
 **Structure**: The folder-per-language pattern is the only accepted
 implementation. English lives at the site root; French lives under `fr/`,
@@ -117,8 +153,9 @@ fr/teaching/ece-proba/...     → /fr/teaching/ece-proba/
 
 **Rationale**: Quarto has no native i18n engine. The folder-per-language
 pattern is the only approach officially supported and predictable across
-renders. Per-page `lang:` front matter ensures correct HTML `lang`
-attribute, accessible typography, and proper hyphenation. Stubs prevent
+renders. Declaring `lang:` per directory still gives every page the
+correct HTML `lang` attribute, accessible typography, and proper
+hyphenation, with one place to change instead of hundreds. Stubs prevent
 broken navigation and signal outstanding translation work clearly.
 
 ## Teaching Materials Standards
@@ -138,7 +175,8 @@ divergence MUST be explicitly justified in a commit message.
 ### T-II. Pedagogical Structure (NON-NEGOTIABLE)
 
 Every session file MUST follow the established didactic order:
-**theory first → worked examples → exercises with collapsible solutions**.
+**theory first → worked examples → exercises with folded solutions**
+(`<details class="answer">`, see Principle V).
 Content MUST NOT be flattened into undifferentiated prose. Each major
 concept MUST be introduced before it is used in an example or exercise.
 
@@ -173,9 +211,11 @@ course sidebar.
 ### T-VI. Proof and Demonstration
 
 Each session MUST include at least one formal proof or step-by-step
-derivation for its central theorem, formula, or concept. The proof MUST
-be collapsible (`.callout-caution` with `collapse="true"`) so it does not
-interrupt the flow for students who skip it.
+derivation for its central theorem, formula, or concept, in a
+`.callout-caution` block. A long proof MAY be collapsed
+(`collapse="true"`) so it does not interrupt the flow for students who
+skip it; its title MUST then say so (e.g., "click to expand"), and MUST
+NOT say so when the block is open.
 
 ### T-VII. Visual and Geometric Intuition
 
@@ -262,4 +302,4 @@ The site owner (Guillaume Gilles) holds sole amendment authority.
 All Copilot-assisted changes MUST be validated against these principles
 before merging.
 
-**Version**: 1.5.1 | **Ratified**: 2026-05-31 | **Last Amended**: 2026-09-13
+**Version**: 2.0.0 | **Ratified**: 2026-05-31 | **Last Amended**: 2026-10-18

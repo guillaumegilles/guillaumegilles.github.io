@@ -1,7 +1,7 @@
 ---
 title: "Module 7 — Shape and univariate review"
 subtitle: "Data Description | Part II — Summarising one variable"
-date-modified: 2026-10-13
+date-modified: 2026-10-17
 lang: en
 ---
 
@@ -14,6 +14,9 @@ indicators answer exactly that question, and they close the loop on
 what the mean, median, and mode (Module 4) were quietly hinting at
 all along. This module also consolidates the entire univariate
 toolkit (Modules 3–6) into one complete workflow.
+We start with three trucks that Module 6 cannot tell apart — same
+mean, same standard deviation — small enough to compute by hand, and
+only then write the formulas.
 
 ## Learning objectives
 
@@ -22,31 +25,242 @@ By the end of this module, you will be able to:
 - Explain what a symmetric, right-skewed, and left-skewed
   distribution look like, and how the mean, median, and mode
   typically order themselves in each case.
-- Compute and interpret the Fisher-Pearson sample skewness
-  coefficient (Excel's `SKEW`), the primary skewness measure used in
-  this course.
-- Compute the Pearson skewness coefficient and the Yule-Kendall
-  skewness coefficient as alternative, simpler measures, and
-  recognize that different formulas can disagree in sign or
-  magnitude for near-symmetric data.
+- Compute the Fisher-Pearson sample skewness coefficient for a small
+  dataset with a cubed-deviation table, explain why the deviations are
+  cubed, and read its formula aloud as a sentence.
+- Compute the Pearson skewness coefficient (mode and median forms) and
+  the Yule-Kendall skewness coefficient by hand, and recognize that
+  different formulas can disagree in sign or magnitude for
+  near-symmetric data.
 - Read skewness directly off a histogram or boxplot.
-- Build a complete descriptive-statistics summary for a quantitative
-  variable in Excel, from raw data to shape indicators, without
-  external guidance.
-
-## Time plan
-
-| Block | Minutes | What you do |
-|---|---:|---|
-| Homework debrief | 10 | Module 6 Excel homework: Step 0 results, questions on Homework 1–3 |
-| Theory | 60 | Symmetry vs skewness, Fisher-Pearson skewness, Pearson and Yule-Kendall coefficients, reading skew from charts |
-| Excel lab | 40 | `SKEW`, histogram overlay, full univariate workflow |
-| Exercises | 70 | Three by-hand and three Excel exercises (including full workflow) |
-| **Total** | **180** | |
+- Describe kurtosis in words (leptokurtic, mesokurtic, platykurtic)
+  and tell it apart from skewness.
+- Write a skewness formula in symbols from a description in words.
 
 ## Theory
 
+### Same mean, same spread, different shapes
+
+Three Wandering Fork trucks recorded their revenue on a few ordinary
+days at three different pitches. The numbers are a simplified extract
+chosen so that you can compute everything by hand.
+
+| Truck (pitch) | Daily revenue (€) | Days | Mean (€) | Std. dev. $s$ (€) |
+|---|---|---:|---:|---:|
+| Station | 510, 570, 600, 600, 630, 690 | 6 | 600 | 60 |
+| Stadium | 550, 550, 580, 630, 690 | 5 | 600 | 60 |
+| Market | 510, 570, 620, 650, 650 | 5 | 600 | 60 |
+
+With the tools of Modules 4 and 6 — the mean and the standard
+deviation — the three trucks look **identical**: €600 on an average
+day, give or take about €60. Are they really the same business? For
+which truck would "a typical day is €600" be most misleading, and in
+which direction? Look at the figure before computing anything (start
+with step 1).
+
+```{ojs}
+//| echo: false
+station = [510, 570, 600, 600, 630, 690]
+stadium = [550, 550, 580, 630, 690]
+market = [510, 570, 620, 650, 650]
+
+function shape(xs) {
+  const n = xs.length;
+  const sorted = [...xs].sort((a, b) => a - b);
+  const mean = xs.reduce((a, b) => a + b, 0) / n;
+  const median = n % 2 ? sorted[(n - 1) / 2]
+    : (sorted[n / 2 - 1] + sorted[n / 2]) / 2;
+  const counts = new Map();
+  xs.forEach(x => counts.set(x, (counts.get(x) || 0) + 1));
+  const top = Math.max(...counts.values());
+  const modes = [...counts].filter(([, c]) => c === top).map(([v]) => v);
+  const mode = top > 1 && modes.length === 1 ? modes[0] : null;
+  const dev = sorted.map(x => x - mean);
+  const s = Math.sqrt(dev.reduce((a, d) => a + d * d, 0) / (n - 1));
+  const cube10 = dev.map(d => (d / 10) ** 3);
+  const sumCube10 = cube10.reduce((a, b) => a + b, 0);
+  const skew = n / ((n - 1) * (n - 2)) * sumCube10 / (s / 10) ** 3;
+  const quart = p => {
+    const pos = (n + 1) * p, k = Math.floor(pos);
+    const lo = sorted[k - 1], hi = sorted[Math.min(k, n - 1)];
+    return lo + (pos - k) * (hi - lo);
+  };
+  const q1 = quart(0.25), q3 = quart(0.75);
+  const yk = (q3 + q1 - 2 * median) / (q3 - q1);
+  return {n, sorted, mean, median, mode, dev, s, cube10, sumCube10, skew,
+    q1, q3, yk, min: sorted[0], max: sorted[n - 1]};
+}
+
+num = (v, d = 0) => (v < 0 ? "−" : "") + Math.abs(v).toFixed(d)
+signed = (v, d = 0) => (v > 0 ? "+" : "") + num(v, d)
+
+shapeTrucks = [["Station", station], ["Stadium", stadium],
+  ["Market", market]].map(([name, xs]) => ({name, st: shape(xs)}))
+
+viewof shapeStep = {
+  const labels = ["1 · Dots", "2 · Mean, median, mode", "3 · Cubes",
+    "4 · Quartiles"];
+  const form = html`<form class="ojs-step-picker">Show: ${labels.map((l, i) =>
+    html`<label> <input type="radio" name="shapeStep" value="${i + 1}"
+      ${i === 0 ? "checked" : ""}> ${l} </label>`)}</form>`;
+  form.value = 1;
+  form.oninput = () => {
+    form.value = +form.querySelector("input:checked").value;
+  };
+  return form;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const W = 660, BLUE = "steelblue", ORANGE = "darkorange";
+  const GREEN = "seagreen", PURPLE = "mediumpurple";
+  const POS = "#5cb85c", NEG = "#d9534f";
+  const panel = 110;
+  let g = "";
+
+  if (shapeStep !== 3) {
+    const x = v => 120 + (v - 480) * (W - 150) / (720 - 480);
+    const H = 3 * panel + 50;
+    shapeTrucks.forEach(({name, st}, k) => {
+      const top = 10 + k * panel, y0 = top + 60;
+      g += `<text x="10" y="${y0}" fill="currentColor"
+        font-weight="bold">${name}</text>`;
+      if (shapeStep === 2) {
+        const marks = [["mode", st.mode, PURPLE, "2 3", 12],
+                       ["median", st.median, GREEN, "", 26],
+                       ["mean", st.mean, ORANGE, "6 4", 40]];
+        marks.forEach(([label, v, c, dash, dy]) => {
+          g += `<line x1="${x(v)}" x2="${x(v)}" y1="${top + dy - 10}"
+            y2="${y0 + 10}" stroke="${c}" stroke-width="2"
+            stroke-dasharray="${dash}"/>`;
+          g += `<text x="${x(v) + 5}" y="${top + dy}" fill="${c}"
+            font-size="12">${label} ${num(v)}</text>`;
+        });
+      }
+      const seen = new Map();
+      st.sorted.forEach(v => {
+        const r = seen.get(v) || 0;
+        seen.set(v, r + 1);
+        g += `<circle cx="${x(v)}" cy="${y0 - 14 * r}" r="6"
+          fill="${BLUE}"/>`;
+      });
+      if (shapeStep === 4) {
+        const yb = y0 + 22;
+        g += `<line x1="${x(st.min)}" x2="${x(st.q1)}" y1="${yb}"
+          y2="${yb}" stroke="currentColor"/>`;
+        g += `<line x1="${x(st.q3)}" x2="${x(st.max)}" y1="${yb}"
+          y2="${yb}" stroke="currentColor"/>`;
+        g += `<rect x="${x(st.q1)}" y="${yb - 8}"
+          width="${x(st.q3) - x(st.q1)}" height="16" fill="${BLUE}"
+          fill-opacity="0.25" stroke="${BLUE}"/>`;
+        g += `<line x1="${x(st.median)}" x2="${x(st.median)}"
+          y1="${yb - 8}" y2="${yb + 8}" stroke="${GREEN}"
+          stroke-width="3"/>`;
+        g += `<text x="10" y="${y0 + 44}" fill="currentColor"
+          font-size="12">Me − Q1 = ${num(st.median - st.q1)},
+          Q3 − Me = ${num(st.q3 - st.median)}</text>`;
+      }
+    });
+    for (let t = 500; t <= 700; t += 50) {
+      g += `<line x1="${x(t)}" x2="${x(t)}" y1="${H - 30}" y2="${H - 24}"
+        stroke="currentColor"/>`;
+      g += `<text x="${x(t)}" y="${H - 10}" text-anchor="middle"
+        fill="currentColor" font-size="12">€${t}</text>`;
+    }
+    g += `<line x1="${x(480)}" x2="${x(720)}" y1="${H - 30}" y2="${H - 30}"
+      stroke="currentColor"/>`;
+    return html`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"
+      aria-label="Daily revenue of the Station, Stadium and Market trucks">
+      ${g}</svg>`;
+  }
+
+  const k = 220 / 729, cx = 340, H = 3 * panel;
+  shapeTrucks.forEach(({name, st}, t) => {
+    const top = 10 + t * panel;
+    g += `<text x="10" y="${top + 30}" fill="currentColor"
+      font-weight="bold">${name}</text>`;
+    g += `<line x1="${cx}" x2="${cx}" y1="${top}" y2="${top + 82}"
+      stroke="${ORANGE}" stroke-width="2" stroke-dasharray="6 4"/>`;
+    st.cube10.forEach((c, i) => {
+      const y = top + 6 + i * 13, len = Math.abs(c) * k;
+      const col = c > 0 ? POS : c < 0 ? NEG : "currentColor";
+      if (c !== 0) {
+        g += `<rect x="${c > 0 ? cx : cx - len}" y="${y - 5}"
+          width="${len}" height="10" fill="${col}"/>`;
+      }
+      g += `<text x="${c >= 0 ? cx + len + 6 : cx - len - 6}" y="${y + 4}"
+        text-anchor="${c >= 0 ? "start" : "end"}" fill="${col}"
+        font-size="11">${signed(c)}</text>`;
+    });
+    g += `<text x="10" y="${top + 50}" fill="currentColor"
+      font-size="12">sum = ${signed(st.sumCube10)}</text>`;
+  });
+  return html`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"
+    aria-label="Cubed deviations, in tens of euros, of the three trucks">
+    ${g}</svg>`;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const order = st => {
+    const m = [["mode", st.mode], ["median", st.median], ["mean", st.mean]];
+    if (m.every(([, v]) => v === st.mean)) return "all three are equal";
+    return m.sort((a, b) => a[1] - b[1]).map(([l]) => l).join(" < ");
+  };
+  const line = ({name, st}) => shapeStep === 1
+    ? `${name}: ${st.n} days from €${st.min} to €${st.max}, mean €${num(st.mean)}, s = €${num(st.s)}.`
+    : shapeStep === 2
+    ? `${name}: mode ${num(st.mode)}, median ${num(st.median)}, mean ${num(st.mean)} — ${order(st)}.`
+    : shapeStep === 3
+    ? `${name}: cubed deviations (tens of €) ${st.cube10.map(c => signed(c)).join(", ")}, sum ${signed(st.sumCube10)}; SKEW = ${st.n}/${(st.n - 1) * (st.n - 2)} × ${num(st.sumCube10)}/${num((st.s / 10) ** 3)} = ${num(st.skew, 2)}.`
+    : `${name}: Q1 = ${num(st.q1)}, Me = ${num(st.median)}, Q3 = ${num(st.q3)}; YK = ${num(st.q3 + st.q1 - 2 * st.median)}/${num(st.q3 - st.q1)} = ${num(st.yk, 2)}.`;
+  return html`<p><em>${shapeTrucks.map(t => html`${line(t)}<br>`)}</em></p>`;
+}
+```
+
 ### Symmetry and skewness
+
+**Try it.** For each truck, sort the values, then find the mean, the
+median and the mode (Module 4). Put the three in increasing order.
+
+| Truck | Sorted values (€) | Mean | Median $Me$ | Mode $Mo$ | Order |
+|---|---|---:|---:|---:|---|
+| Station | 510, 570, 600, 600, 630, 690 | ? | ? | ? | ? |
+| Stadium | 550, 550, 580, 630, 690 | ? | ? | ? | ? |
+| Market | 510, 570, 620, 650, 650 | ? | ? | ? | ? |
+
+Then: on which side of the bulk of the days is each truck's one
+"unusual" day?
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+| Truck | Mean | Median $Me$ | Mode $Mo$ | Order |
+|---|---:|---:|---:|---|
+| Station | 600 | $(600+600)/2 = 600$ | 600 | all equal |
+| Stadium | 600 | 580 | 550 | $Mo < Me < \bar{x}$ |
+| Market | 600 | 620 | 650 | $\bar{x} < Me < Mo$ |
+
+Station is balanced: 510 and 690 are each €90 from 600. Stadium's
+unusual day is a **high** one (690, a match day): it pulls the mean up,
+above the median, which is above the most frequent value. Market's
+unusual day is a **low** one (510, a rainy day): everything flips. The
+mean always moves toward the long tail, because it uses every value;
+the median and the mode do not.
+:::
+
+**See it.** Step 2 of the figure draws the three centres as vertical
+lines. For Station they sit on top of each other; for Stadium the mean
+(orange) is pulled to the right of the median (green) and the mode
+(purple); Market is the mirror image.
+
+In plain words: symmetric = balanced; right-skewed = tail drags to
+the right (a few exceptionally high values); left-skewed = tail
+drags to the left (a few exceptionally low values). The mean is
+dragged toward the tail, the median less, the mode not at all.
 
 ::: {.callout-note}
 #### Definition — symmetry and skewness
@@ -60,11 +274,79 @@ values, typically pulling the mean above the median above the mode
 case, with a longer tail toward low values ($\bar{x} < Me < Mo$).
 :::
 
-In plain words: symmetric = balanced; right-skewed = tail drags to
-the right (a few exceptionally high values); left-skewed = tail
-drags to the left (a few exceptionally low values).
-
 ### Fisher-Pearson sample skewness coefficient
+
+The order of the three centres gives a direction, not a size. To use
+**every** day, start again from the deviations of Module 6.
+
+**Try it.** Stadium truck ($n = 5$, $\bar{x} = 600$, $s = 60$). We will
+divide each deviation by $s$, so the euros cancel; that means you may
+count the deviations in **tens of euros**, where $s = 6$.
+
+| Day | $x_i$ (€) | $x_i-\bar{x}$ (€) | In tens of € | Cubed | Sign |
+|---|---:|---:|---:|---:|:---:|
+| 1 | 550 | ? | ? | ? | ? |
+| 2 | 550 | ? | ? | ? | ? |
+| 3 | 580 | ? | ? | ? | ? |
+| 4 | 630 | ? | ? | ? | ? |
+| 5 | 690 | ? | ? | ? | ? |
+| **Total** | **3,000** | **?** | | **?** | |
+
+1. Fill the deviation column and check that it adds up to 0
+   (Module 6).
+2. Divide each deviation by 10, cube it (e.g. $(-5)^3 = -125$), and add
+   up the cubes.
+3. Which single day decides the sign of the total?
+4. Computed for you (calculator step): divide the total by
+   $s^3 = 6^3 = 216$, then multiply by $\frac{5}{4 \times 3} =
+   \frac{5}{12}$.
+
+Your turn: build the same table for Market (510, 570, 620, 650, 650)
+and for Station.
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+**Stadium**
+
+| Day | $x_i$ | $x_i-\bar{x}$ | In tens of € | Cubed | Sign |
+|---|---:|---:|---:|---:|:---:|
+| 1 | 550 | −50 | −5 | −125 | − |
+| 2 | 550 | −50 | −5 | −125 | − |
+| 3 | 580 | −20 | −2 | −8 | − |
+| 4 | 630 | 30 | 3 | 27 | + |
+| 5 | 690 | 90 | 9 | 729 | + |
+| **Total** | **3,000** | **0** | | **498** | **+** |
+
+Day 5 alone (+729) outweighs the three negative days together
+($-125-125-8 = -258$). Then $498/216 \approx 2.306$ and
+$\frac{5}{12} \times 2.306 \approx 0.96$: Stadium's Fisher-Pearson
+skewness is about **+0.96**, a clear right skew.
+
+**Market:** deviations −90, −30, 20, 50, 50; in tens −9, −3, 2, 5, 5;
+cubes −729, −27, 8, 125, 125; total **−498**, so the skewness is about
+**−0.96** — the same size, opposite sign.
+
+**Station:** deviations in tens −9, −3, 0, 0, 3, 9; cubes −729, −27, 0,
+0, 27, 729; total **0**, so the skewness is **0**: perfectly symmetric.
+:::
+
+**Why cube and not square?** In Module 6 we squared the deviations to
+remove their signs — perfect for measuring distance, useless for
+direction: Stadium and Market have exactly the same squares, hence the
+same $s$. Cubing keeps the sign (a negative number cubed stays
+negative) and makes the far days dominate ($9^3 = 729$ but
+$2^3 = 8$), so the total tells you **which side the long tail is on**.
+
+**See it.** Step 3 of the figure draws each cube as a bar from the
+mean: red to the left, green to the right. Stadium's single long green
+bar wins; Market's single long red bar wins; Station's bars cancel in
+pairs.
+
+In plain words: measure each deviation in standard deviations, cube
+those standardized deviations (so direction matters), and average them
+with a small-sample correction. The correction factor
+$\frac{n}{(n-1)(n-2)}$ matters most for small samples and becomes
+negligible for large ones.
 
 ::: {.callout-tip}
 #### Formula — Fisher-Pearson sample skewness coefficient
@@ -83,12 +365,85 @@ value near $0$ signals near-symmetry; positive means right-skewed;
 negative means left-skewed.
 :::
 
-In plain words: cube the standardized deviations (so direction
-matters), average them with a small-sample correction. The
-correction factor $\frac{n}{(n-1)(n-2)}$ matters most for small
-samples and becomes negligible for large ones.
+::: {.callout-note}
+#### Notation decoder — Fisher-Pearson sample skewness coefficient
+| Symbol | Read aloud | In our example (Stadium) |
+|---|---|---|
+| $SKEW$ | "skew" | about +0.96 |
+| $n$ | "n" | 5 days |
+| $\frac{n}{(n-1)(n-2)}$ | "n over n minus 1 times n minus 2" | $\frac{5}{4\times3} = \frac{5}{12} \approx 0.417$ |
+| $x_i$ | "x sub i" | the value on day $i$, e.g. $x_5 = 690$ |
+| $\bar{x}$ | "x-bar" | the mean, 600 |
+| $s$ | "s" | the standard deviation, 60 (6 in tens of €) |
+| $\frac{x_i-\bar{x}}{s}$ | "x sub i minus x-bar, over s" | the deviation in standard deviations: −0.83, −0.83, −0.33, 0.5, 1.5 |
+| $\left(\cdots\right)^3$ | "cubed" | e.g. $1.5^3 = 3.375$ (that is, $729/216$) |
+| $\sum_{i=1}^{n}$ | "add up, for i from 1 to n" | $498/216 \approx 2.306$ |
+
+**Whole formula as a sentence:** "the skewness is the sum, over all
+$n$ days, of each day's deviation from the mean measured in standard
+deviations and cubed, multiplied by the small-sample factor $n$ over
+$(n-1)(n-2)$."
+:::
 
 ### Alternative asymmetry coefficients
+
+The Fisher-Pearson coefficient needs every raw value. Two shortcuts
+need only a few summary numbers you already know.
+
+**Try it — Pearson.** For Stadium and Market ($\bar{x} = 600$,
+$s = 60$, medians and modes from the first Try it):
+
+| Truck | Mean − mode (€) | Divided by $s$ | Mean − median (€) | 3 × that, divided by $s$ |
+|---|---:|---:|---:|---:|
+| Stadium | ? | ? | ? | ? |
+| Market | ? | ? | ? | ? |
+
+**Try it — Yule-Kendall.** **Recall.** You computed quartiles in
+[Module 5](module-05.qmd) with the position $(n+1)p$ and
+interpolation: for $n = 5$, $Q_1$ sits at position $6 \times 0.25 =
+1.5$ (halfway between the 1st and 2nd sorted values) and $Q_3$ at
+position $6 \times 0.75 = 4.5$ (halfway between the 4th and 5th).
+
+| Truck | $Q_1$ | $Me$ | $Q_3$ | $Me-Q_1$ | $Q_3-Me$ | (2nd gap − 1st gap) ÷ $(Q_3-Q_1)$ |
+|---|---:|---:|---:|---:|---:|---:|
+| Stadium | ? | 580 | ? | ? | ? | ? |
+| Market | ? | 620 | ? | ? | ? | ? |
+
+Is each median closer to $Q_1$ or to $Q_3$?
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+**Pearson.**
+
+| Truck | Mean − mode | Divided by $s$ | Mean − median | 3 × that, divided by $s$ |
+|---|---:|---:|---:|---:|
+| Stadium | $600-550 = 50$ | $50/60 \approx 0.83$ | 20 | $60/60 = 1.00$ |
+| Market | $600-650 = -50$ | $\approx -0.83$ | −20 | $-1.00$ |
+
+**Yule-Kendall.** Stadium: $Q_1 = (550+550)/2 = 550$,
+$Q_3 = (630+690)/2 = 660$. Market: $Q_1 = (510+570)/2 = 540$,
+$Q_3 = (650+650)/2 = 650$.
+
+| Truck | $Q_1$ | $Me$ | $Q_3$ | $Me-Q_1$ | $Q_3-Me$ | (2nd gap − 1st gap) ÷ $(Q_3-Q_1)$ |
+|---|---:|---:|---:|---:|---:|---:|
+| Stadium | 550 | 580 | 660 | 30 | 80 | $50/110 \approx 0.45$ |
+| Market | 540 | 620 | 650 | 80 | 30 | $-50/110 \approx -0.45$ |
+
+Stadium's median is closer to $Q_1$: the upper quarter of the data is
+more spread out, a sign of right skew. All three shortcuts agree in
+sign with the Fisher-Pearson value (+0.96 / −0.96), but not in size:
+0.83, 1.00 and 0.45 for the same truck.
+:::
+
+**See it.** Step 4 of the figure draws each truck's box from $Q_1$ to
+$Q_3$ with the median as a green bar: Stadium's median hugs the left
+edge of its box, Market's hugs the right edge, Station's sits in the
+middle.
+
+In plain words: the Pearson coefficient counts how many standard
+deviations the mean has been pulled away from the mode (or, three
+times, from the median); the Yule-Kendall coefficient checks whether
+the median sits closer to $Q_1$ or to $Q_3$ inside the box.
 
 ::: {.callout-note}
 #### Definition — alternative asymmetry coefficients
@@ -117,6 +472,27 @@ than to $Q_3$, the upper quarter of the data is more spread out,
 which is itself a sign of right skew, and vice versa.
 :::
 
+::: {.callout-note}
+#### Notation decoder — Pearson and Yule-Kendall coefficients
+| Symbol | Read aloud | In our example (Stadium) |
+|---|---|---|
+| $\bar{x}$ | "x-bar" | the mean, 600 |
+| $Mo$ | "the mode" | 550 (the value seen twice) |
+| $s$ | "s" | 60 |
+| $\frac{\bar{x}-Mo}{s}$ | "x-bar minus the mode, over s" | $50/60 \approx 0.83$ |
+| $Me$ | "the median" | 580 |
+| $3(\bar{x}-Me)/s$ | "three times x-bar minus the median, over s" | $3 \times 20/60 = 1.00$ |
+| $Q_1$, $Q_3$ | "Q one", "Q three" | 550 and 660 |
+| $Q_3+Q_1-2\,Me$ | "Q three plus Q one minus twice the median" | $660+550-1{,}160 = 50$, the same as $(Q_3-Me)-(Me-Q_1) = 80-30$ |
+| $Q_3-Q_1$ | "Q three minus Q one" (the IQR) | 110 |
+| $YK$ | "Yule-Kendall" | $50/110 \approx 0.45$ |
+
+**Whole formula as a sentence:** "the Pearson coefficient is the gap
+between the mean and the mode, measured in standard deviations; the
+Yule-Kendall coefficient is how much longer the upper half of the box
+is than the lower half, as a share of the whole box."
+:::
+
 ::: {.callout-warning}
 Different skewness formulas can genuinely disagree in sign or
 magnitude, especially for near-symmetric data where all the values
@@ -127,7 +503,74 @@ when reporting a skewness value — "the Fisher-Pearson skewness is
 not, unless the formula is named.
 :::
 
+### Reading skew from a chart
+
+**Try it.** Here are the three five-number summaries (Station's
+quartiles are at positions 1.75 and 5.25, since $n = 6$). Sketch the
+three boxplots on one axis, or look at step 4 of the figure.
+
+| Truck | Min | $Q_1$ | $Me$ | $Q_3$ | Max | Longer whisker | Median closer to | Skew |
+|---|---:|---:|---:|---:|---:|---|---|---|
+| Station | 510 | 555 | 600 | 645 | 690 | ? | ? | ? |
+| Stadium | 550 | 550 | 580 | 660 | 690 | ? | ? | ? |
+| Market | 510 | 540 | 620 | 650 | 650 | ? | ? | ? |
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+| Truck | Longer whisker | Median closer to | Skew |
+|---|---|---|---|
+| Station | neither (45 and 45) | the middle (45 and 45) | symmetric |
+| Stadium | right (0 vs 30) | $Q_1$ (30 vs 80) | right |
+| Market | left (30 vs 0) | $Q_3$ (80 vs 30) | left |
+
+Both clues point the same way: the long side of the boxplot is the
+side of the long tail.
+:::
+
+**See it.** In step 4, Stadium's box and whiskers stretch to the right
+of its median; Market's stretch to the left. On a histogram, the same
+truck would show a pile of bars on one side and a thin tail on the
+other (see [Visual intuition](#visual-intuition)).
+
+In plain words: the skew is on the side where the picture is
+stretched out — the longer tail of the histogram, the longer whisker
+and the wider half of the box of the boxplot.
+
 ### Kurtosis (conceptual only)
+
+**Try it.** A fourth truck, at the Park pitch, also has mean €600 and
+$s = €60$, and it is symmetric too (its skewness is 0). Compare it with
+Station.
+
+| Truck | Values (€) | Days within €30 of the mean | Farthest day from the mean (€) |
+|---|---|---:|---:|
+| Station | 510, 570, 600, 600, 630, 690 | ? | ? |
+| Park | 530, 550, 560, 640, 650, 670 | ? | ? |
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+| Truck | Days within €30 of the mean | Farthest day from the mean (€) |
+|---|---:|---:|
+| Station | 4 (570, 600, 600, 630) | 90 |
+| Park | 0 | 70 |
+
+Same mean, same $s$, same skewness — yet Station has a sharp peak at
+600 *and* longer tails (510, 690), while Park is flat, with no day near
+the centre and no far-out day. That remaining difference is what
+kurtosis describes: Station leans **leptokurtic**, Park
+**platykurtic**.
+:::
+
+**See it.** The two trucks on one number line (each • is one day):
+
+| Truck | 510 | 530 | 550 | 560 | 570 | 600 | 630 | 640 | 650 | 670 | 690 |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Station | • | | | | • | •• | • | | | | • |
+| Park | | • | • | • | | | | • | • | • | |
+
+In plain words: skewness asks "is one tail longer?"; kurtosis asks
+"is there a sharp peak with long tails, or a flat top with short
+ones?".
 
 ::: {.callout-note}
 #### Definition — kurtosis
@@ -193,21 +636,6 @@ middle half of the data and ignores the tail beyond $Q_3$. This is
 the pattern Module 6's high $CV$ (67.6%) and Module 5's three
 outliers were already signaling.
 
-## Using Excel
-
-The complete list of function names, with their French equivalents, is
-on the [Excel functions](excel-functions.qmd) page.
-
-| Concept | Excel function / steps |
-|---|---|
-| Fisher-Pearson sample skewness | `=SKEW(range)` |
-| Pearson skewness coefficient | No direct function — `=(AVERAGE(range)-Mo)/STDEV.S(range)`, with $Mo$ computed manually (Module 4) |
-| Yule-Kendall skewness coefficient | No direct function — `=(QUARTILE.EXC(range,3)+QUARTILE.EXC(range,1)-2*MEDIAN(range))/(QUARTILE.EXC(range,3)-QUARTILE.EXC(range,1))` |
-
-For the **full table** (120 days per franchise) use the Excel Table
-`tblFork` and add the franchise as one more condition, for example
-`=SKEW(FILTER(tblFork[daily_revenue_eur], tblFork[franchise]="Campus"))`.
-
 ## Proof / derivation
 
 ::: {.callout-caution collapse="true"}
@@ -255,6 +683,11 @@ Wandering Fork", the near-equal spacing seen in Module 5's boxplot
 (median roughly centered between $Q_1=506.61$ and $Q_3=729.99$) is
 the visual signature of the near-zero skewness confirmed numerically
 here.
+
+The three-truck figure in the hook shows the same readings on
+hand-sized data: step 2 shows the mean dragged toward the tail, step 3
+shows the far day's cube deciding the sign, and step 4 shows Stadium's
+median hugging $Q_1$ while Market's hugs $Q_3$.
 
 ## Interactive demo
 
@@ -323,52 +756,41 @@ lower quarter of the data is more spread out than the upper quarter
 :::
 
 ::: {.callout-caution collapse="true"}
-#### Exercise 4 (Excel) — Skewness for Campus revenue (click for solution)
-In `wandering-fork.xlsx`, filter `franchise` to "Campus" and compute
-`=SKEW` for `daily_revenue_eur` (120 days). Also compute the Pearson
-(median form, since there is no unique mode) and Yule-Kendall
-coefficients. Do all three agree on the direction?
+#### Exercise 4 (by hand) — Formula to words (click for solution)
+(a) Read $\dfrac{Q_3+Q_1-2\,Me}{Q_3-Q_1}$ aloud as one sentence.
+Which indicator is it?
 
-**Solution.** Campus 120-day: `SKEW` = 1.00, Pearson median form =
-$3(455.03-390.39)/307.43 \approx 0.63$, Yule-Kendall =
-$(598.60+236.07-2\times390.39)/362.54 \approx 0.15$. All three are
-**positive**, confirming right skew — consistent with the
-event-driven revenue spikes and the three outliers found in Module 5.
-Yule-Kendall is much smaller because the long tail lies beyond $Q_3$,
-where it cannot see.
+(b) Read $\dfrac{\bar{x}-Mo}{s}$ aloud, then compute it for a truck
+with $\bar{x} = 500$, $Mo = 440$ and $s = 120$. What does the sign
+say?
+
+(c) In $\left(\frac{x_i-\bar{x}}{s}\right)^3$, what does dividing by
+$s$ do, and what does cubing do?
+
+**Solution.** (a) "Q three plus Q one minus twice the median, divided
+by Q three minus Q one" — the Yule-Kendall coefficient $YK$.
+(b) "x-bar minus the mode, divided by s" — the Pearson coefficient:
+$(500-440)/120 = 60/120 = 0.5$. Positive: the mean is pulled above the
+mode, a sign of right skew.
+(c) Dividing by $s$ measures the deviation in standard deviations, so
+the result has no unit; cubing keeps the sign of the deviation and
+makes the far-out values dominate.
 :::
 
 ::: {.callout-caution collapse="true"}
-#### Exercise 5 (Excel) — Payroll skew: skewness (click for solution)
-Open `payroll-skew.csv`. Compute the Fisher-Pearson skewness for the
-11 salaries. What does the value tell you?
+#### Exercise 5 (by hand) — Words to formula (click for solution)
+Write in symbols:
 
-**Solution.** `SKEW` = 3.12. This is **strong right skew** — the
-CEO's €180,000 salary creates an extremely long upper tail. The mean
-(€47,231) is far above the median (€38,050), and the mode (no unique
-mode) would be even lower. This is the most skewed dataset in the
-course.
-:::
+(a) "three times the gap between the mean and the median, divided by
+the standard deviation";
+(b) "the deviation of the $i$-th observation from the mean, measured
+in standard deviations, then cubed";
+(c) "add up those cubes for all $n$ observations".
 
-::: {.callout-caution collapse="true"}
-#### Exercise 6 (Excel) — Full univariate workflow for Campus revenue (click for solution)
-Using `wandering-fork.xlsx` filtered to "Campus" (120 days), build a
-complete descriptive summary for `daily_revenue_eur` in one
-continuous Excel workflow: class table (Module 3), quartiles and
-boxplot (Module 5), mean/median/mode (Module 4), variance/std/CV
-(Module 6), skewness (this module). Verify internal consistency
-(e.g., $Q_1 \le Me \le Q_3$, mean ≈ median for symmetric data).
-
-**Solution.** Campus 120-day summary:
-- Class table: 8 classes of width 200 (Module 3, Exercise 4), modal
-  class [200,400[ (37 days), long tail up to [1400,1600[
-- Quartiles: Q1=236.07, Me=390.39, Q3=598.60, IQR=362.54, fences
-  -307.74 / 1142.40, three high outliers (1335.48, 1362.93, 1407.59)
-- Mean=455.03, median=390.39, no unique mode
-- Variance=94,511.80, std=307.43, CV=67.56%
-- Skewness=1.00 (right-skewed)
-- Consistency: Q1 (236) ≤ Me (390) ≤ Q3 (599) ✓; mean > median ✓
-  (right skew); CV > 35% ✓ (high variability)
+**Solution.** (a) $\dfrac{3(\bar{x}-Me)}{s}$ — Pearson's median form.
+(b) $\left(\dfrac{x_i-\bar{x}}{s}\right)^3$.
+(c) $\sum_{i=1}^{n}\left(\dfrac{x_i-\bar{x}}{s}\right)^3$ — multiply
+it by $\frac{n}{(n-1)(n-2)}$ and you get $SKEW$.
 :::
 
 ## Common mistakes
@@ -391,6 +813,161 @@ boxplot (Module 5), mean/median/mode (Module 4), variance/std/CV
 - **Forgetting the small-sample correction in `SKEW`.** Excel's
   `SKEW` includes it automatically; if you implement the formula
   manually, you must include $\frac{n}{(n-1)(n-2)}$.
+:::
+
+## Exit check
+
+Five minutes, no calculator needed except for question 4.
+
+1. In one sentence, what does a positive skewness tell you about the
+   shape of a distribution?
+2. A dataset has mean 42, median 38 and mode 35. Which way is it
+   skewed, and on which side is the long tail?
+3. Read $SKEW = \frac{n}{(n-1)(n-2)}\sum_{i=1}^{n}
+   \left(\frac{x_i-\bar{x}}{s}\right)^3$ aloud as a sentence.
+4. Compute the Yule-Kendall coefficient for $Q_1 = 20$, $Me = 24$,
+   $Q_3 = 36$.
+5. Why are the deviations cubed in the skewness formula instead of
+   squared, as in the variance?
+
+::: {.callout-caution collapse="true"}
+#### Exit check — answers
+1. The distribution has a longer tail toward high values: a few
+   unusually high observations pull the mean above the median.
+2. Mode < median < mean: right-skewed, with the long tail toward high
+   values.
+3. "The sum, over all $n$ observations, of each deviation from the
+   mean measured in standard deviations and cubed, multiplied by $n$
+   over $(n-1)(n-2)$."
+4. $YK = (36+20-2\times24)/(36-20) = 8/16 = 0.5$: the median is closer
+   to $Q_1$, so mild right skew.
+5. A square is always positive, so it cannot tell left from right; a
+   cube keeps the sign, so deviations above and below the mean only
+   cancel when the distribution is balanced.
+:::
+
+## Homework — Excel lab
+
+Reproduce, in Excel, every indicator you computed by hand in class,
+with `AVERAGE`, `MEDIAN`, `MODE.SNGL`, `STDEV.S`, `SKEW` and
+`QUARTILE.EXC`, then build a complete descriptive-statistics summary
+for a quantitative variable, from raw data to shape indicators,
+without external guidance.
+
+**Estimated time:** about 50–60 minutes. Any spreadsheet application
+works, at home or in a campus computer room.
+
+**Follow-up:** a 10-minute debrief at the start of
+[Module 8](module-08.qmd). Bring your Step 0 results and any question
+on Homework 1–3.
+
+### Using Excel
+
+The complete list of function names, with their French equivalents, is
+on the [Excel functions](excel-functions.qmd) page.
+
+| Concept | Excel function / steps |
+|---|---|
+| Fisher-Pearson sample skewness | `=SKEW(range)` |
+| Pearson skewness coefficient | No direct function — `=(AVERAGE(range)-Mo)/STDEV.S(range)`, with $Mo$ computed manually (Module 4) |
+| Yule-Kendall skewness coefficient | No direct function — `=(QUARTILE.EXC(range,3)+QUARTILE.EXC(range,1)-2*MEDIAN(range))/(QUARTILE.EXC(range,3)-QUARTILE.EXC(range,1))` |
+
+For the **full table** (120 days per franchise) use the Excel Table
+`tblFork` and add the franchise as one more condition, for example
+`=SKEW(FILTER(tblFork[daily_revenue_eur], tblFork[franchise]="Campus"))`.
+
+### Step 0 — check your class results
+
+1. Type Station's six values (510, 570, 600, 600, 630, 690) in
+   `A2:A7`, Stadium's five (550, 550, 580, 630, 690) in `B2:B6` and
+   Market's five (510, 570, 620, 650, 650) in `C2:C6`.
+2. Below each column, compute `=AVERAGE(A2:A7)`, `=MEDIAN(A2:A7)`,
+   `=MODE.SNGL(A2:A7)`, `=STDEV.S(A2:A7)`, `=SKEW(A2:A7)`,
+   `=QUARTILE.EXC(A2:A7,1)` and `=QUARTILE.EXC(A2:A7,3)`. Repeat for
+   columns B and C (rows 2 to 6).
+3. From those cells, compute the Pearson coefficient
+   (mean − mode) / s, the median form 3 × (mean − median) / s and the
+   Yule-Kendall coefficient with the formulas of the table above.
+4. Compare every result with your hand-computed tables.
+
+::: {.callout-caution collapse="true"}
+#### Step 0 — expected results
+| Indicator | Station | Stadium | Market |
+|---|---:|---:|---:|
+| `AVERAGE` | 600 | 600 | 600 |
+| `MEDIAN` | 600 | 580 | 620 |
+| `MODE.SNGL` | 600 | 550 | 650 |
+| `STDEV.S` | 60 | 60 | 60 |
+| `SKEW` | 0 | 0.96 | −0.96 |
+| `QUARTILE.EXC(…,1)` | 555 | 550 | 540 |
+| `QUARTILE.EXC(…,3)` | 645 | 660 | 650 |
+| Pearson $(\bar{x}-Mo)/s$ | 0 | 0.83 | −0.83 |
+| Pearson median form | 0 | 1.00 | −1.00 |
+| Yule-Kendall | 0 | 0.45 | −0.45 |
+
+Station's `SKEW` may show a tiny number such as `1E-16` instead of 0:
+that is rounding noise in the computer, not real skew.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Homework 1 (Excel) — Skewness for Campus revenue (click for solution)
+In `wandering-fork.xlsx`, filter `franchise` to "Campus" and compute
+`=SKEW` for `daily_revenue_eur` (120 days). Also compute the Pearson
+(median form, since there is no unique mode) and Yule-Kendall
+coefficients. Do all three agree on the direction?
+
+**How to.** Wrap the range in
+`FILTER(tblFork[daily_revenue_eur], tblFork[franchise]="Campus")`
+inside `SKEW`, `AVERAGE`, `MEDIAN`, `STDEV.S` and `QUARTILE.EXC`, then
+type the two coefficient formulas of the Using Excel table.
+
+**Solution.** Campus 120-day: `SKEW` = 1.00, Pearson median form =
+$3(455.03-390.39)/307.43 \approx 0.63$, Yule-Kendall =
+$(598.60+236.07-2\times390.39)/362.54 \approx 0.15$. All three are
+**positive**, confirming right skew — consistent with the
+event-driven revenue spikes and the three outliers found in Module 5.
+Yule-Kendall is much smaller because the long tail lies beyond $Q_3$,
+where it cannot see.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Homework 2 (Excel) — Payroll skew: skewness (click for solution)
+Open `payroll-skew.csv`. Compute the Fisher-Pearson skewness for the
+11 salaries. What does the value tell you?
+
+**How to.** Open the CSV, select the 11 salaries and type
+`=SKEW(range)`; add `=AVERAGE(range)` and `=MEDIAN(range)` to compare.
+
+**Solution.** `SKEW` = 3.12. This is **strong right skew** — the
+CEO's €180,000 salary creates an extremely long upper tail. The mean
+(€47,231) is far above the median (€38,050), and the mode (no unique
+mode) would be even lower. This is the most skewed dataset in the
+course.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Homework 3 (Excel) — Full univariate workflow for Campus revenue (click for solution)
+Using `wandering-fork.xlsx` filtered to "Campus" (120 days), build a
+complete descriptive summary for `daily_revenue_eur` in one
+continuous Excel workflow: class table (Module 3), quartiles and
+boxplot (Module 5), mean/median/mode (Module 4), variance/std/CV
+(Module 6), skewness (this module). Verify internal consistency
+(e.g., $Q_1 \le Me \le Q_3$, mean ≈ median for symmetric data).
+
+**How to.** Work on one sheet, one block per module, reusing the
+functions of each module's Using Excel table, and finish with the
+consistency checks.
+
+**Solution.** Campus 120-day summary:
+- Class table: 8 classes of width 200 (Module 3, Exercise 4), modal
+  class [200,400[ (37 days), long tail up to [1400,1600[
+- Quartiles: Q1=236.07, Me=390.39, Q3=598.60, IQR=362.54, fences
+  -307.74 / 1142.40, three high outliers (1335.48, 1362.93, 1407.59)
+- Mean=455.03, median=390.39, no unique mode
+- Variance=94,511.80, std=307.43, CV=67.56%
+- Skewness=1.00 (right-skewed)
+- Consistency: Q1 (236) ≤ Me (390) ≤ Q3 (599) ✓; mean > median ✓
+  (right skew); CV > 35% ✓ (high variability)
 :::
 
 ## Further reading

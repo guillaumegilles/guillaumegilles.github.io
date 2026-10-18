@@ -1,7 +1,7 @@
 ---
 title: "Module 8 — Bivariate I: contingency tables and scatter plots"
 subtitle: "Data Description | Part III — Two variables and synthesis"
-date-modified: 2026-10-08
+date-modified: 2026-10-17
 lang: en
 ---
 
@@ -11,35 +11,107 @@ Fork"'s trading is whether two variables move together — does warmer
 weather really bring more revenue? Do promotions work better on sunny
 days? This module introduces the two graphical tools for answering
 that: the contingency table (for two qualitative-or-grouped variables)
-and the scatter plot (for two quantitative variables).
+and the scatter plot (for two quantitative variables). We start with a
+table and five days small enough to handle by hand, and only then
+write the notation.
 
 ## Learning objectives
 
 By the end of this module, you will be able to:
 
-- Build and read a contingency table crossing two variables.
+- Build a contingency table by hand from a list of individuals, and
+  read a cell count $n_{ij}$ and the margins $n_{i\cdot}$, $n_{\cdot j}$
+  aloud.
 - Compute row and column marginal distributions from a contingency
-  table.
-- Build a scatter plot of two quantitative variables and describe the
-  pattern it shows.
+  table, as $n_{i\cdot}/n$ and $n_{\cdot j}/n$.
 - Compute a **conditional distribution** — the distribution of one
   variable restricted to a single modality of the other — and use it
   to compare sub-groups fairly.
+- Read a share such as $n_{ij}/n_{i\cdot}$ aloud as a sentence, and
+  write a share described in words in this notation.
+- Draw a scatter plot of two quantitative variables by hand and
+  describe the pattern it shows (direction, form, exceptions).
 - Distinguish "a visible pattern" from "a proven relationship" —
   formalised numerically in Module 9.
 
-## Time plan
-
-| Block | Minutes | What you do |
-|---|---:|---|
-| Theory | 60 | Contingency table, marginal distributions, conditional distributions, scatter plot |
-| Excel lab | 60 | `COUNTIFS`, PivotTable (two fields), XY scatter chart |
-| Exercises | 60 | Three by-hand and four Excel exercises |
-| **Total** | **180** | |
-
 ## Theory
 
+### Sun, rain and medium days
+
+One Wandering Fork truck classified 50 of its trading days by weather
+(keeping only Sunny and Rainy days) and by revenue level: **Low**
+(under €500), **Medium** (€500 to under €700) and **High** (€700 or
+more). The numbers are a simplified extract chosen so that you can
+compute everything by hand.
+
+| Weather \ Revenue | Low | Medium | High |
+|---|---:|---:|---:|
+| Sunny | 3 | 9 | 18 |
+| Rainy | 12 | 6 | 2 |
+
+The truck had **9 medium days when it was sunny, and only 6 when it
+rained**. Is a medium day more likely when the sun is out? And what
+would you tell the owner about High days: is "18 against 2" the right
+way to compare sunny and rainy weather?
+
 ### Contingency table
+
+Where does a table like the one above come from? From a plain list of
+days, each one described by **two** variables at once.
+
+**Try it.** Here are ten days of the same truck's log. Tally them into
+the table below, then add the row and column totals. Number the rows
+$i = 1$ (Sunny), $i = 2$ (Rainy) and the columns $j = 1$ (Low),
+$j = 2$ (Medium), $j = 3$ (High).
+
+| Day | Weather | Revenue level |
+|---|---|---|
+| 1 | Sunny | High |
+| 2 | Sunny | Medium |
+| 3 | Rainy | Low |
+| 4 | Sunny | High |
+| 5 | Rainy | Medium |
+| 6 | Sunny | Low |
+| 7 | Sunny | High |
+| 8 | Rainy | Low |
+| 9 | Sunny | Medium |
+| 10 | Rainy | High |
+
+| Weather \ Revenue | Low | Medium | High | Row total |
+|---|---:|---:|---:|---:|
+| Sunny | ? | ? | ? | ? |
+| Rainy | ? | ? | ? | ? |
+| **Column total** | **?** | **?** | **?** | **?** |
+
+1. How many days were Sunny **and** High?
+2. Count the Sunny days in the log directly, ignoring revenue. Do you
+   get the Sunny row total?
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+| Weather \ Revenue | Low | Medium | High | Row total |
+|---|---:|---:|---:|---:|
+| Sunny | 1 | 2 | 3 | 6 |
+| Rainy | 2 | 1 | 1 | 4 |
+| **Column total** | **3** | **3** | **4** | **10** |
+
+1. 3 days (Days 1, 4 and 7) were Sunny and High.
+2. Yes: the log has 6 Sunny days, which is the Sunny row total. Each
+   day lands in exactly one cell, so the ten days fill the six cells
+   and every total adds up to 10.
+:::
+
+**See it.** Each day is one dot in exactly one cell — the cell where
+its row (weather) and its column (revenue level) cross:
+
+| Weather \ Revenue | Low | Medium | High |
+|---|---|---|---|
+| Sunny | ● (Day 6) | ●● (Days 2, 9) | ●●● (Days 1, 4, 7) |
+| Rainy | ●● (Days 3, 8) | ● (Day 5) | ● (Day 10) |
+
+In plain words: a contingency table is a two-dimensional frequency
+table. The margins are the row and column totals — they give you back
+the one-variable frequency tables you already know.
 
 ::: {.callout-note}
 #### Definition — contingency table
@@ -52,11 +124,143 @@ $n_{\cdot j} = \sum_i n_{ij}$ recover each variable's own (univariate)
 frequency table from the same data.
 :::
 
-In plain words: a contingency table is a two-dimensional frequency
-table. The margins are the row and column totals — they give you back
-the one-variable frequency tables you already know.
+::: {.callout-note}
+#### Notation decoder — contingency table
+| Symbol | Read aloud | In our example (ten days) |
+|---|---|---|
+| $(i,j)$ | "cell i, j" — row first, then column | $(1,3)$ is the Sunny–High cell |
+| $n_{ij}$ | "n sub i j" | $n_{13} = 3$ Sunny and High days |
+| $n_{i\cdot}$ | "n sub i dot" — the dot replaces the index that was added up | $n_{1\cdot} = 6$ Sunny days |
+| $n_{\cdot j}$ | "n sub dot j" | $n_{\cdot 3} = 4$ High days |
+| $\sum_j$ | "add up over all columns j" | across a row: $1+2+3 = 6$ |
+| $\sum_i$ | "add up over all rows i" | down a column: $3+1 = 4$ |
+
+**Whole formula as a sentence:** "the row margin $n_{i\cdot}$ is the
+sum of the counts across row $i$; the column margin $n_{\cdot j}$ is
+the sum of the counts down column $j$." Adding all the cells gives the
+grand total $n = 10$.
+:::
+
+### Marginal distributions
+
+**Try it.** Go back to the 50-day table of the hook. Complete the
+totals, then turn each total into a share of all 50 days.
+
+| Weather \ Revenue | Low | Medium | High | Row total | % of all days |
+|---|---:|---:|---:|---:|---:|
+| Sunny | 3 | 9 | 18 | ? | ? |
+| Rainy | 12 | 6 | 2 | ? | ? |
+| **Column total** | **?** | **?** | **?** | **50** | |
+| **% of all days** | **?** | **?** | **?** | | **100%** |
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+| Weather \ Revenue | Low | Medium | High | Row total | % of all days |
+|---|---:|---:|---:|---:|---:|
+| Sunny | 3 | 9 | 18 | 30 | 60% |
+| Rainy | 12 | 6 | 2 | 20 | 40% |
+| **Column total** | **15** | **15** | **20** | **50** | |
+| **% of all days** | **30%** | **30%** | **40%** | | **100%** |
+
+The truck had 30 Sunny days ($30/50 = 60\%$) and 20 Rainy days
+($40\%$). Separately, 40% of all days were High. Notice that Sunny days
+are simply **more numerous** — this already explains part of
+"9 against 6".
+:::
+
+**See it.** The two margins are two ordinary one-variable bar charts
+(each block = 10% of the 50 days):
+
+| Variable | Modality | Share of all 50 days |
+|---|---|---|
+| Weather (row margin) | Sunny | ██████ 60% |
+| | Rainy | ████ 40% |
+| Revenue (column margin) | Low | ███ 30% |
+| | Medium | ███ 30% |
+| | High | ████ 40% |
+
+**Recall.** In [Module 2](module-02.qmd) you computed relative
+frequencies $f_i = n_i/n$ for one variable. A marginal distribution is
+exactly that, using the margins of the table as the counts.
+
+In plain words: a marginal distribution is the share of all $n$
+individuals in each modality of one variable, read off the edge of the
+table — as if the other variable did not exist.
+
+::: {.callout-tip}
+#### Formula — marginal distributions
+Dividing each margin by the grand total $n$ gives the two **marginal
+distributions** (relative frequencies, as in Module 2):
+$$
+\frac{n_{i\cdot}}{n} \quad \text{(row variable)}, \qquad
+\frac{n_{\cdot j}}{n} \quad \text{(column variable)}.
+$$
+Each one sums to 1 (100%) and ignores the other variable entirely.
+:::
+
+::: {.callout-note}
+#### Notation decoder — marginal distributions
+| Symbol | Read aloud | In our example (50 days) |
+|---|---|---|
+| $n$ | "n" | 50 days |
+| $n_{i\cdot}$ | "n sub i dot" | row totals: $n_{1\cdot} = 30$, $n_{2\cdot} = 20$ |
+| $n_{\cdot j}$ | "n sub dot j" | column totals: 15, 15, 20 |
+| $\frac{n_{i\cdot}}{n}$ | "n sub i dot over n" | $30/50 = 60\%$ Sunny, $20/50 = 40\%$ Rainy |
+| $\frac{n_{\cdot j}}{n}$ | "n sub dot j over n" | $15/50 = 30\%$, 30%, $20/50 = 40\%$ |
+
+**Whole formula as a sentence:** "the marginal share of a modality is
+its row (or column) total divided by the grand total."
+:::
 
 ### Conditional distribution
+
+**Try it.** To answer the hook, compute percentages **within each
+row**: divide every cell by its own row total (30 for Sunny, 20 for
+Rainy), not by 50.
+
+| Weather \ Revenue | Low | Medium | High | Total |
+|---|---:|---:|---:|---:|
+| Sunny ($\div 30$) | ? | ? | ? | 100% |
+| Rainy ($\div 20$) | ? | ? | ? | 100% |
+| All days ($\div 50$) | 30% | 30% | 40% | 100% |
+
+1. Is a medium day more likely when it is sunny?
+2. How do High days compare between the two kinds of weather?
+3. Now read **down** the High column instead: of the 20 High days,
+   what share were Sunny?
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+| Weather \ Revenue | Low | Medium | High | Total |
+|---|---:|---:|---:|---:|
+| Sunny ($\div 30$) | 10% | 30% | 60% | 100% |
+| Rainy ($\div 20$) | 60% | 30% | 10% | 100% |
+| All days ($\div 50$) | 30% | 30% | 40% | 100% |
+
+1. No: $9/30 = 30\%$ and $6/20 = 30\%$. "9 against 6" only reflects
+   that there were more Sunny days.
+2. $18/30 = 60\%$ of Sunny days were High, against $2/20 = 10\%$ of
+   Rainy days: here the weather really makes a difference.
+3. $18/20 = 90\%$ of High days were Sunny. This is a different
+   question ("given High") from question 2 ("given Sunny"), so it has
+   a different answer.
+:::
+
+**See it.** Each row now has its own 100% bar (each block = 10% of
+that row):
+
+| Given | Low | Medium | High |
+|---|---|---|---|
+| Sunny | █ 10% | ███ 30% | ██████ 60% |
+| Rainy | ██████ 60% | ███ 30% | █ 10% |
+| All days (marginal) | ███ 30% | ███ 30% | ████ 40% |
+
+The Medium column is identical in all three rows; the Low and High
+columns are not — that is where weather and revenue are associated.
+
+In plain words: to compare Sunny vs Rainy days fairly, don't compare
+raw counts (Sunny has more days total). Instead, compute percentages
+*within* each weather type — that's the conditional distribution.
 
 ::: {.callout-note}
 #### Definition — conditional distribution
@@ -68,11 +272,180 @@ variable distributed?", which the raw counts alone cannot, since row
 totals differ in size.
 :::
 
-In plain words: to compare Sunny vs Rainy days fairly, don't compare
-raw counts (Sunny has more days total). Instead, compute percentages
-*within* each weather type — that's the conditional distribution.
+::: {.callout-tip}
+#### Formula — conditional distributions
+Given row modality $i$, the share of column modality $j$ is
+$$
+\frac{n_{ij}}{n_{i\cdot}} \quad \text{(row percentages)},
+$$
+and given column modality $j$, the share of row modality $i$ is
+$$
+\frac{n_{ij}}{n_{\cdot j}} \quad \text{(column percentages)}.
+$$
+Each conditional distribution sums to 1 (100%) over its own row (or
+column).
+:::
+
+::: {.callout-note}
+#### Notation decoder — conditional distributions
+| Symbol | Read aloud | In our example (50 days) |
+|---|---|---|
+| $n_{ij}$ | "n sub i j" | $n_{13} = 18$ Sunny and High days |
+| $n_{i\cdot}$ | "n sub i dot" | $n_{1\cdot} = 30$ Sunny days |
+| $n_{\cdot j}$ | "n sub dot j" | $n_{\cdot 3} = 20$ High days |
+| $\frac{n_{ij}}{n_{i\cdot}}$ | "n sub i j over n sub i dot" — "given row i" | $18/30 = 60\%$ of Sunny days were High |
+| $\frac{n_{ij}}{n_{\cdot j}}$ | "n sub i j over n sub dot j" — "given column j" | $18/20 = 90\%$ of High days were Sunny |
+
+**Whole formula as a sentence:** "the conditional share is the count
+in one cell divided by the total of the row (or column) you are
+restricting to — not by the grand total."
+:::
 
 ### Scatter plot
+
+When both variables are **quantitative**, grouping them into classes
+throws information away. Plot the raw pairs instead.
+
+**Try it.** Five days from the same truck (a simplified extract):
+temperature $x$ and number of items sold $y$.
+
+| Day | Temperature $x$ (°C) | Items sold $y$ | $x$ above its mean? | $y$ above its mean? |
+|---|---:|---:|---|---|
+| 1 | 12 | 40 | ? | ? |
+| 2 | 16 | 55 | ? | ? |
+| 3 | 21 | 50 | ? | ? |
+| 4 | 24 | 70 | ? | ? |
+| 5 | 27 | 85 | ? | ? |
+| **Total** | **?** | **?** | | |
+| **Mean** | **?** | **?** | | |
+
+1. On squared paper, draw an $x$ axis from 10 to 30 °C and a $y$ axis
+   from 30 to 90 items. Plot one point per day at $(x, y)$.
+2. Compute both means, draw a vertical line at the mean temperature
+   and a horizontal line at the mean number of items, then fill the
+   last two columns.
+3. How many points lie in the lower-left or upper-right quarters of
+   the plot? Which day goes against the trend?
+
+::: {.callout-caution collapse="true"}
+#### Try it — check your answer
+| Day | $x$ (°C) | $y$ | $x$ above 20? | $y$ above 60? |
+|---|---:|---:|---|---|
+| 1 | 12 | 40 | no | no |
+| 2 | 16 | 55 | no | no |
+| 3 | 21 | 50 | yes | no |
+| 4 | 24 | 70 | yes | yes |
+| 5 | 27 | 85 | yes | yes |
+| **Total** | **100** | **300** | | |
+| **Mean** | **20** | **60** | | |
+
+Four of the five points (Days 1, 2, 4, 5) are in the lower-left or
+upper-right quarter: warmer days tend to sell more. Day 3 (21 °C, 50
+items) is slightly warmer than average but sells below average — the
+points rise to the right, but not along a perfect line.
+:::
+
+**See it.** Step 1 of the figure shows the five points; step 2 adds
+the two mean lines and colours each point by the quarter it falls in.
+
+```{ojs}
+//| echo: false
+temps = [12, 16, 21, 24, 27]
+items = [40, 55, 50, 70, 85]
+
+avg = xs => xs.reduce((a, b) => a + b, 0) / xs.length
+
+function quadrants(xs, ys) {
+  const mx = avg(xs), my = avg(ys);
+  const agree = [], against = [];
+  xs.forEach((v, i) =>
+    ((v - mx) * (ys[i] - my) > 0 ? agree : against).push(i + 1));
+  return {mx, my, agree, against};
+}
+
+viewof scatterStep = {
+  const labels = ["1 · Points", "2 · Mean lines"];
+  const form = html`<form class="ojs-step-picker">Show: ${labels.map((l, i) =>
+    html`<label> <input type="radio" name="scatterStep" value="${i + 1}"
+      ${i === 0 ? "checked" : ""}> ${l} </label>`)}</form>`;
+  form.value = 1;
+  form.oninput = () => {
+    form.value = +form.querySelector("input:checked").value;
+  };
+  return form;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const W = 660, H = 380, L = 60, R = 20, T = 20, B = 50;
+  const BLUE = "steelblue", ORANGE = "darkorange";
+  const AGREE = "#5cb85c", AGAINST = "#d9534f";
+  const x = v => L + (v - 10) * (W - L - R) / (30 - 10);
+  const y = v => H - B - (v - 30) * (H - T - B) / (90 - 30);
+  const q = quadrants(temps, items);
+  let g = "";
+  if (scatterStep === 2) {
+    g += `<rect x="${x(10)}" y="${y(q.my)}" width="${x(q.mx) - x(10)}"
+      height="${y(30) - y(q.my)}" fill="${AGREE}" fill-opacity="0.08"/>`;
+    g += `<rect x="${x(q.mx)}" y="${y(90)}" width="${x(30) - x(q.mx)}"
+      height="${y(q.my) - y(90)}" fill="${AGREE}" fill-opacity="0.08"/>`;
+  }
+  for (let t = 10; t <= 30; t += 5) {
+    g += `<line x1="${x(t)}" x2="${x(t)}" y1="${y(30)}" y2="${y(90)}"
+      stroke="currentColor" stroke-opacity="0.15"/>`;
+    g += `<text x="${x(t)}" y="${H - B + 18}" text-anchor="middle"
+      fill="currentColor" font-size="12">${t} °C</text>`;
+  }
+  for (let v = 30; v <= 90; v += 10) {
+    g += `<line x1="${x(10)}" x2="${x(30)}" y1="${y(v)}" y2="${y(v)}"
+      stroke="currentColor" stroke-opacity="0.15"/>`;
+    g += `<text x="${L - 8}" y="${y(v) + 4}" text-anchor="end"
+      fill="currentColor" font-size="12">${v}</text>`;
+  }
+  g += `<text x="${(x(10) + x(30)) / 2}" y="${H - 8}" text-anchor="middle"
+    fill="currentColor" font-size="13">Temperature x (°C)</text>`;
+  g += `<text x="14" y="${y(60)}" text-anchor="middle" fill="currentColor"
+    font-size="13" transform="rotate(-90 14 ${y(60)})">Items sold y</text>`;
+  if (scatterStep === 2) {
+    g += `<line x1="${x(q.mx)}" x2="${x(q.mx)}" y1="${y(30)}" y2="${y(90)}"
+      stroke="${ORANGE}" stroke-width="2" stroke-dasharray="6 4"/>`;
+    g += `<text x="${x(q.mx) + 6}" y="${y(90) + 14}" fill="${ORANGE}"
+      font-size="12">mean = ${q.mx} °C</text>`;
+    g += `<line x1="${x(10)}" x2="${x(30)}" y1="${y(q.my)}" y2="${y(q.my)}"
+      stroke="${ORANGE}" stroke-width="2" stroke-dasharray="6 4"/>`;
+    g += `<text x="${x(30) - 4}" y="${y(q.my) - 6}" text-anchor="end"
+      fill="${ORANGE}" font-size="12">mean = ${q.my} items</text>`;
+  }
+  temps.forEach((t, i) => {
+    const c = scatterStep === 1 ? BLUE
+      : q.agree.includes(i + 1) ? AGREE : AGAINST;
+    g += `<circle cx="${x(t)}" cy="${y(items[i])}" r="7" fill="${c}"/>`;
+    g += `<text x="${x(t) + 10}" y="${y(items[i]) + 4}" fill="currentColor"
+      font-size="12">Day ${i + 1}</text>`;
+  });
+  return html`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"
+    aria-label="Scatter plot of temperature and items sold for five days">
+    ${g}</svg>`;
+}
+```
+
+```{ojs}
+//| echo: false
+{
+  const q = quadrants(temps, items);
+  const days = ds => ds.map(d => `Day ${d}`).join(", ");
+  const text = scatterStep === 1
+    ? `Five days from ${Math.min(...temps)} °C to ${Math.max(...temps)} °C and from ${Math.min(...items)} to ${Math.max(...items)} items sold: the cloud rises to the right.`
+    : `Means: ${q.mx} °C and ${q.my} items. ${q.agree.length} of ${temps.length} points lie in the lower-left or upper-right quarter (${days(q.agree)}); ${days(q.against)} (${q.against.map(d => `${temps[d - 1]} °C, ${items[d - 1]} items`).join("; ")}) goes against the trend.`;
+  return html`<p><em>${text}</em></p>`;
+}
+```
+
+In plain words: each day becomes a dot at (temperature, revenue). The
+cloud of dots shows the pattern — upward trend, downward trend,
+curved, or no pattern at all.
 
 ::: {.callout-note}
 #### Definition — scatter plot
@@ -82,10 +455,6 @@ $y$-coordinate. It is the standard first look at a possible
 relationship between two quantitative variables, before computing
 any numerical summary.
 :::
-
-In plain words: each day becomes a dot at (temperature, revenue). The
-cloud of dots shows the pattern — upward trend, downward trend,
-curved, or no pattern at all.
 
 ## Worked example
 
@@ -132,24 +501,6 @@ the right: as temperature rises, revenue tends to rise too, though
 the points do not fall on a perfect line — there is visible scatter
 around the trend.
 
-## Using Excel
-
-The sheet `harbour_30d` of `wandering-fork.xlsx` has the data. The
-complete list of function names, with their French equivalents, is on
-the [Excel functions](excel-functions.qmd) page.
-
-| Concept | Excel function / steps |
-|---|---|
-| Contingency table | Select the two columns → **Insert → PivotTable**, one variable in Rows, the other in Columns, `Count` in Values |
-| Row/column margins | The PivotTable's own "Grand Total" row and column |
-| Conditional distribution | In the PivotTable, right-click Values → **Show Values As** → **% of Row Total** (or Column Total) |
-| Scatter plot | Select the two quantitative columns → **Insert → Chart → Scatter (X Y)** |
-| Two-way `COUNTIFS` | `=COUNTIFS(range1, criterion1, range2, criterion2, …)` for cell counts |
-
-For the **full table** (120 days per franchise) use the Excel Table
-`tblFork` and add the franchise as one more condition, for example
-`=COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny",tblFork[daily_revenue_eur],">=600",tblFork[daily_revenue_eur],"<700")`.
-
 ## Proof / derivation
 
 ::: {.callout-caution collapse="true"}
@@ -179,6 +530,11 @@ one-variable-at-a-time view from Modules 2–3. A scatter plot's
 "upward-and-to-the-right" shape is the visual signature of a positive
 relationship; Module 9 replaces "shape" with a single number, the
 correlation coefficient.
+
+Step 2 of the five-day scatter figure shows where that number comes
+from: the two mean lines cut the plot into four quarters, and a
+rising cloud puts most points in the lower-left and upper-right
+quarters (4 of 5 here). Module 9's covariance adds up exactly this.
 
 ## Interactive demo
 
@@ -222,72 +578,45 @@ other factors besides temperature also influence daily revenue.
 :::
 
 ::: {.callout-caution collapse="true"}
-#### Exercise 4 (Excel) — Build the contingency table for Campus (click for solution)
-In `wandering-fork.xlsx`, filter `franchise` to "Campus" and build a
-PivotTable crossing `weather` (Rows) with `daily_revenue_eur` class
-(Columns, grouped in €100 bins). What are the row totals? Do they
-match Module 2's Campus `weather` frequencies?
+#### Exercise 4 (by hand) — Formula to words (click for solution)
+Use the Harbour 30-day table of the worked example, with rows
+$i = 1$ (Sunny), $2$ (Cloudy), $3$ (Rainy) and columns $j = 1$
+([400,500[) to $j = 5$ ([800,900[).
 
-**Solution.** Campus 120-day row totals: Sunny 50, Cloudy 48, Rainy
-22 (total 120). These match the Campus `weather` frequencies from
-Module 2 (Sunny 41.7%, Cloudy 40.0%, Rainy 18.3%).
+(a) Read $\frac{n_{ij}}{n_{i\cdot}}$ aloud as one sentence. Which
+distribution is it?
+
+(b) Compute $n_{3\cdot}$, $n_{\cdot 1}$ and $\frac{n_{31}}{n_{3\cdot}}$,
+and say in words what the last number means.
+
+(c) Compute $\frac{n_{31}}{n_{\cdot 1}}$. Why is it different from (b)?
+
+**Solution.** (a) "The count in cell $i$, $j$ divided by the total of
+row $i$": the conditional distribution of the column variable given
+row modality $i$ (row percentages).
+(b) $n_{3\cdot} = 3+1+0+1+0 = 5$ Rainy days; $n_{\cdot 1} = 0+3+3 = 6$
+days in [400,500[; $\frac{n_{31}}{n_{3\cdot}} = 3/5 = 60\%$: "60% of
+Rainy days earned under €500".
+(c) $\frac{n_{31}}{n_{\cdot 1}} = 3/6 = 50\%$: "half of the days under
+€500 were Rainy". The cell is the same, but (b) restricts to the
+Rainy row and (c) to the [400,500[ column.
 :::
 
 ::: {.callout-caution collapse="true"}
-#### Exercise 5 (Excel) — Conditional distribution: revenue given promo (click for solution)
-Using the full 240-row `tblFork`, build a PivotTable with `promo_active`
-(Rows) and `daily_revenue_eur` class (Columns, €100 bins). Show
-values as **% of Row Total**. Compare the conditional distributions
-for "Yes" vs "No" promo. Is revenue higher when a promo is active?
+#### Exercise 5 (by hand) — Words to formula (click for solution)
+Use the 50-day table of the hook, with rows $i = 1$ (Sunny), $2$
+(Rainy) and columns $j = 1$ (Low), $2$ (Medium), $3$ (High). Write in
+symbols, then compute:
 
-**Solution.** There are 26 promo days and 214 non-promo days. Summing
-the row percentages: below €200, 15.4% (Yes) vs 19.2% (No); €400 or
-more, 53.8% vs 48.1%; €600 or more, 23.1% vs 23.4%. Promo days have
-slightly less mass in the lowest classes, but the top of the two
-distributions is almost identical. The difference is small and rests
-on only 26 days — and it is descriptive, not causal (other factors
-may drive both promo and revenue).
-:::
+(a) "the number of Rainy days with High revenue";
+(b) "the share of all days that were Sunny";
+(c) "among High days, the share that were Sunny";
+(d) "the total number of Medium days, adding down the column".
 
-::: {.callout-caution collapse="true"}
-#### Exercise 6 (Excel) — Scatter plot: foot traffic vs revenue (click for solution)
-Create a scatter plot of `foot_traffic` (x) vs `daily_revenue_eur` (y)
-for Harbour 120 days. Describe the direction, form, and strength of
-the pattern.
-
-**Solution.** Strong positive linear trend: more foot traffic
-clearly associates with higher revenue. The points cluster tightly
-around an upward line — much tighter than temperature vs revenue.
-This visually confirms the $r \ge 0.80$ correlation from the dataset
-design.
-:::
-
-::: {.callout-caution collapse="true"}
-#### Exercise 7 (Excel) — Harbour vs Campus: weather and revenue (click for solution)
-For each franchise (120 days each), compute the conditional share of
-days with `daily_revenue_eur` of €500 or more **given** each
-`weather` category. Is the weather–revenue association equally strong
-at both trucks?
-
-**Solution.** For Harbour and Sunny:
-
-```text
-=COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny",
-          tblFork[daily_revenue_eur],">=500")
- /COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny")
-```
-
-| Weather | Harbour | Campus |
-|---|---:|---:|
-| Sunny | 25/53 = 47.2% | 19/50 = 38.0% |
-| Cloudy | 11/42 = 26.2% | 18/48 = 37.5% |
-| Rainy | 2/25 = 8.0% | 6/22 = 27.3% |
-
-At Harbour the share falls sharply from Sunny to Rainy (47.2% to
-8.0%): weather is strongly associated with revenue. At Campus the
-three shares are much closer (38.0%, 37.5%, 27.3%): the association
-is weaker, so other factors (such as nearby events) matter more
-there.
+**Solution.** (a) $n_{23} = 2$.
+(b) $\frac{n_{1\cdot}}{n} = 30/50 = 60\%$.
+(c) $\frac{n_{13}}{n_{\cdot 3}} = 18/20 = 90\%$.
+(d) $n_{\cdot 2} = \sum_i n_{i2} = 9 + 6 = 15$.
 :::
 
 ## Common mistakes
@@ -311,6 +640,190 @@ there.
   variables.** Line charts imply a sequence (time); scatter plots
   show the relationship between two variables measured on the same
   individuals.
+:::
+
+## Exit check
+
+Five minutes, no calculator needed except for question 4.
+
+1. In one sentence, what is the difference between a marginal and a
+   conditional distribution?
+2. Why compare row percentages rather than raw counts when the row
+   totals differ?
+3. Read $n_{\cdot j} = \sum_i n_{ij}$ aloud as a sentence.
+4. Harbour had 12 good days and 8 bad days; Campus had 9 good days and
+   21 bad days. Compute the share of good days given each franchise.
+5. A scatter plot of temperature and items sold rises to the right.
+   Can you conclude that heat causes the extra sales? Why?
+
+::: {.callout-caution collapse="true"}
+#### Exit check — answers
+1. A marginal distribution describes one variable over all $n$
+   individuals, ignoring the other; a conditional distribution
+   describes it within one modality of the other variable only.
+2. Because a bigger row has bigger counts even when nothing differs:
+   in the hook, 9 vs 6 medium days were 30% vs 30%.
+3. "The column margin $n_{\cdot j}$ is the sum, over all rows $i$, of
+   the counts in column $j$."
+4. Harbour: $12/20 = 60\%$; Campus: $9/30 = 30\%$ (row totals 20 and
+   30, not the grand total 50).
+5. No: a scatter plot only shows association. Other factors (season,
+   events, foot traffic) can drive both; Module 9 measures the linear
+   association, but neither proves causation.
+:::
+
+## Homework — Excel lab
+
+Reproduce, in Excel, every table and chart you built by hand in class,
+with `COUNTIFS`, a PivotTable with two fields (and **Show Values As →
+% of Row Total**) and an XY scatter chart, then apply them to the full
+dataset.
+
+**Estimated time:** about 50–60 minutes. Any spreadsheet application
+works, at home or in a campus computer room.
+
+**Follow-up:** a 10-minute debrief at the start of
+[Module 9](module-09.qmd). Bring your Step 0 results and any question
+on Homework 1–4.
+
+### Using Excel
+
+The sheet `harbour_30d` of `wandering-fork.xlsx` has the data. The
+complete list of function names, with their French equivalents, is on
+the [Excel functions](excel-functions.qmd) page.
+
+| Concept | Excel function / steps |
+|---|---|
+| Contingency table | Select the two columns → **Insert → PivotTable**, one variable in Rows, the other in Columns, `Count` in Values |
+| Row/column margins | The PivotTable's own "Grand Total" row and column |
+| Conditional distribution | In the PivotTable, right-click Values → **Show Values As** → **% of Row Total** (or Column Total) |
+| Scatter plot | Select the two quantitative columns → **Insert → Chart → Scatter (X Y)** |
+| Two-way `COUNTIFS` | `=COUNTIFS(range1, criterion1, range2, criterion2, …)` for cell counts |
+
+For the **full table** (120 days per franchise) use the Excel Table
+`tblFork` and add the franchise as one more condition, for example
+`=COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny",tblFork[daily_revenue_eur],">=600",tblFork[daily_revenue_eur],"<700")`.
+
+### Step 0 — check your class results
+
+1. Type the ten-day log of the contingency-table Try it in `A2:B11`
+   (column A `Weather`, column B `Revenue level`, headers in row 1).
+2. Build the 2×3 table either with a PivotTable (Weather in Rows,
+   Revenue level in Columns, Count in Values) or with `COUNTIFS`, e.g.
+   `=COUNTIFS($A$2:$A$11,"Sunny",$B$2:$B$11,"High")`, and add the
+   margins with `SUM`.
+3. Type the 50-day table of the hook (Sunny 3, 9, 18; Rainy 12, 6, 2),
+   compute the row totals with `SUM`, and the row percentages by
+   dividing each cell by its row total (e.g. `=E2/$H2` if the counts
+   are in `E2:G3` and the totals in `H2:H3`), formatted as a
+   percentage.
+4. Type the five (temperature, items sold) pairs in two columns, insert
+   a **Scatter (X Y)** chart, and compute both means with `AVERAGE`.
+5. Compare every result with your hand computation.
+
+::: {.callout-caution collapse="true"}
+#### Step 0 — expected results
+| Ten-day table | Low | Medium | High | Row total |
+|---|---:|---:|---:|---:|
+| Sunny | 1 | 2 | 3 | 6 |
+| Rainy | 2 | 1 | 1 | 4 |
+| Column total | 3 | 3 | 4 | 10 |
+
+| 50-day table, % of Row Total | Low | Medium | High | Row total |
+|---|---:|---:|---:|---:|
+| Sunny | 10% | 30% | 60% | 30 days |
+| Rainy | 60% | 30% | 10% | 20 days |
+| Grand total (% of all days) | 30% | 30% | 40% | 50 days |
+
+Scatter plot: five points rising to the right; `AVERAGE` gives 20 °C
+and 60 items. If the chart looks wrong, check that temperature is the
+left-hand column (Excel uses it for the $x$ axis).
+:::
+
+::: {.callout-caution collapse="true"}
+#### Homework 1 (Excel) — Build the contingency table for Campus (click for solution)
+In `wandering-fork.xlsx`, filter `franchise` to "Campus" and build a
+PivotTable crossing `weather` (Rows) with `daily_revenue_eur` class
+(Columns, grouped in €100 bins). What are the row totals? Do they
+match Module 2's Campus `weather` frequencies?
+
+**How to.** Insert a PivotTable on `tblFork`, put `franchise` in
+Filters (select Campus), `weather` in Rows and `daily_revenue_eur` in
+Columns, then right-click a revenue label → **Group…** with By = 100.
+
+**Solution.** Campus 120-day row totals: Sunny 50, Cloudy 48, Rainy
+22 (total 120). These match the Campus `weather` frequencies from
+Module 2 (Sunny 41.7%, Cloudy 40.0%, Rainy 18.3%).
+:::
+
+::: {.callout-caution collapse="true"}
+#### Homework 2 (Excel) — Conditional distribution: revenue given promo (click for solution)
+Using the full 240-row `tblFork`, build a PivotTable with `promo_active`
+(Rows) and `daily_revenue_eur` class (Columns, €100 bins). Show
+values as **% of Row Total**. Compare the conditional distributions
+for "Yes" vs "No" promo. Is revenue higher when a promo is active?
+
+**How to.** Same PivotTable as Homework 1 without the franchise
+filter, `promo_active` in Rows; right-click a value → **Show Values
+As → % of Row Total**, then add up the classes below €200, from €400
+and from €600.
+
+**Solution.** There are 26 promo days and 214 non-promo days. Summing
+the row percentages: below €200, 15.4% (Yes) vs 19.2% (No); €400 or
+more, 53.8% vs 48.1%; €600 or more, 23.1% vs 23.4%. Promo days have
+slightly less mass in the lowest classes, but the top of the two
+distributions is almost identical. The difference is small and rests
+on only 26 days — and it is descriptive, not causal (other factors
+may drive both promo and revenue).
+:::
+
+::: {.callout-caution collapse="true"}
+#### Homework 3 (Excel) — Scatter plot: foot traffic vs revenue (click for solution)
+Create a scatter plot of `foot_traffic` (x) vs `daily_revenue_eur` (y)
+for Harbour 120 days. Describe the direction, form, and strength of
+the pattern.
+
+**How to.** Filter `tblFork` to Harbour, select `foot_traffic` then
+`daily_revenue_eur` (x column first), and choose **Insert → Chart →
+Scatter (X Y)**.
+
+**Solution.** Strong positive linear trend: more foot traffic
+clearly associates with higher revenue. The points cluster tightly
+around an upward line — much tighter than temperature vs revenue.
+This visually confirms the $r \ge 0.80$ correlation from the dataset
+design.
+:::
+
+::: {.callout-caution collapse="true"}
+#### Homework 4 (Excel) — Harbour vs Campus: weather and revenue (click for solution)
+For each franchise (120 days each), compute the conditional share of
+days with `daily_revenue_eur` of €500 or more **given** each
+`weather` category. Is the weather–revenue association equally strong
+at both trucks?
+
+**How to.** Lay out a 3×2 grid (weather × franchise) and fill each
+cell with the formula below, changing "Harbour" and "Sunny" each time
+(or pointing to the row and column header cells).
+
+**Solution.** For Harbour and Sunny:
+
+```text
+=COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny",
+          tblFork[daily_revenue_eur],">=500")
+ /COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny")
+```
+
+| Weather | Harbour | Campus |
+|---|---:|---:|
+| Sunny | 25/53 = 47.2% | 19/50 = 38.0% |
+| Cloudy | 11/42 = 26.2% | 18/48 = 37.5% |
+| Rainy | 2/25 = 8.0% | 6/22 = 27.3% |
+
+At Harbour the share falls sharply from Sunny to Rainy (47.2% to
+8.0%): weather is strongly associated with revenue. At Campus the
+three shares are much closer (38.0%, 37.5%, 27.3%): the association
+is weaker, so other factors (such as nearby events) matter more
+there.
 :::
 
 ## Further reading
