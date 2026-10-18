@@ -18,10 +18,8 @@ Modified principles:
 Added sections: none
 Removed sections: none
 Templates requiring updates:
-  - .specify/templates/plan-template.md ⚠ pending (line 57: "`lang:` front
-    matter set on all files" → "language set by directory `_metadata.yml`";
-    line 65: "collapsible formal proof" → "formal proof in
-    `.callout-caution`")
+  - .specify/templates/plan-template.md ✅ (Constitution Check gates V,
+    VI, T-II and T-VI reworded for v2.0.0)
   - .specify/templates/spec-template.md ✅ (no changes needed)
   - .specify/templates/tasks-template.md ✅ (no changes needed)
 Follow-up TODOs: none
