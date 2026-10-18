@@ -547,3 +547,246 @@ against the same values.
 - *Revenue in € instead of items sold* — rejected: three-digit
   deviations make the product column slow to compute; items sold keeps
   products below 150.
+
+## R16. Module 1 mini-datasets
+
+One shared five-day extract (Wandering Fork world, labelled in the page
+as a simplified extract), used by the hook, the four Try its, the two
+notation exercises, the exit check and Step 0.
+
+| Day | Weather | Temp. (°C) | Satisfaction | Customers | Revenue (€) |
+|---|---|---:|---:|---:|---:|
+| 1 | Sunny | 18 | 4 | 38 | 400 |
+| 2 | Cloudy | 22 | 3 | 44 | 440 |
+| 3 | Rainy | 16 | 2 | 47 | 480 |
+| 4 | Sunny | 20 | 3 | 41 | 440 |
+| 5 | Sunny | 24 | 3 | 40 | 440 |
+
+Verification (`.venv/bin/python`, NumPy):
+
+```python
+x=[400,440,480,440,440]; t=[18,22,16,20,24]; r=[4,3,2,3,3]
+c=[38,44,47,41,40]; w=['Sunny','Cloudy','Rainy','Sunny','Sunny']
+```
+
+| Quantity | Result |
+|---|---|
+| sum / mean of revenue | 2200 / 440.0 |
+| sum / mean of temperature | 100 / 20.0 |
+| median of rating (mean) | 3.0 (3.0) |
+| revenue day 3 / day 1 | 1.2 |
+| temperature day 2 − day 1 | 4 |
+| temperature day 5 / day 3 | 1.5 (computed, but meaningless) |
+| Sunny days / relative frequency | 3 / 0.6 |
+
+All values are whole numbers except the ratios 1.2, 1.5 and 0.6, which
+are exact in one decimal. Customers (sum 210, mean 42) are only shown,
+never computed on.
+
+Alternatives considered: using real Harbour values (rejected, not
+whole-number arithmetic); a 6-column table with a mean-able rating
+(rejected: ratings 4,3,2,3,3 give median = mean = 3, which hides the
+"mean is less safe" point only slightly but keeps hand work minimal).
+
+
+## R17. Module 2 mini-datasets
+
+Simplified extract, Wandering Fork (Harbour), five days. Used in the
+hook, the Try it blocks and Step 0 of the homework.
+
+| Day | `weather` | `satisfaction_rating` |
+|---|---|---:|
+| 1 | Sunny | 4 |
+| 2 | Sunny | 5 |
+| 3 | Rainy | 3 |
+| 4 | Cloudy | 4 |
+| 5 | Sunny | 4 |
+
+- `weather`: Sunny 3 (60%), Cloudy 1 (20%), Rainy 1 (20%); total 5.
+  Pie angles 216°, 72°, 72° (sum 360°). Mode: Sunny.
+- `satisfaction_rating` (levels 1–5): counts 0, 0, 1, 3, 1; running
+  counts 0, 0, 1, 4, 5; running shares 0, 0, 20, 80, 100%. Mode: 4.
+- Exit-check dataset: ratings 1, 2, 2, 4, 5 → counts 1, 2, 0, 1, 1;
+  running counts 1, 3, 3, 4, 5; running shares 20, 60, 60, 80,
+  100%; mode 2 (2 days).
+
+Verification (`.venv/bin/python`, NumPy):
+
+```python
+import numpy as np
+w = np.array(['Sunny','Sunny','Rainy','Cloudy','Sunny'])
+r = np.array([4,5,3,4,4])
+for c in ['Sunny','Cloudy','Rainy']:
+    print(c, (w==c).sum(), (w==c).mean(), (w==c).mean()*360)
+cnt = [(r==k).sum() for k in range(1,6)]
+print(cnt, np.cumsum(cnt), np.cumsum(cnt)/len(r))
+q = np.array([1,2,2,4,5])
+c = [(q==k).sum() for k in range(1,6)]
+print(c, np.cumsum(c), np.cumsum(c)/5)
+```
+
+Output: Sunny 3 0.6 216.0; Cloudy 1 0.2 72.0; Rainy 1 0.2 72.0;
+`[0,0,1,3,1] [0 0 1 4 5] [0 0 .2 .8 1]`;
+`[1,2,0,1,1] [1 3 3 4 5] [.2 .6 .6 .8 1]`.
+
+Alternatives considered: six days (3/2/1) gives non-whole percentages
+(50, 33.3, 16.7), so five days were kept (whole-number shares). The
+OJS "See it" figures compute counts, shares and running totals from
+the same array in JavaScript.
+
+
+## R18. Module 3 mini-datasets
+
+One simplified Wandering Fork extract, labelled as such on the page:
+**five days of revenue** (€): Day 1 = 600, Day 2 = 470, Day 3 = 730,
+Day 4 = 550, Day 5 = 430. Used by the hook, all five Try its, the OJS
+figure, the Formula-to-words exercise and Step 0.
+
+| Quantity | Value |
+|---|---|
+| $n$, sum, mean | 5, 2,780, 556 (not shown) |
+| min, max, range | 430, 730, 300 |
+| Sturges $k = 1 + 3.3\log_{10}5$ | 3.31 (shown as 3.3) |
+| $h \approx 300/k$ | 90.7 (shown as about 91), rounded to 100 |
+| Classes (width 100 from 400) | [400,500[ 2; [500,600[ 1; [600,700[ 1; [700,800[ 1 |
+| $N_i^{+}$ | 2, 3, 4, 5 |
+| $f_i$ (%) | 40, 20, 20, 20 |
+| $F_i^{+}$ (%) | 40, 60, 80, 100 |
+| Merged [600,800[ (Try it, histogram) | 2 days, density 2/200 = 0.01; first class 2/100 = 0.02 |
+| Polygon point of [500,600[ | (550, 1) |
+| Cumulative reading at $p = 50\%$ | $500 + 100 \cdot 10/20 = 550$ (equals the exact median 550) |
+
+Design points: Day 1 = 600 sits exactly on a class bound (shows the
+half-open rule); every share is a whole percentage; the interpolated
+50% reading equals the exact median, so there is no confusing
+discrepancy; whole-number arithmetic throughout.
+
+Exit-check question 4 (separate numbers): counts 3, 5, 2 with $n = 10$
+give $f_2 = 50\%$, $F_2^{+} = 80\%$.
+
+Verification (`.venv/bin/python`, NumPy), output:
+
+```text
+mean 556.0  median 550.0  sum 2780  range 300
+k = 3.3066  300/k = 90.73
+counts [2 1 1 1]  cum [2 3 4 5]  f [40 20 20 20]  F [40 60 80 100]
+interpolated x50 = 550.0
+merged density 0.01  first-class density 0.02
+exit check: cumulative shares [0.3 0.8 1.0]
+```
+
+The OJS figure (views Histogram / Polygon / Cumulative curve) computes
+counts, cumulative shares and the 50% crossing in JavaScript from the
+data array. It was run under `node` with a stub `html` tag for the three
+views: captions "Counts 2, 1, 1, 1 … 5 days", "Polygon points … (450, 2),
+(550, 1), (650, 1), (750, 1)", "Points … (500, 40%) … (800, 100%) …
+crosses 50% at about 550"; no `NaN`/`undefined` in the SVG.
+
+Alternatives considered: six values with $n = 6$ (shares 16.7%: not
+whole); a value of 500 on a bound instead of 600 (the interpolated
+median would be 550 against an exact 500).
+
+
+## R19. Module 4 mini-datasets
+
+All are labelled "simplified extract" on the page, set in the Wandering
+Fork world, whole-number arithmetic, at most 6 values (or a 4-row
+frequency table). Truck A is the same series as Module 6's Truck A
+(mean 620), so the two modules agree. Truck C is new (Module 6 uses A
+and B only).
+
+| Name | Data | Used in |
+|---|---|---|
+| Truck C "Festival" | 580, 590, 600, 610, 1320 | hook, mean, median, See it figure |
+| Truck A "Steady" | 590, 610, 630, 630, 640 | mode, median (even case with first 4 days), Step 0 |
+| Ten-day table | classes [400,500[, [500,600[, [600,700[, [700,800[ with frequencies 1, 4, 3, 2 | grouped mode, grouped mean |
+| Three sites | means 600, 500, 800; trucks 3, 1, 1 | weighted mean |
+| Exit check | 2, 4, 4, 6, 9 | exit check Q4 |
+
+Verification (`.venv/bin/python`, NumPy):
+
+```text
+Truck C: sum 3700, mean 740.0, median 600.0
+         deviations -160 -150 -140 -130 +580, sum 0; 4 of 5 days < mean
+Truck A first 4 days: 590 610 630 630 -> mean 615, median 620
+Truck A: sum 3100, mean 620, median 630, mode 630
+Grouped: f*m = 450 2200 1950 1500, total 6100, n = 10, mean 610.0
+         mode = 500 + 100*(4-1)/((4-1)+(4-3)) = 575.0
+Weighted: w*x = 1800 500 800, total 3100 / 5 trucks = 620.0
+          plain mean of site means = 633.33
+Exit check 2,4,4,6,9: sum 25, mean 5.0, median 4.0, mode 4
+Formula-to-words (c) 4,6,8: sum 18, mean 6.0
+```
+
+Alternatives considered: a grid search over 4-class frequency tables
+(n = 8 or 10) kept (1, 4, 3, 2) because the mode (575) and the grouped
+mean (610) are both whole numbers and clearly different. Tables such as
+(1, 5, 4) gave mode = mean, which would blur the lesson.
+
+The OJS figure (steps Dots / Mean / Median) uses the built-in `html`
+template and inline SVG only; mean, median, deviations, deviation sum
+and the below/above counts are computed in JavaScript from `truckC`.
+
+
+## R20. Module 5 mini-datasets
+
+All three are labelled "simplified extract" in the Wandering Fork world.
+Quartiles and percentiles use the exclusive method, rank $p(n+1)$
+(NumPy `method='weibull'`).
+
+| Set | Values (€) | Used for |
+|---|---|---|
+| Truck A "Regular week" ($n=6$) | day order 420, 540, 300, 500, 380, 460 | hook, median, quartiles, IQR/fences, boxplot, grouped data |
+| Truck B "Festival week" ($n=6$) | day order 420, 1100, 300, 500, 380, 460 | same; one outlier |
+| Truck C "Four Saturdays" ($n=4$) | 320, 400, 480, 640 | percentiles |
+
+Two further tiny sets appear only in exercises / exit check:
+10, 20, 30, 40, 50 (Formula to words) and 10, 14, 18, 22, 50 (exit
+check Q4).
+
+Verification (`.venv/bin/python`, NumPy):
+
+| Quantity | Truck A | Truck B |
+|---|---:|---:|
+| sorted | 300, 380, 420, 460, 500, 540 | 300, 380, 420, 460, 500, 1100 |
+| ranks 1.75 / 3.5 / 5.25 → $Q_1$ / $Me$ / $Q_3$ | 360 / 440 / 510 | 360 / 440 / 650 |
+| IQR | 150 | 290 |
+| lower / upper fence | 135 / 735 | −75 / 1085 |
+| outliers | none | 1100 |
+| median of first five days (A, day 6 dropped) | 420 | — |
+
+Truck C, `weibull`: $P_{20}=320$, $P_{30}=360$, $P_{40}=400$,
+$P_{60}=480$, $P_{70}=560$, $P_{80}=640$. $P_{90}$ has rank 4.5 > $n$:
+NumPy clamps it to 640, but Excel's `PERCENTILE.EXC` returns `#NUM!`
+(valid range is $1/(n+1) \le p \le n/(n+1)$). The page uses the Excel
+behaviour and says "error".
+
+Other checks: set 10, 20, 30, 40, 50 → $Q_1=15$, $Q_3=45$, $IQR=30$,
+upper fence 90; set 10, 14, 18, 22, 50 → $Q_1=12$, $Q_3=36$, $IQR=24$,
+fences −24 / 72 (50 not an outlier); $n=19$: $0.25\times20=5$;
+$n=9$, $p=0.75$: rank 7.5.
+
+Grouped data (Truck A, classes [300,400[, [400,500[, [500,600[ of 2, 2,
+2 days, $h=100$): $Q_1 = 300 + 1.5/2\times100 = 375$,
+$Me = 400 + (3-2)/2\times100 = 450$,
+$Q_3 = 500 + (4.5-4)/2\times100 = 525$ (raw: 360 / 440 / 510).
+
+Alternatives considered and rejected:
+
+- $n=7$ would give whole ranks 2 / 4 / 6 but exceeds the 6-value cap.
+- With $n \le 6$, an outlier at an end always pulls $Q_3$ (or $Q_1$)
+  past its neighbour, because the exclusive rank is fractional (5.25).
+  So Truck B's largest non-outlier (500) lies *inside* the box
+  ($Q_3 = 650$): its upper whisker has zero length. The page says so
+  explicitly in the boxplot answer fold; the OJS figure draws the
+  whisker to $\max(Q_3, \text{largest non-outlier})$.
+- Truck C with $n=5$ or 6 gives no whole ranks for percentiles other than
+  50; $n=4$ (rank $5p$) gives whole ranks for $P_{20}, P_{40}, P_{60},
+  P_{80}$.
+
+Excel Step 0 values (all as in the tables above) were taken from the
+NumPy results; `QUARTILE.EXC` follows the same rank formula.
+
+The OJS figure logic (`miniStats`) was also run under `node`: same
+quartiles, fences, whiskers and outliers as NumPy.
+

@@ -323,3 +323,172 @@ demo as well as a Shinylive one (Constitution T-IV allows both).
 ## Classroom notes
 
 *(to fill after teaching Module 6 — T045)*
+
+## Module 1
+
+| Old (v2 page) | New (v2.1 page) |
+|---|---|
+| Front matter `date-modified: 2026-10-07` | `date-modified: 2026-10-18` (no `date`, no `lang:` present before) |
+| Business question | same text + one added closing sentence |
+| Learning objectives (5 bullets) | same 5 + new notation bullet; Excel bullet marks "(homework)" |
+| `## Time plan` | removed |
+| `### Descriptive vs inferential statistics` (2 notes + "In plain words") | `### Descriptive vs inferential statistics` after Try it / See it; "In plain words" paragraph reused as Say it; both notes verbatim |
+| `### Population, individual, variable` note | same, after Try it / See it / Say it; plain notation paragraph added |
+| `### Variable types` (3 notes) | same, after Try it / See it / Say it |
+| `### Levels of measurement` tip | verbatim, after Try it / See it / Say it; new decoder after it |
+| "A common trap" `.callout-warning` in Theory | plain paragraph `**A common trap.**` after the decoder, text verbatim (warning callouts only in Common mistakes) |
+| New | hook `### Numbers that are not numbers` (first Theory subsection) |
+| `## Worked example` | unchanged |
+| `## Using Excel` (+ quick-check tip) | `### Using Excel` under Homework, unchanged |
+| `## Proof / derivation` | unchanged |
+| `## Visual intuition`, `## Interactive demo` (TODO) | unchanged |
+| Exercise 1 (by hand) Classify the variables | `#exr-classify-variables`, Exercise 1 |
+| Exercise 2 (by hand) Population and individual | `#exr-population-individual`, Exercise 2 |
+| Exercise 3 (by hand) Levels of measurement and allowed operations | `#exr-levels-operations`, Exercise 3 |
+| Exercise 4 (by hand) Descriptive vs inferential | `#exr-descriptive-inferential`, Exercise 4 |
+| New | `#exr-formula-words` (Exercise 5), `#exr-words-formula` (Exercise 6) |
+| Exercise 5 (Excel) Open the dataset and explore | `### Homework 1 (Excel) — Open the dataset and explore`, verbatim |
+| Exercise 6 (Excel) English vs French function names | `### Homework 2 (Excel) — English vs French function names`, verbatim |
+| New | `## Exit check` (5 questions), `### Step 0 — check your class results` |
+| `## Common mistakes`, `## Further reading` | unchanged |
+
+Pre-existing wording kept verbatim: Exercise 1's solution says "data
+dictionary table in the Theory section above", but the table is in
+`## Worked example`; the derivation says "(Module 1's derivation)".
+
+
+## Module 2
+
+| Old (v2 page) | New | Note |
+|---|---|---|
+| `## Time plan` | removed | contract v2.1 |
+| Front matter `date-modified: 2026-10-07` | `2026-10-18` | no `date`/`lang:` existed |
+| Learning objectives | kept; added "read formulas aloud" bullet; Excel bullet marked homework | |
+| Theory: Frequency table (note + plain words) | `### Frequency table …`: Try it, See it, Say it, same callout, decoder | callout verbatim |
+| Theory: Cumulative frequency (tip + plain words) | same subsection, Try it/See it before; callout verbatim; decoder added | |
+| Theory: Nominal vs ordinal (note + plain words) | same subsection, Try it/See it/Say it before callout; callout verbatim | no formula, no decoder |
+| Theory: The mode (tip + plain words) | same subsection, Try it/See it/Say it before; callout verbatim; decoder added | |
+| (new) | `### Five days, one column of words` hook | first Theory subsection |
+| Worked example | unchanged | |
+| `## Using Excel` | `### Using Excel` under `## Homework — Excel lab` | text unchanged |
+| Proof, Visual intuition, Interactive demo (TODO) | unchanged | |
+| Exercise 1 (by hand) | `@exr-rating-table`, "Frequency table for `satisfaction_rating`" | statement/solution verbatim |
+| Exercise 2 (by hand) | `@exr-choosing-chart`, "Choosing the right chart" | verbatim |
+| Exercise 3 (by hand) | `@exr-pie-slice-angle`, "Pie-slice angle" | verbatim |
+| (new) | `@exr-formula-words` "Formula to words", `@exr-words-formula` "Words to formula" | |
+| Exercise 4 (Excel) | Homework 1 (Excel) — Build the frequency table with `COUNTIFS` | verbatim |
+| Exercise 5 (Excel) | Homework 2 (Excel) — PivotTable and conditional formatting | verbatim |
+| Exercise 6 (Excel) | Homework 3 (Excel) — Campus weather comparison | verbatim |
+| (new) | `### Step 0 — check your class results`, `## Exit check` (5 Qs) | |
+| Common mistakes, Further reading | unchanged | |
+
+"**Solution.**" labels in exercise bodies were replaced by the fold
+summary `Solution`; the text after them is verbatim.
+
+
+## Module 3
+
+| Old (v1) | New (v2.1) |
+|---|---|
+| Front matter `date-modified: 2026-10-07` | `date-modified: 2026-10-18` (no `lang:`/`date` in v1) |
+| `## Time plan` | removed |
+| Learning objectives (5 bullets) | kept verbatim; 6th bullet added (read/write the notation) |
+| Theory: definition callout (class table) + "In plain words" | `### Classes: …` Try it → See it → Say it (verbatim) → callout (verbatim) |
+| Theory `### How many classes, how wide?`: Sturges tip, "In plain words", 30-day paragraph | `### How many classes, how wide?`: Try it, See it, Say it (verbatim), tip (verbatim), decoder, 30-day paragraph (verbatim, after decoder) |
+| `### Frequencies in a class table`: tip + "In plain words" | same title: Try it, See it, Say it (verbatim), tip (verbatim), decoder |
+| `### The histogram`: definition + "In plain words" | same title: Try it, See it (OJS figure), Say it (verbatim), definition (verbatim) |
+| `### Frequency polygon and cumulative curve`: 2 bullets, percentile tip, "In plain words" | same title: Try it, See it, bullets (verbatim), Say it (verbatim), tip (verbatim), decoder |
+| (none) | hook `### Five days, five different numbers` (first Theory subsection) |
+| `## Worked example` (steps 1-4, numbers) | unchanged |
+| `.callout-important` "Exam tip" | plain paragraph `**Exam tip.**`, same words (important is reserved for `TODO:`) |
+| `## Using Excel` | `### Using Excel` under the homework, unchanged (incl. its warning callout) |
+| `## Proof / derivation`, `## Visual intuition`, `## Interactive demo` | unchanged |
+| Exercise 1 (by hand) — Reading the cumulative curve | `@exr-reading-cumulative-curve` "Reading the cumulative curve"; solution without the "**Solution.**" label |
+| Exercise 2 (by hand) — Unequal class widths | `@exr-unequal-class-widths`, same treatment |
+| Exercise 3 (by hand) — Polygon points | `@exr-polygon-points`, same treatment |
+| (none) | `@exr-formula-words` "Formula to words", `@exr-words-formula` "Words to formula" (new) |
+| Exercise 4 (Excel) — A skewed distribution | `### Homework 1 (Excel) — A skewed distribution`, statement and solution verbatim (label "**Solution.**" dropped); `**How to.**` line added |
+| Exercise 5 (Excel) — Group with a PivotTable | `### Homework 2 (Excel) — Group with a PivotTable`, same treatment |
+| (none) | `## Exit check` (5 questions, folded answers); `### Step 0` (new) |
+| `## Common mistakes`, `## Further reading` | unchanged |
+
+
+## Module 4
+
+Old = pre-revision `module-04.qmd` (date-modified 2026-10-08).
+
+| Old block | New location | Change |
+|---|---|---|
+| Front matter `date-modified: 2026-10-08` | `date-modified: 2026-10-18` | bumped |
+| Business question | same | one sentence appended leading to the hook |
+| Learning objectives (4 bullets) | same, verbatim | 1 bullet added (read $\bar{x}$ aloud, write sums) |
+| `## Time plan` | removed | contract v2.1 |
+| (new) | `### One typical day?` | hook (Truck C), first Theory subsection |
+| `### Arithmetic mean` + definition + formula | `### Arithmetic mean` | Try it, See it (OJS), Say it, definition and formula verbatim, decoder added |
+| `### Median` + definition + formula | `### Median` | Try it, See it, Say it, callouts verbatim, decoder added |
+| `### Mode` definition | `### Mode` | Try it, See it, Say it, definition verbatim |
+| `### Mode` formula (grouped continuous) | `### Mode of grouped data` | split into its own subsection so the decoder precedes the next `###`; Try it, See it, Say it; formula verbatim, decoder added |
+| `### Grouped-data mean` formula and "In plain words" | `### Grouped-data mean` | "In plain words" paragraph verbatim, moved before the formula (Say it); formula verbatim; Try it, See it, decoder added |
+| `### Weighted mean` formula and "In plain words" | `### Weighted mean` | same treatment |
+| `### Choosing the right measure` | same | callout verbatim; one lead-in sentence added |
+| Worked example (both datasets) | same, verbatim | no change |
+| Proof / derivation | same, verbatim | no change |
+| Visual intuition, Interactive demo (TODO) | same, verbatim | no change |
+| `## Using Excel` | `### Using Excel` under `## Homework — Excel lab` | H2 to H3, content unchanged |
+| Exercise 1 (by hand) Mean vs. median with an outlier | `@exr-mean-vs-median` (Exercise 1) | block + fold; "**Solution.**" label dropped (fold summary is "Solution") |
+| Exercise 2 (by hand) Choosing an indicator | `@exr-choosing-indicator` (Exercise 2) | same; quotes removed from the `name` attribute |
+| Exercise 3 (by hand) Grouped mode | `@exr-grouped-mode` (Exercise 3) | same |
+| (new) | `@exr-formula-words` (Exercise 4), `@exr-words-formula` (Exercise 5) | notation exercises |
+| Exercise 4 (Excel) Weighted mean for a portfolio | `### Homework 1 (Excel) — Weighted mean for a portfolio` | statement and solution verbatim; `**How to.**` added |
+| Exercise 5 (Excel) Grouped mean from a class table | `### Homework 2 (Excel) — Grouped mean from a class table` | same |
+| Exercise 6 (Excel) Campus revenue: mean, median, mode | `### Homework 3 (Excel) — Campus revenue: mean, median, mode` | same |
+| Common mistakes | same, verbatim | no change |
+| (new) | `## Exit check` (5 questions) | new |
+| (new) | `### Step 0 — check your class results` | new |
+| Further reading | same, verbatim | no change |
+
+
+## Module 5
+
+| Old block (v1, 2026-10-08) | New location | Change |
+|---|---|---|
+| Front matter (`date-modified: 2026-10-08`) | Front matter | `date-modified` → 2026-10-18; no `date`, no `lang` (none was present) |
+| Intro "business question" | Intro | Verbatim; one sentence added leading to the hook |
+| Learning objectives (4 bullets) | Learning objectives (6 bullets) | Bullets 2–4 and the demo bullet verbatim ("Compute …", "Apply linear interpolation …", "Build a boxplot …", "Use the interactive demo …"); two bullets added (explain in one sentence; read/write formulas) |
+| `## Time plan` | — | Removed (v2.1) |
+| — | Theory › "Same median, different weeks" | New hook, Truck A/B table + OJS figure (3 steps) |
+| Theory › Median (definition callout) | Theory › Median | Callout verbatim; Try it, See it, Say it added |
+| Theory › Quartiles (formula callout) | Theory › Quartiles (exclusive method) | Callout verbatim, now after Try it/See it/Say it; decoder added |
+| "In plain words: to find $Q_1$ …" | Theory › Quartiles, Say it | Verbatim, moved before the callout |
+| Theory › IQR and outlier fences (formula callout) | Theory › IQR and outlier fences | Callout verbatim; after Try it/See it/Say it; decoder added |
+| "In plain words: the IQR measures …" | same subsection, Say it | Verbatim, moved before the callout |
+| Theory › Boxplot (definition callout) | Theory › Boxplot | Callout verbatim; Try it, See it, Say it added (no decoder: not a formula) |
+| Theory › Percentiles (formula callout) | Theory › Percentiles | Callout verbatim; Try it (Truck C), See it (table), Say it added; decoder added |
+| Theory › Grouped-data interpolation (formula callout) | Theory › Grouped-data interpolation | Callout verbatim; Try it on Truck A classes added; decoder added |
+| "In plain words: find which class …" | same subsection, Say it | Verbatim, moved before the callout |
+| Worked example (table, Steps 1–5) | Worked example | Unchanged |
+| `## Using Excel` (table, `QUARTILE.EXC` note, `tblFork` tip, sheet sentence) | Homework — Excel lab › Using Excel | Moved, H2 → H3, content unchanged |
+| Proof / derivation (collapsed callout) | Proof / derivation | Unchanged |
+| Visual intuition | Visual intuition | Kept; one paragraph added pointing to step 3 of the figure |
+| Interactive demo (OJS boxplot) | Interactive demo | Unchanged (block byte-for-byte; defines no top-level names, no clash with `mini*` cells) |
+| Exercise 1 (by hand) — Median position | Exercise 1 — Median position (`exr-median-position`) | Statement and solution verbatim (`**Solution.**` label becomes the fold summary) |
+| Exercise 2 (by hand) — Outlier check | Exercise 2 — Outlier check (`exr-outlier-check`) | Same |
+| Exercise 3 (by hand) — Grouped-data interpolation | Exercise 3 — Grouped-data interpolation (`exr-grouped-interpolation`) | Same |
+| — | Exercise 4 — Formula to words (`exr-formula-words`) | New |
+| — | Exercise 5 — Words to formula (`exr-words-formula`) | New |
+| Exercise 4 (Excel) — Build the boxplot for Campus | Homework 1 (Excel) | Moved, renumbered; one "How to" line added; statement and solution verbatim |
+| Exercise 5 (Excel) — Percentile $P_{90}$ for Harbour revenue | Homework 2 (Excel) | Same (code block verbatim) |
+| Exercise 6 (Excel) — Compare franchises with side-by-side boxplots | Homework 3 (Excel) | Same |
+| Common mistakes | Common mistakes | Unchanged |
+| — | Exit check (5 questions + folded answers) | New |
+| — | Homework intro, Step 0 + expected results | New; follow-up in Module 6 |
+| Further reading | Further reading | Unchanged |
+
+Module 6's recall link to `module-05.qmd` has no anchor, and no other page
+links to a `module-05.qmd#…` anchor (grep), so no link changed. The
+`#homework-excel-lab` anchor is used by the in-page exercises intro.
+
+Render check note: in the default sandbox `quarto render` of this page
+(and of module-06) exits 1 silently although the HTML is produced; with
+unrestricted filesystem writes it exits 0.
+

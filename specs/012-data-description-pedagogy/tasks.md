@@ -190,6 +190,17 @@ modules):
 
 ---
 
+## Phase 8: Extension — Modules 1–5 rollout
+
+- [X] T046 [P] Revise `teaching/data-description/modules/module-01.qmd` to contract v2.1 (mini-datasets R16, fidelity map in `fidelity-record.md`); `check_modules_v2.py` passes, render exits 0
+- [X] T047 [P] Revise `module-02.qmd` the same way (R17)
+- [X] T048 [P] Revise `module-03.qmd` the same way (R18)
+- [X] T049 [P] Revise `module-04.qmd` the same way (R19)
+- [X] T050 [P] Revise `module-05.qmd` the same way (R20)
+- [X] T051 Update `teaching/data-description/index.qmd`: remove the "Modules 1–5 still include their original Excel lab" note; homework now covers every module (about 10 of the 20 hours)
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase dependencies
