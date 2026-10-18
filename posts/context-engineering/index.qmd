@@ -10,6 +10,43 @@ abstract: |
 draft: true
 ---
 
+Context Window: The Memory Limit
+
+Every model has a context window: its maximum "working memory" measured in tokens. Modern LLMs range from 8k tokens (older GPT-3.5) to 1M+ tokens (Gemini 1.5 Pro). Claude 3.5 Sonnet handles 200k tokens, enough for 150,000 words or 500 pages of text. Exceed this limit and the model silently truncates earlier context. It literally forgets the start of your conversation.
+
+---
+
+## prompt
+
+Effective prompts aren't magic; they're carefully structured instructions that
+guide the model toward the desired outcome. A good prompt explicitly spells out
+what you want, how you want it, and any constraints to follow. Experts often
+break prompts into clear components (or pillars):
+
+- the core instruction (task to perform)
+    Instruction (task): This is the core command or action you want from the , expressed with a clear verb. For example, use commands such as "Write...", "Analyse…", "Summarise…", or "Compare..." to explicitly state the task. Being explicit with the action prevents ambiguity. It's the difference between saying "Help me with marketing" and "Draft a 300-word social media post about a new eco-friendly product aimed at millennials". Clear instructions set expectations and direct the AI's focus.
+- relevant context (background information),
+    Context (background): Context provides the AI with relevant information or a scenario so it understands the situation and perspective. This can include domain details, objectives, or background documents. For instance, you might explain who the audience is, reference specific data, or even set a "system message" style role: "You are an experienced marine biologist specialising in fish". Such context steers the 's tone and content. The more relevant background you supply, the less guessing the model has to do, reducing errors. Context can also link to external sources or files (e.g., "Based on the attached report..."), ensuring the answer fits the situation.
+- the desired output format (structure/style),
+    Output format (structure): Specify how you want the answer to look. This could mean asking for bullet points, a numbered list, a table, code blocks, a JSON object, or a certain word count. For example, "Summarise these 3 log samples each in a bullet point, all under 50 words". Explicitly stating format and length makes the response immediately useful. If you need a summary, specify its length; if you need code, specify language or style.
+- and any constraints (rules or limits).
+    Constraints (boundaries): These are any rules or limits you impose on the response. Constraints guide the model to follow specific boundaries; for example, forbidding certain topics, enforcing a style guide, or mandating a tone. They ensure output aligns with your needs. For example, "Write an academic report on IoT devices, provide citations in MLA format, and include a bullet-pointed summary section at the end (do NOT exceed 5 bullets)". By defining constraints, you keep the AI on track and avoid unwanted directions.
+
+When all these elements work together, the model has a well-defined framework for generating accurate, on-target responses. Let's break that down.
+
+
+### S
+
+#### System Prompt
+
+Developer / application - Immutable, constant - Establishes identity, rules, and safety boundaries: "Never execute code. Always be helpful and professional." - high-priority context that shapes overall behaviour
+
+### U
+
+#### User Prompt
+
+End user - Dynamic, session-specific - Carries task-specific requests and data: "Summarise this document for me." - Acted on within the system prompt's constraints
+
 
 We view harness engineering as a subset of context engineering. Coined by my cofounder Dex in 12-factor agents, context engineering is a superset of “prompt engineering” and a variety of other techniques for systematically improving AI agents’ reliability. You can find the original talk on here.
 
@@ -137,10 +174,7 @@ Templates can ensure consistency across team members, reduce cognitive load, and
 Create a github repo to store all the template
 
 
----
-title: "Prompt Engineering"
-draft: true
----
+# Prompt Engineering
 
 ## Shot
 
