@@ -2,7 +2,6 @@
 title: "Module 6 — Dispersion"
 subtitle: "Data Description | Part II — Summarising one variable"
 date-modified: 2026-10-13
-lang: en
 ---
 
 **The business question.** "The Wandering Fork" has a mean daily
@@ -29,22 +28,6 @@ By the end of this module, you will be able to:
   must not be rounded in it.
 - Use the interactive calculator below to see how editing a sample
   changes its dispersion indicators live.
-
-## Time plan
-
-| Block | Minutes | What you do |
-|---|---:|---|
-| Hook | 10 | Two trucks, same mean — which is riskier to run? |
-| Concrete build | 45 | Range on both trucks, IQR recall, deviation table, sum-to-zero, square, average with $n-1$, square root |
-| Notation | 25 | Notation decoders for $s^2$ and $s$; formula ↔ words; reading $\sum$ |
-| Relative spread | 20 | $CV$ from "is €200 a lot?"; shortcut formula on Truck A |
-| Worked example | 20 | Harbour 30-day values; interpretation; visual intuition and demo |
-| Practice | 45 | By-hand exercises 1–5 |
-| Exit check | 10 | Five concept and notation questions |
-| Excel preview | 5 | Instructor shows `STDEV.S` reproducing the hand result; homework briefing |
-| **Total** | **180** | |
-
-The Excel lab is now [homework](#homework-excel-lab), done after class.
 
 ## Theory
 
@@ -194,23 +177,29 @@ viewof step = {
 
 ### Range and interquartile range
 
-**Try it.** For each truck, find the best day, the worst day and the
-gap between them.
+**Try it.**
+
+For each truck, find the best day, the worst day and the gap between them.
 
 | Truck | Max (€) | Min (€) | Max − Min (€) |
 |---|---:|---:|---:|
 | A "Steady" | ? | ? | ? |
 | B "Erratic" | ? | ? | ? |
 
-::: {.callout-caution collapse="true"}
-#### Try it — check your answer
-Truck A: $640 - 590 = 50$. Truck B: $870 - 370 = 500$. Truck B's best
-and worst days are **10 times** further apart than Truck A's, even
-though both average €620.
-:::
+<details class="answer">
+<summary>Check your answer</summary>
 
-**See it.** In step 1 of the figure, Truck B's dots stretch across
-almost the whole axis; Truck A's huddle around the mean line.
+- Truck A: $640 - 590 = 50$
+- Truck B: $870 - 370 = 500$
+- Truck B's best and worst days are **10 times** further apart than Truck A's,
+  even though both average €620.
+
+</details>
+
+**See it.**
+
+In step 1 of the figure, Truck B's dots stretch across the almost the whole axis;
+Truck A's huddle around the mean line.
 
 In plain words: the range uses only the two most extreme values; the
 IQR uses the middle 50%, so a single outlier cannot distort it.
@@ -218,7 +207,9 @@ IQR uses the middle 50%, so a single outlier cannot distort it.
 ::: {.callout-note}
 #### Definition — range and interquartile range
 The **range** is $\max - \min$: simple, but sensitive to a single
-extreme value. The **interquartile range** $IQR = Q_3-Q_1$ (Module 5)
+extreme value.
+
+The **interquartile range** $IQR = Q_3-Q_1$ (Module 5)
 measures the spread of only the central 50% of the data, making it
 more robust to extreme values.
 :::
@@ -252,8 +243,9 @@ each day is from the mean.
 
 Your turn: build the same table for Truck B.
 
-::: {.callout-caution collapse="true"}
-#### Try it — check your answer
+<details class="answer">
+<summary>Check your answer</summary>
+
 **Truck A**
 
 | Day $i$ | $x_i$ | $x_i-\bar{x}$ | $(x_i-\bar{x})^2$ |
@@ -265,7 +257,8 @@ Your turn: build the same table for Truck B.
 | 5 | 640 | 20 | 400 |
 | **Total** | **3,100** | **0** | **1,600** |
 
-$1{,}600 / 4 = 400$ €², and $\sqrt{400} = 20$ €.
+- $1{,}600 / 4 = 400$ €²
+- $\sqrt{400} = 20$ €.
 
 **Truck B**
 
@@ -278,10 +271,12 @@ $1{,}600 / 4 = 400$ €², and $\sqrt{400} = 20$ €.
 | 5 | 870 | 250 | 62,500 |
 | **Total** | **3,100** | **0** | **160,000** |
 
-$160{,}000 / 4 = 40{,}000$ €², and $\sqrt{40{,}000} = 200$ €. On a
-typical day Truck B is about €200 away from its mean; Truck A only
-about €20.
-:::
+- $160{,}000 / 4 = 40{,}000$ €²
+- $\sqrt{40{,}000} = 200$ €.
+- On a typical day Truck B is about €200 away from its mean; Truck A only
+  about €20.
+
+</details>
 
 **Why is the deviation total always 0?** The mean is the balance point
 of the data: the days above it exactly offset the days below it. So
@@ -303,7 +298,7 @@ square those distances (so they are all positive), average them (with
 $n-1$), and take the square root to get back to the original unit.
 
 ::: {.callout-tip}
-#### Formula — sample variance and standard deviation
+#### Formula: sample variance and standard deviation
 For a sample of $n$ values $x_1,\dots,x_n$ with mean $\bar{x}$, the
 **sample variance** is
 $$
@@ -311,12 +306,14 @@ s^2 = \frac{1}{n-1}\sum_{i=1}^{n} (x_i-\bar{x})^2,
 $$
 i.e. the average squared distance of each observation from the mean
 (with $n-1$, not $n$, correcting for the fact that $\bar{x}$ is itself
-estimated from the same sample). The **sample standard deviation**
+estimated from the same sample).
+
+The **sample standard deviation**
 $s=\sqrt{s^2}$ returns to the original unit (€, not €²).
 :::
 
-::: {.callout-note}
-#### Notation decoder — sample variance and standard deviation
+#### Notation decoder: sample variance and standard deviation
+
 | Symbol | Read aloud | In our example (Truck A) |
 |---|---|---|
 | $n$ | "n" | 5 days |
@@ -332,18 +329,9 @@ $s=\sqrt{s^2}$ returns to the original unit (€, not €²).
 **Whole formula as a sentence:** "the sample variance is the sum, over
 all $n$ days, of each day's squared distance from the mean, divided by
 $n-1$; the standard deviation is its square root."
-:::
 
-::: {.callout-warning}
-#### Why $n-1$ and not $n$?
-The sample mean $\bar{x}$ is computed from the same data, so the
-deviations $(x_i-\bar{x})$ are not fully independent — they sum to
-zero. Using $n-1$ (Bessel's correction) makes $s^2$ an unbiased
-estimator of the true population variance. In this descriptive
-statistics course, we use the **sample** formulas (`.S`) by default
-because real business data are almost always samples. The population
-variants (`.P`) are shown for completeness.
-:::
+If you are interested to understand why we need to divide by $n-1$ rather $n$,
+see [Bessel's correction](../../../posts/bessel-correction/index.qmd).
 
 ### Coefficient of variation
 
@@ -353,32 +341,37 @@ variants (`.P`) are shown for completeness.
 2. A coffee cart in the same fleet has a mean of €62 and $s = €20$ —
    exactly Truck A's $s$. Is it as steady as Truck A?
 
-::: {.callout-caution collapse="true"}
-#### Try it — check your answer
+<details class="answer">
+<summary>Check your answer</summary>
+
 1. Truck A: $20/620 \times 100\% = 3.23\%$. Truck B:
    $200/620 \times 100\% = 32.26\%$.
 2. Coffee cart: $20/62 \times 100\% = 32.26\%$ — the same relative
    variability as the *erratic* Truck B. A €20 swing is tiny next to
    €620 but huge next to €62. The size of $s$ only means something
    relative to the mean.
-:::
+
+</details>
 
 In plain words: divide the standard deviation by the mean and express
 as a percentage. A $CV$ of 20% means the typical deviation from the
 mean is about 20% of the mean itself.
 
 ::: {.callout-tip}
-#### Formula — coefficient of variation
+
+#### Formula: coefficient of variation
+
 $$
 CV = \frac{s}{\bar{x}} \times 100\%.
 $$
+
 Because it is unit-free, $CV$ is the only dispersion indicator that
 lets you compare the *relative* variability of two variables measured
 on different scales or units (e.g., revenue in € vs. customer count).
 :::
 
-::: {.callout-note}
-#### Notation decoder — coefficient of variation
+#### Notation decoder: coefficient of variation
+
 | Symbol | Read aloud | In our example |
 |---|---|---|
 | $CV$ | "coefficient of variation" | 3.23% (A), 32.26% (B) |
@@ -389,7 +382,6 @@ on different scales or units (e.g., revenue in € vs. customer count).
 **Whole formula as a sentence:** "the coefficient of variation is the
 standard deviation expressed as a percentage of the mean." The € cancel
 out, which is why $CV$ has no unit.
-:::
 
 ### Shortcut (computational) formula for variance
 
@@ -402,8 +394,9 @@ deviation.
 3. Subtract, then divide by $n-1 = 4$.
 4. Redo step 2 with a rounded mean of 621. What happens?
 
-::: {.callout-caution collapse="true"}
-#### Try it — check your answer
+<details class="answer">
+<summary>Check your answer</summary>
+
 1. $348{,}100 + 372{,}100 + 396{,}900 + 396{,}900 + 409{,}600 =
    1{,}923{,}600$.
 2. $5 \times 384{,}400 = 1{,}922{,}000$.
@@ -414,23 +407,27 @@ deviation.
    variance, which is impossible. The shortcut subtracts two large,
    nearly equal numbers, so a tiny rounding of $\bar{x}$ ruins it.
    Always keep the mean unrounded.
-:::
+
+</details>
 
 In plain words: square every value and add them up, subtract $n$ times
 the squared mean, and divide by $n-1$. Same answer, no deviation column.
 
 ::: {.callout-tip}
-#### Formula — variance shortcut
+
+#### Formula: variance shortcut
+
 $$
 s^2 = \frac{1}{n-1}\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right).
 $$
-This needs only $\sum x_i^2$ and $\bar{x}$ — one pass over the data
+
+This needs only $\sum x_i^2$ and $\bar{x}$, one pass over the data
 instead of first computing every deviation $(x_i-\bar{x})$ and then
 squaring it. In Excel, use `SUMSQ(range)` for $\sum x_i^2$.
 :::
 
-::: {.callout-note}
-#### Notation decoder — variance shortcut
+#### Notation decoder: variance shortcut
+
 | Symbol | Read aloud | In our example (Truck A) |
 |---|---|---|
 | $\sum_{i=1}^{n} x_i^2$ | "sum of x sub i squared" | square first, then add: 1,923,600 |
@@ -440,7 +437,6 @@ squaring it. In Excel, use `SUMSQ(range)` for $\sum x_i^2$.
 
 **Whole formula as a sentence:** "the variance is the sum of the
 squared values minus $n$ times the squared mean, divided by $n-1$."
-:::
 
 ## Worked example
 
@@ -487,24 +483,31 @@ shortcut subtracts two very large, nearly equal numbers.
 
 ## Proof / derivation
 
-::: {.callout-caution collapse="true"}
-#### Derivation — the variance shortcut (computational) formula (click to expand)
+::: {.callout-caution}
+#### Derivation: the variance shortcut (computational) formula
+
 Starting from the definitional formula and expanding the square:
+
 $$
 \sum_{i=1}^{n}(x_i-\bar{x})^2
 = \sum_{i=1}^n x_i^2 - 2\bar{x}\sum_{i=1}^n x_i + n\bar{x}^2.
 $$
+
 Since $\sum_{i=1}^n x_i = n\bar{x}$, the middle term becomes
 $-2\bar{x}(n\bar{x}) = -2n\bar{x}^2$, so
+
 $$
 \sum_{i=1}^{n}(x_i-\bar{x})^2
 = \sum_{i=1}^n x_i^2 - 2n\bar{x}^2 + n\bar{x}^2
 = \sum_{i=1}^n x_i^2 - n\bar{x}^2.
 $$
+
 Dividing by $n-1$ gives the **shortcut formula**
+
 $$
 s^2 = \frac{1}{n-1}\left(\sum_{i=1}^{n} x_i^2 - n\bar{x}^2\right),
 $$
+
 which needs only $\sum x_i^2$ and $\bar{x}$ — one pass over the data
 instead of first computing every deviation $(x_i-\bar{x})$ and then
 squaring it. Both formulas give the identical result, $s^2=18{,}793.33$,
@@ -605,46 +608,65 @@ html`<p><strong>Mean</strong> = ${calc.mean.toFixed(2)} ·
 
 ## Exercises
 
-::: {.callout-caution collapse="true"}
-#### Exercise 1 (by hand) — Shortcut formula (click for solution)
+All exercises below are done by hand; the Excel ones are in the
+[homework](#homework-excel-lab).
+
+::: {#exr-shortcut-formula name="Shortcut formula"}
 A sample of $n=5$ values has $\sum x_i = 100$ and $\sum x_i^2 = 2140$.
 Find the sample variance.
 
-**Solution.** $\bar{x}=100/5=20$. Shortcut formula:
-$s^2 = \frac{1}{n-1}\left(\sum x_i^2 - n\bar{x}^2\right)
-= \frac{1}{4}(2140 - 5\times400) = \frac{1}{4}(2140-2000) = 35$.
+<details class="answer">
+<summary>Solution</summary>
+
+- $\bar{x}=100/5=20$.
+- Shortcut formula:
+
+  $$
+  s^2 = \frac{1}{n-1}\left(\sum x_i^2 - n\bar{x}^2\right)
+  $$
+  $$
+  s^2= \frac{1}{4}(2140 - 5\times400) = \frac{1}{4}(2140-2000) = 35
+  $$
+</details>
 :::
 
-::: {.callout-caution collapse="true"}
-#### Exercise 2 (by hand) — Comparing variability across units (click for solution)
+::: {#exr-cv-units name="Comparing variability across units"}
 "The Wandering Fork"'s `items_sold` has mean $74.40$ and sample
 standard deviation $16.22$ (from `data-model.md`). Which variable —
 `daily_revenue_eur` or `items_sold` — has higher *relative*
 variability?
 
-**Solution.** $CV_{\text{revenue}} = 137.09/628.34 = 21.82\%$;
-$CV_{\text{items}} = 16.22/74.40 = 21.80\%$. The two are almost
-identical (about 21.8%) even though the raw units (€ vs. items sold)
-are completely different — exactly the kind of comparison only $CV$,
-not $s$ alone, can make fairly.
+<details class="answer">
+<summary>Solution</summary>
+
+- $CV_{\text{revenue}} = 137.09/628.34 = 21.82\%$;
+- $CV_{\text{items}} = 16.22/74.40 = 21.80\%$.
+- The two are almost identical (about 21.8%) even though the raw units (€ vs.
+  items sold) are completely different, exactly the kind of comparison only $CV$,
+  not $s$ alone, can make fairly.
+
+</details>
 :::
 
-::: {.callout-caution collapse="true"}
-#### Exercise 3 (by hand) — Effect of an outlier on the range (click for solution)
+::: {#exr-effect-outlier-range name="Effect of an outlier on the range"}
 If one exceptionally bad day of $\text{daily\_revenue\_eur}=150$
 replaced the current minimum (407.59), how would the range change,
 and would the standard deviation be affected in the same direction?
 
-**Solution.** New range $= 886.56 - 150 = 736.56$ (up from 478.97) —
-the range, using only two values, reacts strongly to a single extreme
-point. The standard deviation would also increase (an extra-large
-deviation from the mean adds to $\sum(x_i-\bar{x})^2$), but by a much
-smaller relative amount, since it accounts for all 30 days rather
-than just the two most extreme.
+<details class="answer">
+<summary>Solution</summary>
+
+- New range $= 886.56 - 150 = 736.56$ (up from 478.97)
+- The range, using only two values, reacts strongly to a single extreme
+  point. The standard deviation would also increase (an extra-large
+  deviation from the mean adds to $\sum(x_i-\bar{x})^2$), but by a much
+  smaller relative amount, since it accounts for all 30 days rather
+  than just the two most extreme.
+
+</details>
 :::
 
-::: {.callout-caution collapse="true"}
-#### Exercise 4 (by hand) — Formula to words (click for solution)
+::: {#exr-formula-words name="Formula to words"}
 (a) Read $\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2$ aloud as one
 sentence. Which indicator is it?
 
@@ -652,26 +674,35 @@ sentence. Which indicator is it?
 $\sum_{i=1}^{3} x_i^2$. Is $\left(\sum x_i\right)^2$ equal to
 $\sum x_i^2$?
 
-**Solution.** (a) "Take each observation's distance from the mean,
+<details class="answer">
+<summary>Solution</summary>
+
+(a) "Take each observation's distance from the mean,
 square it, add up the $n$ squares, and divide by $n-1$." It is the
 sample variance $s^2$.
 (b) $\sum x_i = 4+6+8 = 18$; $\sum x_i^2 = 16+36+64 = 116$. But
 $\left(\sum x_i\right)^2 = 18^2 = 324 \neq 116$: "square then add" is
 not "add then square" — the most common slip in the shortcut formula.
+
+</details>
 :::
 
-::: {.callout-caution collapse="true"}
-#### Exercise 5 (by hand) — Words to formula (click for solution)
+::: {#exr-words-formula name="Words to formula"}
 Write in symbols:
 
 (a) "add up the squares of all $n$ observations";
 (b) "the standard deviation as a percentage of the mean";
 (c) "the distance between the 3rd observation and the mean".
 
-**Solution.** (a) $\sum_{i=1}^{n} x_i^2$.
+<details class="answer">
+<summary>Solution</summary>
+
+(a) $\sum_{i=1}^{n} x_i^2$.
 (b) $CV = \dfrac{s}{\bar{x}} \times 100\%$.
 (c) $x_3-\bar{x}$ (negative if the 3rd observation is below the
 mean).
+
+</details>
 :::
 
 ## Common mistakes
@@ -708,8 +739,9 @@ Five minutes, no calculator needed except for question 4.
 5. You want to compare the spread of revenue (in €) with the spread of
    items sold. Which indicator do you use, and why?
 
-::: {.callout-caution collapse="true"}
-#### Exit check — answers
+<details class="answer">
+<summary>Answers</summary>
+
 1. The typical distance between an observation and the mean, in the
    original unit (e.g., "on a typical day, revenue is about €137 away
    from the average").
@@ -721,7 +753,8 @@ Five minutes, no calculator needed except for question 4.
    1, 16; total 28; $s^2 = 28/4 = 7$.
 5. The coefficient of variation $CV = s/\bar{x}\times100\%$: it has no
    unit, so € and items can be compared.
-:::
+
+</details>
 
 ## Homework — Excel lab
 
@@ -773,8 +806,9 @@ For the **full table** (120 days per franchise) use the Excel Table
    `=(SUMSQ(A2:A6)-COUNT(A2:A6)*AVERAGE(A2:A6)^2)/(COUNT(A2:A6)-1)`.
 4. Compare every result with your hand-computed deviation table.
 
-::: {.callout-caution collapse="true"}
-#### Step 0 — expected results
+<details class="answer">
+<summary>Expected results</summary>
+
 | Indicator | Truck A | Truck B |
 |---|---:|---:|
 | Mean | 620 | 620 |
@@ -786,10 +820,11 @@ For the **full table** (120 days per franchise) use the Excel Table
 
 If your shortcut cell is off, check that it references the `AVERAGE`
 cell rather than a rounded mean you typed in.
-:::
 
-::: {.callout-caution collapse="true"}
-#### Homework 1 (Excel) — Dispersion for Campus revenue (click for solution)
+</details>
+
+### Homework 1 (Excel) — Dispersion for Campus revenue
+
 In `wandering-fork.xlsx`, filter `franchise` to "Campus" and compute
 the range, sample variance, sample standard deviation, and $CV$ for
 `daily_revenue_eur` (120 days). How do they compare to Harbour's?
@@ -799,16 +834,20 @@ the range, sample variance, sample standard deviation, and $CV$ for
 inside each function; use `MAX`−`MIN`, `VAR.S`, `STDEV.S` and
 `STDEV.S/AVERAGE`, then repeat with "Harbour" to compare.
 
-**Solution.** Campus 120-day: range = 1383.74, $s^2 = 94{,}511.80$,
+<details class="answer">
+<summary>Solution</summary>
+
+Campus 120-day: range = 1383.74, $s^2 = 94{,}511.80$,
 $s = 307.43$, $CV = 67.56\%$. Over the same 120 days, Harbour has
 range = 998.79, $s = 216.01$, $CV = 52.24\%$. Campus has higher
 absolute and relative dispersion than Harbour (range 1384 vs 999, $CV$
 67.6% vs 52.2%) — consistent with the right-skewed, event-driven
 revenue pattern.
-:::
 
-::: {.callout-caution collapse="true"}
-#### Homework 2 (Excel) — Shortcut formula with `SUMSQ` (click for solution)
+</details>
+
+### Homework 2 (Excel) — Shortcut formula with `SUMSQ`
+
 Using the Harbour 30-day `daily_revenue_eur` data, verify the
 shortcut formula: compute `=SUMSQ(range)` and `=AVERAGE(range)`,
 then apply the shortcut formula manually. Confirm it matches
@@ -818,14 +857,18 @@ then apply the shortcut formula manually. Confirm it matches
 `=COUNT(range)` in three cells, type the shortcut formula pointing to
 those three cells, and put `=VAR.S(range)` in a fourth cell to compare.
 
-**Solution.** `SUMSQ` = 12,389,403.98, `AVERAGE` = 628.3417, $n=30$.
+<details class="answer">
+<summary>Solution</summary>
+
+`SUMSQ` = 12,389,403.98, `AVERAGE` = 628.3417, $n=30$.
 Shortcut: $(12{,}389{,}403.98 - 30 \times 628.3417^2) / 29 =
 18{,}793.33$, matching `VAR.S` exactly (point to the `AVERAGE` cell
 rather than typing 628.34, or rounding shifts the result).
-:::
 
-::: {.callout-caution collapse="true"}
-#### Homework 3 (Excel) — Payroll skew: dispersion (click for solution)
+</details>
+
+### Homework 3 (Excel) — Payroll skew: dispersion
+
 Open `payroll-skew.csv`. Compute the range, sample standard deviation,
 and $CV$ for the 11 salaries. Why is the $CV$ so high?
 
@@ -833,12 +876,16 @@ and $CV$ for the 11 salaries. Why is the $CV$ so high?
 `MAX`−`MIN`, `STDEV.S` and `STDEV.S/AVERAGE`; format the $CV$ cell as
 a percentage.
 
-**Solution.** Range = 154,834, $s = 44{,}788$, $CV = 94.8\%$. The $CV$
+<details class="answer">
+<summary>Solution</summary>
+
+Range = 154,834, $s = 44{,}788$, $CV = 94.8\%$. The $CV$
 is close to 100% because the standard deviation (driven by the CEO's
 €180,000 salary) is almost as large as the mean (€47,231) — a
 hallmark of extreme right skew where the mean is pulled far above the
 bulk of the data.
-:::
+
+</details>
 
 ## Further reading
 

@@ -51,18 +51,22 @@ Verify the following before proceeding:
 - [ ] **IV. Privacy-First** — No tracking scripts, cookies, or fingerprinting
   introduced by this feature.
 - [ ] **V. Styling contained** — All CSS/SCSS changes are in `assets/dark.scss`;
-  no inline styles; no `<style>` blocks.
+  no inline styles; no `<style>` blocks. Callouts only for their roles
+  (note = definition, tip = formula, caution = proof, warning = common
+  mistakes, important = `TODO:`); exercises use `::: {#exr-…}`, answers
+  `<details class="answer">`, decoders and remarks are plain markup.
 - [ ] **VI. Bilingual parity** — Every new page has both an EN and FR `.qmd`
   counterpart. Untranslated pages render a stub with a "translation in progress"
-  notice — not a 404 or a missing nav entry. `lang:` front matter set on all files.
+  notice — not a 404 or a missing nav entry. Language is set by the directory
+  `_metadata.yml`; no page repeats the inherited `lang:`.
 
 *For teaching pages only:*
 - [ ] **T-I. Content Fidelity** — Canonical theory, examples, and exercises preserved.
-- [ ] **T-II. Pedagogical Structure** — Theory → examples → exercises order maintained.
+- [ ] **T-II. Pedagogical Structure** — Theory → examples → exercises order maintained; solutions folded in `<details class="answer">`.
 - [ ] **T-III. Audience language** — Plain language; every formula has a prose explanation.
 - [ ] **T-IV. Interactive demos** — Priority concepts have Shinylive Python or OJS interactive demos; gaps marked with TODO callout.
 - [ ] **T-V. Glossary** — New symbols added to the course `glossary.qmd`.
-- [ ] **T-VI. Proof** — Each session includes at least one collapsible formal proof.
+- [ ] **T-VI. Proof** — Each session includes at least one formal proof in a `.callout-caution` (collapse optional; "click to expand" in the title only when collapsed).
 - [ ] **T-VII. Visual intuition** — Geometric interpretation surfaced where applicable.
 - [ ] **T-VIII. Course syllabus** *(if creating/modifying a course index)* — `index.qmd` exists at course root, is first sidebar entry, contains Recommended Literature section with author/title/edition/publisher for each reference.
   No inline div-toggle bilingual patterns used.

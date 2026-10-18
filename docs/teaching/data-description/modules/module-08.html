@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -48,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-1c3d7007041861d2ced64e43bb764f6c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-3d6222ca90cd04258b1655236d0fb3dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,6 +175,8 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+<script type="module" src="../../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -388,10 +425,11 @@ window.Quarto = {
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
-  <li><a href="#time-plan" id="toc-time-plan" class="nav-link" data-scroll-target="#time-plan">Time plan</a></li>
   <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory">Theory</a>
   <ul class="collapse">
+  <li><a href="#sun-rain-and-medium-days" id="toc-sun-rain-and-medium-days" class="nav-link" data-scroll-target="#sun-rain-and-medium-days">Sun, rain and medium days</a></li>
   <li><a href="#contingency-table" id="toc-contingency-table" class="nav-link" data-scroll-target="#contingency-table">Contingency table</a></li>
+  <li><a href="#marginal-distributions" id="toc-marginal-distributions" class="nav-link" data-scroll-target="#marginal-distributions">Marginal distributions</a></li>
   <li><a href="#conditional-distribution" id="toc-conditional-distribution" class="nav-link" data-scroll-target="#conditional-distribution">Conditional distribution</a></li>
   <li><a href="#scatter-plot" id="toc-scatter-plot" class="nav-link" data-scroll-target="#scatter-plot">Scatter plot</a></li>
   </ul></li>
@@ -400,12 +438,17 @@ window.Quarto = {
   <li><a href="#contingency-table-weather-daily_revenue_eur-class" id="toc-contingency-table-weather-daily_revenue_eur-class" class="nav-link" data-scroll-target="#contingency-table-weather-daily_revenue_eur-class">Contingency table — <code>weather</code> × <code>daily_revenue_eur</code> class</a></li>
   <li><a href="#scatter-plot-temperature_c-vs-daily_revenue_eur" id="toc-scatter-plot-temperature_c-vs-daily_revenue_eur" class="nav-link" data-scroll-target="#scatter-plot-temperature_c-vs-daily_revenue_eur">Scatter plot — <code>temperature_c</code> vs <code>daily_revenue_eur</code></a></li>
   </ul></li>
-  <li><a href="#using-excel" id="toc-using-excel" class="nav-link" data-scroll-target="#using-excel">Using Excel</a></li>
   <li><a href="#proof-derivation" id="toc-proof-derivation" class="nav-link" data-scroll-target="#proof-derivation">Proof / derivation</a></li>
   <li><a href="#visual-intuition" id="toc-visual-intuition" class="nav-link" data-scroll-target="#visual-intuition">Visual intuition</a></li>
   <li><a href="#interactive-demo" id="toc-interactive-demo" class="nav-link" data-scroll-target="#interactive-demo">Interactive demo</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   <li><a href="#common-mistakes" id="toc-common-mistakes" class="nav-link" data-scroll-target="#common-mistakes">Common mistakes</a></li>
+  <li><a href="#exit-check" id="toc-exit-check" class="nav-link" data-scroll-target="#exit-check">Exit check</a></li>
+  <li><a href="#homework-excel-lab" id="toc-homework-excel-lab" class="nav-link" data-scroll-target="#homework-excel-lab">Homework — Excel lab</a>
+  <ul class="collapse">
+  <li><a href="#using-excel" id="toc-using-excel" class="nav-link" data-scroll-target="#using-excel">Using Excel</a></li>
+  <li><a href="#step-0-check-your-class-results" id="toc-step-0-check-your-class-results" class="nav-link" data-scroll-target="#step-0-check-your-class-results">Step 0 — check your class results</a></li>
+  </ul></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
   </ul>
 </nav>
@@ -428,7 +471,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 8, 2026</p>
+      <p class="date-modified">October 17, 2026</p>
     </div>
   </div>
     
@@ -439,61 +482,232 @@ window.Quarto = {
 </header>
 
 
-<p><strong>The business question.</strong> Every univariate indicator so far described <strong>one</strong> variable at a time. The real question behind “The Wandering Fork”’s trading is whether two variables move together — does warmer weather really bring more revenue? Do promotions work better on sunny days? This module introduces the two graphical tools for answering that: the contingency table (for two qualitative-or-grouped variables) and the scatter plot (for two quantitative variables).</p>
+<p><strong>The business question.</strong> Every univariate indicator so far described <strong>one</strong> variable at a time. The real question behind “The Wandering Fork”’s trading is whether two variables move together — does warmer weather really bring more revenue? Do promotions work better on sunny days? This module introduces the two graphical tools for answering that: the contingency table (for two qualitative-or-grouped variables) and the scatter plot (for two quantitative variables). We start with a table and five days small enough to handle by hand, and only then write the notation.</p>
 <section id="learning-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
 <p>By the end of this module, you will be able to:</p>
 <ul>
-<li>Build and read a contingency table crossing two variables.</li>
-<li>Compute row and column marginal distributions from a contingency table.</li>
-<li>Build a scatter plot of two quantitative variables and describe the pattern it shows.</li>
+<li>Build a contingency table by hand from a list of individuals, and read a cell count <span class="math inline">\(n_{ij}\)</span> and the margins <span class="math inline">\(n_{i\cdot}\)</span>, <span class="math inline">\(n_{\cdot j}\)</span> aloud.</li>
+<li>Compute row and column marginal distributions from a contingency table, as <span class="math inline">\(n_{i\cdot}/n\)</span> and <span class="math inline">\(n_{\cdot j}/n\)</span>.</li>
 <li>Compute a <strong>conditional distribution</strong> — the distribution of one variable restricted to a single modality of the other — and use it to compare sub-groups fairly.</li>
+<li>Read a share such as <span class="math inline">\(n_{ij}/n_{i\cdot}\)</span> aloud as a sentence, and write a share described in words in this notation.</li>
+<li>Draw a scatter plot of two quantitative variables by hand and describe the pattern it shows (direction, form, exceptions).</li>
 <li>Distinguish “a visible pattern” from “a proven relationship” — formalised numerically in Module 9.</li>
 </ul>
 </section>
-<section id="time-plan" class="level2">
-<h2 class="anchored" data-anchor-id="time-plan">Time plan</h2>
+<section id="theory" class="level2">
+<h2 class="anchored" data-anchor-id="theory">Theory</h2>
+<section id="sun-rain-and-medium-days" class="level3">
+<h3 class="anchored" data-anchor-id="sun-rain-and-medium-days">Sun, rain and medium days</h3>
+<p>One Wandering Fork truck classified 50 of its trading days by weather (keeping only Sunny and Rainy days) and by revenue level: <strong>Low</strong> (under €500), <strong>Medium</strong> (€500 to under €700) and <strong>High</strong> (€700 or more). The numbers are a simplified extract chosen so that you can compute everything by hand.</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 30%">
-<col style="width: 40%">
-<col style="width: 30%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Block</th>
-<th style="text-align: right;">Minutes</th>
-<th>What you do</th>
+<th>Weather &nbsp;Revenue</th>
+<th style="text-align: right;">Low</th>
+<th style="text-align: right;">Medium</th>
+<th style="text-align: right;">High</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Theory</td>
-<td style="text-align: right;">60</td>
-<td>Contingency table, marginal distributions, conditional distributions, scatter plot</td>
+<td>Sunny</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">18</td>
 </tr>
 <tr class="even">
-<td>Excel lab</td>
-<td style="text-align: right;">60</td>
-<td><code>COUNTIFS</code>, PivotTable (two fields), XY scatter chart</td>
-</tr>
-<tr class="odd">
-<td>Exercises</td>
-<td style="text-align: right;">60</td>
-<td>Three by-hand and four Excel exercises</td>
-</tr>
-<tr class="even">
-<td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>180</strong></td>
-<td></td>
+<td>Rainy</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
 </tr>
 </tbody>
 </table>
+<p>The truck had <strong>9 medium days when it was sunny, and only 6 when it rained</strong>. Is a medium day more likely when the sun is out? And what would you tell the owner about High days: is “18 against 2” the right way to compare sunny and rainy weather?</p>
 </section>
-<section id="theory" class="level2">
-<h2 class="anchored" data-anchor-id="theory">Theory</h2>
 <section id="contingency-table" class="level3">
 <h3 class="anchored" data-anchor-id="contingency-table">Contingency table</h3>
+<p>Where does a table like the one above come from? From a plain list of days, each one described by <strong>two</strong> variables at once.</p>
+<p><strong>Try it.</strong> Here are ten days of the same truck’s log. Tally them into the table below, then add the row and column totals. Number the rows <span class="math inline">\(i = 1\)</span> (Sunny), <span class="math inline">\(i = 2\)</span> (Rainy) and the columns <span class="math inline">\(j = 1\)</span> (Low), <span class="math inline">\(j = 2\)</span> (Medium), <span class="math inline">\(j = 3\)</span> (High).</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Day</th>
+<th>Weather</th>
+<th>Revenue level</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Sunny</td>
+<td>High</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Sunny</td>
+<td>Medium</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Rainy</td>
+<td>Low</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Sunny</td>
+<td>High</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Rainy</td>
+<td>Medium</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Sunny</td>
+<td>Low</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Sunny</td>
+<td>High</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>Rainy</td>
+<td>Low</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>Sunny</td>
+<td>Medium</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Rainy</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Weather &nbsp;Revenue</th>
+<th style="text-align: right;">Low</th>
+<th style="text-align: right;">Medium</th>
+<th style="text-align: right;">High</th>
+<th style="text-align: right;">Row total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+<tr class="even">
+<td>Rainy</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+<tr class="odd">
+<td><strong>Column total</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>How many days were Sunny <strong>and</strong> High?</li>
+<li>Count the Sunny days in the log directly, ignoring revenue. Do you get the Sunny row total?</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Try it — check your answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Weather &nbsp;Revenue</th>
+<th style="text-align: right;">Low</th>
+<th style="text-align: right;">Medium</th>
+<th style="text-align: right;">High</th>
+<th style="text-align: right;">Row total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td>Rainy</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td><strong>Column total</strong></td>
+<td style="text-align: right;"><strong>3</strong></td>
+<td style="text-align: right;"><strong>3</strong></td>
+<td style="text-align: right;"><strong>4</strong></td>
+<td style="text-align: right;"><strong>10</strong></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>3 days (Days 1, 4 and 7) were Sunny and High.</li>
+<li>Yes: the log has 6 Sunny days, which is the Sunny row total. Each day lands in exactly one cell, so the ten days fill the six cells and every total adds up to 10.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>See it.</strong> Each day is one dot in exactly one cell — the cell where its row (weather) and its column (revenue level) cross:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Weather &nbsp;Revenue</th>
+<th>Low</th>
+<th>Medium</th>
+<th>High</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny</td>
+<td>● (Day 6)</td>
+<td>●● (Days 2, 9)</td>
+<td>●●● (Days 1, 4, 7)</td>
+</tr>
+<tr class="even">
+<td>Rainy</td>
+<td>●● (Days 3, 8)</td>
+<td>● (Day 5)</td>
+<td>● (Day 10)</td>
+</tr>
+</tbody>
+</table>
+<p>In plain words: a contingency table is a two-dimensional frequency table. The margins are the row and column totals — they give you back the one-variable frequency tables you already know.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -507,10 +721,416 @@ window.Quarto = {
 <p>A <strong>contingency table</strong> (or cross-tabulation) crosses the modalities of two variables observed on the same individuals: cell <span class="math inline">\((i,j)\)</span> holds the count <span class="math inline">\(n_{ij}\)</span> of individuals with modality <span class="math inline">\(i\)</span> of the first variable <strong>and</strong> modality <span class="math inline">\(j\)</span> of the second. The <strong>row margin</strong> <span class="math inline">\(n_{i\cdot} = \sum_j n_{ij}\)</span> and <strong>column margin</strong> <span class="math inline">\(n_{\cdot j} = \sum_i n_{ij}\)</span> recover each variable’s own (univariate) frequency table from the same data.</p>
 </div>
 </div>
-<p>In plain words: a contingency table is a two-dimensional frequency table. The margins are the row and column totals — they give you back the one-variable frequency tables you already know.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Notation decoder — contingency table
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Read aloud</th>
+<th>In our example (ten days)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\((i,j)\)</span></td>
+<td>“cell i, j” — row first, then column</td>
+<td><span class="math inline">\((1,3)\)</span> is the Sunny–High cell</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(n_{ij}\)</span></td>
+<td>“n sub i j”</td>
+<td><span class="math inline">\(n_{13} = 3\)</span> Sunny and High days</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(n_{i\cdot}\)</span></td>
+<td>“n sub i dot” — the dot replaces the index that was added up</td>
+<td><span class="math inline">\(n_{1\cdot} = 6\)</span> Sunny days</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(n_{\cdot j}\)</span></td>
+<td>“n sub dot j”</td>
+<td><span class="math inline">\(n_{\cdot 3} = 4\)</span> High days</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\sum_j\)</span></td>
+<td>“add up over all columns j”</td>
+<td>across a row: <span class="math inline">\(1+2+3 = 6\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sum_i\)</span></td>
+<td>“add up over all rows i”</td>
+<td>down a column: <span class="math inline">\(3+1 = 4\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Whole formula as a sentence:</strong> “the row margin <span class="math inline">\(n_{i\cdot}\)</span> is the sum of the counts across row <span class="math inline">\(i\)</span>; the column margin <span class="math inline">\(n_{\cdot j}\)</span> is the sum of the counts down column <span class="math inline">\(j\)</span>.” Adding all the cells gives the grand total <span class="math inline">\(n = 10\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="marginal-distributions" class="level3">
+<h3 class="anchored" data-anchor-id="marginal-distributions">Marginal distributions</h3>
+<p><strong>Try it.</strong> Go back to the 50-day table of the hook. Complete the totals, then turn each total into a share of all 50 days.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Weather &nbsp;Revenue</th>
+<th style="text-align: right;">Low</th>
+<th style="text-align: right;">Medium</th>
+<th style="text-align: right;">High</th>
+<th style="text-align: right;">Row total</th>
+<th style="text-align: right;">% of all days</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+<tr class="even">
+<td>Rainy</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+</tr>
+<tr class="odd">
+<td><strong>Column total</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>50</strong></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td><strong>% of all days</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><strong>100%</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Try it — check your answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Weather &nbsp;Revenue</th>
+<th style="text-align: right;">Low</th>
+<th style="text-align: right;">Medium</th>
+<th style="text-align: right;">High</th>
+<th style="text-align: right;">Row total</th>
+<th style="text-align: right;">% of all days</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">60%</td>
+</tr>
+<tr class="even">
+<td>Rainy</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">40%</td>
+</tr>
+<tr class="odd">
+<td><strong>Column total</strong></td>
+<td style="text-align: right;"><strong>15</strong></td>
+<td style="text-align: right;"><strong>15</strong></td>
+<td style="text-align: right;"><strong>20</strong></td>
+<td style="text-align: right;"><strong>50</strong></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td><strong>% of all days</strong></td>
+<td style="text-align: right;"><strong>30%</strong></td>
+<td style="text-align: right;"><strong>30%</strong></td>
+<td style="text-align: right;"><strong>40%</strong></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><strong>100%</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The truck had 30 Sunny days (<span class="math inline">\(30/50 = 60\%\)</span>) and 20 Rainy days (<span class="math inline">\(40\%\)</span>). Separately, 40% of all days were High. Notice that Sunny days are simply <strong>more numerous</strong> — this already explains part of “9 against 6”.</p>
+</div>
+</div>
+</div>
+<p><strong>See it.</strong> The two margins are two ordinary one-variable bar charts (each block = 10% of the 50 days):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Modality</th>
+<th>Share of all 50 days</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Weather (row margin)</td>
+<td>Sunny</td>
+<td>██████ 60%</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Rainy</td>
+<td>████ 40%</td>
+</tr>
+<tr class="odd">
+<td>Revenue (column margin)</td>
+<td>Low</td>
+<td>███ 30%</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Medium</td>
+<td>███ 30%</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>High</td>
+<td>████ 40%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recall.</strong> In <a href="../../../teaching/data-description/modules/module-02.html">Module 2</a> you computed relative frequencies <span class="math inline">\(f_i = n_i/n\)</span> for one variable. A marginal distribution is exactly that, using the margins of the table as the counts.</p>
+<p>In plain words: a marginal distribution is the share of all <span class="math inline">\(n\)</span> individuals in each modality of one variable, read off the edge of the table — as if the other variable did not exist.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Formula — marginal distributions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Dividing each margin by the grand total <span class="math inline">\(n\)</span> gives the two <strong>marginal distributions</strong> (relative frequencies, as in Module 2): <span class="math display">\[
+\frac{n_{i\cdot}}{n} \quad \text{(row variable)}, \qquad
+\frac{n_{\cdot j}}{n} \quad \text{(column variable)}.
+\]</span> Each one sums to 1 (100%) and ignores the other variable entirely.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Notation decoder — marginal distributions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Read aloud</th>
+<th>In our example (50 days)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(n\)</span></td>
+<td>“n”</td>
+<td>50 days</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(n_{i\cdot}\)</span></td>
+<td>“n sub i dot”</td>
+<td>row totals: <span class="math inline">\(n_{1\cdot} = 30\)</span>, <span class="math inline">\(n_{2\cdot} = 20\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(n_{\cdot j}\)</span></td>
+<td>“n sub dot j”</td>
+<td>column totals: 15, 15, 20</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\frac{n_{i\cdot}}{n}\)</span></td>
+<td>“n sub i dot over n”</td>
+<td><span class="math inline">\(30/50 = 60\%\)</span> Sunny, <span class="math inline">\(20/50 = 40\%\)</span> Rainy</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\frac{n_{\cdot j}}{n}\)</span></td>
+<td>“n sub dot j over n”</td>
+<td><span class="math inline">\(15/50 = 30\%\)</span>, 30%, <span class="math inline">\(20/50 = 40\%\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Whole formula as a sentence:</strong> “the marginal share of a modality is its row (or column) total divided by the grand total.”</p>
+</div>
+</div>
 </section>
 <section id="conditional-distribution" class="level3">
 <h3 class="anchored" data-anchor-id="conditional-distribution">Conditional distribution</h3>
+<p><strong>Try it.</strong> To answer the hook, compute percentages <strong>within each row</strong>: divide every cell by its own row total (30 for Sunny, 20 for Rainy), not by 50.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Weather &nbsp;Revenue</th>
+<th style="text-align: right;">Low</th>
+<th style="text-align: right;">Medium</th>
+<th style="text-align: right;">High</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny (<span class="math inline">\(\div 30\)</span>)</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">100%</td>
+</tr>
+<tr class="even">
+<td>Rainy (<span class="math inline">\(\div 20\)</span>)</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">?</td>
+<td style="text-align: right;">100%</td>
+</tr>
+<tr class="odd">
+<td>All days (<span class="math inline">\(\div 50\)</span>)</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">40%</td>
+<td style="text-align: right;">100%</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Is a medium day more likely when it is sunny?</li>
+<li>How do High days compare between the two kinds of weather?</li>
+<li>Now read <strong>down</strong> the High column instead: of the 20 High days, what share were Sunny?</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Try it — check your answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Weather &nbsp;Revenue</th>
+<th style="text-align: right;">Low</th>
+<th style="text-align: right;">Medium</th>
+<th style="text-align: right;">High</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny (<span class="math inline">\(\div 30\)</span>)</td>
+<td style="text-align: right;">10%</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">60%</td>
+<td style="text-align: right;">100%</td>
+</tr>
+<tr class="even">
+<td>Rainy (<span class="math inline">\(\div 20\)</span>)</td>
+<td style="text-align: right;">60%</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">10%</td>
+<td style="text-align: right;">100%</td>
+</tr>
+<tr class="odd">
+<td>All days (<span class="math inline">\(\div 50\)</span>)</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">40%</td>
+<td style="text-align: right;">100%</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>No: <span class="math inline">\(9/30 = 30\%\)</span> and <span class="math inline">\(6/20 = 30\%\)</span>. “9 against 6” only reflects that there were more Sunny days.</li>
+<li><span class="math inline">\(18/30 = 60\%\)</span> of Sunny days were High, against <span class="math inline">\(2/20 = 10\%\)</span> of Rainy days: here the weather really makes a difference.</li>
+<li><span class="math inline">\(18/20 = 90\%\)</span> of High days were Sunny. This is a different question (“given High”) from question 2 (“given Sunny”), so it has a different answer.</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>See it.</strong> Each row now has its own 100% bar (each block = 10% of that row):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Given</th>
+<th>Low</th>
+<th>Medium</th>
+<th>High</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny</td>
+<td>█ 10%</td>
+<td>███ 30%</td>
+<td>██████ 60%</td>
+</tr>
+<tr class="even">
+<td>Rainy</td>
+<td>██████ 60%</td>
+<td>███ 30%</td>
+<td>█ 10%</td>
+</tr>
+<tr class="odd">
+<td>All days (marginal)</td>
+<td>███ 30%</td>
+<td>███ 30%</td>
+<td>████ 40%</td>
+</tr>
+</tbody>
+</table>
+<p>The Medium column is identical in all three rows; the Low and High columns are not — that is where weather and revenue are associated.</p>
+<p>In plain words: to compare Sunny vs Rainy days fairly, don’t compare raw counts (Sunny has more days total). Instead, compute percentages <em>within</em> each weather type — that’s the conditional distribution.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -524,10 +1144,370 @@ window.Quarto = {
 <p>A <strong>conditional distribution</strong> is the distribution of one variable <em>restricted</em> to a single modality of the other — one row (or one column), rescaled to its own row (or column) total instead of the grand total <span class="math inline">\(n\)</span>. It answers “given this category, how is the other variable distributed?”, which the raw counts alone cannot, since row totals differ in size.</p>
 </div>
 </div>
-<p>In plain words: to compare Sunny vs Rainy days fairly, don’t compare raw counts (Sunny has more days total). Instead, compute percentages <em>within</em> each weather type — that’s the conditional distribution.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Formula — conditional distributions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Given row modality <span class="math inline">\(i\)</span>, the share of column modality <span class="math inline">\(j\)</span> is <span class="math display">\[
+\frac{n_{ij}}{n_{i\cdot}} \quad \text{(row percentages)},
+\]</span> and given column modality <span class="math inline">\(j\)</span>, the share of row modality <span class="math inline">\(i\)</span> is <span class="math display">\[
+\frac{n_{ij}}{n_{\cdot j}} \quad \text{(column percentages)}.
+\]</span> Each conditional distribution sums to 1 (100%) over its own row (or column).</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Notation decoder — conditional distributions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Read aloud</th>
+<th>In our example (50 days)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(n_{ij}\)</span></td>
+<td>“n sub i j”</td>
+<td><span class="math inline">\(n_{13} = 18\)</span> Sunny and High days</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(n_{i\cdot}\)</span></td>
+<td>“n sub i dot”</td>
+<td><span class="math inline">\(n_{1\cdot} = 30\)</span> Sunny days</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(n_{\cdot j}\)</span></td>
+<td>“n sub dot j”</td>
+<td><span class="math inline">\(n_{\cdot 3} = 20\)</span> High days</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\frac{n_{ij}}{n_{i\cdot}}\)</span></td>
+<td>“n sub i j over n sub i dot” — “given row i”</td>
+<td><span class="math inline">\(18/30 = 60\%\)</span> of Sunny days were High</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\frac{n_{ij}}{n_{\cdot j}}\)</span></td>
+<td>“n sub i j over n sub dot j” — “given column j”</td>
+<td><span class="math inline">\(18/20 = 90\%\)</span> of High days were Sunny</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Whole formula as a sentence:</strong> “the conditional share is the count in one cell divided by the total of the row (or column) you are restricting to — not by the grand total.”</p>
+</div>
+</div>
 </section>
 <section id="scatter-plot" class="level3">
 <h3 class="anchored" data-anchor-id="scatter-plot">Scatter plot</h3>
+<p>When both variables are <strong>quantitative</strong>, grouping them into classes throws information away. Plot the raw pairs instead.</p>
+<p><strong>Try it.</strong> Five days from the same truck (a simplified extract): temperature <span class="math inline">\(x\)</span> and number of items sold <span class="math inline">\(y\)</span>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Day</th>
+<th style="text-align: right;">Temperature <span class="math inline">\(x\)</span> (°C)</th>
+<th style="text-align: right;">Items sold <span class="math inline">\(y\)</span></th>
+<th><span class="math inline">\(x\)</span> above its mean?</th>
+<th><span class="math inline">\(y\)</span> above its mean?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">40</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">55</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">50</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">70</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">85</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>Mean</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td style="text-align: right;"><strong>?</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>On squared paper, draw an <span class="math inline">\(x\)</span> axis from 10 to 30 °C and a <span class="math inline">\(y\)</span> axis from 30 to 90 items. Plot one point per day at <span class="math inline">\((x, y)\)</span>.</li>
+<li>Compute both means, draw a vertical line at the mean temperature and a horizontal line at the mean number of items, then fill the last two columns.</li>
+<li>How many points lie in the lower-left or upper-right quarters of the plot? Which day goes against the trend?</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Try it — check your answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Day</th>
+<th style="text-align: right;"><span class="math inline">\(x\)</span> (°C)</th>
+<th style="text-align: right;"><span class="math inline">\(y\)</span></th>
+<th><span class="math inline">\(x\)</span> above 20?</th>
+<th><span class="math inline">\(y\)</span> above 60?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">40</td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">55</td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">50</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">70</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">85</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>100</strong></td>
+<td style="text-align: right;"><strong>300</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>Mean</strong></td>
+<td style="text-align: right;"><strong>20</strong></td>
+<td style="text-align: right;"><strong>60</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Four of the five points (Days 1, 2, 4, 5) are in the lower-left or upper-right quarter: warmer days tend to sell more. Day 3 (21 °C, 50 items) is slightly warmer than average but sells below average — the points rise to the right, but not along a perfect line.</p>
+</div>
+</div>
+</div>
+<p><strong>See it.</strong> Step 1 of the figure shows the five points; step 2 adds the two mean lines and colours each point by the quarter it falls in.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="352" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 351;"><span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a>temps <span class="op">=</span> [<span class="dv">12</span><span class="op">,</span> <span class="dv">16</span><span class="op">,</span> <span class="dv">21</span><span class="op">,</span> <span class="dv">24</span><span class="op">,</span> <span class="dv">27</span>]</span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> [<span class="dv">40</span><span class="op">,</span> <span class="dv">55</span><span class="op">,</span> <span class="dv">50</span><span class="op">,</span> <span class="dv">70</span><span class="op">,</span> <span class="dv">85</span>]</span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>avg <span class="op">=</span> xs <span class="kw">=&gt;</span> xs<span class="op">.</span><span class="fu">reduce</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">+</span> b<span class="op">,</span> <span class="dv">0</span>) <span class="op">/</span> xs<span class="op">.</span><span class="at">length</span></span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">quadrants</span>(xs<span class="op">,</span> ys) {</span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> mx <span class="op">=</span> <span class="fu">avg</span>(xs)<span class="op">,</span> my <span class="op">=</span> <span class="fu">avg</span>(ys)<span class="op">;</span></span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> agree <span class="op">=</span> []<span class="op">,</span> against <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>  xs<span class="op">.</span><span class="fu">forEach</span>((v<span class="op">,</span> i) <span class="kw">=&gt;</span></span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>    ((v <span class="op">-</span> mx) <span class="op">*</span> (ys[i] <span class="op">-</span> my) <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> agree <span class="op">:</span> against)<span class="op">.</span><span class="fu">push</span>(i <span class="op">+</span> <span class="dv">1</span>))<span class="op">;</span></span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {mx<span class="op">,</span> my<span class="op">,</span> agree<span class="op">,</span> against}<span class="op">;</span></span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a>viewof scatterStep <span class="op">=</span> {</span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> labels <span class="op">=</span> [<span class="st">"1 · Points"</span><span class="op">,</span> <span class="st">"2 · Mean lines"</span>]<span class="op">;</span></span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> form <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;form class="ojs-step-picker"&gt;Show: </span><span class="sc">${</span>labels<span class="op">.</span><span class="fu">map</span>((l<span class="op">,</span> i) <span class="kw">=&gt;</span></span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html</span><span class="vs">`&lt;label&gt; &lt;input type="radio" name="scatterStep" value="</span><span class="sc">${</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span>i <span class="op">===</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">"checked"</span> <span class="op">:</span> <span class="st">""</span><span class="sc">}</span><span class="vs">&gt; </span><span class="sc">${</span>l<span class="sc">}</span><span class="vs"> &lt;/label&gt;`</span>)<span class="sc">}</span><span class="vs">&lt;/form&gt;`</span><span class="op">;</span></span>
+<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a>  form<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a>  form<span class="op">.</span><span class="at">oninput</span> <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a>    form<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="op">+</span>form<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"input:checked"</span>)<span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> form<span class="op">;</span></span>
+<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="379" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 378;"><span id="cb2-379"><a href="#cb2-379" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb2-380"><a href="#cb2-380" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> W <span class="op">=</span> <span class="dv">660</span><span class="op">,</span> H <span class="op">=</span> <span class="dv">380</span><span class="op">,</span> L <span class="op">=</span> <span class="dv">60</span><span class="op">,</span> R <span class="op">=</span> <span class="dv">20</span><span class="op">,</span> T <span class="op">=</span> <span class="dv">20</span><span class="op">,</span> B <span class="op">=</span> <span class="dv">50</span><span class="op">;</span></span>
+<span id="cb2-381"><a href="#cb2-381" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> BLUE <span class="op">=</span> <span class="st">"steelblue"</span><span class="op">,</span> ORANGE <span class="op">=</span> <span class="st">"darkorange"</span><span class="op">;</span></span>
+<span id="cb2-382"><a href="#cb2-382" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> AGREE <span class="op">=</span> <span class="st">"#5cb85c"</span><span class="op">,</span> AGAINST <span class="op">=</span> <span class="st">"#d9534f"</span><span class="op">;</span></span>
+<span id="cb2-383"><a href="#cb2-383" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> x <span class="op">=</span> v <span class="kw">=&gt;</span> L <span class="op">+</span> (v <span class="op">-</span> <span class="dv">10</span>) <span class="op">*</span> (W <span class="op">-</span> L <span class="op">-</span> R) <span class="op">/</span> (<span class="dv">30</span> <span class="op">-</span> <span class="dv">10</span>)<span class="op">;</span></span>
+<span id="cb2-384"><a href="#cb2-384" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> y <span class="op">=</span> v <span class="kw">=&gt;</span> H <span class="op">-</span> B <span class="op">-</span> (v <span class="op">-</span> <span class="dv">30</span>) <span class="op">*</span> (H <span class="op">-</span> T <span class="op">-</span> B) <span class="op">/</span> (<span class="dv">90</span> <span class="op">-</span> <span class="dv">30</span>)<span class="op">;</span></span>
+<span id="cb2-385"><a href="#cb2-385" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> q <span class="op">=</span> <span class="fu">quadrants</span>(temps<span class="op">,</span> items)<span class="op">;</span></span>
+<span id="cb2-386"><a href="#cb2-386" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> g <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb2-387"><a href="#cb2-387" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (scatterStep <span class="op">===</span> <span class="dv">2</span>) {</span>
+<span id="cb2-388"><a href="#cb2-388" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;rect x="</span><span class="sc">${</span><span class="fu">x</span>(<span class="dv">10</span>)<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(q<span class="op">.</span><span class="at">my</span>)<span class="sc">}</span><span class="vs">" width="</span><span class="sc">${</span><span class="fu">x</span>(q<span class="op">.</span><span class="at">mx</span>) <span class="op">-</span> <span class="fu">x</span>(<span class="dv">10</span>)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-389"><a href="#cb2-389" aria-hidden="true" tabindex="-1"></a><span class="vs">      height="</span><span class="sc">${</span><span class="fu">y</span>(<span class="dv">30</span>) <span class="op">-</span> <span class="fu">y</span>(q<span class="op">.</span><span class="at">my</span>)<span class="sc">}</span><span class="vs">" fill="</span><span class="sc">${</span>AGREE<span class="sc">}</span><span class="vs">" fill-opacity="0.08"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-390"><a href="#cb2-390" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;rect x="</span><span class="sc">${</span><span class="fu">x</span>(q<span class="op">.</span><span class="at">mx</span>)<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(<span class="dv">90</span>)<span class="sc">}</span><span class="vs">" width="</span><span class="sc">${</span><span class="fu">x</span>(<span class="dv">30</span>) <span class="op">-</span> <span class="fu">x</span>(q<span class="op">.</span><span class="at">mx</span>)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-391"><a href="#cb2-391" aria-hidden="true" tabindex="-1"></a><span class="vs">      height="</span><span class="sc">${</span><span class="fu">y</span>(q<span class="op">.</span><span class="at">my</span>) <span class="op">-</span> <span class="fu">y</span>(<span class="dv">90</span>)<span class="sc">}</span><span class="vs">" fill="</span><span class="sc">${</span>AGREE<span class="sc">}</span><span class="vs">" fill-opacity="0.08"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-392"><a href="#cb2-392" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-393"><a href="#cb2-393" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> t <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> t <span class="op">&lt;=</span> <span class="dv">30</span><span class="op">;</span> t <span class="op">+=</span> <span class="dv">5</span>) {</span>
+<span id="cb2-394"><a href="#cb2-394" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span><span class="fu">y</span>(<span class="dv">30</span>)<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span><span class="fu">y</span>(<span class="dv">90</span>)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-395"><a href="#cb2-395" aria-hidden="true" tabindex="-1"></a><span class="vs">      stroke="currentColor" stroke-opacity="0.15"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-396"><a href="#cb2-396" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>H <span class="op">-</span> B <span class="op">+</span> <span class="dv">18</span><span class="sc">}</span><span class="vs">" text-anchor="middle"</span></span>
+<span id="cb2-397"><a href="#cb2-397" aria-hidden="true" tabindex="-1"></a><span class="vs">      fill="currentColor" font-size="12"&gt;</span><span class="sc">${</span>t<span class="sc">}</span><span class="vs"> °C&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-398"><a href="#cb2-398" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-399"><a href="#cb2-399" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> v <span class="op">=</span> <span class="dv">30</span><span class="op">;</span> v <span class="op">&lt;=</span> <span class="dv">90</span><span class="op">;</span> v <span class="op">+=</span> <span class="dv">10</span>) {</span>
+<span id="cb2-400"><a href="#cb2-400" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(<span class="dv">10</span>)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(<span class="dv">30</span>)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span><span class="fu">y</span>(v)<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span><span class="fu">y</span>(v)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-401"><a href="#cb2-401" aria-hidden="true" tabindex="-1"></a><span class="vs">      stroke="currentColor" stroke-opacity="0.15"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-402"><a href="#cb2-402" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span>L <span class="op">-</span> <span class="dv">8</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(v) <span class="op">+</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">" text-anchor="end"</span></span>
+<span id="cb2-403"><a href="#cb2-403" aria-hidden="true" tabindex="-1"></a><span class="vs">      fill="currentColor" font-size="12"&gt;</span><span class="sc">${</span>v<span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-404"><a href="#cb2-404" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-405"><a href="#cb2-405" aria-hidden="true" tabindex="-1"></a>  g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span>(<span class="fu">x</span>(<span class="dv">10</span>) <span class="op">+</span> <span class="fu">x</span>(<span class="dv">30</span>)) <span class="op">/</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>H <span class="op">-</span> <span class="dv">8</span><span class="sc">}</span><span class="vs">" text-anchor="middle"</span></span>
+<span id="cb2-406"><a href="#cb2-406" aria-hidden="true" tabindex="-1"></a><span class="vs">    fill="currentColor" font-size="13"&gt;Temperature x (°C)&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-407"><a href="#cb2-407" aria-hidden="true" tabindex="-1"></a>  g <span class="op">+=</span> <span class="vs">`&lt;text x="14" y="</span><span class="sc">${</span><span class="fu">y</span>(<span class="dv">60</span>)<span class="sc">}</span><span class="vs">" text-anchor="middle" fill="currentColor"</span></span>
+<span id="cb2-408"><a href="#cb2-408" aria-hidden="true" tabindex="-1"></a><span class="vs">    font-size="13" transform="rotate(-90 14 </span><span class="sc">${</span><span class="fu">y</span>(<span class="dv">60</span>)<span class="sc">}</span><span class="vs">)"&gt;Items sold y&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-409"><a href="#cb2-409" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (scatterStep <span class="op">===</span> <span class="dv">2</span>) {</span>
+<span id="cb2-410"><a href="#cb2-410" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(q<span class="op">.</span><span class="at">mx</span>)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(q<span class="op">.</span><span class="at">mx</span>)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span><span class="fu">y</span>(<span class="dv">30</span>)<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span><span class="fu">y</span>(<span class="dv">90</span>)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-411"><a href="#cb2-411" aria-hidden="true" tabindex="-1"></a><span class="vs">      stroke="</span><span class="sc">${</span>ORANGE<span class="sc">}</span><span class="vs">" stroke-width="2" stroke-dasharray="6 4"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-412"><a href="#cb2-412" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(q<span class="op">.</span><span class="at">mx</span>) <span class="op">+</span> <span class="dv">6</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(<span class="dv">90</span>) <span class="op">+</span> <span class="dv">14</span><span class="sc">}</span><span class="vs">" fill="</span><span class="sc">${</span>ORANGE<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-413"><a href="#cb2-413" aria-hidden="true" tabindex="-1"></a><span class="vs">      font-size="12"&gt;mean = </span><span class="sc">${</span>q<span class="op">.</span><span class="at">mx</span><span class="sc">}</span><span class="vs"> °C&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-414"><a href="#cb2-414" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(<span class="dv">10</span>)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(<span class="dv">30</span>)<span class="sc">}</span><span class="vs">" y1="</span><span class="sc">${</span><span class="fu">y</span>(q<span class="op">.</span><span class="at">my</span>)<span class="sc">}</span><span class="vs">" y2="</span><span class="sc">${</span><span class="fu">y</span>(q<span class="op">.</span><span class="at">my</span>)<span class="sc">}</span><span class="vs">"</span></span>
+<span id="cb2-415"><a href="#cb2-415" aria-hidden="true" tabindex="-1"></a><span class="vs">      stroke="</span><span class="sc">${</span>ORANGE<span class="sc">}</span><span class="vs">" stroke-width="2" stroke-dasharray="6 4"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-416"><a href="#cb2-416" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(<span class="dv">30</span>) <span class="op">-</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(q<span class="op">.</span><span class="at">my</span>) <span class="op">-</span> <span class="dv">6</span><span class="sc">}</span><span class="vs">" text-anchor="end"</span></span>
+<span id="cb2-417"><a href="#cb2-417" aria-hidden="true" tabindex="-1"></a><span class="vs">      fill="</span><span class="sc">${</span>ORANGE<span class="sc">}</span><span class="vs">" font-size="12"&gt;mean = </span><span class="sc">${</span>q<span class="op">.</span><span class="at">my</span><span class="sc">}</span><span class="vs"> items&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-418"><a href="#cb2-418" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-419"><a href="#cb2-419" aria-hidden="true" tabindex="-1"></a>  temps<span class="op">.</span><span class="fu">forEach</span>((t<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-420"><a href="#cb2-420" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> c <span class="op">=</span> scatterStep <span class="op">===</span> <span class="dv">1</span> <span class="op">?</span> BLUE</span>
+<span id="cb2-421"><a href="#cb2-421" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span> q<span class="op">.</span><span class="at">agree</span><span class="op">.</span><span class="fu">includes</span>(i <span class="op">+</span> <span class="dv">1</span>) <span class="op">?</span> AGREE <span class="op">:</span> AGAINST<span class="op">;</span></span>
+<span id="cb2-422"><a href="#cb2-422" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;circle cx="</span><span class="sc">${</span><span class="fu">x</span>(t)<span class="sc">}</span><span class="vs">" cy="</span><span class="sc">${</span><span class="fu">y</span>(items[i])<span class="sc">}</span><span class="vs">" r="7" fill="</span><span class="sc">${</span>c<span class="sc">}</span><span class="vs">"/&gt;`</span><span class="op">;</span></span>
+<span id="cb2-423"><a href="#cb2-423" aria-hidden="true" tabindex="-1"></a>    g <span class="op">+=</span> <span class="vs">`&lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(t) <span class="op">+</span> <span class="dv">10</span><span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span><span class="fu">y</span>(items[i]) <span class="op">+</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">" fill="currentColor"</span></span>
+<span id="cb2-424"><a href="#cb2-424" aria-hidden="true" tabindex="-1"></a><span class="vs">      font-size="12"&gt;Day </span><span class="sc">${</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb2-425"><a href="#cb2-425" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb2-426"><a href="#cb2-426" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;svg viewBox="0 0 </span><span class="sc">${</span>W<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>H<span class="sc">}</span><span class="vs">" width="100%" role="img"</span></span>
+<span id="cb2-427"><a href="#cb2-427" aria-hidden="true" tabindex="-1"></a><span class="vs">    aria-label="Scatter plot of temperature and items sold for five days"&gt;</span></span>
+<span id="cb2-428"><a href="#cb2-428" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>g<span class="sc">}</span><span class="vs">&lt;/svg&gt;`</span><span class="op">;</span></span>
+<span id="cb2-429"><a href="#cb2-429" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="434" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 433;"><span id="cb3-434"><a href="#cb3-434" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb3-435"><a href="#cb3-435" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> q <span class="op">=</span> <span class="fu">quadrants</span>(temps<span class="op">,</span> items)<span class="op">;</span></span>
+<span id="cb3-436"><a href="#cb3-436" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> days <span class="op">=</span> ds <span class="kw">=&gt;</span> ds<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> <span class="vs">`Day </span><span class="sc">${</span>d<span class="sc">}</span><span class="vs">`</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">", "</span>)<span class="op">;</span></span>
+<span id="cb3-437"><a href="#cb3-437" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> text <span class="op">=</span> scatterStep <span class="op">===</span> <span class="dv">1</span></span>
+<span id="cb3-438"><a href="#cb3-438" aria-hidden="true" tabindex="-1"></a>    <span class="op">?</span> <span class="vs">`Five days from </span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="op">...</span>temps)<span class="sc">}</span><span class="vs"> °C to </span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>temps)<span class="sc">}</span><span class="vs"> °C and from </span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="op">...</span>items)<span class="sc">}</span><span class="vs"> to </span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>items)<span class="sc">}</span><span class="vs"> items sold: the cloud rises to the right.`</span></span>
+<span id="cb3-439"><a href="#cb3-439" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span> <span class="vs">`Means: </span><span class="sc">${</span>q<span class="op">.</span><span class="at">mx</span><span class="sc">}</span><span class="vs"> °C and </span><span class="sc">${</span>q<span class="op">.</span><span class="at">my</span><span class="sc">}</span><span class="vs"> items. </span><span class="sc">${</span>q<span class="op">.</span><span class="at">agree</span><span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs"> of </span><span class="sc">${</span>temps<span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs"> points lie in the lower-left or upper-right quarter (</span><span class="sc">${</span><span class="fu">days</span>(q<span class="op">.</span><span class="at">agree</span>)<span class="sc">}</span><span class="vs">); </span><span class="sc">${</span><span class="fu">days</span>(q<span class="op">.</span><span class="at">against</span>)<span class="sc">}</span><span class="vs"> (</span><span class="sc">${</span>q<span class="op">.</span><span class="at">against</span><span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>temps[d <span class="op">-</span> <span class="dv">1</span>]<span class="sc">}</span><span class="vs"> °C, </span><span class="sc">${</span>items[d <span class="op">-</span> <span class="dv">1</span>]<span class="sc">}</span><span class="vs"> items`</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">"; "</span>)<span class="sc">}</span><span class="vs">) goes against the trend.`</span><span class="op">;</span></span>
+<span id="cb3-440"><a href="#cb3-440" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;p&gt;&lt;em&gt;</span><span class="sc">${</span>text<span class="sc">}</span><span class="vs">&lt;/em&gt;&lt;/p&gt;`</span><span class="op">;</span></span>
+<span id="cb3-441"><a href="#cb3-441" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<p>In plain words: each day becomes a dot at (temperature, revenue). The cloud of dots shows the pattern — upward trend, downward trend, curved, or no pattern at all.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -541,7 +1521,6 @@ window.Quarto = {
 <p>A <strong>scatter plot</strong> places one point per individual, using one quantitative variable for the <span class="math inline">\(x\)</span>-coordinate and another for the <span class="math inline">\(y\)</span>-coordinate. It is the standard first look at a possible relationship between two quantitative variables, before computing any numerical summary.</p>
 </div>
 </div>
-<p>In plain words: each day becomes a dot at (temperature, revenue). The cloud of dots shows the pattern — upward trend, downward trend, curved, or no pattern at all.</p>
 </section>
 </section>
 <section id="worked-example" class="level2">
@@ -618,8 +1597,210 @@ window.Quarto = {
 <p>Plotting <code>temperature_c</code> (x-axis) against <code>daily_revenue_eur</code> (y-axis) for all 30 Harbour days shows points trending upward and to the right: as temperature rises, revenue tends to rise too, though the points do not fall on a perfect line — there is visible scatter around the trend.</p>
 </section>
 </section>
-<section id="using-excel" class="level2">
-<h2 class="anchored" data-anchor-id="using-excel">Using Excel</h2>
+<section id="proof-derivation" class="level2">
+<h2 class="anchored" data-anchor-id="proof-derivation">Proof / derivation</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Derivation — marginal totals recover the univariate frequency table (click to expand)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\(n_{ij}\)</span> be the contingency table’s cell counts, with row modalities <span class="math inline">\(i=1,\dots,r\)</span> and column modalities <span class="math inline">\(j=1,\dots,c\)</span>. Every one of the <span class="math inline">\(n\)</span> individuals is counted in exactly one cell, so summing across all columns for a fixed row <span class="math inline">\(i\)</span> recovers that row modality’s total univariate count: <span class="math display">\[
+n_{i\cdot} = \sum_{j=1}^{c} n_{ij}.
+\]</span> For “The Wandering Fork”, row <span class="math inline">\(i=\text{Sunny}\)</span>: <span class="math inline">\(0+3+6+3+1 = 13\)</span>, matching Module 2’s Sunny count exactly — this is not a coincidence but a direct consequence of the contingency table partitioning the same 30 rows both by <code>weather</code> and, independently, by <code>daily_revenue_eur</code> class.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="visual-intuition" class="level2">
+<h2 class="anchored" data-anchor-id="visual-intuition">Visual intuition</h2>
+<p>A contingency table is a two-dimensional histogram: instead of one row of class counts (Module 3), we now have a <em>grid</em> of counts, and reading down a single column or across a single row projects the two-dimensional picture back onto one axis — exactly recovering the one-variable-at-a-time view from Modules 2–3. A scatter plot’s “upward-and-to-the-right” shape is the visual signature of a positive relationship; Module 9 replaces “shape” with a single number, the correlation coefficient.</p>
+<p>Step 2 of the five-day scatter figure shows where that number comes from: the two mean lines cut the plot into four quarters, and a rising cloud puts most points in the lower-left and upper-right quarters (4 of 5 here). Module 9’s covariance adds up exactly this.</p>
+</section>
+<section id="interactive-demo" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-demo">Interactive demo</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>TODO: an interactive contingency table builder (drag categories, see conditional distributions update) would be a good Shinylive demo for this module.</p>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise 1 (by hand) — Reading a contingency table (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Out of the 12 Cloudy days, what proportion earned in the top two revenue classes ([700,800[ or [800,900[)?</p>
+<p><strong>Solution.</strong> Cloudy row: <span class="math inline">\(3+2=5\)</span> days in the top two classes out of 12 Cloudy days total, i.e.&nbsp;<span class="math inline">\(5/12 \approx 41.7\%\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise 2 (by hand) — Column margin check (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Verify that the column total for [600,700[ (8) is consistent with Module 3’s class frequency table.</p>
+<p><strong>Solution.</strong> Column [600,700[: <span class="math inline">\(6\,(\text{Sunny}) + 2\,(\text{Cloudy})
++ 0\,(\text{Rainy}) = 8\)</span>, matching Module 3’s <span class="math inline">\(n_{[600,700[}=8\)</span> exactly.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise 3 (by hand) — Describing a scatter plot (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Without computing any number, how would you describe the scatter plot of <code>temperature_c</code> vs.&nbsp;<code>daily_revenue_eur</code> — direction, and is the relationship perfectly linear?</p>
+<p><strong>Solution.</strong> The direction is positive (points trend upward to the right). The relationship is not perfectly linear — there is visible scatter of points around any trend line one might draw, meaning other factors besides temperature also influence daily revenue.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise 4 (by hand) — Formula to words (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Use the Harbour 30-day table of the worked example, with rows <span class="math inline">\(i = 1\)</span> (Sunny), <span class="math inline">\(2\)</span> (Cloudy), <span class="math inline">\(3\)</span> (Rainy) and columns <span class="math inline">\(j = 1\)</span> ([400,500[) to <span class="math inline">\(j = 5\)</span> ([800,900[).</p>
+<ol type="a">
+<li><p>Read <span class="math inline">\(\frac{n_{ij}}{n_{i\cdot}}\)</span> aloud as one sentence. Which distribution is it?</p></li>
+<li><p>Compute <span class="math inline">\(n_{3\cdot}\)</span>, <span class="math inline">\(n_{\cdot 1}\)</span> and <span class="math inline">\(\frac{n_{31}}{n_{3\cdot}}\)</span>, and say in words what the last number means.</p></li>
+<li><p>Compute <span class="math inline">\(\frac{n_{31}}{n_{\cdot 1}}\)</span>. Why is it different from (b)?</p></li>
+</ol>
+<p><strong>Solution.</strong> (a) “The count in cell <span class="math inline">\(i\)</span>, <span class="math inline">\(j\)</span> divided by the total of row <span class="math inline">\(i\)</span>”: the conditional distribution of the column variable given row modality <span class="math inline">\(i\)</span> (row percentages). (b) <span class="math inline">\(n_{3\cdot} = 3+1+0+1+0 = 5\)</span> Rainy days; <span class="math inline">\(n_{\cdot 1} = 0+3+3 = 6\)</span> days in [400,500[; <span class="math inline">\(\frac{n_{31}}{n_{3\cdot}} = 3/5 = 60\%\)</span>: “60% of Rainy days earned under €500”. (c) <span class="math inline">\(\frac{n_{31}}{n_{\cdot 1}} = 3/6 = 50\%\)</span>: “half of the days under €500 were Rainy”. The cell is the same, but (b) restricts to the Rainy row and (c) to the [400,500[ column.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exercise 5 (by hand) — Words to formula (click for solution)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Use the 50-day table of the hook, with rows <span class="math inline">\(i = 1\)</span> (Sunny), <span class="math inline">\(2\)</span> (Rainy) and columns <span class="math inline">\(j = 1\)</span> (Low), <span class="math inline">\(2\)</span> (Medium), <span class="math inline">\(3\)</span> (High). Write in symbols, then compute:</p>
+<ol type="a">
+<li>“the number of Rainy days with High revenue”;</li>
+<li>“the share of all days that were Sunny”;</li>
+<li>“among High days, the share that were Sunny”;</li>
+<li>“the total number of Medium days, adding down the column”.</li>
+</ol>
+<p><strong>Solution.</strong> (a) <span class="math inline">\(n_{23} = 2\)</span>. (b) <span class="math inline">\(\frac{n_{1\cdot}}{n} = 30/50 = 60\%\)</span>. (c) <span class="math inline">\(\frac{n_{13}}{n_{\cdot 3}} = 18/20 = 90\%\)</span>. (d) <span class="math inline">\(n_{\cdot 2} = \sum_i n_{i2} = 9 + 6 = 15\)</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="common-mistakes" class="level2">
+<h2 class="anchored" data-anchor-id="common-mistakes">Common mistakes</h2>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Watch out
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Using raw counts to compare rows with different totals.</strong> Always use conditional distributions (% of row/column total) for fair comparison.</li>
+<li><strong>Confusing marginal and conditional distributions.</strong> Marginal = overall (ignoring the other variable); conditional = given a specific value of the other variable.</li>
+<li><strong>Reading a scatter plot as proof of causation.</strong> A pattern only shows association; Module 9 quantifies the linear association, but neither proves causation.</li>
+<li><strong>Forgetting to group continuous variables for contingency tables.</strong> <code>daily_revenue_eur</code> must be binned (e.g., €100 classes) before crossing with <code>weather</code> — PivotTable grouping does this automatically.</li>
+<li><strong>Using a line chart instead of a scatter plot for two quantitative variables.</strong> Line charts imply a sequence (time); scatter plots show the relationship between two variables measured on the same individuals.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="exit-check" class="level2">
+<h2 class="anchored" data-anchor-id="exit-check">Exit check</h2>
+<p>Five minutes, no calculator needed except for question 4.</p>
+<ol type="1">
+<li>In one sentence, what is the difference between a marginal and a conditional distribution?</li>
+<li>Why compare row percentages rather than raw counts when the row totals differ?</li>
+<li>Read <span class="math inline">\(n_{\cdot j} = \sum_i n_{ij}\)</span> aloud as a sentence.</li>
+<li>Harbour had 12 good days and 8 bad days; Campus had 9 good days and 21 bad days. Compute the share of good days given each franchise.</li>
+<li>A scatter plot of temperature and items sold rises to the right. Can you conclude that heat causes the extra sales? Why?</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-21-contents" aria-controls="callout-21" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Exit check — answers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-21" class="callout-21-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>A marginal distribution describes one variable over all <span class="math inline">\(n\)</span> individuals, ignoring the other; a conditional distribution describes it within one modality of the other variable only.</li>
+<li>Because a bigger row has bigger counts even when nothing differs: in the hook, 9 vs 6 medium days were 30% vs 30%.</li>
+<li>“The column margin <span class="math inline">\(n_{\cdot j}\)</span> is the sum, over all rows <span class="math inline">\(i\)</span>, of the counts in column <span class="math inline">\(j\)</span>.”</li>
+<li>Harbour: <span class="math inline">\(12/20 = 60\%\)</span>; Campus: <span class="math inline">\(9/30 = 30\%\)</span> (row totals 20 and 30, not the grand total 50).</li>
+<li>No: a scatter plot only shows association. Other factors (season, events, foot traffic) can drive both; Module 9 measures the linear association, but neither proves causation.</li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="homework-excel-lab" class="level2">
+<h2 class="anchored" data-anchor-id="homework-excel-lab">Homework — Excel lab</h2>
+<p>Reproduce, in Excel, every table and chart you built by hand in class, with <code>COUNTIFS</code>, a PivotTable with two fields (and <strong>Show Values As → % of Row Total</strong>) and an XY scatter chart, then apply them to the full dataset.</p>
+<p><strong>Estimated time:</strong> about 50–60 minutes. Any spreadsheet application works, at home or in a campus computer room.</p>
+<p><strong>Follow-up:</strong> a 10-minute debrief at the start of <a href="../../../teaching/data-description/modules/module-09.html">Module 9</a>. Bring your Step 0 results and any question on Homework 1–4.</p>
+<section id="using-excel" class="level3">
+<h3 class="anchored" data-anchor-id="using-excel">Using Excel</h3>
 <p>The sheet <code>harbour_30d</code> of <code>wandering-fork.xlsx</code> has the data. The complete list of function names, with their French equivalents, is on the <a href="../../../teaching/data-description/modules/excel-functions.html">Excel functions</a> page.</p>
 <table class="caption-top table">
 <colgroup>
@@ -657,165 +1838,167 @@ window.Quarto = {
 </table>
 <p>For the <strong>full table</strong> (120 days per franchise) use the Excel Table <code>tblFork</code> and add the franchise as one more condition, for example <code>=COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny",tblFork[daily_revenue_eur],"&gt;=600",tblFork[daily_revenue_eur],"&lt;700")</code>.</p>
 </section>
-<section id="proof-derivation" class="level2">
-<h2 class="anchored" data-anchor-id="proof-derivation">Proof / derivation</h2>
+<section id="step-0-check-your-class-results" class="level3">
+<h3 class="anchored" data-anchor-id="step-0-check-your-class-results">Step 0 — check your class results</h3>
+<ol type="1">
+<li>Type the ten-day log of the contingency-table Try it in <code>A2:B11</code> (column A <code>Weather</code>, column B <code>Revenue level</code>, headers in row 1).</li>
+<li>Build the 2×3 table either with a PivotTable (Weather in Rows, Revenue level in Columns, Count in Values) or with <code>COUNTIFS</code>, e.g. <code>=COUNTIFS($A$2:$A$11,"Sunny",$B$2:$B$11,"High")</code>, and add the margins with <code>SUM</code>.</li>
+<li>Type the 50-day table of the hook (Sunny 3, 9, 18; Rainy 12, 6, 2), compute the row totals with <code>SUM</code>, and the row percentages by dividing each cell by its row total (e.g.&nbsp;<code>=E2/$H2</code> if the counts are in <code>E2:G3</code> and the totals in <code>H2:H3</code>), formatted as a percentage.</li>
+<li>Type the five (temperature, items sold) pairs in two columns, insert a <strong>Scatter (X Y)</strong> chart, and compute both means with <code>AVERAGE</code>.</li>
+<li>Compare every result with your hand computation.</li>
+</ol>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Derivation — marginal totals recover the univariate frequency table (click to expand)
+<span class="screen-reader-only">Caution</span>Step 0 — expected results
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-22" class="callout-22-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Let <span class="math inline">\(n_{ij}\)</span> be the contingency table’s cell counts, with row modalities <span class="math inline">\(i=1,\dots,r\)</span> and column modalities <span class="math inline">\(j=1,\dots,c\)</span>. Every one of the <span class="math inline">\(n\)</span> individuals is counted in exactly one cell, so summing across all columns for a fixed row <span class="math inline">\(i\)</span> recovers that row modality’s total univariate count: <span class="math display">\[
-n_{i\cdot} = \sum_{j=1}^{c} n_{ij}.
-\]</span> For “The Wandering Fork”, row <span class="math inline">\(i=\text{Sunny}\)</span>: <span class="math inline">\(0+3+6+3+1 = 13\)</span>, matching Module 2’s Sunny count exactly — this is not a coincidence but a direct consequence of the contingency table partitioning the same 30 rows both by <code>weather</code> and, independently, by <code>daily_revenue_eur</code> class.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="visual-intuition" class="level2">
-<h2 class="anchored" data-anchor-id="visual-intuition">Visual intuition</h2>
-<p>A contingency table is a two-dimensional histogram: instead of one row of class counts (Module 3), we now have a <em>grid</em> of counts, and reading down a single column or across a single row projects the two-dimensional picture back onto one axis — exactly recovering the one-variable-at-a-time view from Modules 2–3. A scatter plot’s “upward-and-to-the-right” shape is the visual signature of a positive relationship; Module 9 replaces “shape” with a single number, the correlation coefficient.</p>
-</section>
-<section id="interactive-demo" class="level2">
-<h2 class="anchored" data-anchor-id="interactive-demo">Interactive demo</h2>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Important
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>TODO: an interactive contingency table builder (drag categories, see conditional distributions update) would be a good Shinylive demo for this module.</p>
-</div>
-</div>
-</section>
-<section id="exercises" class="level2">
-<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 1 (by hand) — Reading a contingency table (click for solution)
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Out of the 12 Cloudy days, what proportion earned in the top two revenue classes ([700,800[ or [800,900[)?</p>
-<p><strong>Solution.</strong> Cloudy row: <span class="math inline">\(3+2=5\)</span> days in the top two classes out of 12 Cloudy days total, i.e.&nbsp;<span class="math inline">\(5/12 \approx 41.7\%\)</span>.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 2 (by hand) — Column margin check (click for solution)
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Verify that the column total for [600,700[ (8) is consistent with Module 3’s class frequency table.</p>
-<p><strong>Solution.</strong> Column [600,700[: <span class="math inline">\(6\,(\text{Sunny}) + 2\,(\text{Cloudy})
-+ 0\,(\text{Rainy}) = 8\)</span>, matching Module 3’s <span class="math inline">\(n_{[600,700[}=8\)</span> exactly.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 3 (by hand) — Describing a scatter plot (click for solution)
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Without computing any number, how would you describe the scatter plot of <code>temperature_c</code> vs.&nbsp;<code>daily_revenue_eur</code> — direction, and is the relationship perfectly linear?</p>
-<p><strong>Solution.</strong> The direction is positive (points trend upward to the right). The relationship is not perfectly linear — there is visible scatter of points around any trend line one might draw, meaning other factors besides temperature also influence daily revenue.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Ten-day table</th>
+<th style="text-align: right;">Low</th>
+<th style="text-align: right;">Medium</th>
+<th style="text-align: right;">High</th>
+<th style="text-align: right;">Row total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td>Rainy</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td>Column total</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">10</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>50-day table, % of Row Total</th>
+<th style="text-align: right;">Low</th>
+<th style="text-align: right;">Medium</th>
+<th style="text-align: right;">High</th>
+<th style="text-align: right;">Row total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sunny</td>
+<td style="text-align: right;">10%</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">60%</td>
+<td style="text-align: right;">30 days</td>
+</tr>
+<tr class="even">
+<td>Rainy</td>
+<td style="text-align: right;">60%</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">10%</td>
+<td style="text-align: right;">20 days</td>
+</tr>
+<tr class="odd">
+<td>Grand total (% of all days)</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">40%</td>
+<td style="text-align: right;">50 days</td>
+</tr>
+</tbody>
+</table>
+<p>Scatter plot: five points rising to the right; <code>AVERAGE</code> gives 20 °C and 60 items. If the chart looks wrong, check that temperature is the left-hand column (Excel uses it for the <span class="math inline">\(x\)</span> axis).</p>
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 4 (Excel) — Build the contingency table for Campus (click for solution)
+<span class="screen-reader-only">Caution</span>Homework 1 (Excel) — Build the contingency table for Campus (click for solution)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div id="callout-23" class="callout-23-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>In <code>wandering-fork.xlsx</code>, filter <code>franchise</code> to “Campus” and build a PivotTable crossing <code>weather</code> (Rows) with <code>daily_revenue_eur</code> class (Columns, grouped in €100 bins). What are the row totals? Do they match Module 2’s Campus <code>weather</code> frequencies?</p>
+<p><strong>How to.</strong> Insert a PivotTable on <code>tblFork</code>, put <code>franchise</code> in Filters (select Campus), <code>weather</code> in Rows and <code>daily_revenue_eur</code> in Columns, then right-click a revenue label → <strong>Group…</strong> with By = 100.</p>
 <p><strong>Solution.</strong> Campus 120-day row totals: Sunny 50, Cloudy 48, Rainy 22 (total 120). These match the Campus <code>weather</code> frequencies from Module 2 (Sunny 41.7%, Cloudy 40.0%, Rainy 18.3%).</p>
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 5 (Excel) — Conditional distribution: revenue given promo (click for solution)
+<span class="screen-reader-only">Caution</span>Homework 2 (Excel) — Conditional distribution: revenue given promo (click for solution)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div id="callout-24" class="callout-24-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Using the full 240-row <code>tblFork</code>, build a PivotTable with <code>promo_active</code> (Rows) and <code>daily_revenue_eur</code> class (Columns, €100 bins). Show values as <strong>% of Row Total</strong>. Compare the conditional distributions for “Yes” vs “No” promo. Is revenue higher when a promo is active?</p>
+<p><strong>How to.</strong> Same PivotTable as Homework 1 without the franchise filter, <code>promo_active</code> in Rows; right-click a value → <strong>Show Values As → % of Row Total</strong>, then add up the classes below €200, from €400 and from €600.</p>
 <p><strong>Solution.</strong> There are 26 promo days and 214 non-promo days. Summing the row percentages: below €200, 15.4% (Yes) vs 19.2% (No); €400 or more, 53.8% vs 48.1%; €600 or more, 23.1% vs 23.4%. Promo days have slightly less mass in the lowest classes, but the top of the two distributions is almost identical. The difference is small and rests on only 26 days — and it is descriptive, not causal (other factors may drive both promo and revenue).</p>
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 6 (Excel) — Scatter plot: foot traffic vs revenue (click for solution)
+<span class="screen-reader-only">Caution</span>Homework 3 (Excel) — Scatter plot: foot traffic vs revenue (click for solution)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div id="callout-25" class="callout-25-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Create a scatter plot of <code>foot_traffic</code> (x) vs <code>daily_revenue_eur</code> (y) for Harbour 120 days. Describe the direction, form, and strength of the pattern.</p>
+<p><strong>How to.</strong> Filter <code>tblFork</code> to Harbour, select <code>foot_traffic</code> then <code>daily_revenue_eur</code> (x column first), and choose <strong>Insert → Chart → Scatter (X Y)</strong>.</p>
 <p><strong>Solution.</strong> Strong positive linear trend: more foot traffic clearly associates with higher revenue. The points cluster tightly around an upward line — much tighter than temperature vs revenue. This visually confirms the <span class="math inline">\(r \ge 0.80\)</span> correlation from the dataset design.</p>
 </div>
 </div>
 </div>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>Exercise 7 (Excel) — Harbour vs Campus: weather and revenue (click for solution)
+<span class="screen-reader-only">Caution</span>Homework 4 (Excel) — Harbour vs Campus: weather and revenue (click for solution)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div id="callout-26" class="callout-26-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>For each franchise (120 days each), compute the conditional share of days with <code>daily_revenue_eur</code> of €500 or more <strong>given</strong> each <code>weather</code> category. Is the weather–revenue association equally strong at both trucks?</p>
+<p><strong>How to.</strong> Lay out a 3×2 grid (weather × franchise) and fill each cell with the formula below, changing “Harbour” and “Sunny” each time (or pointing to the row and column header cells).</p>
 <p><strong>Solution.</strong> For Harbour and Sunny:</p>
 <pre class="text"><code>=COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny",
           tblFork[daily_revenue_eur],"&gt;=500")
@@ -851,27 +2034,6 @@ Important
 </div>
 </div>
 </section>
-<section id="common-mistakes" class="level2">
-<h2 class="anchored" data-anchor-id="common-mistakes">Common mistakes</h2>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Watch out
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><strong>Using raw counts to compare rows with different totals.</strong> Always use conditional distributions (% of row/column total) for fair comparison.</li>
-<li><strong>Confusing marginal and conditional distributions.</strong> Marginal = overall (ignoring the other variable); conditional = given a specific value of the other variable.</li>
-<li><strong>Reading a scatter plot as proof of causation.</strong> A pattern only shows association; Module 9 quantifies the linear association, but neither proves causation.</li>
-<li><strong>Forgetting to group continuous variables for contingency tables.</strong> <code>daily_revenue_eur</code> must be binned (e.g., €100 classes) before crossing with <code>weather</code> — PivotTable grouping does this automatically.</li>
-<li><strong>Using a line chart instead of a scatter plot for two quantitative variables.</strong> Line charts imply a sequence (time); scatter plots show the relationship between two variables measured on the same individuals.</li>
-</ul>
-</div>
-</div>
 </section>
 <section id="further-reading" class="level2">
 <h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
@@ -929,6 +2091,17 @@ Important
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InRlbXBzID0gWzEyLCAxNiwgMjEsIDI0LCAyN11cbml0ZW1zID0gWzQwLCA1NSwgNTAsIDcwLCA4NV1cblxuYXZnID0geHMgPT4geHMucmVkdWNlKChhLCBiKSA9PiBhICsgYiwgMCkgLyB4cy5sZW5ndGhcblxuZnVuY3Rpb24gcXVhZHJhbnRzKHhzLCB5cykge1xuICBjb25zdCBteCA9IGF2Zyh4cyksIG15ID0gYXZnKHlzKTtcbiAgY29uc3QgYWdyZWUgPSBbXSwgYWdhaW5zdCA9IFtdO1xuICB4cy5mb3JFYWNoKCh2LCBpKSA9PlxuICAgICgodiAtIG14KSAqICh5c1tpXSAtIG15KSA+IDAgPyBhZ3JlZSA6IGFnYWluc3QpLnB1c2goaSArIDEpKTtcbiAgcmV0dXJuIHtteCwgbXksIGFncmVlLCBhZ2FpbnN0fTtcbn1cblxudmlld29mIHNjYXR0ZXJTdGVwID0ge1xuICBjb25zdCBsYWJlbHMgPSBbXCIxIMK3IFBvaW50c1wiLCBcIjIgwrcgTWVhbiBsaW5lc1wiXTtcbiAgY29uc3QgZm9ybSA9IGh0bWxgPGZvcm0gY2xhc3M9XCJvanMtc3RlcC1waWNrZXJcIj5TaG93OiAke2xhYmVscy5tYXAoKGwsIGkpID0+XG4gICAgaHRtbGA8bGFiZWw+IDxpbnB1dCB0eXBlPVwicmFkaW9cIiBuYW1lPVwic2NhdHRlclN0ZXBcIiB2YWx1ZT1cIiR7aSArIDF9XCJcbiAgICAgICR7aSA9PT0gMCA/IFwiY2hlY2tlZFwiIDogXCJcIn0+ICR7bH0gPC9sYWJlbD5gKX08L2Zvcm0+YDtcbiAgZm9ybS52YWx1ZSA9IDE7XG4gIGZvcm0ub25pbnB1dCA9ICgpID0+IHtcbiAgICBmb3JtLnZhbHVlID0gK2Zvcm0ucXVlcnlTZWxlY3RvcihcImlucHV0OmNoZWNrZWRcIikudmFsdWU7XG4gIH07XG4gIHJldHVybiBmb3JtO1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoie1xuICBjb25zdCBXID0gNjYwLCBIID0gMzgwLCBMID0gNjAsIFIgPSAyMCwgVCA9IDIwLCBCID0gNTA7XG4gIGNvbnN0IEJMVUUgPSBcInN0ZWVsYmx1ZVwiLCBPUkFOR0UgPSBcImRhcmtvcmFuZ2VcIjtcbiAgY29uc3QgQUdSRUUgPSBcIiM1Y2I4NWNcIiwgQUdBSU5TVCA9IFwiI2Q5NTM0ZlwiO1xuICBjb25zdCB4ID0gdiA9PiBMICsgKHYgLSAxMCkgKiAoVyAtIEwgLSBSKSAvICgzMCAtIDEwKTtcbiAgY29uc3QgeSA9IHYgPT4gSCAtIEIgLSAodiAtIDMwKSAqIChIIC0gVCAtIEIpIC8gKDkwIC0gMzApO1xuICBjb25zdCBxID0gcXVhZHJhbnRzKHRlbXBzLCBpdGVtcyk7XG4gIGxldCBnID0gXCJcIjtcbiAgaWYgKHNjYXR0ZXJTdGVwID09PSAyKSB7XG4gICAgZyArPSBgPHJlY3QgeD1cIiR7eCgxMCl9XCIgeT1cIiR7eShxLm15KX1cIiB3aWR0aD1cIiR7eChxLm14KSAtIHgoMTApfVwiXG4gICAgICBoZWlnaHQ9XCIke3koMzApIC0geShxLm15KX1cIiBmaWxsPVwiJHtBR1JFRX1cIiBmaWxsLW9wYWNpdHk9XCIwLjA4XCIvPmA7XG4gICAgZyArPSBgPHJlY3QgeD1cIiR7eChxLm14KX1cIiB5PVwiJHt5KDkwKX1cIiB3aWR0aD1cIiR7eCgzMCkgLSB4KHEubXgpfVwiXG4gICAgICBoZWlnaHQ9XCIke3kocS5teSkgLSB5KDkwKX1cIiBmaWxsPVwiJHtBR1JFRX1cIiBmaWxsLW9wYWNpdHk9XCIwLjA4XCIvPmA7XG4gIH1cbiAgZm9yIChsZXQgdCA9IDEwOyB0IDw9IDMwOyB0ICs9IDUpIHtcbiAgICBnICs9IGA8bGluZSB4MT1cIiR7eCh0KX1cIiB4Mj1cIiR7eCh0KX1cIiB5MT1cIiR7eSgzMCl9XCIgeTI9XCIke3koOTApfVwiXG4gICAgICBzdHJva2U9XCJjdXJyZW50Q29sb3JcIiBzdHJva2Utb3BhY2l0eT1cIjAuMTVcIi8+YDtcbiAgICBnICs9IGA8dGV4dCB4PVwiJHt4KHQpfVwiIHk9XCIke0ggLSBCICsgMTh9XCIgdGV4dC1hbmNob3I9XCJtaWRkbGVcIlxuICAgICAgZmlsbD1cImN1cnJlbnRDb2xvclwiIGZvbnQtc2l6ZT1cIjEyXCI+JHt0fSDCsEM8L3RleHQ+YDtcbiAgfVxuICBmb3IgKGxldCB2ID0gMzA7IHYgPD0gOTA7IHYgKz0gMTApIHtcbiAgICBnICs9IGA8bGluZSB4MT1cIiR7eCgxMCl9XCIgeDI9XCIke3goMzApfVwiIHkxPVwiJHt5KHYpfVwiIHkyPVwiJHt5KHYpfVwiXG4gICAgICBzdHJva2U9XCJjdXJyZW50Q29sb3JcIiBzdHJva2Utb3BhY2l0eT1cIjAuMTVcIi8+YDtcbiAgICBnICs9IGA8dGV4dCB4PVwiJHtMIC0gOH1cIiB5PVwiJHt5KHYpICsgNH1cIiB0ZXh0LWFuY2hvcj1cImVuZFwiXG4gICAgICBmaWxsPVwiY3VycmVudENvbG9yXCIgZm9udC1zaXplPVwiMTJcIj4ke3Z9PC90ZXh0PmA7XG4gIH1cbiAgZyArPSBgPHRleHQgeD1cIiR7KHgoMTApICsgeCgzMCkpIC8gMn1cIiB5PVwiJHtIIC0gOH1cIiB0ZXh0LWFuY2hvcj1cIm1pZGRsZVwiXG4gICAgZmlsbD1cImN1cnJlbnRDb2xvclwiIGZvbnQtc2l6ZT1cIjEzXCI+VGVtcGVyYXR1cmUgeCAowrBDKTwvdGV4dD5gO1xuICBnICs9IGA8dGV4dCB4PVwiMTRcIiB5PVwiJHt5KDYwKX1cIiB0ZXh0LWFuY2hvcj1cIm1pZGRsZVwiIGZpbGw9XCJjdXJyZW50Q29sb3JcIlxuICAgIGZvbnQtc2l6ZT1cIjEzXCIgdHJhbnNmb3JtPVwicm90YXRlKC05MCAxNCAke3koNjApfSlcIj5JdGVtcyBzb2xkIHk8L3RleHQ+YDtcbiAgaWYgKHNjYXR0ZXJTdGVwID09PSAyKSB7XG4gICAgZyArPSBgPGxpbmUgeDE9XCIke3gocS5teCl9XCIgeDI9XCIke3gocS5teCl9XCIgeTE9XCIke3koMzApfVwiIHkyPVwiJHt5KDkwKX1cIlxuICAgICAgc3Ryb2tlPVwiJHtPUkFOR0V9XCIgc3Ryb2tlLXdpZHRoPVwiMlwiIHN0cm9rZS1kYXNoYXJyYXk9XCI2IDRcIi8+YDtcbiAgICBnICs9IGA8dGV4dCB4PVwiJHt4KHEubXgpICsgNn1cIiB5PVwiJHt5KDkwKSArIDE0fVwiIGZpbGw9XCIke09SQU5HRX1cIlxuICAgICAgZm9udC1zaXplPVwiMTJcIj5tZWFuID0gJHtxLm14fSDCsEM8L3RleHQ+YDtcbiAgICBnICs9IGA8bGluZSB4MT1cIiR7eCgxMCl9XCIgeDI9XCIke3goMzApfVwiIHkxPVwiJHt5KHEubXkpfVwiIHkyPVwiJHt5KHEubXkpfVwiXG4gICAgICBzdHJva2U9XCIke09SQU5HRX1cIiBzdHJva2Utd2lkdGg9XCIyXCIgc3Ryb2tlLWRhc2hhcnJheT1cIjYgNFwiLz5gO1xuICAgIGcgKz0gYDx0ZXh0IHg9XCIke3goMzApIC0gNH1cIiB5PVwiJHt5KHEubXkpIC0gNn1cIiB0ZXh0LWFuY2hvcj1cImVuZFwiXG4gICAgICBmaWxsPVwiJHtPUkFOR0V9XCIgZm9udC1zaXplPVwiMTJcIj5tZWFuID0gJHtxLm15fSBpdGVtczwvdGV4dD5gO1xuICB9XG4gIHRlbXBzLmZvckVhY2goKHQsIGkpID0+IHtcbiAgICBjb25zdCBjID0gc2NhdHRlclN0ZXAgPT09IDEgPyBCTFVFXG4gICAgICA6IHEuYWdyZWUuaW5jbHVkZXMoaSArIDEpID8gQUdSRUUgOiBBR0FJTlNUO1xuICAgIGcgKz0gYDxjaXJjbGUgY3g9XCIke3godCl9XCIgY3k9XCIke3koaXRlbXNbaV0pfVwiIHI9XCI3XCIgZmlsbD1cIiR7Y31cIi8+YDtcbiAgICBnICs9IGA8dGV4dCB4PVwiJHt4KHQpICsgMTB9XCIgeT1cIiR7eShpdGVtc1tpXSkgKyA0fVwiIGZpbGw9XCJjdXJyZW50Q29sb3JcIlxuICAgICAgZm9udC1zaXplPVwiMTJcIj5EYXkgJHtpICsgMX08L3RleHQ+YDtcbiAgfSk7XG4gIHJldHVybiBodG1sYDxzdmcgdmlld0JveD1cIjAgMCAke1d9ICR7SH1cIiB3aWR0aD1cIjEwMCVcIiByb2xlPVwiaW1nXCJcbiAgICBhcmlhLWxhYmVsPVwiU2NhdHRlciBwbG90IG9mIHRlbXBlcmF0dXJlIGFuZCBpdGVtcyBzb2xkIGZvciBmaXZlIGRheXNcIj5cbiAgICAke2d9PC9zdmc+YDtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IntcbiAgY29uc3QgcSA9IHF1YWRyYW50cyh0ZW1wcywgaXRlbXMpO1xuICBjb25zdCBkYXlzID0gZHMgPT4gZHMubWFwKGQgPT4gYERheSAke2R9YCkuam9pbihcIiwgXCIpO1xuICBjb25zdCB0ZXh0ID0gc2NhdHRlclN0ZXAgPT09IDFcbiAgICA/IGBGaXZlIGRheXMgZnJvbSAke01hdGgubWluKC4uLnRlbXBzKX0gwrBDIHRvICR7TWF0aC5tYXgoLi4udGVtcHMpfSDCsEMgYW5kIGZyb20gJHtNYXRoLm1pbiguLi5pdGVtcyl9IHRvICR7TWF0aC5tYXgoLi4uaXRlbXMpfSBpdGVtcyBzb2xkOiB0aGUgY2xvdWQgcmlzZXMgdG8gdGhlIHJpZ2h0LmBcbiAgICA6IGBNZWFuczogJHtxLm14fSDCsEMgYW5kICR7cS5teX0gaXRlbXMuICR7cS5hZ3JlZS5sZW5ndGh9IG9mICR7dGVtcHMubGVuZ3RofSBwb2ludHMgbGllIGluIHRoZSBsb3dlci1sZWZ0IG9yIHVwcGVyLXJpZ2h0IHF1YXJ0ZXIgKCR7ZGF5cyhxLmFncmVlKX0pOyAke2RheXMocS5hZ2FpbnN0KX0gKCR7cS5hZ2FpbnN0Lm1hcChkID0+IGAke3RlbXBzW2QgLSAxXX0gwrBDLCAke2l0ZW1zW2QgLSAxXX0gaXRlbXNgKS5qb2luKFwiOyBcIil9KSBnb2VzIGFnYWluc3QgdGhlIHRyZW5kLmA7XG4gIHJldHVybiBodG1sYDxwPjxlbT4ke3RleHR9PC9lbT48L3A+YDtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnc2NhdHRlclN0ZXAnKSJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/data-description/modules";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
