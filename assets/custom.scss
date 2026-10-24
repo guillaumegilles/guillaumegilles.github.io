@@ -1,0 +1,195 @@
+// Neutral Light Theme
+// A clean, low-chroma light theme: white surfaces, gray text, one calm accent.
+
+
+/*-- scss:defaults --*/
+
+// ─── Surface palette ─────────────────────────────────────────────────
+
+$surface:         #FFFFFF !default;  // main page background
+$surface-subtle:  #F7F7F8 !default;  // secondary panels, navbar, footer
+$surface-raised:  #F0F0F2 !default;  // code blocks, inline code
+$border:          #E2E2E6 !default;  // borders, separators
+$border-strong:   #C9C9CF !default;
+
+// ─── Text palette ───────────────────────────────────────────────────
+
+$ink:        #2B2B30 !default;  // main body text
+$ink-strong: #121214 !default;  // headings, emphasis
+$ink-dim:    #6B6B74 !default;  // muted/secondary text
+
+// ─── Accent colors ──────────────────────────────────────────────────
+
+$accent:  #2F5D8A !default;  // links, primary — muted steel blue
+$amber:   #B7791F !default;  // caution / exercises
+$cyan:    #1F7A99 !default;  // info / notes
+$green:   #2E7D4F !default;  // tips
+$red:     #B83B3B !default;  // danger
+
+// ─── Bootstrap variable mappings ─────────────────────────────────────
+
+$white:    #fff !default;
+$black:    #000 !default;
+
+$body-bg:    $surface !default;
+$body-color: $ink     !default;
+
+$primary:   $accent   !default;
+$secondary: $ink-dim  !default;
+$success:   $green    !default;
+$info:      $cyan     !default;
+$warning:   $amber    !default;
+$danger:    $red      !default;
+
+$link-color:       $accent                !default;
+$link-hover-color: darken($accent, 12%)   !default;
+
+// Inline code
+$code-bg:        $surface-raised !default;
+$code-color:     #8A3B5C         !default;  // muted plum, readable on light gray
+$code-block-bg:  $surface-subtle !default;
+
+
+/*-- scss:rules --*/
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap');
+
+body {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.navbar-brand {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $ink-strong !important;
+  letter-spacing: 0.01em;
+}
+
+h1, .title {
+  font-size: 1.75rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: $ink-strong;
+}
+
+h2, h3, h4, h5, h6 {
+  color: $ink-strong;
+}
+
+// ─── Navbar ─────────────────────────────────────────────────────────
+
+.navbar {
+  background-color: $surface-subtle !important;
+  border-bottom: 1px solid $border;
+}
+
+.nav-link {
+  font-size: 0.9rem;
+  color: $ink !important;
+  font-weight: 500;
+
+  &:hover {
+    background-color: transparent !important;
+    color: $accent !important;
+    border-bottom: 2px solid $accent !important;
+  }
+}
+
+// --- Closeread ------------------------------------------------------
+
+.cr-section {
+  background-color: $body-bg !important;
+
+  --cr-section-background-color:       #{$surface};
+  --cr-narrative-text-color-sidebar:   #{$ink};
+  --cr-narrative-text-color-overlay:   #{$ink-strong};
+
+  .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb] {
+    color: rgba($ink, 0.35) !important;
+  }
+
+  .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb].cr-hl,
+  .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb] span.cr-hl {
+    color: $ink-strong !important;
+  }
+}
+
+// ─── Code cells ─────────────────────────────────────────────────────
+
+$mono-font: "IBM Plex Mono", ui-monospace, monospace !default;
+
+// Source code blocks — full terminal window
+div.sourceCode {
+  background-color: $surface-subtle !important;
+  border: 1px solid $border;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin: 1.25rem 0;
+
+  // macOS-style traffic-light title bar
+  &::before {
+    content: "🔴 🟡 🟢";
+    display: block;
+    background-color: $surface-subtle;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.15rem;
+    border-bottom: 1px solid $border-strong;
+  }
+
+  pre.sourceCode {
+    background: $surface-subtle !important;
+    border: none;
+    margin: 0;
+    padding: 0.9rem 1.1rem;
+    font-family: $mono-font;
+    font-size: 0.875rem;
+    line-height: 1.65;
+
+    code {
+      font-family: $mono-font;
+      background: transparent !important;
+      color: $ink;
+    }
+  }
+}
+
+// Neutralize Quarto's near-white span.re background
+code span.re {
+  background-color: transparent !important;
+}
+
+// Cell output
+.cell-output pre,
+.cell-output-stdout pre {
+  background-color: $surface;
+  border: 1px solid $border;
+  border-top: 1px dashed $border-strong;  // dashed separator: input → output
+  border-radius: 0 0 0.5rem 0.5rem;
+  padding: 0.75rem 1.1rem;
+  margin-top: -0.25rem;
+  margin-bottom: 1.25rem;
+  font-family: $mono-font;
+  font-size: 0.85rem;
+  color: $ink-dim;
+
+  code { color: $ink-dim; background: transparent; }
+}
+
+// stderr — red-tinted
+.cell-output-stderr pre {
+  color: $red;
+  border-color: rgba($red, 0.35);
+  background-color: mix($red, $surface, 6%);
+}
+
+// Inline code
+code:not([class]) {
+  background-color: $surface-raised;
+  color: $code-color;
+  padding: 0.1em 0.4em;
+  border-radius: 0.25rem;
+  font-family: $mono-font;
+  font-size: 0.875em;
+}
