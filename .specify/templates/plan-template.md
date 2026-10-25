@@ -50,7 +50,7 @@ Verify the following before proceeding:
   freeze entries are intentional.
 - [ ] **IV. Privacy-First** — No tracking scripts, cookies, or fingerprinting
   introduced by this feature.
-- [ ] **V. Styling contained** — All CSS/SCSS changes are in `assets/dark.scss`;
+- [ ] **V. Styling contained** — All CSS/SCSS changes are in `assets/custom.scss` (Giscus palette copy: `assets/giscus-neutral-light.css`);
   no inline styles; no `<style>` blocks. Callouts only for their roles
   (note = definition, tip = formula, caution = proof, warning = common
   mistakes, important = `TODO:`); exercises use `::: {#exr-…}`, answers

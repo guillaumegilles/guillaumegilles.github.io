@@ -55,7 +55,7 @@ Open [http://localhost:4321](http://localhost:4321) in your browser.
 | Layer | Technology |
 |---|---|
 | Site generator | [Quarto](https://quarto.org) |
-| Styling | Custom SCSS (`assets/dark.scss`) |
+| Styling | Custom SCSS (`assets/custom.scss`) |
 | Comments | [Giscus](https://giscus.app) |
 | Edge Worker | Cloudflare Workers (AI résumé chat) |
 | Deployment | GitHub Pages (`docs/` directory) |

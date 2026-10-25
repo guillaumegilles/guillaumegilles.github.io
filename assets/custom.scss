@@ -6,11 +6,11 @@
 
 // ─── Surface palette ─────────────────────────────────────────────────
 
-$surface:         #FFFFFF !default;  // main page background
-$surface-subtle:  #F7F7F8 !default;  // secondary panels, navbar, footer
-$surface-raised:  #F0F0F2 !default;  // code blocks, inline code
-$border:          #E2E2E6 !default;  // borders, separators
-$border-strong:   #C9C9CF !default;
+$surface:         #FAF9F5 !default;  // main page background
+$surface-subtle:  #F2F0E9 !default;  // secondary panels, navbar, footer
+$surface-raised:  #EAE7DD !default;  // code blocks, inline code
+$border:          #E0DDD2 !default;  // borders, separators
+$border-strong:   #CBC7B9 !default;
 
 // ─── Text palette ───────────────────────────────────────────────────
 
@@ -192,4 +192,108 @@ code:not([class]) {
   border-radius: 0.25rem;
   font-family: $mono-font;
   font-size: 0.875em;
+}
+
+// ─── Callouts ───────────────────────────────────────────────────────
+
+.callout {
+  background-color: $surface-subtle;
+  border: 1px solid $border;
+  border-left: 4px solid;         // accent color set per type below
+  border-radius: 0.4rem;
+  overflow: hidden;
+  margin: 1.25rem 0;
+  color: $ink;
+
+  .callout-header {
+    background-color: rgba($ink, 0.03);
+    border-bottom: 1px solid $border;
+    font-weight: 600;
+    opacity: 1;
+    padding: 0.55rem 1rem;
+  }
+
+  .callout-body-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .callout-body {
+    color: $ink;
+  }
+}
+
+.callout-note {
+  border-left-color: $cyan;
+  .callout-header { color: $cyan; }
+}
+
+.callout-tip {
+  border-left-color: $green;
+  .callout-header { color: $green; }
+}
+
+.callout-caution {
+  border-left-color: $amber;
+  .callout-header { color: $amber; }
+}
+
+.callout-warning {
+  border-left-color: darken($amber, 10%);
+  .callout-header { color: darken($amber, 10%); }
+}
+
+.callout-important {
+  border-left-color: $red;
+  .callout-header { color: $red; }
+}
+
+// ─── Fold-out answers — <details class="answer"> ────────────────────
+
+details.answer {
+  margin: 0.75rem 0 1.25rem;
+
+  > summary {
+    display: inline-block;
+    cursor: pointer;
+    list-style: none;
+    color: $ink-dim;
+    font-family: $mono-font;
+    font-size: 0.85em;
+    border-bottom: 1px dashed $border-strong;
+
+    &::-webkit-details-marker { display: none; }
+    &::before { content: "▸ "; color: $accent; }
+    &:hover, &:focus-visible { color: $ink-strong; }
+  }
+
+  &[open] > summary {
+    margin-bottom: 0.6rem;
+    &::before { content: "▾ "; }
+  }
+
+  &[open] {
+    border-left: 1px dashed $border-strong;
+    padding-left: 0.85rem;
+  }
+}
+
+// ─── Language switcher — injected by assets/lang-switch.html ────────
+
+.lang-switch {
+  font-size: 0.82rem;
+  margin-top: 0.3rem;
+  margin-bottom: 1.75rem;
+  opacity: 0.85;
+
+  a {
+    color: $ink-dim;
+    text-decoration: none;
+    border-bottom: 1px dotted $ink-dim;
+
+    &:hover {
+      color: $accent;
+      border-bottom-color: $accent;
+      opacity: 1;
+    }
+  }
 }

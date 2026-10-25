@@ -1,25 +1,23 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version change: 1.5.1 → 2.0.0 (MAJOR — redefinition of callout semantics
-  in Principle V, of language declaration in Principle VI, and of proof
-  markup in T-VI)
+Version change: 2.0.0 → 3.0.0 (MAJOR — T-IV no longer permits Shinylive;
+  styling entry point renamed from `assets/dark.scss` to
+  `assets/custom.scss`)
 Modified principles:
-  - V. Minimal & Contained Styling — callout table reduced to content
-    roles (note = definition, tip = formula, caution = proof), plus
-    warning (common mistakes) and important (TODO markers); exercises and
-    answers are no longer callouts.
-  - VI. Bilingual Content Strategy — `lang:` declared once per directory
-    in `_metadata.yml`, not in every `.qmd` file.
-  - T-II. Pedagogical Structure — "collapsible solutions" now means
-    folded `<details class="answer">` blocks.
-  - T-VI. Proof and Demonstration — `.callout-caution`; collapsing is
-    optional.
+  - V. Minimal & Contained Styling — the single styling file is now
+    `assets/custom.scss` (neutral light theme). Documented exception:
+    `assets/giscus-neutral-light.css`, a plain-CSS copy of the palette
+    loaded by Giscus by absolute URL, kept in sync by hand.
+  - T-IV. Interactive Demonstrations — OJS (`{ojs}`) is the only
+    permitted technology; Shinylive was removed from the site and its
+    demos ported to OJS.
+  - Technology Stack table — "Interactive widgets" row is Observable JS;
+    "Theme" row is `assets/custom.scss`.
 Added sections: none
 Removed sections: none
 Templates requiring updates:
-  - .specify/templates/plan-template.md ✅ (Constitution Check gates V,
-    VI, T-II and T-VI reworded for v2.0.0)
+  - .specify/templates/plan-template.md ✅ (gates V and T-IV reworded)
   - .specify/templates/spec-template.md ✅ (no changes needed)
   - .specify/templates/tasks-template.md ✅ (no changes needed)
 Follow-up TODOs: none
@@ -76,7 +74,10 @@ cookies, no tracking." Violating this breaks an explicit public promise.
 
 ### V. Minimal & Contained Styling
 
-All custom CSS/SCSS MUST live in `assets/dark.scss`. Inline `style=`
+All custom CSS/SCSS MUST live in `assets/custom.scss`. The only exception
+is `assets/giscus-neutral-light.css`, a plain-CSS copy of the palette that
+Giscus loads by absolute URL inside its own iframe; it MUST be kept in
+sync with the `custom.scss` palette by hand. Inline `style=`
 attributes and page-level `<style>` blocks MUST NOT be used. The
 Cloudflare Worker (`worker/`) is a separate deployment artifact and MUST
 NOT be entangled with Quarto build steps. Math MUST use standard LaTeX
@@ -105,7 +106,7 @@ Everything else MUST NOT be a callout:
   prose, headings and tables.
 
 The styling of `.theorem.exercise` and `details.answer` lives in
-`assets/dark.scss` like every other rule.
+`assets/custom.scss` like every other rule.
 
 **Rationale**: When most blocks on a page are boxed, no box stands out.
 Limiting callouts to definitions, formulas and proofs (plus mistakes and
@@ -257,7 +258,7 @@ know what to read before starting.
 | Edge function | Cloudflare Worker (`worker/`) | Deployed independently via `wrangler` |
 | Hosting | GitHub Pages (`main` branch, `docs/` dir) | No server-side logic |
 | Comments | Giscus (auto-injected via `posts/_metadata.yml`) | Blog-only; no per-file config |
-| Theme | `assets/dark.scss` | Only styling entry point |
+| Theme | `assets/custom.scss` | Only styling entry point (Giscus: `assets/giscus-neutral-light.css`) |
 
 New runtime dependencies MUST be justified against the privacy principle
 and MUST NOT introduce server-side state into the static hosting layer.
@@ -299,4 +300,4 @@ The site owner (Guillaume Gilles) holds sole amendment authority.
 All Copilot-assisted changes MUST be validated against these principles
 before merging.
 
-**Version**: 2.0.0 | **Ratified**: 2026-05-31 | **Last Amended**: 2026-10-18
+**Version**: 3.0.0 | **Ratified**: 2026-05-31 | **Last Amended**: 2026-10-25
