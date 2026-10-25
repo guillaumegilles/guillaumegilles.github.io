@@ -5,8 +5,6 @@ abstract: |
   Comment décider aujourd'hui d'un investissement dont les effets financiers
   s'étendent sur plusieurs années ? Cette journée couvre la construction des
   flux de trésorerie, la VAN, le TRI et l'analyse du risque.
-filters:
-  - shinylive
 ---
 
 ## Objectifs de la journée
@@ -566,121 +564,86 @@ mutuellement exclusifs, la VAN tranche.
 
 ### Démonstration interactive — VAN et TRI
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 500
+```{ojs}
+//| echo: false
+tri_I0 = 10000
+tri_flux = [3000, 3500, 4000, 4000, 3000]
 
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+tri_eur = x => {
+  const r = Math.round(Math.abs(x)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "\u202f");
+  return (x < 0 && Math.round(Math.abs(x)) !== 0 ? "\u2212" : "") + r + " €";
+}
 
-BG = '#1C2E22'
-FG = '#D2CCC0'
+tri_van = k => -tri_I0 + tri_flux.reduce((s, cf, i) => s + cf / Math.pow(1 + k, i + 1), 0)
 
-I0 = 10000
-FLUX = [3000, 3500, 4000, 4000, 3000]
+// Bissection : VAN(lo) > 0 > VAN(hi) ; on coupe l'intervalle en deux
+// jusqu'à encadrer le taux qui annule la VAN (pas de formule fermée).
+tri_taux = {
+  let lo = 0.0, hi = 1.0;
+  for (let i = 0; i < 200; i++) {
+    const mid = (lo + hi) / 2;
+    if (tri_van(mid) > 0) lo = mid; else hi = mid;
+    if (hi - lo < 1e-10) break;
+  }
+  return (lo + hi) / 2;
+}
+```
 
+**Profil VAN(k)** — I0 = 10 000 €, flux 3 000 / 3 500 / 4 000 / 4 000 / 3 000 €
 
-def van(k):
-    return -I0 + sum(cf / (1 + k) ** t for t, cf in enumerate(FLUX, start=1))
+```{ojs}
+//| echo: false
+viewof tri_kpct = Inputs.range([0, 50], {
+  value: 10, step: 0.5, label: "Taux d'actualisation k (%)"
+})
+```
 
+```{ojs}
+//| echo: false
+{
+  const k = tri_kpct / 100;
+  const v = tri_van(k);
+  const verdict = v >= 0 ? "projet acceptable" : "projet rejeté";
+  return html`<div style="border-left:3px solid steelblue; padding:10px 14px; margin:8px 0; font-family:monospace; font-size:0.9em;">
+    VAN à ${tri_kpct.toFixed(1)} % = <b>${tri_eur(v)}</b> (${verdict})<br>
+    TRI (bissection) ≈ <b>${(tri_taux * 100).toFixed(2)} %</b>
+    — contrôle : VAN(TRI) = ${tri_eur(Math.round(tri_van(tri_taux)))}
+  </div>`;
+}
+```
 
-def tri(lo=0.0, hi=1.0, tol=1e-10):
-    # Bissection : VAN(lo) > 0 > VAN(hi) ; on coupe l'intervalle en deux
-    # jusqu'à encadrer le taux qui annule la VAN (pas de formule fermée).
-    for _ in range(200):
-        mid = (lo + hi) / 2
-        if van(mid) > 0:
-            lo = mid
-        else:
-            hi = mid
-        if hi - lo < tol:
-            break
-    return (lo + hi) / 2
-
-
-def eur(x):
-    return f"{x:,.0f}".replace(",", "\u202f").replace("-", "\u2212") + " €"
-
-
-TRI = tri()
-
-
-def draw(k):
-    ks = [i * 0.005 for i in range(101)]
-    xs = [x * 100 for x in ks]
-    vs = [van(x) for x in ks]
-    fig, ax = plt.subplots(figsize=(7, 4))
-    fig.patch.set_facecolor(BG)
-    ax.set_facecolor(BG)
-    for spine in ax.spines.values():
-        spine.set_edgecolor(FG)
-    ax.tick_params(colors=FG)
-    ax.plot(xs, vs, color='steelblue', lw=2, label="VAN(k)")
-    ax.axhline(0, color='gray', lw=1)
-    ax.fill_between(xs, vs, 0, where=[v >= 0 for v in vs],
-                    color='steelblue', alpha=0.15)
-    ax.axvline(TRI * 100, color='tomato', ls='--', lw=1)
-    ax.plot([TRI * 100], [0], 'o', color='tomato', ms=9,
-            label=f"TRI ≈ {TRI * 100:.2f} % (VAN = 0)")
-    ax.plot([k * 100], [van(k)], 'o', color='gold', ms=7,
-            label=f"k = {k * 100:.1f} %")
-    ax.set_xlabel("Taux d'actualisation k (%)", color=FG)
-    ax.set_ylabel("VAN (€)", color=FG)
-    ax.set_title("Le TRI est l'abscisse où la courbe coupe l'axe", color=FG)
-    ax.grid(alpha=0.15, color=FG)
-    leg = ax.legend(facecolor=BG, edgecolor=FG)
-    for text in leg.get_texts():
-        text.set_color(FG)
-    fig.tight_layout()
-    return fig
-
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px;
-               font-family: sans-serif; margin: 0; }}
-        .form-label, label {{ color: {FG} !important; }}
-        .info-box {{ background: #152119; border-radius: 6px;
-                    padding: 10px 14px; margin: 8px 0;
-                    border-left: 3px solid steelblue;
-                    font-family: monospace; font-size: 0.9em; }}
-    """),
-    ui.h5("Profil VAN(k) — I0 = 10 000 €, flux 3 000 / 3 500 / 4 000 / "
-          "4 000 / 3 000 €", style=f"color:{FG}"),
-    ui.input_slider("k", "Taux d'actualisation k (%)",
-                    min=0, max=50, value=10, step=0.5),
-    ui.output_ui("info"),
-    ui.output_plot("plot", height="340px"),
-)
-
-
-def server(input, output, session):
-
-    @output
-    @render.ui
-    def info():
-        k = input.k() / 100
-        v = van(k)
-        verdict = "projet acceptable" if v >= 0 else "projet rejeté"
-        return ui.div(
-            ui.HTML(
-                f"VAN à {input.k():.1f} % = <b>{eur(v)}</b> ({verdict})"
-                f"<br>TRI (bissection) ≈ <b>{TRI * 100:.2f} %</b>"
-                f" — contrôle : VAN(TRI) = {eur(round(van(TRI)))}"
-            ),
-            class_="info-box",
-        )
-
-    @output
-    @render.plot
-    def plot():
-        return draw(input.k() / 100)
-
-
-app = App(app_ui, server)
+```{ojs}
+//| echo: false
+{
+  const k = tri_kpct / 100;
+  const pts = Array.from({length: 101}, (_, i) => ({x: i * 0.5, v: tri_van(i * 0.005)}));
+  const lblTri = `TRI ≈ ${(tri_taux * 100).toFixed(2)} % (VAN = 0)`;
+  const lblK = `k = ${tri_kpct.toFixed(1)} %`;
+  return Plot.plot({
+    width: 700,
+    height: 340,
+    marginLeft: 60,
+    style: {background: "transparent", color: "currentColor"},
+    x: {label: "Taux d'actualisation k (%)"},
+    y: {label: "VAN (€)", grid: true},
+    color: {
+      legend: true,
+      domain: ["VAN(k)", lblTri, lblK],
+      range: ["steelblue", "tomato", "gold"]
+    },
+    title: "Le TRI est l'abscisse où la courbe coupe l'axe",
+    marks: [
+      Plot.areaY(pts, {x: "x", y1: 0, y2: d => Math.max(d.v, 0), fill: "steelblue", fillOpacity: 0.15}),
+      Plot.ruleY([0], {stroke: "gray"}),
+      Plot.line(pts, {x: "x", y: "v", stroke: "steelblue", strokeWidth: 2}),
+      Plot.ruleX([tri_taux * 100], {stroke: "tomato", strokeDasharray: "4,3"}),
+      Plot.dot([{x: tri_taux * 100, y: 0}], {x: "x", y: "y", r: 6, fill: "tomato"}),
+      Plot.dot([{x: tri_kpct, y: tri_van(k)}], {x: "x", y: "y", r: 5, fill: "gold"}),
+      // Points fictifs hors champ pour alimenter la légende
+      Plot.dot([{c: "VAN(k)"}, {c: lblTri}, {c: lblK}], {x: () => NaN, y: () => NaN, fill: "c"})
+    ]
+  });
+}
 ```
 
 ::: {.callout-note}
@@ -694,8 +657,8 @@ app = App(app_ui, server)
 - La zone ombrée au-dessus de la ligne grise ($VAN > 0$) correspond aux
   taux exigés pour lesquels le projet est acceptable : tous ceux inférieurs
   au TRI.
-- Choix technique (T-IV) : Shinylive, car le TRI exige une recherche de
-  racine itérative. Elle est faite ici par bissection, en Python pur.
+- Choix technique (T-IV) : OJS, car le TRI se calcule par bissection en
+  JavaScript pur.
 :::
 
 ---
@@ -1006,213 +969,142 @@ Variables typiquement testées :
 
 #### Démonstration interactive — Sensibilité de la VAN de la machine
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 720
+```{ojs}
+//| echo: false
+// Cas central : machine de l'atelier (Séquences 2 à 5)
+sens_BASE = ({volume: 2000, marge: 12.0, fixes: 9000.0, I0: 50000.0, k: 0.08})
+sens_N = 5
+sens_LABELS = ({
+  volume: "Volume vendu",
+  marge: "Marge unitaire (prix)",
+  fixes: "Charges fixes",
+  I0: "Investissement I0",
+  k: "Taux exigé k"
+})
+// (nom, multiplicateur du volume, probabilité)
+sens_SCENARIOS = [["Pessimiste", 0.80, 0.25], ["Central", 1.00, 0.50], ["Optimiste", 1.15, 0.25]]
 
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-
-BG = '#1C2E22'
-FG = '#D2CCC0'
-
-# Cas central : machine de l'atelier (Séquences 2 à 5)
-BASE = {
-    'volume': 2000,     # pièces vendues par an
-    'marge': 12.0,      # marge unitaire (€ par pièce)
-    'fixes': 9000.0,    # charges fixes annuelles (€)
-    'I0': 50000.0,      # investissement initial (€)
-    'k': 0.08,          # taux exigé
+sens_fmt = (x, d = 0) => {
+  const s = Math.abs(x).toFixed(d);
+  const [i, f] = s.split(".");
+  const g = i.replace(/\B(?=(\d{3})+(?!\d))/g, "\u202f");
+  return (x < 0 && Number(s) !== 0 ? "\u2212" : "") + g + (f ? "," + f : "");
 }
-N = 5
-LABELS = {
-    'volume': "Volume vendu",
-    'marge': "Marge unitaire (prix)",
-    'fixes': "Charges fixes",
-    'I0': "Investissement I0",
-    'k': "Taux exigé k",
+sens_eur = x => sens_fmt(x, 0) + " €"
+
+sens_facteur = k => {
+  let s = 0;
+  for (let t = 1; t <= sens_N; t++) s += 1 / Math.pow(1 + k, t);
+  return s;
 }
-SCENARIOS = [            # (nom, multiplicateur du volume, probabilité)
-    ("Pessimiste", 0.80, 0.25),
-    ("Central", 1.00, 0.50),
-    ("Optimiste", 1.15, 0.25),
-]
+sens_van = p => -p.I0 + (p.volume * p.marge - p.fixes) * sens_facteur(p.k)
+sens_ajuste = (base, variations) =>
+  Object.fromEntries(Object.keys(base).map(key => [key, base[key] * (1 + (variations[key] ?? 0))]))
+sens_volume_seuil = p => (p.I0 / sens_facteur(p.k) + p.fixes) / p.marge
 
+// ΔVAN quand on fait varier un seul facteur de −20 % puis +20 %
+sens_tornado = (p, choc = 0.20) => {
+  const v0 = sens_van(p);
+  const lignes = Object.keys(sens_LABELS).map(key => ({
+    key,
+    label: sens_LABELS[key],
+    bas: sens_van(sens_ajuste(p, {[key]: -choc})) - v0,
+    haut: sens_van(sens_ajuste(p, {[key]: +choc})) - v0
+  }));
+  lignes.sort((a, b) => Math.max(Math.abs(a.bas), Math.abs(a.haut)) - Math.max(Math.abs(b.bas), Math.abs(b.haut)));
+  return lignes;
+}
 
-def facteur(k):
-    return sum(1 / (1 + k) ** t for t in range(1, N + 1))
+sens_scenarios = p => {
+  const lignes = sens_SCENARIOS.map(([nom, mult, proba]) => ({
+    nom, volume: p.volume * mult, van: sens_van(sens_ajuste(p, {volume: mult - 1})), proba
+  }));
+  const esp = lignes.reduce((s, r) => s + r.van * r.proba, 0);
+  const ecart = Math.sqrt(lignes.reduce((s, r) => s + r.proba * (r.van - esp) ** 2, 0));
+  return {lignes, esp, ecart};
+}
+```
 
+**Analyse de sensibilité** — machine à 50 000 €, 2 000 pièces × 12 € − 9 000 €, 5 ans, k = 8 %
 
-def van(p):
-    flux = p['volume'] * p['marge'] - p['fixes']
-    return -p['I0'] + flux * facteur(p['k'])
+```{ojs}
+//| echo: false
+viewof sens_d_volume = Inputs.range([-30, 30], {value: 0, step: 1, label: "Volume vendu (%)"})
+viewof sens_d_marge = Inputs.range([-30, 30], {value: 0, step: 1, label: "Marge unitaire (prix) (%)"})
+viewof sens_d_fixes = Inputs.range([-30, 30], {value: 0, step: 1, label: "Charges fixes (%)"})
+viewof sens_d_I0 = Inputs.range([-30, 30], {value: 0, step: 1, label: "Investissement I0 (%)"})
+viewof sens_d_k = Inputs.range([-30, 30], {value: 0, step: 1, label: "Taux exigé k (en % de 8 %) (%)"})
+```
 
+```{ojs}
+//| echo: false
+sens_p = sens_ajuste(sens_BASE, {
+  volume: sens_d_volume / 100,
+  marge: sens_d_marge / 100,
+  fixes: sens_d_fixes / 100,
+  I0: sens_d_I0 / 100,
+  k: sens_d_k / 100
+})
+```
 
-def ajuste(base, variations):
-    return {key: base[key] * (1 + variations.get(key, 0.0)) for key in base}
+```{ojs}
+//| echo: false
+{
+  const p = sens_p;
+  const v = sens_van(p);
+  const flux = p.volume * p.marge - p.fixes;
+  const seuil = sens_volume_seuil(p);
+  const margeSecu = 1 - seuil / p.volume;
+  const verdict = v >= 0 ? "crée de la valeur" : "détruit de la valeur";
+  return html`<div style="border-left:3px solid steelblue; padding:10px 14px; margin:8px 0; font-family:monospace; font-size:0.9em;">
+    Flux annuel = ${p.volume.toFixed(0)} × ${sens_fmt(p.marge, 2)} € − ${sens_eur(p.fixes)} = <b>${sens_eur(flux)}</b><br>
+    k = ${sens_fmt(p.k * 100, 2)} % — VAN = <b>${sens_eur(v)}</b> (${verdict})<br>
+    Volume seuil (VAN = 0) ≈ <b>${sens_fmt(seuil)} pièces</b> — marge de sécurité ${sens_fmt(margeSecu * 100, 1)} %
+  </div>`;
+}
+```
 
+```{ojs}
+//| echo: false
+{
+  const {lignes, esp, ecart} = sens_scenarios(sens_p);
+  const cell = "border-bottom:1px solid currentColor; padding:3px 6px; text-align:right;";
+  const first = "border-bottom:1px solid currentColor; padding:3px 6px; text-align:left;";
+  return html`<table style="border-collapse:collapse; width:100%; font-size:0.9em;">
+    <tr><th style=${first}>Scénario</th><th style=${cell}>Volume</th><th style=${cell}>VAN</th><th style=${cell}>Proba.</th></tr>
+    ${lignes.map(r => html`<tr><td style=${first}>${r.nom}</td><td style=${cell}>${r.volume.toFixed(0)}</td><td style=${cell}>${sens_eur(r.van)}</td><td style=${cell}>${sens_fmt(r.proba, 2)}</td></tr>`)}
+    <tr><td style=${first}><b>E(VAN)</b></td><td style=${cell}></td><td style=${cell}><b>${sens_eur(esp)}</b></td><td style=${cell}></td></tr>
+    <tr><td style=${first}><b>σ(VAN)</b></td><td style=${cell}></td><td style=${cell}><b>${sens_eur(ecart)}</b></td><td style=${cell}></td></tr>
+  </table>`;
+}
+```
 
-def volume_seuil(p):
-    return (p['I0'] / facteur(p['k']) + p['fixes']) / p['marge']
-
-
-def tornado(p, choc=0.20):
-    # ΔVAN quand on fait varier un seul facteur de −20 % puis +20 %
-    v0 = van(p)
-    lignes = []
-    for key in LABELS:
-        bas = van(ajuste(p, {key: -choc})) - v0
-        haut = van(ajuste(p, {key: +choc})) - v0
-        lignes.append((key, bas, haut))
-    lignes.sort(key=lambda r: max(abs(r[1]), abs(r[2])))
-    return lignes
-
-
-def scenarios(p):
-    lignes = []
-    for nom, mult, proba in SCENARIOS:
-        lignes.append((nom, p['volume'] * mult,
-                       van(ajuste(p, {'volume': mult - 1})), proba))
-    esp = sum(v * pr for _, _, v, pr in lignes)
-    ecart = sum(pr * (v - esp) ** 2 for _, _, v, pr in lignes) ** 0.5
-    return lignes, esp, ecart
-
-
-def eur(x):
-    return f"{x:,.0f}".replace(",", "\u202f").replace("-", "\u2212") + " €"
-
-
-def draw_tornado(p):
-    lignes = tornado(p)
-    fig, ax = plt.subplots(figsize=(7, 3.4))
-    fig.patch.set_facecolor(BG)
-    ax.set_facecolor(BG)
-    for spine in ax.spines.values():
-        spine.set_edgecolor(FG)
-    ax.tick_params(colors=FG)
-    y = list(range(len(lignes)))
-    ax.barh(y, [r[1] for r in lignes], color='tomato', label="facteur −20 %")
-    ax.barh(y, [r[2] for r in lignes], color='steelblue',
-            label="facteur +20 %")
-    ax.set_yticks(y)
-    ax.set_yticklabels([LABELS[r[0]] for r in lignes], color=FG)
-    ax.axvline(0, color=FG, lw=1)
-    ax.set_xlabel("Variation de la VAN (€) autour du scénario affiché",
-                  color=FG)
-    ax.set_title("Diagramme en tornade : quel facteur pèse le plus ?",
-                 color=FG)
-    ax.grid(alpha=0.15, color=FG, axis='x')
-    leg = ax.legend(facecolor=BG, edgecolor=FG, loc='lower right')
-    for text in leg.get_texts():
-        text.set_color(FG)
-    fig.tight_layout()
-    return fig
-
-
-def slider(key, label):
-    return ui.input_slider(key, label, min=-30, max=30, value=0, step=1,
-                           post=" %")
-
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px;
-               font-family: sans-serif; margin: 0; }}
-        .form-label, label {{ color: {FG} !important; }}
-        .info-box {{ background: #152119; border-radius: 6px;
-                    padding: 10px 14px; margin: 8px 0;
-                    border-left: 3px solid steelblue;
-                    font-family: monospace; font-size: 0.9em; }}
-        table.sc {{ border-collapse: collapse; width: 100%; color: {FG};
-                    font-size: 0.9em; }}
-        table.sc td, table.sc th {{ border-bottom: 1px solid #2f4a37;
-                                    padding: 3px 6px; text-align: right; }}
-        table.sc td:first-child, table.sc th:first-child {{
-            text-align: left; }}
-    """),
-    ui.h5("Analyse de sensibilité — machine à 50 000 €, 2 000 pièces × 12 € "
-          "− 9 000 €, 5 ans, k = 8 %", style=f"color:{FG}"),
-    ui.row(
-        ui.column(
-            4,
-            slider("d_volume", "Volume vendu"),
-            slider("d_marge", "Marge unitaire (prix)"),
-            slider("d_fixes", "Charges fixes"),
-            slider("d_I0", "Investissement I0"),
-            slider("d_k", "Taux exigé k (en % de 8 %)"),
-        ),
-        ui.column(
-            8,
-            ui.output_ui("info"),
-            ui.output_ui("table"),
-        ),
-    ),
-    ui.output_plot("plot", height="300px"),
-)
-
-
-def server(input, output, session):
-
-    def params():
-        return ajuste(BASE, {
-            'volume': input.d_volume() / 100,
-            'marge': input.d_marge() / 100,
-            'fixes': input.d_fixes() / 100,
-            'I0': input.d_I0() / 100,
-            'k': input.d_k() / 100,
-        })
-
-    @output
-    @render.ui
-    def info():
-        p = params()
-        v = van(p)
-        flux = p['volume'] * p['marge'] - p['fixes']
-        seuil = volume_seuil(p)
-        marge_secu = 1 - seuil / p['volume']
-        verdict = "crée de la valeur" if v >= 0 else "détruit de la valeur"
-        seuil_txt = f"{seuil:,.0f}".replace(",", "\u202f")
-        return ui.div(
-            ui.HTML(
-                f"Flux annuel = {p['volume']:.0f} × {p['marge']:.2f} € − "
-                f"{eur(p['fixes'])} = <b>{eur(flux)}</b>"
-                f"<br>k = {p['k'] * 100:.2f} % — VAN = <b>{eur(v)}</b>"
-                f" ({verdict})"
-                f"<br>Volume seuil (VAN = 0) ≈ <b>{seuil_txt} pièces</b>"
-                f" — marge de sécurité {marge_secu * 100:.1f} %"
-            ),
-            class_="info-box",
-        )
-
-    @output
-    @render.ui
-    def table():
-        lignes, esp, ecart = scenarios(params())
-        rows = "".join(
-            f"<tr><td>{nom}</td><td>{vol:.0f}</td><td>{eur(v)}</td>"
-            f"<td>{pr:.2f}</td></tr>"
-            for nom, vol, v, pr in lignes
-        )
-        return ui.HTML(
-            "<table class='sc'><tr><th>Scénario</th><th>Volume</th>"
-            "<th>VAN</th><th>Proba.</th></tr>" + rows +
-            f"<tr><td><b>E(VAN)</b></td><td></td><td><b>{eur(esp)}</b></td>"
-            "<td></td></tr>"
-            f"<tr><td><b>σ(VAN)</b></td><td></td><td><b>{eur(ecart)}</b></td>"
-            "<td></td></tr>"
-            "</table>"
-        )
-
-    @output
-    @render.plot
-    def plot():
-        return draw_tornado(params())
-
-
-app = App(app_ui, server)
+```{ojs}
+//| echo: false
+{
+  const lignes = sens_tornado(sens_p);
+  // Le facteur le plus influent est en haut du graphique
+  const ordre = lignes.map(r => r.label).reverse();
+  return Plot.plot({
+    width: 700,
+    height: 300,
+    marginLeft: 150,
+    style: {background: "transparent", color: "currentColor"},
+    x: {label: "Variation de la VAN (€) autour du scénario affiché", grid: true},
+    y: {label: null, domain: ordre},
+    color: {
+      legend: true,
+      domain: ["facteur −20 %", "facteur +20 %"],
+      range: ["tomato", "steelblue"]
+    },
+    title: "Diagramme en tornade : quel facteur pèse le plus ?",
+    marks: [
+      Plot.barX(lignes, {y: "label", x1: 0, x2: "bas", fill: () => "facteur −20 %"}),
+      Plot.barX(lignes, {y: "label", x1: 0, x2: "haut", fill: () => "facteur +20 %"}),
+      Plot.ruleX([0], {stroke: "currentColor"})
+    ]
+  });
+}
 ```
 
 ::: {.callout-note}
@@ -1230,8 +1122,8 @@ app = App(app_ui, server)
 - Le **tableau des scénarios** applique au volume affiché les coefficients
   0,80 / 1 / 1,15 avec les probabilités 0,25 / 0,50 / 0,25 de l'exemple
   résolu ci-dessous, et en déduit $E(VAN)$ et $\sigma(VAN)$.
-- Choix technique (T-IV) : Shinylive, car l'analyse balaie des boucles de
-  scénarios.
+- Choix technique (T-IV) : OJS, car l'analyse balaie des boucles de
+  scénarios, calculables en JavaScript pur.
 :::
 
 ### B. Valeur seuil (break-even)

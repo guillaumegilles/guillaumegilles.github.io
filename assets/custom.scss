@@ -1,0 +1,299 @@
+// Neutral Light Theme
+// A clean, low-chroma light theme: white surfaces, gray text, one calm accent.
+
+
+/*-- scss:defaults --*/
+
+// ─── Surface palette ─────────────────────────────────────────────────
+
+$surface:         #FAF9F5 !default;  // main page background
+$surface-subtle:  #F2F0E9 !default;  // secondary panels, navbar, footer
+$surface-raised:  #EAE7DD !default;  // code blocks, inline code
+$border:          #E0DDD2 !default;  // borders, separators
+$border-strong:   #CBC7B9 !default;
+
+// ─── Text palette ───────────────────────────────────────────────────
+
+$ink:        #2B2B30 !default;  // main body text
+$ink-strong: #121214 !default;  // headings, emphasis
+$ink-dim:    #6B6B74 !default;  // muted/secondary text
+
+// ─── Accent colors ──────────────────────────────────────────────────
+
+$accent:  #2F5D8A !default;  // links, primary — muted steel blue
+$amber:   #B7791F !default;  // caution / exercises
+$cyan:    #1F7A99 !default;  // info / notes
+$green:   #2E7D4F !default;  // tips
+$red:     #B83B3B !default;  // danger
+
+// ─── Bootstrap variable mappings ─────────────────────────────────────
+
+$white:    #fff !default;
+$black:    #000 !default;
+
+$body-bg:    $surface !default;
+$body-color: $ink     !default;
+
+$primary:   $accent   !default;
+$secondary: $ink-dim  !default;
+$success:   $green    !default;
+$info:      $cyan     !default;
+$warning:   $amber    !default;
+$danger:    $red      !default;
+
+$link-color:       $accent                !default;
+$link-hover-color: darken($accent, 12%)   !default;
+
+// Inline code
+$code-bg:        $surface-raised !default;
+$code-color:     #8A3B5C         !default;  // muted plum, readable on light gray
+$code-block-bg:  $surface-subtle !default;
+
+
+/*-- scss:rules --*/
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap');
+
+body {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.navbar-brand {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $ink-strong !important;
+  letter-spacing: 0.01em;
+}
+
+h1, .title {
+  font-size: 1.75rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: $ink-strong;
+}
+
+h2, h3, h4, h5, h6 {
+  color: $ink-strong;
+}
+
+// ─── Navbar ─────────────────────────────────────────────────────────
+
+.navbar {
+  background-color: $surface-subtle !important;
+  border-bottom: 1px solid $border;
+}
+
+.nav-link {
+  font-size: 0.9rem;
+  color: $ink !important;
+  font-weight: 500;
+
+  &:hover {
+    background-color: transparent !important;
+    color: $accent !important;
+    border-bottom: 2px solid $accent !important;
+  }
+}
+
+// --- Closeread ------------------------------------------------------
+
+.cr-section {
+  background-color: $body-bg !important;
+
+  --cr-section-background-color:       #{$surface};
+  --cr-narrative-text-color-sidebar:   #{$ink};
+  --cr-narrative-text-color-overlay:   #{$ink-strong};
+
+  .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb] {
+    color: rgba($ink, 0.35) !important;
+  }
+
+  .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb].cr-hl,
+  .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb] span.cr-hl {
+    color: $ink-strong !important;
+  }
+}
+
+// ─── Code cells ─────────────────────────────────────────────────────
+
+$mono-font: "IBM Plex Mono", ui-monospace, monospace !default;
+
+// Source code blocks — full terminal window
+div.sourceCode {
+  background-color: $surface-subtle !important;
+  border: 1px solid $border;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin: 1.25rem 0;
+
+  // macOS-style traffic-light title bar
+  &::before {
+    content: "🔴 🟡 🟢";
+    display: block;
+    background-color: $surface-subtle;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.15rem;
+    border-bottom: 1px solid $border-strong;
+  }
+
+  pre.sourceCode {
+    background: $surface-subtle !important;
+    border: none;
+    margin: 0;
+    padding: 0.9rem 1.1rem;
+    font-family: $mono-font;
+    font-size: 0.875rem;
+    line-height: 1.65;
+
+    code {
+      font-family: $mono-font;
+      background: transparent !important;
+      color: $ink;
+    }
+  }
+}
+
+// Neutralize Quarto's near-white span.re background
+code span.re {
+  background-color: transparent !important;
+}
+
+// Cell output
+.cell-output pre,
+.cell-output-stdout pre {
+  background-color: $surface;
+  border: 1px solid $border;
+  border-top: 1px dashed $border-strong;  // dashed separator: input → output
+  border-radius: 0 0 0.5rem 0.5rem;
+  padding: 0.75rem 1.1rem;
+  margin-top: -0.25rem;
+  margin-bottom: 1.25rem;
+  font-family: $mono-font;
+  font-size: 0.85rem;
+  color: $ink-dim;
+
+  code { color: $ink-dim; background: transparent; }
+}
+
+// stderr — red-tinted
+.cell-output-stderr pre {
+  color: $red;
+  border-color: rgba($red, 0.35);
+  background-color: mix($red, $surface, 6%);
+}
+
+// Inline code
+code:not([class]) {
+  background-color: $surface-raised;
+  color: $code-color;
+  padding: 0.1em 0.4em;
+  border-radius: 0.25rem;
+  font-family: $mono-font;
+  font-size: 0.875em;
+}
+
+// ─── Callouts ───────────────────────────────────────────────────────
+
+.callout {
+  background-color: $surface-subtle;
+  border: 1px solid $border;
+  border-left: 4px solid;         // accent color set per type below
+  border-radius: 0.4rem;
+  overflow: hidden;
+  margin: 1.25rem 0;
+  color: $ink;
+
+  .callout-header {
+    background-color: rgba($ink, 0.03);
+    border-bottom: 1px solid $border;
+    font-weight: 600;
+    opacity: 1;
+    padding: 0.55rem 1rem;
+  }
+
+  .callout-body-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .callout-body {
+    color: $ink;
+  }
+}
+
+.callout-note {
+  border-left-color: $cyan;
+  .callout-header { color: $cyan; }
+}
+
+.callout-tip {
+  border-left-color: $green;
+  .callout-header { color: $green; }
+}
+
+.callout-caution {
+  border-left-color: $amber;
+  .callout-header { color: $amber; }
+}
+
+.callout-warning {
+  border-left-color: darken($amber, 10%);
+  .callout-header { color: darken($amber, 10%); }
+}
+
+.callout-important {
+  border-left-color: $red;
+  .callout-header { color: $red; }
+}
+
+// ─── Fold-out answers — <details class="answer"> ────────────────────
+
+details.answer {
+  margin: 0.75rem 0 1.25rem;
+
+  > summary {
+    display: inline-block;
+    cursor: pointer;
+    list-style: none;
+    color: $ink-dim;
+    font-family: $mono-font;
+    font-size: 0.85em;
+    border-bottom: 1px dashed $border-strong;
+
+    &::-webkit-details-marker { display: none; }
+    &::before { content: "▸ "; color: $accent; }
+    &:hover, &:focus-visible { color: $ink-strong; }
+  }
+
+  &[open] > summary {
+    margin-bottom: 0.6rem;
+    &::before { content: "▾ "; }
+  }
+
+  &[open] {
+    border-left: 1px dashed $border-strong;
+    padding-left: 0.85rem;
+  }
+}
+
+// ─── Language switcher — injected by assets/lang-switch.html ────────
+
+.lang-switch {
+  font-size: 0.82rem;
+  margin-top: 0.3rem;
+  margin-bottom: 1.75rem;
+  opacity: 0.85;
+
+  a {
+    color: $ink-dim;
+    text-decoration: none;
+    border-bottom: 1px dotted $ink-dim;
+
+    &:hover {
+      color: $accent;
+      border-bottom-color: $accent;
+      opacity: 1;
+    }
+  }
+}

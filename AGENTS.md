@@ -38,7 +38,8 @@ cd worker && wrangler deploy
 
 ```markdown
 _quarto.yml          # Site config: navbar, all sidebars, theme, output dir
-assets/dark.scss     # Custom dark theme applied globally
+assets/custom.scss   # Neutral light theme applied globally
+assets/giscus-neutral-light.css  # Giscus comments theme (plain CSS, see Theme)
 posts/               # Blog posts — single .qmd or <name>/index.qmd
 teaching/            # Course materials, one subdirectory per course
   statistics-probability/
@@ -86,10 +87,36 @@ Giscus comments are injected automatically for all blog posts via
 Add a new sidebar block under `website.sidebar` in `_quarto.yml` and create
 the corresponding directory under `teaching/`.
 
-### Interactive Python widgets (Shinylive)
+### Interactive widgets (Observable JS)
 
-The `quarto-ext/shinylive` extension is installed. Use `{shinylive-python}`
-code blocks to embed live Python apps in teaching pages.
+Use `{ojs}` blocks (native to Quarto, no extension) for interactive demos in
+teaching pages. Add `//| echo: false`, build controls with `viewof x =
+Inputs.range(...)`, and plot with `Plot`/`d3`. OJS variable names are global
+per page, so prefix them per demo (e.g. `sec_`, `quiz_`). Use `currentColor`
+and transparent backgrounds so the site theme applies. Shinylive is not used
+on this site.
+
+### Scrollytelling (Closeread)
+
+Posts that use `:::{.cr-section}`, `:::{#cr-...}` sticky blocks and `@cr-...`
+references (e.g. `posts/github-codespaces-quarto/`) need the Closeread Lua
+filter. Without it Quarto treats `@cr-...` as unresolved citations and nothing
+sticks or scrolls. Add this to the post's front matter:
+
+```yaml
+filters:
+  - ../../_extensions/qmd-lab/closeread/closeread.lua
+format:
+  html:
+    css: ../../_extensions/qmd-lab/closeread/closeread.css
+```
+
+- The filter rewrites the `cr-*` syntax into the sticky/trigger markup; the CSS
+  provides the layout. Both are required.
+- It is set per post (not in `_quarto.yml`) so the rest of the site is not
+  processed by Closeread. Adjust the `../../` depth to the file's location.
+- Alternative: use the extension's own `format: closeread-html` instead of
+  listing the filter and CSS manually.
 
 ### Computational freeze
 
@@ -117,8 +144,15 @@ Common types: `.callout-note`, `.callout-important`, `.callout-tip`.
 
 ### Theme
 
-All styling goes in `assets/dark.scss`. The compiled theme is referenced in
-`_quarto.yml` under `format.html.theme`.
+All site styling goes in `assets/custom.scss`. The compiled theme is referenced
+in `_quarto.yml` under `format.html.theme`.
+
+Giscus renders inside an iframe on `giscus.app` and loads its theme from an
+absolute URL (`posts/_metadata.yml`), so it cannot use the SCSS build. Its
+colors live in `assets/giscus-neutral-light.css` as plain-CSS hex literals
+copied from the `custom.scss` palette. If you change the palette variables
+(`$surface`, `$ink`, `$accent`, ...), update that file by hand. It is listed
+under `project.resources` so it is copied to `docs/assets/`.
 
 <!-- SPECKIT START -->
 ## Active Spec Kit Plan

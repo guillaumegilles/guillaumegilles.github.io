@@ -1,7 +1,5 @@
 ---
 title: "Dérivée d'une fonction univariée"
-filters:
-  - shinylive
 ---
 
 ::: {.callout-important}
@@ -192,89 +190,65 @@ plt.show()
 
 Utilisez le curseur pour faire varier $h$ et observez comment la pente de la sécante se rapproche de $f'(3) = 6$.
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 510
+```{ojs}
+//| echo: false
+md`##### 🎯 De la sécante à la tangente
 
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
+Faites varier h pour voir comment la pente de la sécante se rapproche de f'(3) = 6 quand h → 0.`
+```
 
-BG = '#1C2E22'
-FG = '#D2CCC0'
+```{ojs}
+//| echo: false
+viewof sec_h = Inputs.range([0.05, 3.0], {value: 2.0, step: 0.05, label: "Valeur de h :"})
+```
 
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 12px; font-family: sans-serif; margin:0; }}
-        .form-label {{ color: {FG} !important; }}
-        .form-range {{ accent-color: steelblue; width: 100%; }}
-        .info-box {{
-            background: #152119; border-radius: 6px; padding: 10px 14px;
-            margin: 8px 0; border-left: 3px solid steelblue;
-            font-family: monospace; font-size: 0.9em;
-        }}
-    """),
-    ui.h5("🎯 De la sécante à la tangente", style=f"color:{FG}"),
-    ui.p(
-        "Faites varier h pour voir comment la pente de la sécante se rapproche de f'(3) = 6 quand h → 0.",
-        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
-    ),
-    ui.input_slider("h", "Valeur de h :", min=0.05, max=3.0, value=2.0, step=0.05),
-    ui.output_ui("info"),
-    ui.output_plot("plot", height="340px"),
-)
+```{ojs}
+//| echo: false
+sec_slope = ((3 + sec_h) ** 2 - 9) / sec_h
+sec_error = Math.abs(sec_slope - 6)
+```
 
-def server(input, output, session):
-    @output
-    @render.ui
-    def info():
-        h = input.h()
-        slope = ((3 + h) ** 2 - 9) / h
-        error = abs(slope - 6)
-        tick = "  ✅ Tres proche !" if error < 0.15 else ""
-        color = "steelblue" if error < 0.15 else "#e07a5f"
-        return ui.HTML(f"""
-            <div class='info-box'>
-                Pente = (f(3 + {h:.2f}) − f(3)) / {h:.2f}
-                = <strong style='color:darkorange'>{slope:.4f}</strong><br>
-                Ecart avec 6 : <strong style='color:{color}'>{error:.4f}</strong>{tick}
-            </div>
-        """)
+```{ojs}
+//| echo: false
+{
+  const close = sec_error < 0.15;
+  const tick = close ? "  ✅ Tres proche !" : "";
+  const color = close ? "steelblue" : "#e07a5f";
+  return html`<div style="border-left:3px solid steelblue; border-radius:6px; padding:10px 14px; margin:8px 0; font-family:monospace; font-size:0.9em; background:rgba(128,128,128,0.10);">
+    Pente = (f(3 + ${sec_h.toFixed(2)}) − f(3)) / ${sec_h.toFixed(2)}
+    = <strong style="color:darkorange">${sec_slope.toFixed(4)}</strong><br>
+    Ecart avec 6 : <strong style="color:${color}">${sec_error.toFixed(4)}</strong>${tick}
+  </div>`;
+}
+```
 
-    @output
-    @render.plot
-    def plot():
-        h  = input.h()
-        x0, y0 = 3, 9
-        slope   = ((x0 + h) ** 2 - y0) / h
-        x = np.linspace(0.5, 6.5, 300)
-
-        fig, ax = plt.subplots(figsize=(7, 3.8))
-        fig.patch.set_facecolor(BG)
-        ax.set_facecolor(BG)
-        for spine in ax.spines.values():
-            spine.set_edgecolor(FG)
-        ax.tick_params(colors=FG)
-
-        ax.plot(x, x ** 2, color='steelblue', lw=2.2, label=r'$f(x)=x^2$')
-        ax.plot(x, y0 + slope * (x - x0), color='darkorange', lw=1.8,
-                linestyle='--', label=f'Sécante  h={h:.2f}  (pente={slope:.3f})')
-        ax.plot(x, y0 + 6 * (x - x0), color=FG, lw=2.0,
-                label=r"Tangente $h\to0$  (pente = 6)")
-        ax.scatter([x0, x0 + h], [y0, (x0 + h) ** 2],
-                   color='crimson', zorder=6, s=70)
-        ax.set_xlim(0.5, 6.5); ax.set_ylim(-5, 45)
-        ax.set_xlabel("$x$", color=FG); ax.set_ylabel("$f(x)$", color=FG)
-        ax.set_title(r"Sécante vs tangente en $x_0 = 3$", color=FG)
-        ax.legend(fontsize=8.5, facecolor=BG, edgecolor='none', labelcolor=FG)
-        ax.grid(alpha=0.15, color=FG)
-        plt.tight_layout()
-        return fig
-
-app = App(app_ui, server)
+```{ojs}
+//| echo: false
+{
+  const x0 = 3, y0 = 9;
+  const xs = d3.range(0.5, 6.5001, 0.02);
+  const lblF = "f(x) = x²";
+  const lblS = `Sécante  h=${sec_h.toFixed(2)}  (pente=${sec_slope.toFixed(3)})`;
+  const lblT = "Tangente h→0  (pente = 6)";
+  return Plot.plot({
+    width: 700,
+    height: 380,
+    style: {background: "transparent", color: "currentColor", fontSize: "12px"},
+    x: {domain: [0.5, 6.5], label: "x"},
+    y: {domain: [-5, 45], label: "f(x)", grid: true},
+    color: {
+      legend: true,
+      domain: [lblF, lblS, lblT],
+      range: ["steelblue", "darkorange", "currentColor"]
+    },
+    marks: [
+      Plot.line(xs, {x: xs => xs, y: x => x * x, stroke: () => lblF, strokeWidth: 2.2, clip: true}),
+      Plot.line(xs, {x: xs => xs, y: x => y0 + sec_slope * (x - x0), stroke: () => lblS, strokeWidth: 1.8, strokeDasharray: "6,4", clip: true}),
+      Plot.line(xs, {x: xs => xs, y: x => y0 + 6 * (x - x0), stroke: () => lblT, strokeWidth: 2, clip: true}),
+      Plot.dot([[x0, y0], [x0 + sec_h, (x0 + sec_h) ** 2]], {fill: "crimson", r: 5})
+    ]
+  });
+}
 ```
 
 ### Exemple détaillé : $f(x)=x^2$
@@ -524,107 +498,78 @@ plt.show()
 
 Choisissez une fonction et observez comment le signe de $f'$ détermine la croissance ou la décroissance de $f$.
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 490
+```{ojs}
+//| echo: false
+md`##### 📈 Signe de f' et sens de variation
 
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
+Sélectionnez une fonction et observez le lien entre le signe de f' et la croissance / décroissance de f.`
+```
 
-BG = '#1C2E22'
-FG = '#D2CCC0'
+```{ojs}
+//| echo: false
+sgn_functions = new Map([
+  ["f(x) = x² − 4x  (profit)", {
+    f: x => x ** 2 - 4 * x, fp: x => 2 * x - 4,
+    xlim: [-1.0, 6.0], title_f: "f(x) = x² − 4x", title_fp: "f'(x) = 2x − 4", zeros: [2]
+  }],
+  ["f(x) = x³ − 3x  (cubique)", {
+    f: x => x ** 3 - 3 * x, fp: x => 3 * x ** 2 - 3,
+    xlim: [-2.4, 2.4], title_f: "f(x) = x³ − 3x", title_fp: "f'(x) = 3x² − 3", zeros: [-1, 1]
+  }],
+  ["f(x) = −x² + 6x  (recette max)", {
+    f: x => -(x ** 2) + 6 * x, fp: x => -2 * x + 6,
+    xlim: [-1.0, 8.0], title_f: "f(x) = −x² + 6x", title_fp: "f'(x) = −2x + 6", zeros: [3]
+  }]
+])
+```
 
-FUNCTIONS = {
-    "f(x) = x² − 4x  (profit)": {
-        "f":  lambda x: x**2 - 4*x,
-        "fp": lambda x: 2*x - 4,
-        "xlim": (-1.0, 6.0),
-        "title_f":  r"$f(x)=x^2-4x$",
-        "title_fp": r"$f'(x)=2x-4$",
-        "zeros": [2],
-    },
-    "f(x) = x³ − 3x  (cubique)": {
-        "f":  lambda x: x**3 - 3*x,
-        "fp": lambda x: 3*x**2 - 3,
-        "xlim": (-2.4, 2.4),
-        "title_f":  r"$f(x)=x^3-3x$",
-        "title_fp": r"$f'(x)=3x^2-3$",
-        "zeros": [-1, 1],
-    },
-    "f(x) = −x² + 6x  (recette max)": {
-        "f":  lambda x: -x**2 + 6*x,
-        "fp": lambda x: -2*x + 6,
-        "xlim": (-1.0, 8.0),
-        "title_f":  r"$f(x)=-x^2+6x$",
-        "title_fp": r"$f'(x)=-2x+6$",
-        "zeros": [3],
-    },
+```{ojs}
+//| echo: false
+viewof sgn_cfg = Inputs.select(sgn_functions, {label: "Fonction :"})
+```
+
+```{ojs}
+//| echo: false
+{
+  const cfg = sgn_cfg;
+  const xs = d3.range(cfg.xlim[0], cfg.xlim[1] + 1e-9, (cfg.xlim[1] - cfg.xlim[0]) / 400);
+  const pts = xs.map(x => ({x, f: cfg.f(x), fp: cfg.fp(x)}));
+  const up = "Croissante (f' > 0)", down = "Décroissante (f' < 0)";
+  const common = {
+    width: 440, height: 340,
+    style: {background: "transparent", color: "currentColor", fontSize: "12px"},
+    x: {label: "x", grid: true}
+  };
+  const axes = [Plot.ruleY([0], {stroke: "#888"}), Plot.ruleX([0], {stroke: "#888"})];
+
+  const p1 = Plot.plot({
+    ...common,
+    y: {label: "f(x)", grid: true},
+    color: {legend: true, domain: [up, down], range: ["steelblue", "crimson"]},
+    marks: [
+      ...axes,
+      Plot.areaY(pts, {x: "x", y1: 0, y2: d => d.fp > 0 ? d.f : 0, fill: up, fillOpacity: 0.28}),
+      Plot.areaY(pts, {x: "x", y1: 0, y2: d => d.fp < 0 ? d.f : 0, fill: down, fillOpacity: 0.28}),
+      Plot.line(pts, {x: "x", y: "f", stroke: "steelblue", strokeWidth: 2.2})
+    ]
+  });
+  const p2 = Plot.plot({
+    ...common,
+    y: {label: "f'(x)", grid: true},
+    marks: [
+      ...axes,
+      Plot.areaY(pts, {x: "x", y1: 0, y2: d => d.fp > 0 ? d.fp : 0, fill: "steelblue", fillOpacity: 0.28}),
+      Plot.areaY(pts, {x: "x", y1: 0, y2: d => d.fp < 0 ? d.fp : 0, fill: "crimson", fillOpacity: 0.28}),
+      Plot.line(pts, {x: "x", y: "fp", stroke: "darkorange", strokeWidth: 2.2}),
+      Plot.dot(cfg.zeros, {x: d => d, y: 0, fill: "currentColor", r: 4})
+    ]
+  });
+  return html`<div style="text-align:center; font-size:0.9em; margin-bottom:4px;">Signe de f' ⇔ sens de variation de f</div>
+  <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+    <div><div style="text-align:center;"><code>${cfg.title_f}</code></div>${p1}</div>
+    <div><div style="text-align:center;"><code>${cfg.title_fp}</code></div>${p2}</div>
+  </div>`;
 }
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color:{BG}; color:{FG}; padding:12px;
-                font-family:sans-serif; margin:0; }}
-        .form-label {{ color:{FG} !important; }}
-        .form-select {{ background-color:#152119; color:{FG}; border-color:#2F4636; }}
-    """),
-    ui.h5("📈 Signe de f' et sens de variation", style=f"color:{FG}"),
-    ui.p(
-        "Sélectionnez une fonction et observez le lien entre le signe de f' "
-        "et la croissance / décroissance de f.",
-        style=f"color:{FG}; font-size:0.88em; margin-bottom:6px;",
-    ),
-    ui.input_select("func", "Fonction :", choices=list(FUNCTIONS.keys())),
-    ui.output_plot("plot", height="380px"),
-)
-
-def server(input, output, session):
-    @output
-    @render.plot
-    def plot():
-        cfg = FUNCTIONS[input.func()]
-        x  = np.linspace(*cfg["xlim"], 400)
-        f  = cfg["f"](x)
-        fp = cfg["fp"](x)
-
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.8))
-        fig.patch.set_facecolor(BG)
-        for ax in (ax1, ax2):
-            ax.set_facecolor(BG)
-            for spine in ax.spines.values():
-                spine.set_edgecolor(FG)
-            ax.tick_params(colors=FG)
-            ax.axhline(0, color='#5a5a5a', lw=0.8)
-            ax.axvline(0, color='#5a5a5a', lw=0.8)
-
-        ax1.plot(x, f, color='steelblue', lw=2.2)
-        ax1.fill_between(x, f, 0, where=(fp > 0), alpha=0.28,
-                         color='steelblue', label="Croissante (f' > 0)")
-        ax1.fill_between(x, f, 0, where=(fp < 0), alpha=0.28,
-                         color='crimson',   label="Décroissante (f' < 0)")
-        ax1.set_title(cfg["title_f"], color=FG)
-        ax1.set_xlabel("$x$", color=FG); ax1.set_ylabel("$f(x)$", color=FG)
-        ax1.legend(fontsize=8, facecolor=BG, edgecolor='none', labelcolor=FG)
-        ax1.grid(alpha=0.15, color=FG)
-
-        ax2.plot(x, fp, color='darkorange', lw=2.2)
-        ax2.fill_between(x, fp, 0, where=(fp > 0), alpha=0.28, color='steelblue')
-        ax2.fill_between(x, fp, 0, where=(fp < 0), alpha=0.28, color='crimson')
-        for z in cfg["zeros"]:
-            ax2.scatter([z], [0], color=FG, zorder=6, s=60)
-        ax2.set_title(cfg["title_fp"], color=FG)
-        ax2.set_xlabel("$x$", color=FG); ax2.set_ylabel("$f'(x)$", color=FG)
-        ax2.grid(alpha=0.15, color=FG)
-
-        plt.suptitle("Signe de f'  \u21d4  sens de variation de f", color=FG, fontsize=10)
-        plt.tight_layout()
-        return fig
-
-app = App(app_ui, server)
 ```
 
 ## Exercices
@@ -653,196 +598,90 @@ app = App(app_ui, server)
 
 Testez vos reflexes : une fonction s'affiche, choisissez la bonne dérivée et recevez un retour immédiat.
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 430
-
-from shiny import App, render, ui, reactive
-import random
-
-BG = '#1C2E22'
-FG = '#D2CCC0'
-
-QUESTIONS = [
-    {
-        "func":    "f(x) = 5",
-        "correct": "f'(x) = 0",
-        "choices": ["f'(x) = 0", "f'(x) = 5", "f'(x) = 1", "f'(x) = 5x"],
-        "hint":    "La dérivée d'une constante est toujours zéro.",
-        "rule":    "Constante",
-    },
-    {
-        "func":    "f(x) = 3x",
-        "correct": "f'(x) = 3",
-        "choices": ["f'(x) = 3x²", "f'(x) = 3", "f'(x) = x", "f'(x) = 1/3"],
-        "hint":    "La dérivée de kx est k : c'est la pente de la droite.",
-        "rule":    "Linéaire",
-    },
-    {
-        "func":    "f(x) = x⁴",
-        "correct": "f'(x) = 4x³",
-        "choices": ["f'(x) = 4x⁵", "f'(x) = x³", "f'(x) = 4x³", "f'(x) = 4"],
-        "hint":    "Règle puissance : (xⁿ)' = n·xⁿ⁻¹. Ici n=4.",
-        "rule":    "Puissance",
-    },
-    {
-        "func":    "f(x) = eˣ",
-        "correct": "f'(x) = eˣ",
-        "choices": ["f'(x) = eˣ⁻¹", "f'(x) = x·eˣ", "f'(x) = eˣ", "f'(x) = 1"],
-        "hint":    "L'exponentielle est sa propre dérivée : (eˣ)' = eˣ.",
-        "rule":    "Exponentielle",
-    },
-    {
-        "func":    "f(x) = ln(x)",
-        "correct": "f'(x) = 1/x",
-        "choices": ["f'(x) = 1/x", "f'(x) = x", "f'(x) = ln(x)/x", "f'(x) = eˣ"],
-        "hint":    "(ln x)' = 1/x, valable pour x > 0.",
-        "rule":    "Logarithme",
-    },
-    {
-        "func":    "f(x) = e^(3x)",
-        "correct": "f'(x) = 3e^(3x)",
-        "choices": ["f'(x) = e^(3x)", "f'(x) = 3e^(3x)", "f'(x) = 3xe^(3x)", "f'(x) = e^(3)"],
-        "hint":    "Exponentielle composée : (e^u)' = u'·e^u. Ici u=3x donc u'=3.",
-        "rule":    "Exp. composée",
-    },
-    {
-        "func":    "f(x) = ln(2x² + 1)",
-        "correct": "f'(x) = 4x / (2x² + 1)",
-        "choices": [
-            "f'(x) = 1 / (2x² + 1)",
-            "f'(x) = 4x / (2x² + 1)",
-            "f'(x) = 4x · ln(2x² + 1)",
-            "f'(x) = 2x / (2x² + 1)",
-        ],
-        "hint":    "Log. compose : (ln u)' = u'/u. Ici u=2x²+1 donc u'=4x.",
-        "rule":    "Log. compose",
-    },
-    {
-        "func":    "f(x) = (2x + 3)·eˣ",
-        "correct": "f'(x) = (2x + 5)·eˣ",
-        "choices": [
-            "f'(x) = 2·eˣ",
-            "f'(x) = (2x + 3)·eˣ",
-            "f'(x) = (2x + 5)·eˣ",
-            "f'(x) = 2(x + 3)·eˣ",
-        ],
-        "hint":    "Règle du produit : (uv)' = u'v + uv'. Ici u=2x+3, v=eˣ.",
-        "rule":    "Produit",
-    },
+```{ojs}
+//| echo: false
+quiz_questions = [
+  {func: "f(x) = 5", correct: "f'(x) = 0",
+   choices: ["f'(x) = 0", "f'(x) = 5", "f'(x) = 1", "f'(x) = 5x"],
+   hint: "La dérivée d'une constante est toujours zéro.", rule: "Constante"},
+  {func: "f(x) = 3x", correct: "f'(x) = 3",
+   choices: ["f'(x) = 3x²", "f'(x) = 3", "f'(x) = x", "f'(x) = 1/3"],
+   hint: "La dérivée de kx est k : c'est la pente de la droite.", rule: "Linéaire"},
+  {func: "f(x) = x⁴", correct: "f'(x) = 4x³",
+   choices: ["f'(x) = 4x⁵", "f'(x) = x³", "f'(x) = 4x³", "f'(x) = 4"],
+   hint: "Règle puissance : (xⁿ)' = n·xⁿ⁻¹. Ici n=4.", rule: "Puissance"},
+  {func: "f(x) = eˣ", correct: "f'(x) = eˣ",
+   choices: ["f'(x) = eˣ⁻¹", "f'(x) = x·eˣ", "f'(x) = eˣ", "f'(x) = 1"],
+   hint: "L'exponentielle est sa propre dérivée : (eˣ)' = eˣ.", rule: "Exponentielle"},
+  {func: "f(x) = ln(x)", correct: "f'(x) = 1/x",
+   choices: ["f'(x) = 1/x", "f'(x) = x", "f'(x) = ln(x)/x", "f'(x) = eˣ"],
+   hint: "(ln x)' = 1/x, valable pour x > 0.", rule: "Logarithme"},
+  {func: "f(x) = e^(3x)", correct: "f'(x) = 3e^(3x)",
+   choices: ["f'(x) = e^(3x)", "f'(x) = 3e^(3x)", "f'(x) = 3xe^(3x)", "f'(x) = e^(3)"],
+   hint: "Exponentielle composée : (e^u)' = u'·e^u. Ici u=3x donc u'=3.", rule: "Exp. composée"},
+  {func: "f(x) = ln(2x² + 1)", correct: "f'(x) = 4x / (2x² + 1)",
+   choices: ["f'(x) = 1 / (2x² + 1)", "f'(x) = 4x / (2x² + 1)", "f'(x) = 4x · ln(2x² + 1)", "f'(x) = 2x / (2x² + 1)"],
+   hint: "Log. compose : (ln u)' = u'/u. Ici u=2x²+1 donc u'=4x.", rule: "Log. compose"},
+  {func: "f(x) = (2x + 3)·eˣ", correct: "f'(x) = (2x + 5)·eˣ",
+   choices: ["f'(x) = 2·eˣ", "f'(x) = (2x + 3)·eˣ", "f'(x) = (2x + 5)·eˣ", "f'(x) = 2(x + 3)·eˣ"],
+   hint: "Règle du produit : (uv)' = u'v + uv'. Ici u=2x+3, v=eˣ.", rule: "Produit"}
 ]
+```
 
-# Randomise once at startup
-_order = list(range(len(QUESTIONS)))
-random.shuffle(_order)
+```{ojs}
+//| echo: false
+quiz_widget = {
+  const order = d3.shuffle(d3.range(quiz_questions.length));
+  let idx = 0, answered = false, chosen = null, score = 0, done = 0;
 
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color:{BG}; color:{FG}; padding:14px;
-                font-family:sans-serif; margin:0; }}
-        .btn-choice {{
-            display:block; width:100%; margin:5px 0;
-            background:#152119; color:{FG};
-            border:1px solid #2F4636; border-radius:6px;
-            padding:8px 14px; cursor:pointer; font-size:0.9em;
-            text-align:left;
-        }}
-        .btn-choice:hover {{ background:#253A2C; }}
-        .feedback {{ border-radius:6px; padding:10px 14px; margin-top:10px;
-                     font-size:0.9em; }}
-        .correct  {{ background:#1a3a1a; border-left:4px solid #4caf50; }}
-        .wrong    {{ background:#3a1a1a; border-left:4px solid #e53935; }}
-        .score    {{ font-size:0.85em; color:#aaa; margin-bottom:6px; }}
-        .rule-tag {{ font-size:0.75em; color:#888; margin-bottom:8px; }}
-    """),
-    ui.h5("🧠 Quiz — Quelle est la dérivée ?", style=f"color:{FG}"),
-    ui.output_ui("score_line"),
-    ui.output_ui("question_ui"),
-    ui.output_ui("feedback_ui"),
-    ui.div(
-        ui.input_action_button("next_q", "Question suivante →",
-                               style="margin-top:10px; background:#253A2C; "
-                                     "color:#D2CCC0; border:1px solid #2F4636; "
-                                     "border-radius:6px; padding:7px 18px; cursor:pointer;"),
-    ),
-)
+  const root = html`<div style="padding:4px 0;"></div>`;
+  const title = html`<h5>🧠 Quiz — Quelle est la dérivée ?</h5>`;
+  const scoreEl = html`<p style="font-size:0.85em; opacity:0.7; margin-bottom:6px;"></p>`;
+  const qEl = html`<div></div>`;
+  const fbEl = html`<div></div>`;
+  const next = html`<button style="margin-top:10px; background:transparent; color:inherit; border:1px solid currentColor; border-radius:6px; padding:7px 18px; cursor:pointer;">Question suivante →</button>`;
+  root.append(title, scoreEl, qEl, fbEl, next);
 
-def server(input, output, session):
-    idx        = reactive.Value(0)
-    answered   = reactive.Value(False)
-    chosen     = reactive.Value(None)
-    score      = reactive.Value(0)
-    total_done = reactive.Value(0)
+  const btnStyle = "display:block; width:100%; margin:5px 0; background:transparent; color:inherit; border:1px solid rgba(128,128,128,0.6); border-radius:6px; padding:8px 14px; cursor:pointer; font-size:0.9em; text-align:left;";
 
-    def current_q():
-        return QUESTIONS[_order[idx() % len(_order)]]
+  function render() {
+    const q = quiz_questions[order[idx % order.length]];
+    scoreEl.textContent = done === 0
+      ? "Répondez aux questions pour voir votre score."
+      : `Score : ${score} / ${done} (${Math.round(100 * score / done)}%)`;
 
-    @output
-    @render.ui
-    def score_line():
-        done = total_done()
-        if done == 0:
-            return ui.p("Répondez aux questions pour voir votre score.",
-                        class_="score")
-        pct = round(100 * score() / done)
-        return ui.HTML(
-            f"<p class='score'>Score : {score()} / {done} ({pct}%)</p>"
-        )
+    qEl.replaceChildren(
+      html`<p style="font-size:0.75em; opacity:0.6; margin-bottom:8px;">Règle : ${q.rule}</p>`,
+      html`<p><strong>Donnez la dérivée de</strong> &nbsp; <code>${q.func}</code></p>`,
+      ...q.choices.map(c => {
+        const b = html`<button style="${btnStyle}">${c}</button>`;
+        if (answered) {
+          b.disabled = true;
+          if (c === q.correct) b.style.borderColor = "#4caf50";
+          else if (c === chosen) b.style.borderColor = "#e53935";
+        }
+        b.onclick = () => {
+          if (answered) return;
+          answered = true; chosen = c; done += 1;
+          if (c === q.correct) score += 1;
+          render();
+        };
+        return b;
+      })
+    );
 
-    @output
-    @render.ui
-    def question_ui():
-        q = current_q()
-        choices_html = "".join(
-            f"<button class='btn-choice' onclick=\"Shiny.setInputValue('choice','{c}',{{priority:'event'}})\">{c}</button>"
-            for c in q["choices"]
-        )
-        return ui.HTML(
-            f"<p class='rule-tag'>Règle : {q['rule']}</p>"
-            f"<p><strong>Donnez la dérivée de</strong> &nbsp; "
-            f"<code style='font-size:1em;'>{q['func']}</code></p>"
-            + choices_html
-        )
+    if (!answered) fbEl.replaceChildren();
+    else if (chosen === q.correct) {
+      fbEl.replaceChildren(html`<div style="border-radius:6px; padding:10px 14px; margin-top:10px; font-size:0.9em; background:rgba(76,175,80,0.15); border-left:4px solid #4caf50;">✅ <strong>Correct !</strong><br>${q.hint}</div>`);
+    } else {
+      fbEl.replaceChildren(html`<div style="border-radius:6px; padding:10px 14px; margin-top:10px; font-size:0.9em; background:rgba(229,57,53,0.15); border-left:4px solid #e53935;">❌ <strong>Incorrect.</strong> Bonne réponse : <em>${q.correct}</em><br>${q.hint}</div>`);
+    }
+  }
 
-    @output
-    @render.ui
-    def feedback_ui():
-        if not answered():
-            return ui.HTML("")
-        q = current_q()
-        if chosen() == q["correct"]:
-            return ui.HTML(
-                f"<div class='feedback correct'>"
-                f"✅ <strong>Correct !</strong><br>{q['hint']}</div>"
-            )
-        return ui.HTML(
-            f"<div class='feedback wrong'>"
-            f"❌ <strong>Incorrect.</strong> Bonne réponse : "
-            f"<em>{q['correct']}</em><br>{q['hint']}</div>"
-        )
-
-    @reactive.Effect
-    @reactive.event(input.choice)
-    def _on_choice():
-        if answered():
-            return
-        c = input.choice()
-        q = current_q()
-        answered.set(True)
-        chosen.set(c)
-        total_done.set(total_done() + 1)
-        if c == q["correct"]:
-            score.set(score() + 1)
-
-    @reactive.Effect
-    @reactive.event(input.next_q)
-    def _on_next():
-        idx.set(idx() + 1)
-        answered.set(False)
-        chosen.set(None)
-
-app = App(app_ui, server)
+  next.onclick = () => { idx += 1; answered = false; chosen = null; render(); };
+  render();
+  return root;
+}
 ```
 
 # Conclusion
