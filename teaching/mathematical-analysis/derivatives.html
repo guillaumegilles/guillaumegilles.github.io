@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Dérivée d’une fonction univariée – Guillaume Gilles</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/profile.jpeg" rel="icon" type="image/jpeg">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bd80c826246aa7a07474d267acf3e75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var path = window.location.pathname;
+  var isEnTeaching = path.startsWith('/teaching/');
+  var isFrTeaching = path.startsWith('/fr/teaching/');
+
+  function translateTool() {
+    var icon = document.querySelector('.bi-translate');
+    return icon ? icon.closest('.dropdown') : null;
+  }
+
+  // Outside the teaching section: hide the translate tool
+  if (!isEnTeaching && !isFrTeaching) {
+    var tool = translateTool();
+    if (tool) tool.style.display = 'none';
+    return;
+  }
+
+  // Skip RevealJS slides
+  if (document.body.classList.contains('reveal')) return;
+
+  // Courses with full page-for-page FR translations [EN prefix, FR prefix]
+  var fullPairs = [
+    ['/teaching/mathematical-fundamentals/', '/fr/teaching/mathematical-fundamentals/'],
+  ];
+
+  function frCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][0]))
+        return fullPairs[i][1] + p.slice(fullPairs[i][0].length);
+    }
+    var slug = p.replace('/teaching/', '').split('/')[0];
+    return '/fr/teaching/' + slug + '/';
+  }
+
+  function enCounterpart(p) {
+    for (var i = 0; i < fullPairs.length; i++) {
+      if (p.startsWith(fullPairs[i][1]))
+        return fullPairs[i][0] + p.slice(fullPairs[i][1].length);
+    }
+    var slug = p.replace('/fr/teaching/', '').split('/')[0];
+    return '/teaching/' + slug + '/';
+  }
+
+  var enHref = isEnTeaching ? path : enCounterpart(path);
+  var frHref = isFrTeaching ? path : frCounterpart(path);
+
+  var tool = translateTool();
+  if (!tool) return;
+
+  tool.querySelectorAll('a.dropdown-item').forEach(function (a) {
+    var txt = a.textContent.trim();
+    if (txt.includes('English')) a.href = enHref;
+    else if (txt.includes('Français') || txt.includes('francais')) a.href = frHref;
+  });
+});
+</script>
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Dérivée d’une fonction univariée – Guillaume Gilles">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://ggilles.dev/teaching/mathematical-analysis/assets/og-image.jpg">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta name="twitter:title" content="Dérivée d’une fonction univariée – Guillaume Gilles">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://ggilles.dev/teaching/mathematical-analysis/assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/profile.jpeg" alt="" class="navbar-logo light-content">
+    <img src="../../assets/profile.jpeg" alt="" class="navbar-logo dark-content">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <div class="dropdown">
+      <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../teaching.html">
+            🇬🇧 English
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../../fr/teaching.html">
+            🇫🇷 Français
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Dérivée d’une fonction univariée</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">0.1</span> Introduction</a></li>
+  <li><a href="#définition-de-la-dérivée" id="toc-définition-de-la-dérivée" class="nav-link" data-scroll-target="#définition-de-la-dérivée"><span class="header-section-number">0.2</span> Définition de la dérivée</a></li>
+  <li><a href="#intuition-du-taux-moyen-au-taux-instantané" id="toc-intuition-du-taux-moyen-au-taux-instantané" class="nav-link" data-scroll-target="#intuition-du-taux-moyen-au-taux-instantané"><span class="header-section-number">0.3</span> Intuition : du taux moyen au taux instantané</a></li>
+  <li><a href="#dérivées-des-fonctions-usuelles" id="toc-dérivées-des-fonctions-usuelles" class="nav-link" data-scroll-target="#dérivées-des-fonctions-usuelles"><span class="header-section-number">0.4</span> Dérivées des fonctions usuelles</a></li>
+  <li><a href="#partie-2---fonctions-composées" id="toc-partie-2---fonctions-composées" class="nav-link" data-scroll-target="#partie-2---fonctions-composées"><span class="header-section-number">1</span> Partie 2 - Fonctions composées</a>
+  <ul class="collapse">
+  <li><a href="#règles-de-dérivation" id="toc-règles-de-dérivation" class="nav-link" data-scroll-target="#règles-de-dérivation"><span class="header-section-number">1.1</span> Règles de dérivation</a></li>
+  <li><a href="#exemples-pas-a-pas" id="toc-exemples-pas-a-pas" class="nav-link" data-scroll-target="#exemples-pas-a-pas"><span class="header-section-number">1.2</span> Exemples pas a pas</a></li>
+  </ul></li>
+  <li><a href="#partie-3---interprétation-de-la-dérivée" id="toc-partie-3---interprétation-de-la-dérivée" class="nav-link" data-scroll-target="#partie-3---interprétation-de-la-dérivée"><span class="header-section-number">2</span> Partie 3 - Interprétation de la dérivée</a>
+  <ul class="collapse">
+  <li><a href="#interprétation-géométrique" id="toc-interprétation-géométrique" class="nav-link" data-scroll-target="#interprétation-géométrique"><span class="header-section-number">2.1</span> Interprétation géométrique</a></li>
+  <li><a href="#approximation-locale-utile" id="toc-approximation-locale-utile" class="nav-link" data-scroll-target="#approximation-locale-utile"><span class="header-section-number">2.2</span> Approximation locale utile</a></li>
+  <li><a href="#sens-de-variation" id="toc-sens-de-variation" class="nav-link" data-scroll-target="#sens-de-variation"><span class="header-section-number">2.3</span> Sens de variation</a></li>
+  <li><a href="#exercices" id="toc-exercices" class="nav-link" data-scroll-target="#exercices"><span class="header-section-number">2.4</span> Exercices</a></li>
+  <li><a href="#exercices-supplémentaires-issus-du-support" id="toc-exercices-supplémentaires-issus-du-support" class="nav-link" data-scroll-target="#exercices-supplémentaires-issus-du-support"><span class="header-section-number">2.5</span> Exercices supplémentaires (issus du support)</a></li>
+  <li><a href="#exercice-interactif-quiz-de-dérivation" id="toc-exercice-interactif-quiz-de-dérivation" class="nav-link" data-scroll-target="#exercice-interactif-quiz-de-dérivation"><span class="header-section-number">2.6</span> Exercice interactif — Quiz de dérivation</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">3</span> Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Objectifs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Comprendre la <strong>dérivée d’une fonction univariée</strong></li>
+<li>Savoir <strong>calculer et interpréter</strong> une dérivée</li>
+<li>Étudier le <strong>sens de variation</strong> d’une fonction</li>
+<li>Comprendre et calculer l’<strong>élasticité</strong></li>
+</ul>
+</div>
+</div>
+<section id="introduction" class="level2 page-columns page-full" data-number="0.1">
+<h2 data-number="0.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">0.1</span> Introduction</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Pourquoi apprendre les dérivées ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Imaginez que vous gérez une boulangerie. Votre chiffre d’affaires quotidien est <span class="math inline">\(R(p) = 200p - 5p^2\)</span>, ou <span class="math inline">\(p\)</span> est le prix d’une baguette en euros.</p>
+<p>Si vous augmentez <span class="math inline">\(p\)</span> de 1 centime, votre chiffre d’affaires augmente-t-il ou diminue-t-il ? De combien exactement ?</p>
+<p>C’est précisément ce que mesure la dérivée : <strong>la variation instantanée d’une grandeur par rapport à une autre</strong>. Dans cet exemple, <span class="math inline">\(R'(p)\)</span> indique le gain (ou la perte) de chiffre d’affaires pour une hausse de prix infinitésimale.</p>
+</div>
+</div>
+<p>Ce module présente les notions fondamentales de dérivation des fonctions univariées et leur interprétation économique.</p>
+<section id="exemple-économique" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="exemple-économique">Exemple économique</h3>
+<p>Le graphique ci-dessous illustre le cas de la boulangerie : à gauche le chiffre d’affaires <span class="math inline">\(R(p)\)</span>, à droite sa dérivée <span class="math inline">\(R'(p)\)</span> qui mesure le gain marginal.</p>
+<div id="cell-fig-boulangerie" class="cell page-columns page-full" data-execution_count="1">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-boulangerie" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-boulangerie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="derivatives_files/figure-html/fig-boulangerie-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="852" height="332">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boulangerie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Chiffre d’affaires R(p) = 200p − 5p² : la dérivée indique le gain marginal par euro de hausse de prix.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="définition-de-la-dérivée" class="level2" data-number="0.2">
+<h2 data-number="0.2" class="anchored" data-anchor-id="définition-de-la-dérivée"><span class="header-section-number">0.2</span> Définition de la dérivée</h2>
+<p>Une fonction <span class="math inline">\(f\)</span> est dite dérivable en <span class="math inline">\(x\)</span> si le taux d’accroissement <span class="math inline">\(\frac{f(x+h)-f(x)}{h}\)</span> admet une limite quand <span class="math inline">\(h \to 0\)</span>.</p>
+<p>On définit alors :</p>
+<p><span class="math display">\[
+f'(x) = \lim_{h \to 0} \frac{f(x+h)-f(x)}{h}
+\]</span></p>
+</section>
+<section id="intuition-du-taux-moyen-au-taux-instantané" class="level2 page-columns page-full" data-number="0.3">
+<h2 data-number="0.3" class="anchored" data-anchor-id="intuition-du-taux-moyen-au-taux-instantané"><span class="header-section-number">0.3</span> Intuition : du taux moyen au taux instantané</h2>
+<p>Le quotient</p>
+<p><span class="math display">\[
+\frac{f(x+h)-f(x)}{h}
+\]</span></p>
+<p>mesure une <strong>variation moyenne</strong> de <span class="math inline">\(f\)</span> entre <span class="math inline">\(x\)</span> et <span class="math inline">\(x+h\)</span>. Quand <span class="math inline">\(h\)</span> devient très petit, on “zoome” autour de <span class="math inline">\(x\)</span> : cette variation moyenne tend vers une variation <strong>instantanée</strong>.</p>
+<p>C’est exactement ce que représente la dérivée <span class="math inline">\(f'(x)\)</span> :</p>
+<ul>
+<li>en géométrie : la pente de la tangente ;</li>
+<li>en économie : un effet marginal (coût marginal, recette marginale, etc.).</li>
+</ul>
+<section id="mini-lecture-numérique" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="mini-lecture-numérique">Mini-lecture numérique</h3>
+<p>Pour <span class="math inline">\(f(x)=x^2\)</span> au point <span class="math inline">\(x=3\)</span> :</p>
+<p><span class="math display">\[
+\frac{f(3+h)-f(3)}{h}=\frac{(3+h)^2-9}{h}=6+h
+\]</span></p>
+<p>Si <span class="math inline">\(h=1\)</span>, on obtient <span class="math inline">\(7\)</span> ; si <span class="math inline">\(h=0.1\)</span>, on obtient <span class="math inline">\(6.1\)</span> ; si <span class="math inline">\(h=0.01\)</span>, on obtient <span class="math inline">\(6.01\)</span>. La valeur se rapproche de <span class="math inline">\(6\)</span>, donc <span class="math inline">\(f'(3)=6\)</span>.</p>
+<div id="cell-fig-sécantes" class="cell page-columns page-full" data-execution_count="2">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-sécantes" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-sécantes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="derivatives_files/figure-html/fig-secantes-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="661" height="373">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sécantes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Droites sécantes pour h = 2, 1 et 0.1 : quand h tend vers 0, la sécante converge vers la tangente (pente = 6).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="à-retenir" class="level3">
+<h3 class="anchored" data-anchor-id="à-retenir">À retenir</h3>
+<ol type="1">
+<li>On calcule d’abord un taux moyen.</li>
+<li>On fait tendre <span class="math inline">\(h\)</span> vers 0.</li>
+<li>La limite obtenue est la dérivée (taux instantané).</li>
+</ol>
+</section>
+<section id="exercice-interactif-convergence-de-h-0" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-interactif-convergence-de-h-0">Exercice interactif — Convergence de h → 0</h3>
+<p>Utilisez le curseur pour faire varier <span class="math inline">\(h\)</span> et observez comment la pente de la sécante se rapproche de <span class="math inline">\(f'(3) = 6\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="194" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 193;"><span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`##### 🎯 De la sécante à la tangente</span></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="vs">Faites varier h pour voir comment la pente de la sécante se rapproche de f'(3) = 6 quand h → 0.`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="201" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 200;"><span id="cb2-201"><a href="#cb2-201" aria-hidden="true" tabindex="-1"></a>viewof sec_h <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.05</span><span class="op">,</span> <span class="fl">3.0</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="fl">2.0</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Valeur de h :"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="207" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 206;"><span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a>sec_slope <span class="op">=</span> ((<span class="dv">3</span> <span class="op">+</span> sec_h) <span class="op">**</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">9</span>) <span class="op">/</span> sec_h</span>
+<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a>sec_error <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(sec_slope <span class="op">-</span> <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="212" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 211;"><span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> close <span class="op">=</span> sec_error <span class="op">&lt;</span> <span class="fl">0.15</span><span class="op">;</span></span>
+<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> tick <span class="op">=</span> close <span class="op">?</span> <span class="st">"  ✅ Tres proche !"</span> <span class="op">:</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> color <span class="op">=</span> close <span class="op">?</span> <span class="st">"steelblue"</span> <span class="op">:</span> <span class="st">"#e07a5f"</span><span class="op">;</span></span>
+<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;div style="border-left:3px solid steelblue; border-radius:6px; padding:10px 14px; margin:8px 0; font-family:monospace; font-size:0.9em; background:rgba(128,128,128,0.10);"&gt;</span></span>
+<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a><span class="vs">    Pente = (f(3 + </span><span class="sc">${</span>sec_h<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">) − f(3)) / </span><span class="sc">${</span>sec_h<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span></span>
+<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a><span class="vs">    = &lt;strong style="color:darkorange"&gt;</span><span class="sc">${</span>sec_slope<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt;&lt;br&gt;</span></span>
+<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a><span class="vs">    Ecart avec 6 : &lt;strong style="color:</span><span class="sc">${</span>color<span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span>sec_error<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt;</span><span class="sc">${</span>tick<span class="sc">}</span></span>
+<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="226" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 225;"><span id="cb5-226"><a href="#cb5-226" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb5-227"><a href="#cb5-227" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> x0 <span class="op">=</span> <span class="dv">3</span><span class="op">,</span> y0 <span class="op">=</span> <span class="dv">9</span><span class="op">;</span></span>
+<span id="cb5-228"><a href="#cb5-228" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xs <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(<span class="fl">0.5</span><span class="op">,</span> <span class="fl">6.5001</span><span class="op">,</span> <span class="fl">0.02</span>)<span class="op">;</span></span>
+<span id="cb5-229"><a href="#cb5-229" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> lblF <span class="op">=</span> <span class="st">"f(x) = x²"</span><span class="op">;</span></span>
+<span id="cb5-230"><a href="#cb5-230" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> lblS <span class="op">=</span> <span class="vs">`Sécante  h=</span><span class="sc">${</span>sec_h<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">  (pente=</span><span class="sc">${</span>sec_slope<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="vs">)`</span><span class="op">;</span></span>
+<span id="cb5-231"><a href="#cb5-231" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> lblT <span class="op">=</span> <span class="st">"Tangente h→0  (pente = 6)"</span><span class="op">;</span></span>
+<span id="cb5-232"><a href="#cb5-232" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb5-233"><a href="#cb5-233" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="dv">700</span><span class="op">,</span></span>
+<span id="cb5-234"><a href="#cb5-234" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">380</span><span class="op">,</span></span>
+<span id="cb5-235"><a href="#cb5-235" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {<span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span><span class="op">,</span> <span class="dt">color</span><span class="op">:</span> <span class="st">"currentColor"</span><span class="op">,</span> <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"12px"</span>}<span class="op">,</span></span>
+<span id="cb5-236"><a href="#cb5-236" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="fl">0.5</span><span class="op">,</span> <span class="fl">6.5</span>]<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span>}<span class="op">,</span></span>
+<span id="cb5-237"><a href="#cb5-237" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">45</span>]<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"f(x)"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb5-238"><a href="#cb5-238" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb5-239"><a href="#cb5-239" aria-hidden="true" tabindex="-1"></a>      <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb5-240"><a href="#cb5-240" aria-hidden="true" tabindex="-1"></a>      <span class="dt">domain</span><span class="op">:</span> [lblF<span class="op">,</span> lblS<span class="op">,</span> lblT]<span class="op">,</span></span>
+<span id="cb5-241"><a href="#cb5-241" aria-hidden="true" tabindex="-1"></a>      <span class="dt">range</span><span class="op">:</span> [<span class="st">"steelblue"</span><span class="op">,</span> <span class="st">"darkorange"</span><span class="op">,</span> <span class="st">"currentColor"</span>]</span>
+<span id="cb5-242"><a href="#cb5-242" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb5-243"><a href="#cb5-243" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb5-244"><a href="#cb5-244" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">line</span>(xs<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> xs <span class="kw">=&gt;</span> xs<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> x <span class="kw">=&gt;</span> x <span class="op">*</span> x<span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> () <span class="kw">=&gt;</span> lblF<span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">2.2</span><span class="op">,</span> <span class="dt">clip</span><span class="op">:</span> <span class="kw">true</span>})<span class="op">,</span></span>
+<span id="cb5-245"><a href="#cb5-245" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">line</span>(xs<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> xs <span class="kw">=&gt;</span> xs<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> x <span class="kw">=&gt;</span> y0 <span class="op">+</span> sec_slope <span class="op">*</span> (x <span class="op">-</span> x0)<span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> () <span class="kw">=&gt;</span> lblS<span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">1.8</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"6,4"</span><span class="op">,</span> <span class="dt">clip</span><span class="op">:</span> <span class="kw">true</span>})<span class="op">,</span></span>
+<span id="cb5-246"><a href="#cb5-246" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">line</span>(xs<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> xs <span class="kw">=&gt;</span> xs<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> x <span class="kw">=&gt;</span> y0 <span class="op">+</span> <span class="dv">6</span> <span class="op">*</span> (x <span class="op">-</span> x0)<span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> () <span class="kw">=&gt;</span> lblT<span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">clip</span><span class="op">:</span> <span class="kw">true</span>})<span class="op">,</span></span>
+<span id="cb5-247"><a href="#cb5-247" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">dot</span>([[x0<span class="op">,</span> y0]<span class="op">,</span> [x0 <span class="op">+</span> sec_h<span class="op">,</span> (x0 <span class="op">+</span> sec_h) <span class="op">**</span> <span class="dv">2</span>]]<span class="op">,</span> {<span class="dt">fill</span><span class="op">:</span> <span class="st">"crimson"</span><span class="op">,</span> <span class="dt">r</span><span class="op">:</span> <span class="dv">5</span>})</span>
+<span id="cb5-248"><a href="#cb5-248" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb5-249"><a href="#cb5-249" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb5-250"><a href="#cb5-250" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-5" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
+<section id="exemple-détaillé-fxx2" class="level3">
+<h3 class="anchored" data-anchor-id="exemple-détaillé-fxx2">Exemple détaillé : <span class="math inline">\(f(x)=x^2\)</span></h3>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{f(x+h)-f(x)}{h}
+&amp;= \frac{(x+h)^2-x^2}{h} \\
+&amp;= \frac{x^2+2xh+h^2-x^2}{h} \\
+&amp;= 2x+h
+\end{aligned}
+\]</span></p>
+<p>Donc :</p>
+<p><span class="math display">\[
+f'(x) = \lim_{h \to 0}(2x+h)=2x
+\]</span></p>
+</section>
+<section id="exemples-rapides" class="level3">
+<h3 class="anchored" data-anchor-id="exemples-rapides">Exemples rapides</h3>
+<ul>
+<li><span class="math inline">\(f(x)=\frac{1}{x} \Rightarrow f'(x)=-\frac{1}{x^2}\)</span></li>
+<li><span class="math inline">\(f(x)=\sqrt{x} \Rightarrow f'(x)=\frac{1}{2\sqrt{x}}, \; x&gt;0\)</span></li>
+</ul>
+</section>
+</section>
+<section id="dérivées-des-fonctions-usuelles" class="level2" data-number="0.4">
+<h2 data-number="0.4" class="anchored" data-anchor-id="dérivées-des-fonctions-usuelles"><span class="header-section-number">0.4</span> Dérivées des fonctions usuelles</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Fonction <span class="math inline">\(f(x)\)</span></th>
+<th>Dérivée <span class="math inline">\(f'(x)\)</span></th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(k\)</span></td>
+<td><span class="math inline">\(0\)</span></td>
+<td><span class="math inline">\(k\)</span> constante réelle</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(kx\)</span></td>
+<td><span class="math inline">\(k\)</span></td>
+<td><span class="math inline">\(k\)</span> constante réelle</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(x^n\)</span></td>
+<td><span class="math inline">\(nx^{n-1}\)</span></td>
+<td><span class="math inline">\(n \in \mathbb{N}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\frac{1}{x^n}\)</span></td>
+<td><span class="math inline">\(\frac{-n}{x^{n+1}}\)</span></td>
+<td><span class="math inline">\(x \neq 0\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\sqrt{x}\)</span></td>
+<td><span class="math inline">\(\frac{1}{2\sqrt{x}}\)</span></td>
+<td><span class="math inline">\(x &gt; 0\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(e^x\)</span></td>
+<td><span class="math inline">\(e^x\)</span></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\ln(x)\)</span></td>
+<td><span class="math inline">\(\frac{1}{x}\)</span></td>
+<td><span class="math inline">\(x&gt;0\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Comment lire ce tableau
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>La constante ne varie jamais : <span class="math inline">\(f(x)=5 \Rightarrow f'(x)=0\)</span>.</li>
+<li>La dérivée de <span class="math inline">\(kx\)</span> est la pente <span class="math inline">\(k\)</span> : une augmentation de 1 de <span class="math inline">\(x\)</span> fait varier <span class="math inline">\(f\)</span> de <span class="math inline">\(k\)</span> unités.</li>
+<li>La dérivée de <span class="math inline">\(x^n\)</span> “abaisse l’exposant d’un cran” : <span class="math inline">\(x^4 \to 4x^3\)</span>.</li>
+<li><span class="math inline">\(e^x\)</span> est sa propre dérivée : son taux de croissance instantané est égal à sa valeur — propriété remarquable exploitée en finance (actualisation).</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Domaine de définition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La dérivée n’est définie que là où la fonction est définie. Par exemple, <span class="math inline">\(\ln(x)\)</span> impose <span class="math inline">\(x &gt; 0\)</span>, donc <span class="math inline">\((\ln(x))' = \frac{1}{x}\)</span> est également valable uniquement pour <span class="math inline">\(x &gt; 0\)</span>.</p>
+<p><strong>Toujours préciser le domaine de définition</strong> avant de dériver.</p>
+</div>
+</div>
+</section>
+<section id="partie-2---fonctions-composées" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Partie 2 - Fonctions composées</h1>
+<section id="règles-de-dérivation" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="règles-de-dérivation"><span class="header-section-number">1.1</span> Règles de dérivation</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Règle</th>
+<th>Formule</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Somme</td>
+<td><span class="math inline">\((u+v)' = u' + v'\)</span></td>
+</tr>
+<tr class="even">
+<td>Produit</td>
+<td><span class="math inline">\((uv)' = u'v + uv'\)</span></td>
+</tr>
+<tr class="odd">
+<td>Quotient</td>
+<td><span class="math inline">\(\left(\dfrac{u}{v}\right)' = \dfrac{u'v - uv'}{v^2}\)</span></td>
+</tr>
+<tr class="even">
+<td>Exponentielle composée</td>
+<td><span class="math inline">\((e^{u(x)})' = u'(x)\,e^{u(x)}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Logarithme compose</td>
+<td><span class="math inline">\((\ln(u(x)))' = \dfrac{u'(x)}{u(x)}\)</span></td>
+</tr>
+<tr class="even">
+<td>Puissance composée</td>
+<td><span class="math inline">\((u(x)^n)' = n\,u'(x)\,u(x)^{n-1}\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>La règle du produit en detail
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La règle <span class="math inline">\((uv)' = u'v + uv'\)</span> est souvent source d’erreurs. Pensez-y ainsi : quand le produit de deux quantités varie, <strong>chaque terme contribue tour à tour</strong> pendant que l’autre reste fixe. On additionne les deux contributions.</p>
+</div>
+</div>
+</section>
+<section id="exemples-pas-a-pas" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="exemples-pas-a-pas"><span class="header-section-number">1.2</span> Exemples pas a pas</h2>
+<section id="règle-de-la-somme-fx-4x---ex" class="level3">
+<h3 class="anchored" data-anchor-id="règle-de-la-somme-fx-4x---ex">Règle de la somme : <span class="math inline">\(f(x) = 4x - e^x\)</span></h3>
+<p>On pose <span class="math inline">\(u(x)=4x\)</span> et <span class="math inline">\(v(x)=e^x\)</span>.</p>
+<p><span class="math display">\[
+u'(x)=4, \qquad v'(x)=e^x
+\]</span></p>
+<p><span class="math display">\[
+f'(x) = 4 - e^x
+\]</span></p>
+<hr>
+</section>
+<section id="règle-du-produit-fx-2x3ex" class="level3">
+<h3 class="anchored" data-anchor-id="règle-du-produit-fx-2x3ex">Règle du produit : <span class="math inline">\(f(x) = (2x+3)\,e^x\)</span></h3>
+<p>On pose <span class="math inline">\(u(x)=2x+3\)</span> et <span class="math inline">\(v(x)=e^x\)</span>.</p>
+<p><span class="math display">\[
+u'(x)=2, \qquad v'(x)=e^x
+\]</span></p>
+<p><span class="math display">\[
+f'(x) = u'v + uv' = 2\,e^x + (2x+3)\,e^x = e^x(2x+5)
+\]</span></p>
+<hr>
+</section>
+<section id="règle-du-quotient-fx-dfraclnx2x2" class="level3">
+<h3 class="anchored" data-anchor-id="règle-du-quotient-fx-dfraclnx2x2">Règle du quotient : <span class="math inline">\(f(x) = \dfrac{\ln(x)}{2x^2}\)</span></h3>
+<p>On pose <span class="math inline">\(u(x)=\ln(x)\)</span> et <span class="math inline">\(v(x)=2x^2\)</span>.</p>
+<p><span class="math display">\[
+u'(x)=\frac{1}{x}, \qquad v'(x)=4x
+\]</span></p>
+<p><span class="math display">\[
+f'(x) = \frac{\frac{1}{x}\cdot 2x^2 - \ln(x)\cdot 4x}{(2x^2)^2}
+       = \frac{2x - 4x\ln(x)}{4x^4}
+       = \frac{1 - 2\ln(x)}{2x^3}
+\]</span></p>
+<hr>
+</section>
+<section id="exponentielle-composée-fx-e2x23x" class="level3">
+<h3 class="anchored" data-anchor-id="exponentielle-composée-fx-e2x23x">Exponentielle composée : <span class="math inline">\(f(x) = e^{2x^2+3x}\)</span></h3>
+<p>On pose <span class="math inline">\(u(x)=2x^2+3x\)</span>.</p>
+<p><span class="math display">\[
+u'(x)=4x+3
+\]</span></p>
+<p><span class="math display">\[
+f'(x) = u'(x)\,e^{u(x)} = (4x+3)\,e^{2x^2+3x}
+\]</span></p>
+<hr>
+</section>
+<section id="logarithme-compose-fx-ln4x22" class="level3">
+<h3 class="anchored" data-anchor-id="logarithme-compose-fx-ln4x22">Logarithme compose : <span class="math inline">\(f(x) = \ln(4x^2+2)\)</span></h3>
+<p>On pose <span class="math inline">\(u(x)=4x^2+2\)</span>.</p>
+<p><span class="math display">\[
+u'(x)=8x
+\]</span></p>
+<p><span class="math display">\[
+f'(x) = \frac{u'(x)}{u(x)} = \frac{8x}{4x^2+2} = \frac{4x}{2x^2+1}
+\]</span></p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Erreur classique
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ne pas confondre <span class="math inline">\((\ln(x))' = \frac{1}{x}\)</span> et <span class="math inline">\((\ln(u(x)))' = \frac{u'(x)}{u(x)}\)</span>.</p>
+<p>Toujours verifier si l’argument du <span class="math inline">\(\ln\)</span> est une expression composée, et si oui, multiplier par sa dérivée.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="partie-3---interprétation-de-la-dérivée" class="level1 page-columns page-full" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Partie 3 - Interprétation de la dérivée</h1>
+<section id="interprétation-géométrique" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="interprétation-géométrique"><span class="header-section-number">2.1</span> Interprétation géométrique</h2>
+<p>La dérivée <span class="math inline">\(f'(a)\)</span> représente la pente de la tangente à la courbe de <span class="math inline">\(f\)</span> au point d’abscisse <span class="math inline">\(a\)</span>.</p>
+</section>
+<section id="approximation-locale-utile" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="approximation-locale-utile"><span class="header-section-number">2.2</span> Approximation locale utile</h2>
+<p>Pres d’un point <span class="math inline">\(a\)</span>, on peut approximer :</p>
+<p><span class="math display">\[
+f(a+h) \approx f(a) + f'(a)h
+\]</span></p>
+<p>Cette formule donne une lecture pratique : <span class="math inline">\(f'(a)\)</span> indique la variation attendue de <span class="math inline">\(f\)</span> pour une petite variation de la variable.</p>
+</section>
+<section id="sens-de-variation" class="level2 page-columns page-full" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sens-de-variation"><span class="header-section-number">2.3</span> Sens de variation</h2>
+<ul>
+<li>Si <span class="math inline">\(f'(x)&gt;0\)</span>, la fonction est croissante.</li>
+<li>Si <span class="math inline">\(f'(x)&lt;0\)</span>, la fonction est décroissante.</li>
+<li>Si <span class="math inline">\(f'(x)=0\)</span>, <span class="math inline">\(x\)</span> est un point critique.</li>
+</ul>
+<div id="cell-fig-signe-dérivée" class="cell page-columns page-full" data-execution_count="3">
+<div class="cell-output cell-output-display page-columns page-full">
+<div id="fig-signe-dérivée" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-signe-dérivée-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="derivatives_files/figure-html/fig-signe-derivee-output-1.png" class="quarto-figure quarto-figure-center figure-img column-screen-inset" width="853" height="381">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-signe-dérivée-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: f(x) = x³ − 3x et sa dérivée f’(x) = 3x² − 3. Les zones bleues indiquent où f est croissante (f’ &gt; 0) ; les zones rouges où f est décroissante (f’ &lt; 0).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="exercice-interactif-explorer-le-sens-de-variation" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-interactif-explorer-le-sens-de-variation">Exercice interactif — Explorer le sens de variation</h3>
+<p>Choisissez une fonction et observez comment le signe de <span class="math inline">\(f'\)</span> détermine la croissance ou la décroissance de <span class="math inline">\(f\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="502" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 501;"><span id="cb6-502"><a href="#cb6-502" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`##### 📈 Signe de f' et sens de variation</span></span>
+<span id="cb6-503"><a href="#cb6-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-504"><a href="#cb6-504" aria-hidden="true" tabindex="-1"></a><span class="vs">Sélectionnez une fonction et observez le lien entre le signe de f' et la croissance / décroissance de f.`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="509" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 508;"><span id="cb7-509"><a href="#cb7-509" aria-hidden="true" tabindex="-1"></a>sgn_functions <span class="op">=</span> <span class="kw">new</span> <span class="bu">Map</span>([</span>
+<span id="cb7-510"><a href="#cb7-510" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"f(x) = x² − 4x  (profit)"</span><span class="op">,</span> {</span>
+<span id="cb7-511"><a href="#cb7-511" aria-hidden="true" tabindex="-1"></a>    <span class="dt">f</span><span class="op">:</span> x <span class="kw">=&gt;</span> x <span class="op">**</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">4</span> <span class="op">*</span> x<span class="op">,</span> <span class="dt">fp</span><span class="op">:</span> x <span class="kw">=&gt;</span> <span class="dv">2</span> <span class="op">*</span> x <span class="op">-</span> <span class="dv">4</span><span class="op">,</span></span>
+<span id="cb7-512"><a href="#cb7-512" aria-hidden="true" tabindex="-1"></a>    <span class="dt">xlim</span><span class="op">:</span> [<span class="op">-</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">6.0</span>]<span class="op">,</span> <span class="dt">title_f</span><span class="op">:</span> <span class="st">"f(x) = x² − 4x"</span><span class="op">,</span> <span class="dt">title_fp</span><span class="op">:</span> <span class="st">"f'(x) = 2x − 4"</span><span class="op">,</span> <span class="dt">zeros</span><span class="op">:</span> [<span class="dv">2</span>]</span>
+<span id="cb7-513"><a href="#cb7-513" aria-hidden="true" tabindex="-1"></a>  }]<span class="op">,</span></span>
+<span id="cb7-514"><a href="#cb7-514" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"f(x) = x³ − 3x  (cubique)"</span><span class="op">,</span> {</span>
+<span id="cb7-515"><a href="#cb7-515" aria-hidden="true" tabindex="-1"></a>    <span class="dt">f</span><span class="op">:</span> x <span class="kw">=&gt;</span> x <span class="op">**</span> <span class="dv">3</span> <span class="op">-</span> <span class="dv">3</span> <span class="op">*</span> x<span class="op">,</span> <span class="dt">fp</span><span class="op">:</span> x <span class="kw">=&gt;</span> <span class="dv">3</span> <span class="op">*</span> x <span class="op">**</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">3</span><span class="op">,</span></span>
+<span id="cb7-516"><a href="#cb7-516" aria-hidden="true" tabindex="-1"></a>    <span class="dt">xlim</span><span class="op">:</span> [<span class="op">-</span><span class="fl">2.4</span><span class="op">,</span> <span class="fl">2.4</span>]<span class="op">,</span> <span class="dt">title_f</span><span class="op">:</span> <span class="st">"f(x) = x³ − 3x"</span><span class="op">,</span> <span class="dt">title_fp</span><span class="op">:</span> <span class="st">"f'(x) = 3x² − 3"</span><span class="op">,</span> <span class="dt">zeros</span><span class="op">:</span> [<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>]</span>
+<span id="cb7-517"><a href="#cb7-517" aria-hidden="true" tabindex="-1"></a>  }]<span class="op">,</span></span>
+<span id="cb7-518"><a href="#cb7-518" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"f(x) = −x² + 6x  (recette max)"</span><span class="op">,</span> {</span>
+<span id="cb7-519"><a href="#cb7-519" aria-hidden="true" tabindex="-1"></a>    <span class="dt">f</span><span class="op">:</span> x <span class="kw">=&gt;</span> <span class="op">-</span>(x <span class="op">**</span> <span class="dv">2</span>) <span class="op">+</span> <span class="dv">6</span> <span class="op">*</span> x<span class="op">,</span> <span class="dt">fp</span><span class="op">:</span> x <span class="kw">=&gt;</span> <span class="op">-</span><span class="dv">2</span> <span class="op">*</span> x <span class="op">+</span> <span class="dv">6</span><span class="op">,</span></span>
+<span id="cb7-520"><a href="#cb7-520" aria-hidden="true" tabindex="-1"></a>    <span class="dt">xlim</span><span class="op">:</span> [<span class="op">-</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">8.0</span>]<span class="op">,</span> <span class="dt">title_f</span><span class="op">:</span> <span class="st">"f(x) = −x² + 6x"</span><span class="op">,</span> <span class="dt">title_fp</span><span class="op">:</span> <span class="st">"f'(x) = −2x + 6"</span><span class="op">,</span> <span class="dt">zeros</span><span class="op">:</span> [<span class="dv">3</span>]</span>
+<span id="cb7-521"><a href="#cb7-521" aria-hidden="true" tabindex="-1"></a>  }]</span>
+<span id="cb7-522"><a href="#cb7-522" aria-hidden="true" tabindex="-1"></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="527" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 526;"><span id="cb8-527"><a href="#cb8-527" aria-hidden="true" tabindex="-1"></a>viewof sgn_cfg <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>(sgn_functions<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Fonction :"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="532" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 531;"><span id="cb9-532"><a href="#cb9-532" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb9-533"><a href="#cb9-533" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> cfg <span class="op">=</span> sgn_cfg<span class="op">;</span></span>
+<span id="cb9-534"><a href="#cb9-534" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xs <span class="op">=</span> d3<span class="op">.</span><span class="fu">range</span>(cfg<span class="op">.</span><span class="at">xlim</span>[<span class="dv">0</span>]<span class="op">,</span> cfg<span class="op">.</span><span class="at">xlim</span>[<span class="dv">1</span>] <span class="op">+</span> <span class="fl">1e-9</span><span class="op">,</span> (cfg<span class="op">.</span><span class="at">xlim</span>[<span class="dv">1</span>] <span class="op">-</span> cfg<span class="op">.</span><span class="at">xlim</span>[<span class="dv">0</span>]) <span class="op">/</span> <span class="dv">400</span>)<span class="op">;</span></span>
+<span id="cb9-535"><a href="#cb9-535" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pts <span class="op">=</span> xs<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> ({x<span class="op">,</span> <span class="dt">f</span><span class="op">:</span> cfg<span class="op">.</span><span class="fu">f</span>(x)<span class="op">,</span> <span class="dt">fp</span><span class="op">:</span> cfg<span class="op">.</span><span class="fu">fp</span>(x)}))<span class="op">;</span></span>
+<span id="cb9-536"><a href="#cb9-536" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> up <span class="op">=</span> <span class="st">"Croissante (f' &gt; 0)"</span><span class="op">,</span> down <span class="op">=</span> <span class="st">"Décroissante (f' &lt; 0)"</span><span class="op">;</span></span>
+<span id="cb9-537"><a href="#cb9-537" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> common <span class="op">=</span> {</span>
+<span id="cb9-538"><a href="#cb9-538" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="dv">440</span><span class="op">,</span> <span class="dt">height</span><span class="op">:</span> <span class="dv">340</span><span class="op">,</span></span>
+<span id="cb9-539"><a href="#cb9-539" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {<span class="dt">background</span><span class="op">:</span> <span class="st">"transparent"</span><span class="op">,</span> <span class="dt">color</span><span class="op">:</span> <span class="st">"currentColor"</span><span class="op">,</span> <span class="dt">fontSize</span><span class="op">:</span> <span class="st">"12px"</span>}<span class="op">,</span></span>
+<span id="cb9-540"><a href="#cb9-540" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}</span>
+<span id="cb9-541"><a href="#cb9-541" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb9-542"><a href="#cb9-542" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> axes <span class="op">=</span> [Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"#888"</span>})<span class="op">,</span> Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"#888"</span>})]<span class="op">;</span></span>
+<span id="cb9-543"><a href="#cb9-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-544"><a href="#cb9-544" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> p1 <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb9-545"><a href="#cb9-545" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span>common<span class="op">,</span></span>
+<span id="cb9-546"><a href="#cb9-546" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"f(x)"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb9-547"><a href="#cb9-547" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [up<span class="op">,</span> down]<span class="op">,</span> <span class="dt">range</span><span class="op">:</span> [<span class="st">"steelblue"</span><span class="op">,</span> <span class="st">"crimson"</span>]}<span class="op">,</span></span>
+<span id="cb9-548"><a href="#cb9-548" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb9-549"><a href="#cb9-549" aria-hidden="true" tabindex="-1"></a>      <span class="op">...</span>axes<span class="op">,</span></span>
+<span id="cb9-550"><a href="#cb9-550" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(pts<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y1</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">y2</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">fp</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> d<span class="op">.</span><span class="at">f</span> <span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> up<span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.28</span>})<span class="op">,</span></span>
+<span id="cb9-551"><a href="#cb9-551" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(pts<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y1</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">y2</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">fp</span> <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">?</span> d<span class="op">.</span><span class="at">f</span> <span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> down<span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.28</span>})<span class="op">,</span></span>
+<span id="cb9-552"><a href="#cb9-552" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">line</span>(pts<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"f"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">2.2</span>})</span>
+<span id="cb9-553"><a href="#cb9-553" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb9-554"><a href="#cb9-554" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb9-555"><a href="#cb9-555" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> p2 <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb9-556"><a href="#cb9-556" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span>common<span class="op">,</span></span>
+<span id="cb9-557"><a href="#cb9-557" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"f'(x)"</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb9-558"><a href="#cb9-558" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb9-559"><a href="#cb9-559" aria-hidden="true" tabindex="-1"></a>      <span class="op">...</span>axes<span class="op">,</span></span>
+<span id="cb9-560"><a href="#cb9-560" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(pts<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y1</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">y2</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">fp</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> d<span class="op">.</span><span class="at">fp</span> <span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"steelblue"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.28</span>})<span class="op">,</span></span>
+<span id="cb9-561"><a href="#cb9-561" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">areaY</span>(pts<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y1</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">y2</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">fp</span> <span class="op">&lt;</span> <span class="dv">0</span> <span class="op">?</span> d<span class="op">.</span><span class="at">fp</span> <span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"crimson"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.28</span>})<span class="op">,</span></span>
+<span id="cb9-562"><a href="#cb9-562" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">line</span>(pts<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"fp"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"darkorange"</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="fl">2.2</span>})<span class="op">,</span></span>
+<span id="cb9-563"><a href="#cb9-563" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">dot</span>(cfg<span class="op">.</span><span class="at">zeros</span><span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"currentColor"</span><span class="op">,</span> <span class="dt">r</span><span class="op">:</span> <span class="dv">4</span>})</span>
+<span id="cb9-564"><a href="#cb9-564" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb9-565"><a href="#cb9-565" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb9-566"><a href="#cb9-566" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;div style="text-align:center; font-size:0.9em; margin-bottom:4px;"&gt;Signe de f' ⇔ sens de variation de f&lt;/div&gt;</span></span>
+<span id="cb9-567"><a href="#cb9-567" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;"&gt;</span></span>
+<span id="cb9-568"><a href="#cb9-568" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div&gt;&lt;div style="text-align:center;"&gt;&lt;code&gt;</span><span class="sc">${</span>cfg<span class="op">.</span><span class="at">title_f</span><span class="sc">}</span><span class="vs">&lt;/code&gt;&lt;/div&gt;</span><span class="sc">${</span>p1<span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb9-569"><a href="#cb9-569" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;div&gt;&lt;div style="text-align:center;"&gt;&lt;code&gt;</span><span class="sc">${</span>cfg<span class="op">.</span><span class="at">title_fp</span><span class="sc">}</span><span class="vs">&lt;/code&gt;&lt;/div&gt;</span><span class="sc">${</span>p2<span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb9-570"><a href="#cb9-570" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb9-571"><a href="#cb9-571" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-9" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="exercices" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="exercices"><span class="header-section-number">2.4</span> Exercices</h2>
+<ol type="1">
+<li>Calculer les dérivées de <span class="math inline">\(3x^2\)</span>, <span class="math inline">\(5x^3-2x\)</span>, et <span class="math inline">\(\frac{1}{x}\)</span>.</li>
+<li>Étudier le sens de variation de <span class="math inline">\(f(x)=x^3-3x\)</span>.</li>
+<li>Calculer <span class="math inline">\(f'(2)\)</span> pour <span class="math inline">\(f(x)=4x^4-3x^2+7\)</span>.</li>
+</ol>
+</section>
+<section id="exercices-supplémentaires-issus-du-support" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="exercices-supplémentaires-issus-du-support"><span class="header-section-number">2.5</span> Exercices supplémentaires (issus du support)</h2>
+<ol type="1">
+<li>Dériver et donner le domaine de définition :
+<ul>
+<li><span class="math inline">\(f(x)=5\)</span></li>
+<li><span class="math inline">\(g(x)=5x\)</span></li>
+<li><span class="math inline">\(h(x)=-7x+2\)</span></li>
+<li><span class="math inline">\(k(x)=5x^2+8x-3\)</span></li>
+</ul></li>
+<li>Dériver les fonctions composées :
+<ul>
+<li><span class="math inline">\(f(x)=(x-2)(2x+5)\)</span></li>
+<li><span class="math inline">\(g(x)=x(3x-2)\)</span></li>
+<li><span class="math inline">\(h(x)=\dfrac{\ln(x)}{2x^2}\)</span></li>
+</ul></li>
+<li>Étudier les variations de :
+<ul>
+<li><span class="math inline">\(u(x)=x^2-2x-3\)</span></li>
+<li><span class="math inline">\(v(x)=\dfrac{1}{x}\)</span></li>
+<li><span class="math inline">\(w(x)=e^{2x^2+3x}\)</span></li>
+</ul></li>
+</ol>
+</section>
+<section id="exercice-interactif-quiz-de-dérivation" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="exercice-interactif-quiz-de-dérivation"><span class="header-section-number">2.6</span> Exercice interactif — Quiz de dérivation</h2>
+<p>Testez vos reflexes : une fonction s’affiche, choisissez la bonne dérivée et recevez un retour immédiat.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="602" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 601;"><span id="cb10-602"><a href="#cb10-602" aria-hidden="true" tabindex="-1"></a>quiz_questions <span class="op">=</span> [</span>
+<span id="cb10-603"><a href="#cb10-603" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">func</span><span class="op">:</span> <span class="st">"f(x) = 5"</span><span class="op">,</span> <span class="dt">correct</span><span class="op">:</span> <span class="st">"f'(x) = 0"</span><span class="op">,</span></span>
+<span id="cb10-604"><a href="#cb10-604" aria-hidden="true" tabindex="-1"></a>   <span class="dt">choices</span><span class="op">:</span> [<span class="st">"f'(x) = 0"</span><span class="op">,</span> <span class="st">"f'(x) = 5"</span><span class="op">,</span> <span class="st">"f'(x) = 1"</span><span class="op">,</span> <span class="st">"f'(x) = 5x"</span>]<span class="op">,</span></span>
+<span id="cb10-605"><a href="#cb10-605" aria-hidden="true" tabindex="-1"></a>   <span class="dt">hint</span><span class="op">:</span> <span class="st">"La dérivée d'une constante est toujours zéro."</span><span class="op">,</span> <span class="dt">rule</span><span class="op">:</span> <span class="st">"Constante"</span>}<span class="op">,</span></span>
+<span id="cb10-606"><a href="#cb10-606" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">func</span><span class="op">:</span> <span class="st">"f(x) = 3x"</span><span class="op">,</span> <span class="dt">correct</span><span class="op">:</span> <span class="st">"f'(x) = 3"</span><span class="op">,</span></span>
+<span id="cb10-607"><a href="#cb10-607" aria-hidden="true" tabindex="-1"></a>   <span class="dt">choices</span><span class="op">:</span> [<span class="st">"f'(x) = 3x²"</span><span class="op">,</span> <span class="st">"f'(x) = 3"</span><span class="op">,</span> <span class="st">"f'(x) = x"</span><span class="op">,</span> <span class="st">"f'(x) = 1/3"</span>]<span class="op">,</span></span>
+<span id="cb10-608"><a href="#cb10-608" aria-hidden="true" tabindex="-1"></a>   <span class="dt">hint</span><span class="op">:</span> <span class="st">"La dérivée de kx est k : c'est la pente de la droite."</span><span class="op">,</span> <span class="dt">rule</span><span class="op">:</span> <span class="st">"Linéaire"</span>}<span class="op">,</span></span>
+<span id="cb10-609"><a href="#cb10-609" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">func</span><span class="op">:</span> <span class="st">"f(x) = x⁴"</span><span class="op">,</span> <span class="dt">correct</span><span class="op">:</span> <span class="st">"f'(x) = 4x³"</span><span class="op">,</span></span>
+<span id="cb10-610"><a href="#cb10-610" aria-hidden="true" tabindex="-1"></a>   <span class="dt">choices</span><span class="op">:</span> [<span class="st">"f'(x) = 4x⁵"</span><span class="op">,</span> <span class="st">"f'(x) = x³"</span><span class="op">,</span> <span class="st">"f'(x) = 4x³"</span><span class="op">,</span> <span class="st">"f'(x) = 4"</span>]<span class="op">,</span></span>
+<span id="cb10-611"><a href="#cb10-611" aria-hidden="true" tabindex="-1"></a>   <span class="dt">hint</span><span class="op">:</span> <span class="st">"Règle puissance : (xⁿ)' = n·xⁿ⁻¹. Ici n=4."</span><span class="op">,</span> <span class="dt">rule</span><span class="op">:</span> <span class="st">"Puissance"</span>}<span class="op">,</span></span>
+<span id="cb10-612"><a href="#cb10-612" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">func</span><span class="op">:</span> <span class="st">"f(x) = eˣ"</span><span class="op">,</span> <span class="dt">correct</span><span class="op">:</span> <span class="st">"f'(x) = eˣ"</span><span class="op">,</span></span>
+<span id="cb10-613"><a href="#cb10-613" aria-hidden="true" tabindex="-1"></a>   <span class="dt">choices</span><span class="op">:</span> [<span class="st">"f'(x) = eˣ⁻¹"</span><span class="op">,</span> <span class="st">"f'(x) = x·eˣ"</span><span class="op">,</span> <span class="st">"f'(x) = eˣ"</span><span class="op">,</span> <span class="st">"f'(x) = 1"</span>]<span class="op">,</span></span>
+<span id="cb10-614"><a href="#cb10-614" aria-hidden="true" tabindex="-1"></a>   <span class="dt">hint</span><span class="op">:</span> <span class="st">"L'exponentielle est sa propre dérivée : (eˣ)' = eˣ."</span><span class="op">,</span> <span class="dt">rule</span><span class="op">:</span> <span class="st">"Exponentielle"</span>}<span class="op">,</span></span>
+<span id="cb10-615"><a href="#cb10-615" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">func</span><span class="op">:</span> <span class="st">"f(x) = ln(x)"</span><span class="op">,</span> <span class="dt">correct</span><span class="op">:</span> <span class="st">"f'(x) = 1/x"</span><span class="op">,</span></span>
+<span id="cb10-616"><a href="#cb10-616" aria-hidden="true" tabindex="-1"></a>   <span class="dt">choices</span><span class="op">:</span> [<span class="st">"f'(x) = 1/x"</span><span class="op">,</span> <span class="st">"f'(x) = x"</span><span class="op">,</span> <span class="st">"f'(x) = ln(x)/x"</span><span class="op">,</span> <span class="st">"f'(x) = eˣ"</span>]<span class="op">,</span></span>
+<span id="cb10-617"><a href="#cb10-617" aria-hidden="true" tabindex="-1"></a>   <span class="dt">hint</span><span class="op">:</span> <span class="st">"(ln x)' = 1/x, valable pour x &gt; 0."</span><span class="op">,</span> <span class="dt">rule</span><span class="op">:</span> <span class="st">"Logarithme"</span>}<span class="op">,</span></span>
+<span id="cb10-618"><a href="#cb10-618" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">func</span><span class="op">:</span> <span class="st">"f(x) = e^(3x)"</span><span class="op">,</span> <span class="dt">correct</span><span class="op">:</span> <span class="st">"f'(x) = 3e^(3x)"</span><span class="op">,</span></span>
+<span id="cb10-619"><a href="#cb10-619" aria-hidden="true" tabindex="-1"></a>   <span class="dt">choices</span><span class="op">:</span> [<span class="st">"f'(x) = e^(3x)"</span><span class="op">,</span> <span class="st">"f'(x) = 3e^(3x)"</span><span class="op">,</span> <span class="st">"f'(x) = 3xe^(3x)"</span><span class="op">,</span> <span class="st">"f'(x) = e^(3)"</span>]<span class="op">,</span></span>
+<span id="cb10-620"><a href="#cb10-620" aria-hidden="true" tabindex="-1"></a>   <span class="dt">hint</span><span class="op">:</span> <span class="st">"Exponentielle composée : (e^u)' = u'·e^u. Ici u=3x donc u'=3."</span><span class="op">,</span> <span class="dt">rule</span><span class="op">:</span> <span class="st">"Exp. composée"</span>}<span class="op">,</span></span>
+<span id="cb10-621"><a href="#cb10-621" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">func</span><span class="op">:</span> <span class="st">"f(x) = ln(2x² + 1)"</span><span class="op">,</span> <span class="dt">correct</span><span class="op">:</span> <span class="st">"f'(x) = 4x / (2x² + 1)"</span><span class="op">,</span></span>
+<span id="cb10-622"><a href="#cb10-622" aria-hidden="true" tabindex="-1"></a>   <span class="dt">choices</span><span class="op">:</span> [<span class="st">"f'(x) = 1 / (2x² + 1)"</span><span class="op">,</span> <span class="st">"f'(x) = 4x / (2x² + 1)"</span><span class="op">,</span> <span class="st">"f'(x) = 4x · ln(2x² + 1)"</span><span class="op">,</span> <span class="st">"f'(x) = 2x / (2x² + 1)"</span>]<span class="op">,</span></span>
+<span id="cb10-623"><a href="#cb10-623" aria-hidden="true" tabindex="-1"></a>   <span class="dt">hint</span><span class="op">:</span> <span class="st">"Log. compose : (ln u)' = u'/u. Ici u=2x²+1 donc u'=4x."</span><span class="op">,</span> <span class="dt">rule</span><span class="op">:</span> <span class="st">"Log. compose"</span>}<span class="op">,</span></span>
+<span id="cb10-624"><a href="#cb10-624" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">func</span><span class="op">:</span> <span class="st">"f(x) = (2x + 3)·eˣ"</span><span class="op">,</span> <span class="dt">correct</span><span class="op">:</span> <span class="st">"f'(x) = (2x + 5)·eˣ"</span><span class="op">,</span></span>
+<span id="cb10-625"><a href="#cb10-625" aria-hidden="true" tabindex="-1"></a>   <span class="dt">choices</span><span class="op">:</span> [<span class="st">"f'(x) = 2·eˣ"</span><span class="op">,</span> <span class="st">"f'(x) = (2x + 3)·eˣ"</span><span class="op">,</span> <span class="st">"f'(x) = (2x + 5)·eˣ"</span><span class="op">,</span> <span class="st">"f'(x) = 2(x + 3)·eˣ"</span>]<span class="op">,</span></span>
+<span id="cb10-626"><a href="#cb10-626" aria-hidden="true" tabindex="-1"></a>   <span class="dt">hint</span><span class="op">:</span> <span class="st">"Règle du produit : (uv)' = u'v + uv'. Ici u=2x+3, v=eˣ."</span><span class="op">,</span> <span class="dt">rule</span><span class="op">:</span> <span class="st">"Produit"</span>}</span>
+<span id="cb10-627"><a href="#cb10-627" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-10" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="632" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 631;"><span id="cb11-632"><a href="#cb11-632" aria-hidden="true" tabindex="-1"></a>quiz_widget <span class="op">=</span> {</span>
+<span id="cb11-633"><a href="#cb11-633" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> order <span class="op">=</span> d3<span class="op">.</span><span class="fu">shuffle</span>(d3<span class="op">.</span><span class="fu">range</span>(quiz_questions<span class="op">.</span><span class="at">length</span>))<span class="op">;</span></span>
+<span id="cb11-634"><a href="#cb11-634" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> idx <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> answered <span class="op">=</span> <span class="kw">false</span><span class="op">,</span> chosen <span class="op">=</span> <span class="kw">null</span><span class="op">,</span> score <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> done <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-635"><a href="#cb11-635" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-636"><a href="#cb11-636" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> <span class="bu">root</span> <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="padding:4px 0;"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb11-637"><a href="#cb11-637" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> title <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;h5&gt;🧠 Quiz — Quelle est la dérivée ?&lt;/h5&gt;`</span><span class="op">;</span></span>
+<span id="cb11-638"><a href="#cb11-638" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> scoreEl <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;p style="font-size:0.85em; opacity:0.7; margin-bottom:6px;"&gt;&lt;/p&gt;`</span><span class="op">;</span></span>
+<span id="cb11-639"><a href="#cb11-639" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> qEl <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb11-640"><a href="#cb11-640" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> fbEl <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb11-641"><a href="#cb11-641" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> next <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;button style="margin-top:10px; background:transparent; color:inherit; border:1px solid currentColor; border-radius:6px; padding:7px 18px; cursor:pointer;"&gt;Question suivante →&lt;/button&gt;`</span><span class="op">;</span></span>
+<span id="cb11-642"><a href="#cb11-642" aria-hidden="true" tabindex="-1"></a>  <span class="bu">root</span><span class="op">.</span><span class="fu">append</span>(title<span class="op">,</span> scoreEl<span class="op">,</span> qEl<span class="op">,</span> fbEl<span class="op">,</span> next)<span class="op">;</span></span>
+<span id="cb11-643"><a href="#cb11-643" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-644"><a href="#cb11-644" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> btnStyle <span class="op">=</span> <span class="st">"display:block; width:100%; margin:5px 0; background:transparent; color:inherit; border:1px solid rgba(128,128,128,0.6); border-radius:6px; padding:8px 14px; cursor:pointer; font-size:0.9em; text-align:left;"</span><span class="op">;</span></span>
+<span id="cb11-645"><a href="#cb11-645" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-646"><a href="#cb11-646" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">render</span>() {</span>
+<span id="cb11-647"><a href="#cb11-647" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> q <span class="op">=</span> quiz_questions[order[idx <span class="op">%</span> order<span class="op">.</span><span class="at">length</span>]]<span class="op">;</span></span>
+<span id="cb11-648"><a href="#cb11-648" aria-hidden="true" tabindex="-1"></a>    scoreEl<span class="op">.</span><span class="at">textContent</span> <span class="op">=</span> done <span class="op">===</span> <span class="dv">0</span></span>
+<span id="cb11-649"><a href="#cb11-649" aria-hidden="true" tabindex="-1"></a>      <span class="op">?</span> <span class="st">"Répondez aux questions pour voir votre score."</span></span>
+<span id="cb11-650"><a href="#cb11-650" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span> <span class="vs">`Score : </span><span class="sc">${</span>score<span class="sc">}</span><span class="vs"> / </span><span class="sc">${</span>done<span class="sc">}</span><span class="vs"> (</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(<span class="dv">100</span> <span class="op">*</span> score <span class="op">/</span> done)<span class="sc">}</span><span class="vs">%)`</span><span class="op">;</span></span>
+<span id="cb11-651"><a href="#cb11-651" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-652"><a href="#cb11-652" aria-hidden="true" tabindex="-1"></a>    qEl<span class="op">.</span><span class="fu">replaceChildren</span>(</span>
+<span id="cb11-653"><a href="#cb11-653" aria-hidden="true" tabindex="-1"></a>      <span class="fu">html</span><span class="vs">`&lt;p style="font-size:0.75em; opacity:0.6; margin-bottom:8px;"&gt;Règle : </span><span class="sc">${</span>q<span class="op">.</span><span class="at">rule</span><span class="sc">}</span><span class="vs">&lt;/p&gt;`</span><span class="op">,</span></span>
+<span id="cb11-654"><a href="#cb11-654" aria-hidden="true" tabindex="-1"></a>      <span class="fu">html</span><span class="vs">`&lt;p&gt;&lt;strong&gt;Donnez la dérivée de&lt;/strong&gt; &amp;nbsp; &lt;code&gt;</span><span class="sc">${</span>q<span class="op">.</span><span class="at">func</span><span class="sc">}</span><span class="vs">&lt;/code&gt;&lt;/p&gt;`</span><span class="op">,</span></span>
+<span id="cb11-655"><a href="#cb11-655" aria-hidden="true" tabindex="-1"></a>      <span class="op">...</span>q<span class="op">.</span><span class="at">choices</span><span class="op">.</span><span class="fu">map</span>(c <span class="kw">=&gt;</span> {</span>
+<span id="cb11-656"><a href="#cb11-656" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> b <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;button style="</span><span class="sc">${</span>btnStyle<span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span>c<span class="sc">}</span><span class="vs">&lt;/button&gt;`</span><span class="op">;</span></span>
+<span id="cb11-657"><a href="#cb11-657" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (answered) {</span>
+<span id="cb11-658"><a href="#cb11-658" aria-hidden="true" tabindex="-1"></a>          b<span class="op">.</span><span class="at">disabled</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb11-659"><a href="#cb11-659" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> (c <span class="op">===</span> q<span class="op">.</span><span class="at">correct</span>) b<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">borderColor</span> <span class="op">=</span> <span class="st">"#4caf50"</span><span class="op">;</span></span>
+<span id="cb11-660"><a href="#cb11-660" aria-hidden="true" tabindex="-1"></a>          <span class="cf">else</span> <span class="cf">if</span> (c <span class="op">===</span> chosen) b<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">borderColor</span> <span class="op">=</span> <span class="st">"#e53935"</span><span class="op">;</span></span>
+<span id="cb11-661"><a href="#cb11-661" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb11-662"><a href="#cb11-662" aria-hidden="true" tabindex="-1"></a>        b<span class="op">.</span><span class="at">onclick</span> <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb11-663"><a href="#cb11-663" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> (answered) <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb11-664"><a href="#cb11-664" aria-hidden="true" tabindex="-1"></a>          answered <span class="op">=</span> <span class="kw">true</span><span class="op">;</span> chosen <span class="op">=</span> c<span class="op">;</span> done <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb11-665"><a href="#cb11-665" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> (c <span class="op">===</span> q<span class="op">.</span><span class="at">correct</span>) score <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb11-666"><a href="#cb11-666" aria-hidden="true" tabindex="-1"></a>          <span class="fu">render</span>()<span class="op">;</span></span>
+<span id="cb11-667"><a href="#cb11-667" aria-hidden="true" tabindex="-1"></a>        }<span class="op">;</span></span>
+<span id="cb11-668"><a href="#cb11-668" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> b<span class="op">;</span></span>
+<span id="cb11-669"><a href="#cb11-669" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb11-670"><a href="#cb11-670" aria-hidden="true" tabindex="-1"></a>    )<span class="op">;</span></span>
+<span id="cb11-671"><a href="#cb11-671" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-672"><a href="#cb11-672" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>answered) fbEl<span class="op">.</span><span class="fu">replaceChildren</span>()<span class="op">;</span></span>
+<span id="cb11-673"><a href="#cb11-673" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">if</span> (chosen <span class="op">===</span> q<span class="op">.</span><span class="at">correct</span>) {</span>
+<span id="cb11-674"><a href="#cb11-674" aria-hidden="true" tabindex="-1"></a>      fbEl<span class="op">.</span><span class="fu">replaceChildren</span>(<span class="fu">html</span><span class="vs">`&lt;div style="border-radius:6px; padding:10px 14px; margin-top:10px; font-size:0.9em; background:rgba(76,175,80,0.15); border-left:4px solid #4caf50;"&gt;✅ &lt;strong&gt;Correct !&lt;/strong&gt;&lt;br&gt;</span><span class="sc">${</span>q<span class="op">.</span><span class="at">hint</span><span class="sc">}</span><span class="vs">&lt;/div&gt;`</span>)<span class="op">;</span></span>
+<span id="cb11-675"><a href="#cb11-675" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb11-676"><a href="#cb11-676" aria-hidden="true" tabindex="-1"></a>      fbEl<span class="op">.</span><span class="fu">replaceChildren</span>(<span class="fu">html</span><span class="vs">`&lt;div style="border-radius:6px; padding:10px 14px; margin-top:10px; font-size:0.9em; background:rgba(229,57,53,0.15); border-left:4px solid #e53935;"&gt;❌ &lt;strong&gt;Incorrect.&lt;/strong&gt; Bonne réponse : &lt;em&gt;</span><span class="sc">${</span>q<span class="op">.</span><span class="at">correct</span><span class="sc">}</span><span class="vs">&lt;/em&gt;&lt;br&gt;</span><span class="sc">${</span>q<span class="op">.</span><span class="at">hint</span><span class="sc">}</span><span class="vs">&lt;/div&gt;`</span>)<span class="op">;</span></span>
+<span id="cb11-677"><a href="#cb11-677" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-678"><a href="#cb11-678" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb11-679"><a href="#cb11-679" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-680"><a href="#cb11-680" aria-hidden="true" tabindex="-1"></a>  next<span class="op">.</span><span class="at">onclick</span> <span class="op">=</span> () <span class="kw">=&gt;</span> { idx <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span> answered <span class="op">=</span> <span class="kw">false</span><span class="op">;</span> chosen <span class="op">=</span> <span class="kw">null</span><span class="op">;</span> <span class="fu">render</span>()<span class="op">;</span> }<span class="op">;</span></span>
+<span id="cb11-681"><a href="#cb11-681" aria-hidden="true" tabindex="-1"></a>  <span class="fu">render</span>()<span class="op">;</span></span>
+<span id="cb11-682"><a href="#cb11-682" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">root</span><span class="op">;</span></span>
+<span id="cb11-683"><a href="#cb11-683" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-11" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Conclusion</h1>
+<p>La dérivée mesure une variation marginale. Elle constitue un outil central pour l’analyse économique, la modélisation et la décision.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Im1kYCMjIyMjIPCfjq8gRGUgbGEgc8OpY2FudGUgw6AgbGEgdGFuZ2VudGVcblxuRmFpdGVzIHZhcmllciBoIHBvdXIgdm9pciBjb21tZW50IGxhIHBlbnRlIGRlIGxhIHPDqWNhbnRlIHNlIHJhcHByb2NoZSBkZSBmJygzKSA9IDYgcXVhbmQgaCDihpIgMC5gXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2Ygc2VjX2ggPSBJbnB1dHMucmFuZ2UoWzAuMDUsIDMuMF0sIHt2YWx1ZTogMi4wLCBzdGVwOiAwLjA1LCBsYWJlbDogXCJWYWxldXIgZGUgaCA6XCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoic2VjX3Nsb3BlID0gKCgzICsgc2VjX2gpICoqIDIgLSA5KSAvIHNlY19oXG5zZWNfZXJyb3IgPSBNYXRoLmFicyhzZWNfc2xvcGUgLSA2KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoie1xuICBjb25zdCBjbG9zZSA9IHNlY19lcnJvciA8IDAuMTU7XG4gIGNvbnN0IHRpY2sgPSBjbG9zZSA/IFwiICDinIUgVHJlcyBwcm9jaGUgIVwiIDogXCJcIjtcbiAgY29uc3QgY29sb3IgPSBjbG9zZSA/IFwic3RlZWxibHVlXCIgOiBcIiNlMDdhNWZcIjtcbiAgcmV0dXJuIGh0bWxgPGRpdiBzdHlsZT1cImJvcmRlci1sZWZ0OjNweCBzb2xpZCBzdGVlbGJsdWU7IGJvcmRlci1yYWRpdXM6NnB4OyBwYWRkaW5nOjEwcHggMTRweDsgbWFyZ2luOjhweCAwOyBmb250LWZhbWlseTptb25vc3BhY2U7IGZvbnQtc2l6ZTowLjllbTsgYmFja2dyb3VuZDpyZ2JhKDEyOCwxMjgsMTI4LDAuMTApO1wiPlxuICAgIFBlbnRlID0gKGYoMyArICR7c2VjX2gudG9GaXhlZCgyKX0pIOKIkiBmKDMpKSAvICR7c2VjX2gudG9GaXhlZCgyKX1cbiAgICA9IDxzdHJvbmcgc3R5bGU9XCJjb2xvcjpkYXJrb3JhbmdlXCI+JHtzZWNfc2xvcGUudG9GaXhlZCg0KX08L3N0cm9uZz48YnI+XG4gICAgRWNhcnQgYXZlYyA2IDogPHN0cm9uZyBzdHlsZT1cImNvbG9yOiR7Y29sb3J9XCI+JHtzZWNfZXJyb3IudG9GaXhlZCg0KX08L3N0cm9uZz4ke3RpY2t9XG4gIDwvZGl2PmA7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTUiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ7XG4gIGNvbnN0IHgwID0gMywgeTAgPSA5O1xuICBjb25zdCB4cyA9IGQzLnJhbmdlKDAuNSwgNi41MDAxLCAwLjAyKTtcbiAgY29uc3QgbGJsRiA9IFwiZih4KSA9IHjCslwiO1xuICBjb25zdCBsYmxTID0gYFPDqWNhbnRlICBoPSR7c2VjX2gudG9GaXhlZCgyKX0gIChwZW50ZT0ke3NlY19zbG9wZS50b0ZpeGVkKDMpfSlgO1xuICBjb25zdCBsYmxUID0gXCJUYW5nZW50ZSBo4oaSMCAgKHBlbnRlID0gNilcIjtcbiAgcmV0dXJuIFBsb3QucGxvdCh7XG4gICAgd2lkdGg6IDcwMCxcbiAgICBoZWlnaHQ6IDM4MCxcbiAgICBzdHlsZToge2JhY2tncm91bmQ6IFwidHJhbnNwYXJlbnRcIiwgY29sb3I6IFwiY3VycmVudENvbG9yXCIsIGZvbnRTaXplOiBcIjEycHhcIn0sXG4gICAgeDoge2RvbWFpbjogWzAuNSwgNi41XSwgbGFiZWw6IFwieFwifSxcbiAgICB5OiB7ZG9tYWluOiBbLTUsIDQ1XSwgbGFiZWw6IFwiZih4KVwiLCBncmlkOiB0cnVlfSxcbiAgICBjb2xvcjoge1xuICAgICAgbGVnZW5kOiB0cnVlLFxuICAgICAgZG9tYWluOiBbbGJsRiwgbGJsUywgbGJsVF0sXG4gICAgICByYW5nZTogW1wic3RlZWxibHVlXCIsIFwiZGFya29yYW5nZVwiLCBcImN1cnJlbnRDb2xvclwiXVxuICAgIH0sXG4gICAgbWFya3M6IFtcbiAgICAgIFBsb3QubGluZSh4cywge3g6IHhzID0+IHhzLCB5OiB4ID0+IHggKiB4LCBzdHJva2U6ICgpID0+IGxibEYsIHN0cm9rZVdpZHRoOiAyLjIsIGNsaXA6IHRydWV9KSxcbiAgICAgIFBsb3QubGluZSh4cywge3g6IHhzID0+IHhzLCB5OiB4ID0+IHkwICsgc2VjX3Nsb3BlICogKHggLSB4MCksIHN0cm9rZTogKCkgPT4gbGJsUywgc3Ryb2tlV2lkdGg6IDEuOCwgc3Ryb2tlRGFzaGFycmF5OiBcIjYsNFwiLCBjbGlwOiB0cnVlfSksXG4gICAgICBQbG90LmxpbmUoeHMsIHt4OiB4cyA9PiB4cywgeTogeCA9PiB5MCArIDYgKiAoeCAtIHgwKSwgc3Ryb2tlOiAoKSA9PiBsYmxULCBzdHJva2VXaWR0aDogMiwgY2xpcDogdHJ1ZX0pLFxuICAgICAgUGxvdC5kb3QoW1t4MCwgeTBdLCBbeDAgKyBzZWNfaCwgKHgwICsgc2VjX2gpICoqIDJdXSwge2ZpbGw6IFwiY3JpbXNvblwiLCByOiA1fSlcbiAgICBdXG4gIH0pO1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC02IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoibWRgIyMjIyMg8J+TiCBTaWduZSBkZSBmJyBldCBzZW5zIGRlIHZhcmlhdGlvblxuXG5Tw6lsZWN0aW9ubmV6IHVuZSBmb25jdGlvbiBldCBvYnNlcnZleiBsZSBsaWVuIGVudHJlIGxlIHNpZ25lIGRlIGYnIGV0IGxhIGNyb2lzc2FuY2UgLyBkw6ljcm9pc3NhbmNlIGRlIGYuYFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC03IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoic2duX2Z1bmN0aW9ucyA9IG5ldyBNYXAoW1xuICBbXCJmKHgpID0geMKyIOKIkiA0eCAgKHByb2ZpdClcIiwge1xuICAgIGY6IHggPT4geCAqKiAyIC0gNCAqIHgsIGZwOiB4ID0+IDIgKiB4IC0gNCxcbiAgICB4bGltOiBbLTEuMCwgNi4wXSwgdGl0bGVfZjogXCJmKHgpID0geMKyIOKIkiA0eFwiLCB0aXRsZV9mcDogXCJmJyh4KSA9IDJ4IOKIkiA0XCIsIHplcm9zOiBbMl1cbiAgfV0sXG4gIFtcImYoeCkgPSB4wrMg4oiSIDN4ICAoY3ViaXF1ZSlcIiwge1xuICAgIGY6IHggPT4geCAqKiAzIC0gMyAqIHgsIGZwOiB4ID0+IDMgKiB4ICoqIDIgLSAzLFxuICAgIHhsaW06IFstMi40LCAyLjRdLCB0aXRsZV9mOiBcImYoeCkgPSB4wrMg4oiSIDN4XCIsIHRpdGxlX2ZwOiBcImYnKHgpID0gM3jCsiDiiJIgM1wiLCB6ZXJvczogWy0xLCAxXVxuICB9XSxcbiAgW1wiZih4KSA9IOKIknjCsiArIDZ4ICAocmVjZXR0ZSBtYXgpXCIsIHtcbiAgICBmOiB4ID0+IC0oeCAqKiAyKSArIDYgKiB4LCBmcDogeCA9PiAtMiAqIHggKyA2LFxuICAgIHhsaW06IFstMS4wLCA4LjBdLCB0aXRsZV9mOiBcImYoeCkgPSDiiJJ4wrIgKyA2eFwiLCB0aXRsZV9mcDogXCJmJyh4KSA9IOKIkjJ4ICsgNlwiLCB6ZXJvczogWzNdXG4gIH1dXG5dKVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC04IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIHNnbl9jZmcgPSBJbnB1dHMuc2VsZWN0KHNnbl9mdW5jdGlvbnMsIHtsYWJlbDogXCJGb25jdGlvbiA6XCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC05IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoie1xuICBjb25zdCBjZmcgPSBzZ25fY2ZnO1xuICBjb25zdCB4cyA9IGQzLnJhbmdlKGNmZy54bGltWzBdLCBjZmcueGxpbVsxXSArIDFlLTksIChjZmcueGxpbVsxXSAtIGNmZy54bGltWzBdKSAvIDQwMCk7XG4gIGNvbnN0IHB0cyA9IHhzLm1hcCh4ID0+ICh7eCwgZjogY2ZnLmYoeCksIGZwOiBjZmcuZnAoeCl9KSk7XG4gIGNvbnN0IHVwID0gXCJDcm9pc3NhbnRlIChmJyA+IDApXCIsIGRvd24gPSBcIkTDqWNyb2lzc2FudGUgKGYnIDwgMClcIjtcbiAgY29uc3QgY29tbW9uID0ge1xuICAgIHdpZHRoOiA0NDAsIGhlaWdodDogMzQwLFxuICAgIHN0eWxlOiB7YmFja2dyb3VuZDogXCJ0cmFuc3BhcmVudFwiLCBjb2xvcjogXCJjdXJyZW50Q29sb3JcIiwgZm9udFNpemU6IFwiMTJweFwifSxcbiAgICB4OiB7bGFiZWw6IFwieFwiLCBncmlkOiB0cnVlfVxuICB9O1xuICBjb25zdCBheGVzID0gW1Bsb3QucnVsZVkoWzBdLCB7c3Ryb2tlOiBcIiM4ODhcIn0pLCBQbG90LnJ1bGVYKFswXSwge3N0cm9rZTogXCIjODg4XCJ9KV07XG5cbiAgY29uc3QgcDEgPSBQbG90LnBsb3Qoe1xuICAgIC4uLmNvbW1vbixcbiAgICB5OiB7bGFiZWw6IFwiZih4KVwiLCBncmlkOiB0cnVlfSxcbiAgICBjb2xvcjoge2xlZ2VuZDogdHJ1ZSwgZG9tYWluOiBbdXAsIGRvd25dLCByYW5nZTogW1wic3RlZWxibHVlXCIsIFwiY3JpbXNvblwiXX0sXG4gICAgbWFya3M6IFtcbiAgICAgIC4uLmF4ZXMsXG4gICAgICBQbG90LmFyZWFZKHB0cywge3g6IFwieFwiLCB5MTogMCwgeTI6IGQgPT4gZC5mcCA+IDAgPyBkLmYgOiAwLCBmaWxsOiB1cCwgZmlsbE9wYWNpdHk6IDAuMjh9KSxcbiAgICAgIFBsb3QuYXJlYVkocHRzLCB7eDogXCJ4XCIsIHkxOiAwLCB5MjogZCA9PiBkLmZwIDwgMCA/IGQuZiA6IDAsIGZpbGw6IGRvd24sIGZpbGxPcGFjaXR5OiAwLjI4fSksXG4gICAgICBQbG90LmxpbmUocHRzLCB7eDogXCJ4XCIsIHk6IFwiZlwiLCBzdHJva2U6IFwic3RlZWxibHVlXCIsIHN0cm9rZVdpZHRoOiAyLjJ9KVxuICAgIF1cbiAgfSk7XG4gIGNvbnN0IHAyID0gUGxvdC5wbG90KHtcbiAgICAuLi5jb21tb24sXG4gICAgeToge2xhYmVsOiBcImYnKHgpXCIsIGdyaWQ6IHRydWV9LFxuICAgIG1hcmtzOiBbXG4gICAgICAuLi5heGVzLFxuICAgICAgUGxvdC5hcmVhWShwdHMsIHt4OiBcInhcIiwgeTE6IDAsIHkyOiBkID0+IGQuZnAgPiAwID8gZC5mcCA6IDAsIGZpbGw6IFwic3RlZWxibHVlXCIsIGZpbGxPcGFjaXR5OiAwLjI4fSksXG4gICAgICBQbG90LmFyZWFZKHB0cywge3g6IFwieFwiLCB5MTogMCwgeTI6IGQgPT4gZC5mcCA8IDAgPyBkLmZwIDogMCwgZmlsbDogXCJjcmltc29uXCIsIGZpbGxPcGFjaXR5OiAwLjI4fSksXG4gICAgICBQbG90LmxpbmUocHRzLCB7eDogXCJ4XCIsIHk6IFwiZnBcIiwgc3Ryb2tlOiBcImRhcmtvcmFuZ2VcIiwgc3Ryb2tlV2lkdGg6IDIuMn0pLFxuICAgICAgUGxvdC5kb3QoY2ZnLnplcm9zLCB7eDogZCA9PiBkLCB5OiAwLCBmaWxsOiBcImN1cnJlbnRDb2xvclwiLCByOiA0fSlcbiAgICBdXG4gIH0pO1xuICByZXR1cm4gaHRtbGA8ZGl2IHN0eWxlPVwidGV4dC1hbGlnbjpjZW50ZXI7IGZvbnQtc2l6ZTowLjllbTsgbWFyZ2luLWJvdHRvbTo0cHg7XCI+U2lnbmUgZGUgZicg4oeUIHNlbnMgZGUgdmFyaWF0aW9uIGRlIGY8L2Rpdj5cbiAgPGRpdiBzdHlsZT1cImRpc3BsYXk6ZmxleDsgZmxleC13cmFwOndyYXA7IGdhcDoxMnB4OyBqdXN0aWZ5LWNvbnRlbnQ6Y2VudGVyO1wiPlxuICAgIDxkaXY+PGRpdiBzdHlsZT1cInRleHQtYWxpZ246Y2VudGVyO1wiPjxjb2RlPiR7Y2ZnLnRpdGxlX2Z9PC9jb2RlPjwvZGl2PiR7cDF9PC9kaXY+XG4gICAgPGRpdj48ZGl2IHN0eWxlPVwidGV4dC1hbGlnbjpjZW50ZXI7XCI+PGNvZGU+JHtjZmcudGl0bGVfZnB9PC9jb2RlPjwvZGl2PiR7cDJ9PC9kaXY+XG4gIDwvZGl2PmA7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTEwIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoicXVpel9xdWVzdGlvbnMgPSBbXG4gIHtmdW5jOiBcImYoeCkgPSA1XCIsIGNvcnJlY3Q6IFwiZicoeCkgPSAwXCIsXG4gICBjaG9pY2VzOiBbXCJmJyh4KSA9IDBcIiwgXCJmJyh4KSA9IDVcIiwgXCJmJyh4KSA9IDFcIiwgXCJmJyh4KSA9IDV4XCJdLFxuICAgaGludDogXCJMYSBkw6lyaXbDqWUgZCd1bmUgY29uc3RhbnRlIGVzdCB0b3Vqb3VycyB6w6lyby5cIiwgcnVsZTogXCJDb25zdGFudGVcIn0sXG4gIHtmdW5jOiBcImYoeCkgPSAzeFwiLCBjb3JyZWN0OiBcImYnKHgpID0gM1wiLFxuICAgY2hvaWNlczogW1wiZicoeCkgPSAzeMKyXCIsIFwiZicoeCkgPSAzXCIsIFwiZicoeCkgPSB4XCIsIFwiZicoeCkgPSAxLzNcIl0sXG4gICBoaW50OiBcIkxhIGTDqXJpdsOpZSBkZSBreCBlc3QgayA6IGMnZXN0IGxhIHBlbnRlIGRlIGxhIGRyb2l0ZS5cIiwgcnVsZTogXCJMaW7DqWFpcmVcIn0sXG4gIHtmdW5jOiBcImYoeCkgPSB44oG0XCIsIGNvcnJlY3Q6IFwiZicoeCkgPSA0eMKzXCIsXG4gICBjaG9pY2VzOiBbXCJmJyh4KSA9IDR44oG1XCIsIFwiZicoeCkgPSB4wrNcIiwgXCJmJyh4KSA9IDR4wrNcIiwgXCJmJyh4KSA9IDRcIl0sXG4gICBoaW50OiBcIlLDqGdsZSBwdWlzc2FuY2UgOiAoeOKBvyknID0gbsK3eOKBv+KBu8K5LiBJY2kgbj00LlwiLCBydWxlOiBcIlB1aXNzYW5jZVwifSxcbiAge2Z1bmM6IFwiZih4KSA9IGXLo1wiLCBjb3JyZWN0OiBcImYnKHgpID0gZcujXCIsXG4gICBjaG9pY2VzOiBbXCJmJyh4KSA9IGXLo+KBu8K5XCIsIFwiZicoeCkgPSB4wrdly6NcIiwgXCJmJyh4KSA9IGXLo1wiLCBcImYnKHgpID0gMVwiXSxcbiAgIGhpbnQ6IFwiTCdleHBvbmVudGllbGxlIGVzdCBzYSBwcm9wcmUgZMOpcml2w6llIDogKGXLoyknID0gZcujLlwiLCBydWxlOiBcIkV4cG9uZW50aWVsbGVcIn0sXG4gIHtmdW5jOiBcImYoeCkgPSBsbih4KVwiLCBjb3JyZWN0OiBcImYnKHgpID0gMS94XCIsXG4gICBjaG9pY2VzOiBbXCJmJyh4KSA9IDEveFwiLCBcImYnKHgpID0geFwiLCBcImYnKHgpID0gbG4oeCkveFwiLCBcImYnKHgpID0gZcujXCJdLFxuICAgaGludDogXCIobG4geCknID0gMS94LCB2YWxhYmxlIHBvdXIgeCA+IDAuXCIsIHJ1bGU6IFwiTG9nYXJpdGhtZVwifSxcbiAge2Z1bmM6IFwiZih4KSA9IGVeKDN4KVwiLCBjb3JyZWN0OiBcImYnKHgpID0gM2VeKDN4KVwiLFxuICAgY2hvaWNlczogW1wiZicoeCkgPSBlXigzeClcIiwgXCJmJyh4KSA9IDNlXigzeClcIiwgXCJmJyh4KSA9IDN4ZV4oM3gpXCIsIFwiZicoeCkgPSBlXigzKVwiXSxcbiAgIGhpbnQ6IFwiRXhwb25lbnRpZWxsZSBjb21wb3PDqWUgOiAoZV51KScgPSB1J8K3ZV51LiBJY2kgdT0zeCBkb25jIHUnPTMuXCIsIHJ1bGU6IFwiRXhwLiBjb21wb3PDqWVcIn0sXG4gIHtmdW5jOiBcImYoeCkgPSBsbigyeMKyICsgMSlcIiwgY29ycmVjdDogXCJmJyh4KSA9IDR4IC8gKDJ4wrIgKyAxKVwiLFxuICAgY2hvaWNlczogW1wiZicoeCkgPSAxIC8gKDJ4wrIgKyAxKVwiLCBcImYnKHgpID0gNHggLyAoMnjCsiArIDEpXCIsIFwiZicoeCkgPSA0eCDCtyBsbigyeMKyICsgMSlcIiwgXCJmJyh4KSA9IDJ4IC8gKDJ4wrIgKyAxKVwiXSxcbiAgIGhpbnQ6IFwiTG9nLiBjb21wb3NlIDogKGxuIHUpJyA9IHUnL3UuIEljaSB1PTJ4wrIrMSBkb25jIHUnPTR4LlwiLCBydWxlOiBcIkxvZy4gY29tcG9zZVwifSxcbiAge2Z1bmM6IFwiZih4KSA9ICgyeCArIDMpwrdly6NcIiwgY29ycmVjdDogXCJmJyh4KSA9ICgyeCArIDUpwrdly6NcIixcbiAgIGNob2ljZXM6IFtcImYnKHgpID0gMsK3ZcujXCIsIFwiZicoeCkgPSAoMnggKyAzKcK3ZcujXCIsIFwiZicoeCkgPSAoMnggKyA1KcK3ZcujXCIsIFwiZicoeCkgPSAyKHggKyAzKcK3ZcujXCJdLFxuICAgaGludDogXCJSw6hnbGUgZHUgcHJvZHVpdCA6ICh1diknID0gdSd2ICsgdXYnLiBJY2kgdT0yeCszLCB2PWXLoy5cIiwgcnVsZTogXCJQcm9kdWl0XCJ9XG5dXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTExIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoicXVpel93aWRnZXQgPSB7XG4gIGNvbnN0IG9yZGVyID0gZDMuc2h1ZmZsZShkMy5yYW5nZShxdWl6X3F1ZXN0aW9ucy5sZW5ndGgpKTtcbiAgbGV0IGlkeCA9IDAsIGFuc3dlcmVkID0gZmFsc2UsIGNob3NlbiA9IG51bGwsIHNjb3JlID0gMCwgZG9uZSA9IDA7XG5cbiAgY29uc3Qgcm9vdCA9IGh0bWxgPGRpdiBzdHlsZT1cInBhZGRpbmc6NHB4IDA7XCI+PC9kaXY+YDtcbiAgY29uc3QgdGl0bGUgPSBodG1sYDxoNT7wn6egIFF1aXog4oCUIFF1ZWxsZSBlc3QgbGEgZMOpcml2w6llID88L2g1PmA7XG4gIGNvbnN0IHNjb3JlRWwgPSBodG1sYDxwIHN0eWxlPVwiZm9udC1zaXplOjAuODVlbTsgb3BhY2l0eTowLjc7IG1hcmdpbi1ib3R0b206NnB4O1wiPjwvcD5gO1xuICBjb25zdCBxRWwgPSBodG1sYDxkaXY+PC9kaXY+YDtcbiAgY29uc3QgZmJFbCA9IGh0bWxgPGRpdj48L2Rpdj5gO1xuICBjb25zdCBuZXh0ID0gaHRtbGA8YnV0dG9uIHN0eWxlPVwibWFyZ2luLXRvcDoxMHB4OyBiYWNrZ3JvdW5kOnRyYW5zcGFyZW50OyBjb2xvcjppbmhlcml0OyBib3JkZXI6MXB4IHNvbGlkIGN1cnJlbnRDb2xvcjsgYm9yZGVyLXJhZGl1czo2cHg7IHBhZGRpbmc6N3B4IDE4cHg7IGN1cnNvcjpwb2ludGVyO1wiPlF1ZXN0aW9uIHN1aXZhbnRlIOKGkjwvYnV0dG9uPmA7XG4gIHJvb3QuYXBwZW5kKHRpdGxlLCBzY29yZUVsLCBxRWwsIGZiRWwsIG5leHQpO1xuXG4gIGNvbnN0IGJ0blN0eWxlID0gXCJkaXNwbGF5OmJsb2NrOyB3aWR0aDoxMDAlOyBtYXJnaW46NXB4IDA7IGJhY2tncm91bmQ6dHJhbnNwYXJlbnQ7IGNvbG9yOmluaGVyaXQ7IGJvcmRlcjoxcHggc29saWQgcmdiYSgxMjgsMTI4LDEyOCwwLjYpOyBib3JkZXItcmFkaXVzOjZweDsgcGFkZGluZzo4cHggMTRweDsgY3Vyc29yOnBvaW50ZXI7IGZvbnQtc2l6ZTowLjllbTsgdGV4dC1hbGlnbjpsZWZ0O1wiO1xuXG4gIGZ1bmN0aW9uIHJlbmRlcigpIHtcbiAgICBjb25zdCBxID0gcXVpel9xdWVzdGlvbnNbb3JkZXJbaWR4ICUgb3JkZXIubGVuZ3RoXV07XG4gICAgc2NvcmVFbC50ZXh0Q29udGVudCA9IGRvbmUgPT09IDBcbiAgICAgID8gXCJSw6lwb25kZXogYXV4IHF1ZXN0aW9ucyBwb3VyIHZvaXIgdm90cmUgc2NvcmUuXCJcbiAgICAgIDogYFNjb3JlIDogJHtzY29yZX0gLyAke2RvbmV9ICgke01hdGgucm91bmQoMTAwICogc2NvcmUgLyBkb25lKX0lKWA7XG5cbiAgICBxRWwucmVwbGFjZUNoaWxkcmVuKFxuICAgICAgaHRtbGA8cCBzdHlsZT1cImZvbnQtc2l6ZTowLjc1ZW07IG9wYWNpdHk6MC42OyBtYXJnaW4tYm90dG9tOjhweDtcIj5Sw6hnbGUgOiAke3EucnVsZX08L3A+YCxcbiAgICAgIGh0bWxgPHA+PHN0cm9uZz5Eb25uZXogbGEgZMOpcml2w6llIGRlPC9zdHJvbmc+ICZuYnNwOyA8Y29kZT4ke3EuZnVuY308L2NvZGU+PC9wPmAsXG4gICAgICAuLi5xLmNob2ljZXMubWFwKGMgPT4ge1xuICAgICAgICBjb25zdCBiID0gaHRtbGA8YnV0dG9uIHN0eWxlPVwiJHtidG5TdHlsZX1cIj4ke2N9PC9idXR0b24+YDtcbiAgICAgICAgaWYgKGFuc3dlcmVkKSB7XG4gICAgICAgICAgYi5kaXNhYmxlZCA9IHRydWU7XG4gICAgICAgICAgaWYgKGMgPT09IHEuY29ycmVjdCkgYi5zdHlsZS5ib3JkZXJDb2xvciA9IFwiIzRjYWY1MFwiO1xuICAgICAgICAgIGVsc2UgaWYgKGMgPT09IGNob3NlbikgYi5zdHlsZS5ib3JkZXJDb2xvciA9IFwiI2U1MzkzNVwiO1xuICAgICAgICB9XG4gICAgICAgIGIub25jbGljayA9ICgpID0+IHtcbiAgICAgICAgICBpZiAoYW5zd2VyZWQpIHJldHVybjtcbiAgICAgICAgICBhbnN3ZXJlZCA9IHRydWU7IGNob3NlbiA9IGM7IGRvbmUgKz0gMTtcbiAgICAgICAgICBpZiAoYyA9PT0gcS5jb3JyZWN0KSBzY29yZSArPSAxO1xuICAgICAgICAgIHJlbmRlcigpO1xuICAgICAgICB9O1xuICAgICAgICByZXR1cm4gYjtcbiAgICAgIH0pXG4gICAgKTtcblxuICAgIGlmICghYW5zd2VyZWQpIGZiRWwucmVwbGFjZUNoaWxkcmVuKCk7XG4gICAgZWxzZSBpZiAoY2hvc2VuID09PSBxLmNvcnJlY3QpIHtcbiAgICAgIGZiRWwucmVwbGFjZUNoaWxkcmVuKGh0bWxgPGRpdiBzdHlsZT1cImJvcmRlci1yYWRpdXM6NnB4OyBwYWRkaW5nOjEwcHggMTRweDsgbWFyZ2luLXRvcDoxMHB4OyBmb250LXNpemU6MC45ZW07IGJhY2tncm91bmQ6cmdiYSg3NiwxNzUsODAsMC4xNSk7IGJvcmRlci1sZWZ0OjRweCBzb2xpZCAjNGNhZjUwO1wiPuKchSA8c3Ryb25nPkNvcnJlY3QgITwvc3Ryb25nPjxicj4ke3EuaGludH08L2Rpdj5gKTtcbiAgICB9IGVsc2Uge1xuICAgICAgZmJFbC5yZXBsYWNlQ2hpbGRyZW4oaHRtbGA8ZGl2IHN0eWxlPVwiYm9yZGVyLXJhZGl1czo2cHg7IHBhZGRpbmc6MTBweCAxNHB4OyBtYXJnaW4tdG9wOjEwcHg7IGZvbnQtc2l6ZTowLjllbTsgYmFja2dyb3VuZDpyZ2JhKDIyOSw1Nyw1MywwLjE1KTsgYm9yZGVyLWxlZnQ6NHB4IHNvbGlkICNlNTM5MzU7XCI+4p2MIDxzdHJvbmc+SW5jb3JyZWN0Ljwvc3Ryb25nPiBCb25uZSByw6lwb25zZSA6IDxlbT4ke3EuY29ycmVjdH08L2VtPjxicj4ke3EuaGludH08L2Rpdj5gKTtcbiAgICB9XG4gIH1cblxuICBuZXh0Lm9uY2xpY2sgPSAoKSA9PiB7IGlkeCArPSAxOyBhbnN3ZXJlZCA9IGZhbHNlOyBjaG9zZW4gPSBudWxsOyByZW5kZXIoKTsgfTtcbiAgcmVuZGVyKCk7XG4gIHJldHVybiByb290O1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdzZWNfaCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdzZ25fY2ZnJykifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/mathematical-analysis";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ggilles\.dev");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a> · Source on <a href="https://github.com/guillaumegilles/guillaumegilles.github.io"><i class="bi bi-github"></i> GitHub</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>This site respects your privacy — no cookies, no tracking.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

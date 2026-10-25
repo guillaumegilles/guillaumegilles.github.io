@@ -10,8 +10,6 @@ abstract: |
   Le chapitre se termine par une application centrale : la loi de la somme de
   deux variables indépendantes via la **convolution** des densités.
 date-modified: 2026-03-24
-filters:
-  - shinylive
 ---
 
 Jusqu'ici, on a étudié les variables aléatoires une à une. Dans de nombreuses situations concrètes, on s'intéresse simultanément à plusieurs grandeurs liées : la taille et le poids d'un individu, la température et la pression atmosphérique, la durée de vie de deux composants d'un même système. Pour modéliser ces **dépendances**, il faut étudier la loi **conjointe** du couple $(X, Y)$, qui décrit non seulement le comportement individuel de chaque variable, mais aussi les liens statistiques entre elles. C'est ce que permet le cadre des couples de variables aléatoires à densité.
@@ -289,121 +287,89 @@ plt.show()
 
 Sélectionnez l'une des trois densités pour observer le lien entre **forme du support**, **lois marginales** et **indépendance**. La densité ③ illustre le piège classique : un support rectangulaire ne garantit pas l'indépendance — seule la factorisation $f = f_X \cdot f_Y$ est décisive.
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 430
-
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
-
-BG = '#1C2E22'
-FG = '#D2CCC0'
-
-CHOICES = {
-    "indep":    "① e^{−(x+y)} sur [0,∞)²  (indépendantes)",
-    "triangle": "② e^{−y}·1_{0<x<y}        (dépendantes, triangle)",
-    "rect_dep": "③ (x+y)/8 sur [0,2]²      (dépendantes, rectangle!)",
+```{ojs}
+//| echo: false
+ind_cells = function(f, x0, x1, y0, y1, n = 60) {
+  const out = [], dx = (x1 - x0) / n, dy = (y1 - y0) / n;
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    const a = x0 + i * dx, b = y0 + j * dy;
+    const v = f(a + dx / 2, b + dy / 2);
+    if (Number.isFinite(v)) out.push({x1: a, x2: a + dx, y1: b, y2: b + dy, v});
+  }
+  return out;
 }
 
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 10px;
-                font-family: sans-serif; margin: 0; }}
-        label {{ color: {FG} !important; }}
-        .info {{ background:#152119; border-radius:5px; padding:7px 12px;
-                 margin-top:6px; border-left:3px solid steelblue; font-size:0.85em; }}
-    """),
-    ui.h5("🔍 Indépendance — comparer trois densités"),
-    ui.row(
-        ui.column(4,
-            ui.input_radio_buttons("density", "Choisir la densité :",
-                choices=CHOICES, selected="indep"),
-            ui.output_ui("info"),
-        ),
-        ui.column(8,
-            ui.output_plot("plot", height="360px"),
-        ),
-    ),
+ind_info = ({
+  indep: ["#66BB6A", "✅ Support rectangulaire<br>✅ Factorisation → <strong>INDÉPENDANTES</strong>"],
+  triangle: ["#EF5350", "❌ Support triangulaire → <strong>DÉPENDANTES</strong><br><em>Pas besoin de vérifier la factorisation.</em>"],
+  rect_dep: ["#FFA726", "✅ Support rectangulaire<br>❌ Factorisation échoue → <strong>DÉPENDANTES</strong><br><em>Piège classique !</em>"]
+})
+
+viewof ind_density = Inputs.radio(
+  new Map([
+    ["① e^−(x+y) sur [0,∞)²  (indépendantes)", "indep"],
+    ["② e^−y · 1_{0<x<y}  (dépendantes, triangle)", "triangle"],
+    ["③ (x+y)/8 sur [0,2]²  (dépendantes, rectangle !)", "rect_dep"]
+  ]),
+  {label: "Choisir la densité :", value: "indep"}
 )
+```
 
-def server(input, output, session):
-    @output
-    @render.ui
-    def info():
-        d = input.density()
-        data = {
-            "indep":    ("#1B5E20",
-                         "✅ Support rectangulaire<br>✅ Factorisation → <strong>INDÉPENDANTES</strong>"),
-            "triangle": ("#880E4F",
-                         "❌ Support triangulaire → <strong>DÉPENDANTES</strong><br>"
-                         "<em>Pas besoin de vérifier la factorisation.</em>"),
-            "rect_dep": ("#E65100",
-                         "✅ Support rectangulaire<br>❌ Factorisation échoue → "
-                         "<strong>DÉPENDANTES</strong><br><em>Piège classique !</em>"),
-        }
-        color, msg = data[d]
-        return ui.HTML(f"<div class='info' style='border-color:{color}'>{msg}</div>")
+```{ojs}
+//| echo: false
+{
+  const d = document.createElement("div");
+  d.setAttribute("style", `border-left:3px solid ${ind_info[ind_density][0]}; padding:7px 12px; margin:6px 0; font-size:0.9em; background:rgba(128,128,128,0.12); border-radius:5px;`);
+  d.innerHTML = ind_info[ind_density][1];
+  return d;
+}
+```
 
-    @output
-    @render.plot
-    def plot():
-        d = input.density()
-        fig, axes = plt.subplots(1, 3, figsize=(11, 3.8))
-        fig.patch.set_facecolor(BG)
-        for ax in axes:
-            ax.set_facecolor(BG)
-            ax.tick_params(colors=FG)
-            for sp in ax.spines.values():
-                sp.set_edgecolor(FG)
-
-        if d == "indep":
-            x = y = np.linspace(0, 4, 300)
-            X, Y = np.meshgrid(x, y)
-            Z = np.exp(-(X + Y))
-            fX, fY = np.exp(-x), np.exp(-y)
-            color = '#66BB6A'
-            suptitle = r'$f(x,y)=e^{-(x+y)}$ — variables INDÉPENDANTES'
-        elif d == "triangle":
-            x = y = np.linspace(0, 4, 300)
-            X, Y = np.meshgrid(x, y)
-            Z = np.where(X < Y, np.exp(-Y), np.nan)
-            fX, fY = np.exp(-x), y * np.exp(-y)
-            color = '#EF5350'
-            suptitle = r'$f(x,y)=e^{-y}\mathbf{1}_{0<x<y}$ — variables DÉPENDANTES'
-        else:
-            x = y = np.linspace(0, 2, 300)
-            X, Y = np.meshgrid(x, y)
-            Z = (X + Y) / 8
-            fX, fY = (x + 1) / 4, (y + 1) / 4
-            color = '#FFA726'
-            suptitle = r'$f(x,y)=(x+y)/8$ — DÉPENDANTES malgré le rectangle'
-
-        axes[0].contourf(X, Y, Z, levels=18, cmap='Blues')
-        axes[0].set_xlabel('$x$', color=FG)
-        axes[0].set_ylabel('$y$', color=FG)
-        axes[0].set_title('Densité conjointe', color=FG, fontsize=10)
-
-        axes[1].plot(x, fX, color='#4FC3F7', lw=2)
-        axes[1].fill_between(x, fX, alpha=0.25, color='#4FC3F7')
-        axes[1].set_xlabel('$x$', color=FG)
-        axes[1].set_ylabel('$f_X(x)$', color=FG)
-        axes[1].set_title('Marginale de $X$', color=FG, fontsize=10)
-
-        axes[2].plot(y, fY, color=color, lw=2)
-        axes[2].fill_between(y, fY, alpha=0.25, color=color)
-        axes[2].set_xlabel('$y$', color=FG)
-        axes[2].set_ylabel('$f_Y(y)$', color=FG)
-        axes[2].set_title('Marginale de $Y$', color=FG, fontsize=10)
-
-        plt.suptitle(suptitle, color=FG, fontsize=10)
-        plt.tight_layout()
-        return fig
-
-app = App(app_ui, server)
+```{ojs}
+//| echo: false
+{
+  const d = ind_density;
+  let L, f, fX, fY, color, title;
+  if (d === "indep") {
+    L = 4; f = (x, y) => Math.exp(-(x + y));
+    fX = x => Math.exp(-x); fY = y => Math.exp(-y);
+    color = "#66BB6A"; title = "f(x,y) = e^−(x+y) — variables INDÉPENDANTES";
+  } else if (d === "triangle") {
+    L = 4; f = (x, y) => (x < y ? Math.exp(-y) : NaN);
+    fX = x => Math.exp(-x); fY = y => y * Math.exp(-y);
+    color = "#EF5350"; title = "f(x,y) = e^−y · 1_{0<x<y} — variables DÉPENDANTES";
+  } else {
+    L = 2; f = (x, y) => (x + y) / 8;
+    fX = x => (x + 1) / 4; fY = y => (y + 1) / 4;
+    color = "#FFA726"; title = "f(x,y) = (x+y)/8 — DÉPENDANTES malgré le rectangle";
+  }
+  const t = d3.range(0, L + 1e-9, L / 200);
+  const dataX = t.map(x => ({t: x, v: fX(x)}));
+  const dataY = t.map(y => ({t: y, v: fY(y)}));
+  const base = {width: 330, height: 280, style: {background: "transparent", color: "currentColor", fontSize: "11px"}};
+  const joint = Plot.plot({
+    ...base, title: "Densité conjointe", aspectRatio: 1,
+    x: {label: "x", domain: [0, L]}, y: {label: "y", domain: [0, L]},
+    color: {scheme: "blues", domain: [0, d3.max(ind_cells(f, 0, L, 0, L, 20), c => c.v)]},
+    marks: [Plot.rect(ind_cells(f, 0, L, 0, L), {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: "v", inset: -0.3})]
+  });
+  const margX = Plot.plot({
+    ...base, title: "Marginale de X",
+    x: {label: "x"}, y: {label: "f_X(x)", domain: [0, d3.max(dataX, e => e.v) * 1.05]},
+    marks: [Plot.areaY(dataX, {x: "t", y: "v", fill: "#4FC3F7", fillOpacity: 0.25}),
+            Plot.line(dataX, {x: "t", y: "v", stroke: "#4FC3F7", strokeWidth: 2}),
+            Plot.ruleY([0])]
+  });
+  const margY = Plot.plot({
+    ...base, title: "Marginale de Y",
+    x: {label: "y"}, y: {label: "f_Y(y)", domain: [0, d3.max(dataY, e => e.v) * 1.05]},
+    marks: [Plot.areaY(dataY, {x: "t", y: "v", fill: color, fillOpacity: 0.25}),
+            Plot.line(dataY, {x: "t", y: "v", stroke: color, strokeWidth: 2}),
+            Plot.ruleY([0])]
+  });
+  return html`<div style="font-weight:bold; font-size:0.9em; margin-bottom:4px;">${title}</div>
+    <div style="display:flex; flex-wrap:wrap; gap:6px;">${joint}${margX}${margY}</div>`;
+}
 ```
 
 ::: {.callout-caution}
@@ -633,124 +599,78 @@ On reconnaît une loi exponentielle $\mathcal{E}(1)$ **translatée** de $x$, soi
 
 Déplacez $x_0$ pour observer comment la densité conditionnelle $f_{Y|X}(y \mid x_0)$ change. Pour les variables **indépendantes** (gauche), la courbe est identique quel que soit $x_0$. Pour les variables **dépendantes** (droite), elle se translate avec $x_0$ — c'est la marque de la dépendance.
 
-```{shinylive-python}
-#| standalone: true
-#| components: [viewer]
-#| viewerHeight: 420
-
-from shiny import App, render, ui
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
-
-BG = '#1C2E22'
-FG = '#D2CCC0'
-
-app_ui = ui.page_fluid(
-    ui.tags.style(f"""
-        body {{ background-color: {BG}; color: {FG}; padding: 10px;
-                font-family: sans-serif; margin: 0; }}
-        label {{ color: {FG} !important; }}
-        .formula {{ background:#152119; border-radius:5px; padding:7px 12px; margin-top:6px;
-                    border-left:3px solid #FFA726; font-size:0.85em; font-family:monospace; }}
-    """),
-    ui.h5("📐 Densité conditionnelle — déplacer x₀"),
-    ui.row(
-        ui.column(4,
-            ui.input_radio_buttons("density", "Densité conjointe :",
-                choices={
-                    "indep": "f = e^{−(x+y)}  (indépendantes)",
-                    "dep":   "f = e^{−y}·1_{0<x<y}  (dépendantes)",
-                },
-                selected="indep"),
-            ui.input_slider("x0", "Valeur de x₀ :", min=0.2, max=3.0, value=1.0, step=0.1),
-            ui.output_ui("formula"),
-        ),
-        ui.column(8,
-            ui.output_plot("plot", height="340px"),
-        ),
-    ),
+```{ojs}
+//| echo: false
+viewof cond_density = Inputs.radio(
+  new Map([
+    ["f = e^−(x+y)  (indépendantes)", "indep"],
+    ["f = e^−y · 1_{0<x<y}  (dépendantes)", "dep"]
+  ]),
+  {label: "Densité conjointe :", value: "indep"}
 )
 
-def server(input, output, session):
-    @output
-    @render.ui
-    def formula():
-        d = input.density()
-        x0 = input.x0()
-        if d == "indep":
-            text = (
-                f"f<sub>Y|X</sub>(y | x={x0:.1f}) = e<sup>−y</sup> · 1<sub>y≥0</sub><br>"
-                "<em style='color:#66BB6A'>Invariante en x₀ → indépendance !</em>"
-            )
-        else:
-            text = (
-                f"f<sub>Y|X</sub>(y | x={x0:.1f}) = "
-                f"e<sup>−(y−{x0:.1f})</sup> · 1<sub>y>{x0:.1f}</sub><br>"
-                "<em style='color:#EF5350'>Se décale avec x₀ → dépendance !</em>"
-            )
-        return ui.HTML(f"<div class='formula'>{text}</div>")
+viewof cond_x0 = Inputs.range([0.2, 3.0], {label: "Valeur de x₀ :", value: 1.0, step: 0.1})
+```
 
-    @output
-    @render.plot
-    def plot():
-        d = input.density()
-        x0 = input.x0()
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 3.6))
-        fig.patch.set_facecolor(BG)
-        for ax in (ax1, ax2):
-            ax.set_facecolor(BG)
-            ax.tick_params(colors=FG)
-            for sp in ax.spines.values():
-                sp.set_edgecolor(FG)
+```{ojs}
+//| echo: false
+{
+  const x0 = cond_x0.toFixed(1);
+  const d = document.createElement("div");
+  d.setAttribute("style", "border-left:3px solid #FFA726; padding:7px 12px; margin:6px 0; font-size:0.9em; font-family:monospace; background:rgba(128,128,128,0.12); border-radius:5px;");
+  d.innerHTML = cond_density === "indep"
+    ? `f<sub>Y|X</sub>(y | x=${x0}) = e<sup>−y</sup> · 1<sub>y≥0</sub><br><em style="color:#66BB6A">Invariante en x₀ → indépendance !</em>`
+    : `f<sub>Y|X</sub>(y | x=${x0}) = e<sup>−(y−${x0})</sup> · 1<sub>y&gt;${x0}</sub><br><em style="color:#EF5350">Se décale avec x₀ → dépendance !</em>`;
+  return d;
+}
+```
 
-        xs = np.linspace(0, 4, 300)
-        ys = np.linspace(0, 4, 300)
-        X, Y = np.meshgrid(xs, ys)
-
-        if d == "indep":
-            Z = np.exp(-(X + Y))
-            y_cond = np.linspace(0, 6, 400)
-            f_cond = np.exp(-y_cond)
-            mean_c = 1.0
-            color = '#66BB6A'
-            xlim = (0, 6)
-        else:
-            Z = np.where(X < Y, np.exp(-Y), np.nan)
-            y_cond = np.linspace(x0, x0 + 6, 400)
-            f_cond = np.exp(-(y_cond - x0))
-            mean_c = x0 + 1.0
-            color = '#EF5350'
-            xlim = (0, x0 + 6)
-
-        ax1.contourf(X, Y, Z, levels=18, cmap='Blues')
-        ax1.axvline(x0, color='#FFA726', lw=2, linestyle='--', label=f'$x_0={x0:.1f}$')
-        ax1.set_xlim(0, 4); ax1.set_ylim(0, 4)
-        ax1.set_xlabel('$x$', color=FG); ax1.set_ylabel('$y$', color=FG)
-        ax1.set_title('Densité conjointe $f(x,y)$', color=FG, fontsize=10)
-        ax1.legend(fontsize=9, facecolor='#152119', edgecolor='none', labelcolor=FG)
-
-        ax2.plot(y_cond, f_cond, color=color, lw=2.5, label='$f_{Y|X}(y|x_0)$')
-        ax2.fill_between(y_cond, f_cond, alpha=0.25, color=color)
-        if d == "dep":
-            ax2.plot([0, x0], [0, 0], color=color, lw=2.5)
-            ax2.axvline(x0, color='#FFA726', lw=1, linestyle=':', alpha=0.7,
-                        label=f'$x_0={x0:.1f}$')
-        ax2.axvline(mean_c, color='white', lw=1.2, linestyle=':', alpha=0.7,
-                    label=f'$E[Y|X=x_0]={mean_c:.1f}$')
-        ax2.set_xlabel('$y$', color=FG)
-        ax2.set_ylabel('densité conditionnelle', color=FG)
-        ax2.set_title('$f_{Y|X}(y \\mid x_0)$', color=FG, fontsize=10)
-        ax2.legend(fontsize=8, facecolor='#152119', edgecolor='none', labelcolor=FG)
-        ax2.set_xlim(*xlim)
-
-        plt.suptitle(r'Tranche verticale de $f(x,y)$ en $x=x_0$, normalisée',
-                     color=FG, fontsize=10)
-        plt.tight_layout()
-        return fig
-
-app = App(app_ui, server)
+```{ojs}
+//| echo: false
+{
+  const dep = cond_density === "dep", x0 = cond_x0;
+  const f = dep ? (x, y) => (x < y ? Math.exp(-y) : NaN) : (x, y) => Math.exp(-(x + y));
+  const cells = [], n = 60, L = 4, h = L / n;
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    const v = f((i + 0.5) * h, (j + 0.5) * h);
+    if (Number.isFinite(v)) cells.push({x1: i * h, x2: (i + 1) * h, y1: j * h, y2: (j + 1) * h, v});
+  }
+  const color = dep ? "#EF5350" : "#66BB6A";
+  const start = dep ? x0 : 0, mean = start + 1;
+  const xmax = dep ? x0 + 6 : 6;
+  const curve = d3.range(0, 401).map(i => {
+    const y = start + 6 * i / 400;
+    return {y, v: Math.exp(-(y - start))};
+  });
+  const base = {width: 400, height: 300, style: {background: "transparent", color: "currentColor", fontSize: "11px"}};
+  const joint = Plot.plot({
+    ...base, title: "Densité conjointe f(x,y)", aspectRatio: 1,
+    x: {label: "x", domain: [0, L]}, y: {label: "y", domain: [0, L]},
+    color: {scheme: "blues", domain: [0, 1]},
+    marks: [
+      Plot.rect(cells, {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: "v", inset: -0.3}),
+      Plot.ruleX([x0], {stroke: "#FFA726", strokeWidth: 2, strokeDasharray: "6,4"})
+    ]
+  });
+  const cond = Plot.plot({
+    ...base, title: "Densité conditionnelle f_Y|X(y|x₀)",
+    x: {label: "y", domain: [0, xmax]}, y: {label: "densité conditionnelle", domain: [0, 1.05]},
+    marks: [
+      Plot.areaY(curve, {x: "y", y: "v", fill: color, fillOpacity: 0.25}),
+      Plot.line(curve, {x: "y", y: "v", stroke: color, strokeWidth: 2.5}),
+      dep ? Plot.line([[0, 0], [x0, 0]], {stroke: color, strokeWidth: 2.5}) : null,
+      dep ? Plot.ruleX([x0], {stroke: "#FFA726", strokeDasharray: "2,3", opacity: 0.8}) : null,
+      Plot.ruleX([mean], {stroke: "currentColor", strokeDasharray: "2,3", opacity: 0.7}),
+      Plot.ruleY([0])
+    ].filter(Boolean)
+  });
+  return html`<div style="font-weight:bold; font-size:0.9em; margin-bottom:4px;">Tranche verticale de f(x,y) en x = x₀, normalisée</div>
+    <div style="display:flex; flex-wrap:wrap; gap:6px;">${joint}${cond}</div>
+    <div style="font-size:0.85em;">
+      <span style="color:#FFA726">┅ x₀ = ${x0.toFixed(1)}</span> &nbsp;
+      <span style="color:${color}">━ f_Y|X(y|x₀)</span> &nbsp;
+      <span>┅ E[Y|X=x₀] = ${mean.toFixed(1)}</span></div>`;
+}
 ```
 
 ### Lien avec l'indépendance
