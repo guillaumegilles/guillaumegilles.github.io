@@ -189,12 +189,11 @@ explanation of what it computes and why it matters.
 ### T-IV. Interactive Demonstrations
 
 Priority concepts in each course MUST have an interactive demo —
-implemented as either a `{shinylive-python}` block (Shinylive Python)
-or a `{ojs}` block (Observable JS). The choice of technology MUST be
-justified by the nature of the computation: use Shinylive when the
-simulation requires Python libraries; use OJS when the simulation is
-computable in pure JavaScript (arithmetic, algebra, elementary
-statistics). Where a demo has not yet been built, a `.callout-important`
+implemented as a `{ojs}` block (Observable JS, native to Quarto; no
+Python runtime in the browser). Simulations MUST be computable in
+JavaScript (arithmetic, algebra, elementary statistics, numerical
+root-finding); Observable Plot, `Inputs` and `d3` are available by
+default. Where a demo has not yet been built, a `.callout-important`
 block with a `TODO:` label MUST mark the gap so missing demos are
 trackable.
 
@@ -254,7 +253,7 @@ know what to read before starting.
 | Output dir | `docs/` | Committed; served by GitHub Pages |
 | Python env | `.venv/` + `requirements.txt` | MUST NOT be committed |
 | Computation cache | `_freeze/` | MUST be committed |
-| Interactive widgets | Shinylive (`quarto-ext/shinylive`) | Teaching pages only; `{shinylive-python}` blocks |
+| Interactive widgets | Observable JS (Quarto native) | Teaching pages only; `{ojs}` blocks |
 | Edge function | Cloudflare Worker (`worker/`) | Deployed independently via `wrangler` |
 | Hosting | GitHub Pages (`main` branch, `docs/` dir) | No server-side logic |
 | Comments | Giscus (auto-injected via `posts/_metadata.yml`) | Blog-only; no per-file config |

@@ -86,10 +86,36 @@ Giscus comments are injected automatically for all blog posts via
 Add a new sidebar block under `website.sidebar` in `_quarto.yml` and create
 the corresponding directory under `teaching/`.
 
-### Interactive Python widgets (Shinylive)
+### Interactive widgets (Observable JS)
 
-The `quarto-ext/shinylive` extension is installed. Use `{shinylive-python}`
-code blocks to embed live Python apps in teaching pages.
+Use `{ojs}` blocks (native to Quarto, no extension) for interactive demos in
+teaching pages. Add `//| echo: false`, build controls with `viewof x =
+Inputs.range(...)`, and plot with `Plot`/`d3`. OJS variable names are global
+per page, so prefix them per demo (e.g. `sec_`, `quiz_`). Use `currentColor`
+and transparent backgrounds so the dark theme applies. Shinylive is not used
+on this site.
+
+### Scrollytelling (Closeread)
+
+Posts that use `:::{.cr-section}`, `:::{#cr-...}` sticky blocks and `@cr-...`
+references (e.g. `posts/github-codespaces-quarto/`) need the Closeread Lua
+filter. Without it Quarto treats `@cr-...` as unresolved citations and nothing
+sticks or scrolls. Add this to the post's front matter:
+
+```yaml
+filters:
+  - ../../_extensions/qmd-lab/closeread/closeread.lua
+format:
+  html:
+    css: ../../_extensions/qmd-lab/closeread/closeread.css
+```
+
+- The filter rewrites the `cr-*` syntax into the sticky/trigger markup; the CSS
+  provides the layout. Both are required.
+- It is set per post (not in `_quarto.yml`) so the rest of the site is not
+  processed by Closeread. Adjust the `../../` depth to the file's location.
+- Alternative: use the extension's own `format: closeread-html` instead of
+  listing the filter and CSS manually.
 
 ### Computational freeze
 
