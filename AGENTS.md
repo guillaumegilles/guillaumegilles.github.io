@@ -125,5 +125,5 @@ All styling goes in `assets/dark.scss`. The compiled theme is referenced in
 
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-`specs/012-data-description-pedagogy/plan.md`
+`specs/014-financial-analysis-3day-course/plan.md`
 <!-- SPECKIT END -->
