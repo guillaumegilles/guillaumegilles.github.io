@@ -72,3 +72,31 @@ Owner to supply editions.
 
 All numbers (≥ 4 digits) and company names present in the HEAD version of
 each quest are still present in the edited version.
+
+## T040 decision (badges)
+
+Commented badge tables removed from `index.qmd` and restored as one plain
+table in `evaluation.qmd` (competence, collaboration, bonus subsets).
+"Progression" badges dropped (duplicate of levels; also cited 1 600 XP for
+level 4 whereas the published threshold is > 1 200 and the total is 1 500).
+Badge criteria "Initiative Personnelle", "Feedback Constructif", "Puzzle
+Master" dropped (no timetable slot; owner may restore).
+Level boundary rule (400/800/1 200 → lower level) and default XP crediting
+(max XP × quest score, credited to each team member) are assumptions
+stated in `evaluation.qmd`.
+
+## Validation log (T047–T050)
+
+- `check-timetable.sh` passes on FR and EN `planning.qmd` (360/360/360,
+  1080); Block/Start/Duration rows identical in both languages.
+- `check-parity.sh` and `check-conventions.sh` pass.
+- `quarto render fr/teaching/financial-analysis` and
+  `quarto render teaching/financial-analysis` exit 0.
+- T048 blocked: `quarto render` (whole site) fails before reaching this
+  course, on `fr/teaching/mathematical-finance/module-03.qmd`
+  (`filters: - shinylive` cannot be resolved; the extension exists only in
+  `teaching/data-description/_extensions`). Unrelated to this feature. The
+  failed run emptied `docs/`; tracked files were restored with
+  `git checkout -- docs` (312 files). The post-render hook did not run.
+- T049 (instructor pilot, student 10-question check) needs people; not done.
+- T050: `AGENTS.md` layout notes still accurate; no change.

@@ -108,10 +108,10 @@ cut list in R2. Apply the quest-page order in contract section 3.
 **Goal**: one assessment page consistent with the timetable.
 **Independent test**: quickstart section 6 (XP 900, exam 12/20 → 12.0, Stratège Financier).
 
-- [ ] T038 [US4] Create `FR/evaluation.qmd`: XP per activity (total 1 500), levels (< 400, 400–800, 800–1 200, > 1 200 with boundary values assigned to the lower level), boss slots and criteria, grade rule `0.4 × (XP / 1500 × 20) + 0.6 × exam` on /20, exam conversion (/50 or /100 to /20), worked example. Remove the XP/level duplicates from `FR/index.qmd` and link here.
-- [ ] T039 [P] [US4] Edit `FR/exercices/examen-1h.qmd` and `examen-final.qmd`: add a visible line "Hors des 18 h du cours", convert callouts, keep every question (T-I).
-- [ ] T040 [US4] Decide the commented-out badge tables in `FR/index.qmd`: restore under `evaluation.qmd` as plain tables or delete, and record the decision in `baseline.md`.
-- [ ] T041 [US4] Verify the sum of quest XP in `FR/modules/*.qmd` equals 1 500 and matches `evaluation.qmd`.
+- [x] T038 [US4] Create `FR/evaluation.qmd`: XP per activity (total 1 500), levels (< 400, 400–800, 800–1 200, > 1 200 with boundary values assigned to the lower level), boss slots and criteria, grade rule `0.4 × (XP / 1500 × 20) + 0.6 × exam` on /20, exam conversion (/50 or /100 to /20), worked example. Remove the XP/level duplicates from `FR/index.qmd` and link here.
+- [x] T039 [P] [US4] Edit `FR/exercices/examen-1h.qmd` and `examen-final.qmd`: add a visible line "Hors des 18 h du cours", convert callouts, keep every question (T-I).
+- [x] T040 [US4] Decide the commented-out badge tables in `FR/index.qmd`: restore under `evaluation.qmd` as plain tables or delete, and record the decision in `baseline.md`.
+- [x] T041 [US4] Verify the sum of quest XP in `FR/modules/*.qmd` equals 1 500 and matches `evaluation.qmd`.
 
 ---
 
@@ -120,20 +120,20 @@ cut list in R2. Apply the quest-page order in contract section 3.
 **Goal**: mirrored paths; full EN home page and timetable; stubs elsewhere.
 **Independent test**: `check-parity.sh` passes; EN and FR timetable values identical.
 
-- [ ] T042 [P] [US5] Translate `FR/index.qmd` to `EN/index.qmd` in full (same blocks, durations, RNCP table, literature).
-- [ ] T043 [P] [US5] Translate `FR/planning.qmd` to `EN/planning.qmd` in full; Block, Start and Duration columns identical to FR.
-- [ ] T044 [US5] Generate English stubs (title, "Translation in progress", link to the French page) for every other `FR/` page listed in contract section 1: `evaluation`, `glossaire`, `modules/*` (quests, reference pages, `etats-financiers`, `formules`), `exercices/*`, `enseignant/jour-{1,2,3}`, `annexes/inventaire-sources`.
-- [ ] T045 [US5] Add the English sidebar `en-financial-analysis` entries for all pages; check the navbar language switcher reaches the mirrored pages.
+- [x] T042 [P] [US5] Translate `FR/index.qmd` to `EN/index.qmd` in full (same blocks, durations, RNCP table, literature).
+- [x] T043 [P] [US5] Translate `FR/planning.qmd` to `EN/planning.qmd` in full; Block, Start and Duration columns identical to FR.
+- [x] T044 [US5] Generate English stubs (title, "Translation in progress", link to the French page) for every other `FR/` page listed in contract section 1: `evaluation`, `glossaire`, `modules/*` (quests, reference pages, `etats-financiers`, `formules`), `exercices/*`, `enseignant/jour-{1,2,3}`, `annexes/inventaire-sources`.
+- [x] T045 [US5] Add the English sidebar `en-financial-analysis` entries for all pages; check the navbar language switcher reaches the mirrored pages.
 
 ---
 
 ## Phase 8: Polish & Cross-Cutting
 
-- [ ] T046 [P] Create `FR/annexes/inventaire-sources.qmd`: every non-`.qmd` file in the course folder classified `used`, `optional` or `archived` with used-in block ids (FR-014); include duplicate exam formats and the empty `new/` and `old/`. Register in sidebar (FR and EN stub).
-- [ ] T047 Run all scripts (`check-timetable.sh` on both planning pages, `check-parity.sh`, `check-conventions.sh`); fix every failure.
-- [ ] T048 Run `quarto render` for the whole site; it must exit 0 for FR and EN and the post-render hook must run. Commit `docs/` with the sources (constitution render gate). No freeze entries should change.
-- [ ] T049 Human validation: instructor pilot for Day 1 (< 2 h preparation, SC-003) and the 10-question student check (SC-004); log results in `baseline.md`.
-- [ ] T050 Update `AGENTS.md` architecture notes only if the folder layout changed from what it describes.
+- [x] T046 [P] Create `FR/annexes/inventaire-sources.qmd`: every non-`.qmd` file in the course folder classified `used`, `optional` or `archived` with used-in block ids (FR-014); include duplicate exam formats and the empty `new/` and `old/`. Register in sidebar (FR and EN stub).
+- [x] T047 Run all scripts (`check-timetable.sh` on both planning pages, `check-parity.sh`, `check-conventions.sh`); fix every failure.
+- [ ] T048 Run `quarto render` for the whole site; it must exit 0 for FR and EN and the post-render hook must run. Commit `docs/` with the sources (constitution render gate). No freeze entries should change. **BLOCKED (pre-existing):** whole-site render fails in `fr/teaching/mathematical-finance/module-03.qmd` (shinylive filter not found); the course trees render alone with exit 0 (see baseline.md).
+- [ ] T049 Human validation: instructor pilot for Day 1 (< 2 h preparation, SC-003) and the 10-question student check (SC-004); log results in `baseline.md`. **PENDING:** needs a human pilot (instructor and students).
+- [x] T050 Update `AGENTS.md` architecture notes only if the folder layout changed from what it describes.
 
 ---
 
