@@ -287,6 +287,26 @@ plt.show()
 
 Sélectionnez l'une des trois densités pour observer le lien entre **forme du support**, **lois marginales** et **indépendance**. La densité ③ illustre le piège classique : un support rectangulaire ne garantit pas l'indépendance — seule la factorisation $f = f_X \cdot f_Y$ est décisive.
 
+<<<<<<< HEAD
+```shinyl
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 430
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+CHOICES = {
+    "indep":    "① e^{−(x+y)} sur [0,∞)²  (indépendantes)",
+    "triangle": "② e^{−y}·1_{0<x<y}        (dépendantes, triangle)",
+    "rect_dep": "③ (x+y)/8 sur [0,2]²      (dépendantes, rectangle!)",
+=======
 ```{ojs}
 //| echo: false
 ind_cells = function(f, x0, x1, y0, y1, n = 60) {
@@ -297,6 +317,7 @@ ind_cells = function(f, x0, x1, y0, y1, n = 60) {
     if (Number.isFinite(v)) out.push({x1: a, x2: a + dx, y1: b, y2: b + dy, v});
   }
   return out;
+>>>>>>> main
 }
 
 ind_info = ({
@@ -599,6 +620,46 @@ On reconnaît une loi exponentielle $\mathcal{E}(1)$ **translatée** de $x$, soi
 
 Déplacez $x_0$ pour observer comment la densité conditionnelle $f_{Y|X}(y \mid x_0)$ change. Pour les variables **indépendantes** (gauche), la courbe est identique quel que soit $x_0$. Pour les variables **dépendantes** (droite), elle se translate avec $x_0$ — c'est la marque de la dépendance.
 
+<<<<<<< HEAD
+```shinyl
+#| standalone: true
+#| components: [viewer]
+#| viewerHeight: 420
+
+from shiny import App, render, ui
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+
+BG = '#1C2E22'
+FG = '#D2CCC0'
+
+app_ui = ui.page_fluid(
+    ui.tags.style(f"""
+        body {{ background-color: {BG}; color: {FG}; padding: 10px;
+                font-family: sans-serif; margin: 0; }}
+        label {{ color: {FG} !important; }}
+        .formula {{ background:#152119; border-radius:5px; padding:7px 12px; margin-top:6px;
+                    border-left:3px solid #FFA726; font-size:0.85em; font-family:monospace; }}
+    """),
+    ui.h5("📐 Densité conditionnelle — déplacer x₀"),
+    ui.row(
+        ui.column(4,
+            ui.input_radio_buttons("density", "Densité conjointe :",
+                choices={
+                    "indep": "f = e^{−(x+y)}  (indépendantes)",
+                    "dep":   "f = e^{−y}·1_{0<x<y}  (dépendantes)",
+                },
+                selected="indep"),
+            ui.input_slider("x0", "Valeur de x₀ :", min=0.2, max=3.0, value=1.0, step=0.1),
+            ui.output_ui("formula"),
+        ),
+        ui.column(8,
+            ui.output_plot("plot", height="340px"),
+        ),
+    ),
+=======
 ```{ojs}
 //| echo: false
 viewof cond_density = Inputs.radio(
@@ -607,6 +668,7 @@ viewof cond_density = Inputs.radio(
     ["f = e^−y · 1_{0<x<y}  (dépendantes)", "dep"]
   ]),
   {label: "Densité conjointe :", value: "indep"}
+>>>>>>> main
 )
 
 viewof cond_x0 = Inputs.range([0.2, 3.0], {label: "Valeur de x₀ :", value: 1.0, step: 0.1})
