@@ -43,10 +43,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3d6222ca90cd04258b1655236d0fb3dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-bd80c826246aa7a07474d267acf3e75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -182,7 +182,7 @@ window.Quarto = {
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -232,61 +232,47 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Estimation ponctuelle et par intervalle de confiance</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  <div>
+    <div class="abstract">
+      <div class="block-title">Abstract</div>
+      <p>Ce chapitre présente les méthodes d’<strong>estimation statistique</strong>. On étudie d’abord l’<strong>estimation ponctuelle</strong> : propriétés des estimateurs (biais, convergence, erreur quadratique), puis deux méthodes de construction — méthode des moments et maximum de vraisemblance. On aborde ensuite l’<strong>estimation par intervalle de confiance</strong> pour une proportion, une moyenne et une variance, en mettant l’accent sur la comparaison d’estimateurs, le choix d’une méthode de construction et l’interprétation pratique des marges d’erreur dans un contexte d’ingénierie.</p>
+    </div>
+  </div>
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul>
-  <li><a href="#estimateurs-et-leurs-propriétés" id="toc-estimateurs-et-leurs-propriétés" class="nav-link active" data-scroll-target="#estimateurs-et-leurs-propriétés">Estimateurs et leurs propriétés</a>
   <ul class="collapse">
-  <li><a href="#définitions" id="toc-définitions" class="nav-link" data-scroll-target="#définitions">Définitions</a></li>
-  <li><a href="#convergence" id="toc-convergence" class="nav-link" data-scroll-target="#convergence">Convergence</a></li>
-  <li><a href="#estimateurs-de-la-moyenne-et-de-la-variance" id="toc-estimateurs-de-la-moyenne-et-de-la-variance" class="nav-link" data-scroll-target="#estimateurs-de-la-moyenne-et-de-la-variance">Estimateurs de la moyenne et de la variance</a></li>
-  </ul></li>
-  <li><a href="#méthodes-de-construction-destimateurs" id="toc-méthodes-de-construction-destimateurs" class="nav-link" data-scroll-target="#méthodes-de-construction-destimateurs">Méthodes de construction d’estimateurs</a>
-  <ul class="collapse">
-  <li><a href="#méthode-des-moments-emm" id="toc-méthode-des-moments-emm" class="nav-link" data-scroll-target="#méthode-des-moments-emm">Méthode des moments (EMM)</a></li>
-  <li><a href="#méthode-du-maximum-de-vraisemblance-emv" id="toc-méthode-du-maximum-de-vraisemblance-emv" class="nav-link" data-scroll-target="#méthode-du-maximum-de-vraisemblance-emv">Méthode du maximum de vraisemblance (EMV)</a></li>
-  <li><a href="#information-de-fisher-et-efficacité" id="toc-information-de-fisher-et-efficacité" class="nav-link" data-scroll-target="#information-de-fisher-et-efficacité">Information de Fisher et efficacité</a></li>
-  </ul></li>
-  <li><a href="#estimation-par-intervalle-de-confiance" id="toc-estimation-par-intervalle-de-confiance" class="nav-link" data-scroll-target="#estimation-par-intervalle-de-confiance">Estimation par intervalle de confiance</a>
-  <ul class="collapse">
-  <li><a href="#intervalle-de-confiance-pour-une-proportion" id="toc-intervalle-de-confiance-pour-une-proportion" class="nav-link" data-scroll-target="#intervalle-de-confiance-pour-une-proportion">Intervalle de confiance pour une proportion</a></li>
-  <li><a href="#intervalle-de-confiance-pour-une-moyenne" id="toc-intervalle-de-confiance-pour-une-moyenne" class="nav-link" data-scroll-target="#intervalle-de-confiance-pour-une-moyenne">Intervalle de confiance pour une moyenne</a></li>
-  <li><a href="#intervalle-de-confiance-pour-une-variance" id="toc-intervalle-de-confiance-pour-une-variance" class="nav-link" data-scroll-target="#intervalle-de-confiance-pour-une-variance">Intervalle de confiance pour une variance</a></li>
-  </ul></li>
+  <li><a href="#estimateurs-et-leurs-propriétés" id="toc-estimateurs-et-leurs-propriétés" class="nav-link active" data-scroll-target="#estimateurs-et-leurs-propriétés"><span class="header-section-number">1</span> Estimateurs et leurs propriétés</a></li>
+  <li><a href="#méthodes-de-construction-destimateurs" id="toc-méthodes-de-construction-destimateurs" class="nav-link" data-scroll-target="#méthodes-de-construction-destimateurs"><span class="header-section-number">2</span> Méthodes de construction d’estimateurs</a></li>
+  <li><a href="#estimation-par-intervalle-de-confiance" id="toc-estimation-par-intervalle-de-confiance" class="nav-link" data-scroll-target="#estimation-par-intervalle-de-confiance"><span class="header-section-number">3</span> Estimation par intervalle de confiance</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Estimation ponctuelle et par intervalle de confiance</h1>
-</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-<div>
-  <div class="abstract">
-    <div class="block-title">Abstract</div>
-    <p>Ce chapitre présente les méthodes d’<strong>estimation statistique</strong>. On étudie d’abord l’<strong>estimation ponctuelle</strong> : propriétés des estimateurs (biais, convergence, erreur quadratique), puis deux méthodes de construction — méthode des moments et maximum de vraisemblance. On aborde ensuite l’<strong>estimation par intervalle de confiance</strong> pour une proportion, une moyenne et une variance, en mettant l’accent sur la comparaison d’estimateurs, le choix d’une méthode de construction et l’interprétation pratique des marges d’erreur dans un contexte d’ingénierie.</p>
-  </div>
-</div>
-
-
-</header>
 
 
 <p>En pratique, l’ingénieur doit prendre une décision à partir d’un nombre limité de mesures : régler une machine à partir d’essais de calibration, estimer un taux de panne à partir d’un retour d’expérience partiel, certifier une performance moyenne à partir d’une campagne de tests, ou quantifier l’incertitude avant de passer à la production. L’estimation fournit deux sorties complémentaires : une <strong>valeur centrale</strong> plausible du paramètre inconnu, et une <strong>mesure d’incertitude</strong> qui indique la précision réellement acquise.</p>
@@ -325,8 +311,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<section id="estimateurs-et-leurs-propriétés" class="level2">
-<h2 class="anchored" data-anchor-id="estimateurs-et-leurs-propriétés">Estimateurs et leurs propriétés</h2>
+<section id="estimateurs-et-leurs-propriétés" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="estimateurs-et-leurs-propriétés"><span class="header-section-number">1</span> Estimateurs et leurs propriétés</h2>
 <section id="définitions" class="level3">
 <h3 class="anchored" data-anchor-id="définitions">Définitions</h3>
 <p>Soit <span class="math inline">\((X_1, \ldots, X_n)\)</span> un échantillon de loi dépendant d’un paramètre inconnu <span class="math inline">\(\theta\)</span>.</p>
@@ -508,8 +494,8 @@ E\!\left[n\overline{X}_n^2\right] = n\!\left(m^2+\frac{\sigma^2}{n}\right)
 <p>On dispose maintenant des outils pour évaluer un estimateur. La question suivante est : comment en construire un systématiquement ? Les deux méthodes qui suivent répondent à cette question.</p>
 </section>
 </section>
-<section id="méthodes-de-construction-destimateurs" class="level2">
-<h2 class="anchored" data-anchor-id="méthodes-de-construction-destimateurs">Méthodes de construction d’estimateurs</h2>
+<section id="méthodes-de-construction-destimateurs" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="méthodes-de-construction-destimateurs"><span class="header-section-number">2</span> Méthodes de construction d’estimateurs</h2>
 <section id="méthode-des-moments-emm" class="level3">
 <h3 class="anchored" data-anchor-id="méthode-des-moments-emm">Méthode des moments (EMM)</h3>
 <p>L’idée est d’<strong>estimer les moments théoriques par leurs équivalents empiriques</strong> : une espérance est approchée par une moyenne empirique, une variance par une variance empirique, etc.</p>
@@ -986,8 +972,8 @@ E\!\left[n\overline{X}_n^2\right] = n\!\left(m^2+\frac{\sigma^2}{n}\right)
 </div>
 </section>
 </section>
-<section id="estimation-par-intervalle-de-confiance" class="level2">
-<h2 class="anchored" data-anchor-id="estimation-par-intervalle-de-confiance">Estimation par intervalle de confiance</h2>
+<section id="estimation-par-intervalle-de-confiance" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="estimation-par-intervalle-de-confiance"><span class="header-section-number">3</span> Estimation par intervalle de confiance</h2>
 <p>On cherche maintenant à quantifier la <strong>confiance</strong> que l’on peut accorder à l’estimation ponctuelle. Un intervalle de confiance est un intervalle aléatoire (dépendant de l’échantillon) qui contient le vrai paramètre avec une probabilité au moins égale à un niveau prescrit.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
