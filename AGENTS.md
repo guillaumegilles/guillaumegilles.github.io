@@ -159,9 +159,5 @@ under `project.resources` so it is copied to `docs/assets/`.
 
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-<<<<<<< HEAD
-`specs/014-financial-analysis-3day-course/plan.md`
-=======
 `specs/014-financial-analysis-slides/plan.md`
->>>>>>> main
 <!-- SPECKIT END -->
