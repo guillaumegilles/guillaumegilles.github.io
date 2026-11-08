@@ -1,0 +1,1 @@
+**Translation in progress.** This page is currently available in French only: [Structure financière](../../fr/teaching/financial-analysis/05-structure-fi.llms.md).

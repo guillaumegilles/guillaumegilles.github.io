@@ -1,0 +1,1 @@
+**Translation in progress.** This page is currently available in French only: [Examen — Diagnostic Financier Retraité](../../../fr/teaching/financial-analysis/exercices/examen-1h.docx).

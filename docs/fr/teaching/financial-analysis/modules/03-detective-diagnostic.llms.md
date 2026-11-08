@@ -1,0 +1,408 @@
+# Introduction
+
+Durée : **135 min** (dont 25 min de théorie) \| Équipes : **3–5 étudiants** \| XP : **+200** *Boss de Jour 1*
+
+**Objectifs pédagogiques**
+
+- Appliquer la méthodologie de diagnostic financier en 6 étapes à un cas réel.
+- Calculer et interpréter les ratios clés sur 3 exercices : marges, rentabilité, solvabilité, liquidité.
+- Calculer le Résultat Net Récurrent (RNR) et les Fonds Propres Nets Réduits (FPNR).
+- Réaliser une analyse statique et dynamique de la liquidité (FRNG, BFR, trésorerie nette).
+- Produire une synthèse diagnostique argumentée avec une recommandation crédit.
+
+**Prérequis**
+
+- Avoir assimilé les Quêtes 1 et 2 (lecture des états financiers et consolidation).
+- Connaître les principaux ratios de marge, solvabilité et liquidité.
+
+**Lectures préalables** (une par étape de travail, à parcourir avant la séance)
+
+- [Banque de France](../../../../fr/teaching/financial-analysis/modules/banque-france.llms.md) : environnement, qualité de l’information et notation (étapes 1, 2 et 6).
+- [Performances](../../../../fr/teaching/financial-analysis/modules/performances.llms.md) : marges, SIG, RNR (étape 3).
+- [Structure financière](../../../../fr/teaching/financial-analysis/modules/structure-fi.llms.md) : gearing, FPNR (étape 4).
+- [Liquidité](../../../../fr/teaching/financial-analysis/modules/liquidite.llms.md) : FRNG, BFR, trésorerie, flux (étape 5).
+- Données du fil rouge : [comptes consolidés du Groupe AUBÉPINE](../../../../fr/teaching/financial-analysis/donnees/index.llms.md) (données fictives, normes françaises).
+
+------------------------------------------------------------------------
+
+## Plan de la séance
+
+La séance suit la grille de diagnostic en 6 étapes, à appliquer dans l’ordre :
+
+1.  **Environnement, stratégie et organisation** : contexte sectoriel, positionnement, gouvernance, points forts/faibles qualitatifs.
+2.  **Qualité de l’information** : fiabilité des comptes, méthodes comptables, éléments exceptionnels ou non récurrents à retraiter.
+3.  **Performances (rentabilité)** : marges, SIG (EBE, REX), RNR = RCAI × ¾.
+4.  **Structure financière (solvabilité)** : capitaux propres, endettement net, gearing, FPNR = FP − goodwill − actifs d’impôt différé.
+5.  **Liquidité** : analyse statique (FRNG, BFR, trésorerie nette) et dynamique (tableau de flux de trésorerie).
+6.  **Notation / recommandation crédit** : synthèse SWOT, score de risque, avis motivé (accord / refus / conditions particulières).
+
+### Répartition du temps (135 min)
+
+| Bloc | Contenu | Durée |
+|:---|:---|---:|
+| Théorie en direct | Mission, grille, lecture des ratios, RNR/FPNR, liquidité, SWOT | 25 min |
+| Étape 1 (travaux 1) | Ratios sur 3 exercices | 20 min |
+| Étape 2 (travaux 2) | RNR | 10 min |
+| Étape 3 (travaux 3) | FPNR | 5 min |
+| Étape 4 (travaux 4) | Liquidité statique et dynamique | 20 min |
+| Étape 5 (travaux 5) | Matrice SWOT | 10 min |
+| Étape 6 (travaux 6) | Note de synthèse et recommandation | 15 min |
+| Présentation Boss | Comité de crédit : 3 passages de 10 min | 30 min |
+| **Total** |  | **135 min** |
+
+Dans les travaux ci-dessous, les « étapes de travail » numérotées 1 à 6 correspondent aux six blocs chronométrés du tableau (ratios, RNR, FPNR, liquidité, SWOT, synthèse), et non aux six étapes de la grille de diagnostic.
+
+### Théorie en direct (25 min)
+
+| Minutes | Séquence                                                      |
+|--------:|:--------------------------------------------------------------|
+|     0–5 | Mission Boss, contexte MEDITECH, grille en 6 étapes           |
+|    5–10 | Lire une évolution de ratios : marges, ROE, gearing           |
+|   10–15 | RNR et FPNR : pourquoi retraiter les comptes                  |
+|   15–22 | FRNG, BFR, trésorerie nette ; lecture du tableau de flux      |
+|   22–25 | SWOT chiffré et règles d’une recommandation crédit argumentée |
+
+Pour la présentation, les équipes qui ne passent pas jouent le comité de crédit et posent des questions. S’il y a plus de 3 équipes, on constitue plusieurs comités en parallèle.
+
+------------------------------------------------------------------------
+
+## Contexte, données et exemple résolu
+
+### Mission Boss
+
+StratFin Corp est mandatée par la **Banque Régionale des Entreprises** pour évaluer la demande de crédit de **MEDITECH SAS**, une PME spécialisée dans la fabrication de dispositifs médicaux (instrumentation chirurgicale et capteurs de monitoring). MEDITECH sollicite un **nouveau prêt à moyen terme de 500 k€** pour financer l’extension de son atelier de production.
+
+Vous êtes l’équipe d’analystes financiers juniors. Vous disposez des **3 derniers exercices comptables** (N-2, N-1, N). Votre mission : produire un **diagnostic financier complet** et formuler une **recommandation crédit** argumentée, comme si vous vous présentiez devant un comité de crédit.
+
+**Contexte sectoriel à intégrer.** Le secteur des dispositifs médicaux est soumis à de fortes contraintes réglementaires (MDR 2017/745 en Europe). Les cycles de certification sont longs et coûteux. MEDITECH a engagé depuis N-2 un programme de mise en conformité MDR qui pèse sur ses charges d’exploitation. Ce contexte est à prendre en compte dans votre analyse qualitative.
+
+### Données financières — MEDITECH SAS (montants en k€)
+
+#### Bilans simplifiés au 31/12
+
+**Actif**
+
+|                  Poste |       N-2 |       N-1 |         N |
+|-----------------------:|----------:|----------:|----------:|
+| Immobilisations nettes |     2 400 |     2 980 |     3 350 |
+|                 Stocks |       380 |       520 |       680 |
+|       Créances clients |       520 |       710 |       890 |
+|         Disponibilités |       300 |       130 |        80 |
+|        **Total Actif** | **3 600** | **4 340** | **5 000** |
+
+**Passif**
+
+|                       Poste |       N-2 |       N-1 |         N |
+|----------------------------:|----------:|----------:|----------:|
+|            Capitaux propres |     1 450 |     1 560 |     1 480 |
+|   Emprunts moyen-long terme |       900 |     1 380 |     2 000 |
+|         Dettes fournisseurs |       650 |       870 |     1 060 |
+| Concours bancaires courants |       600 |       530 |       460 |
+|            **Total Passif** | **3 600** | **4 340** | **5 000** |
+
+*Note : les immobilisations N-1 incluent un fonds commercial (goodwill) de **120 k€** acquis lors d’une petite opération de croissance externe.*
+
+#### Comptes de résultat simplifiés
+
+|                                    Poste |       N-2 |       N-1 |         N |
+|-----------------------------------------:|----------:|----------:|----------:|
+|                  Chiffre d’affaires (CA) |     4 200 |     5 000 |     5 600 |
+|                          Coût des ventes |    -2 100 |    -2 750 |    -3 360 |
+|                          **Marge brute** | **2 100** | **2 250** | **2 240** |
+|                   Charges d’exploitation |    -1 680 |    -1 993 |    -2 100 |
+| **Résultat d’exploitation (REX / EBIT)** |   **420** |   **257** |   **140** |
+|               Charges financières nettes |       -90 |      -110 |      -220 |
+|                                 **RCAI** |   **330** |   **147** |   **-80** |
+|                   Impôt sur les sociétés |       -83 |       -37 |         0 |
+|                         **Résultat net** |   **247** |   **110** |   **-80** |
+
+#### Tableau de flux de trésorerie simplifié — Exercice N
+
+|                                           Flux | Montant (k€) |
+|-----------------------------------------------:|-------------:|
+|                      **I. Flux opérationnels** |              |
+|                                   Résultat net |          -80 |
+|                \+ Dotations aux amortissements |         +400 |
+|             = Capacité d’autofinancement (CAF) |          320 |
+|                         − Variation des stocks |         -160 |
+|               − Variation des créances clients |         -180 |
+|           \+ Variation des dettes fournisseurs |         +190 |
+|          **= Flux de trésorerie opérationnel** |      **170** |
+|                  **II. Flux d’investissement** |              |
+|                 Acquisitions d’immobilisations |         -770 |
+|      **= Flux de trésorerie d’investissement** |     **-770** |
+|                   **III. Flux de financement** |              |
+| Nouveaux emprunts MLT (nets de remboursements) |         +620 |
+|               Variation des concours bancaires |          -70 |
+|        **= Flux de trésorerie de financement** |      **550** |
+|              **Variation nette de trésorerie** |      **-50** |
+|               Trésorerie d’ouverture (01/01/N) |          130 |
+|            **Trésorerie de clôture (31/12/N)** |       **80** |
+
+### Exemple résolu (animé en direct) : exercice N-2
+
+Deux indicateurs calculés pas à pas sur l’exercice N-2, pour fixer la méthode avant de vous lancer sur les trois exercices.
+
+> **TIP:**
+>
+> \\\text{Taux de marge brute} = \frac{\text{Marge brute}}{\text{CA}} \qquad \text{Gearing} = \frac{\text{Dettes nettes}}{\text{Capitaux propres}}\\
+
+Le taux de marge brute mesure la part du chiffre d’affaires qui reste après le coût des ventes ; il dit si l’entreprise vend assez cher par rapport à ce que lui coûte sa production. Le gearing compare l’endettement net aux fonds propres ; il dit combien de dettes pèsent pour 1 € apporté par les actionnaires.
+
+- Taux de marge brute N-2 : \\2\\100 / 4\\200 = 50{,}0\\ \\\\.
+- Dettes nettes N-2 : \\900 + 600 - 300 = 1\\200\\ k€.
+- Gearing N-2 : \\1\\200 / 1\\450 \approx 82{,}8\\ \\\\, soit un endettement net inférieur aux fonds propres : situation saine.
+
+------------------------------------------------------------------------
+
+## Dérivation : l’approximation RNR ≈ ¾ × RCAI
+
+> **CAUTION:**
+>
+> Le RNR est le bénéfice que l’entreprise dégagerait sans événements exceptionnels. On l’obtient en reprenant le résultat avant impôt récurrent et en lui appliquant l’impôt « normal ». Étape par étape :
+>
+> 1.  **Base récurrente.** Le RCAI (résultat courant avant impôt) exclut par construction le résultat exceptionnel : c’est le profit avant impôt de l’activité récurrente.
+> 2.  **Impôt normatif.** Avec un taux d’impôt d’environ 25 %, \\\text{IS}\_{\text{normatif}} = t \times \text{RCAI}\\ avec \\t \approx 0{,}25\\.
+> 3.  **Résultat net récurrent.** \\\text{RNR} = \text{RCAI} - t \times \text{RCAI} = (1 - t) \times \text{RCAI}\\
+> 4.  **Application numérique.** Avec \\t = 25\\ \\ = \tfrac{1}{4}\\ : \\\text{RNR} = \Bigl(1 - \tfrac{1}{4}\Bigr) \times \text{RCAI} = \tfrac{3}{4} \times \text{RCAI}\\
+>
+> **Vérification sur MEDITECH.** Le taux d’impôt observé est \\83 / 330 \approx 25{,}2\\ \\\\ en N-2 et \\37 / 147 \approx 25{,}2\\ \\\\ en N-1 : l’approximation est donc cohérente (\\\tfrac{3}{4} \times 330 = 247{,}5\\ contre un résultat net de 247).
+>
+> **Limites.**
+>
+> - **RCAI négatif** (N) : il n’y a pas d’impôt à économiser, donc le facteur ¾ n’a pas de sens ; on retient alors un RNR égal au RCAI (ou on le commente sans l’interpréter comme un net d’impôt).
+> - **Taux réel différent de 25 %** : taux réduit PME, contributions additionnelles, charges non déductibles, impôts différés.
+> - **Définition de « récurrent »** : le classement des éléments en exceptionnels relève du jugement de l’analyste ; un RCAI contient parfois des éléments peu réguliers.
+> - **Approximation** : c’est un ordre de grandeur de lecture rapide, pas un calcul fiscal.
+
+> **WARNING:**
+>
+> Appliquer mécaniquement ¾ à un RCAI négatif (ici N : \\-80 \times \tfrac{3}{4} = -60\\) revient à créer une économie d’impôt qui n’existe pas : MEDITECH a payé 0 € d’IS et son résultat net N est bien de \\-80\\ k€.
+
+------------------------------------------------------------------------
+
+## Travaux demandés
+
+### Étape 1 — Analyse des ratios sur 3 exercices (20 min)
+
+**Exercice 1 (Ratios sur 3 exercices)** Calculez et commentez l’évolution des indicateurs suivants pour chaque exercice (N-2, N-1, N) :
+
+| Indicateur | Formule | N-2 | N-1 | N |
+|:---|:---|---:|---:|---:|
+| Taux de marge brute | Marge brute / CA | ? | ? | ? |
+| Taux de marge d’exploitation | REX / CA | ? | ? | ? |
+| ROE | Résultat net / Capitaux propres | ? | ? | ? |
+| Gearing (levier financier) | (Dettes nettes) / Capitaux propres | ? | ? | ? |
+| BFR | Stocks + Créances clients − Dettes fournisseurs | ? | ? | ? |
+| Ratio de liquidité générale | Actif circulant / Passif circulant | ? | ? | ? |
+
+Pour chaque ratio : calculez la valeur, indiquez la tendance (↗ ↘ →) et rédigez 2–3 phrases de commentaire analytique.
+
+> **TIP:**
+>
+> \\\text{Dettes nettes} = \text{Emprunts MLT} + \text{Concours bancaires} - \text{Disponibilités}\\
+>
+> \\\text{Actif circulant} = \text{Stocks} + \text{Créances clients} + \text{Disponibilités}\\
+>
+> \\\text{Passif circulant} = \text{Dettes fournisseurs} + \text{Concours bancaires}\\
+
+Ces trois agrégats servent à calculer le gearing (poids de la dette nette) et le ratio de liquidité générale (capacité à payer le court terme avec ce qui est réalisable à court terme). Repères de lecture : un gearing supérieur à 100 % signale un endettement net supérieur aux fonds propres ; un ratio de liquidité générale inférieur à 1 traduit un risque de cessation de paiements à court terme.
+
+Solution
+
+| Indicateur                   |    N-2 |     N-1 |       N | Tendance |
+|:-----------------------------|-------:|--------:|--------:|:--------:|
+| Taux de marge brute          | 50,0 % |  45,0 % |  40,0 % |    ↘     |
+| Taux de marge d’exploitation | 10,0 % |   5,1 % |   2,5 % |    ↘     |
+| ROE                          | 17,0 % |   7,1 % |  -5,4 % |    ↘     |
+| Dettes nettes (k€)           |  1 200 |   1 780 |   2 380 |    ↗     |
+| Gearing                      | 82,8 % | 114,1 % | 160,8 % |    ↗     |
+| BFR (k€)                     |    250 |     360 |     510 |    ↗     |
+| Liquidité générale           |   0,96 |    0,97 |    1,09 |    ↗     |
+
+Détails : marge brute \\2\\100/4\\200\\, \\2\\250/5\\000\\, \\2\\240/5\\600\\ ; REX \\420/4\\200\\, \\257/5\\000\\, \\140/5\\600\\ ; ROE \\247/1\\450\\, \\110/1\\560\\, \\-80/1\\480\\ ; dettes nettes \\900+600-300\\, \\1\\380+530-130\\, \\2\\000+460-80\\ ; BFR \\380+520-650\\, \\520+710-870\\, \\680+890-1\\060\\ ; liquidité générale \\1\\200/1\\250\\, \\1\\360/1\\400\\, \\1\\650/1\\520\\.
+
+**Commentaire.** Le CA progresse de 33 % en deux ans, mais la croissance est « achetée » : la marge brute perd 10 points (coût des ventes qui augmente plus vite que le CA) et la marge d’exploitation est divisée par 4, avec le poids de la mise en conformité MDR. Le ROE devient négatif. Le gearing passe de 83 % à 161 % : l’endettement finance la croissance, pas la rentabilité. Le BFR double (250 → 510). Le ratio de liquidité générale remonte à 1,09, mais cette amélioration est trompeuse : elle vient du financement par emprunts MLT, non d’une meilleure génération de cash.
+
+------------------------------------------------------------------------
+
+### Étape 2 — Résultat Net Récurrent (RNR) (10 min)
+
+**Exercice 2 (Résultat Net Récurrent)** Calculez le RNR pour chaque année à l’aide de la formule simplifiée \\\text{RNR} \approx \text{RCAI} \times \tfrac{3}{4}\\.
+
+Expliquez l’intérêt de cet indicateur par rapport au résultat net comptable. Que révèle son évolution sur la capacité bénéficiaire récurrente de MEDITECH ?
+
+Cette formule estime le bénéfice net « normal » de l’entreprise, hors exceptionnel et avec un impôt normatif ; elle permet de comparer les exercices sur une base homogène.
+
+Solution
+
+|                                    |   N-2 |    N-1 |   N |
+|:-----------------------------------|------:|-------:|----:|
+| RCAI                               |   330 |    147 | -80 |
+| RNR \\= \tfrac{3}{4} \times\\ RCAI | 247,5 | 110,25 | -60 |
+| Résultat net comptable             |   247 |    110 | -80 |
+
+Le RNR neutralise l’exceptionnel et la fiscalité propre à chaque exercice : il mesure ce que l’activité courante rapporte durablement. Ici, il chute de 247,5 à 110 puis devient négatif : la capacité bénéficiaire récurrente s’est effondrée en deux ans (charges financières doublées, marge dégradée). En N, le « -60 » est théorique : le RCAI étant négatif, aucun impôt n’est économisé (voir la dérivation : le résultat net réel est de -80).
+
+------------------------------------------------------------------------
+
+### Étape 3 — Fonds Propres Nets Réduits (FPNR) (5 min)
+
+**Exercice 3 (Fonds Propres Nets Réduits)** À partir des données de l’exercice N, calculez les FPNR selon la formule :
+
+\\\text{FPNR} = \text{Fonds propres} - \text{Goodwill net} - \text{Actifs d'impôt différé}\\
+
+*Données : goodwill net au 31/12/N = 120 k€ ; actifs d’impôt différé = 0 k€.*
+
+Expliquez pourquoi les analystes crédit préfèrent les FPNR aux fonds propres comptables bruts.
+
+Les FPNR retirent des fonds propres les actifs qui ne valent rien en cas de liquidation ; ils mesurent le coussin réellement disponible pour absorber les pertes.
+
+Solution
+
+\\\text{FPNR} = 1\\480 - 120 - 0 = 1\\360\\ k€.
+
+Le goodwill et les impôts différés actifs sont des actifs incorporels difficilement cessibles : ils ne rembourseraient pas un créancier. Les FPNR donnent donc une mesure plus prudente de la solvabilité. Gearing recalculé : \\2\\380 / 1\\360 \approx 175\\ \\\\ (contre 160,8 % en brut).
+
+------------------------------------------------------------------------
+
+### Étape 4 — Liquidité statique et dynamique (20 min)
+
+**Exercice 4 (Liquidité statique et dynamique)** **Analyse statique (3 exercices).** Calculez et commentez pour chaque exercice :
+
+\\\text{FRNG} = \text{Capitaux permanents} - \text{Actif immobilisé}\\
+
+\\\text{Trésorerie nette} = \text{FRNG} - \text{BFR}\\
+
+*(Capitaux permanents = Capitaux propres + Emprunts MLT)*
+
+Vérifiez la cohérence : Trésorerie nette = Disponibilités − Concours bancaires.
+
+**Analyse dynamique (exercice N).** À partir du tableau de flux :
+
+- Identifiez le flux opérationnel libre (avant investissement).
+- Commentez la structure du financement : quelle part de l’investissement est financée par l’exploitation ? par l’endettement ?
+- Évaluez qualitativement le risque de dépendance bancaire.
+
+Le FRNG indique si les ressources stables couvrent les emplois stables ; la trésorerie nette indique ce qu’il reste une fois le BFR financé. Un FRNG insuffisant oblige à financer le long terme par du court terme.
+
+Solution
+
+| (k€)                      |            N-2 |            N-1 |             N |
+|:--------------------------|---------------:|---------------:|--------------:|
+| Capitaux permanents       |          2 350 |          2 940 |         3 480 |
+| Actif immobilisé          |          2 400 |          2 980 |         3 350 |
+| **FRNG**                  |        **-50** |        **-40** |       **130** |
+| BFR                       |            250 |            360 |           510 |
+| **Trésorerie nette**      |       **-300** |       **-400** |      **-380** |
+| Disponibilités − Concours | 300−600 = -300 | 130−530 = -400 | 80−460 = -380 |
+
+Cohérence vérifiée sur les 3 exercices. Le FRNG ne devient positif qu’en N, grâce à 620 k€ d’emprunts nouveaux, mais il reste très inférieur au BFR (510) : la trésorerie nette est négative sur les trois ans (-380 en N), c’est-à-dire que l’entreprise vit sur ses découverts.
+
+**Dynamique (N).** Le flux opérationnel avant investissement est de **170 k€** (CAF 320, absorbée à 150 k€ par la hausse nette du BFR : \\-160-180+190 = -150\\). Après investissements de 770 k€, le flux libre est de \\170 - 770 = -600\\ k€. L’exploitation finance donc \\170/770 \approx 22\\ \\\\ de l’investissement ; le reste (≈ 78 %) vient de l’endettement net (+550) et d’un prélèvement sur la trésorerie (-50). **Risque de dépendance bancaire élevé** : flux libre négatif, charges financières (220) supérieures au REX (140), et une demande de 500 k€ supplémentaires.
+
+------------------------------------------------------------------------
+
+### Étape 5 — Matrice SWOT de MEDITECH SAS (10 min)
+
+**Exercice 5 (Matrice SWOT)** Construisez la matrice SWOT en intégrant :
+
+- Les éléments **quantitatifs** issus de vos calculs (ratios, flux).
+- Les éléments **qualitatifs** du contexte sectoriel (réglementation MDR, positionnement sur un marché en croissance, dépendance clients).
+
+|              | **Forces**    | **Faiblesses** |
+|:-------------|:--------------|:---------------|
+| **Internes** | (à compléter) | (à compléter)  |
+
+|              | **Opportunités** | **Menaces**   |
+|:-------------|:-----------------|:--------------|
+| **Externes** | (à compléter)    | (à compléter) |
+
+Solution
+
+|  | **Forces** | **Faiblesses** |
+|:---|:---|:---|
+| **Internes** | CA +33 % en 2 ans ; marge brute encore à 40 % ; FRNG redevenu positif (130) ; FPNR de 1 360 k€ | Marge d’exploitation 10 % → 2,5 % ; résultat net -80 ; gearing 161 % ; BFR doublé ; charges financières (220) \> REX (140) |
+
+|  | **Opportunités** | **Menaces** |
+|:---|:---|:---|
+| **Externes** | Marché des dispositifs médicaux en croissance ; barrière à l’entrée réglementaire une fois la conformité MDR acquise | Coût et délais de la certification MDR ; dépendance clients ; hausse des taux (charges financières) ; pression sur les prix |
+
+------------------------------------------------------------------------
+
+### Étape 6 — Synthèse diagnostique et recommandation crédit (15 min)
+
+**Exercice 6 (Note de synthèse et recommandation crédit)** Rédigez une **note de synthèse d’1 page maximum** structurée en 4 parties :
+
+1.  **Présentation de l’entreprise** (5 lignes) : activité, taille, contexte.
+2.  **Points forts et points de vigilance** : 3 points forts, 3 points faibles étayés par les chiffres.
+3.  **Avis sur la demande de crédit** : accord, refus ou accord conditionnel ? Justifiez avec les ratios.
+4.  **Conditions éventuelles** : garanties demandées, clauses de covenant, suivi à envisager.
+
+Votre recommandation doit être argumentée : un analyste crédit doit toujours quantifier le risque et proposer des conditions d’atténuation.
+
+Solution
+
+Réponse modèle (d’autres conclusions sont acceptables si elles sont chiffrées et cohérentes).
+
+1.  **Présentation.** PME de dispositifs médicaux, CA de 5,6 M€, en croissance mais engagée dans une mise en conformité MDR coûteuse ; demande un prêt MLT de 500 k€ pour étendre son atelier.
+2.  **Forces :** CA +33 % en deux ans ; FPNR de 1 360 k€ ; liquidité générale remontée à 1,09. **Faiblesses :** marge d’exploitation de 2,5 % et RNR négatif ; gearing de 161 % (≈ 175 % sur FPNR) ; flux libre de -600 k€ avec des charges financières supérieures au REX.
+3.  **Avis :** **refus en l’état / accord conditionnel**. La capacité à rembourser n’est pas démontrée : un prêt de 500 k€ porterait la dette nette à environ 2 880 k€ (gearing ≈ 195 %) alors que le REX ne couvre pas les intérêts actuels.
+4.  **Conditions :** garanties réelles sur l’atelier financé et/ou caution des dirigeants ; covenants (gearing \< 150 %, couverture des charges financières \> 1,5 × à terme) ; information financière trimestrielle ; plan de retour à la rentabilité (marge brute, BFR) ; versement du prêt par tranches selon l’avancement.
+
+------------------------------------------------------------------------
+
+## Livrables et format
+
+- **Fichier Excel** (ou tableur) avec :
+  - Tableau de calcul des ratios sur 3 ans avec formules apparentes.
+  - Calcul du FRNG, BFR, trésorerie nette sur 3 ans.
+  - Calcul du RNR et des FPNR.
+  - Matrice SWOT mise en forme.
+- **Note de synthèse diagnostique** (PDF, 1 page maximum).
+- **Présentation orale** : 10 minutes par équipe, format comité de crédit (les équipes qui ne présentent pas jouent le comité et posent des questions).
+
+## Critères d’évaluation
+
+- Exactitude des calculs (ratios, RNR, FPNR, FRNG, BFR) : **30 %**
+- Qualité de l’analyse et des commentaires : **30 %**
+- Synthèse diagnostique et recommandation crédit : **25 %**
+- Clarté de la présentation orale : **15 %**
+
+## XP
+
+**+200 XP** : *Boss de Jour 1*. Vous êtes maintenant face au Boss : armez-vous de vos ratios, de votre esprit critique et d’une plume analytique affûtée. Bonne chasse, détectives !
+
+------------------------------------------------------------------------
+
+## À couper en premier si le temps manque
+
+1.  Mise en forme de la matrice SWOT dans le tableur (garder la version papier).
+2.  Calcul du gearing recalculé sur FPNR (étape 3).
+3.  Le détail des commentaires pour les ratios secondaires (BFR, liquidité générale) : se limiter à une phrase chacun.
+
+Ne jamais couper : les ratios, le RNR, la liquidité et la recommandation.
+
+> **IMPORTANT:**
+>
+> Ajouter une démo interactive (Shinylive) où l’on saisit les données de MEDITECH et où l’application calcule les ratios, le RNR, les FPNR et le FRNG/BFR, pour illustrer les 6 étapes en direct pendant les 25 min de théorie.
+
+------------------------------------------------------------------------
+
+## Extension (hors séance)
+
+### Quantifier la capacité de remboursement
+
+Cette partie, optionnelle, approfondit le risque de dépendance bancaire de l’étape 4 ; elle a été déplacée ici pour tenir dans les 135 min.
+
+**Exercice 7 (Couverture des charges financières et DSCR)** Calculez pour l’exercice N la couverture des charges financières (REX / charges financières nettes) et un DSCR simplifié (flux opérationnel / charges financières). Quelles garanties, quels covenants et quelle clause d’information financière annuelle proposez-vous ?
+
+\\\text{DSCR} = \frac{\text{Flux opérationnel}}{\text{Charges financières} + \text{Remboursements}}\\
+
+Cette formule mesure combien d’euros de flux sont disponibles pour chaque euro de service de la dette (intérêts et capital) ; un DSCR inférieur à 1 signifie que l’entreprise ne peut pas honorer sa dette avec ses flux.
+
+Solution
+
+- Couverture des charges financières : \\140 / 220 \approx 0{,}64\\ : le REX ne couvre pas les intérêts.
+- DSCR simplifié (sans remboursements, non fournis) : \\170 / 220 \approx 0{,}77 \< 1\\. Avec les remboursements de capital, il serait encore plus bas : c’est une borne supérieure.
+- Propositions : garanties réelles sur l’atelier ou caution des dirigeants ; covenants sur le gearing et la couverture des intérêts ; information financière annuelle (idéalement trimestrielle).

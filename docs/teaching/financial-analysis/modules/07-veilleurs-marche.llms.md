@@ -1,0 +1,1 @@
+**Translation in progress.** This page is currently available in French only: [Les Veilleurs du Marché](../../../fr/teaching/financial-analysis/modules/07-veilleurs-marche.llms.md).

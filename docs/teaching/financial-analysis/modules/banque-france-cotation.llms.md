@@ -1,0 +1,1 @@
+**Translation in progress.** This page is currently available in French only: [Comprendre la cotation Banque de France](../../../fr/teaching/financial-analysis/modules/banque-france-cotation.llms.md).

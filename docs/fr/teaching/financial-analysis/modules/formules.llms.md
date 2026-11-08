@@ -1,0 +1,284 @@
+Notation : \\A\\ = total de l’actif, \\D\\ = dettes, \\CP\\ ou \\E\\ = capitaux propres, \\t\\ = taux d’impôt, \\i\\ = coût de la dette avant impôt. Les quêtes sont numérotées de Q1 à Q9.
+
+## Jour 1 — Explorer les états financiers
+
+### Q1 — Le Temple des Bilans
+
+> **TIP:**
+>
+> \\A = D + CP \qquad\text{soit}\qquad \text{Total actif} = \text{Total passif}\\
+>
+> **Ce que ça calcule.** Tout ce que l’entreprise possède (actif) a été financé par quelqu’un (dettes ou capitaux propres). Si les deux totaux diffèrent, le bilan contient une erreur : c’est le premier contrôle à faire. *Utilisée en Q1.*
+
+> **TIP:**
+>
+> \\\Delta \text{Trésorerie} = FO + FI + FF\\
+>
+> **Ce que ça calcule.** La variation de trésorerie est la somme des flux opérationnels (FO), d’investissement (FI) et de financement (FF). Elle permet de vérifier que le tableau de flux est cohérent avec la trésorerie d’ouverture et de clôture du bilan. *Utilisée en Q1.*
+
+### Q2 — Les Archives Consolidées
+
+> **TIP:**
+>
+> \\\text{Écart d'acquisition} = \text{Prix des titres} - \\\\\text{détention} \times \text{Capitaux propres de la filiale}\\
+>
+> **Ce que ça calcule.** Le surplus payé par le groupe par rapport à la part des capitaux propres de la filiale qu’il achète. Il sert à voir ce que l’on paie en plus de la valeur comptable (le goodwill). *Utilisée en Q2.*
+
+> **TIP:**
+>
+> \\\text{Intérêts minoritaires} = (1 - \\\\\text{détention}) \times \text{Capitaux propres de la filiale}\\
+>
+> **Ce que ça calcule.** La part des capitaux propres de la filiale qui appartient aux actionnaires extérieurs au groupe. Elle sert à isoler, dans les comptes consolidés, ce qui revient vraiment au groupe. *Utilisée en Q2.*
+
+### Q3 — Le Détective du Diagnostic
+
+> **TIP:**
+>
+> | Indicateur          | Formule              |
+> |:--------------------|:---------------------|
+> | Marge brute         | CA − Coût des ventes |
+> | Taux de marge brute | Marge brute / CA     |
+> | Taux d’EBE          | EBE / CA             |
+> | Marge d’EBIT        | EBIT / CA            |
+> | Marge nette         | RN / CA              |
+> | Taux de RNR         | RNR / CA             |
+>
+> **Ce que ça calcule.** La part du chiffre d’affaires qui reste à chaque étape du compte de résultat. Cela montre où se perd la rentabilité. *Utilisés en Q3 (taux de marge brute), Q4 et Q5 (marge d’EBIT).*
+
+> **TIP:**
+>
+> \\\text{Gearing} = \frac{\text{Dettes financières nettes}}{\text{Capitaux propres}} \qquad\text{(noté } D/E \text{ en Q4)}\\
+>
+> \\\text{Dettes nettes} = \text{Emprunts MLT} + \text{Concours bancaires} - \text{Disponibilités}\\
+>
+> **Ce que ça calcule.** Combien de dettes nettes pèsent pour 1 € apporté par les actionnaires. Plus il est élevé, plus l’entreprise dépend de ses prêteurs. *Utilisé en Q3 et Q4.*
+
+> **TIP:**
+>
+> \\\text{Actif circulant} = \text{Stocks} + \text{Créances clients} + \text{Disponibilités}\\
+>
+> \\\text{Passif circulant} = \text{Dettes fournisseurs} + \text{Concours bancaires}\\
+>
+> \\\text{Liquidité générale} = \frac{\text{Actif circulant}}{\text{Passif circulant}}\\
+>
+> **Ce que ça calcule.** Ce que l’entreprise peut transformer en cash à court terme, face à ce qu’elle doit payer à court terme. Cela dit si elle peut honorer ses échéances proches. *Utilisés en Q3.*
+
+> **TIP:**
+>
+> \\\text{RNR} = (1 - t) \times \text{RCAI} \approx \frac{3}{4} \times \text{RCAI}\\
+>
+> **Ce que ça calcule.** Le bénéfice que l’activité courante rapporte durablement, après un impôt d’environ un quart. Il neutralise l’exceptionnel et la fiscalité propre à chaque exercice, et permet de comparer les années entre elles. *Utilisé en Q3.*
+
+> **TIP:**
+>
+> \\\text{FPNR} = \text{Capitaux propres} - \text{Goodwill net} - \text{Actifs d'impôt différé (IDA non recouvrables)}\\
+>
+> **Ce que ça calcule.** Les fonds propres amputés des actifs qui ne rembourseraient pas un créancier en cas de liquidation. Ils donnent une mesure plus prudente du coussin réellement disponible pour absorber les pertes. *Utilisés en Q3.*
+
+> **TIP:**
+>
+> \\\text{FRNG} = \text{Capitaux permanents} - \text{Actifs immobilisés nets}\\
+>
+> avec Capitaux permanents = Capitaux propres + Emprunts MLT.
+>
+> **Ce que ça calcule.** La part des ressources stables qui reste après avoir financé les investissements durables. C’est un matelas pour financer l’exploitation. *Utilisé en Q3.*
+
+> **TIP:**
+>
+> \\\text{BFR} = \text{Stocks} + \text{Créances d'exploitation} - \text{Dettes d'exploitation}\\
+>
+> \\\text{BFR en jours de CA} = \frac{\text{BFR}}{\text{CA} / 365}\\
+>
+> **Ce que ça calcule.** L’argent immobilisé par le cycle d’exploitation : on paie ses fournisseurs avant d’être payé par ses clients. En jours de CA, il se compare d’une entreprise à l’autre. *Utilisé en Q3, Q4 et Q8.*
+
+> **TIP:**
+>
+> \\\text{Trésorerie nette} = \text{FRNG} - \text{BFR} = \text{Disponibilités} - \text{Concours bancaires}\\
+>
+> **Ce que ça calcule.** Ce qui reste en caisse une fois l’exploitation financée. Une valeur négative signale un recours aux découverts bancaires. *Utilisée en Q3.*
+
+> **TIP:**
+>
+> \\\text{CAFr} = \text{RNR} + \text{Dotations nettes aux amortissements}\\
+>
+> **Ce que ça calcule.** Le cash que l’activité courante génère avant variation du BFR. C’est la base de la capacité de remboursement. *Utilisée en Q3 (la CAF figure dans le tableau de flux) et Q8.*
+
+> **TIP:**
+>
+> \\\text{Capacité de remboursement} = \frac{\text{Dettes financières nettes}}{\text{CAFr}}\\
+>
+> |    Ratio | Interprétation |
+> |---------:|:---------------|
+> | \< 2 ans | Confortable    |
+> |  2–4 ans | Acceptable     |
+> |  4–5 ans | Tendu          |
+> | \> 5 ans | Critique       |
+>
+> **Ce que ça calcule.** Le nombre d’années de CAF nécessaires pour rembourser la dette nette. *Utilisée en Q3 (structure financière).*
+
+> **TIP:**
+>
+> \\\text{Couverture} = \frac{\text{REX}}{\text{Charges financières nettes}} \qquad \text{DSCR} = \frac{\text{Flux opérationnel}}{\text{Charges financières} + \text{Remboursements}}\\
+>
+> **Ce que ça calcule.** Combien d’euros de résultat ou de flux couvrent chaque euro d’intérêts (ou de service de la dette). Un DSCR inférieur à 1 signifie que les flux ne suffisent pas à payer la dette. *Utilisés en Q3 (extension).*
+
+## Jour 2 — Rentabilité, modèle économique et valorisation
+
+### Q4 — Les Arènes de la Rentabilité
+
+> **TIP:**
+>
+> \\\text{ROCE} = \frac{\text{EBIT}}{\text{Capitaux engagés}} = \frac{\text{EBIT}}{\text{Capitaux propres} + \text{Dettes financières nettes}}\\
+>
+> **Ce que ça calcule.** Ce que rapportent les capitaux investis dans l’exploitation, quelle que soit la façon dont ils sont financés. *Utilisé en Q4, Q5 et Q8.*
+
+> **TIP:**
+>
+> \\\text{ROE} = \frac{\text{Résultat net}}{\text{Capitaux propres}}\\
+>
+> **Ce que ça calcule.** Ce que gagnent les actionnaires par euro de capitaux propres investi. *Utilisé en Q4 et Q8.*
+
+> **TIP:**
+>
+> \\\text{ROE} = \text{ROCE} + (\text{ROCE} - i) \times \frac{D}{E}\\
+>
+> où \\D/E\\ est le gearing. Les ROCE et \\i\\ s’entendent après impôt (voir la dérivation en Q4).
+>
+> - Si ROCE \> \\i\\ : levier positif, la dette amplifie le ROE.
+> - Si ROCE \< \\i\\ : levier négatif, la dette pénalise le ROE.
+>
+> **Ce que ça calcule.** De combien l’endettement augmente ou réduit la rentabilité des actionnaires. Il sert à juger si s’endetter est rentable. *Utilisé en Q4.*
+
+> **TIP:**
+>
+> \\\text{ROE} = \underbrace{\frac{\text{RN}}{\text{CA}}}\_{\text{Marge nette}} \times \underbrace{\frac{\text{CA}}{\text{Actif total}}}\_{\text{Rotation des actifs}} \times \underbrace{\frac{\text{Actif total}}{\text{Capitaux propres}}}\_{\text{Levier financier}}\\
+>
+> **Ce que ça calcule.** Elle explique le ROE par trois leviers : la marge que l’on dégage, l’efficacité avec laquelle les actifs produisent du CA, et l’endettement. Elle montre d’où vient une bonne ou mauvaise rentabilité. *Utilisée en Q4.*
+
+### Q5 — Les Cartographes du Modèle Économique
+
+> **TIP:**
+>
+> \\\text{EBIT} = \text{CA} - \text{Coûts directs} - \text{Coûts opérationnels}\\
+>
+> \\\text{Marge EBIT \\} = \text{Marge brute \\} - \text{Coûts op. \\}\\
+>
+> **Ce que ça calcule.** Le lien entre la structure de coûts du modèle économique et la marge d’exploitation. *Utilisées en Q5.*
+
+> **TIP:**
+>
+> \\\text{Point mort} = \frac{\text{Charges fixes}}{\text{Taux de marge sur coûts variables}} \qquad \text{Taux de MSCV} = \frac{\text{CA} - \text{Charges variables}}{\text{CA}}\\
+>
+> **Ce que ça calcule.** Le chiffre d’affaires à partir duquel l’activité ne perd plus d’argent. *Formule de référence conservée du formulaire initial ; elle n’est pas détaillée dans une quête.*
+
+### Q6 — Le Conseil des Sages
+
+> **TIP:**
+>
+> \\\text{PER} = \frac{\text{Cours de l'action}}{\text{BPA}} = \frac{\text{Capitalisation boursière}}{\text{Résultat net}}\\
+>
+> \\\text{Valeur des FP} = \text{RN} \times \text{PER comparable}\\
+>
+> **Ce que ça calcule.** Le nombre d’années de bénéfices que les investisseurs acceptent de payer. Un PER élevé traduit des attentes de forte croissance. *Utilisé en Q6.*
+
+> **TIP:**
+>
+> \\\text{P/B} = \frac{\text{Capitalisation boursière}}{\text{Capitaux propres comptables}}\\
+>
+> **Ce que ça calcule.** Le prix de marché comparé à la valeur comptable. Un P/B supérieur à 1 signifie que le marché valorise des actifs immatériels (marque, brevets, talents) au-delà de la comptabilité. *Utilisé en Q6.*
+
+> **TIP:**
+>
+> \\\text{VE (EV)} = \text{Multiple sectoriel} \times \text{EBITDA}\\
+>
+> **Ce que ça calcule.** Une estimation de la valeur de l’activité (financée par actionnaires et prêteurs) à partir du multiple payé dans le secteur. *Utilisée en Q6.*
+
+> **TIP:**
+>
+> \\\text{Valeur des FP} = \text{VE} - \text{Dettes financières nettes}\\
+>
+> Version complète, avec minoritaires et associés :
+>
+> \\\text{Equity value} = \text{VE} - \text{Dette nette} - \text{Minoritaires} + \text{Associés}\\
+>
+> **Ce que ça calcule.** Ce qui revient aux actionnaires une fois les prêteurs et les minoritaires servis. C’est la valeur que l’on compare au prix d’une participation. *Utilisé en Q6.*
+
+## Jour 3 — Réglementation, stratégie et ESG
+
+### Q7 — Les Veilleurs du Marché
+
+> **TIP:**
+>
+> \\D_0 = \sum\_{t=1}^{n} \frac{L}{(1+r)^t} = L \cdot \frac{1-(1+r)^{-n}}{r}\\
+>
+> où \\L\\ est le loyer annuel, \\n\\ la durée du bail et \\r\\ le taux d’actualisation.
+>
+> **Ce que ça calcule.** La dette inscrite au bilan pour un contrat de location : la valeur actuelle de tous les loyers à venir. *Utilisée en Q7.*
+
+> **TIP:**
+>
+> \\\text{EBITDA}\_{\text{après}} = \text{EBITDA}\_{\text{avant}} + L \qquad \text{Dette nette}\_{\text{après}} = \text{Dette nette}\_{\text{avant}} + D_0\\
+>
+> Le loyer est remplacé par un amortissement \\A = D_0 / n\\ (sous l’EBITDA) et par des intérêts \\I_1 = r \\ D_0\\ (charges financières) la première année.
+>
+> **Ce que ça calcule.** Le loyer sort de l’EBITDA et la dette locative entre dans la dette nette, sans aucun changement du cash réellement payé. *Utilisé en Q7.*
+
+> **WARNING:**
+>
+> Conclure qu’IFRS 16 « améliore » la performance : l’EBITDA monte, mais la dette nette monte aussi, et les flux de trésorerie ne changent pas.
+
+### Q8 — Les Architectes de la Stratégie
+
+> **TIP:**
+>
+> \\\text{FTD} = \text{EBITDA} - \text{impôt} - \text{Capex} - \Delta\text{BFR} \qquad\text{avec impôt} = t \times \text{EBIT}\\
+>
+> Variante équivalente, à partir de l’EBE :
+>
+> \\\text{FTD} = \text{EBE} - \text{IS normatif} - \Delta\text{BFR} - \text{Investissements nets}\\
+>
+> \\\Delta\text{BFR}\_n = \text{BFR}\_n - \text{BFR}\_{n-1}\\
+>
+> **Ce que ça calcule.** Le cash que l’activité dégage après impôt, investissements et variation de BFR. C’est ce qui peut rembourser la dette ou rémunérer les actionnaires. *Utilisé en Q8.*
+
+> **TIP:**
+>
+> \\\text{Tréso}\_{n+1} = \text{Tréso}\_n + \text{FTD}\_n - \text{Remb}\_n + \text{Financement}\_n\\
+>
+> **Ce que ça calcule.** La trésorerie de fin d’année : celle de l’année précédente, plus le FTD, moins les remboursements, plus les financements reçus. Elle sert à repérer un besoin de financement externe. *Utilisée en Q8.*
+
+> **TIP:**
+>
+> \\\text{FTA} = \text{RNR} + \text{D\\A} - \Delta\text{BFR} \qquad\text{et}\qquad \frac{\text{FTA}}{\text{CA}}\\
+>
+> **Ce que ça calcule.** Le cash dégagé par l’activité courante. Rapporté au CA, il indique la part de chaque euro vendu qui se transforme en cash. *Formule de référence conservée du formulaire initial ; les quêtes calculent le FTD (ci-dessus) mais pas le FTA.*
+
+### Q9 — Les Gardiens de l’Extra-Financier
+
+> **TIP:**
+>
+> \\\text{Intensité carbone} = \frac{\text{Émissions de GES (scopes 1 + 2) (tCO}\_2\text{)}}{\text{CA (M€)}}\\
+>
+> **Ce que ça calcule.** Les tonnes de CO₂ émises pour 1 M€ de chiffre d’affaires, ce qui permet de comparer des entreprises de tailles différentes. *Utilisée en Q9.*
+
+> **TIP:**
+>
+> \\\text{WACC} = \frac{E}{V} K_e + \frac{D}{V} K_d (1 - t)\\
+>
+> où \\V = E + D\\, \\K_e\\ est le coût des fonds propres et \\K_d\\ le coût de la dette.
+>
+> **Ce que ça calcule.** Le taux de rémunération moyen exigé par les actionnaires et les prêteurs. Il sert de taux d’actualisation pour valoriser l’entreprise. *Utilisé en Q9.*
+
+> **TIP:**
+>
+> \\\text{WACC}\_{ajusté} = \text{WACC}\_{standard} + \text{Prime ESG}\\
+>
+> \\\Delta\text{WACC} = \frac{E}{V}\Delta_e + \frac{D}{V}\Delta_d (1 - t)\\
+>
+> | Notation ESG                   | Prime estimée |
+> |:-------------------------------|:--------------|
+> | Leader sectoriel               | 0 à 0,5%      |
+> | Moyenne                        | 0,5 à 1,5%    |
+> | Controverses / faible notation | \> 1,5%       |
+>
+> **Ce que ça calcule.** La hausse du coût du capital quand l’entreprise présente des risques ESG. Plus le WACC monte, plus la valeur baisse. *Utilisé en Q9.*

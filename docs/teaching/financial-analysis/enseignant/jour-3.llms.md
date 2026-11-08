@@ -1,0 +1,1 @@
+**Translation in progress.** This page is currently available in French only: [Guide enseignant — Jour 3](../../../fr/teaching/financial-analysis/enseignant/jour-3.llms.md).

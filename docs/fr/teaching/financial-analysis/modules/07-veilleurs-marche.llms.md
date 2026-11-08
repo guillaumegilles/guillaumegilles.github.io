@@ -1,0 +1,198 @@
+# Introduction
+
+Durée : **100 min** (dont 20 min de théorie) \| Équipes : **3–5 étudiants** \| XP : **+150**
+
+**Objectifs pédagogiques**
+
+- Comprendre les principaux cadres réglementaires : CSRD, IFRS, AMF, Bâle III/IV.
+- Identifier les impacts financiers des évolutions réglementaires sur les entreprises.
+- Conduire et synthétiser une veille réglementaire et de marché.
+- Formuler des recommandations stratégiques fondées sur l’analyse réglementaire.
+
+**Prérequis et lectures préalables**
+
+- Prérequis : connaître les bases de la réglementation financière européenne (IFRS, AMF).
+- Lecture préalable : **aucune n’est exigée**. Les briefs sont recherchés pendant la séance.
+- Pour aller plus loin (facultatif, hors séance) : lire la DPEF ou la section RSE d’un rapport annuel et repérer une initiative RSE/ESG.
+
+------------------------------------------------------------------------
+
+## Contexte narratif — Mission
+
+StratFin Corp tient son **comité trimestriel de veille stratégique**. Chaque équipe se voit attribuer un sujet réglementaire ou de marché et doit en briefer le comité sur ses implications pour les entreprises clientes du cabinet.
+
+Les Directeurs Associés attendent des analyses rigoureuses, des chiffrages d’impact et des préconisations concrètes. Le comité évaluera chaque présentation selon les mêmes critères qu’un rapport destiné à un client grand compte.
+
+**Votre rôle ce matin.** Vous êtes **analystes régulateurs seniors** au sein de StratFin Corp. Votre mission : surveiller l’environnement réglementaire, quantifier les impacts financiers pour vos clients, et proposer une réponse managériale adaptée.
+
+------------------------------------------------------------------------
+
+## Théorie en direct (20 min)
+
+| Minutes | Contenu |
+|:---|:---|
+| 0–5 | Pourquoi la réglementation est un signal stratégique ; cartographie CSRD, IFRS, AMF, DORA, taux |
+| 5–15 | IFRS 16 en détail : droit d’utilisation, dette locative, effets sur EBITDA et dette nette (exemple et dérivation ci-dessous) |
+| 15–20 | Méthode de la fiche de veille : dater, chiffrer, relier aux ratios, citer un exemple |
+
+### Exemple travaillé — un bail capitalisé (chiffres illustratifs)
+
+Un client signe un bail de **5 ans** avec un loyer de **100 par an**, payé en fin d’année. Taux d’actualisation retenu : **5 %**. Ces valeurs sont illustratives, choisies pour le calcul.
+
+| Poste (année 1)                      | Avant IFRS 16 | Après IFRS 16 |
+|:-------------------------------------|--------------:|--------------:|
+| Charge de loyer dans l’EBITDA        |          −100 |             0 |
+| Amortissement du droit d’utilisation |             0 |        −86,59 |
+| Charge d’intérêt sur dette locative  |             0 |        −21,65 |
+| Dette locative à la signature        |             0 |        432,95 |
+
+L’EBITDA augmente de 100 (le loyer sort de l’EBITDA). Le résultat d’exploitation augmente de \\100 - 86{,}59 = 13{,}41\\. Le résultat avant impôt baisse de \\13{,}41 - 21{,}65 = -8{,}24\\ en année 1. La dette nette augmente de 432,95.
+
+> **CAUTION:**
+>
+> **Étape 1 — Dette locative.** Elle est égale à la valeur actuelle des loyers futurs \\L\\ sur \\n\\ années au taux \\r\\ :
+>
+> \\ D_0 = \sum\_{t=1}^{n} \frac{L}{(1+r)^t} = L \cdot \frac{1-(1+r)^{-n}}{r} \\
+>
+> Autrement dit : la dette locative est ce que l’on emprunterait aujourd’hui pour financer tous les loyers à venir.
+>
+> **Étape 2 — Application.** Avec \\L=100\\, \\n=5\\, \\r=5\\\\\\ :
+>
+> \\ D_0 = 100 \times \frac{1-1{,}05^{-5}}{0{,}05} = 100 \times 4{,}3295 \approx 432{,}95 \\
+>
+> **Étape 3 — EBITDA.** Avant, \\\text{EBITDA}\_{\text{avant}} = \text{Produits} - \text{Charges hors loyer} - L\\. Après, le loyer n’est plus une charge opérationnelle :
+>
+> \\ \text{EBITDA}\_{\text{après}} = \text{EBITDA}\_{\text{avant}} + L \\
+>
+> L’EBITDA augmente donc exactement du loyer, soit +100 par an, sans aucun changement de flux de trésorerie réel.
+>
+> **Étape 4 — Dette nette.** Le passif locatif entre dans la dette :
+>
+> \\ \text{Dette nette}\_{\text{après}} = \text{Dette nette}\_{\text{avant}} + D_0 \\
+>
+> La dette nette augmente de 432,95 à la signature.
+>
+> **Étape 5 — Où va le loyer ?** Il est remplacé par un amortissement \\A = D_0/n = 86{,}59\\ (sous l’EBITDA) et par des intérêts \\I_1 = r \\ D_0 = 21{,}65\\ (en charges financières) en année 1. La charge totale est plus élevée en début de bail, plus faible ensuite.
+
+------------------------------------------------------------------------
+
+## Sujets attribués par équipe
+
+Une équipe par thème. Le formateur procède à la répartition en début de séance. Chaque équipe traite ses points clés et les restitue dans **la même fiche de veille** (voir plus bas).
+
+| Équipe | Sujet | Description | Points clés à traiter |
+|:--:|:---|:---|:---|
+| 1 | CSRD (Corporate Sustainability Reporting Directive) | Directive européenne rendant obligatoire le reporting extra-financier (ESG) pour les grandes entreprises de l’UE à partir de 2024–2025. | Calendrier d’entrée en vigueur et périmètre ; obligations de reporting (double matérialité, normes ESRS) ; impact sur bilan et compte de résultat (coûts de conformité, dépréciation d’actifs, accès au financement vert) ; opportunités (green bonds, SLL, coût de la dette ESG). |
+| 2 | IFRS 16 (Contrats de location) | Norme comptable internationale imposant la capitalisation des contrats de location opérationnelle au bilan. | Mécanisme de retraitement (droit d’utilisation à l’actif, dette locative au passif) ; impact sur gearing, EBITDA, ROCE, capacité de remboursement ; secteurs les plus touchés (distribution, transport, hôtellerie) ; ajustements analytiques des analystes crédit et agences de notation. |
+| 3 | IFRS 9 (Instruments financiers) | Norme de classification et d’évaluation des actifs financiers remplaçant IAS 39. | Trois catégories (coût amorti, juste valeur par OCI, juste valeur par résultat) ; modèle de dépréciation en pertes de crédit attendues (ECL) ; impact sur banques et corporates (volatilité du résultat, provisions, fonds propres) ; comparaison avant/après IFRS 9 sur un exemple chiffré. |
+| 4 | AMF (Autorité des Marchés Financiers) | Régulateur français des marchés financiers. | Rôle et pouvoirs (surveillance, agrément, sanction) ; obligations déclaratives des sociétés cotées (prospectus, DDR, franchissement de seuil) ; évolutions récentes (crypto-actifs PSAN/PSCA, révision MiFID II, réforme du marché primaire) ; risques et sanctions (exemples réels). |
+| 5 | Directive DORA / Risque cyber | Règlement européen sur la résilience opérationnelle numérique du secteur financier (Digital Operational Resilience Act). | Périmètre (établissements de crédit, assurances, PSP, fintechs) ; exigences (tests de résilience ICT, risques tiers, reporting d’incident) ; impact financier (budgets sécurité, pénalités, réputation) ; lien avec coût de la dette et notations de risque opérationnel. |
+| 6 | Inflation et taux d’intérêt | Environnement macroéconomique : remontée des taux directeurs de la BCE et conséquences sur les entreprises. | Transmission (taux directeurs → taux de financement) ; impact sur WACC et valorisations (DCF) ; effets sur BFR, trésorerie et capacité de remboursement ; secteurs gagnants/perdants (immobilier, private equity, utilities, distribution). |
+
+### Déroulement de la séance (100 minutes)
+
+| Phase | Durée | Activité |
+|:---|---:|:---|
+| Théorie en direct | 20 min | Voir plan ci-dessus |
+| Briefing & répartition | 5 min | Attribution des sujets, consignes |
+| Recherche & analyse | 25 min | Travail en équipe sur le sujet assigné |
+| Rédaction de la fiche de veille | 15 min | Complétion de la fiche ci-dessous |
+| Présentations | 24 min | 6 équipes × 4 min d’exposé |
+| Questions-réponses | 6 min | Une question par équipe, environ 1 min chacune |
+| Synthèse collective | 5 min | Points communs, enseignements transversaux |
+| **Total** | **100 min** |  |
+
+### Fiche de veille réglementaire (modèle commun)
+
+Chaque équipe complète la fiche suivante et la remet en PDF à l’issue de la séance. Conseils : soyez précis sur les dates (entreprises déjà soumises ou bientôt soumises) ; chiffrez (« coûts de conformité CSRD estimés à 0,5–1 % du CA pour les grands groupes » vaut mieux qu’« impact significatif ») ; liez l’analyse à des ratios (gearing, WACC, EBITDA, capacité de remboursement) ; citez au moins un exemple d’entreprise.
+
+| Rubrique                        | Contenu |
+|:--------------------------------|:--------|
+| Réglementation / Évolution      |         |
+| Date d’entrée en vigueur        |         |
+| Périmètre (qui est concerné ?)  |         |
+| Principales obligations         |         |
+| Impact bilan                    |         |
+| Impact compte de résultat       |         |
+| Impact ratios clés              |         |
+| Réponse managériale recommandée |         |
+
+**Exercice 1 (Capitaliser un bail)** Une entreprise a un EBITDA de 1 000 et une dette nette de 800 avant IFRS 16. Elle signe un bail de 3 ans, loyer de 200 par an en fin d’année, actualisé à 4 %. Valeurs **illustratives**. Calculez la dette locative, puis l’EBITDA et le ratio dette nette / EBITDA après retraitement.
+
+Solution
+
+\\D_0 = 200 \times \frac{1-1{,}04^{-3}}{0{,}04} = 200 \times 2{,}7751 \approx 555{,}02\\. En clair : c’est la valeur actuelle des trois loyers.
+
+- EBITDA après : \\1\\000 + 200 = 1\\200\\.
+- Dette nette après : \\800 + 555{,}02 = 1\\355{,}02\\.
+- Ratio : \\800/1\\000 = 0{,}80\\ avant, \\1\\355{,}02/1\\200 \approx 1{,}13\\ après.
+
+L’EBITDA « s’améliore » de 200, mais le levier apparent monte : aucun flux de trésorerie n’a changé.
+
+**Exercice 2 (Rédiger la fiche de veille de votre sujet)** Recherchez votre sujet (équipes 1 à 6) et complétez toutes les rubriques de la fiche de veille modèle. Préparez un exposé de 4 minutes.
+
+Solution
+
+Fiche modèle (équipe 1, CSRD ; **à compléter** par chaque équipe avec ses sources) :
+
+| Rubrique | Contenu |
+|:---|:---|
+| Réglementation | CSRD, reporting extra-financier (ESG) |
+| Entrée en vigueur | À partir de 2024–2025 selon les entreprises |
+| Périmètre | Grandes entreprises de l’UE |
+| Obligations | Double matérialité, normes ESRS |
+| Impact bilan | Dépréciation d’actifs possible ; accès au financement vert |
+| Impact résultat | Coûts de conformité (ordre de grandeur cité : 0,5–1 % du CA pour les grands groupes) |
+| Ratios | Coût de la dette ESG, marges |
+| Réponse managériale | Préparer le reporting, étudier green bonds ou SLL |
+
+> **WARNING:**
+>
+> Conclure qu’IFRS 16 « améliore » la performance. L’EBITDA monte mécaniquement, mais la dette nette monte aussi et la trésorerie réelle est inchangée. Comparez toujours avant et après retraitement.
+
+------------------------------------------------------------------------
+
+## Livrables et critères d’évaluation
+
+1.  **Fiche de veille complétée** (1 page A4 max, format PDF).
+2.  **Présentation orale de 4 minutes** devant le comité. Le temps de parole est strictement limité : un bon brief dit l’essentiel, rien de plus.
+3.  **Une question écrite** posée à une autre équipe après sa présentation, avec la réponse attendue (1–2 lignes).
+
+| Critère                                           | Pondération |
+|:--------------------------------------------------|------------:|
+| Qualité et exactitude de l’analyse réglementaire  |         40% |
+| Pertinence de l’évaluation des impacts financiers |         30% |
+| Clarté de la présentation orale                   |         20% |
+| Qualité des questions posées aux autres équipes   |         10% |
+
+## XP
+
+Terminer la quête : **+150 XP**.
+
+------------------------------------------------------------------------
+
+## Extension (hors séance) — ressources de recherche
+
+- **CSRD** : Règlement (UE) 2022/2464 ; EFRAG, normes ESRS (efrag.org/lab6) ; AMF, « Guide sur les informations de durabilité »
+  2024. ; rapport de durabilité Danone 2023 (danone.com/investisseurs).
+- **IFRS 16** : résumé sur ifrs.org/issued-standards/list-of-standards/ifrs-16-leases ; ANC, position-recommandation 2018-01 ; rapport annuel Carrefour 2023 (note « Droit d’utilisation ») ; Moody’s, « IFRS 16 — Adjustments to Key Credit Metrics » (2019).
+- **IFRS 9** : résumé sur ifrs.org/issued-standards/list-of-standards/ifrs-9-financial-instruments ; EBA, « Guidelines on credit risk management practices and accounting for expected credit losses » (2017) ; rapport annuel BNP Paribas 2023 (note « Coût du risque ») ; Banque de France, Bulletin n°230, « L’impact d’IFRS 9 sur le provisionnement des banques françaises ».
+- **AMF** : amf-france.org, rapports annuels et sanctions ; Règlement général de l’AMF, articles 223-1 et suivants ; registre PSAN/PSCA (amf-france.org/fr/espace-professionnels/fintech) ; décision de sanction AMF contre Société Générale (2023).
+- **DORA** : Règlement (UE) 2022/2554 ; ACPR, « Guide de préparation à DORA pour les entités supervisées » (2024) ; ENISA, « Threat Landscape for the Finance Sector » ; budget cyber Axa 2023 (section « Risques opérationnels »).
+- **Inflation et taux** : BCE, « Monetary policy decisions » (ecb.europa.eu/mopo/decisions) ; Banque de France, « Projections macroéconomiques » ; INSEE, « Note de conjoncture » (insee.fr) ; Nexity (immobilier) vs TotalEnergies (énergie), rapports annuels 2023.
+
+------------------------------------------------------------------------
+
+## À couper en premier si le temps manque
+
+1.  La synthèse collective (5 min), reportée en devoir écrit.
+2.  Les questions-réponses (6 min), remplacées par les questions écrites.
+3.  Dans la théorie, la partie méthode (5 min), lue par les équipes.
+
+------------------------------------------------------------------------
+
+Les Veilleurs du Marché savent que la réglementation n’est jamais une contrainte brute — c’est un signal stratégique à décoder avant les autres. À vos fiches !
+
+> **IMPORTANT:**
+>
+> Ajouter une démo Shinylive : curseurs pour le loyer, la durée et le taux, affichage de la dette locative, de l’EBITDA et de la dette nette avant et après retraitement.

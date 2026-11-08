@@ -1,0 +1,116 @@
+## Pré-lecture
+
+Cette page sert de pré-lecture pour la quête Q6. Temps de lecture : environ 10 à 15 minutes. Budget indicatif : au plus 45 minutes de pré-lecture par soirée, toutes pages confondues.
+
+- https://www.banque-france.fr/fr/strategie-monetaire/cadre-operationnel/operation-refinancement
+- https://memo.bank/magazine/nouvelle-echelle-de-cotation-de-la-banque-de-france/
+- https://acpr.banque-france.fr/system/files/import/acpr/medias/documents/20170125-bale.pdf
+- https://www.ecb.europa.eu/mopo/coll/risk/ecaf/html/index.fr.html
+- https://www.ecb.europa.eu/mopo/coll/risk/pdf/minimum_coverage_requirements201601.fr.pdf
+- https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32013R0575
+- https://www.banque-france.fr/fr/a-votre-service/entreprises/rehaussement-du-seuil-de-cotation
+- https://www.ecb.europa.eu/mopo/coll/risk/ecaf/html/index.en.html
+- https://www.economie.gouv.fr/facileco/marche-interbancaire#
+- https://www.ecb.europa.eu/pub/pdf/scpops/ecb.op284~bbce5257bf.en.pdf
+- https://www.banque-france.fr/system/files/2023-08/Banque%20de%20France%20%E2%80%93%20Entreprises_bulletin-de-la-banque-de-france_196_systeme-cotation-etude-4.pdf
+- https://www.banque-france.fr/fr/les-taux-monetaires-directeurs
+- https://www.ecb.europa.eu/ecb-and-you/explainers/tell-me-more/html/haircuts.en.html
+
+## Qu’est-ce que la cote de crédit Banque de France ?
+
+La cote de Banque de France est un outil de mesure et de suivi du **risque de crédit** des entreprises non financières, c’est-à-dire des entreprises industrielles et commerciales, à l’exception de celles relevant de la sphère financière (établissement de crédit et compagnies d’assurance notamment).
+
+Elle traduit l’appréciation de la Banque de France sur **la capacité d’une entité à honorer ses engagements financiers à un horizon de trois ans**.
+
+### La cote d’activité et la cote de crédit
+
+La système de cote de la Banque de France se compose de deux éléments :
+
+#### 1. Une cote d’activité (chiffre d’affaires)
+
+> Unités en **millions d’euros**.
+
+La cote d’activité indique une fourchette de chiffre d’affaires dans laquelle se positionne une entreprise. @cr-cote
+
+Elle est représentée par une lettre de **A**, chiffre d’affaires supérieur à \\750\\ millions d’euros.
+
+à **M**, chiffre d’affaires inférieur à \\100.000\\ euros.
+
+| **Cote** | **Niveau d’activité (M€)** |
+|----|----|
+| A | ≥ 750 |
+| B | ≥ 150 et \< 750 |
+| C | ≥ 50 et \< 150 |
+| D | ≥ 30 et \< 50 |
+| E | ≥ 15 et \< 30 |
+| F | ≥ 7,5 et \< 15 |
+| G | ≥ 1,5 et \< 7,5 |
+| H | ≥ 1,25 et \< 1,5 |
+| J | ≥ 0,50 et \< 1,25 |
+| K | ≥ 0,25 et \< 0,50 |
+| L | ≥ 0,10 et \< 0,25 |
+| M | \< 0,10 |
+| N | Non significatif |
+| X | Chiffre d’affaires inconnu ou trop ancien (exercice clos depuis plus de 20 mois) |
+
+#### 2. Une cote de crédit (capacité à honorer les engagements à 3 ans)
+
+La cote de crédit positione l’entreprise sur une échelle de risque de crédit. @cr-credit
+
+Elle est représentée par un **chiffre**, parfois nuancé par \\+\\ ou \\-\\.
+
+Par exemple, la cote de crédit \\2+\\ est moins risqué que la cote de crédit \\3-\\.
+
+| **Cote** | **Appréciation**      |
+|----------|-----------------------|
+| 1+       | Excellente ++         |
+| 1        | Excellente +          |
+| 1−       | Excellente            |
+| 2+       | Très satisfaisante ++ |
+| 2        | Très satisfaisante +  |
+| 2−       | Très satisfaisante    |
+| 3+       | Forte ++              |
+| 3        | Forte +               |
+| 3−       | Forte                 |
+| 4+       | Bonne +               |
+| 4        | Bonne                 |
+| 4−       | Intermédiaire +       |
+| 5+       | Intermédiaire −       |
+| 5        | Fragile               |
+| 5−       | Assez faible          |
+| 6+       | Très faible           |
+| 6        | Menacée               |
+| 6−       | Compromise            |
+| 7        | Très compromise       |
+| 8        | Fortement compromise  |
+| P        | Défaillante           |
+| 0        | Non significative     |
+
+Une entreprise recevant une cote Banque de France, \\C1-\\ réalise un chiffre d’affaire compris entre \\50\\ et \\150\\ millions d’euro et possède une *excellente* situation financière.
+
+## Pour quelle raison la Banque de France attribue-t-elle une cote ?
+
+### Une évaluation externe neutre et indépendante
+
+Pour les dirigeant(e)s d’entreprise, la cotation facilite le dialogue avec les structures de financement. Elle offre une référence commune, conforme aux standards internationaux et reconnue comme objective et indépendante :
+
+- Elle fournit aux prêteurs une information sur la qualité des engagements qu’ils s’apprêtent à décider ou qu’ils ont déjà pris ;
+- Elle aide à identifier les facteurs qui influent sur la situation financière de l’entreprise, notamment par rapport à un risque de crédit. Elle constitue un regard extérieur sur cette situation et sur la capacité de votre entreprise à rembourser ses dettes.
+
+### ICAS
+
+La cotation est reconnue par l’Eurosystème comme “système interne d’évaluation du crédit” (*In-house Credit Assessment System* ICAS).
+
+> **NOTE:**
+>
+> L’ICAS est un système d’évaluation du risque de crédit propre à une Banque centrale nationale et reconnu par l’Eurosystème dans le cadre de l’ECAF, [*Eurosystem Credit Assessment Framework*](https://www.ecb.europa.eu/mopo/coll/risk/ecaf/html/index.en.html).
+
+La cotation permet l’évaluation, à des fins de politique monétaire, de la qualité des créances détenues par les établissements de crédit sur des entreprises non financières. Seules les créances sur les entreprises qui reçoivent les meilleurs cotes peuvent être mobilisées par les établissement de crédit auprès de l’Eurosystème en garantie des opérations de refinancement.
+
+### OEEC
+
+Le système de cotation de la Banque de France bénéficie du statut d’organisme externe d’évaluation du crédit, **OEEC**. Il peut être utilisé par les établissement de crédti pour le calcul de leur besoin en fonds propres réglementaires.
+
+Dans ce contexte, les cotes, mises à disposition des établissements de crédit, sont exploitées comme un outil d’aide à la décision, de suivi et de mesure de la qualité de leur portefeuille de crédit aux entreprises. Elles permettent également la surveillance de la solidité des actifs des établissements de crédit par l’Autorité de Contrôle Prudentiel et de Résolution, ACPR.
+
+## Qui peut accéder à la cote

@@ -1,0 +1,1 @@
+**Translation in progress.** This page is currently available in French only: [Les trois états financiers](../../../fr/teaching/financial-analysis/modules/etats-financiers.llms.md).

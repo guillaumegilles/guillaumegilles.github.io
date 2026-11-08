@@ -1,0 +1,163 @@
+# Analyse Financière et Stratégique de l’Entreprise
+
+## Introduction
+
+Le cours **Analyse Financière et Stratégique de l’Entreprise** s’inscrit dans le cadre du premier bloc de compétences, **Concevoir la stratégie financière et extra-financière des organisations** du titre [Expert en Stratégie Financière (RNCP40177)](https://www.francecompetences.fr/recherche/rncp/40177/), reconnu par [France Compétences](https://www.francecompetences.fr/).
+
+Il est proposé aux étudiants des **Master of Science** [Finance d’Entreprise & Ingénierie Financière](https://www.inseec.com/program/msc-finance-dentreprise-ingenierie-financiere/), [Manager Financier, Banque & Assurance](https://www.inseec.com/program/msc-manager-financier-banque-assurance/), [Banque d’Affaires & Ingénierie Financière](https://www.inseec.com/program/msc-banque-daffaires-ingenierie-financiere/) et [Analyse Financière Internationale](https://www.inseec.com/program/msc-analyse-financiere-internationale-2/) de l’INSEEC. Ce module vise à développer une expertise approfondie en diagnostic financier, en analyse de la performance et en conception de stratégies financières et extra-financières, en lien avec les normes internationales (IFRS, GAAP), les enjeux ESG et les exigences réglementaires (CSRD, AMF, etc.).
+
+Le cours s’appuie sur la méthodologie opérationnelle de la [Banque de France](banque-france.qmd), telle que pratiquée par ses analystes financiers dans le cadre de la [cotation des entreprises](banque-france-cotation.qmd). Cette méthodologie fonde l’analyse sur l’examen des **comptes consolidés** et repose sur un processus en **6 étapes** appliqué à plus de 5 000 groupes chaque année.
+
+Toutes les études de cas, quêtes et examens du cours s’appuient sur un même **fil rouge** : les [comptes consolidés fictifs du Groupe AUBÉPINE](../../../fr/teaching/financial-analysis/donnees/index.llms.md) (données fictives, normes françaises).
+
+## La méthodologie en 6 étapes
+
+| Étape | Contenu | Quêtes |
+|:--:|----|----|
+| **1** | Environnement, stratégie et organisation — SWOT, analyse juridique, économique et financière | Q5 |
+| **2** | Examen critique de l’information — périmètre de consolidation, méthodes (intégration globale / proportionnelle / mise en équivalence), certification | Q2 |
+| **3** | Analyse des [performances](performances.qmd) — résultat net récurrent (RNR ≈ ¾ × RCAI), tendances, comparaison sectorielle | Q4 |
+| **4** | [Structure financière](structure-fi.qmd) — FPNR, évaluation des écarts d’acquisition, endettement retraité, autonomie financière (CAF) | Q3, Q4 |
+| **5** | [Liquidité](liquidite.qmd) — analyse statique (FRNG/BFR), dynamique (FTA/CA), prospective (FTD sur N+1, N+2), risques financiers | Q3, Q8 |
+| **6** | Décision de [cotation](banque-france-cotation.qmd) — cote financière, profil qualitatif, perspectives d’évolution, préconisation pour les filiales | Q3, Q6 |
+
+## Objectifs Pédagogiques
+
+- Diagnostic sur les comptes individuels et sur les comptes consolidés.
+- Étude de la profitabilité, de la solvabilité, de la structure financière et de la rentabilité (ROCE, ROE).
+- Analyse de sociétés cotées et de sociétés non cotées.
+
+## Connaissances et compétences RNCP visées
+
+1.  Mener une veille économique, règlementaire, juridique et fiscale (projet de loi Finances, directive CSRD, normes IFRS, US Gap, AMF etc.) afin de construire une stratégie financière qui soutiendra l’activité et de développement de l’organisation dans le respect des normes nationales et internationales en vigueur dans son secteur et sur son marché. 
+2.  Analyser le modèle économique de l’organisation, sa stratégie RSE, son marché afin d’identifier les forces, les faiblesses, les opportunités et les risques et de co-construire, avec la Direction, sa stratégie et son business plan.
+3.  Piloter la réalisation des états financiers (bilan, compte de résultat et tableau de flux de trésorerie) en veillant à la qualité des données et au respect des normes (IFRS, GAAP…) afin de produire des documents fiables qui pourront être communiqués aux parties prenantes internes et externes et qui pourront servir de base à la prise de décisions.
+4.  Piloter la réalisation des déclarations de performance extra- financière en veillant à la qualité des données intégrées dans les critères ESG afin de produire des rapports qui présentent la stratégie RSE aux parties prenantes internes et externes. 
+5.  Analyser les éléments financiers de l’organisation à partir des états produits précédemment via des ratios pertinents (ratios de liquidité, de solvabilité, de rentabilité, BFR etc.) et synthétiser les données afin d’évaluer sa solidité financière, sa solvabilité et sa performance.
+6.  Concevoir la stratégie financière de l’entreprise (planification financière à moyen et long terme, budgets, plan de trésorerie) en fonction des choix stratégiques de l’entreprise et de sa politique RSE, afin de valider avec la direction générale des objectifs communs, d’identifier les moyens pour les atteindre et de sécuriser l’activité de l’entreprise.
+7.  Décliner la stratégie RSE de l’entreprise en critères ESG et piloter la mise en place de la mesure de ces critères afin de soutenir la politique RSE de l’entreprise, de la mesurer et de produire les déclarations de performance extra-financière.
+8.  Concevoir et animer le processus budgétaire en lien avec les différentes fonctions de l’organisation et avec le contrôle de gestion, en reflétant la stratégie définie afin d’atteindre les objectifs financiers et d’assurer sa performance financière.
+
+### Correspondance Compétences RNCP — Quêtes
+
+| Compétence RNCP | Q1 | Q2 | Q3 | Q4 | Q5 | Q6 | Q7 | Q8 | Q9 | Examen (hors 18 h) |
+|:---|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+| 1\. Veille réglementaire |  |  |  |  |  |  | × |  | × | × |
+| 2\. Modèle économique & SWOT |  |  |  |  | × |  |  |  |  | × |
+| 3\. États financiers (bilan, CR, flux) | × | × | × |  |  | × |  |  |  | × |
+| 4\. Performance extra-financière (ESG) |  |  |  |  |  |  |  |  | × | × |
+| 5\. Ratios & diagnostic financier |  |  | × | × |  | × |  |  |  | × |
+| 6\. Stratégie financière & projections |  |  |  |  |  |  |  | × |  | × |
+| 7\. Critères ESG & reporting |  |  |  |  | × |  | × |  | × | × |
+| 8\. Processus budgétaire & prévisions |  |  |  |  |  |  |  | × |  | × |
+
+------------------------------------------------------------------------
+
+# Séances
+
+Centré sur une approche d’apprentissage *actif*, le cours transforme les étudiants en joueurs[^1], les modules en quêtes, les évaluations en points d’expérience (XP), et les compétences en niveaux à atteindre.
+
+## Plan des séances
+
+Le cours se déroule sur **3 journées de 6 h d’enseignement (360 minutes chacune, 1 080 minutes soit 18 h au total)**, divisées en **3 quêtes principales**. Les pauses ne sont pas comptées. Le détail minute par minute est dans le [planning](../../../fr/teaching/financial-analysis/planning.llms.md).
+
+Chaque quête commence par **20 à 30 minutes de théorie en direct** (comprises dans sa durée) ; les pages de référence servent de **pré-lecture** (45 minutes au plus par soir).
+
+**Examens.** Les examens de 1 h et de 3 h 30 sont **hors des 18 h** : ils ont lieu lors d’une session séparée. Pendant les trois journées, seuls les cas « boss » et les XP évaluent les étudiants.
+
+| Bloc | Durée | Séance | Sujets abordés |
+|----|---:|----|----|
+| D1-B1 | 15 min | Jour 1 — Lancement | Règles du jeu, équipes, 6 étapes BdF |
+| D1-B2 | 110 min | Jour 1 — Q1 : [Le Temple des Bilans](../../../fr/teaching/financial-analysis/modules/01-temple-bilans.llms.md) | Bilan, compte de résultat, tableau de flux |
+| D1-B3 | 100 min | Jour 1 — Q2 : [Les Archives Consolidées](../../../fr/teaching/financial-analysis/modules/02-archives-consolidees.llms.md) | Consolidation, périmètre, éliminations intragroupe |
+| D1-B4 | 135 min | Jour 1 — Q3 : [Le Détective du Diagnostic](../../../fr/teaching/financial-analysis/modules/03-detective-diagnostic.llms.md) | Les 6 étapes BdF, diagnostic complet d’une PME, boss |
+| D2-B1 | 120 min | Jour 2 — Q4 : [Les Arènes de la Rentabilité](../../../fr/teaching/financial-analysis/modules/04-arenes-rentabilite.llms.md) | ROCE, ROE, DuPont, effet de levier |
+| D2-B2 | 105 min | Jour 2 — Q5 : [Les Cartographes du Modèle Éco](../../../fr/teaching/financial-analysis/modules/05-cartographes-modele-eco.llms.md) | SWOT, Business Model Canvas, RSE/ESG |
+| D2-B3 | 135 min | Jour 2 — Q6 : [Le Conseil des Sages](../../../fr/teaching/financial-analysis/modules/06-conseil-sages.llms.md) | Cotation BdF, cotées vs non cotées, valorisation, boss |
+| D3-B1 | 100 min | Jour 3 — Q7 : [Les Veilleurs du Marché](../../../fr/teaching/financial-analysis/modules/07-veilleurs-marche.llms.md) | Veille réglementaire (CSRD, IFRS, AMF) |
+| D3-B2 | 110 min | Jour 3 — Q8 : [Les Architectes de la Stratégie](../../../fr/teaching/financial-analysis/modules/08-architectes-strategie.llms.md) | Planification financière, BFR, trésorerie |
+| D3-B3 | 140 min | Jour 3 — Q9 : [Les Gardiens de l’Extra-Financier](../../../fr/teaching/financial-analysis/modules/09-gardiens-extra-financier.llms.md) | ESG, DPEF, CSRD, boss final |
+| D3-B4 | 10 min | Jour 3 — Clôture | Niveaux, badges, débrief |
+
+Pages de référence : [méthode Banque de France](../../../fr/teaching/financial-analysis/modules/banque-france.llms.md), [états financiers](../../../fr/teaching/financial-analysis/modules/etats-financiers.llms.md), [performances](../../../fr/teaching/financial-analysis/modules/performances.llms.md), [structure financière](../../../fr/teaching/financial-analysis/modules/structure-fi.llms.md), [liquidité](../../../fr/teaching/financial-analysis/modules/liquidite.llms.md), [cotation](../../../fr/teaching/financial-analysis/modules/banque-france-cotation.llms.md), [formules](../../../fr/teaching/financial-analysis/modules/formules.llms.md) et [glossaire](../../../fr/teaching/financial-analysis/glossaire.llms.md).
+
+## Diapositives
+
+Les supports de cours sont organisés en trois présentations, une par journée.
+
+| Jour | Thème | Lien |
+|----|----|----|
+| 1 | Les fondamentaux de l’analyse financière | [Diapositives du jour 1](../../../fr/teaching/financial-analysis/slides/jour-1.llms.md) |
+| 2 | Banque de France, cotation et analyse des groupes (étapes 1 à 3) | [Diapositives du jour 2](../../../fr/teaching/financial-analysis/slides/jour-2.llms.md) |
+| 3 | Structure financière, liquidité, décision de cotation et enjeux actuels (étapes 4 à 6) | [Diapositives du jour 3](../../../fr/teaching/financial-analysis/slides/jour-3.llms.md) |
+
+## Thème du jeu : “Les Stratèges de la Finance”
+
+Les étudiants incarnent des analystes financiers juniors dans une firme fictive nommée **“StratFin Corp”**. Leur mission : gravir les échelons pour devenir **Experts en Stratégie Financière**, en relevant des quêtes, en collaborant, et en produisant des livrables stratégiques.
+
+## Structure des 3 journées (18 h)
+
+Chaque journée est divisée en **3 quêtes principales**, avec des **activités en équipe**, des **boss de fin de journée** (cas pratiques) et des **XP** attribués à chaque activité.
+
+### Jour 1 : Exploration des états financiers (360 min)
+
+**Objectif** : les joueurs découvrent les bases du diagnostic financier et les fondements de la méthodologie Banque de France, condition préalable à l’analyse des comptes consolidés.
+
+- **Prérequis** : notions de comptabilité générale (bilan, compte de résultat).
+- **Pré-lecture (≈ 15 min)** : [Les trois états financiers](../../../fr/teaching/financial-analysis/modules/etats-financiers.llms.md).
+- **Blocs** : lancement (15), Q1 (110), Q2 (100), Q3 + boss (135).
+- **Livrable de fin de journée** : présentation orale du diagnostic de MEDITECH SAS et recommandation de crédit (10 min par passage).
+- **XP** : Q1 +100, Q2 +150, Q3 +200.
+
+### Jour 2 : Analyse de performance et stratégie (360 min)
+
+**Objectif** : les joueurs apprennent à évaluer la performance et la stratégie d’une entreprise.
+
+- **Prérequis** : avoir suivi le Jour 1 (ou lu les pages de référence [performances](../../../fr/teaching/financial-analysis/modules/performances.llms.md) et [formules](../../../fr/teaching/financial-analysis/modules/formules.llms.md)).
+- **Préparation du soir (≈ 45 min)** :
+  - lire la page [performances](../../../fr/teaching/financial-analysis/modules/performances.llms.md) et la fiche des principaux ratios ([formules](../../../fr/teaching/financial-analysis/modules/formules.llms.md)) ;
+  - relever, sur le rapport annuel choisi au Jour 1, les données pour calculer capitaux propres, EBIT, dettes financières et BFR ;
+  - calculer au moins 2 ratios et noter leur interprétation.
+- **Blocs** : Q4 (120), Q5 (105), Q6 + boss (135).
+- **Livrable de fin de journée** : étude comparative d’une société cotée (CAC 40) et d’une PME non cotée du même secteur, présentée en 5 min par équipe.
+- **XP** : Q4 +150, Q5 +150, Q6 +200.
+
+### Jour 3 : Veille, ESG et stratégie financière (360 min)
+
+**Objectif** : les joueurs deviennent des stratèges capables d’intégrer les enjeux ESG et réglementaires.
+
+- **Prérequis** : avoir suivi le Jour 2 ; le rapport annuel choisi au Jour 1 est réutilisé.
+- **Préparation du soir (≈ 45 min)** :
+  - lire la Déclaration de Performance Extra-Financière (DPEF) ou la section RSE du rapport annuel ;
+  - compléter par un court article d’actualité (green bonds, taxe carbone ou financement durable) ;
+  - identifier une initiative RSE/ESG et son impact financier possible (coûts, image, financement, rentabilité), en 5 diapositives au plus ou une page.
+- **Blocs** : Q7 (100), Q8 (110), Q9 + boss final (140), clôture (10).
+- **Livrable de fin de journée** : soutenance d’un rapport stratégique intégrant ESG et finance ; la partie « à la maison » de Q9 (ajustement du coût du capital, rapport de 1,5 page) complète la note de la quête.
+- **XP** : Q7 +150, Q8 +150, Q9 +250.
+
+# Pour aller plus loin…
+
+## Bibliographie recommandée
+
+| Author(s) | Title | Edition | Publisher/Source |
+|----|----|----|----|
+| Vernimmen, P.; Quiry, P.; Le Fur, Y. | *Finance d’entreprise* | édition à vérifier | Dalloz |
+| Coulon, Y. | *L’analyse financière* | édition à vérifier | Gualino |
+| Brooks, R. | *Financial Management: Core Concepts* | édition à vérifier | Pearson |
+| Helfer, J.-P.; Orsoni, J. | *Stratégie financière de l’entreprise* | édition à vérifier | Vuibert |
+| Teyssier, S.; Ducoulombier, F. | *Finance durable et ESG* | édition à vérifier | EDHEC |
+| Albouy, M. | *Corporate Finance and ESG* | édition à vérifier | Economica |
+| Lefebvre, F. | *IFRS — Normes internationales d’information financière* | édition à vérifier | Éditions Francis Lefebvre |
+| Revue Banque | *Guide pratique de la CSRD et du reporting extra-financier* | édition à vérifier | Dalloz / Revue Banque |
+
+## Évaluation du module
+
+Dans le cadre de ce cours, les étudiants évoluent dans un univers pédagogique *gamifié*, Chaque activité, qu’il s’agisse d’une mission individuelle, d’un travail en groupe ou d’une présentation, permet de gagner des **points d’expérience (XP)**. Ces XP reflètent l’engagement, la qualité du travail et la progression dans l’acquisition des compétences. Le système est structuré en **niveaux** : *Analyste Junior*, *Analyste Confirmé*, *Stratège Financier*, et enfin *Experts en Stratégie Financière*.
+
+À mesure qu’ils accumulent des XP, les étudiants débloquent des **badges** valorisant leurs compétences techniques (diagnostic, ratios, ESG), leur esprit collaboratif, et leur capacité stratégique. Ce dispositif favorise la motivation, la participation active et la montée en compétence progressive, tout en rendant l’apprentissage plus immersif et stimulant.
+
+Les XP par quête, les niveaux, les badges et le calcul de la note finale (40 % XP, 60 % examen) sont détaillés dans la page [Évaluation](../../../fr/teaching/financial-analysis/evaluation.llms.md). Les examens de 1 h et de 3 h 30 sont hors des 18 h.
+
+## Notes de bas de page
+
+[^1]: *[The Multiplayer Classroom: Designing Coursework as a Game, Lee Sheldon](https://www.goodreads.com/book/show/48805975-the-multiplayer-classroom)*

@@ -65,12 +65,12 @@ description: "Task list for the fictitious consolidated accounts (French GAAP) c
 
 **Independent Test**: `grep -l "donnees/index.qmd"` over the edited files lists all of them (quickstart step 6); both trees still render exit 0.
 
-- [ ] T030 [P] [US2] Add one plain-prose link to `../donnees/index.qmd` in `fr/teaching/financial-analysis/modules/02-archives-consolidees.qmd` (FR-008; no other edit, T-I)
-- [ ] T031 [P] [US2] Add the same link in `fr/teaching/financial-analysis/modules/03-detective-diagnostic.qmd`
-- [ ] T032 [P] [US2] Add the same link in the BdF reference pages `fr/teaching/financial-analysis/modules/performances.qmd`, `structure-fi.qmd`, `liquidite.qmd`, `banque-france.qmd`
-- [ ] T033 [P] [US2] Add the same link in `fr/teaching/financial-analysis/exercices/examen-final.qmd` (and `examen-1h.qmd` if it uses accounts)
-- [ ] T034 [US2] Add a one-line mention of the fil rouge in `fr/teaching/financial-analysis/index.qmd` and `planning.qmd`
-- [ ] T035 [US2] Re-render both trees (exit 0) and run the grep check of quickstart step 6
+- [X] T030 [P] [US2] Add one plain-prose link to `../donnees/index.qmd` in `fr/teaching/financial-analysis/modules/02-archives-consolidees.qmd` (FR-008; no other edit, T-I)
+- [X] T031 [P] [US2] Add the same link in `fr/teaching/financial-analysis/modules/03-detective-diagnostic.qmd`
+- [X] T032 [P] [US2] Add the same link in the BdF reference pages `fr/teaching/financial-analysis/modules/performances.qmd`, `structure-fi.qmd`, `liquidite.qmd`, `banque-france.qmd`
+- [X] T033 [P] [US2] Add the same link in `fr/teaching/financial-analysis/exercices/examen-final.qmd` (and `examen-1h.qmd` if it uses accounts)
+- [X] T034 [US2] Add a one-line mention of the fil rouge in `fr/teaching/financial-analysis/index.qmd` and `planning.qmd`
+- [X] T035 [US2] Re-render both trees (exit 0) and run the grep check of quickstart step 6
 
 **Checkpoint**: US1 + US2 both work independently; the dataset is referenced everywhere it is needed.
 
