@@ -4,7 +4,17 @@
 
 Les comptes consolidés sont établis selon le règlement **CRC 99-02** (normes françaises). Les filiales contrôlées sont consolidées par **intégration globale** (100 % des postes, puis isolation des intérêts minoritaires) ; la participation de 30 % dans TERROIR PARTENAIRES SA est comptabilisée par **mise en équivalence**. Les opérations intragroupe sont éliminées. L’écart d’acquisition est constaté à la clôture comme le prix des titres diminué de la quote-part du groupe dans les capitaux propres de la filiale.
 
-## Périmètre et éliminations
+## Périmètre de consolidation
+
+| Entité                 | Forme | % d’intérêt | Méthode | CP à l’acquisition (k€) |
+|------------------------|-------|-------------|---------|-------------------------|
+| AUBÉPINE SA            | SA    | —           | Mère    | —                       |
+| AUBÉPINE NORD SAS      | SAS   | 75 %        | IG      | 600                     |
+| AUBÉPINE SUD SAS       | SAS   | 80 %        | IG      | 400                     |
+| VERGER Export SARL     | SARL  | 60 %        | IG      | 350                     |
+| TERROIR PARTENAIRES SA | SA    | 30 %        | MEE     | 300                     |
+
+## Écarts d’acquisition, opérations intragroupe et intérêts minoritaires
 
 ### Écarts d’acquisition et intérêts minoritaires (k€)
 
@@ -25,3 +35,12 @@ Les comptes consolidés sont établis selon le règlement **CRC 99-02** (normes 
 | Prêt AUBÉPINE SA → VERGER Export (créance / dette éliminées) | 200 |
 | Dividendes versés par NORD / SUD / VERGER (dont part mère éliminée) | 80 / 60 / 40 (mère : 132) |
 | Quote-part de résultat TERROIR (30 %, MEE) — gardée au CR consolidé | 17 / 17 / 19 |
+
+### Intérêts minoritaires au résultat (k€)
+
+| Filiale                  | %    | 2023 | 2024 | 2025 |
+|--------------------------|------|------|------|------|
+| AUBÉPINE NORD SAS        | 75 % | 60   | 68   | 76   |
+| AUBÉPINE SUD SAS         | 80 % | 27   | 31   | 36   |
+| VERGER Export SARL       | 60 % | 50   | 60   | 69   |
+| **Total (CR consolidé)** | —    | 137  | 159  | 181  |

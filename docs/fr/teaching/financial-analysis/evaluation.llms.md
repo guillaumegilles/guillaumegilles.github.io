@@ -70,3 +70,7 @@ Une étudiante obtient 900 XP et 12/20 à l’examen.
 1.  Note XP : \\900 / 1500 \times 20 = 12\\.
 2.  Note finale : \\0{,}4 \times 12 + 0{,}6 \times 12 = 4{,}8 + 7{,}2 = 12{,}0\\.
 3.  Niveau : 900 XP est supérieur à 800, donc **Stratège Financier**.
+
+## Usage de l’IA générative et variantes de données
+
+Le jeu de données du fil rouge ([Groupe AUBÉPINE](../../../fr/teaching/financial-analysis/donnees/index.llms.md)) est un support de cours fictif, pas un devoir à rendre tel quel. Pour les travaux notés individuels, l’enseignant peut distribuer une **variante individuelle** du classeur, générée à partir de votre identifiant étudiant : le fichier s’appelle `aubepine-variante-<identifiant>.xlsx` et quelques chiffres diffèrent du jeu publié. Le travail rendu doit correspondre à votre propre variante et être accompagné du fichier de travail (tableur avec les formules visibles). Les restitutions orales s’appliquent normalement. Cette politique est affichée volontairement, en prose, dans les pages concernées : rien n’est caché dans le cours.

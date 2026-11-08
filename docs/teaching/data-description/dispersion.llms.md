@@ -535,7 +535,7 @@ Reproduce, in Excel, every indicator you computed by hand in class, with `VAR.S`
 
 ### 9.1 Using Excel
 
-The complete list of function names, with their French equivalents, is on the [Excel functions](excel-functions.qmd) page.
+The complete list of function names, with their French equivalents, is on the [Excel functions](../../teaching/data-description/excel-functions.llms.md) page.
 
 | Concept | Excel function / steps |
 |----|----|

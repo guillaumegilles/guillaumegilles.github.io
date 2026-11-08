@@ -1,0 +1,137 @@
+## The problem with local setup
+
+Every time you start a new project, you go through the same ritual: install the right version of Python, find the right extension for your editor, configure the environment, and debug why it doesn’t work on *your* local machine. With Quarto, this often means installing the CLI, setting up Jupyter, adding VS Code extensions, and getting the preview server running — before writing a single line.
+
+[GitHub Codespaces](https://github.com/features/codespaces) solves this by moving the entire development environment into the cloud. You define the environment once as code, and anyone (including future you) can launch a fully configured workspace from a browser in seconds.
+
+Each codespace runs in a [Docker container](https://www.docker.com/resources/what-container/) on a GitHub-managed virtual machine. Every personal GitHub account includes **120 core hours of free compute time** and **15 GB of storage per month** — more than enough for writing and publishing. (With the 4-core machine this template requests, that works out to 30 hours of usage per month.)
+
+## The template
+
+I built a ready-to-use template repository that bundles everything you need to write and publish Quarto documents without installing anything locally. Click the button below to launch it instantly:
+
+[![](https://github.com/codespaces/badge.svg)](https://codespaces.new/guillaumegilles/codespaces-quarto)
+
+Open in GitHub Codespaces
+
+When the codespace starts, you get:
+
+- The **Quarto CLI** (latest), ready to render `.qmd` files
+- **Python** with `jupyter`, `matplotlib`, and `plotly` pre-installed
+- **VS Code for the web** with the Quarto, Python, and Jupyter extensions
+- A **live preview** of `hello.qmd` that opens automatically in the side panel
+
+All of this is driven by a single configuration file: `.devcontainer/devcontainer.json`.
+
+## Walking through `devcontainer.json`
+
+The `.devcontainer/devcontainer.json` file is the heart of any Codespaces setup. It tells GitHub exactly what container image to use, what tools to install, and how to configure the editor. Scroll through the story below to see how each piece of this file works.
+
+This is the complete `.devcontainer/devcontainer.json` for this template. Every key plays a specific role — let’s go through them one by one.
+
+**`name`** is just a human-readable label shown in the Codespaces dashboard. **`image`** sets the base container. The Microsoft Ubuntu image is a lean starting point with `git`, `curl`, and common shell tools — without the bloat of the universal image.
+
+**`features`** are the magic of dev containers. Each entry is a self-contained install script that layers on top of the base image. Here we pull in two: the official Python feature (which also sets up `pip`) and the Rocker project’s Quarto CLI feature (which installs the latest `quarto` binary).
+
+**`hostRequirements`** asks GitHub to provision a machine with at least 4 CPU cores. Quarto rendering — especially with Jupyter kernels — benefits from extra CPU headroom, so this prevents the codespace from running on the smallest tier.
+
+**`waitFor`** tells the lifecycle to wait until `onCreateCommand` has finished before running subsequent commands. This ensures the container is fully ready before installing Python packages or starting the preview server.
+
+**`updateContentCommand`** runs every time the codespace content is updated (including on creation). Here it installs all Python packages listed in `requirements.txt` — so adding a dependency to that file is all you need to do to make it available in your codespace.
+
+**`postAttachCommand`** runs once VS Code connects to the container. The `server` key starts a `quarto preview` process in the background, watching `hello.qmd` and serving a live preview on port 8000.
+
+**`portsAttributes`** tells Codespaces what to do when port 8000 is open. `"onAutoForward": "openPreview"` makes the preview appear directly in the VS Code side panel — no copying URLs, no browser tabs.
+
+**`customizations`** configures the editor itself. The `codespaces.openFiles` list causes `hello.qmd` to open automatically when the workspace loads. The `vscode.extensions` list pre-installs three extensions: **Quarto** for syntax highlighting and rendering commands, **Python** for IntelliSense, and **Jupyter** for running notebook cells inline.
+
+**`forwardPorts`** ensures port 8000 is always forwarded to your browser, even if `portsAttributes` automatic forwarding hasn’t triggered yet. This is the safety net that guarantees the preview is always reachable.
+
+``` json
+{
+  "name": "Quarto Codespaces",
+
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "latest"
+    },
+    "ghcr.io/rocker-org/devcontainer-features/quarto-cli:1": {
+      "version": "latest"
+    }
+  },
+```
+
+``` json
+{
+  …SNIP…
+
+  "hostRequirements": {
+    "cpus": 4
+  },
+
+  "waitFor": "onCreateCommand",
+  "updateContentCommand": "python3 -m pip install -r requirements.txt",
+  "postAttachCommand": {
+    "server": "quarto preview hello.qmd --output-dir _page --no-browser --port 8000"
+  },
+  "portsAttributes": {
+    "8000": {
+      "label": "Quarto Preview",
+      "onAutoForward": "openPreview"
+    }
+  },
+}
+```
+
+``` json
+{
+
+  …SNIP…
+
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["hello.qmd"]
+    },
+    "vscode": {
+      "extensions": [
+        "quarto.quarto",
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  },
+
+  "forwardPorts": [8000]
+}
+```
+
+## Using the template
+
+The quickest way to get started is to click the badge above. Alternatively, you can use it to seed your own repository:
+
+1.  Go to [github.com/guillaumegilles/codespaces-quarto](https://github.com/guillaumegilles/codespaces-quarto)
+2.  Click **“Use this template”** → **“Create a new repository”**
+3.  Open your new repo and click **“Code”** → **“Codespaces”** → **“Create codespace on main”**
+
+Within about 90 seconds the container will be built, Python packages installed, and a live Quarto preview will open in your browser — ready to write.
+
+## Going further
+
+Once you’re comfortable with the template, you can extend it by editing `.devcontainer/devcontainer.json`:
+
+- **Add R support** by including the `ghcr.io/rocker-org/devcontainer-features/r-rig:1` feature
+- **Add more Python packages** by editing `requirements.txt`
+- **Pre-install more VS Code extensions** by adding their IDs to the `extensions` list
+- **Change the base image** to the universal image if you need a wider set of pre-installed runtimes
+
+The configuration-as-code approach means any change you commit is instantly available to anyone who opens the repository in a codespace.
+
+## What to expect
+
+Here is what the codespace looks like once it has finished loading: VS Code on the left with `hello.qmd` open, and the live Quarto preview rendering a polar plot on the right — no local setup required.
+
+![](preview.png)
+
+VS Code for the web with `hello.qmd` open and its Quarto preview side by side.

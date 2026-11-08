@@ -1,0 +1,286 @@
+## 1 Diagnostic Activity
+
+Answer these questions **before** reading further. They review the tools you will need throughout this module.
+
+1.  Compute \\f'(x)\\ for \\f(x) = 3x^2 - 4x\\.
+2.  Find \\x\\ where \\f'(x) = 0\\ for \\f(x) = -x^2 + 6x\\.
+3.  For \\f(x) = -x^2 + 6x\\, is \\x = 3\\ a maximum or a minimum? Justify your answer.
+
+> **NOTE:**
+>
+> 1.  Using the power rule: \\f'(x) = 6x - 4\\.
+> 2.  \\f'(x) = -2x + 6 = 0 \\\Rightarrow\\ x = 3\\.
+> 3.  **Maximum**, because \\a = -1 \< 0\\ so the parabola opens downward.
+
+Use your results to identify topics needing attention.
+
+## 2 Opening Problem
+
+A manufacturer produces \\q\\ units of a product. The revenue function is \\R(q) = 60q - 0.2q^2\\ (euros) and the total cost function is \\C(q) = 500 + 20q\\ (euros).
+
+> What quantity \\q\\ maximises the manufacturer’s profit? Write down your estimate before continuing.
+
+## 3 Core Concepts
+
+### 3.1 What Does “Optimise” Mean?
+
+In mathematics, to **optimize** means to find the **maximum** or the **minimum** of a function. In management there are many situations that call for an optimal decision:
+
+- **maximisation**: firm profit, production, yield, consumer utility;
+- **minimisation**: average cost, production or delivery time, inventory, the risk of a portfolio.
+
+To find a maximum or a minimum we study how the function **varies**: over which intervals is it increasing, and over which is it decreasing? The derivative is the tool that answers this question precisely.
+
+### 3.2 Average Rate of Change
+
+> **NOTE:**
+>
+> The **average rate of change** of a function \\f\\ between \\x_1\\ and \\x_2\\ is \\ \tau = \frac{f(x_2) - f(x_1)}{x_2 - x_1}. \\
+
+Geometrically, it is the **slope of the secant line** joining the two points \\(x_1, f(x_1))\\ and \\(x_2, f(x_2))\\ on the graph. Economically, it measures the average change of \\f\\ per unit of \\x\\ — for instance the average change of cost per additional unit produced.
+
+#### Worked example — average rate of change
+
+For \\f(x) = x^{2}\\ between \\x_1 = 1\\ and \\x_2 = 3\\:
+
+\\ \tau = \frac{f(3) - f(1)}{3 - 1} = \frac{9 - 1}{2} = 4. \\
+
+### 3.3 Instantaneous Rate of Change and the Derivative
+
+If we let the second point get closer and closer to the first (\\x_2 \to x_1\\), the secant line tends towards the **tangent line** at the point. Its slope is the **instantaneous rate of change**, called the **derivative** of \\f\\ at \\x_1\\, written \\f'(x_1)\\.
+
+> **TIP:**
+>
+> - \\f'(x) \> 0\\ on an interval \\\\\Rightarrow\\ f\\ is **increasing** there.
+> - \\f'(x) \< 0\\ on an interval \\\\\Rightarrow\\ f\\ is **decreasing** there.
+> - \\f'(x) = 0\\ at a point where \\f\\ changes direction \\\\\Rightarrow\\\\ a candidate **maximum or minimum** (the tangent is horizontal).
+
+> **CAUTION:**
+>
+> Take a point \\x\\ and a small increment \\h\\. The average rate of change between \\x\\ and \\x + h\\ is
+>
+> \\ \frac{f(x + h) - f(x)}{h} = \frac{(x + h)^{2} - x^{2}}{h} = \frac{x^{2} + 2xh + h^{2} - x^{2}}{h} = \frac{2xh + h^{2}}{h} = 2x + h. \\
+>
+> As \\h\\ becomes infinitely small (\\h \to 0\\), this tends to \\2x\\. Hence the instantaneous rate of change is
+>
+> \\ f'(x) = 2x. \\
+
+> **TIP:**
+>
+> - **Constant** \\f(x) = k\\: \\\\f'(x) = 0\\.
+> - **Affine** \\f(x) = a x + b\\: \\\\f'(x) = a\\ (constant slope).
+> - **Power** \\f(x) = x^{n}\\: \\\\f'(x) = n\\x^{n-1}\\.
+> - **Quadratic** \\f(x) = a x^{2} + b x + c\\: \\\\f'(x) = 2a x + b\\.
+
+### 3.4 Applying the Derivative to Optimization
+
+> **IMPORTANT:**
+>
+> 1.  Compute the derivative \\f'(x)\\.
+> 2.  Solve \\f'(x) = 0\\ to find the candidate point \\x^{\*}\\.
+> 3.  For \\f(x) = a x^{2} + b x + c\\, the extremum is at \\x^{\*} = -\dfrac{b}{2a}\\: it is a **maximum** if \\a \< 0\\ and a **minimum** if \\a \> 0\\.
+
+#### Worked example — maximising profit
+
+A firm’s profit is \\P(x) = -2x^{2} + 40x - 50\\ (in thousands of euros), where \\x\\ is the quantity produced. Then \\P'(x) = -4x + 40\\. Setting \\P'(x) = 0\\ gives \\x = 10\\. Since \\a = -2 \< 0\\, the parabola opens downward, so \\x = 10\\ is a **maximum**. The maximum profit is \\P(10) = -2(100) + 400 - 50 = 150\\ (thousand euros).
+
+> **CAUTION:**
+>
+> 1.  Average rate of change of \\f(x) = 3x + 2\\ between \\x = 0\\ and \\x = 4\\. \\\tau = \dfrac{14 - 2}{4} = 3\\ (equal to the slope, as expected for an affine function).
+> 2.  Differentiate \\f(x) = 5x^{2} - 3x + 7\\. \\\\f'(x) = 10x - 3\\.
+> 3.  Minimise the average cost \\C(x) = x^{2} - 12x + 40\\. \\C'(x) = 2x - 12 = 0 \Rightarrow x = 6\\; since \\a \> 0\\ it is a minimum, \\C(6) = 4\\.
+
+## 4 Worked Example
+
+### 4.1 Worked example — maximising the manufacturer’s profit (Opening Problem)
+
+We return to the opening problem. Given:
+
+\\ R(q) = 60q - 0.2q^2, \qquad C(q) = 500 + 20q. \\
+
+**Step 1 — Write the profit function.**
+
+\\ P(q) = R(q) - C(q) = 60q - 0.2q^2 - 500 - 20q = -0.2q^2 + 40q - 500. \\
+
+**Step 2 — Compute the derivative.**
+
+\\ P'(q) = -0.4q + 40. \\
+
+**Step 3 — Solve \\P'(q) = 0\\.**
+
+\\ -0.4q + 40 = 0 \\\Rightarrow\\ q^\* = 100 \text{ units.} \\
+
+**Step 4 — Confirm the nature of the critical point.**
+
+Since \\a = -0.2 \< 0\\, the parabola opens downward, so \\q^\* = 100\\ is a **maximum**.
+
+**Step 5 — Compute the maximum profit.**
+
+\\ P(100) = -0.2(10{,}000) + 40(100) - 500 = -2{,}000 + 4{,}000 - 500 = 1{,}500 \text{ €.} \\
+
+The manufacturer maximises profit at **100 units**, earning **€1,500**.
+
+## 5 Guided Practice
+
+A firm’s average cost function is \\C(x) = x^2 - 12x + 40\\, where \\x\\ is the production level (hundreds of units).
+
+1.  Find the production level that minimises average cost.
+2.  What is the minimum average cost?
+3.  On which intervals is average cost decreasing? Increasing?
+
+> **TIP:**
+>
+> Compute \\C'(x)\\ and set it equal to zero. Since \\a \> 0\\, the critical point is a minimum.
+
+> **CAUTION:**
+>
+> - \\C'(x) = 2x - 12 = 0 \\\Rightarrow\\ x = 6\\ (hundreds of units).
+> - Minimum average cost: \\C(6) = 36 - 72 + 40 = 4\\ (per unit).
+> - Decreasing on \\\]-\infty, 6\[\\\\; increasing on \\\\\]6, +\infty\[\\.
+
+## 6 Interactive Exploration
+
+Use the slider to choose a production quantity \\q\\ and observe how revenue, cost, and profit change. The red dashed line marks the analytically derived optimum \\q^\* = 100\\.
+
+``` js
+viewof quantity = Inputs.range([0, 200], {
+  value: 50,
+  step: 1,
+  label: "Quantity q (units)"
+})
+```
+
+``` js
+qRange = Array.from({length: 201}, (_, i) => i)
+curveData = qRange.flatMap(q => [
+  {q, value: 60*q - 0.2*q*q, curve: "Revenue R(q)"},
+  {q, value: 500 + 20*q, curve: "Cost C(q)"},
+  {q, value: 60*q - 0.2*q*q - 500 - 20*q, curve: "Profit P(q)"}
+])
+
+qStar = 100
+revenue_q = 60*quantity - 0.2*quantity*quantity
+cost_q = 500 + 20*quantity
+profit_q = revenue_q - cost_q
+revenue_opt = 60*qStar - 0.2*qStar*qStar
+profit_opt = revenue_opt - (500 + 20*qStar)
+
+profitChart = Plot.plot({
+  marks: [
+    Plot.line(curveData, {x: "q", y: "value", stroke: "curve"}),
+    Plot.ruleY([0], {stroke: "#aaa", strokeDash: [2,2]}),
+    Plot.ruleX([quantity], {stroke: "white", strokeDash: [3,3]}),
+    Plot.ruleX([qStar], {stroke: "red", strokeDash: [4,2]})
+  ],
+  x: {label: "Quantity q"},
+  y: {label: "Value (€)"},
+  color: {legend: true},
+  width: 550,
+  height: 320
+})
+```
+
+``` js
+html`
+<div style="margin-bottom:1rem">${profitChart}</div>
+<p style="font-size:0.85rem;opacity:0.7">White dashed line: your slider
+position q = ${quantity}. Red dashed line: optimal q* = 100.</p>
+<div class="metric-grid">
+  <div class="metric-card">
+    <span class="metric-label">Revenue R(q)</span>
+    <strong>${revenue_q.toFixed(0)} €</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">Cost C(q)</span>
+    <strong>${cost_q.toFixed(0)} €</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">Profit P(q)</span>
+    <strong>${profit_q.toFixed(0)} €</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">Maximum profit at q* = 100</span>
+    <strong>${profit_opt.toFixed(0)} €</strong>
+  </div>
+</div>
+`
+```
+
+### 6.1 Investigation
+
+1.  Move the slider to \\q = 100\\. Does the displayed profit match the worked example result (€1,500)?
+2.  Move the slider to \\q = 50\\ and \\q = 150\\. Are both profits the same? Why? What does this say about the shape of the profit function?
+3.  At what quantity does revenue equal cost (the break-even point)? Use the slider to find it approximately, then verify algebraically.
+4.  Does producing more always increase profit? Find the quantity beyond which profit starts to decline.
+
+## 7 Applied Problem
+
+A bakery sells artisan bread at €4 per loaf. The daily cost function is \\C(q) = 0.05q^2 + 0.5q + 80\\ (euros), where \\q\\ is the number of loaves baked.
+
+1.  Write the daily profit function \\P(q)\\.
+2.  Find the number of loaves that maximises daily profit.
+3.  What is the maximum daily profit?
+4.  Find the break-even quantities (where profit = 0).
+
+## 8 Common Errors
+
+> **WARNING:**
+>
+> A student finds \\f'(x) = 0\\ at \\x = 5\\ and immediately declares “the function has a maximum at \\x = 5\\.”
+>
+> Finding \\f'(x^\*) = 0\\ identifies a **candidate** extremum — it could be a maximum, a minimum, or neither (an inflection point). For a quadratic \\f(x) = ax^2 + bx + c\\:
+>
+> - If \\a \< 0\\: the critical point is a **maximum** (parabola opens downward).
+> - If \\a \> 0\\: the critical point is a **minimum** (parabola opens upward).
+>
+> Always check the sign of \\a\\ before concluding.
+
+## 9 Check Your Understanding
+
+1.  Compute the average rate of change of \\f(x) = 2x^2 - 3\\ between \\x = 1\\ and \\x = 4\\.
+2.  Differentiate \\g(x) = -3x^2 + 12x - 5\\.
+3.  A cost function is \\C(q) = 2q^2 - 40q + 300\\. Find the production level that minimises cost.
+4.  A student sets the derivative of a profit function equal to zero and gets \\q = 80\\. She concludes profit is maximised. What additional check should she perform?
+5.  Revenue is \\R(q) = 50q\\ and cost is \\C(q) = q^2 + 100q + 200\\. Is there a quantity that maximises profit? What does a negative optimal \\q\\ mean in this context?
+
+## 10 Summary
+
+1.  The derivative \\f'(x)\\ measures the instantaneous rate of change of \\f\\ at \\x\\: it is positive when \\f\\ is increasing, negative when decreasing, and zero at a candidate extremum (where the tangent is horizontal).
+2.  To optimise a quadratic function, compute \\f'(x)\\, set it to zero to find \\x^\*\\, then confirm whether \\x^\*\\ is a maximum (if \\a \< 0\\) or minimum (if \\a \> 0\\) by checking the sign of the leading coefficient.
+3.  Calculus provides the exact optimal decision — the exact quantity, price, or production level — rather than a graphical approximation; combining the derivative with the economic context (does a maximum make sense?) is what turns mathematics into decision support.
+
+## 11 Independent Work
+
+- Compute derivatives for functions 1–8 in the exercise bank.
+
+- Solve optimisation problems A–F.
+
+- Compare the derivative-based solution with the slider-based estimate from the Interactive Exploration.
+
+- Record errors in your error log.
+
+- Review glossary entries for: *derivative*, *rate of change*, *maximum*, *minimum*, *optimisation*.
+
+  ## 12 Module 7 — Derivatives and Optimisation
+
+  **Derivative of a power function**
+
+  \\ (x^n)' = n\\x^{n-1} \\
+
+  Applies to any real exponent \\n\\. Special cases: \\(x^2)' = 2x\\, \\(x)' = 1\\, \\(c)' = 0\\ for constants.
+
+  ------------------------------------------------------------------------
+
+  **Linearity of the derivative**
+
+  \\ (af + bg)' = a f' + b g' \\
+
+  The derivative of a linear combination is the same linear combination of the derivatives.
+
+  ------------------------------------------------------------------------
+
+  **Necessary condition for a local extremum**
+
+  \\ f'(x^\*) = 0 \\
+
+  At a maximum or minimum of a differentiable function the tangent is horizontal. For \\f(x) = ax^2 + bx + c\\: maximum if \\a \< 0\\, minimum if \\a \> 0\\.

@@ -1,0 +1,277 @@
+## 1 Diagnostic Activity
+
+Answer these questions before reading the module. They take about five minutes and will show you where to focus your attention.
+
+1.  What type of function is \\f(x) = 3x + 2\\: affine, quadratic, exponential, or logarithmic?
+2.  Compute the discriminant of \\x^2 - 5x + 6 = 0\\.
+3.  Is \\\ln(x)\\ defined for \\x = -1\\? Why?
+
+> **NOTE:**
+>
+> 1.  **Affine** — it has the form \\ax + b\\.
+> 2.  \\\Delta = (-5)^2 - 4(1)(6) = 25 - 24 = 1\\.
+> 3.  **No** — the logarithm is only defined for \\x \> 0\\. \\x = -1\\ is a forbidden value.
+
+Use your results to identify topics needing attention.
+
+## 2 Opening Problem
+
+A firm’s sales data shows rapid growth in the first year, followed by a gradual slowdown as the market matures. A consultant proposes modelling monthly revenue with one of four function types: affine, quadratic, exponential, or logarithmic.
+
+> Which function type best captures rapid initial growth that later flattens off? Write down your reasoning before continuing.
+
+## 3 Core Concepts
+
+### 3.1 Single-Variable Functions
+
+> **NOTE:**
+>
+> A **function** is a process that associates to a number a **unique** number. We write \\f : x \mapsto f(x)\\; \\x\\ is the variable and \\f(x)\\ is the image of \\x\\.
+
+Functions are very useful: they let us model a situation, produce a graphical representation, or solve problems.
+
+**Domain of definition and forbidden values.** The **domain** \\D_f\\ is the set of values of \\x\\ for which \\f(x)\\ can be computed. Some values are **forbidden**, in particular:
+
+- values that make a denominator zero (division by zero is undefined);
+- negative values under a square root;
+- non-positive values inside a logarithm.
+
+**Sign.** Studying the sign of \\f\\ means determining for which \\x\\ we have \\f(x) \> 0\\, \\f(x) = 0\\, or \\f(x) \< 0\\ — for example, the values where a profit function is positive.
+
+**Sense of variation.** A function is **increasing** on an interval if \\x\\ rising implies \\f(x)\\ rising, and **decreasing** if \\x\\ rising implies \\f(x)\\ falling.
+
+**Parity.** A function is **even** if \\f(-x) = f(x)\\ (graph symmetric about the \\y\\-axis) and **odd** if \\f(-x) = -f(x)\\ (graph symmetric about the origin).
+
+### 3.2 The Usual Functions
+
+> **TIP:**
+>
+> - **Affine**: \\f(x) = a x + b\\. A straight line; slope \\a\\, intercept \\b\\. Increasing if \\a \> 0\\, decreasing if \\a \< 0\\. Domain \\\mathbb{R}\\.
+> - **Degree-2 polynomial**: \\f(x) = a x^{2} + b x + c\\ with \\a \neq 0\\. A parabola, opening upward if \\a \> 0\\, downward if \\a \< 0\\. Domain \\\mathbb{R}\\.
+> - **Square root**: \\f(x) = \sqrt{x}\\. Increasing; domain \\\[0, +\infty\[\\.
+> - **Logarithm**: \\f(x) = \ln x\\. Increasing; domain \\\]0, +\infty\[\\; turns products into sums: \\\ln(ab) = \ln a + \ln b\\.
+> - **Exponential**: \\f(x) = e^{x}\\. Increasing and always positive; domain \\\mathbb{R}\\; turns sums into products: \\e^{a+b} = e^{a} e^{b}\\.
+
+> **TIP:**
+>
+> \\\ln(e^x) = x\\ and \\e^{\ln x} = x\\ for \\x \> 0\\. These inverse functions are central to finance: the exponential models compound growth; the logarithm measures the time needed to reach a target.
+
+### 3.3 Second-Degree Equations
+
+A **simple** second-degree equation such as \\x^{2} = 2\\ is solved directly: \\x = \sqrt{2}\\ or \\x = -\sqrt{2}\\. Note that \\x^2 = k\\ has no real solution when \\k \< 0\\.
+
+For the **general** equation \\a x^{2} + b x + c = 0\\ (with \\a \neq 0\\), we use the **discriminant** \\\Delta = b^{2} - 4ac\\.
+
+> **TIP:**
+>
+> - If \\\Delta \> 0\\: two distinct real roots \\x = \dfrac{-b \pm \sqrt{\Delta}}{2a}\\.
+> - If \\\Delta = 0\\: one double root \\x = \dfrac{-b}{2a}\\.
+> - If \\\Delta \< 0\\: no real root.
+
+> **CAUTION:**
+>
+> Start from \\a x^{2} + b x + c = 0\\ and divide by \\a \neq 0\\: \\x^{2} + \dfrac{b}{a}x + \dfrac{c}{a} = 0\\. Complete the square:
+>
+> \\ \left(x + \frac{b}{2a}\right)^{2} - \frac{b^{2}}{4a^{2}} + \frac{c}{a} = 0 \\\Longrightarrow\\ \left(x + \frac{b}{2a}\right)^{2} = \frac{b^{2} - 4ac}{4a^{2}}. \\
+>
+> Writing \\\Delta = b^{2} - 4ac\\, if \\\Delta \geq 0\\ we take square roots: \\x + \dfrac{b}{2a} = \pm \dfrac{\sqrt{\Delta}}{2a}\\, hence
+>
+> \\ x = \frac{-b \pm \sqrt{\Delta}}{2a}. \\
+>
+> If \\\Delta \< 0\\ the right-hand side is negative and no real square root exists, so there is no real solution.
+
+### 3.4 Worked example — solving a quadratic
+
+Solve \\x^{2} - 5x + 6 = 0\\. Here \\\Delta = 25 - 24 = 1 \> 0\\, so \\x = \dfrac{5 \pm 1}{2}\\, giving \\x = 3\\ or \\x = 2\\. (Consistent with the factored form \\(x - 2)(x - 3) = 0\\.)
+
+### 3.5 Practice exercises
+
+> **CAUTION:**
+>
+> 1.  Domain of \\f(x) = \ln(x - 2)\\ → \\\]2, +\infty\[\\.
+> 2.  Solve \\2x^{2} + 3x - 2 = 0\\. \\\Delta = 9 + 16 = 25\\, so \\x = \dfrac{-3 \pm 5}{4}\\, i.e. \\x = \tfrac12\\ or \\x = -2\\.
+> 3.  Is \\f(x) = x^{2}\\ even or odd? \\f(-x) = (-x)^2 = x^2 = f(x)\\, so **even**.
+> 4.  A profit function is \\P(x) = -x^{2} + 10x - 16\\. For which \\x\\ is the firm profitable (\\P(x) \> 0\\)? Roots: \\\Delta = 100 - 64 = 36\\, \\x = 2\\ or \\x = 8\\; since the parabola opens downward, \\P(x) \> 0\\ for \\x \in \\\]2, 8\[\\.
+
+## 4 Worked Example
+
+### 4.1 Worked example — identifying and using the right function
+
+**Part A — Domain of definition**
+
+Find the domain of \\f(x) = \dfrac{\sqrt{x-1}}{x-3}\\.
+
+We need \\x - 1 \geq 0\\ (square root) and \\x - 3 \neq 0\\ (denominator), so \\x \geq 1\\ and \\x \neq 3\\. The domain is \\\[1, 3\[\\\cup\\\]3, +\infty\[\\.
+
+**Part B — Revenue model**
+
+A firm’s monthly revenue (thousands of euros) is modelled by \\R(t) = -2t^2 + 20t + 5\\, where \\t\\ is the number of months since launch.
+
+1.  **Month of maximum revenue.** \\R'(t) = -4t + 20 = 0 \Rightarrow t = 5\\. Maximum revenue: \\R(5) = -2(25) + 20(5) + 5 = -50 + 100 + 5 = 55\\ thousand €.
+
+2.  **Months when revenue is positive.** We solve \\R(t) = 0\\: \\\Delta = 20^2 - 4(-2)(5) = 400 + 40 = 440\\. Since \\\sqrt{440} \approx 20.98\\, the roots are \\t = \dfrac{-20 \pm \sqrt{440}}{2(-2)} = \dfrac{20 \mp \sqrt{440}}{4}\\, giving \\t \approx -0.25\\ and \\t \approx 10.25\\. Because the parabola opens downward (\\a = -2 \< 0\\), revenue is positive for \\t \in \\\]0, 10.25\[\\, i.e., during approximately the first 10 months of activity.
+
+## 5 Guided Practice
+
+A new subscription service models its cumulative subscriber count after \\t\\ weeks as \\N(t) = 500 \times e^{0.12t}\\.
+
+1.  How many subscribers does the service have at launch (\\t = 0\\)?
+2.  How many subscribers does it have after 10 weeks?
+3.  After how many weeks does the count reach 2,000 subscribers?
+
+> **TIP:**
+>
+> For Q3, solve \\500 \times e^{0.12t} = 2000\\, i.e., \\e^{0.12t} = 4\\. Apply \\\ln\\ to both sides: \\0.12t = \ln(4)\\.
+
+> **CAUTION:**
+>
+> - **At launch**: \\N(0) = 500 \times e^0 = 500\\ subscribers.
+> - **After 10 weeks**: \\N(10) = 500 \times e^{1.2} \approx 500 \times 3.320 \approx 1{,}660\\ subscribers.
+> - **Reach 2,000**: \\0.12t = \ln(4) \approx 1.386 \Rightarrow t \approx 11.55\\ weeks, i.e., approximately 12 weeks.
+
+## 6 Interactive Exploration
+
+Use the controls below to explore how each function family behaves as you vary its parameters.
+
+``` js
+viewof funcType = Inputs.select(
+  ["affine", "quadratic", "exponential", "logarithmic"],
+  {value: "affine", label: "Function type"}
+)
+
+viewof paramA = Inputs.range([-5, 5], {
+  value: 1,
+  step: 0.5,
+  label: "Parameter a"
+})
+
+viewof paramB = Inputs.range([-10, 10], {
+  value: 0,
+  step: 0.5,
+  label: "Parameter b"
+})
+```
+
+``` js
+xDomain = Array.from({length: 200}, (_, i) => -5 + i * 0.05)
+
+funcData = xDomain.flatMap(x => {
+  let y
+  if (funcType === "affine") y = paramA * x + paramB
+  else if (funcType === "quadratic") y = paramA * x * x + paramB
+  else if (funcType === "exponential") y = Math.exp(paramA * x) + paramB
+  else if (funcType === "logarithmic") {
+    if (x <= 0) return []
+    y = paramA * Math.log(x) + paramB
+  }
+  if (y === undefined || !isFinite(y) || Math.abs(y) > 30) return []
+  return [{x, y}]
+})
+
+funcChart = Plot.plot({
+  marks: [
+    Plot.line(funcData, {x: "x", y: "y", stroke: "steelblue"}),
+    Plot.ruleY([0], {stroke: "#aaa", strokeDash: [2,2]}),
+    Plot.ruleX([0], {stroke: "#aaa", strokeDash: [2,2]})
+  ],
+  x: {domain: [-5, 5], label: "x"},
+  y: {domain: [-15, 15], label: "f(x)"},
+  width: 500,
+  height: 320
+})
+
+domainText = funcType === "logarithmic"
+  ? "Domain: ]0, +∞[ (x must be strictly positive)"
+  : "Domain: ℝ (all real numbers)"
+```
+
+``` js
+html`
+<div style="margin-bottom:1rem">${funcChart}</div>
+<div class="metric-grid">
+  <div class="metric-card">
+    <span class="metric-label">Function type</span>
+    <strong>${funcType}</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">Domain</span>
+    <strong>${domainText}</strong>
+  </div>
+</div>
+`
+```
+
+### 6.1 Investigation
+
+1.  Select **logarithmic**. What happens when you try to evaluate at \\x = 0\\ or \\x \< 0\\? Why does the graph start at \\x \> 0\\?
+2.  Switch to **quadratic** and set \\a \> 0\\, then \\a \< 0\\. How does the sign of \\a\\ affect the graph shape and the location of the maximum or minimum?
+3.  Which function type best models the “rapid growth then plateau” pattern from the Opening Problem? Set the parameters to demonstrate your answer.
+
+## 7 Applied Problem
+
+A firm’s profit function (in thousands of euros) is \\P(x) = -x^2 + 10x - 16\\, where \\x\\ is the number of units produced (in hundreds).
+
+1.  For what production levels is the firm profitable (i.e., \\P(x) \> 0\\)?
+2.  Find the production level that maximises profit.
+3.  What is the maximum profit?
+4.  Below what production level does the firm begin losing money?
+
+## 8 Common Errors
+
+> **WARNING:**
+>
+> A student writes \\\ln(-3) = -\ln(3)\\ by analogy with the rule \\\ln(1/x) = -\ln(x)\\.
+>
+> This is incorrect. The natural logarithm \\\ln(x)\\ is **only defined for \\x \> 0\\**. \\\ln(-3)\\ does not exist in the real numbers.
+>
+> The rule \\\ln(1/x) = -\ln(x)\\ applies only when \\x \> 0\\, so that both \\x\\ and \\1/x\\ are positive.
+
+## 9 Check Your Understanding
+
+1.  Find the domain of \\g(x) = \sqrt{2x - 6}\\.
+2.  Is \\f(x) = x^3\\ an even function, an odd function, or neither?
+3.  A demand function is \\D(p) = -3p + 90\\. For what price range is demand positive?
+4.  Solve \\2x^2 - 7x + 3 = 0\\.
+5.  A student says the exponential \\e^x\\ can be negative for some values of \\x\\. Is this correct? Why?
+
+## 10 Summary
+
+1.  A function assigns a unique output to each input; the domain is the set of valid inputs — forbidden values arise from division by zero, negative arguments under a square root, and non-positive arguments in a logarithm.
+2.  The four main function families (affine, quadratic, exponential, logarithmic) model different economic relationships: linear proportionality, parabolic revenue/cost, exponential growth/decay, and logarithmic saturation.
+3.  The discriminant \\\Delta = b^2 - 4ac\\ determines whether a quadratic equation has two real roots, one double root, or no real root — and identifies the break-even or profit boundaries of a quadratic profit model.
+
+## 11 Independent Work
+
+- Find the domain for functions 1–8 in the exercise bank.
+
+- Solve the quadratic equations in problems 1–6.
+
+- Identify the function type in the applied-context problems.
+
+- Record errors in your error log.
+
+- Review glossary entries for: *domain of definition*, *discriminant*, *exponential*, *logarithm*, *sense of variation*.
+
+  ## 12 Module 6 — Functions
+
+  **Discriminant of a quadratic**
+
+  \\ \Delta = b^2 - 4ac \\
+
+  For \\ax^2 + bx + c = 0\\: if \\\Delta \> 0\\ two real roots; \\\Delta = 0\\ one double root; \\\Delta \< 0\\ no real root.
+
+  ------------------------------------------------------------------------
+
+  **Quadratic formula**
+
+  \\ x = \frac{-b \pm \sqrt{\Delta}}{2a} \\
+
+  The roots of \\ax^2 + bx + c = 0\\ when \\\Delta \geq 0\\.
+
+  ------------------------------------------------------------------------
+
+  **Inverse relationship between \\\ln\\ and \\\exp\\**
+
+  \\ \ln(e^x) = x, \qquad e^{\ln x} = x \quad (x \> 0) \\
+
+  Used to solve equations with exponential or logarithmic unknowns (e.g., finding the time to double a capital).

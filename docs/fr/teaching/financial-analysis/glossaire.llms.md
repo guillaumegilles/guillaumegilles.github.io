@@ -42,6 +42,8 @@ Les quêtes sont notées Q1 à Q9 (Jour 1 : Q1–Q3 ; Jour 2 : Q4–Q6 ; Jour 3 
 | Mise en équivalence | Méthode où la participation apparaît sur une seule ligne, à hauteur de la part du groupe dans les capitaux propres de la société. | Q2, Q6 |
 | Minoritaires | Intérêts minoritaires : part des capitaux propres et du résultat d’une filiale qui appartient aux actionnaires extérieurs au groupe. | Q2, Q6 |
 | Élimination intragroupe | Suppression des opérations entre sociétés du groupe, pour ne montrer que les opérations avec les tiers. | Q2 |
+| Écart d’acquisition | Synonyme de goodwill : écart d’acquisition = prix des titres payé − quote-part du groupe dans les capitaux propres de la filiale à la date d’acquisition ; constaté à l’actif du bilan consolidé. | Q2, fil rouge |
+| Intérêts minoritaires | Part des capitaux propres et du résultat d’une filiale qui appartient aux actionnaires extérieurs au groupe ; isolée au passif du bilan consolidé et au compte de résultat consolidé. | Q2, fil rouge |
 
 ## Valorisation et marchés
 

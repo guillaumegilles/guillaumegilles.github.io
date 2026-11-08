@@ -1,0 +1,169 @@
+Ce formulaire est le pendant du [glossaire](../../../fr/teaching/mathematical-finance/glossaire.llms.md). Il ne contient que les formules — chaque terme est défini dans le glossaire.
+
+> **IMPORTANT:**
+>
+> 1.  Tracez la ligne du temps.
+> 2.  Vérifiez que le taux \\i\\ et la durée \\n\\ sont sur la **même périodicité**.
+> 3.  Distinguez **capitalisation** (aller vers le futur) et **actualisation** (revenir vers le présent).
+> 4.  Contrôlez le résultat par la formule inverse.
+
+------------------------------------------------------------------------
+
+## 1. Capitalisation
+
+\\\boxed{V_n = V_0 \\(1+i)^n}\\
+
+**Intuition** : Cette formule répond à : combien vaudra mon capital dans quelques années si je le place aujourd’hui à un taux donné ?
+
+| Symbole | Signification                          |
+|---------|----------------------------------------|
+| \\V_0\\ | Capital de départ (à la date 0)        |
+| \\V_n\\ | Capital acquis après \\n\\ périodes    |
+| \\i\\   | Taux d’intérêt périodique (en décimal) |
+| \\n\\   | Nombre de périodes                     |
+
+------------------------------------------------------------------------
+
+## 2. Actualisation
+
+\\\boxed{V_0 = \frac{V_n}{(1+i)^n} = V_n \\(1+i)^{-n}}\\
+
+**Intuition** : Cette formule répond à : combien dois-je placer aujourd’hui pour disposer d’une somme précise à une date future, ou combien vaut aujourd’hui une somme promise plus tard ?
+
+------------------------------------------------------------------------
+
+## 3. Taux équivalent
+
+\\\boxed{i_p = (1+i_a)^{1/m} - 1}\\
+
+**Intuition** : Cette formule répond à : quel taux mensuel ou trimestriel dois-je appliquer pour obtenir exactement le même résultat qu’un taux annuel annoncé ?
+
+| Symbole | Signification                  |
+|---------|--------------------------------|
+| \\i_p\\ | Taux périodique (sous-période) |
+| \\i_a\\ | Taux annuel de référence       |
+| \\m\\   | Nombre de sous-périodes par an |
+
+**Exemples :** - Taux mensuel : \\i_m = (1+i_a)^{1/12} - 1\\ - Taux trimestriel : \\i_t = (1+i_a)^{1/4} - 1\\ - Taux annuel à partir d’un taux périodique : \\i_a = (1+i_p)^m - 1\\
+
+------------------------------------------------------------------------
+
+## 4. Valeur acquise d’annuités constantes
+
+\\\boxed{V_n = A \cdot \frac{(1+i)^n - 1}{i}}\\
+
+**Intuition** : Cette formule répond à : quelle somme aurai-je accumulée à l’échéance si j’épargne le même montant à chaque période ?
+
+**(Annuités de fin de période.)** Pour des annuités de **début** de période, multiplier par \\(1+i)\\.
+
+------------------------------------------------------------------------
+
+## 5. Valeur actuelle d’annuités constantes
+
+\\\boxed{V_0 = A \cdot \frac{1-(1+i)^{-n}}{i}}\\
+
+**Intuition** : Cette formule répond à : combien vaut aujourd’hui une série de versements réguliers que je recevrai (ou paierai) dans le futur ?
+
+**(Annuités de fin de période.)** Pour des annuités de **début** de période, multiplier par \\(1+i)\\.
+
+**Perpétuité** (\\n \to \infty\\) :
+
+\\V_0 = \frac{A}{i}\\
+
+**Perpétuité croissante** au taux \\g\\ (\\i \> g\\) :
+
+\\V_0 = \frac{A_1}{i - g}\\
+
+------------------------------------------------------------------------
+
+## 6. Annuité d’un emprunt
+
+\\\boxed{A = C_0 \cdot \frac{i}{1-(1+i)^{-n}}}\\
+
+**Intuition** : Cette formule répond à : quelle mensualité ou annuité constante devrai-je payer pour rembourser mon emprunt sur la durée prévue ?
+
+| Symbole | Signification      |
+|---------|--------------------|
+| \\A\\   | Annuité constante  |
+| \\C_0\\ | Capital emprunté   |
+| \\i\\   | Taux périodique    |
+| \\n\\   | Nombre d’échéances |
+
+**Structure d’une échéance \\t\\ :**
+
+\\I_t = CRD\_{t-1} \times i \qquad Am_t = A - I_t \qquad CRD_t = CRD\_{t-1} - Am_t\\
+
+------------------------------------------------------------------------
+
+## 7. Prix d’une obligation
+
+\\\boxed{P_0 = C \cdot \frac{1-(1+r)^{-n}}{r} + \frac{N}{(1+r)^n}}\\
+
+**Intuition** : Cette formule répond à : quel prix maximum puis-je payer aujourd’hui une obligation pour obtenir le rendement exigé par le marché ?
+
+| Symbole | Signification                              |
+|---------|--------------------------------------------|
+| \\P_0\\ | Prix de l’obligation                       |
+| \\C\\   | Coupon annuel (\\= N \times\\ taux facial) |
+| \\N\\   | Nominal                                    |
+| \\r\\   | Taux de marché (rendement exigé)           |
+| \\n\\   | Maturité résiduelle                        |
+
+**Duration modifiée :** \\D^\* = D_M / (1+r)\\
+
+**Approximation de la variation de prix :** \\\Delta P / P \approx -D^\* \cdot \Delta r\\
+
+------------------------------------------------------------------------
+
+## 8. Valeur actuelle nette
+
+\\\boxed{VAN = -I_0 + \sum\_{t=1}^{n} \frac{CF_t}{(1+k)^t}}\\
+
+**Intuition** : Cette formule répond à : ce projet crée-t-il plus de valeur qu’il ne coûte, une fois tous ses flux ramenés à aujourd’hui ?
+
+| Symbole  | Signification                             |
+|----------|-------------------------------------------|
+| \\I_0\\  | Investissement initial (flux à \\t = 0\\) |
+| \\CF_t\\ | Flux de trésorerie net à la période \\t\\ |
+| \\k\\    | Taux d’actualisation (CMPC ou taux exigé) |
+
+**Indice de profitabilité :** \\IP = 1 + VAN / I_0\\
+
+------------------------------------------------------------------------
+
+## 9. Taux de rentabilité interne
+
+\\\boxed{0 = -I_0 + \sum\_{t=1}^{n} \frac{CF_t}{(1+TRI)^t}}\\
+
+**Intuition** : Cette formule répond à : quel rendement annuel ce projet rapporte-t-il réellement, et dépasse-t-il le coût de mon financement ?
+
+Le TRI est le taux \\r\\ qui annule la VAN. Il se calcule numériquement (Excel : `TRI(flux0:fluxn)`).
+
+**Règle de décision :** accepter si \\TRI \> k\\.
+
+------------------------------------------------------------------------
+
+## 10. Annuité équivalente
+
+\\\boxed{AE = VAN \times \frac{k}{1-(1+k)^{-n}}}\\
+
+**Intuition** : Cette formule répond à : entre deux projets de durées différentes, lequel rapporte le plus de valeur par année ?
+
+Permet de comparer des projets de **durées différentes** sur une base annuelle homogène.
+
+------------------------------------------------------------------------
+
+## Récapitulatif des fonctions Excel
+
+| Besoin | Fonction | Arguments principaux |
+|----|----|----|
+| Valeur actuelle d’un capital | `VA(taux;npm;vpm)` | `taux` = \\i\\, `npm` = \\n\\, `vpm` = \\-A\\ |
+| Valeur future d’un capital | `VC(taux;npm;vpm)` | idem |
+| Annuité d’un emprunt | `VPM(taux;npm;va)` | `va` = \\C_0\\ (positif) |
+| Taux actuariel | `TAUX(npm;vpm;va)` | `va` = montant net reçu |
+| VAN (flux variables) | `VAN(taux;flux1:fluxn) + flux0` | Ne pas inclure \\-I_0\\ dans la plage `VAN` |
+| TRI | `TRI(flux0:fluxn)` | Inclure \\-I_0\\ comme premier flux |
+
+> **WARNING:**
+>
+> Les **sorties de trésorerie** (remboursements, investissement) sont saisies en **négatif** ; les **entrées** (montant reçu, revenus) en **positif**. Utiliser la même convention dans tout le modèle.

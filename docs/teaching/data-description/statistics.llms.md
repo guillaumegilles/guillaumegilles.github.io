@@ -1,8 +1,12 @@
+## 1 What is statistics?
+
+> Statistics is the science of changing your mind. ([Kozyrkov 2025](#ref-kozyrkov_statistics_2025))
+
 **The business question.** A food-truck owner opens a spreadsheet with 120 rows of daily data: weather, temperature, customers, items sold, revenue, and more. Before computing any number or drawing any chart, what *kind* of information is in each column? Does “weather” behave like “revenue”? Can you average “satisfaction rating”? This module teaches you to look at a dataset and answer those questions — the first step in every statistical analysis. We start with five days small enough to read at a glance, and only then name the concepts.
 
-## 1 Theory
+## 2 Theory
 
-### 1.1 Numbers that are not numbers
+### 2.1 Numbers that are not numbers
 
 Here are five days from the Wandering Fork dataset. The numbers are a simplified extract chosen so that you can read everything at a glance.
 
@@ -16,7 +20,7 @@ Here are five days from the Wandering Fork dataset. The numbers are a simplified
 
 Four of the five columns contain numbers, and the spreadsheet will happily average any of them. Would you trust the average of the satisfaction column as much as the average of the revenue column? What could you even compute for the weather column?
 
-### 1.2 Descriptive vs inferential statistics
+### 2.2 Descriptive vs inferential statistics
 
 **Try it.** Decide for each statement whether it only summarises the five days you hold (descriptive) or goes beyond them (inferential), and compute the number in the first one.
 
@@ -49,7 +53,7 @@ In plain words: if you have the revenue of all 120 trading days and you compute 
 >
 > **Inferential statistics** use a sample to draw conclusions about a population that you did not fully observe: confidence intervals, hypothesis tests, regression with p-values. This course stops at descriptive statistics; the next course (Inferential Statistics, MS04) continues from here.
 
-### 1.3 Population, individual, variable
+### 2.3 Population, individual, variable
 
 **Try it.** Look at the table of the five days above and fill in the blanks. The `Day` column only labels the rows; it is not a variable we analyse.
 
@@ -86,7 +90,7 @@ In plain words: the population is everything you want to talk about, an individu
 
 A word on notation. We write \\n\\ for the number of individuals (\\n=5\\ in the extract) and \\x_i\\ for the value of a variable on the \\i\\-th individual: for revenue, \\x_1 = 400\\ and \\x_3 = 480\\.
 
-### 1.4 Variable types
+### 2.4 Variable types
 
 **Try it.** Classify each column of the five-day extract. For a qualitative variable, say nominal or ordinal; for a quantitative one, say discrete or continuous.
 
@@ -134,7 +138,7 @@ In plain words: ask first whether the values are categories or numbers, then whe
 >
 > A quantitative variable is **discrete** if its possible values are countable (e.g., `customer_count`: 39, 38, 38, …). It is **continuous** if it can take any value in an interval (e.g., `daily_revenue_eur`, `temperature_c`).
 
-### 1.5 Levels of measurement
+### 2.5 Levels of measurement
 
 **Try it.** For each question about the five-day extract, say whether it makes sense and, if it does, give the result.
 
@@ -194,7 +198,7 @@ In plain words: each level of measurement adds one thing you may do with the val
 
 **A common trap.** `satisfaction_rating` is stored as the numbers 1, 2, 3, 4, 5, but it is **ordinal**, not ratio. The step from 1 to 2 is not necessarily the same as from 4 to 5. Computing an arithmetic mean of satisfaction ratings is technically questionable — the median is safer. Module 4 discusses this in detail.
 
-## 2 Worked example
+## 3 Worked example
 
 We use the **Harbour 30-day subset** (sheet `harbour_30d`) to illustrate the concepts of this module.
 
@@ -212,23 +216,23 @@ We use the **Harbour 30-day subset** (sheet `harbour_30d`) to illustrate the con
 
 **Step 3 — allowed operations.** For `weather` you can count and find the mode (Sunny appears most often). For `temperature_c` you can compute the mean and standard deviation (interval level). For `daily_revenue_eur` you can also compute ratios (e.g., “day 5 revenue is 1.5× day 3 revenue”) and the coefficient of variation (ratio level).
 
-## 3 Proof / derivation
+## 4 Proof / derivation
 
 > **CAUTION:**
 >
 > Let a qualitative variable have \\k\\ categories with absolute frequencies \\n_1, \dots, n_k\\ and total \\n = \sum\_{i=1}^{k} n_i\\. The relative frequency of category \\i\\ is \\f_i = n_i / n\\. Summing over all categories: \\ \sum\_{i=1}^{k} f_i = \sum\_{i=1}^{k} \frac{n_i}{n} = \frac{1}{n}\sum\_{i=1}^{k} n_i = \frac{n}{n} = 1. \\ In percentages, \\\sum f_i \times 100\\ = 100\\\\. This is exactly the same property we saw for percentage distributions in the Excel warm-up (Module 1’s derivation), now applied to categories instead of line items. If your frequency table’s percentages do not sum to (very close to) 100%, a category was missed or a count was wrong.
 
-## 4 Visual intuition
+## 5 Visual intuition
 
 Think of the population as a bag of coloured balls. A **qualitative** variable is the colour of each ball — you can sort them into piles (nominal) or line them up by shade (ordinal). A **quantitative** variable is a number written on each ball — you can count them (discrete) or measure them on a ruler (continuous). The level of measurement tells you which ruler you are allowed to use: a ruler with no numbers (nominal), a ruler with only order marks (ordinal), a ruler with equal spacing but no true zero (interval), or a ruler with a true zero (ratio).
 
-## 5 Interactive demo
+## 6 Interactive demo
 
 > **IMPORTANT:**
 >
 > TODO: an interactive variable-type classifier (drag a column name to its type and level) would be a good OJS demo for this module.
 
-## 6 Exercises
+## 7 Exercises
 
 All exercises below are done by hand; the Excel ones are in the [homework](#homework-excel-lab).
 
@@ -270,7 +274,7 @@ Solution
 1.  \\x_3 = 1.2\\x_1\\ (with \\x_1 = 400\\ and \\x_3 = 480\\).
 2.  \\f_i = n_i / n\\. (c) \\\sum\_{i=1}^{k} f_i = 1\\.
 
-## 7 Common mistakes
+## 8 Common mistakes
 
 > **WARNING:**
 >
@@ -279,7 +283,7 @@ Solution
 > - **Confusing the population with the sample.** The 120 Harbour days are a *finite population* in this course. In real life, they would often be a *sample* of all possible trading days.
 > - **Using `COUNT` when you need `COUNTA`.** `COUNT` only counts numbers; `COUNTA` counts everything non-empty (text, dates, errors).
 
-## 8 Exit check
+## 9 Exit check
 
 Five minutes, no calculator needed.
 
@@ -297,7 +301,7 @@ Answers
 4.  Sorted: 2, 3, 3, 3, 4, so the median is 3. Ratings are ordinal: the distances between 1, 2, 3, 4, 5 are not necessarily equal, so an average of them is questionable.
 5.  Differences of temperatures are meaningful (4 °C warmer), but 0 °C is not “no temperature”, so “24 °C is 1.5 times as warm as 16 °C” has no meaning.
 
-## 9 Homework — Excel lab
+## 10 Homework — Excel lab
 
 Reproduce, in Excel, what you did by hand in class, with `SUM`, `COUNT`, `COUNTA`, `AVERAGE` and `IF`, then apply them to the full dataset.
 
@@ -305,9 +309,9 @@ Reproduce, in Excel, what you did by hand in class, with `SUM`, `COUNT`, `COUNTA
 
 **Follow-up:** a 10-minute debrief at the start of [Module 2](module-02.qmd). Bring your Step 0 results and any question on Homework 1–2.
 
-### 9.1 Using Excel
+### 10.1 Using Excel
 
-The complete list of function names, with their French equivalents, is on the [Excel functions](excel-functions.qmd) page.
+The complete list of function names, with their French equivalents, is on the [Excel functions](../../teaching/data-description/excel-functions.llms.md) page.
 
 | Concept | Excel function / steps |
 |----|----|
@@ -326,7 +330,7 @@ The complete list of function names, with their French equivalents, is on the [E
 >
 > Type `=AVERAGE(` in a cell. If Excel suggests `AVERAGE`, you are in English locale. If it suggests `MOYENNE`, you are in French locale. The course writes all formulas with English names; use the Excel functions page to translate.
 
-### 9.2 Step 0 — check your class results
+### 10.2 Step 0 — check your class results
 
 1.  Type the five revenues 400, 440, 480, 440, 440 in `A2:A6` and the five weather values Sunny, Cloudy, Rainy, Sunny, Sunny in `B2:B6`.
 2.  Compute `=SUM(A2:A6)`, `=COUNT(A2:A6)`, `=COUNTA(A2:A6)` and `=AVERAGE(A2:A6)`; then `=COUNT(B2:B6)` and `=COUNTA(B2:B6)`.
@@ -345,7 +349,7 @@ Expected results
 
 `COUNT` finds no numbers in the weather column, while `COUNTA` counts the five non-empty cells.
 
-### 9.3 Homework 1 (Excel) — Open the dataset and explore
+### 10.3 Homework 1 (Excel) — Open the dataset and explore
 
 Open `wandering-fork.xlsx`. (a) Filter `franchise` to “Harbour”. How many rows? (b) In column N (`daily_revenue_eur`), compute `=SUM`, `=COUNT`, `=COUNTA`, `=AVERAGE` for the filtered rows. (c) Sort by `daily_revenue_eur` descending. What is the highest revenue day for Harbour?
 
@@ -353,7 +357,7 @@ Solution
 
 1.  120 rows (all Harbour days). (b) `SUM` ≈ 49,618.46, `COUNT` = 120, `COUNTA` = 120, `AVERAGE` ≈ 413.49. (c) The highest Harbour revenue is €1,050.00 (day 80).
 
-### 9.4 Homework 2 (Excel) — English vs French function names
+### 10.4 Homework 2 (Excel) — English vs French function names
 
 Your colleague uses French Excel. You send them the formula `=AVERAGE(N2:N121)`. What must they change it to?
 
@@ -361,7 +365,7 @@ Solution
 
 `=MOYENNE(N2:N121)` (function name) and the argument separator becomes a semicolon if the range is written with cell references: `=MOYENNE(N2;N121)` — but structured references like `tblFork[daily_revenue_eur]` work the same in both locales. See the Excel functions page for the full list.
 
-## 10 Further reading
+## 11 Further reading
 
 | Source | Where | What it adds | Time | Verified |
 |----|----|----|----|----|
@@ -371,3 +375,38 @@ Solution
 | Khan Academy | Unit *Study design* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on statistical questions, sampling methods, and types of studies | Videos and practice on population vs sample, observational studies vs experiments | ~30–45 min (estimate) | link check pending (T048) |
 
 OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## References
+
+Kozyrkov, Cassie. 2025. “Statistics for People in a Hurry.” In *Medium*. <https://kozyrkov.medium.com/statistics-for-people-in-a-hurry-7c3910b4ca9a>.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {1️⃣ {What} Is Statistics?},
+  url = {https://ggilles.dev/teaching/data-description/statistics.html},
+  langid = {en},
+  abstract = {**By the end of this module, you will be able to:** -
+    Distinguish descriptive statistics (summarising what happened) from
+    inferential statistics (drawing conclusions about a larger
+    population). - Identify the population, the statistical individual,
+    and the variable in a business context. - Classify a variable as
+    qualitative (nominal or ordinal) or quantitative (discrete or
+    continuous). - State the four levels of measurement (nominal,
+    ordinal, interval, ratio) and explain which arithmetic operations
+    each allows. - Read aloud simple notation such as \$x\_i\$, \$n\$,
+    \$f\_i = n\_i/n\$ and \$\textbackslash sum\$, and write it from a
+    sentence. - Open the Wandering Fork dataset, recognise its grain
+    (one row = one franchise-day), and perform basic Excel operations:
+    cell references, sorting, filtering, and the functions `SUM`,
+    `COUNT`, `COUNTA`, `AVERAGE`, `IF` (homework).}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “1️⃣ What Is Statistics?” <https://ggilles.dev/teaching/data-description/statistics.html>.

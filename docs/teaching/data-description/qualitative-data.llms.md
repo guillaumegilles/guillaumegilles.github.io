@@ -372,7 +372,7 @@ Reproduce, in Excel, every table you built by hand in class, with `COUNTIF`, `CO
 
 ### 9.1 Using Excel
 
-The sheet `harbour_30d` of `wandering-fork.xlsx` has the data. The complete list of function names, with their French equivalents, is on the [Excel functions](excel-functions.qmd) page.
+The sheet `harbour_30d` of `wandering-fork.xlsx` has the data. The complete list of function names, with their French equivalents, is on the [Excel functions](../../teaching/data-description/excel-functions.llms.md) page.
 
 | Concept | Excel function / steps |
 |----|----|

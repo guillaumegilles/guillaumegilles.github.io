@@ -1,0 +1,121 @@
+> **NOTE:**
+>
+> Un couple de variables aléatoires continues est une application \\ (X,Y):\Omega\to\mathbb{R}^2, \qquad \omega\mapsto (X(\omega),Y(\omega)). \\
+
+> **TIP:**
+>
+> Chaque résultat \\\omega\\ de l’expérience aléatoire produit **simultanément** deux valeurs \\(X(\omega), Y(\omega))\\. On peut penser à un individu tiré au hasard dans une population : \\X(\omega)\\ est sa taille, \\Y(\omega)\\ son poids. Le couple \\(X, Y)\\ décrit la distribution jointe de ces deux quantités dans la population.
+>
+> L’intérêt fondamental du couple est qu’il capture la **relation** entre \\X\\ et \\Y\\ — information que les lois individuelles de \\X\\ et \\Y\\ ne contiennent pas. Connaître séparément la loi de la taille et la loi du poids ne dit pas si, dans la population, les individus grands tendent aussi à être lourds. C’est la **loi conjointe** qui encode cette structure.
+>
+> Formellement, la loi du couple est une mesure de probabilité sur \\\mathbb{R}^2\\ : pour toute région \\\mathcal{D}\\ du plan, \\P\bigl((X,Y) \in \mathcal{D}\bigr)\\ est la probabilité que l’issue aléatoire tombe dans \\\mathcal{D}\\. Lorsque cette mesure admet une **densité** \\f\\, on dit que le couple est absolument continu, et toutes les probabilités se calculent par intégration de \\f\\ sur des régions du plan.
+
+### 0.1 Densité de probabilité sur \\\mathbb{R}^2\\
+
+> **NOTE:**
+>
+> Une fonction \\f : \mathbb{R}^2 \to \mathbb{R}\\ est une densité de probabilité sur \\\mathbb{R}^2\\ si :
+>
+> - \\f(x,y)\ge 0\\ pour tout \\(x,y)\\,
+> - \\f\\ est intégrable sur \\\mathbb{R}^2\\,
+> - \\\displaystyle \iint\_{\mathbb{R}^2} f(x,y)\\dx\\dy = 1\\.
+
+L’intuition géométrique est celle d’un **relief** : \\f(x,y)\\ représente la “hauteur” en chaque point du plan. La condition \\\iint f = 1\\ signifie que le **volume total** sous ce relief vaut exactement \\1\\. La probabilité que le couple \\(X,Y)\\ tombe dans une région \\\mathcal{D}\\ est \\\iint\_{\mathcal{D}} f(x,y)\\dx\\dy\\, c’est-à-dire le volume du morceau de relief situé au-dessus de \\\mathcal{D}\\. Plus la densité est élevée en un point, plus ce point est probable — mais la probabilité d’une valeur exacte \\(x_0, y_0)\\ est toujours nulle, exactement comme dans le cas unidimensionnel.
+
+![](pair-continuous-rv-joint-distribution_files/figure-html/fig-densite-conjointe-relief-output-1.png)
+
+Figure 1: **Gauche :** la probabilité que \\(X,Y)\\ tombe dans la région \\\mathcal{D}\\ est le volume du relief \\f\\ au-dessus de \\\mathcal{D}\\. **Droite :** le relief vu de dessus — les zones sombres correspondent aux régions de forte densité (événements plus probables).
+
+### 0.2 Explorateur interactif — Corrélation et densité conjointe
+
+Faites varier le coefficient de corrélation \\\rho\\ pour observer l’effet sur la forme de la densité. Quand \\\rho = 0\\, les contours d’équiprobabilité sont des cercles et les variables sont **indépendantes**. À droite : la densité conditionnelle \\f\_{Y\|X}(y\mid 1.5)\\ se déplace avec \\\rho\\, illustrant que la loi de \\Y\\ sachant \\X = 1.5\\ dépend du coefficient de corrélation.
+
+``` js
+biv_pdf2 = (x, y, rho) => {
+  const c = Math.max(1 - rho * rho, 1e-8);
+  return Math.exp(-(x * x - 2 * rho * x * y + y * y) / (2 * c)) / (2 * Math.PI * Math.sqrt(c));
+}
+biv_pdf1 = (x, mu = 0, s = 1) => Math.exp(-0.5 * ((x - mu) / s) ** 2) / (s * Math.sqrt(2 * Math.PI))
+
+viewof biv_rho = Inputs.range([-0.95, 0.95], {label: "Corrélation ρ :", value: 0.0, step: 0.05})
+```
+
+``` js
+{
+  const r = biv_rho;
+  let c, msg;
+  if (Math.abs(r) < 0.05) { c = "#2E7D32"; msg = "✅ ρ ≈ 0 → INDÉPENDANTES"; }
+  else if (r > 0) { c = "#E65100"; msg = `↗ ρ = ${r.toFixed(2)} → dépendance positive`; }
+  else { c = "#AD1457"; msg = `↙ ρ = ${r.toFixed(2)} → dépendance négative`; }
+  return html`<div>
+    <div style="display:inline-block; padding:4px 10px; border-radius:4px; font-size:0.88em; font-weight:bold; margin:4px 0; background:${c}; color:white;">${msg}</div>
+    <ul style="font-size:0.82em; margin-top:6px;">
+      <li>ρ = 0 → cercles → indépendance</li>
+      <li>ρ &gt; 0 → ellipses penchées ↗</li>
+      <li>ρ &lt; 0 → ellipses penchées ↘</li>
+      <li>Marginale f_Y(y) : toujours N(0,1), quel que soit ρ</li>
+    </ul></div>`;
+}
+```
+
+``` js
+{
+  const rho = biv_rho, n = 70, h = 6 / n;
+  const cells = [];
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    const x = -3 + (i + 0.5) * h, y = -3 + (j + 0.5) * h;
+    cells.push({x1: -3 + i * h, x2: -3 + (i + 1) * h, y1: -3 + j * h, y2: -3 + (j + 1) * h, v: biv_pdf2(x, y, rho)});
+  }
+  const t = d3.range(0, 401).map(i => -3.5 + 7 * i / 400);
+  const s = Math.sqrt(Math.max(1 - rho * rho, 1e-4));
+  const marg = t.map(y => ({y, v: biv_pdf1(y)}));
+  const cond = t.map(y => ({y, v: biv_pdf1(y, rho * 1.5, s)}));
+  const base = {width: 400, height: 340, style: {background: "transparent", color: "currentColor", fontSize: "11px"}};
+  const joint = Plot.plot({
+    ...base, title: `Densité conjointe (ρ = ${rho.toFixed(2)})`, aspectRatio: 1,
+    x: {label: "x", domain: [-3, 3]}, y: {label: "y", domain: [-3, 3]},
+    color: {scheme: "blues", domain: [0, 0.4]},
+    marks: [Plot.rect(cells, {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: "v", inset: -0.3})]
+  });
+  const right = Plot.plot({
+    ...base, title: "Marginale vs conditionnelle (x = 1.5)",
+    x: {label: "y", domain: [-3.5, 3.5]}, y: {label: "densité", domain: [0, 1.5]},
+    marks: [
+      Plot.line(marg, {x: "y", y: "v", stroke: "#4FC3F7", strokeWidth: 2}),
+      Plot.line(cond, {x: "y", y: "v", stroke: "#FFA726", strokeWidth: 2, strokeDasharray: "6,4"}),
+      Plot.ruleY([0])
+    ]
+  });
+  return html`<div style="font-weight:bold; font-size:0.9em; margin-bottom:4px;">Loi normale bivariée standard</div>
+    <div style="display:flex; flex-wrap:wrap; gap:6px;">${joint}${right}</div>
+    <div style="font-size:0.85em;">
+      <span style="color:#4FC3F7">━ marginale f_Y(y)</span> &nbsp;
+      <span style="color:#FFA726">┅ conditionnelle f_Y|X(y|1.5)</span></div>`;
+}
+```
+
+> **NOTE:**
+>
+> Le couple \\(X,Y)\\ est dit **absolument continu** s’il existe une densité conjointe \\f\\ telle que, pour tous intervalles \\I,J\subset\mathbb{R}\\, \\ P(X\in I,\\ Y\in J) = \iint\_{I\times J} f(x,y)\\dx\\dy. \\
+
+> **CAUTION:**
+>
+> Soit \\ f(x,y)= \begin{cases} e^{-(x+y)} & \text{si } x\ge 0,\\ y\ge 0,\\ 0 & \text{sinon.} \end{cases} \\ Montrer que \\f\\ est une densité sur \\\mathbb{R}^2\\.
+
+> **TIP:**
+>
+> La positivité est immédiate. Ensuite : \\ \iint\_{\mathbb{R}^2} f(x,y)\\dx\\dy = \left(\int_0^{+\infty} e^{-x}\\dx\right) \left(\int_0^{+\infty} e^{-y}\\dy\right)=1\cdot 1=1. \\ Donc \\f\\ est bien une densité.
+
+### 0.3 Fonction de répartition conjointe
+
+> **NOTE:**
+>
+> La fonction de répartition du couple \\(X,Y)\\ de densité \\f\\ est \\ F(x,y)=P(X\le x,\\ Y\le y)=\int\_{-\infty}^{x}\int\_{-\infty}^{y} f(u,v)\\dv\\du. \\
+
+> **IMPORTANT:**
+>
+> Aux points où \\f\\ est continue, \\ f(x,y)=\frac{\partial^2 F}{\partial x\partial y}(x,y). \\
+>
+> La densité conjointe et la répartition conjointe caractérisent la loi du couple.
+
+La fonction de répartition conjointe \\F(x,y)\\ est l’analogue bidimensionnel de la répartition usuelle : elle cumule la probabilité d’être dans le “quadrant inférieur gauche” \\(-\infty, x\] \times (-\infty, y\]\\. La proposition ci-dessus établit le lien fondamental avec la densité : dériver \\F\\ successivement par rapport à \\x\\ puis par rapport à \\y\\ redonne \\f\\. C’est le pendant exact de la relation \\F' = f\\ du cas unidimensionnel, généralisée à la dimension deux.

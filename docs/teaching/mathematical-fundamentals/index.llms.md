@@ -1,0 +1,115 @@
+## 1 Syllabus
+
+### 1.1 Course Information
+
+- **Department**: Operations Management and Decision Science
+- **Code**: MS01-001-G
+- **Semester**: 01
+- **Teaching campuses**: Aix-en-Provence, Angers, Bordeaux, Boulogne-Billancourt, Lyon, Strasbourg
+- **Total hours**: 30.00
+- **ECTS credits**: 4.00
+- **Open to exchange students**: No
+
+### 1.2 General Presentation
+
+This course in *Mathematical Fundamentals* aims to give students the mathematical tools needed to analyse and solve quantitative problems, whether financial, economic, or managerial:
+
+- Manipulating algebraic expressions;
+- Solving first- and second-degree equations and inequalities to model economic questions;
+- Graphically visualising and interpreting economic functions;
+- Sequences and the usual functions;
+- Simple optimization for strategic decision-making.
+
+### 1.3 Targeted Competencies
+
+**2 — Intellectual abilities**
+
+- **2.3**: Choose the relevant calculation methods and problem-solving tools.
+
+**5 — Technological skills**
+
+- **5.2**: Use the tools dedicated to searching and processing information and to business communication (in particular: word processing, dashboards, project-management tools, online tools).
+
+### 1.4 Organisation & Schedule
+
+#### Module 1 — [Essential Mathematical Calculations for Economics and Management](module-1.qmd)
+
+> Fundamental operations and properties of real numbers (order of operations, absolute value, powers, square roots, fractions, percentages, index numbers, and the proportionality rule).
+>
+> **Application question**: How can we calculate and interpret a change in price, revenue, cost, or market share?
+
+#### Module 2 — [Mastering Equations for Better Decision-Making](module-2.qmd)
+
+> Factoring, expanding, notable identities, and solving first-degree equations.
+
+**Application question**: At what sales volume does a company reach its break-even point?
+
+#### Module 3 — [Curve Analysis in Economics and Management](module-3.qmd)
+
+> Graphical representation (reading a graph, lines, sign, sense of variation, parity), intersection of two lines, first-degree systems of equations and inequalities.
+
+**Application question**: At what level of activity do two pricing or cost models produce the same result?
+
+#### Module 4 — [Introduction to Financial-Mathematics Tools](module-4.qmd)
+
+> Study of numerical sequences (general definition, arithmetic sequences, geometric sequences).
+
+**Application question**: How can we model a quantity that grows by a fixed amount or by a fixed percentage?
+
+#### Module 5 — [Application of Financial Mathematics](module-5.qmd)
+
+> Simple and compound interest.
+
+**Application question**: How does capitalisation frequency affect the future value of an investment?
+
+#### Module 6 — [Functions Useful in Economics and Management](module-6.qmd)
+
+> Single-variable functions (meaning, domain of definition, forbidden values) and the usual functions (affine, polynomial, logarithm, exponential); simple and general second-degree equations.
+
+**Application question**: Which type of function best represents a given economic or managerial phenomenon?
+
+#### Module 7 — [Introduction to Optimization](module-7.qmd)
+
+> Average and instantaneous rates of change, an intuitive presentation of the derivative, applied to affine and polynomial functions.
+
+**Application question**: Which price, quantity, or production level maximises profit or minimises cost?
+
+#### Module 8 — [Revision and Final-Exam Preparation](../../teaching/mathematical-fundamentals/module-8.llms.md)
+
+> General revision and consolidation of what has been learned.
+
+**Application question**: Can you identify the appropriate mathematical method without being told which module the problem comes from?
+
+### 1.5 [Glossary](glossary.qmd)
+
+> Collects every symbol and term introduced across the modules.
+
+### 1.6 Assessment
+
+#### Precision of Numerical Answers
+
+Some questions will ask for a numerical answer, for example solving for an equilibrium price.
+
+- If the answer is rational, enter an exact answer. For example: \\3/4\\, \\0.125\\ or \\519\\.
+- If the answer is rational, but has a repeating decimal, you may alternatively enter any approximation within \\0.1%\\ of the correct answer. For example: \\1/9\\ or \\8.66667\\.
+- Otherwise, enter any approximation within \\0.1%\\ of the correct answer. For example: \\1.414\\ to represent \\\sqrt{2}\\.
+
+When in doubt, enter more decimal places than you think you need. It never hurts to put more decimal places.
+
+#### Examination Schedule
+
+| Examination           | % of overall grade | Assessment mode    | Duration (min) |
+|-----------------------|-------------------:|--------------------|---------------:|
+| Continuous assessment |                 35 | individual written |             45 |
+| Final exam (FE)       |                 65 | individual written |             90 |
+
+### 1.7 Expected Personal Work
+
+- Complete the associated work and exercises before each class session.
+- **Workload**: 50 hours.
+
+## 2 Recommended Literature
+
+- Ian Jacques, *Mathematics for Economics and Business*, 5th edition, Pearson Education Limited, 2006.
+- Jean-Luc Dorier and Marc Duc-Jacquet, *Mathématiques pour l’économie et la gestion*, 1st edition, Gualino Éditeur, 1996.
+- Stéphane Rossignol, *Mathématiques en économie-gestion*, 2nd edition, Dunod Éditions, 2022.

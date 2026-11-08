@@ -1,5 +1,8 @@
 > **Données fictives — usage pédagogique uniquement.** Voir [l’accueil du fil rouge](../../../../fr/teaching/financial-analysis/donnees/index.llms.md).
 
+Le tableau ci-dessous est établi selon la **méthode indirecte** (CRC 99-02)  
+on part du résultat net consolidé, corrigé des éléments non décaissés pour obtenir la capacité d’autofinancement (CAF), puis on ajoute la variation du besoin en fonds de roulement, les flux d’investissement et les flux de financement.
+
 | Poste (k€)                       | 2023  | 2024  | 2025  |
 |----------------------------------|-------|-------|-------|
 | Capacité d’autofinancement (CAF) | 1 160 | 1 286 | 1 412 |
