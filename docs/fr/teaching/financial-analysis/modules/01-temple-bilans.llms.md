@@ -1,0 +1,419 @@
+Durée : **110 min** (dont 25 min de théorie) \| Équipes : **3–5 étudiants** \| XP : **+100**
+
+Bienvenue dans la première quête, **Le Temple des Bilans**. Vous êtes analystes chez **StratFin Corp** : les équipes reçoivent des états financiers volontairement falsifiés. Leur mission : identifier les incohérences, erreurs comptables ou anomalies. Chaque erreur détectée débloque un indice pour sortir du Temple.
+
+## Objectifs pédagogiques
+
+- Comprendre et interpréter les trois états financiers fondamentaux (bilan, compte de résultat et tableau de flux de trésorerie).
+- Identifier les liens et les incohérences entre les différents états financiers.
+- Développer une rigueur analytique, une capacité d’analyse critique et des réflexes de cohérence face à des documents comptables.
+
+## Prérequis et lectures préalables
+
+- Connaître les trois états financiers fondamentaux et savoir vérifier l’équilibre du bilan et la cohérence entre les états.
+- Lecture préalable (obligatoire, environ 10 min) : [États financiers : l’essentiel](../../../../fr/teaching/financial-analysis/modules/etats-financiers.llms.md).
+- Pour aller plus loin : [Formules](../../../../fr/teaching/financial-analysis/modules/formules.llms.md), [Structure financière](../../../../fr/teaching/financial-analysis/modules/structure-fi.llms.md) et [Liquidité](../../../../fr/teaching/financial-analysis/modules/liquidite.llms.md).
+
+## Déroulé et répartition du temps
+
+| Étape                                                         |       Durée |
+|:--------------------------------------------------------------|------------:|
+| Théorie en direct (voir plan ci-dessous)                      |      25 min |
+| Niveau 1 — ALPHATECH SARL                                     |      25 min |
+| Niveau 2 — BETATECH INDUSTRIES                                |      30 min |
+| Fiche d’erreurs et mini-diagnostic                            |      15 min |
+| Restitutions orales (3 équipes tirées au sort, 5 min chacune) |      15 min |
+| **Total**                                                     | **110 min** |
+
+Le Niveau 3 (expert) est proposé en extension, hors séance (voir la fin de la page).
+
+## Plan de la théorie en direct (25 min)
+
+1.  **0–5 min** — Les trois états et leur rôle : photographie (bilan), film de la performance (compte de résultat), film de la trésorerie (tableau de flux).
+2.  **5–12 min** — L’équation du bilan : \\A = D + CP\\ et ce qu’elle impose comme contrôle.
+3.  **12–20 min** — Les liens entre états : résultat net et trésorerie de clôture (voir la dérivation plus bas).
+4.  **20–25 min** — Exemple guidé (ci-dessous) et méthode de contrôle en quatre étapes.
+
+> **NOTE:**
+>
+> Le **bilan** est la photographie, à une date donnée, de ce que possède l’entreprise (actif) et de la manière dont elle l’a financé (passif). Le **compte de résultat** mesure la performance sur une période. Le **tableau de flux de trésorerie** explique la variation de trésorerie sur la période, par activité (opérationnelle, investissement, financement).
+
+> **TIP:**
+>
+> \\ \text{Total actif} = \text{Total passif} \qquad \Delta \text{Trésorerie} = FO + FI + FF \\
+>
+> La première dit que tout ce que l’entreprise possède a été financé par quelqu’un (actionnaires ou créanciers) : si les totaux diffèrent, il y a une erreur. La seconde dit que la variation de trésorerie est la somme des flux des trois activités : elle permet de vérifier que le tableau de flux est cohérent avec les deux trésoreries (ouverture et clôture) du bilan.
+
+## Exemple guidé : MiniCo (en K€)
+
+Méthode de contrôle en quatre étapes, appliquée à une entreprise fictive dont les états sont **cohérents**.
+
+| Bilan clôture — Actif |      K€ | Bilan clôture — Passif |      K€ |
+|:----------------------|--------:|:-----------------------|--------:|
+| Immobilisations       |     100 | Capital                |      80 |
+| Stocks                |      30 | Réserves               |      20 |
+| Créances clients      |      40 | Résultat net           |      12 |
+| Trésorerie            |      49 | Dettes financières     |      55 |
+|                       |         | Dettes fournisseurs    |      52 |
+| **Total**             | **219** | **Total**              | **219** |
+
+Compte de résultat : résultat net = **12**. Tableau de flux : trésorerie d’ouverture 40.
+
+| Poste                          |      K€ |
+|:-------------------------------|--------:|
+| Résultat net                   |      12 |
+| Amortissements                 |      +8 |
+| Variation du BFR               |      −6 |
+| **Flux opérationnels (FO)**    |  **14** |
+| **Flux d’investissement (FI)** | **−10** |
+| **Flux de financement (FF)**   |  **+5** |
+| **Variation de trésorerie**    |  **+9** |
+| Trésorerie de clôture (40 + 9) |  **49** |
+
+1.  **Équilibre** : actif \\100+30+40+49 = 219\\ ; passif \\80+20+12+55+52 = 219\\. ✔
+2.  **Résultat net** : 12 au compte de résultat, 12 au bilan, 12 en tête du tableau de flux. ✔
+3.  **Arithmétique des flux** : \\FO = 12+8-6 = 14\\ ; \\\Delta = 14-10+5 = +9\\. ✔
+4.  **Trésorerie** : \\40 + 9 = 49\\, égale à la ligne « Trésorerie » du bilan. ✔
+
+Un seul de ces quatre contrôles qui échoue suffit à signaler une anomalie : c’est votre grille de lecture pour la quête.
+
+## Dérivation : pourquoi \\A = D + CP\\ et comment la trésorerie relie flux et bilan
+
+> **CAUTION:**
+>
+> **1. L’équation du bilan.** Chaque opération comptable est enregistrée deux fois, avec un montant identique : en emploi (actif) et en ressource (passif). Acheter une machine de 10 financée par emprunt augmente l’actif de 10 et les dettes de 10 ; payer un fournisseur avec de la trésorerie diminue l’actif et les dettes du même montant. La somme des variations de l’actif est donc toujours égale à celle du passif, et par récurrence, à toute date :
+>
+> \\ A = D + CP \\
+>
+> où \\A\\ est le total de l’actif, \\D\\ les dettes et \\CP\\ les capitaux propres. Cette identité justifie le contrôle n°1 : un bilan qui ne s’équilibre pas contient forcément une erreur.
+>
+> **2. Isoler la trésorerie.** Notons \\A = AN + T\\, avec \\AN\\ l’actif non monétaire (immobilisations, stocks, créances) et \\T\\ la trésorerie. Alors
+>
+> \\ T = D + CP - AN \quad\Rightarrow\quad \Delta T = \Delta D + \Delta CP - \Delta AN . \\
+>
+> **3. Décomposer chaque terme.**
+>
+> - \\\Delta CP = RN - \text{Dividendes} + \text{Augmentations de capital}\\ ;
+> - \\\Delta D = \Delta \text{Dettes financières} + \Delta \text{Fournisseurs}\\ ;
+> - \\\Delta AN = \Delta \text{Stocks} + \Delta \text{Créances} + \text{Acquisitions} - \text{Amortissements}\\ (l’immobilisation nette augmente des acquisitions et diminue des amortissements).
+>
+> **4. Regrouper par activité.**
+>
+> \\ \Delta T = \underbrace{RN + \text{Amort.} - \Delta \text{Stocks} - \Delta \text{Créances} + \Delta \text{Fournisseurs}}\_{FO} \\\underbrace{-\\\text{Acquisitions}}\_{FI} \\\underbrace{+\\\Delta \text{Dettes fin.} + \text{Capital} - \text{Dividendes}}\_{FF} \\
+>
+> La variation nette de trésorerie du tableau de flux n’est donc pas une convention : c’est la conséquence arithmétique de l’équation du bilan. Elle explique pourquoi la trésorerie de clôture du tableau de flux doit être égale à celle du bilan, et pourquoi le résultat net (point de départ de \\FO\\) doit être identique dans les trois états.
+
+> **WARNING:**
+>
+> Se contenter de vérifier que chaque état est correct **isolément**. Un tableau de flux dont les sous-totaux sont justes peut malgré tout afficher une trésorerie de clôture différente de celle du bilan, ou un résultat net différent de celui du compte de résultat : l’erreur se cache dans les **liens** entre états.
+
+## Exercices
+
+**Exercice 1 (Niveau 1 : ALPHATECH SARL (25 min))** *Ces documents contiennent volontairement des erreurs. Ne cherchez pas la perfection : cherchez l’incohérence, la faute de logique et le non-respect des liens comptables.* Appliquez la méthode en quatre étapes et justifiez chaque anomalie par une règle comptable ou un raisonnement financier.
+
+**Bilan au 31/12/2024 — en € — Actif**
+
+|                         Poste | Montant (€) |
+|------------------------------:|:-----------:|
+|   Immobilisations corporelles |   150 000   |
+| Immobilisations incorporelles |   50 000    |
+|                        Stocks |   40 000    |
+|              Créances clients |   90 000    |
+|                Disponibilités |   30 000    |
+|               **Total Actif** | **340 000** |
+
+**Bilan au 31/12/2024 — en € — Passif**
+
+|                   Poste | Montant (€) |
+|------------------------:|:-----------:|
+|          Capital social |   100 000   |
+|                Réserves |   30 000    |
+|            Résultat net |   25 000    |
+| Dettes financières (LT) |   120 000   |
+|     Dettes fournisseurs |   80 000    |
+|        **Total Passif** | **345 000** |
+
+Vérifiez l’équilibre du bilan et la cohérence des postes entre eux.
+
+**Compte de résultat — Exercice 2024 — en €**
+
+|                        Poste | Montant (€) |
+|-----------------------------:|:-----------:|
+|           Chiffre d’affaires |   500 000   |
+|             Achats consommés |  -250 000   |
+|         Charges de personnel |  -120 000   |
+| Dotations aux amortissements |   -20 000   |
+|               Autres charges |   -70 000   |
+|  **Résultat d’exploitation** | **40 000**  |
+|          Charges financières |   -15 000   |
+|          Produits financiers |      0      |
+|             **Résultat net** | **10 000**  |
+
+Utilisez ce compte de résultat pour vérifier la cohérence avec le bilan et le tableau de flux.
+
+**Tableau de flux de trésorerie — Exercice 2024 — en €**
+
+|                             Poste | Montant (€) |
+|----------------------------------:|:-----------:|
+|                      Résultat net |   10 000    |
+|                    Amortissements |   20 000    |
+|              Variation des stocks |   -5 000    |
+|    Variation des créances clients |   -30 000   |
+| Variation des dettes fournisseurs |   +20 000   |
+|       **Flux opérationnels (FO)** | **+5 000**  |
+|         **Flux d’investissement** |    ————-    |
+|       Acquisition immobilisations |   -15 000   |
+|    **Flux d’investissement (FI)** | **-15 000** |
+|           **Flux de financement** |    ————-    |
+|                    Nouvel emprunt |   +10 000   |
+|             Remboursement emprunt |   -20 000   |
+|      **Flux de financement (FF)** | **-10 000** |
+|                      **Synthèse** |    ————-    |
+|           Variation de trésorerie | **-20 000** |
+|            Trésorerie d’ouverture |   50 000    |
+|         **Trésorerie de clôture** | **20 000**  |
+
+Dans le bilan, la trésorerie (disponibilités) est indiquée **30 000 €**.
+
+Rappels :
+
+- Le **total actif** doit égaler le total passif.
+- Le **résultat net** du compte de résultat doit être le même que celui du bilan.
+- La **variation de trésorerie** du tableau de flux doit expliquer la différence entre trésorerie d’ouverture et de clôture.
+
+Solution
+
+1.  **Totaux du bilan faux** : la somme de l’actif est \\150+50+40+90+30 = 360\\000\\ (affiché 340 000) ; celle du passif est \\100+30+25+120+80 = 355\\000\\ (affiché 345 000). Même après correction, actif − passif = 5 000 : le bilan reste déséquilibré.
+2.  **Résultat net** : \\40\\000 - 15\\000 + 0 = 25\\000\\. Le compte de résultat affiche 10 000 (erreur), alors que le bilan indique 25 000 (cohérent avec le calcul). Le 10 000 est repris à tort en tête du tableau de flux.
+3.  **Flux opérationnels** : \\10+20-5-30+20 = 15\\000\\ (affiché 5 000). Avec le résultat net corrigé (25 000) : \\FO = 30\\000\\ et \\\Delta T = 30-15-10 = +5\\000\\.
+4.  **Trésorerie de clôture** : \\50\\000 + (-20\\000) = 30\\000\\, et non 20 000 comme affiché ; 30 000 est la valeur du bilan, mais elle ne découle pas des flux (corrigés : \\50+5 = 55\\000\\), il reste donc un écart non expliqué.
+
+**Exercice 2 (Niveau 2 : BETATECH INDUSTRIES (30 min))** Les documents comportent plusieurs anomalies. Certaines demandent de vérifier la cohérence entre les états et de comprendre l’impact d’une variation d’actifs ou de dettes.
+
+**Bilan au 31/12/2024 — en € — Actif**
+
+| Poste                         |     Montant |
+|-------------------------------|------------:|
+| Immobilisations corporelles   |     300 000 |
+| Immobilisations incorporelles |      40 000 |
+| Stocks                        |      55 000 |
+| Créances clients              |     110 000 |
+| Disponibilités                |      25 000 |
+| **Total Actif**               | **530 000** |
+
+**Bilan au 31/12/2024 — en € — Passif**
+
+| Poste                         |     Montant |
+|-------------------------------|------------:|
+| Capital social                |     150 000 |
+| Réserves                      |      40 000 |
+| Résultat net                  |      35 000 |
+| **Emprunts long terme**       |     180 000 |
+| **Découverts bancaires (CT)** |      60 000 |
+| Dettes fournisseurs           |      70 000 |
+| **Total Passif**              | **535 000** |
+
+Vérifiez notamment la classification CT/LT, la cohérence de la dette financière et la structure des capitaux propres.
+
+**Compte de résultat 2024 — en €**
+
+| Poste                        |    Montant |
+|------------------------------|-----------:|
+| Chiffre d’affaires           |    800 000 |
+| Achats consommés             |   -420 000 |
+| Charges de personnel         |   -210 000 |
+| Dotations aux amortissements |    -35 000 |
+| Autres charges               |    -95 000 |
+| **Résultat d’exploitation**  | **40 000** |
+| Charges financières          |    -25 000 |
+| Produits financiers          |      5 000 |
+| **Résultat net**             | **20 000** |
+
+Observez le résultat net annoncé : est-il compatible avec le bilan ?
+
+**Tableau de flux de trésorerie — Exercice 2024 — en €**
+
+*Flux opérationnels*
+
+| Poste                         |    Montant |
+|-------------------------------|-----------:|
+| Résultat net                  |     20 000 |
+| Amortissements                |     35 000 |
+| Variation stocks              |    -15 000 |
+| Variation créances clients    |    -25 000 |
+| Variation dettes fournisseurs |     +5 000 |
+| **Flux opérationnels**        | **20 000** |
+
+*Flux d’investissement*
+
+| Poste                       |     Montant |
+|-----------------------------|------------:|
+| Acquisition immobilisations |     -60 000 |
+| **Flux d’investissement**   | **-60 000** |
+
+*Flux de financement*
+
+| Poste                 |     Montant |
+|-----------------------|------------:|
+| Nouvel emprunt        |     +50 000 |
+| Remboursement emprunt |     -40 000 |
+| **Flux financement**  | **+10 000** |
+
+*Synthèse*
+
+| Poste                     |     Montant |
+|---------------------------|------------:|
+| Variation trésorerie      | **-30 000** |
+| Trésorerie d’ouverture    |      40 000 |
+| **Trésorerie de clôture** |  **10 000** |
+
+Dans le bilan, la ligne de trésorerie indique **25 000 €**.
+
+Notes pour les équipes :
+
+- Les amortissements doivent être cohérents avec les immobilisations et leur évolution.
+- Une dette financière se classe selon son **échéance**, pas sa nature.
+- Vérifiez la cohérence du **résultat net** entre les 3 états, la variation du BFR et l’impact des flux de financement sur les dettes.
+- La trésorerie du bilan doit correspondre à la trésorerie de clôture du tableau de flux.
+
+Solution
+
+1.  **Équilibre** : actif \\300+40+55+110+25 = 530\\000\\ ; passif \\150+40+35+180+60+70 = 535\\000\\ : écart de 5 000.
+2.  **Résultat net** : le compte de résultat est juste (\\800-420-210-35-95 = 40\\ ; \\40-25+5 = 20\\ K€) et le tableau de flux reprend 20 000, mais le bilan affiche 35 000. Avec 20 000, le passif vaudrait 520 000 : l’écart avec l’actif passerait à 10 000 dans l’autre sens, donc le déséquilibre ne se réduit pas à ce poste.
+3.  **Flux** : \\FO = 20+35-15-25+5 = 20\\000\\ ✔ ; \\\Delta T = 20-60+10 = -30\\000\\ ✔ ; \\40-30 = 10\\000\\ ✔. Le tableau de flux est arithmétiquement correct.
+4.  **Trésorerie** : 10 000 en clôture des flux contre 25 000 au bilan : écart de 15 000.
+5.  **Classification** : les découverts bancaires (60 000) sont une dette à court terme ; ils ne doivent ni être confondus avec les emprunts à long terme ni être compensés avec les disponibilités. La part des emprunts remboursable à moins d’un an doit aussi être reclassée en CT, ce que le dossier ne permet pas de vérifier.
+
+## Livrables et critères d’évaluation
+
+Livrables :
+
+1.  **Fiche d’erreurs détectées** (1–2 pages), à déposer en PDF sur la plateforme.
+2.  **Mini-diagnostic financier** (1 page).
+3.  **Présentation orale (5 min)** : les 3 anomalies majeures ; seules 3 équipes, tirées au sort, présentent pendant la séance.
+
+Critères d’évaluation :
+
+- Pertinence des erreurs identifiées : **40 %**
+- Qualité des justifications : **30 %**
+- Clarté et synthèse de la présentation : **20 %**
+- Collaboration et organisation : **10 %**
+
+## XP attribués
+
+\\ +100 \\
+
+Bonne analyse — que vos vérifications soient rigoureuses et méthodiques.
+
+## À couper en premier si le temps manque
+
+1.  Réduire le Niveau 2 aux contrôles d’équilibre et de trésorerie (laisser la classification CT/LT en discussion orale) : gain d’environ 10 min.
+2.  Limiter les restitutions orales à 2 équipes : gain de 5 min.
+3.  Raccourcir l’exemple guidé MiniCo en ne commentant que les contrôles 2 et 4 : gain d’environ 3 min.
+
+Ne jamais couper : la dérivation, la méthode en quatre étapes et le Niveau 1.
+
+> **IMPORTANT:**
+>
+> Prévoir une démo interactive (Shinylive) où l’on modifie un poste du bilan ou du tableau de flux et où l’équilibre et le raccord de trésorerie s’affichent en temps réel.
+
+## Extension (hors séance) : Niveau 3 — Mode Expert
+
+Cette partie avancée (IFRS, consolidation) est proposée en travail personnel ou en bonus ; elle ne modifie pas l’XP de la quête.
+
+**Objectifs pédagogiques**
+
+- Maîtriser la lecture croisée des états financiers (bilan, résultat, flux) dans une logique de diagnostic stratégique.
+- Identifier les signaux faibles : anomalies de structure financière, incohérences de performance, irrégularités de cash-flow.
+- Introduire la dimension IFRS / comptes consolidés dans la détection d’erreurs.
+
+**Contenu renforcé**
+
+- Logique d’articulation **bilan ↔︎ résultat ↔︎ tableau de flux**.
+- Structure financière avancée : dette nette, capitaux employés, provisions.
+- Impacts IFRS possibles sur le diagnostic : IFRS 16, goodwill, dépréciations.
+
+**Exercice 3 (Niveau 3 : escape game financier, mode expert (hors séance))** Vous êtes analystes chez **StratFin Corp**. On vous confie les états financiers d’une entreprise ciblée pour une opération de croissance externe. Les documents contiennent des anomalies **subtiles**, inspirées de cas réels (IFRS, retraitements, variations incohérentes, flux contradictoires, etc.).
+
+Mission :
+
+- Identifier **toutes les incohérences** présentes dans les 3 états financiers.
+- Proposer une **hypothèse stratégique** expliquant les anomalies (fraude ? mauvaise communication financière ? changement comptable ? difficulté de trésorerie ?).
+- Préparer un **diagnostic express** (10 lignes max).
+
+Livrables : fiche des erreurs détectées (tableau fourni), diagnostic financier express, présentation orale de 5 min.
+
+**Bilan — Exercice N et N-1**
+
+| **Actif (en K€)**                             | **N**      | **N-1**    |
+|-----------------------------------------------|------------|------------|
+| Immobilisations incorporelles (dont goodwill) | 5 200      | 7 800      |
+| Immobilisations corporelles                   | 12 400     | 12 900     |
+| Actifs financiers                             | 1 150      | 1 100      |
+| Stocks                                        | 8 900      | 5 200      |
+| Créances clients                              | 6 400      | 6 100      |
+| Trésorerie active                             | 1 050      | 2 300      |
+| **Total Actif**                               | **35 100** | **35 400** |
+
+| **Passif (en K€)**      | **N**      | **N-1**    |
+|-------------------------|------------|------------|
+| Capitaux propres        | 9 800      | 10 100     |
+| Provisions pour risques | 300        | 1 100      |
+| Dettes financières LT   | 4 600      | 6 000      |
+| Dettes financières CT   | 7 700      | 3 200      |
+| Fournisseurs            | 5 800      | 6 000      |
+| Trésorerie passive      | 6 900      | 9 000      |
+| **Total Passif**        | **35 100** | **35 400** |
+
+**Compte de résultat — Exercice N**
+
+| Compte de résultat (en K€) | **N**      |
+|----------------------------|------------|
+| Chiffre d’affaires         | 31 500     |
+| Coût des ventes            | -22 800    |
+| **Marge brute**            | **8 700**  |
+| Charges d’exploitation     | **-7 200** |
+| Reprises sur provisions    | **+1 400** |
+| **EBIT**                   | **3 000**  |
+| Résultat financier         | +1 100     |
+| Résultat exceptionnel      | -450       |
+| **Résultat net**           | **2 050**  |
+
+**Tableau de flux de trésorerie — Exercice N**
+
+| Flux (en K€)                                    | **N**      |
+|-------------------------------------------------|------------|
+| **Flux opérationnels (CFO)**                    | **+3 600** |
+| Variation du BFR                                | **-3 900** |
+| **Flux d’investissement (CFI)**                 | **+800**   |
+| Flux de financement (CFF) : remboursement dette | -1 200     |
+| Emprunts nouveaux                               | +1 600     |
+| Dividendes versés                               | -1 000     |
+| **Variation nette de trésorerie**               | **-700**   |
+
+Les anomalies possibles portent sur : IFRS 3 / goodwill, IFRS 16 / dettes financières, provisions, logique bilan ↔︎ flux ↔︎ résultat, variations impossibles, classement anormal de charges ou flux.
+
+Barème du Niveau 3 :
+
+| Critère                                  | Pondération |
+|------------------------------------------|-------------|
+| Pertinence des erreurs identifiées       | 40%         |
+| Qualité de l’analyse & justification     | 30%         |
+| Capacité à articuler bilan–résultat–flux | 20%         |
+| Communication & synthèse                 | 10%         |
+
+Solution
+
+Les deux bilans s’équilibrent (35 100 et 35 400) ; les anomalies sont ailleurs :
+
+1.  **EBIT** : \\8\\700 - 7\\200 + 1\\400 = 2\\900\\, et non 3 000.
+2.  **Résultat net** : \\3\\000 + 1\\100 - 450 = 3\\650\\ (ou 3 550 avec l’EBIT corrigé), et non 2 050 (hors impôt, absent du dossier).
+3.  **Capitaux propres** : \\10\\100 + 2\\050 - 1\\000 = 11\\150\\ attendu, contre 9 800 au bilan : écart de 1 350 non expliqué.
+4.  **Provisions** : elles baissent de 800 (1 100 → 300), alors que les reprises du compte de résultat sont de 1 400 ; de plus, une reprise gonfle l’EBIT sans être un flux de trésorerie.
+5.  **Goodwill / incorporels** : −2 600 (7 800 → 5 200) sans charge de dépréciation visible au compte de résultat (IFRS 3 / IAS 36).
+6.  **BFR** : stocks +3 700, créances +300, fournisseurs −200 ; l’effet sur la trésorerie est donc −4 200, et non −3 900.
+7.  **Variation de trésorerie** : \\3\\600 - 3\\900 + 800 - 1\\200 + 1\\600 - 1\\000 = -100\\ (ou +3 800 si le CFO inclut déjà le BFR), jamais −700. Au bilan, la trésorerie nette passe de −6 700 à −5 850 (+850).
+8.  **Dette financière** : +3 100 au bilan (9 200 → 12 300), contre +400 de flux nets de financement ; un retraitement IFRS 16 ou un reclassement LT → CT non documenté est à suspecter. Un résultat financier positif (+1 100) est paradoxal avec une dette de 12 300 K€.
+9.  **CFI positif (+800)** alors que les actifs financiers augmentent : cession non documentée.
+
+*Hypothèse stratégique possible* : embellissement du résultat (reprises de provisions) masquant une tension de trésorerie et un endettement à court terme croissant.

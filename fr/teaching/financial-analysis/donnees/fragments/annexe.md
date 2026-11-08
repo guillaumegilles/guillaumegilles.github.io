@@ -17,3 +17,12 @@
 | Prêt AUBÉPINE SA → VERGER Export (créance / dette éliminées) | 200 |
 | Dividendes versés par NORD / SUD / VERGER (dont part mère éliminée) | 80 / 60 / 40 (mère : 132) |
 | Quote-part de résultat TERROIR (30 %, MEE) — gardée au CR consolidé | 17 / 17 / 19 |
+
+### Intérêts minoritaires au résultat (k€)
+
+| Filiale | % | 2023 | 2024 | 2025 |
+|---|---|---|---|---|
+| AUBÉPINE NORD SAS | 75 % | 60 | 68 | 76 |
+| AUBÉPINE SUD SAS | 80 % | 27 | 31 | 36 |
+| VERGER Export SARL | 60 % | 50 | 60 | 69 |
+| **Total (CR consolidé)** | — | 137 | 159 | 181 |

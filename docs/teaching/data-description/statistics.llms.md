@@ -1,0 +1,412 @@
+## 1 What is statistics?
+
+> Statistics is the science of changing your mind. ([Kozyrkov 2025](#ref-kozyrkov_statistics_2025))
+
+**The business question.** A food-truck owner opens a spreadsheet with 120 rows of daily data: weather, temperature, customers, items sold, revenue, and more. Before computing any number or drawing any chart, what *kind* of information is in each column? Does “weather” behave like “revenue”? Can you average “satisfaction rating”? This module teaches you to look at a dataset and answer those questions — the first step in every statistical analysis. We start with five days small enough to read at a glance, and only then name the concepts.
+
+## 2 Theory
+
+### 2.1 Numbers that are not numbers
+
+Here are five days from the Wandering Fork dataset. The numbers are a simplified extract chosen so that you can read everything at a glance.
+
+| Day | Weather | Temp. (°C) | Satisfaction (1–5) | Customers | Revenue (€) |
+|-----|---------|-----------:|-------------------:|----------:|------------:|
+| 1   | Sunny   |         18 |                  4 |        38 |         400 |
+| 2   | Cloudy  |         22 |                  3 |        44 |         440 |
+| 3   | Rainy   |         16 |                  2 |        47 |         480 |
+| 4   | Sunny   |         20 |                  3 |        41 |         440 |
+| 5   | Sunny   |         24 |                  3 |        40 |         440 |
+
+Four of the five columns contain numbers, and the spreadsheet will happily average any of them. Would you trust the average of the satisfaction column as much as the average of the revenue column? What could you even compute for the weather column?
+
+### 2.2 Descriptive vs inferential statistics
+
+**Try it.** Decide for each statement whether it only summarises the five days you hold (descriptive) or goes beyond them (inferential), and compute the number in the first one.
+
+| Statement | Descriptive or inferential? |
+|----|----|
+| “Over these five days, the average revenue was €?.” | ? |
+| “Over all 120 days, the Harbour truck’s average revenue is about the same.” | ? |
+| “Day 3 was the best of these five days.” | ? |
+
+Check your answer
+
+- Average revenue: \\(400 + 440 + 480 + 440 + 440)/5 = 2{,}200/5 = 440\\, so €440 — **descriptive**: it only summarises the five days.
+- The claim about all 120 days is **inferential**: five days are used to say something about days we did not look at.
+- “Day 3 was the best of these five” is **descriptive**.
+
+**See it.** The same five days, seen from two positions:
+
+| What you hold   | What you claim about | Kind        |
+|-----------------|----------------------|-------------|
+| 5 days observed | those same 5 days    | descriptive |
+| 5 days observed | all 120 trading days | inferential |
+
+In plain words: if you have the revenue of all 120 trading days and you compute the average, that is descriptive. If you have 30 days and you estimate the average of *all possible* trading days, that is inferential.
+
+> **NOTE:**
+>
+> **Descriptive statistics** summarise and organise data that you already have: frequency tables, charts, means, standard deviations, correlations. They describe the sample at hand and make no claim about any larger group.
+
+> **NOTE:**
+>
+> **Inferential statistics** use a sample to draw conclusions about a population that you did not fully observe: confidence intervals, hypothesis tests, regression with p-values. This course stops at descriptive statistics; the next course (Inferential Statistics, MS04) continues from here.
+
+### 2.3 Population, individual, variable
+
+**Try it.** Look at the table of the five days above and fill in the blanks. The `Day` column only labels the rows; it is not a variable we analyse.
+
+| Question | Answer |
+|----|----|
+| What is one row (one statistical individual)? | ? |
+| How many individuals are there? | ? |
+| How many variables are recorded on each individual? | ? |
+| If these five days are *all* we care about, how many members does the population have, and is it finite? | ? |
+
+Check your answer
+
+- One row is one **franchise-day**: one truck on one trading day.
+- There are **5** individuals.
+- There are **5** variables: `weather`, temperature, satisfaction, customers and revenue.
+- The population has **5** members: it is **finite**. In the real dataset, the Harbour truck’s population is 120 days.
+
+**See it.** Rows are individuals, columns are variables:
+
+|  | `weather` | `temperature_c` | `satisfaction_rating` | `customer_count` | `daily_revenue_eur` |
+|----|----|---:|---:|---:|---:|
+| individual 1 (day 1) | Sunny | 18 | 4 | 38 | 400 |
+| individual 2 (day 2) | Cloudy | 22 | 3 | 44 | 440 |
+| … | … | … | … | … | … |
+| individual 5 (day 5) | Sunny | 24 | 3 | 40 | 440 |
+
+Reading across one row describes one individual; reading down one column shows one variable over all individuals.
+
+In plain words: the population is everything you want to talk about, an individual is one item of it, and a variable is one question you ask of every individual.
+
+> **NOTE:**
+>
+> A **population** is the set of elements being studied. It is **finite** if you can count its members exactly (e.g., the 120 trading days of the Harbour truck), and **infinite** otherwise (e.g., all possible future trading days). A **statistical individual** is one element of the population (one franchise-day). A **variable** is a characteristic observed on each individual (e.g., `weather`, `daily_revenue_eur`).
+
+A word on notation. We write \\n\\ for the number of individuals (\\n=5\\ in the extract) and \\x_i\\ for the value of a variable on the \\i\\-th individual: for revenue, \\x_1 = 400\\ and \\x_3 = 480\\.
+
+### 2.4 Variable types
+
+**Try it.** Classify each column of the five-day extract. For a qualitative variable, say nominal or ordinal; for a quantitative one, say discrete or continuous.
+
+| Variable | Categories or numbers? | Nominal / ordinal, or discrete / continuous? |
+|----|----|----|
+| `weather` | ? | ? |
+| `satisfaction_rating` | ? | ? |
+| `customer_count` | ? | ? |
+| `temperature_c` | ? | ? |
+| `daily_revenue_eur` | ? | ? |
+
+Check your answer
+
+| Variable | Categories or numbers? | Subtype |
+|----|----|----|
+| `weather` | categories (qualitative) | nominal: no natural order |
+| `satisfaction_rating` | categories (qualitative) | ordinal: 1 \< 2 \< 3 \< 4 \< 5 |
+| `customer_count` | numbers (quantitative) | discrete: you count customers |
+| `temperature_c` | numbers (quantitative) | continuous: any value in an interval |
+| `daily_revenue_eur` | numbers (quantitative) | continuous |
+
+`satisfaction_rating` is written with numbers but behaves like ordered categories.
+
+**See it.** Two questions sort every variable:
+
+- Categories or numbers?
+  - Categories (**qualitative**): is there a natural order?
+    - No → **nominal** (`weather`)
+    - Yes → **ordinal** (`satisfaction_rating`)
+  - Numbers (**quantitative**): countable or measured?
+    - Countable → **discrete** (`customer_count`)
+    - Measured on a scale → **continuous** (`temperature_c`, `daily_revenue_eur`)
+
+In plain words: ask first whether the values are categories or numbers, then whether the categories are ordered, or whether the numbers are counted or measured.
+
+> **NOTE:**
+>
+> A **qualitative** variable takes categories as values (e.g., `weather`: Sunny, Cloudy, Rainy). A **quantitative** variable takes numbers as values (e.g., `daily_revenue_eur`: 460.48, 500.02, …).
+
+> **NOTE:**
+>
+> A qualitative variable is **nominal** if its categories have no natural order (e.g., `weather`, `promo_active`). It is **ordinal** if the categories have a natural order (e.g., `satisfaction_rating`: 1 \< 2 \< 3 \< 4 \< 5). The order matters, but the *distances* between categories are not necessarily equal.
+
+> **NOTE:**
+>
+> A quantitative variable is **discrete** if its possible values are countable (e.g., `customer_count`: 39, 38, 38, …). It is **continuous** if it can take any value in an interval (e.g., `daily_revenue_eur`, `temperature_c`).
+
+### 2.5 Levels of measurement
+
+**Try it.** For each question about the five-day extract, say whether it makes sense and, if it does, give the result.
+
+| Question | Makes sense? | Result |
+|----|----|----|
+| Most frequent `weather` | ? | ? |
+| Middle value (median) of `satisfaction_rating` | ? | ? |
+| Average `temperature_c` | ? | ? |
+| Revenue on day 3 divided by revenue on day 1 | ? | ? |
+| Day 5 (24 °C) is “one and a half times as warm” as day 3 (16 °C) | ? | ? |
+
+Check your answer
+
+| Question | Makes sense? | Result |
+|----|----|----|
+| Most frequent `weather` | yes (count, mode) | Sunny (3 of 5 days) |
+| Median of `satisfaction_rating` | yes (order exists) | sorted 2, 3, 3, 3, 4 → 3 |
+| Average `temperature_c` | yes (differences are meaningful) | \\100/5 = 20\\ °C |
+| Revenue day 3 ÷ day 1 | yes (true zero) | \\480/400 = 1.2\\ |
+| “1.5 times as warm” | **no** | \\24/16 = 1.5\\ is computed, but 0 °C is not “no temperature” |
+
+Each question needed a little more from the data than the one before: counting, then order, then differences, then a true zero.
+
+**See it.** Each level keeps everything the level above it allows and adds one permission:
+
+| Level | Count, mode | Order, median | Differences, mean | Ratios |
+|----|:--:|:--:|:--:|:--:|
+| Nominal (`weather`) | ✓ | ✗ | ✗ | ✗ |
+| Ordinal (`satisfaction_rating`) | ✓ | ✓ | ✗ | ✗ |
+| Interval (`temperature_c`) | ✓ | ✓ | ✓ | ✗ |
+| Ratio (`daily_revenue_eur`) | ✓ | ✓ | ✓ | ✓ |
+
+In plain words: each level of measurement adds one thing you may do with the values — count, then order, then subtract, then divide.
+
+> **TIP:**
+>
+> | Level | Example | Allowed operations |
+> |----|----|----|
+> | **Nominal** | `weather`, `promo_active` | Count, mode, `=`, `≠` |
+> | **Ordinal** | `satisfaction_rating`, `month` | Everything nominal + order (`<`, `>`), median, percentiles |
+> | **Interval** | Temperature in °C (no true zero) | Everything ordinal + addition/subtraction of differences, mean, standard deviation |
+> | **Ratio** | `daily_revenue_eur`, `customer_count`, `temperature` in Kelvin | Everything interval + multiplication/division, ratios, geometric mean, coefficient of variation |
+>
+> In plain words: you can always count and find the mode. With ordinal data you can also sort and find the median. With interval data you can add and subtract differences (so the mean makes sense). With ratio data you can also multiply and divide (so ratios like “twice as much” and the coefficient of variation make sense). Most business data are ratio.
+
+#### Notation decoder: the four levels
+
+| Symbol | Read aloud | In our example (five-day extract) |
+|----|----|----|
+| `=`, `≠` | “equals”, “is different from” | Day 1 and day 4 are both Sunny; Sunny ≠ Rainy |
+| `<`, `>` | “is less than”, “is greater than” | rating on day 3 (2) \< rating on day 1 (4) |
+| \\x_i - x_j\\ | “x sub i minus x sub j” | temperature: \\22 - 18 = 4\\ °C warmer |
+| \\x_i / x_j\\ | “x sub i divided by x sub j” | revenue: \\480/400 = 1.2\\ times as much |
+| Nominal, ordinal, interval, ratio | the four levels | `weather`, `satisfaction_rating`, `temperature_c`, `daily_revenue_eur` |
+
+**Whole table as a sentence:** “a nominal variable can only be counted and compared with equals; an ordinal one can also be ordered with less than and greater than; an interval one can also be subtracted; a ratio one can also be divided.”
+
+**A common trap.** `satisfaction_rating` is stored as the numbers 1, 2, 3, 4, 5, but it is **ordinal**, not ratio. The step from 1 to 2 is not necessarily the same as from 4 to 5. Computing an arithmetic mean of satisfaction ratings is technically questionable — the median is safer. Module 4 discusses this in detail.
+
+## 3 Worked example
+
+We use the **Harbour 30-day subset** (sheet `harbour_30d`) to illustrate the concepts of this module.
+
+| Column | Type | Level | Example values (first 5 days) |
+|----|----|----|----|
+| `weather` | Qualitative, nominal | Nominal | Cloudy, Sunny, Rainy, Cloudy, Sunny |
+| `temperature_c` | Quantitative, continuous | Interval | 21.9, 20.4, 16.4, 18.5, 24.1 |
+| `customer_count` | Quantitative, discrete | Ratio | 39, 38, 38, 38, 53 |
+| `daily_revenue_eur` | Quantitative, continuous | Ratio | 460.48, 500.02, 418.65, 508.80, 646.19 |
+| `satisfaction_rating` | Qualitative, ordinal | Ordinal | 3, 4, 2, 3, 4 |
+
+**Step 1 — population and individual.** The population is the 30 trading days of the Harbour truck (finite). Each row is one statistical individual (one franchise-day).
+
+**Step 2 — variable classification.** `weather` is qualitative nominal (categories with no order). `temperature_c` is quantitative continuous (any value in an interval). `customer_count` is quantitative discrete (countable integers). `daily_revenue_eur` is quantitative continuous (ratio level, true zero). `satisfaction_rating` is qualitative ordinal (ordered categories, unequal steps).
+
+**Step 3 — allowed operations.** For `weather` you can count and find the mode (Sunny appears most often). For `temperature_c` you can compute the mean and standard deviation (interval level). For `daily_revenue_eur` you can also compute ratios (e.g., “day 5 revenue is 1.5× day 3 revenue”) and the coefficient of variation (ratio level).
+
+## 4 Proof / derivation
+
+> **CAUTION:**
+>
+> Let a qualitative variable have \\k\\ categories with absolute frequencies \\n_1, \dots, n_k\\ and total \\n = \sum\_{i=1}^{k} n_i\\. The relative frequency of category \\i\\ is \\f_i = n_i / n\\. Summing over all categories: \\ \sum\_{i=1}^{k} f_i = \sum\_{i=1}^{k} \frac{n_i}{n} = \frac{1}{n}\sum\_{i=1}^{k} n_i = \frac{n}{n} = 1. \\ In percentages, \\\sum f_i \times 100\\ = 100\\\\. This is exactly the same property we saw for percentage distributions in the Excel warm-up (Module 1’s derivation), now applied to categories instead of line items. If your frequency table’s percentages do not sum to (very close to) 100%, a category was missed or a count was wrong.
+
+## 5 Visual intuition
+
+Think of the population as a bag of coloured balls. A **qualitative** variable is the colour of each ball — you can sort them into piles (nominal) or line them up by shade (ordinal). A **quantitative** variable is a number written on each ball — you can count them (discrete) or measure them on a ruler (continuous). The level of measurement tells you which ruler you are allowed to use: a ruler with no numbers (nominal), a ruler with only order marks (ordinal), a ruler with equal spacing but no true zero (interval), or a ruler with a true zero (ratio).
+
+## 6 Interactive demo
+
+> **IMPORTANT:**
+>
+> TODO: an interactive variable-type classifier (drag a column name to its type and level) would be a good OJS demo for this module.
+
+## 7 Exercises
+
+All exercises below are done by hand; the Excel ones are in the [homework](#homework-excel-lab).
+
+**Exercise 1 (Classify the variables)** For each column of the Wandering Fork dataset, state: (a) qualitative or quantitative? (b) if qualitative: nominal or ordinal? (c) if quantitative: discrete or continuous? (d) level of measurement?
+
+Solution
+
+See the data dictionary table in the Theory section above. For example: `weather` → qualitative, nominal, nominal level; `customer_count` → quantitative, discrete, ratio level; `satisfaction_rating` → qualitative, ordinal, ordinal level.
+
+**Exercise 2 (Population and individual)** A marketing manager wants to know the average basket size of customers who visited the shop last month. The shop had 2,450 transactions last month. What is the population? What is the statistical individual? What is the variable of interest?
+
+Solution
+
+Population = the 2,450 transactions (finite). Statistical individual = one transaction. Variable of interest = basket size (quantitative, continuous, ratio level).
+
+**Exercise 3 (Levels of measurement and allowed operations)** For each variable, say whether the operation makes sense: (a) Mean of `weather`. (b) Median of `satisfaction_rating`. (c) Ratio of two `daily_revenue_eur` values (e.g., “today’s revenue is 1.3× yesterday’s”). (d) Difference of two `temperature_c` values (e.g., “today is 3°C warmer than yesterday”).
+
+Solution
+
+1.  No — `weather` is nominal, no mean. (b) Yes — ordinal data have a median. (c) Yes — revenue is ratio, ratios are meaningful.
+2.  Yes — temperature in °C is interval, differences are meaningful (but ratios are not, because 0°C is not “no temperature”).
+
+**Exercise 4 (Descriptive vs inferential)** A company surveys 500 customers and finds that 62% are satisfied. Is this descriptive or inferential? What if the company has 10,000 customers total and uses the 62% to estimate how many of the 10,000 are satisfied?
+
+Solution
+
+The 62% from the 500 surveyed is descriptive (it summarises the sample). Using it to estimate the 10,000 is inferential (it draws a conclusion about the population).
+
+**Exercise 5 (Formula to words)** In the five-day extract, let \\x_i\\ be the revenue, \\t_i\\ the temperature and \\n_i\\ the number of days in a category. Read each expression aloud as one sentence and say which level of measurement it needs. (a) \\x_3 / x_1 = 1.2\\. (b) \\t_2 - t_1 = 4\\. (c) \\f\_{\text{Sunny}} = n\_{\text{Sunny}} / n = 3/5\\.
+
+Solution
+
+1.  “Revenue on day 3 is 1.2 times revenue on day 1” — a ratio, so the ratio level. (b) “Day 2 was 4 °C warmer than day 1” — a difference, so at least the interval level. (c) “The relative frequency of Sunny is the number of Sunny days divided by the total number of days, which is 3 out of 5” — counting only, so any level, even nominal.
+
+**Exercise 6 (Words to formula)** Write in symbols: (a) “revenue on day 3 is 1.2 times revenue on day 1”; (b) “the relative frequency of category \\i\\ is its count divided by the total”; (c) “the \\k\\ relative frequencies add up to 1”.
+
+Solution
+
+1.  \\x_3 = 1.2\\x_1\\ (with \\x_1 = 400\\ and \\x_3 = 480\\).
+2.  \\f_i = n_i / n\\. (c) \\\sum\_{i=1}^{k} f_i = 1\\.
+
+## 8 Common mistakes
+
+> **WARNING:**
+>
+> - **Treating ordinal numbers as ratio.** `satisfaction_rating` is 1–5, but `=AVERAGE` on it is questionable; use the median.
+> - **Forgetting to lock the total in a percentage distribution.** The denominator must be absolute (`$D$8`) or a structured reference (`tblFork[daily_revenue_eur]`), otherwise copying the formula shifts the total.
+> - **Confusing the population with the sample.** The 120 Harbour days are a *finite population* in this course. In real life, they would often be a *sample* of all possible trading days.
+> - **Using `COUNT` when you need `COUNTA`.** `COUNT` only counts numbers; `COUNTA` counts everything non-empty (text, dates, errors).
+
+## 9 Exit check
+
+Five minutes, no calculator needed.
+
+1.  In one sentence, what is the difference between descriptive and inferential statistics?
+2.  A shop lists the 200 sales of last Saturday with the amount of each sale. What are the population, the individual and the variable?
+3.  Read \\x_3 / x_1 = 1.2\\ aloud as a sentence, where \\x_i\\ is the revenue on day \\i\\. Which level of measurement does it need?
+4.  The ratings of five days are 4, 3, 2, 3, 3. Compute the median, and say why the mean is less safe.
+5.  Why is temperature in °C an interval variable and not a ratio variable?
+
+Answers
+
+1.  Descriptive statistics summarise the data you hold; inferential statistics use a sample to draw conclusions about a larger population you did not fully observe.
+2.  Population: the 200 sales (finite); individual: one sale; variable: the amount of the sale.
+3.  “Revenue on day 3 is 1.2 times revenue on day 1.” A ratio needs the ratio level (a true zero).
+4.  Sorted: 2, 3, 3, 3, 4, so the median is 3. Ratings are ordinal: the distances between 1, 2, 3, 4, 5 are not necessarily equal, so an average of them is questionable.
+5.  Differences of temperatures are meaningful (4 °C warmer), but 0 °C is not “no temperature”, so “24 °C is 1.5 times as warm as 16 °C” has no meaning.
+
+## 10 Homework — Excel lab
+
+Reproduce, in Excel, what you did by hand in class, with `SUM`, `COUNT`, `COUNTA`, `AVERAGE` and `IF`, then apply them to the full dataset.
+
+**Estimated time:** about 45–60 minutes. Any spreadsheet application works, at home or in a campus computer room.
+
+**Follow-up:** a 10-minute debrief at the start of [Module 2](module-02.qmd). Bring your Step 0 results and any question on Homework 1–2.
+
+### 10.1 Using Excel
+
+The complete list of function names, with their French equivalents, is on the [Excel functions](../../teaching/data-description/excel-functions.llms.md) page.
+
+| Concept | Excel function / steps |
+|----|----|
+| Open the data | **Data → Get Data → From Text/CSV** (for `.csv`) or double-click `wandering-fork.xlsx` |
+| Cell reference | `A1` (relative), `$A$1` (absolute), `$A1` or `A$1` (mixed); press F4 to cycle |
+| Sum of a range | `=SUM(range)` |
+| Count of numbers | `=COUNT(range)` |
+| Count of non-empty cells | `=COUNTA(range)` |
+| Average | `=AVERAGE(range)` |
+| Conditional value | `=IF(condition, value_if_true, value_if_false)` |
+| Sort | Select the table → **Data → Sort** |
+| Filter | Select the table → **Data → Filter** (or **Table → Filter**) |
+| English vs French locale | English Excel uses commas between arguments (`SUM(A1,A2)`); French Excel uses semicolons (`SOMME(A1;A2)`). Function names also differ — see the Excel functions page. |
+
+> **TIP:**
+>
+> Type `=AVERAGE(` in a cell. If Excel suggests `AVERAGE`, you are in English locale. If it suggests `MOYENNE`, you are in French locale. The course writes all formulas with English names; use the Excel functions page to translate.
+
+### 10.2 Step 0 — check your class results
+
+1.  Type the five revenues 400, 440, 480, 440, 440 in `A2:A6` and the five weather values Sunny, Cloudy, Rainy, Sunny, Sunny in `B2:B6`.
+2.  Compute `=SUM(A2:A6)`, `=COUNT(A2:A6)`, `=COUNTA(A2:A6)` and `=AVERAGE(A2:A6)`; then `=COUNT(B2:B6)` and `=COUNTA(B2:B6)`.
+3.  In `C2` type `=IF(B2="Sunny",1,0)`, copy it down to `C6`, and compute `=SUM(C2:C6)`.
+4.  Compare every result with your hand computation.
+
+Expected results
+
+| Indicator                             | Revenue (`A2:A6`) | Weather (`B2:B6`) |
+|---------------------------------------|------------------:|------------------:|
+| `SUM`                                 |             2,200 |                 — |
+| `COUNT`                               |                 5 |                 0 |
+| `COUNTA`                              |                 5 |                 5 |
+| `AVERAGE`                             |               440 |                 — |
+| `SUM` of the `IF` column (Sunny days) |                 — |                 3 |
+
+`COUNT` finds no numbers in the weather column, while `COUNTA` counts the five non-empty cells.
+
+### 10.3 Homework 1 (Excel) — Open the dataset and explore
+
+Open `wandering-fork.xlsx`. (a) Filter `franchise` to “Harbour”. How many rows? (b) In column N (`daily_revenue_eur`), compute `=SUM`, `=COUNT`, `=COUNTA`, `=AVERAGE` for the filtered rows. (c) Sort by `daily_revenue_eur` descending. What is the highest revenue day for Harbour?
+
+Solution
+
+1.  120 rows (all Harbour days). (b) `SUM` ≈ 49,618.46, `COUNT` = 120, `COUNTA` = 120, `AVERAGE` ≈ 413.49. (c) The highest Harbour revenue is €1,050.00 (day 80).
+
+### 10.4 Homework 2 (Excel) — English vs French function names
+
+Your colleague uses French Excel. You send them the formula `=AVERAGE(N2:N121)`. What must they change it to?
+
+Solution
+
+`=MOYENNE(N2:N121)` (function name) and the argument separator becomes a semicolon if the range is written with cell references: `=MOYENNE(N2;N121)` — but structured references like `tblFork[daily_revenue_eur]` work the same in both locales. See the Excel functions page for the full list.
+
+## 11 Further reading
+
+| Source | Where | What it adds | Time | Verified |
+|----|----|----|----|----|
+| OpenStax IBS 2e | §1.1 *Definitions of Statistics, Probability, and Key Terms* (book pages 5–10) | Formal definitions of population, sample, parameter, statistic | ~5 pages | checked against the PDF contents (T046) |
+| OpenStax IBS 2e | §1.2 *Data, Sampling, and Variation in Data and Sampling* (book pages 10–22) | Sampling methods, variation, qualitative vs quantitative | ~12 pages | checked against the PDF contents (T046) |
+| OpenStax IBS 2e | §1.3 *Levels of Measurement* (book pages 22–30) | The four levels with examples | ~8 pages | checked against the PDF contents (T046) |
+| Khan Academy | Unit *Study design* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on statistical questions, sampling methods, and types of studies | Videos and practice on population vs sample, observational studies vs experiments | ~30–45 min (estimate) | link check pending (T048) |
+
+OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## References
+
+Kozyrkov, Cassie. 2025. “Statistics for People in a Hurry.” In *Medium*. <https://kozyrkov.medium.com/statistics-for-people-in-a-hurry-7c3910b4ca9a>.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {1️⃣ {What} Is Statistics?},
+  url = {https://ggilles.dev/teaching/data-description/statistics.html},
+  langid = {en},
+  abstract = {**By the end of this module, you will be able to:** -
+    Distinguish descriptive statistics (summarising what happened) from
+    inferential statistics (drawing conclusions about a larger
+    population). - Identify the population, the statistical individual,
+    and the variable in a business context. - Classify a variable as
+    qualitative (nominal or ordinal) or quantitative (discrete or
+    continuous). - State the four levels of measurement (nominal,
+    ordinal, interval, ratio) and explain which arithmetic operations
+    each allows. - Read aloud simple notation such as \$x\_i\$, \$n\$,
+    \$f\_i = n\_i/n\$ and \$\textbackslash sum\$, and write it from a
+    sentence. - Open the Wandering Fork dataset, recognise its grain
+    (one row = one franchise-day), and perform basic Excel operations:
+    cell references, sorting, filtering, and the functions `SUM`,
+    `COUNT`, `COUNTA`, `AVERAGE`, `IF` (homework).}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “1️⃣ What Is Statistics?” <https://ggilles.dev/teaching/data-description/statistics.html>.

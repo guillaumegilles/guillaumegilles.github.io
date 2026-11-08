@@ -65,12 +65,12 @@ description: "Task list for the fictitious consolidated accounts (French GAAP) c
 
 **Independent Test**: `grep -l "donnees/index.qmd"` over the edited files lists all of them (quickstart step 6); both trees still render exit 0.
 
-- [ ] T030 [P] [US2] Add one plain-prose link to `../donnees/index.qmd` in `fr/teaching/financial-analysis/modules/02-archives-consolidees.qmd` (FR-008; no other edit, T-I)
-- [ ] T031 [P] [US2] Add the same link in `fr/teaching/financial-analysis/modules/03-detective-diagnostic.qmd`
-- [ ] T032 [P] [US2] Add the same link in the BdF reference pages `fr/teaching/financial-analysis/modules/performances.qmd`, `structure-fi.qmd`, `liquidite.qmd`, `banque-france.qmd`
-- [ ] T033 [P] [US2] Add the same link in `fr/teaching/financial-analysis/exercices/examen-final.qmd` (and `examen-1h.qmd` if it uses accounts)
-- [ ] T034 [US2] Add a one-line mention of the fil rouge in `fr/teaching/financial-analysis/index.qmd` and `planning.qmd`
-- [ ] T035 [US2] Re-render both trees (exit 0) and run the grep check of quickstart step 6
+- [X] T030 [P] [US2] Add one plain-prose link to `../donnees/index.qmd` in `fr/teaching/financial-analysis/modules/02-archives-consolidees.qmd` (FR-008; no other edit, T-I)
+- [X] T031 [P] [US2] Add the same link in `fr/teaching/financial-analysis/modules/03-detective-diagnostic.qmd`
+- [X] T032 [P] [US2] Add the same link in the BdF reference pages `fr/teaching/financial-analysis/modules/performances.qmd`, `structure-fi.qmd`, `liquidite.qmd`, `banque-france.qmd`
+- [X] T033 [P] [US2] Add the same link in `fr/teaching/financial-analysis/exercices/examen-final.qmd` (and `examen-1h.qmd` if it uses accounts)
+- [X] T034 [US2] Add a one-line mention of the fil rouge in `fr/teaching/financial-analysis/index.qmd` and `planning.qmd`
+- [X] T035 [US2] Re-render both trees (exit 0) and run the grep check of quickstart step 6
 
 **Checkpoint**: US1 + US2 both work independently; the dataset is referenced everywhere it is needed.
 
@@ -82,11 +82,11 @@ description: "Task list for the fictitious consolidated accounts (French GAAP) c
 
 **Independent Test**: quickstart step 7 — compute all BdF ratios (performance, structure, liquidité) for N-2..N from the downloaded Excel alone, zero missing inputs (SC-003); render exit 0.
 
-- [ ] T040 [US3] Complete `fr/teaching/financial-analysis/donnees/annexe.qmd` from generator output: principes comptables (CRC 99-02, IG/MEE), périmètre, écarts d'acquisition per filiale, opérations intragroupe with amounts (vente + marge en stock, prêt, créance/dette, dividendes), intérêts minoritaires bilan + résultat (FR-004)
-- [ ] T041 [US3] Complete `flux-tresorerie.qmd` with the tableau des flux N-2..N (méthode indirecte)
-- [ ] T042 [US3] Add the OJS ratio demo on `donnees/index.qmd` (student picks a ratio, it computes from the dataset; `{ojs}` block, `currentColor`, per AGENTS.md convention); if not built, mark a `.callout-important` with `TODO:` (T-IV)
-- [ ] T043 [P] [US3] Ensure `fr/teaching/financial-analysis/glossaire.qmd` lists intégration globale, mise en équivalence, écart d'acquisition, intérêts minoritaires; add missing entries (T-V)
-- [ ] T044 [US3] Run the ratio-coverage validation (quickstart step 7) and record the computed ratios in the corrigé params for later diff (SC-003)
+- [X] T040 [US3] Complete `fr/teaching/financial-analysis/donnees/annexe.qmd` from generator output: principes comptables (CRC 99-02, IG/MEE), périmètre, écarts d'acquisition per filiale, opérations intragroupe with amounts (vente + marge en stock, prêt, créance/dette, dividendes), intérêts minoritaires bilan + résultat (FR-004)
+- [X] T041 [US3] Complete `flux-tresorerie.qmd` with the tableau des flux N-2..N (méthode indirecte)
+- [X] T042 [US3] Add the OJS ratio demo on `donnees/index.qmd` (student picks a ratio, it computes from the dataset; `{ojs}` block, `currentColor`, per AGENTS.md convention); if not built, mark a `.callout-important` with `TODO:` (T-IV)
+- [X] T043 [P] [US3] Ensure `fr/teaching/financial-analysis/glossaire.qmd` lists intégration globale, mise en équivalence, écart d'acquisition, intérêts minoritaires; add missing entries (T-V)
+- [X] T044 [US3] Run the ratio-coverage validation (quickstart step 7) and record the computed ratios in the corrigé params for later diff (SC-003)
 
 **Checkpoint**: US3 independently verified — analysis depth works from the published dataset alone.
 
@@ -98,9 +98,9 @@ description: "Task list for the fictitious consolidated accounts (French GAAP) c
 
 **Independent Test**: quickstart step 8 — recompute from dataset_params.py and diff against published tables and corrigé; diff MUST be empty (SC-004).
 
-- [ ] T050 [US4] Generate `fr/teaching/financial-analysis/enseignant/corrige-aubepine.qmd`: all figures, écarts d'acquisition, minoritaires, eliminated intragroup ops, consolidated statements, and the BdF ratios per year
-- [ ] T051 [P] [US4] Create EN stub `teaching/financial-analysis/enseignant/corrige-aubepine.qmd` and register both corrigé pages in the "Instructor" sidebar sections of `_quarto.yml` (EN + FR)
-- [ ] T052 [US4] Run quickstart step 8; fix params until the recomputed-vs-published diff is empty
+- [X] T050 [US4] Generate `fr/teaching/financial-analysis/enseignant/corrige-aubepine.qmd`: all figures, écarts d'acquisition, minoritaires, eliminated intragroup ops, consolidated statements, and the BdF ratios per year
+- [X] T051 [P] [US4] Create EN stub `teaching/financial-analysis/enseignant/corrige-aubepine.qmd` and register both corrigé pages in the "Instructor" sidebar sections of `_quarto.yml` (EN + FR)
+- [X] T052 [US4] Run quickstart step 8; fix params until the recomputed-vs-published diff is empty
 
 **Checkpoint**: US4 verified — grading is mechanical and consistent.
 
@@ -112,10 +112,10 @@ description: "Task list for the fictitious consolidated accounts (French GAAP) c
 
 **Independent Test**: quickstart step 3 — same seed → identical hash, different seeds → different files, every variant passes `--check`; quickstart step 6 grep finds no hidden text.
 
-- [ ] T060 [US5] Implement `--seed <id> --out <dir>` in `generate-dataset.py`: deterministic shifts of the documented postes only (CA VERGER, stock AUBÉPINE NORD, marge intragroupe, dividende NORD — R5), re-derive all statements, run `--check` on the variant before writing
-- [ ] T061 [US5] Run quickstart step 3 (determinism + variant hashes + variant `--check` all green)
-- [ ] T062 [P] [US5] Add the visible AI-use policy in plain prose to `fr/teaching/financial-analysis/evaluation.qmd` and the variant notice to `donnees/telechargements.qmd` (R8; no callout — roles reserved, Principle V)
-- [ ] T063 [US5] Run the SC-005 audit: `grep -rE "​|﻿|<!--" docs/fr/teaching/financial-analysis/donnees/` after a full render MUST be clean, plus manual inspection of each new page (quickstart step 6)
+- [X] T060 [US5] Implement `--seed <id> --out <dir>` in `generate-dataset.py`: deterministic shifts of the documented postes only (CA VERGER, stock AUBÉPINE NORD, marge intragroupe, dividende NORD — R5), re-derive all statements, run `--check` on the variant before writing
+- [X] T061 [US5] Run quickstart step 3 (determinism + variant hashes + variant `--check` all green)
+- [X] T062 [P] [US5] Add the visible AI-use policy in plain prose to `fr/teaching/financial-analysis/evaluation.qmd` and the variant notice to `donnees/telechargements.qmd` (R8; no callout — roles reserved, Principle V)
+- [X] T063 [US5] Run the SC-005 audit: `grep -rE "​|﻿|<!--" docs/fr/teaching/financial-analysis/donnees/` after a full render MUST be clean, plus manual inspection of each new page (quickstart step 6)
 
 **Checkpoint**: US5 verified — variants work, policy visible, zero hidden content.
 
@@ -125,11 +125,11 @@ description: "Task list for the fictitious consolidated accounts (French GAAP) c
 
 **Purpose**: Full-site validation before merge.
 
-- [ ] T070 Run the complete quickstart.md end-to-end (steps 1–8) and record the output
-- [ ] T071 Full render gate: `quarto render --quiet` exit 0 for the whole site; confirm `_freeze/` untouched (no Python blocks in `.qmd` pages, Principle III)
-- [ ] T072 [P] EN/FR parity check: every `fr/teaching/financial-analysis/donnees/*.qmd` has a stub at `teaching/financial-analysis/donnees/` and vice versa (quickstart step 5)
-- [ ] T073 [P] Confirm no styling was added outside `assets/custom.scss` (Principle V) — expected: no change at all
-- [ ] T074 Commit `docs/` and sources together per the render gate; optional hook `/speckit-git-commit`
+- [X] T070 Run the complete quickstart.md end-to-end (steps 1–8) and record the output
+- [X] T071 Full render gate: `quarto render --quiet` exit 0 for the whole site; confirm `_freeze/` untouched (no Python blocks in `.qmd` pages, Principle III)
+- [X] T072 [P] EN/FR parity check: every `fr/teaching/financial-analysis/donnees/*.qmd` has a stub at `teaching/financial-analysis/donnees/` and vice versa (quickstart step 5)
+- [X] T073 [P] Confirm no styling was added outside `assets/custom.scss` (Principle V) — expected: no change at all
+- [X] T074 Commit `docs/` and sources together per the render gate; optional hook `/speckit-git-commit`
 
 ---
 

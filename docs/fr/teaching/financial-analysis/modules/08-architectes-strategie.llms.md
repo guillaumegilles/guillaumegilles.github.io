@@ -1,0 +1,357 @@
+# Introduction
+
+Durée : **110 min** (dont 25 min de théorie) \| Équipes : **3–5 étudiants** \| XP : **+150**
+
+**Objectifs pédagogiques**
+
+- Construire un modèle de projection financière pluriannuel (compte de résultat, bilan, trésorerie).
+- Comprendre les interactions entre croissance, BFR et génération de cash.
+- Identifier et quantifier les besoins de financement externes.
+- Analyser la soutenabilité d’un plan de croissance et en tester la robustesse.
+
+## Prérequis et pré-lecture
+
+- Maîtriser le calcul du BFR, de la CAF et du flux de trésorerie disponible.
+- Avoir complété les Quêtes 4 et 5.
+- Pré-lecture : [liquidité](../../../../fr/teaching/financial-analysis/modules/liquidite.llms.md) (phase prospective).
+- Référence : [formulaire](../../../../fr/teaching/financial-analysis/modules/formules.llms.md).
+
+## Plan de la séance (110 min)
+
+| Segment                                  |       Durée |
+|:-----------------------------------------|------------:|
+| Théorie en direct (voir plan ci-dessous) |      25 min |
+| Démo interactive (curseurs)              |      10 min |
+| Étape 1 — Compte de résultat projeté     |      12 min |
+| Étape 2 — BFR et ΔBFR                    |      10 min |
+| Étape 3 — Flux de trésorerie disponible  |      12 min |
+| Étape 4 — Évolution de la trésorerie     |      10 min |
+| Étape 5 — Ratios clés                    |       8 min |
+| Note stratégique (1 page)                |      10 min |
+| Présentation orale (par équipe)          |       8 min |
+| Débriefing                               |       5 min |
+| **Total**                                | **110 min** |
+
+### Plan de la théorie en direct (25 min)
+
+1.  **Pourquoi la croissance consomme du cash** (6 min) : le BFR suit le CA, donc un ΔBFR positif absorbe la trésorerie.
+2.  **Du résultat au cash** (7 min) : EBITDA, impôt sur le résultat d’exploitation, capex, ΔBFR.
+3.  **Construire un plan à 3 ans** (7 min) : hypothèses, chaînage CA → EBIT → FTD → trésorerie.
+4.  **Besoin de financement et ratios** (5 min) : quand la trésorerie devient négative, ROCE, ROE, gearing, capacité de remboursement.
+
+------------------------------------------------------------------------
+
+## Exemple traité — GREENTECH SOLUTIONS SAS
+
+### Contexte narratif — Mission
+
+StratFin Corp est mandaté pour conseiller **GREENTECH SOLUTIONS SAS**, une start-up dans les énergies renouvelables qui ambitionne de tripler sa taille en trois ans. La direction a fourni ses hypothèses stratégiques ; il vous appartient de **construire le plan financier à 3 ans**, d’en vérifier la cohérence et d’identifier les besoins de financement.
+
+**Enjeux de la mission.** GREENTECH prépare une levée de fonds et une négociation bancaire. Vos projections seront présentées demain matin à un comité d’investissement. Elles doivent être **rigoureuses, cohérentes et défendables**. Une erreur d’articulation entre le résultat net, le BFR et la trésorerie serait rédhibitoire pour la crédibilité du dossier.
+
+### Données de départ
+
+**Secteur :** équipements et installation d’énergies renouvelables (solaire, éolien, bornes de recharge).
+
+#### Compte de résultat N (réel, en k€)
+
+|                        Poste | Montant |
+|-----------------------------:|--------:|
+|           Chiffre d’affaires |   5 000 |
+|              EBIT (marge 8%) |     400 |
+|   Charges financières nettes |     -50 |
+|         Résultat avant impôt |     350 |
+| Impôt sur les sociétés (25%) |     -88 |
+|             **Résultat net** | **262** |
+
+*Note : le résultat net retenu dans le modèle de projection sera calculé directement à partir de l’EBIT afin de simplifier les calculs. On utilisera RN = EBIT × (1 − t) avec t = 25%.*
+
+#### Bilan au 31/12/N (simplifié, en k€)
+
+|                              Poste |   Montant |
+|-----------------------------------:|----------:|
+|             Immobilisations nettes |     2 700 |
+| Besoin en fonds de roulement (BFR) |       600 |
+|                   Trésorerie nette |       200 |
+|         **Total Actif économique** | **3 500** |
+
+|                 Poste |   Montant |
+|----------------------:|----------:|
+| Capitaux propres (FP) |     1 000 |
+|            Dettes MLT |     1 500 |
+|      Dettes CT nettes |     1 000 |
+|  **Total Ressources** | **3 500** |
+
+#### Paramètres complémentaires N
+
+| Indicateur                           | Valeur N |
+|:-------------------------------------|---------:|
+| Dotations aux amortissements (D&A)   |   150 k€ |
+| Remboursement annuel dette existante |   200 k€ |
+| Distribution de dividendes           |     0 k€ |
+
+### Hypothèses du plan de développement N+1 à N+3
+
+Hypothèses de travail fournies par la direction :
+
+| Hypothèse                     | Valeur                            |
+|:------------------------------|:----------------------------------|
+| Croissance du CA              | **+25% par an**                   |
+| Marge d’EBIT                  | **8%** (stable)                   |
+| Taux d’imposition             | **25%**                           |
+| D&A                           | Croît proportionnellement au CA   |
+| BFR                           | **15% du CA annuel**              |
+| Capex de maintien             | Égal aux D&A de l’année           |
+| Dividendes distribués         | **0** (réinvestissement intégral) |
+| Remboursement dette existante | **200 k€/an**                     |
+| Financement complémentaire    | À déterminer                      |
+
+### Première année pas à pas (N+1)
+
+- CA = 5 000 × 1,25 = **6 250** ; EBIT = 8% × 6 250 = **500**.
+- Résultat net = 500 × (1 − 25%) = **375**.
+- D&A = 3% du CA (150 / 5 000) = **187,5** ; capex = D&A = **187,5**.
+- BFR = 15% × 6 250 = 937,5 ; ΔBFR = 937,5 − 600 = **337,5**.
+- FTD = 375 + 187,5 − 337,5 − 187,5 = **37,5**.
+- Trésorerie = 200 + 37,5 − 200 = **37,5** (positive, mais très faible).
+
+**Lecture du ΔBFR.** Un ΔBFR **positif** signifie que la croissance *consomme* du cash (le BFR augmente). C’est le cas typique d’une entreprise en forte croissance : plus elle vend, plus elle doit financer ses stocks et créances clients avant d’encaisser ses clients. Ici, 337,5 k€ de BFR additionnel absorbent presque tout le résultat net de l’année.
+
+------------------------------------------------------------------------
+
+## Dérivation du flux de trésorerie disponible
+
+> **CAUTION:**
+>
+> On part de l’identité : variation de trésorerie avant financement = encaissements d’exploitation − décaissements d’exploitation − investissements.
+>
+> 1.  **Cash d’exploitation avant impôt** : l’EBITDA est le résultat d’exploitation avant dotations (charge non décaissée). La croissance immobilise du cash dans le BFR : cash = EBITDA − ΔBFR.
+> 2.  **Impôt décaissé** sur le résultat d’exploitation : \\\text{Impôt} = t \times EBIT\\, avec \\EBIT = EBITDA - D\\A\\.
+> 3.  **Investissements** : on retire le capex décaissé.
+> 4.  En assemblant :
+>
+> \\FTD = EBITDA - t \times EBIT - Capex - \Delta BFR\\
+>
+> 5.  **Équivalence avec la formule de l’étape 3** : comme \\EBITDA = EBIT + D\\A\\,
+>
+> \\FTD = EBIT + D\\A - t \times EBIT - Capex - \Delta BFR = EBIT \times (1-t) + D\\A - \Delta BFR - Capex\\
+>
+> **Illustration GREENTECH, N+1 (k€)** : EBITDA = 500 + 187,5 = 687,5 ; impôt = 25% × 500 = 125 ; capex = 187,5 ; ΔBFR = 337,5. Donc FTD = 687,5 − 125 − 187,5 − 337,5 = **37,5**, identique au calcul pas à pas ci-dessus.
+
+> **TIP:**
+>
+> \\FTD = EBITDA - t \times EBIT - Capex - \Delta BFR\\
+>
+> Le FTD est le cash que l’activité dégage après impôt, investissements et financement de la croissance.
+>
+> \\\Delta BFR_n = BFR_n - BFR\_{n-1}, \qquad BFR_n = 15\\ \times CA_n\\
+>
+> La variation de BFR est le cash supplémentaire immobilisé dans le cycle d’exploitation sur l’année.
+>
+> \\Tréso\_{n+1} = Tréso_n + FTD_n - Remb_n + Financement_n\\
+>
+> La trésorerie de fin d’année est celle de l’année précédente, plus le FTD, moins les remboursements de dette, plus les financements nouveaux.
+>
+> Quand capex = D&A, la formule se simplifie en \\FTD = EBIT \times (1-t) - \Delta BFR\\ : le résultat net d’exploitation moins le cash absorbé par la croissance.
+
+------------------------------------------------------------------------
+
+## Démo interactive — Faites varier le plan
+
+Essayez de monter la croissance à 40% ou de passer le BFR à 25% du CA, et observez à partir de quand le FTD devient négatif et la trésorerie cumulée fond. Les valeurs par défaut reproduisent le scénario de base de la direction (la marge d’EBITDA de 11% = (400 + 150) / 5 000).
+
+``` js
+viewof croissance = Inputs.range([0, 0.6], {
+  value: 0.25, step: 0.01, label: "Croissance du CA"
+})
+viewof margeEbitda = Inputs.range([0.05, 0.2], {
+  value: 0.11, step: 0.005, label: "Marge d'EBITDA"
+})
+viewof bfrPct = Inputs.range([0.05, 0.4], {
+  value: 0.15, step: 0.01, label: "BFR (% du CA)"
+})
+viewof capexPct = Inputs.range([0, 0.1], {
+  value: 0.03, step: 0.005, label: "Capex (% du CA)"
+})
+```
+
+``` js
+ca0 = 5000
+bfr0 = 600
+tresoN = 200
+remboursement = 200
+tauxIS = 0.25
+amortPct = 150 / 5000
+
+projection = {
+  const lignes = [];
+  let ca = ca0, bfr = bfr0, treso = tresoN;
+  for (let n = 1; n <= 3; n++) {
+    ca = ca * (1 + croissance);
+    const ebitda = margeEbitda * ca;
+    const ebit = ebitda - amortPct * ca;
+    const nouveauBfr = bfrPct * ca;
+    const dBfr = nouveauBfr - bfr;
+    const capex = capexPct * ca;
+    const ftd = ebitda - tauxIS * ebit - capex - dBfr;
+    treso = treso + ftd - remboursement;
+    bfr = nouveauBfr;
+    lignes.push({ annee: "N+" + n, ca, ebitda, dBfr, ftd, treso });
+  }
+  return lignes;
+}
+
+fmt = x => x.toLocaleString("fr-FR", { maximumFractionDigits: 0 })
+
+html`<table>
+  <thead><tr>
+    <th>Année</th><th>CA</th><th>EBITDA</th><th>ΔBFR</th>
+    <th>FTD</th><th>Trésorerie cumulée</th>
+  </tr></thead>
+  <tbody>${projection.map(r => html`<tr>
+    <td>${r.annee}</td><td>${fmt(r.ca)}</td><td>${fmt(r.ebitda)}</td>
+    <td>${fmt(r.dBfr)}</td><td>${fmt(r.ftd)}</td><td>${fmt(r.treso)}</td>
+  </tr>`)}</tbody>
+</table>`
+```
+
+Montants en k€ ; la trésorerie cumulée part de 200 k€ et tient compte du remboursement de 200 k€/an.
+
+------------------------------------------------------------------------
+
+## Exercice — Le plan financier à 3 ans
+
+**Exercice 1 (Plan financier de GREENTECH)** Complétez le tableau de projection ci-dessous pour N+1, N+2 et N+3 en suivant les cinq étapes :
+
+1.  **Compte de résultat** : CA, EBIT, impôt, résultat net.
+2.  **BFR et ΔBFR** : BFR = 15% × CA ; ΔBFR = BFR_n − BFR\_{n-1}.
+3.  **FTD** : \\FTD = EBIT \times (1-t) + D\\A - \Delta BFR - Capex\\.
+4.  **Trésorerie** : \\Tréso\_{n+1} = Tréso_n + FTD_n - Remb_n + Financement_n\\. Si elle devient négative, identifiez le financement externe nécessaire.
+5.  **Ratios** :
+    - **ROCE** = EBIT / (Capitaux propres + Dettes MLT)
+    - **ROE** = Résultat net / Capitaux propres
+    - **Gearing** = Dettes MLT nettes / Capitaux propres
+    - **Capacité de remboursement** = Dettes MLT nettes / (RN + D&A)
+
+Vérifiez à chaque année : CP(N+1) = CP(N) + RN(N+1) (pas de dividendes) ; Dettes MLT(N+1) = Dettes MLT(N) − Remboursement + Nouveau financement ; trésorerie positive (sinon besoin de financement externe). Ces équations relient compte de résultat, bilan et tableau de flux.
+
+### Tableau de projection à compléter (en k€)
+
+| Indicateur                        | N (réel) | N+1 | N+2 | N+3 |
+|:----------------------------------|---------:|----:|----:|----:|
+| Chiffre d’affaires                |    5 000 |     |     |     |
+| EBIT (8%)                         |      400 |     |     |     |
+| Résultat net \[EBIT × (1−25%)\]   |      300 |     |     |     |
+| D&A                               |      150 |     |     |     |
+| BFR (15% du CA)                   |      600 |     |     |     |
+| ΔBFR                              |        — |     |     |     |
+| Capex de maintien                 |      150 |     |     |     |
+| **Flux de trésorerie disponible** |          |     |     |     |
+| Remboursement dette               |      200 | 200 | 200 | 200 |
+| **Trésorerie nette**              |      200 |     |     |     |
+| Dettes MLT                        |    1 500 |     |     |     |
+| Capitaux propres                  |    1 000 |     |     |     |
+| **ROCE**                          |    15,4% |     |     |     |
+| **ROE**                           |    30,0% |     |     |     |
+| **Gearing**                       |     1,50 |     |     |     |
+| **Capacité de remboursement**     |  5,3 ans |     |     |     |
+
+Solution
+
+Tableau complété, scénario de base (+25%), en k€ (arrondis à une décimale) :
+
+| Indicateur                    | N (réel) |     N+1 |     N+2 |     N+3 |
+|:------------------------------|---------:|--------:|--------:|--------:|
+| Chiffre d’affaires            |    5 000 |   6 250 | 7 812,5 | 9 765,6 |
+| EBIT (8%)                     |      400 |     500 |     625 |   781,3 |
+| Résultat net \[EBIT × 75%\]   |      300 |     375 |   468,8 |   585,9 |
+| D&A (3% du CA)                |      150 |   187,5 |   234,4 |   293,0 |
+| BFR (15% du CA)               |      600 |   937,5 | 1 171,9 | 1 464,8 |
+| ΔBFR                          |        — |   337,5 |   234,4 |   293,0 |
+| Capex de maintien             |      150 |   187,5 |   234,4 |   293,0 |
+| **FTD**                       |          |    37,5 |   234,4 |   293,0 |
+| Remboursement dette           |      200 |     200 |     200 |     200 |
+| **Trésorerie nette**          |      200 |    37,5 |    71,9 |   164,8 |
+| Dettes MLT                    |    1 500 |   1 300 |   1 100 |     900 |
+| Capitaux propres              |    1 000 |   1 375 | 1 843,8 | 2 429,7 |
+| **ROCE**                      |    15,4% |   18,7% |   21,2% |   23,5% |
+| **ROE**                       |    30,0% |   27,3% |   25,4% |   24,1% |
+| **Gearing** (dettes MLT / CP) |     1,50 |    0,95 |    0,60 |    0,37 |
+| **Capacité de remboursement** |  5,3 ans | 2,3 ans | 1,6 ans |  1,0 an |
+
+Détails : FTD = RN − ΔBFR car capex = D&A (375 − 337,5 ; 468,75 − 234,375 ; 585,94 − 292,97). Trésorerie : 200 + 37,5 − 200 = 37,5 ; 37,5 + 234,4 − 200 = 71,9 ; 71,9 + 293,0 − 200 = 164,8. Ratios : ROCE N+1 = 500 / (1 375 + 1 300) = 18,7%.
+
+**Conclusion.** La trésorerie reste positive sous les hypothèses données : aucun financement externe n’est strictement requis. Mais l’année N+1 est tendue (37,5 k€ de trésorerie, FTD quasi nul à cause d’un ΔBFR de 337,5 k€) : une ligne de crédit court terme de précaution est recommandée. Les ratios s’améliorent chaque année.
+
+*Remarque :* la valeur « 5,3 ans » de la colonne N est celle fournie par l’énoncé ; elle n’est pas reproductible avec la formule donnée (1 500 / (300 + 150) = 3,3 ans). Les valeurs N+1 à N+3 ci-dessus appliquent la formule telle qu’écrite, avec les dettes MLT brutes.
+
+------------------------------------------------------------------------
+
+## Livrables et format
+
+1.  **Tableau de projection complété** (Excel ou tableau structuré — obligatoire).
+2.  **Note stratégique écrite** (1 page max) répondant à la question : *Le plan de croissance est-il finançable ? Quel financement est nécessaire, de quelle nature (fonds propres / dette), et à quelle échéance ?*
+3.  **Présentation orale** : 8 minutes par équipe.
+
+L’analyse de sensibilité (tableau comparatif croissance 25% vs 15%) est déplacée en extension, hors séance.
+
+### Critères d’évaluation
+
+| Critère                                             | Pondération |
+|:----------------------------------------------------|------------:|
+| Exactitude des calculs et cohérence du modèle       |         40% |
+| Qualité de l’analyse financière et des commentaires |         30% |
+| Pertinence de la recommandation de financement      |         20% |
+| Présentation orale                                  |         10% |
+
+------------------------------------------------------------------------
+
+## XP
+
+**+150 XP** pour l’équipe, répartis selon les critères d’évaluation ci-dessus.
+
+------------------------------------------------------------------------
+
+## À couper en premier si le temps manque
+
+1.  Le calcul des ratios de l’étape 5 (8 min) : à finir à la maison.
+2.  La rédaction de la note stratégique (10 min) : à réduire à 5 lignes orales.
+3.  La démo interactive (10 min) : à projeter par l’enseignant au lieu de la faire manipuler par les équipes.
+
+------------------------------------------------------------------------
+
+## Extension (hors séance)
+
+### Analyse de sensibilité — Scénario alternatif : croissance à 15%
+
+**Exercice 2 (Croissance à 15%)** Refaites le même modèle en remplaçant le taux de croissance de 25% par **15%**.
+
+1.  Le besoin de financement externe change-t-il de nature ou de montant ?
+2.  Les ratios restent-ils dans des zones acceptables pour une banque ?
+3.  Quelle est la « croissance maximale autofinançable » sans financement externe ?
+
+Livrable associé : tableau comparatif croissance 25% vs 15%.
+
+Solution
+
+Scénario +15% (k€) :
+
+| Indicateur         |   N+1 |     N+2 |     N+3 |
+|:-------------------|------:|--------:|--------:|
+| Chiffre d’affaires | 5 750 | 6 612,5 | 7 604,4 |
+| EBIT (8%)          |   460 |     529 |   608,4 |
+| Résultat net       |   345 |   396,8 |   456,3 |
+| BFR (15%)          | 862,5 |   991,9 | 1 140,7 |
+| ΔBFR               | 262,5 |   129,4 |   148,8 |
+| FTD                |  82,5 |   267,4 |   307,5 |
+| Trésorerie nette   |  82,5 |   149,9 |   257,4 |
+| ROCE               | 17,4% |   18,6% |   19,6% |
+| Gearing            |  0,97 |    0,63 |    0,41 |
+
+1.  Ni la nature ni la présence d’un besoin ne changent (aucun financement externe requis dans les deux cas), mais le coussin de trésorerie est plus confortable : 82,5 k€ contre 37,5 k€ en N+1.
+2.  Oui : ROCE entre 17% et 20%, gearing décroissant sous 1 dès N+1. Le ROCE est un peu inférieur au scénario +25% car la dette pèse plus longtemps relativement aux capitaux employés.
+3.  Avec capex = D&A, la trésorerie de fin d’année n vaut \\200 - 200n + \sum FTD\\ et \\FTD_n = (1+g)^{n-1}(300 - 450g)\\ en k€ (car RN = 300(1+g) et ΔBFR = 750g pour n = 1, etc.). Les conditions de trésorerie ≥ 0 donnent g ≤ 66,7% en N+1, g ≈ 48,8% en N+2 et g ≈ 47% en N+3. La contrainte la plus forte est N+3 : la croissance maximale autofinançable est d’environ **47% par an** (sans trésorerie minimale de sécurité).
+
+------------------------------------------------------------------------
+
+Les Architectes de la Stratégie ne construisent pas des maquettes — ils bâtissent des plans que des investisseurs sont prêts à signer. À vos modèles !

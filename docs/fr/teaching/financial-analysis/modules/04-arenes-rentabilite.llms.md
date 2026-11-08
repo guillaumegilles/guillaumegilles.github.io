@@ -1,0 +1,277 @@
+Durée : **120 min** (dont 25 min de théorie) \| Équipes : **3–5 étudiants** \| XP : **+150**
+
+## Objectifs pédagogiques
+
+- Calculer et interpréter le ROCE (rentabilité économique) et le ROE (rentabilité financière).
+- Comprendre l’effet de levier financier et sa relation entre ROCE et ROE.
+- Analyser les marges de rentabilité (marge brute, marge EBIT, marge nette).
+- Maîtriser la décomposition DuPont du ROE.
+
+## Prérequis et pré-lecture
+
+- **Travail préparatoire (Jour 2) :** avoir préparé une fiche synthétique sur les ratios financiers (ROE, ROCE, solvabilité, liquidité, BFR) et relevé les données nécessaires dans le rapport annuel choisi.
+- **Pré-lecture :** [Performances](../../../../fr/teaching/financial-analysis/modules/performances.llms.md) (marges, ROCE, ROE) et [Formulaire de référence](../../../../fr/teaching/financial-analysis/modules/formules.llms.md).
+
+## Contexte narratif — Mission
+
+Les partenaires de StratFin Corp se livrent une compétition acharnée pour décrocher de nouveaux mandats. Le comité d’investissement a lancé un **Tournoi de Ratios** : chaque équipe choisit une entreprise du CAC 40, calcule ses indicateurs clés de rentabilité à partir du rapport annuel officiel, puis **défend ses chiffres** devant le comité (la classe entière).
+
+La meilleure présentation — alliant rigueur des calculs et qualité de l’analyse — remporte le mandat !
+
+## Déroulé de la séance (120 min)
+
+| Phase              | Contenu                                    |       Durée |
+|:-------------------|:-------------------------------------------|------------:|
+| Théorie en direct  | Voir le plan ci-dessous (démo OJS incluse) |      25 min |
+| Étape 1 — Collecte | Extraction des données du rapport annuel   |      20 min |
+| Échauffement       | Exercice Schneider Electric (levier)       |      10 min |
+| Étape 2 — Calcul   | Tableau de ratios et commentaire           |      25 min |
+| Étape 3 — Comité   | 5 min par équipe (jusqu’à 7 équipes)       |      35 min |
+| Bilan              | Vote du comité et attribution de l’XP      |       5 min |
+| **Total**          |                                            | **120 min** |
+
+### Plan de la théorie en direct (25 min)
+
+1.  **ROCE et ROE : que mesurent-ils ?** (6 min)
+2.  **Effet de levier : démonstration de l’identité** (8 min)
+3.  **Démo interactive : faire varier ROCE, \\i\\ et D/E** (5 min)
+4.  **DuPont et BFR en jours de CA** (6 min)
+
+## Formules clés
+
+> **TIP:**
+>
+> \\\text{ROCE} = \frac{\text{EBIT}}{\text{Capitaux engagés}} = \frac{\text{EBIT}}{\text{Capitaux propres} + \text{Dettes financières nettes}}\\
+>
+> Le ROCE mesure ce que rapportent les capitaux investis dans l’exploitation, quelle que soit la façon dont ils sont financés.
+
+> **TIP:**
+>
+> \\\text{ROE} = \frac{\text{Résultat net}}{\text{Capitaux propres}}\\
+>
+> Le ROE mesure ce que gagnent les actionnaires par euro de capitaux propres investi.
+
+> **TIP:**
+>
+> \\\text{ROE} = \text{ROCE} + (\text{ROCE} - i) \times \text{Gearing}\\
+>
+> où \\i\\ est le coût moyen de la dette (charges financières / dettes financières nettes) et \\\text{Gearing} = \dfrac{\text{Dettes financières nettes}}{\text{Capitaux propres}}\\. Cette relation explique de combien la dette amplifie (ou détruit) le ROE par rapport au ROCE.
+
+> **TIP:**
+>
+> \\\text{ROE} = \underbrace{\frac{\text{RN}}{\text{CA}}}\_{\text{Marge nette}} \times \underbrace{\frac{\text{CA}}{\text{Actif total}}}\_{\text{Rotation des actifs}} \times \underbrace{\frac{\text{Actif total}}{\text{Capitaux propres}}}\_{\text{Levier financier}}\\
+>
+> Elle indique si le ROE provient de la marge, de l’efficacité des actifs ou de l’endettement.
+
+> **TIP:**
+>
+> \\\text{BFR en jours de CA} = \frac{\text{BFR}}{\text{CA} / 365}\\
+>
+> Elle exprime le BFR en nombre de jours de chiffre d’affaires immobilisés dans le cycle d’exploitation.
+
+**Interpréter l’effet de levier :**
+
+- Si **ROCE \> i** : la dette amplifie le ROE → levier **positif**.
+- Si **ROCE \< i** : la dette pénalise le ROE → levier **négatif**.
+- Si **Gearing ↑** : l’effet de levier (positif ou négatif) est amplifié.
+
+## Exemple résolu — Schneider Electric (exercice 2023)
+
+**Données extraites du DEU 2023 :**
+
+| Poste (en M€)                 | Valeur | Page DEU |
+|:------------------------------|-------:|---------:|
+| Chiffre d’affaires            | 35 902 |   p. 256 |
+| EBIT (Résultat opérationnel)  |  5 726 |   p. 258 |
+| Résultat net (part du groupe) |  3 889 |   p. 258 |
+| Capitaux propres              | 24 861 |   p. 260 |
+| Dettes financières nettes     |  8 341 |   p. 262 |
+
+**Calcul du ROCE :**
+
+\\\text{ROCE} = \frac{\text{EBIT}}{\text{Capitaux propres} + \text{Dettes financières nettes}} = \frac{5\\726}{24\\861 + 8\\341} = \frac{5\\726}{33\\202} = 17{,}2\\\\
+
+**Calcul du ROE :**
+
+\\\text{ROE} = \frac{\text{RN}}{\text{Capitaux propres}} = \frac{3\\889}{24\\861} = 15{,}6\\\\
+
+**Interprétation :** Le ROCE (17,2%) est supérieur au coût moyen de la dette (~3%), ce qui confirme un **effet de levier positif**. Le ROE (15,6%) est légèrement inférieur au ROCE car le levier amplifie ici modérément (gearing faible) et, surtout, parce que le ROCE est calculé avant impôt alors que le ROE l’est après impôt (voir la dérivation ci-dessous).
+
+## Dérivation de l’effet de levier
+
+> **CAUTION:**
+>
+> **Notations.** \\E\\ : capitaux propres ; \\D\\ : dettes financières nettes ; \\CE = E + D\\ : capitaux engagés ; \\i\\ : coût de la dette ; \\t\\ : taux d’impôt.
+>
+> **Étape 1 — Résultat net.** Les intérêts versés sont \\iD\\ et l’impôt porte sur le résultat avant impôt : \\RN = (\text{EBIT} - iD)(1 - t)\\
+>
+> **Étape 2 — Hypothèse de simplification.** Pour que l’identité soit exacte, on définit les taux **après impôt** : \\\text{ROCE}\_{AI} = \frac{\text{EBIT}\\(1-t)}{E + D}, \qquad i\_{AI} = i\\(1-t)\\ (en ignorant l’impôt, il suffit de poser \\t = 0\\, alors \\\text{ROCE}\_{AI} = \text{ROCE}\\ et \\i\_{AI} = i\\). Les autres éléments (minoritaires, exceptionnels) sont ignorés.
+>
+> **Étape 3 — Développement.** On a \\\text{EBIT}(1-t) = \text{ROCE}\_{AI}\times (E + D)\\, donc \\RN = \text{ROCE}\_{AI}\\(E + D) - i\_{AI}\\D\\
+>
+> **Étape 4 — Division par \\E\\.** \\\text{ROE} = \frac{RN}{E} = \text{ROCE}\_{AI}\\\frac{E + D}{E} - i\_{AI}\\\frac{D}{E} = \text{ROCE}\_{AI} + \text{ROCE}\_{AI}\\\frac{D}{E} - i\_{AI}\\\frac{D}{E}\\
+>
+> **Étape 5 — Conclusion.** \\\boxed{\text{ROE} = \text{ROCE}\_{AI} + (\text{ROCE}\_{AI} - i\_{AI}) \times \frac{D}{E}}\\
+>
+> Avec les ratios bruts de la page (ROCE avant impôt), la formule donne un ROE théorique avant impôt : il est plus élevé que le ROE publié.
+
+## Démo interactive — Le levier en action
+
+Essayez de passer le ROCE sous le coût de la dette \\i\\ puis d’augmenter D/E : le levier change de signe et le ROE s’effondre. (Calcul avant impôt, \\t = 0\\.)
+
+``` js
+viewof roce = Inputs.range([0, 25], {value: 12, step: 0.5, label: "ROCE (%)"})
+viewof cout = Inputs.range([0, 15], {value: 4, step: 0.25, label: "Coût de la dette i (%)"})
+viewof de = Inputs.range([0, 4], {value: 1, step: 0.05, label: "D/E (gearing)"})
+```
+
+``` js
+roe = roce + (roce - cout) * de
+levier = (roce - cout) * de
+
+md`**ROE = ${roe.toFixed(2)} %** (ROCE ${roce.toFixed(2)} %
++ contribution du levier **${levier.toFixed(2)} points**) —
+levier ${levier >= 0 ? "positif" : "négatif"}.`
+```
+
+``` js
+courbe = Array.from({length: 41}, (_, k) => {
+  const x = k * 0.1;
+  return {de: x, roe: roce + (roce - cout) * x};
+})
+
+Plot.plot({
+  height: 280,
+  x: {label: "D/E"},
+  y: {label: "ROE (%)", grid: true},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.line(courbe, {x: "de", y: "roe", stroke: "steelblue"}),
+    Plot.dot([{de: de, roe: roe}], {x: "de", y: "roe", r: 6, fill: "red"})
+  ]
+})
+```
+
+## Exercices
+
+**Exercice 1 (Levier de Schneider Electric)** Avec les données de l’exemple résolu (coût de la dette \\i = 3\\\\, taux d’impôt \\t = 25\\\\) :
+
+1.  Calculez le gearing.
+2.  Calculez le ROE théorique avant impôt avec la formule du levier.
+3.  Calculez le ROE théorique après impôt (ROCE et \\i\\ après impôt) et comparez-le au ROE publié (15,6%).
+
+Solution
+
+1.  Gearing \\= 8\\341 / 24\\861 = 0{,}336\\.
+2.  \\\text{ROE} = 17{,}25 + (17{,}25 - 3) \times 0{,}336 = 17{,}25 + 4{,}78 \approx 22{,}0\\\\.
+3.  \\\text{ROCE}\_{AI} = 17{,}25 \times 0{,}75 = 12{,}93\\\\ et \\i\_{AI} = 2{,}25\\\\, d’où \\\text{ROE} = 12{,}93 + (12{,}93 - 2{,}25) \times 0{,}336 \approx 16{,}5\\\\. Cet écart de moins d’un point avec le ROE publié (15,6%) s’explique par les éléments ignorés (minoritaires, résultat financier réel, éléments exceptionnels). Le levier reste positif.
+
+**Exercice 2 (Signe du levier)** Une entreprise a un D/E de 1,5 et un coût de la dette de 4%. Calculez son ROE (avant impôt) si son ROCE vaut 10%, puis si son ROCE vaut 3%.
+
+Solution
+
+- ROCE = 10% : \\\text{ROE} = 10 + (10 - 4) \times 1{,}5 = 19\\\\ (levier positif).
+- ROCE = 3% : \\\text{ROE} = 3 + (3 - 4) \times 1{,}5 = 1{,}5\\\\ (levier négatif : la dette détruit de la valeur).
+
+## Le Tournoi
+
+### Entreprises disponibles
+
+Chaque équipe choisit une entreprise parmi la liste suivante (premier arrivé, premier servi — pas de doublon) :
+
+| \#  | Entreprise         | Secteur                  |
+|-----|--------------------|--------------------------|
+| 1   | LVMH               | Luxe & mode              |
+| 2   | TotalEnergies      | Énergie                  |
+| 3   | Danone             | Agroalimentaire          |
+| 4   | Airbus             | Aéronautique             |
+| 5   | Schneider Electric | Énergie & automatisation |
+| 6   | Legrand            | Équipements électriques  |
+| 7   | Bouygues           | BTP & médias             |
+
+**Où trouver les données ?** Les rapports annuels (DEU — Document d’Enregistrement Universel) sont disponibles gratuitement sur le site investisseurs de chaque entreprise ou sur le portail de l’AMF : <https://www.amf-france.org>. Vous aurez besoin du **compte de résultat**, du **bilan** et des **notes annexes**.
+
+**Guide de lecture du DEU :**
+
+| Donnée recherchée | Section du DEU | Repère typique |
+|:---|:---|:---|
+| Chiffre d’affaires, EBIT, Résultat net | Comptes consolidés — Compte de résultat | Chapitre « États financiers consolidés » |
+| Capitaux propres, Dettes financières | Comptes consolidés — Bilan | Même chapitre, tableau du bilan |
+| Dettes financières nettes | Notes annexes | Note « Endettement financier net » |
+| BFR et composantes | Notes annexes | Note « Besoin en fonds de roulement » |
+| Goodwill | Notes annexes | Note « Immobilisations incorporelles » |
+| Effectifs, charges de personnel | Notes annexes ou rapport de gestion | Note « Charges de personnel » |
+
+**Conseil :** utilisez la table des matières et la fonction recherche du PDF. Les données consolidées (pas individuelles) sont à privilégier.
+
+### Tableau de calcul — à compléter
+
+Complétez le tableau ci-dessous à partir des données du rapport annuel de votre entreprise pour les exercices **N** et **N-1**. Indiquez les pages sources dans la colonne « Commentaire ».
+
+| Indicateur                     | Formule        | N-1 | N   | Tendance | Commentaire |
+|--------------------------------|----------------|-----|-----|----------|-------------|
+| CA (k€)                        |                |     |     |          |             |
+| Résultat d’exploitation (k€)   |                |     |     |          |             |
+| Résultat net (k€)              |                |     |     |          |             |
+| Capitaux propres (k€)          |                |     |     |          |             |
+| Dettes financières nettes (k€) |                |     |     |          |             |
+| Capitaux engagés (k€)          |                |     |     |          |             |
+| ROCE (%)                       | EBIT / CE      |     |     |          |             |
+| ROE (%)                        | RN / FP        |     |     |          |             |
+| Marge EBIT (%)                 | EBIT / CA      |     |     |          |             |
+| Marge nette (%)                | RN / CA        |     |     |          |             |
+| BFR (j CA)                     | BFR / (CA/365) |     |     |          |             |
+| Gearing                        | DF nettes / FP |     |     |          |             |
+
+### Étape 1 — Collecte des données (20 min)
+
+Chaque équipe recherche et extrait les données nécessaires depuis le rapport annuel officiel de son entreprise. Veillez à utiliser les chiffres **consolidés** (IFRS).
+
+### Étape 2 — Calcul et analyse (25 min)
+
+Complétez le tableau de ratios et rédigez votre commentaire. Pour chaque ratio, précisez :
+
+- La valeur calculée et sa source (page du rapport)
+- L’évolution N-1 → N (amélioration / dégradation)
+- Une interprétation en lien avec l’activité de l’entreprise
+
+### Étape 3 — Passage devant le comité (5 min par équipe)
+
+Chaque équipe présente ses ratios en **5 minutes chrono**. Le « comité d’investissement » (les autres équipes + l’enseignant) pose **2 questions surprise** auxquelles vous devez répondre.
+
+**Conseils pour la soutenance :**
+
+- Mettez en avant **1 chiffre clé** qui résume la performance de l’entreprise.
+- Comparez votre ROCE au coût de la dette pour conclure sur le levier.
+- Anticipez la question : *« Votre ROE est élevé — est-ce grâce à la performance opérationnelle ou à la dette ? »*
+
+**Exercice 3 (Défendre ses ratios devant le comité)** Pour votre entreprise : (1) complétez le tableau de ratios (N-1 et N, avec sources page rapport) ; (2) présentez-le en 5 minutes devant le comité ; (3) rédigez une note écrite d’une demi-page : que révèlent ces ratios sur la santé financière de l’entreprise ? L’effet de levier est-il un atout ou un risque ?
+
+Solution
+
+La réponse dépend de l’entreprise choisie. Modèle attendu, sur Schneider Electric : ROCE 17,2% et ROE 15,6% ; ROCE nettement supérieur à \\i \approx 3\\\\ et gearing de 0,34, donc levier positif et peu risqué ; le ROE vient surtout de la performance opérationnelle (marge EBIT \\5\\726 / 35\\902 \approx 15{,}9\\\\, marge nette \\\approx 10{,}8\\\\) et non de la dette.
+
+## Livrables et format
+
+- **Fichier tableur** avec le tableau de ratios complété.
+- **Support de présentation** (3 diapositives max).
+- **Note de synthèse PDF** (½ page).
+
+## Critères d’évaluation
+
+- Exactitude des calculs et cohérence des ratios : **40%**
+- Qualité du commentaire et de l’interprétation : **35%**
+- Défense des ratios face aux questions du comité : **25%**
+
+## XP
+
+Quête terminée : **+150 XP**.
+
+Que les meilleures équipes entrent dans l’arène — et que les chiffres parlent d’eux-mêmes !
+
+## À couper en premier si le temps manque
+
+1.  Le calcul du BFR en jours de CA (reste dans le tableau, à faire en devoir).
+2.  La partie DuPont de la théorie (6 min → 3 min).
+3.  L’exercice « Signe du levier » (à faire à la maison).
+4.  La note écrite d’une demi-page (à rendre après la séance).

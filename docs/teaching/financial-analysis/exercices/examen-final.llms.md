@@ -1,0 +1,1 @@
+**Translation in progress.** This page is currently available in French only: [Examen Final — Analyse Financière et Stratégique](../../../fr/teaching/financial-analysis/exercices/examen-final.llms.md).

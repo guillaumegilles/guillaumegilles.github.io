@@ -1,0 +1,446 @@
+## 1 Theory
+
+### 1.1 The business question
+
+The Wandering Fork’s owner wants to know: on which weather conditions does the truck sell most? How concentrated is the payment-method mix? This module turns a column of categories into a frequency table and the right chart, the first step in summarising any qualitative variable. We start with five days small enough to tally by hand, and only then write the formulas.
+
+### 1.2 Five days, one column of words
+
+Five days of the Harbour truck, as the owner’s notebook records them. The values are a simplified extract chosen so that you can tally everything by hand.
+
+| Day | `weather` | `satisfaction_rating` (1–5) |
+|-----|:---------:|----------------------------:|
+| 1   |   Sunny   |                           4 |
+| 2   |   Sunny   |                           5 |
+| 3   |   Rainy   |                           3 |
+| 4   |  Cloudy   |                           4 |
+| 5   |   Sunny   |                           4 |
+
+There is no number to average here: the weather is a word, and even the rating is a score on a scale. The owner asks you for a one-line summary of each column. What would you say — and how would you show it on a single chart?
+
+### 1.3 Frequency table for a qualitative variable
+
+> **NOTE:**
+>
+> **Try it.** Tally the `weather` column of the five days above (\\n = 5\\) and complete the table.
+>
+> | Category  | Tally | Count | Share of days |
+> |-----------|-------|------:|--------------:|
+> | Sunny     | ?     |     ? |             ? |
+> | Cloudy    | ?     |     ? |             ? |
+> | Rainy     | ?     |     ? |             ? |
+> | **Total** |       | **?** |         **?** |
+>
+> 1.  Count the days in each category. Do the counts add up to 5?
+> 2.  Divide each count by 5. What do the shares add up to?
+>
+> Check your answer
+>
+> | Category  | Tally | Count | Share of days |
+> |-----------|-------|------:|--------------:|
+> | Sunny     | III   |     3 |     3/5 = 60% |
+> | Cloudy    | I     |     1 |     1/5 = 20% |
+> | Rainy     | I     |     1 |     1/5 = 20% |
+> | **Total** |       | **5** |      **100%** |
+>
+> The counts add up to the number of days, and the shares add up to 100%.
+
+**Why do the totals come out exactly 5 and 100%?** Every day falls into exactly one category, so nothing is counted twice and nothing is left out. That is also why the shares must add up to 1 — the derivation below makes it precise.
+
+**See it.** The bars below have a height equal to the count of each category; the share is the count divided by the total, computed by the page from the same five days.
+
+``` js
+forkDays = [
+  {weather: "Sunny", rating: 4},
+  {weather: "Sunny", rating: 5},
+  {weather: "Rainy", rating: 3},
+  {weather: "Cloudy", rating: 4},
+  {weather: "Sunny", rating: 4}
+]
+```
+
+``` js
+{
+  const cats = ["Sunny", "Cloudy", "Rainy"];
+  const counts = cats.map(c => forkDays.filter(d => d.weather === c).length);
+  const n = counts.reduce((a, b) => a + b, 0);
+  const W = 420, H = 200, base = 150, unit = 30, BLUE = "steelblue";
+  let g = "";
+  cats.forEach((c, i) => {
+    const x = 50 + i * 120, h = counts[i] * unit;
+    g += `<rect x="${x}" y="${base - h}" width="80" height="${h}"
+      fill="${BLUE}" fill-opacity="0.6" stroke="${BLUE}"/>`;
+    g += `<text x="${x + 40}" y="${base - h - 6}" text-anchor="middle"
+      fill="currentColor" font-size="13">n = ${counts[i]}
+      (${Math.round(100 * counts[i] / n)}%)</text>`;
+    g += `<text x="${x + 40}" y="${base + 18}" text-anchor="middle"
+      fill="currentColor" font-size="13">${c}</text>`;
+  });
+  g += `<line x1="40" x2="${W - 10}" y1="${base}" y2="${base}"
+    stroke="currentColor"/>`;
+  return html`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"
+    aria-label="Bar chart of the weather counts over five days">
+    ${g}</svg>`;
+}
+```
+
+``` js
+{
+  const cats = ["Sunny", "Cloudy", "Rainy"];
+  const counts = cats.map(c => forkDays.filter(d => d.weather === c).length);
+  const n = counts.reduce((a, b) => a + b, 0);
+  return html`<p><em>${cats.map((c, i) => `${c}: ${counts[i]}/${n} =
+    ${Math.round(100 * counts[i] / n)}%`).join(" · ")} — total
+    ${counts.reduce((a, b) => a + b, 0)} days.</em></p>`;
+}
+```
+
+In plain words: count how many times each category appears, divide by the total, and you have the share of each category.
+
+> **NOTE:**
+>
+> For a qualitative variable with \\k\\ categories (modalities) observed on \\n\\ individuals, category \\i\\ has an **absolute frequency** (count) \\n_i\\ and a **relative frequency** \\ f_i = \frac{n_i}{n}, \\ usually reported as a percentage. By construction, \\\sum\_{i=1}^{k} n_i = n\\ and \\\sum\_{i=1}^{k} f_i = 1\\.
+
+#### Notation decoder: absolute and relative frequency
+
+| Symbol | Read aloud | In our example (`weather`, five days) |
+|----|----|----|
+| \\k\\ | “k” | 3 categories (Sunny, Cloudy, Rainy) |
+| \\n\\ | “n” | 5 days |
+| \\n_i\\ | “n sub i” | the count of category \\i\\, e.g. \\n\_{\text{Sunny}} = 3\\ |
+| \\f_i\\ | “f sub i” | the share of category \\i\\, e.g. \\f\_{\text{Sunny}} = 3/5 = 60\\\\ |
+| \\\sum\_{i=1}^{k}\\ | “add up, for i from 1 to k” | \\3+1+1 = 5\\, and \\0.6+0.2+0.2 = 1\\ |
+
+**Whole formula as a sentence:** “the relative frequency of category \\i\\ is its count divided by the total number of individuals; the counts add up to \\n\\ and the relative frequencies add up to 1.”
+
+### 1.4 Cumulative frequency for ordinal data
+
+**Try it.** The ratings have a natural order (1 \< 2 \< 3 \< 4 \< 5). Complete the running totals for the five days.
+
+| Rating | Count | Running count | Running share |
+|--------|------:|--------------:|--------------:|
+| 1      |     0 |             ? |             ? |
+| 2      |     0 |             ? |             ? |
+| 3      |     1 |             ? |             ? |
+| 4      |     3 |             ? |             ? |
+| 5      |     1 |             ? |             ? |
+
+1.  Each running count is the count of that row plus the running count of the row above.
+2.  Divide each running count by 5. What share of days had a rating of 4 or less?
+
+Check your answer
+
+| Rating | Count | Running count | Running share |
+|--------|------:|--------------:|--------------:|
+| 1      |     0 |             0 |            0% |
+| 2      |     0 |             0 |            0% |
+| 3      |     1 |             1 |           20% |
+| 4      |     3 |             4 |           80% |
+| 5      |     1 |             5 |          100% |
+
+80% of the days had a rating of 4 or less. The last running count is always \\n = 5\\ and the last running share is always 100%.
+
+**See it.** Each bar of the figure below is a rating level, in order; the number under each bar is the running total of the bar heights from the left, computed from the same five days.
+
+``` js
+{
+  const levels = [1, 2, 3, 4, 5];
+  const counts = levels.map(l => forkDays.filter(d => d.rating === l).length);
+  const n = counts.reduce((a, b) => a + b, 0);
+  let run = 0;
+  const cum = counts.map(c => (run += c));
+  const W = 420, H = 230, base = 150, unit = 30, BLUE = "steelblue";
+  let g = "";
+  levels.forEach((l, i) => {
+    const x = 40 + i * 72, h = counts[i] * unit;
+    g += `<rect x="${x}" y="${base - h}" width="50" height="${h}"
+      fill="${BLUE}" fill-opacity="0.6" stroke="${BLUE}"/>`;
+    g += `<text x="${x + 25}" y="${base - h - 6}" text-anchor="middle"
+      fill="currentColor" font-size="13">${counts[i]}</text>`;
+    g += `<text x="${x + 25}" y="${base + 18}" text-anchor="middle"
+      fill="currentColor" font-size="13">rating ${l}</text>`;
+    g += `<text x="${x + 25}" y="${base + 40}" text-anchor="middle"
+      fill="darkorange" font-size="13">N = ${cum[i]}
+      (${Math.round(100 * cum[i] / n)}%)</text>`;
+  });
+  g += `<line x1="30" x2="${W - 10}" y1="${base}" y2="${base}"
+    stroke="currentColor"/>`;
+  return html`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img"
+    aria-label="Bar chart of ratings in order with running totals">
+    ${g}</svg>`;
+}
+```
+
+In plain words: for ordinal data like `satisfaction_rating` (1 \< 2 \< 3 \< 4 \< 5), you can ask “what share of days had a rating of 3 or less?” and the cumulative frequency answers it.
+
+> **TIP:**
+>
+> If the categories have a natural order (ordinal), you can cumulate: \\ N_i^{+} = \sum\_{j=1}^{i} n_j, \qquad F_i^{+} = \frac{N_i^{+}}{n}. \\ \\N_i^{+}\\ is the running total of counts up to and including category \\i\\; \\F_i^{+}\\ is the running share. For nominal data, cumulative frequencies are meaningless because there is no order.
+
+#### Notation decoder: cumulative frequency
+
+| Symbol | Read aloud | In our example (ratings, five days) |
+|----|----|----|
+| \\n_j\\ | “n sub j” | the count of rating \\j\\, e.g. \\n_4 = 3\\ |
+| \\\sum\_{j=1}^{i}\\ | “add up, for j from 1 to i” | stop at the rating \\i\\ you ask about |
+| \\N_i^{+}\\ | “capital N sub i plus” | the running count: \\N_4^{+} = 0+0+1+3 = 4\\ |
+| \\n\\ | “n” | 5 days |
+| \\F_i^{+}\\ | “capital F sub i plus” | the running share: \\F_4^{+} = 4/5 = 80\\\\ |
+
+**Whole formula as a sentence:** “the cumulative count up to category \\i\\ is the sum of the counts of categories 1 through \\i\\; the cumulative frequency is that running count divided by the total.”
+
+### 1.5 Nominal vs ordinal — choosing the chart
+
+**Try it.** Decide, for each column, whether it is nominal or ordinal, and which chart you would use.
+
+| Column                           | Nominal or ordinal? | Chart? |
+|----------------------------------|---------------------|--------|
+| `weather` (Sunny, Cloudy, Rainy) | ?                   | ?      |
+| `satisfaction_rating` (1 to 5)   | ?                   | ?      |
+
+Then compute the angle of the Sunny slice if you drew a pie chart of the five days.
+
+Check your answer
+
+| Column | Nominal or ordinal? | Chart? |
+|----|----|----|
+| `weather` | nominal (no order) | bar chart, or pie chart (3 categories) |
+| `satisfaction_rating` | ordinal (1 \< … \< 5) | bar chart, categories in order 1 to 5 |
+
+Sunny’s share is 60%, so its slice spans \\0.6 \times 360° = 216°\\ (Cloudy and Rainy: \\72°\\ each; \\216°+72°+72° = 360°\\).
+
+**See it.** The two bar charts above are the right pictures: the weather bars can be in any order, while the rating bars must follow 1 to 5, because the running totals only make sense in that order. A pie chart has no starting point, so it could not show that order.
+
+In plain words: a pie chart slices a circle; it has no beginning or end, so it cannot show order. A bar chart can be sorted by the meaningful order of the categories.
+
+> **NOTE:**
+>
+> - **Nominal** (no order): bar chart (categories in any order) or pie chart (if few categories). The bar order is arbitrary; alphabetical or by frequency are common choices.
+> - **Ordinal** (natural order): bar chart with categories **in their natural order**. A pie chart is not appropriate because it ignores the order.
+
+### 1.6 The mode
+
+**Try it.** In the two frequency tables you built, which category has the highest count? Is it the same kind of answer for `weather` and for `satisfaction_rating`?
+
+Check your answer
+
+`weather`: Sunny (3 days). `satisfaction_rating`: 4 (3 days). In both cases the answer is a **category**, not a number computed from the data: you cannot average words, but you can always name the most common one.
+
+**See it.** In both bar charts above, the mode is the tallest bar.
+
+In plain words: the mode is the “most common” category.
+
+> **TIP:**
+>
+> The **mode** is the category with the highest absolute frequency \\n_i\\. For a frequency table, it is simply the row with the largest count.
+
+#### Notation decoder: mode of a qualitative variable
+
+| Symbol | Read aloud | In our example (five days) |
+|----|----|----|
+| \\n_i\\ | “n sub i” | the count of category \\i\\: 3, 1, 1 for Sunny, Cloudy, Rainy |
+| mode | “the modal category” | Sunny, the row with the largest \\n_i\\ |
+
+**Whole formula as a sentence:** “the mode is the category whose absolute frequency is the largest.”
+
+## 2 Worked example
+
+We use the **Harbour 30-day subset** (sheet `harbour_30d`). The variable `weather` (nominal, 3 categories) and `satisfaction_rating` (ordinal, 5 categories) are summarised below.
+
+### 2.1 `weather` (nominal, \\n=30\\)
+
+| Category  | \\n_i\\ | \\f_i\\ (%) |
+|-----------|--------:|------------:|
+| Sunny     |      13 |        43.3 |
+| Cloudy    |      12 |        40.0 |
+| Rainy     |       5 |        16.7 |
+| **Total** |  **30** |   **100.0** |
+
+**Step 1 — counts.** Each day’s `weather` value is tallied: 13 Sunny, 12 Cloudy, 5 Rainy; \\13+12+5=30=n\\. ✓
+
+**Step 2 — relative frequencies.** \\f\_{\text{Sunny}} = 13/30 = 43.3\\\\, \\f\_{\text{Cloudy}} = 12/30 = 40.0\\\\, \\f\_{\text{Rainy}} = 5/30 = 16.7\\\\; the three sum to \\100.0\\\\.
+
+**Step 3 — choosing a chart.** `weather` is nominal with only 3 categories: both a **bar chart** (one bar per category, height = count or frequency) and a **pie chart** (one slice per category, angle \\= f_i \times 360°\\) are appropriate. Sunny’s slice spans \\0.433 \times 360° \approx 156°\\; Cloudy’s \\\approx 144°\\; Rainy’s \\\approx 60°\\.
+
+**Step 4 — mode.** The modal category is **Sunny** (\\n_i = 13\\).
+
+### 2.2 `satisfaction_rating` (ordinal, \\n=30\\)
+
+| Rating | \\n_i\\ | \\f_i\\ (%) | \\N_i^{+}\\ | \\F_i^{+}\\ (%) |
+|--------|--------:|------------:|------------:|----------------:|
+| 1      |       0 |         0.0 |           0 |             0.0 |
+| 2      |       6 |        20.0 |           6 |            20.0 |
+| 3      |       6 |        20.0 |          12 |            40.0 |
+| 4      |      16 |        53.3 |          28 |            93.3 |
+| 5      |       2 |         6.7 |          30 |           100.0 |
+
+**Step 1 — counts and shares.** Tallied from the 30 days. No day was rated 1, but the category stays in the table with a count of 0: an ordinal scale keeps all its levels.
+
+**Step 2 — cumulative frequencies.** \\N_i^{+}\\ and \\F_i^{+}\\ are the running totals. For example, \\F_3^{+} = 40.0\\\\ means 40% of days had a rating of 3 or less.
+
+**Step 3 — chart.** A **bar chart** with categories in order 1, 2, 3, 4, 5. The bars show the distribution’s shape: more than half of the days are rated 4.
+
+**Step 4 — mode.** The modal category is **4** (\\n_i = 16\\).
+
+## 3 Proof / derivation
+
+> **CAUTION:**
+>
+> Let a qualitative variable have \\k\\ categories with counts \\n_1, \dots, n_k\\, and let \\n = \sum\_{i=1}^{k} n_i\\ be the total number of individuals (every individual falls into exactly one category, so the counts partition the population — the same partition idea used for PivotTable groups in Module 1). Then \\ \sum\_{i=1}^{k} f_i = \sum\_{i=1}^{k} \frac{n_i}{n} = \frac{1}{n}\sum\_{i=1}^{k} n_i = \frac{n}{n} = 1. \\ For “The Wandering Fork” `weather`: \\f\_{\text{Sunny}}+f\_{\text{Cloudy}}+f\_{\text{Rainy}} = 0.433+0.400+0.167 = 1.000\\. ✓
+
+## 4 Visual intuition
+
+The pie chart’s geometry makes the frequency-sum-to-1 property *visible*: the three slices’ angles, \\156°+144°+60°=360°\\, always complete a full circle no matter how the 30 days split across Sunny/Cloudy/Rainy — exactly as the algebra above guarantees.
+
+For ordinal data, the bar chart with ordered categories makes the cumulative frequency visible: the running total of bar heights up to category \\i\\ is exactly \\N_i^{+}\\.
+
+## 5 Interactive demo
+
+> **IMPORTANT:**
+>
+> TODO: an interactive frequency table builder (type categories and counts, see the bar/pie chart update) would be a good OJS demo for this module.
+
+## 6 Exercises
+
+All exercises below are done by hand; the Excel ones are in the [homework](#homework-excel-lab).
+
+**Exercise 1 (Frequency table for `satisfaction_rating`)** Using the worked-example table for `satisfaction_rating`, verify that the cumulative frequencies \\N_i^{+}\\ and \\F_i^{+}\\ are correct. What percentage of days had a rating of 3 or less?
+
+Solution
+
+\\F_3^{+} = 40.0\\\\ (from the table). Check: \\N_3^{+} = 0+6+6 = 12\\; \\12/30 = 0.400 = 40.0\\\\.
+
+**Exercise 2 (Choosing the right chart)** Which chart type(s) would you use for `weather`, and why would a **line chart** be a poor choice?
+
+Solution
+
+A bar chart or a pie chart, because `weather` is nominal qualitative with no meaningful order between Sunny, Cloudy, and Rainy. A line chart implies a continuous progression *between* consecutive categories, which does not exist here — connecting “Sunny” to “Cloudy” to “Rainy” with a line would suggest an ordering that isn’t real.
+
+**Exercise 3 (Pie-slice angle)** What angle does Cloudy’s pie slice occupy, and what percentage of the circle’s area does it represent?
+
+Solution
+
+Angle \\= f\_{\text{Cloudy}} \times 360° = 0.400 \times 360° = 144°\\. Since a pie chart’s slice area is proportional to its angle, Cloudy also represents \\40.0\\\\ of the circle’s area — matching its relative frequency exactly, by construction.
+
+**Exercise 4 (Formula to words)** Read \\F_i^{+} = \dfrac{1}{n}\sum\_{j=1}^{i} n_j\\ aloud as one sentence. Which indicator is it, and for which kind of variable does it make sense?
+
+Solution
+
+“The cumulative relative frequency up to category \\i\\ is the sum of the counts of categories 1 through \\i\\, divided by the total number \\n\\ of individuals.” It is the running share, and it only makes sense for **ordinal** variables, where the categories have an order.
+
+**Exercise 5 (Words to formula)** Write in symbols: (a) “the share of category \\i\\ is its count divided by the total”; (b) “the counts of the \\k\\ categories add up to the total”; (c) “the running count up to category \\i\\”.
+
+Solution
+
+1.  \\f_i = \dfrac{n_i}{n}\\. (b) \\\sum\_{i=1}^{k} n_i = n\\.
+2.  \\N_i^{+} = \sum\_{j=1}^{i} n_j\\.
+
+## 7 Common mistakes
+
+> **WARNING:**
+>
+> - **Using a pie chart for ordinal data.** A pie chart destroys the order information; use a bar chart with categories in their natural order.
+> - **Cumulative frequencies for nominal data.** \\N_i^{+}\\ and \\F_i^{+}\\ only make sense when the categories have a natural order.
+> - **Forgetting that percentages may not sum to exactly 100% due to rounding.** \\43.3\\ + 40.0\\ + 16.7\\ = 100.0\\\\ here, but with more categories you might get \\99.9\\\\ or \\100.1\\\\ — this is a rounding artifact, not an error.
+> - **Using `COUNT` instead of `COUNTA` for text categories.** `COUNT` only counts numbers; `COUNTA` counts everything non-empty.
+
+## 8 Exit check
+
+Five minutes, no calculator needed.
+
+1.  In one sentence, what does a relative frequency \\f_i\\ measure?
+2.  Why are cumulative frequencies meaningless for `weather`?
+3.  Read \\f_i = n_i / n\\ aloud as a sentence.
+4.  Five days are rated 1, 2, 2, 4, 5. Build the table of counts and running shares, and give the mode.
+5.  Which chart would you use for the five ratings, and why not a pie chart?
+
+Answers
+
+1.  The share of the \\n\\ individuals that fall into category \\i\\: its count divided by the total.
+2.  `weather` is nominal: there is no order, so “running total up to Rainy” depends on an arbitrary listing order.
+3.  “The relative frequency of category \\i\\ is its count divided by the total number of individuals.”
+4.  Counts for ratings 1 to 5: 1, 2, 0, 1, 1. Running counts: 1, 3, 3, 4, 5; running shares: 20%, 60%, 60%, 80%, 100%. The mode is rating 2 (2 days).
+5.  A bar chart with the ratings in the order 1 to 5: the rating is ordinal, and a pie chart has no starting point, so it cannot show the order.
+
+## 9 Homework — Excel lab
+
+Reproduce, in Excel, every table you built by hand in class, with `COUNTIF`, `COUNTIFS`, running sums, a PivotTable and conditional formatting, then apply them to the full dataset.
+
+**Estimated time:** about 50–60 minutes. Any spreadsheet application works, at home or in a campus computer room.
+
+**Follow-up:** a 10-minute debrief at the start of [Module 3](module-03.qmd). Bring your Step 0 results and any question on Homework 1–3.
+
+### 9.1 Using Excel
+
+The sheet `harbour_30d` of `wandering-fork.xlsx` has the data. The complete list of function names, with their French equivalents, is on the [Excel functions](../../teaching/data-description/excel-functions.llms.md) page.
+
+| Concept | Excel function / steps |
+|----|----|
+| Count one category | `=COUNTIF(range, "Sunny")` |
+| Count with several criteria | `=COUNTIFS(range1, criterion1, range2, criterion2, …)` |
+| Relative frequency | `=count/COUNT(range)` (or `/COUNTA` for text data) |
+| Cumulative count | First row `=count`; below `=above + current` (running sum) |
+| Cumulative share | `=cumulative_count/COUNT(range)` |
+| Bar chart | Select the summary table → **Insert → Chart → Clustered Column** |
+| Pie chart (nominal only) | Select the summary table → **Insert → Chart → Pie** |
+| PivotTable counts | **Insert → PivotTable**, put the qualitative field in **Rows** and the same field (or any non-empty field) in **Values** set to *Count* |
+| Conditional formatting | Select the count column → **Home → Conditional Formatting → Highlight Cell Rules → Greater Than** (or a custom formula) |
+
+For the **full table** (120 days per franchise) use the Excel Table `tblFork` and add the franchise as one more condition, for example `=COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny")`.
+
+### 9.2 Step 0 — check your class results
+
+1.  Type the five weather values (Sunny, Sunny, Rainy, Cloudy, Sunny) in `A2:A6` and the five ratings (4, 5, 3, 4, 4) in `B2:B6`.
+2.  Count each weather category with `=COUNTIF($A$2:$A$6, "Sunny")` (and the same for Cloudy and Rainy), then divide by `=COUNTA($A$2:$A$6)`.
+3.  Count each rating level 1 to 5 with `=COUNTIF($B$2:$B$6, 1)` (and so on), then build the running count (`=above + current`) and the running share.
+4.  Compare every result with your hand computation.
+
+Expected results
+
+| Category | Count | Share |
+|----------|------:|------:|
+| Sunny    |     3 |   60% |
+| Cloudy   |     1 |   20% |
+| Rainy    |     1 |   20% |
+
+| Rating | Count | Running count | Running share |
+|--------|------:|--------------:|--------------:|
+| 1      |     0 |             0 |            0% |
+| 2      |     0 |             0 |            0% |
+| 3      |     1 |             1 |           20% |
+| 4      |     3 |             4 |           80% |
+| 5      |     1 |             5 |          100% |
+
+### 9.3 Homework 1 (Excel) — Build the frequency table with `COUNTIFS`
+
+In `wandering-fork.xlsx`, filter `franchise` to “Harbour” and use `COUNTIFS` to build the frequency table for `weather` over all 120 days. What are the counts and relative frequencies?
+
+Solution
+
+Formula for Sunny: `=COUNTIFS(tblFork[franchise],"Harbour",tblFork[weather],"Sunny")`. You should obtain: Sunny 53 (44.2%), Cloudy 42 (35.0%), Rainy 25 (20.8%). The proportions are close to the 30-day subset (43.3%, 40.0%, 16.7%) because the data were generated with the same weather probabilities; the gaps of a few points are ordinary chance variation.
+
+### 9.4 Homework 2 (Excel) — PivotTable and conditional formatting
+
+Build a PivotTable for `satisfaction_rating` (Harbour, 120 days) with the rating in **Rows** and **Count of rating** in **Values**. Apply conditional formatting to highlight the modal category (the one with the highest count). What is the mode?
+
+Solution
+
+The PivotTable gives counts: 1→4, 2→21, 3→40, 4→45, 5→10 (total 120). The mode is **4** (45 days). Conditional formatting rule: `=B2=MAX($B$2:$B$6)` applied to the count column highlights the row for rating 4.
+
+### 9.5 Homework 3 (Excel) — Campus weather comparison
+
+Build the `weather` frequency table for **Campus** (120 days) using `COUNTIFS` on `tblFork`. Compare the relative frequencies with Harbour’s. Are they similar?
+
+Solution
+
+Campus: Sunny 50 (41.7%), Cloudy 48 (40.0%), Rainy 22 (18.3%). The proportions are similar to Harbour’s (44.2%, 35.0%, 20.8%) because both franchises were generated with the same weather probabilities; the remaining differences are chance variation.
+
+## 10 Further reading
+
+| Source | Where | What it adds | Time | Verified |
+|----|----|----|----|----|
+| OpenStax IBS 2e | §2.1 *Display Data* (book pages 46–65) — the parts on bar graphs, pie charts, and frequency tables | A second explanation of qualitative frequency tables and charts with more examples | ~19 pages | checked against the PDF contents (T046) |
+| Khan Academy | Unit *Analyzing categorical data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on frequency tables, bar charts, and pie charts | Short videos and practice questions on building and reading qualitative charts | ~30–45 min (estimate) | link check pending (T048) |
+| Khan Academy | Unit *Displaying and comparing quantitative data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on categorical data displays | Additional practice on bar charts and pie charts | ~20 min (estimate) | link check pending (T048) |
+
+OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.

@@ -1,0 +1,54 @@
+![](assets/profile.jpeg)
+
+# About
+
+[ GitHub](https://github.com/guillaumegilles) [ LinkedIn](https://www.linkedin.com/in/guillaumegilles) [ Kaggle](https://www.kaggle.com/guillaumegilles)
+
+# Economics through the lens of mathematics and AI
+
+I am an economist and statistician specializing in quantitative economic and financial analysis. My interests lie at the intersection of economics, finance, mathematics, econometrics, machine learning, and deep learning. I work across the machine-learning lifecycle, from data preparation and modelling to evaluation, interpretation, and reporting. I am particularly interested in applying advanced quantitative methods to financial forecasting, nonlinear economic dynamics, risk analysis, and complex economic systems.
+
+## Economics and Finance
+
+My professional background has given me extensive experience in economic analysis, financial strategy, and the interpretation of economic and financial information.
+
+I am especially interested in the forces that shape companies, financial institutions, and the wider economy: incentives, risk, uncertainty, market dynamics, investment decisions, and the interaction between individual behaviour and complex systems.
+
+Alongside my professional activities, I teach Financial Analysis and Business Strategy at INSEEC. Teaching allows me to connect financial theory with practical decision-making and to help students understand what financial statements reveal about a company’s performance, strategy, risks, and future prospects.
+
+## Mathematics and quantitative modelling
+
+Mathematics provides the common language connecting my interests.
+
+Statistics, probability, econometrics, optimisation, and nonlinear dynamics offer powerful ways to describe relationships that are difficult to observe directly. They also provide a disciplined framework for testing assumptions, measuring uncertainty, and distinguishing genuine signals from apparent patterns.
+
+I am particularly drawn to systems that evolve through feedback, adaptation, and nonlinear interactions. This has led me to explore research questions at the intersection of economics, applied mathematics, econometrics, and complex systems.
+
+## Machine learning and deep learning
+
+Machine learning extends this quantitative approach by making it possible to investigate large, complex, and sometimes unstructured datasets.
+
+I work across the machine-learning lifecycle, including:
+
+- Data collection, preparation, and exploratory analysis;
+- Feature engineering and variable selection;
+- Statistical and predictive modelling;
+- Model training, validation, and evaluation;
+- Interpretation and communication of results;
+- Reporting and data visualisation.
+
+My interest is not limited to predictive performance. I also care about understanding what a model has learned, how robust its conclusions are, and whether its results can support meaningful economic or financial decisions.
+
+Deep learning is a natural extension of this work. Its ability to model complex relationships creates promising opportunities in areas such as financial forecasting, risk analysis, time-series modelling, anomaly detection, and the analysis of textual or alternative data.
+
+## Continuous learning
+
+Economics, finance, and artificial intelligence are evolving rapidly. Working at their intersection requires both strong foundations and a willingness to keep learning.
+
+I continuously develop my knowledge of quantitative methods, machine learning, deep learning, and applied mathematics. I am motivated by technically challenging projects, interdisciplinary collaboration, and opportunities to transform data into useful economic and financial insights.
+
+Ultimately, my goal is to contribute to meaningful projects that combine **analytical rigour, technological innovation, and positive real-world impact**.
+
+> **NOTE:**
+>
+> If my work is useful to you, consider [sponsoring me on GitHub](https://github.com/sponsors/guillaumegilles).

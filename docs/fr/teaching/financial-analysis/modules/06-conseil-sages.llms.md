@@ -1,0 +1,338 @@
+# Introduction
+
+Durée : **135 min** (dont 25 min de théorie) \| Équipes : **3–5 étudiants** \| XP : **+200** *Boss de Jour 2*
+
+## Boss de fin de Jour 2
+
+Cette quête est le **défi final** de la journée. Elle mobilise l’ensemble des compétences acquises lors des Quêtes 1 à 5 : lecture des états financiers, calcul de ratios, analyse stratégique. Seules les équipes les plus rigoureuses et les mieux préparées sortiront victorieuses !
+
+## Objectifs pédagogiques
+
+- Comprendre les différences fondamentales entre sociétés cotées et non cotées (reporting, normes, gouvernance).
+- Maîtriser les référentiels comptables : IFRS (cotées) vs normes françaises PCG (non cotées).
+- Calculer et interpréter des multiples de valorisation boursière (PER, Price/Book).
+- Estimer la valeur d’une PME non cotée par la méthode des multiples (EV/EBITDA).
+- Produire une analyse comparative et formuler une recommandation d’investissement argumentée.
+
+## Prérequis et pré-lecture
+
+- Quêtes 1 à 5 de la formation (états financiers, ratios, structure financière, liquidité).
+- Pré-lecture : [La cotation Banque de France](../../../../fr/teaching/financial-analysis/modules/banque-france-cotation.llms.md).
+- Pour mémoire : [Formules](../../../../fr/teaching/financial-analysis/modules/formules.llms.md), [Performances](../../../../fr/teaching/financial-analysis/modules/performances.llms.md) et [Structure financière](../../../../fr/teaching/financial-analysis/modules/structure-fi.llms.md).
+
+## Plan de la séance
+
+| Séquence                                              |       Durée |
+|-------------------------------------------------------|------------:|
+| Théorie en direct (voir plan ci-dessous)              |      25 min |
+| Étape 1 — Tableau comparatif des ratios               |      15 min |
+| Étape 2 — Multiples boursiers de PHARMAPLUS           |      15 min |
+| Étape 3 — Valorisation de BIOTECH SERVICES            |      20 min |
+| Étape 4 — Analyse des différences de reporting        |      10 min |
+| Synthèse, recommandation et préparation du Boss       |      20 min |
+| Présentation orale devant le Conseil (toutes équipes) |      30 min |
+| **Total**                                             | **135 min** |
+
+### Théorie en direct (25 min)
+
+1.  **(5 min)** Cotées vs non cotées : IFRS vs PCG, DEU, AMF, transparence.
+2.  **(8 min)** Multiples boursiers : PER et Price/Book, lecture et limites.
+3.  **(7 min)** Valorisation par multiples EV/EBITDA et passage de l’EV à la valeur des capitaux propres.
+4.  **(5 min)** Pièges de la comparaison et consignes du Boss.
+
+------------------------------------------------------------------------
+
+## Contexte narratif — Mission
+
+Le **Conseil des Sages** de StratFin Corp doit arbitrer entre deux dossiers d’investissement reçus le même jour. D’un côté, un grand groupe pharmaceutique coté en bourse ; de l’autre, une PME médicale prometteuse mais non cotée. Les deux opèrent dans le **secteur de la santé**, mais leurs profils financiers, leurs obligations de reporting et leurs méthodes de valorisation sont radicalement différents.
+
+Votre mission : **produire une analyse comparative rigoureuse** et recommander au Conseil lequel des deux dossiers présente le meilleur profil risque/rendement.
+
+------------------------------------------------------------------------
+
+## Rappels — Sociétés cotées vs non cotées
+
+### Sociétés cotées
+
+| Caractéristique | Détail |
+|----|----|
+| Place de cotation | Euronext Paris (CAC 40, SBF 120, Euronext Growth) |
+| Référentiel comptable | **IFRS** (normes internationales, obligatoires) |
+| Document de référence | **DEU** (Document d’Enregistrement Universel), déposé à l’AMF |
+| Surveillance | AMF (Autorité des Marchés Financiers) |
+| Valorisation | **Prix de marché** → PER, Price/Book, EV/EBITDA |
+| Transparence | Très élevée — rapports semestriels, trimestriels, communiqués |
+
+> **TIP:**
+>
+> \\\text{PER} = \frac{\text{Cours de l'action}}{\text{BPA}} = \frac{\text{Capitalisation boursière}}{\text{Résultat net}}\\
+>
+> \\\text{Price/Book} = \frac{\text{Capitalisation boursière}}{\text{Capitaux propres comptables}}\\
+>
+> Le PER indique combien d’années de bénéfices les investisseurs paient ; le Price/Book compare le prix de marché à la valeur comptable.
+>
+> Un PER élevé traduit des anticipations de forte croissance future. Un Price/Book \> 1 signifie que le marché valorise des actifs immatériels (marque, brevets, talent) au-delà de la valeur comptable.
+
+### Sociétés non cotées
+
+| Caractéristique | Détail |
+|----|----|
+| Référentiel comptable | **PCG** (Plan Comptable Général, normes françaises) |
+| Document de référence | Liasses fiscales, comptes annuels déposés au greffe |
+| Surveillance | Commissaires aux comptes (si seuils dépassés) |
+| Valorisation | Pas de prix de marché → **DCF** ou **multiples sectoriels** |
+| Transparence | Limitée — moins d’informations publiques |
+
+> **TIP:**
+>
+> \\\text{Valeur d'Entreprise (EV)} = \text{Multiple sectoriel} \times \text{EBITDA}\\
+>
+> \\\text{Valeur des Capitaux propres} = \text{EV} - \text{Dettes financières nettes}\\
+>
+> On applique à l’EBITDA de la cible le multiple payé pour des entreprises comparables, puis on retire la dette nette pour obtenir ce qui revient aux actionnaires.
+>
+> Le multiple sectoriel de référence est généralement observé sur les transactions comparables ou les cotées du secteur.
+
+------------------------------------------------------------------------
+
+## Étude de cas — Dossiers d’investissement
+
+### Dossier A — PHARMAPLUS SA (société cotée)
+
+**Secteur :** Pharmacie — Groupe intégré (R&D, production, distribution)\
+**Cotation :** CAC Mid 60, Euronext Paris\
+**Référentiel :** IFRS
+
+**Données financières (exercice N, en M€) :**
+
+|                     Poste | Montant |
+|--------------------------:|--------:|
+|        Chiffre d’affaires |   2 500 |
+|                      EBIT |     375 |
+|              Résultat net |     250 |
+|          Capitaux propres |   1 200 |
+| Dettes financières nettes |     800 |
+|  Capitalisation boursière |   3 600 |
+
+**Ratios clés :**
+
+| Indicateur | Valeur |
+|------------|--------|
+| Marge EBIT | 15,0%  |
+| ROCE       | 18,0%  |
+| ROE        | 20,8%  |
+| Gearing    | 0,67   |
+| PER        | 14,4x  |
+| Price/Book | 3,0x   |
+
+------------------------------------------------------------------------
+
+### Dossier B — BIOTECH SERVICES SARL (société non cotée)
+
+**Secteur :** Services médicaux — Analyses biologiques externalisées\
+**Statut :** PME familiale non cotée\
+**Référentiel :** PCG (normes françaises)
+
+**Données financières (exercice N, en M€) :**
+
+|                     Poste | Montant |
+|--------------------------:|--------:|
+|        Chiffre d’affaires |      15 |
+|                      EBIT |     1,5 |
+|                    EBITDA |     2,0 |
+|              Résultat net |     0,9 |
+|          Capitaux propres |     3,0 |
+| Dettes financières nettes |     4,0 |
+
+**Ratios clés :**
+
+| Indicateur | Valeur |
+|------------|--------|
+| Marge EBIT | 10,0%  |
+| ROCE       | 10,0%  |
+| ROE        | 30,0%  |
+| Gearing    | 1,33   |
+
+**Pourquoi le ROE de BIOTECH est-il si élevé ?** ROE = 30% alors que ROCE = 10% seulement. C’est l’**effet de levier** qui joue à plein : avec un Gearing de 1,33, la dette amplifie fortement la rentabilité financière — mais amplifie aussi le risque en cas de retournement.
+
+------------------------------------------------------------------------
+
+## Exemple travaillé — De l’EV aux capitaux propres de BIOTECH
+
+Avec un multiple sectoriel de 6x et un EBITDA de 2,0 M€ :
+
+- EV = 6 × 2,0 = **12,0 M€**.
+- Valeur des capitaux propres = 12,0 − 4,0 = **8,0 M€**.
+- Comparée aux capitaux propres comptables (3,0 M€), la valeur ressort à 8,0 / 3,0 ≈ **2,7x** : l’écart traduit la valeur immatérielle (clientèle, savoir-faire, accréditations).
+
+> **CAUTION:**
+>
+> **Pourquoi retirer la dette ?** L’EV est la valeur de l’*activité*, financée par les actionnaires **et** les prêteurs. Les actionnaires ne possèdent que ce qui reste une fois les prêteurs servis :
+>
+> \\\text{EV} = \text{Valeur des capitaux propres} + \text{Dette financière nette} + \text{Intérêts minoritaires} - \text{Actifs associés}\\
+>
+> On isole la valeur des capitaux propres (part du groupe) :
+>
+> \\\text{Equity value} = \text{EV} - \text{Dette nette} - \text{Minoritaires} + \text{Associés}\\
+>
+> En clair : on part de la valeur de l’activité, on enlève ce qui revient aux prêteurs et aux actionnaires minoritaires, et on ajoute les participations non consolidées dans l’EV.
+>
+> **Application pas à pas (BIOTECH SERVICES, M€) :**
+>
+> 1.  EBITDA = 2,0 et multiple sectoriel = 6x, donc \\\text{EV} = 6 \times 2{,}0 = 12{,}0\\.
+> 2.  Dette financière nette = 4,0, donc \\12{,}0 - 4{,}0 = 8{,}0\\.
+> 3.  Aucun minoritaire ni associé n’apparaît dans le dossier : les deux ajustements valent 0 et l’Equity value est **8,0 M€**.
+> 4.  Variante pédagogique (hypothèses fictives : minoritaires 0,5 et associés 0,3) : \\12{,}0 - 4{,}0 - 0{,}5 + 0{,}3 = 7{,}8\\ M€.
+> 5.  Contrôle : \\8{,}0 + 4{,}0 = 12{,}0\\ = EV. Le pont est cohérent.
+
+------------------------------------------------------------------------
+
+## Travaux demandés
+
+### Étape 1 — Tableau comparatif des ratios (15 min)
+
+**Exercice 1 (Tableau comparatif des ratios)** Complétez le tableau de comparaison suivant. Calculez les valeurs manquantes et commentez chaque écart.
+
+| Indicateur      | PHARMAPLUS SA | BIOTECH SERVICES | Commentaire |
+|-----------------|---------------|------------------|-------------|
+| CA (M€)         | 2 500         | 15               |             |
+| Marge EBIT (%)  | 15,0%         | 10,0%            |             |
+| ROCE (%)        | 18,0%         | 10,0%            |             |
+| ROE (%)         | 20,8%         | 30,0%            |             |
+| Gearing         | 0,67          | 1,33             |             |
+| Marge nette (%) | *à calculer*  | *à calculer*     |             |
+
+Solution
+
+- Marge nette PHARMAPLUS = 250 / 2 500 = **10,0%**.
+- Marge nette BIOTECH = 0,9 / 15 = **6,0%**.
+- Commentaires : PHARMAPLUS est plus rentable sur l’activité (marges EBIT et nette plus élevées, ROCE de 18% contre 10%). BIOTECH affiche un ROE supérieur (30% contre 20,8%) grâce à un levier plus fort (Gearing 1,33 contre 0,67), donc avec davantage de risque. L’échelle diffère d’un facteur 167 sur le CA (2 500 / 15).
+
+### Étape 2 — Multiples boursiers de PHARMAPLUS (15 min)
+
+**Exercice 2 (Multiples boursiers de PHARMAPLUS)** À partir des données du Dossier A :
+
+1.  Vérifiez le **PER** : PER = Capitalisation / Résultat net = ?
+2.  Vérifiez le **Price/Book** : P/B = Capitalisation / Capitaux propres = ?
+3.  Calculez l’**EV** (Valeur d’Entreprise) : EV = Capitalisation + Dettes financières nettes = ?
+4.  Calculez le **multiple EV/EBITDA** de PHARMAPLUS (EBITDA ≈ EBIT + 30 M€ d’amortissements estimés, soit EBITDA = 405 M€).
+
+Solution
+
+1.  PER = 3 600 / 250 = **14,4x**.
+2.  P/B = 3 600 / 1 200 = **3,0x**.
+3.  EV = 3 600 + 800 = **4 400 M€**.
+4.  EV/EBITDA = 4 400 / 405 ≈ **10,9x**.
+
+### Étape 3 — Valorisation de BIOTECH SERVICES (20 min)
+
+**Exercice 3 (Valorisation de BIOTECH SERVICES)** BIOTECH SERVICES n’est pas cotée. Pour estimer sa valeur, utilisez la **méthode des multiples sectoriels**, en retenant le multiple EV/EBITDA calculé pour PHARMAPLUS comme référence sectorielle.
+
+1.  Rappel : EBITDA de BIOTECH = **2,0 M€**, multiple sectoriel = **6x** (ou celui calculé à l’étape 2 si inférieur).
+2.  Calculez l’**EV de BIOTECH** = Multiple × EBITDA.
+3.  Calculez la **valeur des capitaux propres** : Valeur FP = EV − Dettes financières nettes.
+4.  Comparez cette valeur à la valeur comptable des capitaux propres (3 M€). Que conclure sur la création de valeur immatérielle ?
+
+Solution
+
+1.  Le multiple de PHARMAPLUS (≈ 10,9x) est supérieur à 6x : on retient donc **6x**.
+2.  EV = 6 × 2,0 = **12,0 M€**.
+3.  Valeur FP = 12,0 − 4,0 = **8,0 M€**.
+4.  8,0 / 3,0 ≈ 2,7x la valeur comptable : un écart de 5,0 M€ de valeur immatérielle (clientèle, savoir-faire). Avec le multiple de 10,9x, on obtiendrait EV ≈ 21,7 M€ et capitaux propres ≈ 17,7 M€ : le choix du multiple pèse fortement sur le résultat, d’où l’intérêt d’une décote de taille et de liquidité pour une PME non cotée.
+
+### Étape 4 — Analyse des différences de reporting (10 min)
+
+**Exercice 4 (Différences de reporting)** Remplissez le tableau comparatif suivant :
+
+| Critère | PHARMAPLUS SA (cotée) | BIOTECH SERVICES (non cotée) |
+|----|----|----|
+| Référentiel comptable | IFRS | PCG |
+| Document principal | DEU (AMF) | Comptes annuels (greffe) |
+| Fréquence de reporting |  |  |
+| Informations disponibles |  |  |
+| Niveau de transparence |  |  |
+| Auditeurs / Contrôle |  |  |
+
+Solution
+
+| Critère | PHARMAPLUS SA (cotée) | BIOTECH SERVICES (non cotée) |
+|----|----|----|
+| Fréquence de reporting | Semestrielle et trimestrielle, plus communiqués | Annuelle |
+| Informations disponibles | Comptes consolidés, segments, risques, gouvernance, cours | Bilan, compte de résultat, annexe ; peu de détail |
+| Niveau de transparence | Très élevé | Limité |
+| Auditeurs / Contrôle | Commissaires aux comptes, AMF | Commissaires aux comptes si seuils dépassés |
+
+### Synthèse, recommandation et préparation du Boss (20 min)
+
+Cette séquence fusionne l’ancienne note de synthèse et la préparation de la présentation : vous rédigez **une seule note d’1 page**, qui sert aussi de trame à l’oral.
+
+**Exercice 5 (Note de synthèse et recommandation)** Rédigez une **note de synthèse d’1 page** destinée au Conseil des Sages, structurée ainsi, puis préparez vos diapositives à partir de cette note :
+
+1.  **Forces et faiblesses** de chaque dossier (financières et non financières).
+2.  **Risques spécifiques** identifiés (levier, liquidité, reporting, secteur).
+3.  **Recommandation argumentée** : dans quel dossier investir, et pourquoi ?
+
+Solution
+
+Exemple d’argumentation (plusieurs conclusions défendables) :
+
+1.  **Forces/faiblesses** : PHARMAPLUS — marges (EBIT 15%, nette 10%), ROCE 18%, gearing 0,67, transparence maximale, mais valorisation élevée (PER 14,4x, P/B 3,0x). BIOTECH — ROE 30%, valorisation attractive (≈ 8,0 M€ de capitaux propres), mais marge nette 6%, gearing 1,33, taille réduite, dépendance familiale.
+2.  **Risques** : levier et refinancement pour BIOTECH ; illiquidité des titres, information limitée, retraitements PCG/IFRS ; risque de marché et de valorisation pour PHARMAPLUS.
+3.  **Recommandation type** : PHARMAPLUS pour un profil risque/rendement équilibré et liquide ; BIOTECH seulement avec décote, audit approfondi et garanties, car son ROE est porté par le levier.
+
+#### Présentation orale devant le Conseil (30 min)
+
+Chaque équipe présente au Conseil des Sages (la classe + l’enseignant) sa recommandation en **5 minutes** : 4 min de présentation + 1 min de questions du Conseil. Avec 5 à 6 équipes, la séquence occupe les 30 minutes prévues.
+
+Structure recommandée pour la présentation :
+
+1.  **(0 min 30)** Synthèse des deux profils en une phrase chacun.
+2.  **(1 min 15)** Comparaison des ratios et points saillants.
+3.  **(1 min)** Méthode de valorisation de BIOTECH et résultat.
+4.  **(0 min 45)** Risques majeurs identifiés.
+5.  **(0 min 30)** Recommandation et argumentation.
+
+> **WARNING:**
+>
+> - Un ROE élevé peut refléter une forte performance **ou** un levier excessif.
+> - La taille des deux entités est radicalement différente : les ratios sont comparables, les risques absolus ne le sont pas.
+> - BIOTECH opère en normes PCG : des retraitements seraient nécessaires pour une comparaison strictement IFRS.
+
+------------------------------------------------------------------------
+
+## Livrables et format
+
+- **Tableau comparatif des ratios** complété et commenté.
+- **Calculs de valorisation** (PER, P/Book, EV/EBITDA) avec détail des étapes.
+- **Note de synthèse (1 page)** avec recommandation d’investissement.
+- **Support de présentation** (5 diapositives max).
+
+## Critères d’évaluation
+
+- Exactitude des ratios et cohérence des comparaisons : **25%**
+- Méthodologie de valorisation (multiples) : **20%**
+- Qualité de l’analyse comparative (reporting, normes, profils de risque) : **30%**
+- Qualité de la recommandation et de l’argumentation : **25%**
+
+## XP
+
+**+200 XP** — *Boss de Jour 2*.
+
+Le Conseil des Sages attend votre verdict — montrez que vous êtes dignes de siéger à la table des grands décideurs financiers !
+
+------------------------------------------------------------------------
+
+## À couper en premier si le temps manque
+
+1.  La variante avec minoritaires et associés de la dérivation (étape 4 du pas-à-pas).
+2.  Le tableau de reporting de l’étape 4 : à terminer à la maison.
+3.  La question 4 de l’étape 3 (comparaison avec le multiple de 10,9x).
+
+## Extension (hors séance)
+
+- Rédiger la note de synthèse complète d’une page avec retraitements PCG → IFRS illustratifs.
+- Refaire la valorisation de BIOTECH avec une fourchette de multiples (5x à 8x) et une décote d’illiquidité.
+
+> **IMPORTANT:**
+>
+> Widget Shinylive à créer : l’étudiant fait varier le multiple EV/EBITDA, la dette nette, les minoritaires et les associés, et observe l’Equity value de BIOTECH SERVICES.

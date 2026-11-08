@@ -1,0 +1,100 @@
+> **Données fictives — usage pédagogique uniquement.** Page réservée aux enseignants. Générée par `scripts/financial-analysis/generate-dataset.py` — ne pas éditer à la main.
+
+## Éliminations intragroupe (constantes, k€)
+
+| Opération | Montant (k€) |
+|----|----|
+| Vente de marchandises AUBÉPINE SA → AUBÉPINE NORD (CA et achats éliminés) | 200 |
+| Marge latente en stock éliminée (réserves consolidées) | 15 |
+| Prêt AUBÉPINE SA → VERGER Export (créance / dette éliminées) | 200 |
+| Dividendes intragroupe reçus par la mère (éliminés du CR) | 132 |
+
+## Écarts d’acquisition et intérêts minoritaires au bilan (k€)
+
+| Filiale | % | Prix des titres | EAQ 2023 | EAQ 2024 | EAQ 2025 | Mino 2023 | Mino 2024 | Mino 2025 |
+|----|----|----|----|----|----|----|----|----|
+| AUBÉPINE NORD SAS | 75 % | 1 400 | 524 | 381 | 214 | 292 | 340 | 396 |
+| AUBÉPINE SUD SAS | 80 % | 1 000 | 322 | 245 | 149 | 169 | 189 | 213 |
+| VERGER Export SARL | 60 % | 900 | 481 | 416 | 337 | 279 | 323 | 376 |
+
+## Intérêts minoritaires au résultat (k€)
+
+| Filiale                  | 2023 | 2024 | 2025 |
+|--------------------------|------|------|------|
+| AUBÉPINE NORD SAS        | 60   | 68   | 76   |
+| AUBÉPINE SUD SAS         | 27   | 31   | 36   |
+| VERGER Export SARL       | 50   | 60   | 69   |
+| **Total (CR consolidé)** | 137  | 159  | 181  |
+
+## Bilan consolidé (k€)
+
+**Actif**
+
+| Poste                                    | 2023   | 2024   | 2025   |
+|------------------------------------------|--------|--------|--------|
+| Immobilisations brutes                   | 4 600  | 5 180  | 5 760  |
+| Amortissements et dépréciations          | -1 310 | -1 670 | -2 030 |
+| Titres mis en équivalence (TERROIR 30 %) | 107    | 124    | 143    |
+| Écarts d’acquisition                     | 1 327  | 1 042  | 700    |
+| Stocks                                   | 1 235  | 1 335  | 1 435  |
+| Créances clients et comptes rattachés    | 1 230  | 1 330  | 1 430  |
+| Disponibilités                           | 1 905  | 2 063  | 2 327  |
+| **Total actif**                          | 9 094  | 9 404  | 9 765  |
+
+**Passif**
+
+| Poste                                    | 2023  | 2024  | 2025  |
+|------------------------------------------|-------|-------|-------|
+| Capital social                           | 2 000 | 2 000 | 2 000 |
+| Réserves consolidées                     | 1 054 | 1 348 | 1 690 |
+| Résultat net — part du groupe            | 680   | 784   | 890   |
+| Intérêts minoritaires                    | 740   | 852   | 985   |
+| Emprunts et dettes financières           | 3 430 | 3 160 | 2 870 |
+| Dettes fournisseurs et comptes rattachés | 1 190 | 1 260 | 1 330 |
+| **Total passif**                         | 9 094 | 9 404 | 9 765 |
+
+## Compte de résultat consolidé (k€)
+
+| Poste                        | 2023   | 2024   | 2025   |
+|------------------------------|--------|--------|--------|
+| Chiffre d’affaires           | 6 100  | 6 600  | 7 100  |
+| Achats consommés             | -2 600 | -2 820 | -3 040 |
+| Charges externes             | -730   | -780   | -830   |
+| Salaires et traitements      | -1 150 | -1 220 | -1 290 |
+| Dotations aux amortissements | -360   | -360   | -360   |
+| RÉSULTAT D’EXPLOITATION      | 1 260  | 1 420  | 1 580  |
+| Quote-part MEE (TERROIR)     | 17     | 17     | 19     |
+| Charges financières nettes   | -143   | -134   | -126   |
+| RÉSULTAT AVANT IMPÔT         | 1 134  | 1 303  | 1 473  |
+| Impôt sur les bénéfices      | -317   | -360   | -402   |
+| RÉSULTAT NET CONSOLIDÉ       | 817    | 943    | 1 071  |
+| dont intérêts minoritaires   | 137    | 159    | 181    |
+| dont part du groupe          | 680    | 784    | 890    |
+
+## Tableau des flux de trésorerie (méthode indirecte, k€)
+
+| Poste                            | 2023  | 2024  | 2025  |
+|----------------------------------|-------|-------|-------|
+| Capacité d’autofinancement (CAF) | 1 160 | 1 286 | 1 412 |
+| Variation du BFR                 | -90   | -130  | -130  |
+| Flux d’investissement            | -570  | -580  | -580  |
+| Flux de financement              | -438  | -418  | -438  |
+| VARIATION DE TRÉSORERIE          | 62    | 158   | 264   |
+| Δ disponibilités du bilan        | 62    | 158   | 264   |
+
+## Ratios Banque de France par exercice
+
+| Ratio                    | 2023  | 2024  | 2025  |
+|--------------------------|-------|-------|-------|
+| CAF (k€)                 | 1 160 | 1 286 | 1 412 |
+| Marge d’exploitation (%) | 20.66 | 21.52 | 22.25 |
+| Marge nette (%)          | 13.39 | 14.29 | 15.08 |
+| ROE (%)                  | 18.21 | 18.97 | 19.43 |
+| ROCE (%)                 | 21.0  | 23.35 | 25.87 |
+| Taux d’endettement (%)   | 76.67 | 63.4  | 51.57 |
+| Autonomie financière (%) | 49.2  | 53.0  | 56.99 |
+| FRNG (k€)                | 3 180 | 3 468 | 3 862 |
+| BFR (k€)                 | 1 275 | 1 405 | 1 535 |
+| Trésorerie nette (k€)    | 1 905 | 2 063 | 2 327 |
+
+Vérification : `python scripts/financial-analysis/generate-dataset.py --check` recalcule tous ces chiffres depuis `dataset_params.py` et doit afficher OK (exit 0).

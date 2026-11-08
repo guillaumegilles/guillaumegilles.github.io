@@ -1,0 +1,383 @@
+## 1 Diagnostic Activity
+
+Attempt these questions without consulting the lesson.
+
+1.  Evaluate \\4 + 3 \times 5\\.
+2.  Simplify \\\dfrac{18}{24}\\.
+3.  A price rises from €80 to €92. Calculate the percentage increase.
+
+> **NOTE:**
+>
+> 1.  \\4 + 3 \times 5 = 4 + 15 = 19\\ (multiplication before addition).
+> 2.  \\\dfrac{18}{24} = \dfrac{3}{4}\\ (divide numerator and denominator by 6).
+> 3.  \\\dfrac{92 - 80}{80} \times 100 = \dfrac{12}{80} \times 100 = 15\\\\.
+
+Use your results to identify the topics that require particular attention before reading the Core Concepts section.
+
+## 2 Opening Problem
+
+A clothing retailer increases the price of a jacket by 20% for the new season. At the end of the season, the retailer applies a 20% discount to the new price.
+
+> Does the jacket return to its original price?
+
+Write down your prediction before continuing. In particular, is the overall change 0%, positive, or negative?
+
+## 3 Core Concepts
+
+Mathematics is an indispensable universal language in economics and management. Behind every decision about production, pricing, investment, or financing lie calculations — sometimes simple, sometimes more involved, but always based on the fundamental rules of real numbers. Mastering these basics is therefore not merely an academic exercise: it is a daily tool for reasoning and professional effectiveness.
+
+### 3.1 1. Order of Operations
+
+The order of operations is a fundamental rule of mathematics that lets us evaluate a numerical expression correctly. The order in which we perform the calculations can completely change the result: we cannot add, multiply, or raise to a power in just any order.
+
+> **TIP:**
+>
+> 1.  **P**arentheses: \\( )\\, \\\[ \]\\, \\\\ \\\\
+> 2.  **E**xponents (powers and roots)
+> 3.  **M**ultiplication and **D**ivision (left to right)
+> 4.  **A**ddition and **S**ubtraction (left to right)
+
+> **WARNING:**
+>
+> A calculator does not always apply priorities correctly, especially without parentheses. When in doubt, add parentheses.
+
+> **CAUTION:**
+>
+> 1.  \\8 \div 2 \times (2 + 2)\\ \\\rightarrow\\ \\16\\
+> 2.  \\4 \times (5 - (9 - 2))\\ \\\rightarrow\\ \\-8\\
+> 3.  \\10 + 2 \times (-1) \times 2^{3}\\ \\\rightarrow\\ \\-6\\
+> 4.  \\\big(10 + 2 \times (-1) \times 2^{3} - 4 \times (5 - (9 - 2))\big)\\ \\\rightarrow\\ \\2\\
+> 5.  \\(10 + 2 \times (-1) \times 2^{3} - 4 \times (5 - (9 - 2))) \div 8\\ \\= \dfrac{1}{4}\\
+> 6.  \\\big\[12 - (3 + 2^{3} \times (4 - 1)) \div 3\big\] \times 2 - 5^{2}\\ \\\rightarrow\\ \\-19\\
+
+> **CAUTION:**
+>
+> 1.  \\3 + 5 \times 2 = 16\\ \\\rightarrow\\ \\(3 + 5) \times 2 = 16\\
+> 2.  \\10 - 2 + 4 = 4\\ \\\rightarrow\\ \\10 - (2 + 4) = 4\\
+
+### 3.2 2. Absolute Value
+
+The **absolute value** of a real number \\a\\, written \\\|a\|\\, is its distance from zero:
+
+- \\\|a\| = a\\ if \\a \geq 0\\;
+- \\\|a\| = -a\\ if \\a \< 0\\.
+
+> **TIP:**
+>
+> - \\\|a\| \geq 0\\
+> - \\\|a\| = \|{-a}\|\\
+> - \\\|a \times b\| = \|a\| \times \|b\|\\
+> - \\\left\|\dfrac{a}{b}\right\| = \dfrac{\|a\|}{\|b\|}\\ if \\b \neq 0\\
+> - \\\|a\| = 0 \iff a = 0\\
+> - \\\|a\| = \|b\| \iff a = b \text{ or } a = -b\\
+
+> **WARNING:**
+>
+> In general \\\|a + b\| \neq \|a\| + \|b\|\\ (this is the *triangle inequality*: \\\|a + b\| \leq \|a\| + \|b\|\\).
+
+**Applications:**
+
+- *Thermal comfort* — gap between actual and target temperature: \\\|T^{\text{actual}} - T^{\text{target}}\|\\
+- *Quality control* — with measured length \\L_r\\ and target \\L_c\\: overall defect \\= \|L_r - L_c\| + \|l_r - l_c\|\\
+
+> **CAUTION:**
+>
+> \\ -2 \times \big\|-4 - \|1 - 5\|\big\| - \big\|(-2)^{2}\big\| \times \|4 - 7\| + \|-3\|^{2} \\
+>
+> Step by step:
+>
+> - \\\|1 - 5\| = 4\\, so \\\big\|-4 - 4\big\| = 8\\ and \\-2 \times 8 = -16\\;
+> - \\\|(-2)^2\| = 4\\ and \\\|4 - 7\| = 3\\, so \\-4 \times 3 = -12\\;
+> - \\\|-3\|^2 = 9\\.
+>
+> Total: \\-16 - 12 + 9 = \mathbf{-19}\\.
+
+### 3.3 3. Powers
+
+A power \\a^{n}\\ is the product of \\a\\ by itself \\n\\ times.
+
+> **TIP:**
+>
+> - \\a^{n} \times a^{m} = a^{n+m}\\
+> - \\\dfrac{a^{n}}{a^{m}} = a^{n-m}\\
+> - \\a^{0} = 1\\
+> - \\a^{-n} = \dfrac{1}{a^{n}}\\
+> - \\(a^{n})^{m} = a^{nm}\\
+> - \\a^{1/2} = \sqrt{a}\\
+
+> **WARNING:**
+>
+> \\a^{n} + a^{m} \neq a^{n+m}\\.
+
+**Economic application** — *compound (exponential) growth*: each increase applies to an already-increased base, e.g. compound interest and capitalisation (developed in Modules 4 and 5).
+
+> **CAUTION:**
+>
+> \\ \left( \frac{2^{3} \times 4^{-2} \times 8}{2^{-1} \times \sqrt{64} \times 8} \right)^{2} \\
+>
+> Rewrite in base \\2\\: numerator \\2^3 \times 2^{-4} \times 2^3 = 2^{2}\\; denominator \\2^{-1} \times 2^{3} \times 2^{3} = 2^{5}\\. Ratio \\2^{2-5} = 2^{-3}\\, squared \\2^{-6} = \tfrac{1}{64}\\.
+>
+> Result: \\\dfrac{1}{64}\\.
+
+### 3.4 4. Square Root
+
+The square root of \\a \geq 0\\ is the positive number \\b\\ such that \\b^{2} = a\\.
+
+> **TIP:**
+>
+> - \\\sqrt{a \times b} = \sqrt{a} \times \sqrt{b}\\
+> - \\\sqrt{\dfrac{a}{b}} = \dfrac{\sqrt{a}}{\sqrt{b}}\\ (for \\b \> 0\\)
+
+> **WARNING:**
+>
+> \\\sqrt{a + b} \neq \sqrt{a} + \sqrt{b}\\.
+
+### 3.5 5. Fractions
+
+A fraction is a division of two real numbers, written \\\dfrac{a}{b}\\ with \\b \neq 0\\.
+
+> **TIP:**
+>
+> - **Addition / subtraction**: with the same denominator, add the numerators; otherwise reduce to a common denominator (the LCM is convenient).
+> - **Multiplication**: multiply numerators together and denominators together.
+> - **Division**: multiply by the reciprocal of the second fraction.
+
+> **CAUTION:**
+>
+> \\ \left( \frac{3}{4} + \frac{2}{3} \times \left(1 - \frac{5}{6}\right) \right) \div \left( \frac{7}{8} - \frac{1}{2} \right) \\
+>
+> Inner bracket \\1 - \tfrac56 = \tfrac16\\, so \\\tfrac23 \times \tfrac16 = \tfrac{2}{18} = \tfrac19\\. Then \\\tfrac34 + \tfrac19 = \tfrac{27}{36} + \tfrac{4}{36} = \tfrac{31}{36}\\. Divisor \\\tfrac78 - \tfrac12 = \tfrac38\\. Finally \\\tfrac{31}{36} \div \tfrac38 = \tfrac{31}{36} \times \tfrac83 = \tfrac{248}{108} = \tfrac{62}{27}\\.
+>
+> Result: \\\dfrac{62}{27}\\.
+
+### 3.6 6. Percentages and Index Numbers
+
+A percentage is a fraction with denominator \\100\\. For example, \\25\\\\ of \\80\\ is \\\dfrac{25}{100} \times 80 = 20\\.
+
+> **TIP:**
+>
+> \\ \Delta\\ = \frac{V\_{\text{final}} - V\_{\text{initial}}} {V\_{\text{initial}}} \times 100 \\
+>
+> Applying a change of rate \\t\\ multiplies the value by the **factor** \\(1 + t)\\ (where \\t\\ is expressed as a decimal). Two successive changes \\t_1\\ then \\t_2\\ multiply by \\(1 + t_1)(1 + t_2)\\ — they do **not** simply add.
+
+> **CAUTION:**
+>
+> Applying a discount of rate \\t\\ multiplies the price by the factor \\(1 - t)\\. Applying two successive discounts \\t_1\\ then \\t_2\\ multiplies by \\(1 - t_1)\\ then by \\(1 - t_2)\\, hence by the product \\(1 - t_1)(1 - t_2)\\. The **overall** discount rate \\T\\ satisfies \\1 - T = (1 - t_1)(1 - t_2)\\, so
+>
+> \\ T = 1 - (1 - t_1)(1 - t_2). \\
+>
+> This is **not** \\t_1 + t_2\\: successive discounts do not simply add, because each rate applies to a base already reduced by the previous one.
+
+**Index numbers:**
+
+\\ \text{Index} = \left( \frac{\text{current value}}{\text{reference value}} \right) \times 100 \\
+
+- Index \\= 100\\: stable; Index \\\> 100\\: increase; Index \\\< 100\\: decrease.
+
+### 3.7 7. Proportionality Rule
+
+If two ratios are equal, the quantities are proportional:
+
+\\ \frac{a}{b} = \frac{c}{x} \\\Rightarrow\\ x = \frac{b \times c}{a}. \\
+
+This “rule of three” is the everyday tool for scaling recipes, converting prices, comparing unit costs, or splitting quantities proportionally.
+
+> **CAUTION:**
+>
+> If \\3\\ kg of coffee cost €\\27\\, what do \\5\\ kg cost at the same rate?
+>
+> \\ x = \frac{27 \times 5}{3} = 45 \text{ €}. \\
+
+## 4 Worked Example
+
+### 4.1 Successive discounts — a coat sale
+
+A coat costs €\\200\\. It receives a \\10\\\\ sale discount, a \\5\\\\ loyalty discount, and a \\15\\\\ birthday discount.
+
+**Step 1 — Compute the final price.**
+
+Each discount applies to the already-reduced price, so we multiply by the successive factors:
+
+\\ 200 \times 0.90 \times 0.95 \times 0.85 = 145.35 \text{ €}. \\
+
+**Step 2 — Compute the overall discount rate.**
+
+\\ T = 1 - 0.90 \times 0.95 \times 0.85 = 1 - 0.72675 = 0.27325, \\
+
+i.e. about \\\mathbf{27.33\\}\\ — not \\30\\\\ (which would be the naive sum \\10 + 5 + 15\\).
+
+**Step 3 — Express as an index number.**
+
+\\ \text{Index} = \frac{145.35}{200} \times 100 = 72.675. \\
+
+The coat now costs \\72.7\\\\ of its original price — the index fell below \\100\\, confirming a decrease.
+
+**Result**: The three discounts together reduce the price by \\27.33\\\\, not \\30\\\\, because each percentage applies to a smaller base.
+
+## 5 Guided Practice
+
+A company’s revenue rises from €\\400{,}000\\ to €\\460{,}000\\.
+
+1.  Calculate the absolute change.
+2.  Calculate the relative change.
+3.  Express the relative change as a percentage.
+4.  Interpret the result in one sentence.
+
+> **TIP:**
+>
+> The percentage change formula is:
+>
+> \\ \Delta\\ = \frac{\text{new value} - \text{initial value}} {\text{initial value}} \times 100. \\
+>
+> Make sure you divide by the **initial** value (€\\400{,}000\\), not the final value.
+
+> **CAUTION:**
+>
+> 1.  Absolute change: \\460{,}000 - 400{,}000 = 60{,}000\\ €.
+> 2.  Relative change: \\\dfrac{60{,}000}{400{,}000} = 0.15\\.
+> 3.  Percentage: \\0.15 \times 100 = 15\\\\.
+> 4.  Revenue increased by \\15\\\\ relative to the previous period.
+
+## 6 Interactive Exploration
+
+Use the sliders to explore what happens when you apply an increase and then a decrease of the same percentage to a starting value.
+
+``` js
+viewof initialValue = Inputs.range([10, 1000], {
+  value: 100,
+  step: 10,
+  label: "Initial value (€)"
+})
+
+viewof increaseRate = Inputs.range([0, 100], {
+  value: 20,
+  step: 1,
+  label: "Increase (%)"
+})
+
+viewof decreaseRate = Inputs.range([0, 100], {
+  value: 20,
+  step: 1,
+  label: "Decrease (%)"
+})
+```
+
+``` js
+valueAfterIncrease = initialValue * (1 + increaseRate / 100)
+finalValue = valueAfterIncrease * (1 - decreaseRate / 100)
+overallChange = 100 * (finalValue - initialValue) / initialValue
+```
+
+``` js
+html`
+<div class="metric-grid">
+  <div class="metric-card">
+    <span class="metric-label">Initial value</span>
+    <strong>${initialValue.toFixed(2)} €</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">After the increase</span>
+    <strong>${valueAfterIncrease.toFixed(2)} €</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">Final value</span>
+    <strong>${finalValue.toFixed(2)} €</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">Overall change</span>
+    <strong>${overallChange.toFixed(2)}%</strong>
+  </div>
+</div>
+`
+```
+
+### 6.1 Investigation
+
+1.  Set both rates to \\20\\\\. What is the overall change? Is it \\0\\\\?
+2.  Repeat with \\10\\\\, \\30\\\\, and \\50\\\\. Does the pattern hold?
+3.  Does the initial value affect the overall percentage change? Explain.
+4.  Find a decrease rate that exactly reverses an increase of \\25\\\\. Why is this rate **not** \\25\\\\?
+
+## 7 Applied Problem
+
+A retail chain monitors the performance of three product categories over a quarter. The data are as follows:
+
+| Category    | Revenue at start | Revenue at end |
+|-------------|-----------------:|---------------:|
+| Electronics |   €\\120{,}000\\ | €\\138{,}000\\ |
+| Clothing    |    €\\85{,}000\\ |  €\\79{,}050\\ |
+| Food        |   €\\200{,}000\\ | €\\210{,}000\\ |
+
+1.  For each category, calculate the percentage change in revenue. State whether it is an increase or a decrease.
+2.  Which category has the largest absolute change? Which has the largest relative change?
+3.  The chain targets an overall revenue index of \\105\\ (base = start of quarter). Did it reach this target?
+
+## 8 Common Errors
+
+> **WARNING:**
+>
+> A student calculates the percentage change from €\\80\\ to €\\100\\ as:
+>
+> \\ \frac{100 - 80}{100} \times 100 = 20\\. \\
+>
+> The **correct** calculation uses the **initial** value as the reference:
+>
+> \\ \frac{100 - 80}{80} \times 100 = 25\\. \\
+>
+> Dividing by the final value produces a smaller percentage and is mathematically incorrect. The initial value is always the reference base for a percentage change.
+
+## 9 Check Your Understanding
+
+1.  **Calculation**: Evaluate \\\big\[3 + 2^{2} \times (8 - 5)\big\] \div 5\\.
+2.  **Conceptual**: Why do two successive discounts of \\10\\\\ and \\10\\\\ not produce a total discount of \\20\\\\?
+3.  **Applied**: A firm’s costs rise from €\\50{,}000\\ to €\\53{,}500\\. Express this as both a percentage change and an index number (base = initial cost).
+4.  **Error diagnosis**: A student claims that a \\+30\\\\ increase followed by a \\-30\\\\ decrease returns to the original value. What is the actual overall change? What did the student overlook?
+5.  **Find the value**: What single percentage discount is equivalent to successive discounts of \\15\\\\ and \\10\\\\?
+
+## 10 Summary
+
+1.  **Order of operations governs every calculation**: always resolve parentheses first, then exponents, then multiplication/division, then addition/subtraction. Errors in order of operations contaminate every subsequent step.
+2.  **Successive percentage changes multiply, they do not add**: applying a +\\t_1\\\\ increase then a −\\t_2\\\\ decrease gives an overall factor of \\(1 + t_1)(1 - t_2)\\, which is almost never equal to \\1 + t_1 - t_2\\.
+3.  **Always divide by the initial value for a percentage change**: the reference base is where you started, not where you ended up.
+
+## 11 Independent Work
+
+- Complete exercises 1 to 10 in the exercise bank.
+
+- Correct your answers using the detailed solutions.
+
+- Record any errors in your error log (error / cause / corrected method / prevention rule).
+
+- Review the glossary entries for: *percentage*, *index number*, *proportionality*, *absolute value*, *common factor* (LCM/GCF).
+
+  ## 12 Module 1 — Numerical Calculations
+
+  **Percentage change**
+
+  \\ \Delta\\ = \frac{V\_{\text{final}} - V\_{\text{initial}}} {V\_{\text{initial}}} \times 100 \\
+
+  Measures the relative change from an initial to a final value. The initial value is always the reference base.
+
+  ------------------------------------------------------------------------
+
+  **Index number**
+
+  \\ I = \frac{V\_{\text{current}}}{V\_{\text{reference}}} \times 100 \\
+
+  An index above 100 signals an increase relative to the reference period; below 100 signals a decrease.
+
+  ------------------------------------------------------------------------
+
+  **Rule of proportionality (rule of three)**
+
+  \\ \frac{a}{b} = \frac{c}{x} \\\Longrightarrow\\ x = \frac{b \times c}{a} \\
+
+  Used to scale quantities proportionally when the ratio is known.
+
+  ------------------------------------------------------------------------
+
+  **Combined factor for two successive changes**
+
+  \\ (1 + t_1)(1 + t_2) \\
+
+  Two successive percentage changes \\t_1\\ and \\t_2\\ (expressed as decimals) multiply rather than add. For discounts, replace \\(1+t)\\ by \\(1-t)\\.

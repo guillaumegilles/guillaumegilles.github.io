@@ -1,0 +1,1 @@
+**Translation in progress.** This page is currently available in French only: [Le Détective du Diagnostic](../../../fr/teaching/financial-analysis/modules/03-detective-diagnostic.llms.md).

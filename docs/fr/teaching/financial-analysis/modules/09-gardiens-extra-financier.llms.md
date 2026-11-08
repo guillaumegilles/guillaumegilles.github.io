@@ -1,0 +1,373 @@
+# Introduction
+
+Durée : **140 min** (dont 30 min de théorie) \| Équipes : **3–5 étudiants** \| XP : **+250**
+
+## Boss Final — Les Gardiens de l’Extra-Financier
+
+Cette quête est le **boss de fin de journée ET le boss final du cours**. Les Associés de StratFin Corp présentent leurs conclusions devant un **Comité d’Investissement Responsable**. L’enjeu : convaincre ce comité qu’une analyse financière sans dimension ESG est aujourd’hui incomplète — et démontrer que vous savez produire les deux.
+
+**Total XP disponible dans ce cours : 1 500 XP**
+
+**Objectifs pédagogiques**
+
+- Comprendre la DPEF (Déclaration de Performance Extra-Financière) et les exigences de la CSRD.
+- Intégrer les critères ESG dans l’analyse financière d’une entreprise.
+- Relier les risques extra-financiers à la performance et à la valorisation.
+- Produire un rapport stratégique intégré financier + ESG.
+- Développer des compétences en finance durable et en investissement responsable.
+
+## Prérequis et lectures préalables
+
+- Avoir suivi les quêtes 4 à 6 (l’entreprise suivie sert de support).
+- Relire la fiche de formules : [formules.qmd](../../../../fr/teaching/financial-analysis/modules/formules.llms.md) (WACC, DCF).
+- Lire la section « Concepts clés » ci-dessous, en particulier l’introduction ESG et le tableau **DPEF vs CSRD**.
+
+## Contexte narratif — Mission
+
+Le Comité d’Investissement Responsable de StratFin Corp réunit une fois par an ses équipes pour évaluer les entreprises en portefeuille sous un prisme double : **performance financière classique** et **performance extra-financière ESG**.
+
+Chaque équipe présente l’entreprise qu’elle a suivie lors des quêtes 4 à 6 (ou en choisit une nouvelle parmi le CAC 40 avec accord du formateur). Le rapport final doit montrer que vous maîtrisez le **langage de la finance durable**, que vous savez **quantifier les risques ESG** et que vous pouvez formuler une **recommandation d’investissement intégrée**.
+
+**Pourquoi l’ESG devient incontournable en analyse financière.** Les investisseurs institutionnels (assureurs, fonds de pension, fonds ISR) représentent plus de 40% de la capitalisation du CAC 40. Ils exigent désormais une notation ESG pour tout nouvel investissement. Une entreprise sans stratégie ESG crédible subit un **surcoût de capital** et des difficultés croissantes d’accès au financement.
+
+## Déroulé de la séance (140 min)
+
+| Phase | Contenu | Durée |
+|:---|:---|---:|
+| Théorie en direct | Voir le plan ci-dessous | 30 min |
+| Étape 1 | Lecture du rapport de durabilité | 15 min |
+| Étape 2 | Grille d’évaluation ESG | 25 min |
+| Étape 3 | Intensité carbone | 10 min |
+| Préparation | Slides et répartition de la parole | 10 min |
+| Soutenances | Présentations devant le Comité (5 équipes : 10 min chacune) | 50 min |
+| **Total** |  | **140 min** |
+
+**Plan de la théorie en direct (30 min)**
+
+| Segment                                                             | Durée |
+|:--------------------------------------------------------------------|------:|
+| Les critères ESG (E, S, G)                                          | 5 min |
+| DPEF vs CSRD                                                        | 7 min |
+| Les 4 canaux de transmission ESG → valeur                           | 8 min |
+| Instruments de finance durable                                      | 4 min |
+| Formules (intensité carbone, WACC) et démonstration de l’ajustement | 6 min |
+
+**Format des soutenances.** Le maximum est de **12 minutes par équipe** (soutenance + questions du jury) lorsqu’il y a 4 équipes ou moins. Pour tenir dans les 50 minutes prévues : **5 équipes = 10 min** (6 min de présentation + 4 min de questions) ; **6 équipes = 8 min** (5 min + 3 min, les 2 min restantes servant aux transitions).
+
+------------------------------------------------------------------------
+
+## Concepts clés à maîtriser
+
+### 1. Les critères ESG
+
+**E — Environnement**
+
+- Empreinte carbone (scopes 1, 2, 3)
+- Transition énergétique et part des énergies renouvelables
+- Consommation d’eau et gestion des déchets
+- Biodiversité et risques physiques liés au changement climatique
+
+**S — Social**
+
+- Bien-être et santé des salariés (taux d’accident, absentéisme)
+- Égalité femmes-hommes (parité cadres, écarts salariaux)
+- Chaîne d’approvisionnement responsable (devoir de vigilance)
+- Impact communautaire et relations avec les parties prenantes
+
+**G — Gouvernance**
+
+- Indépendance et composition du conseil d’administration
+- Rémunération des dirigeants (say-on-pay, ratio CEO/salarié médian)
+- Politique anti-corruption et conformité
+- Transparence et qualité du reporting
+
+------------------------------------------------------------------------
+
+### 2. DPEF et CSRD
+
+> **NOTE:**
+>
+> | Critère | DPEF (actuelle) | CSRD (à partir de 2024–2026) |
+> |:---|:---|:---|
+> | Entreprises concernées | \> 500 salariés ET (\> 20 M€ bilan OU \> 40 M€ CA) | Extension progressive aux ETI et PME cotées |
+> | Contenu obligatoire | Risques ESG principaux, politiques, KPIs | Double matérialité, normes ESRS, audit externe |
+> | Vérification | Organisme tiers indépendant (OTI) | Assurance limitée puis raisonnable |
+> | Sanction | Rapport manquant = présomption de faute | Amendes et sanctions pénales renforcées |
+
+------------------------------------------------------------------------
+
+### 3. Impact de l’ESG sur la performance financière
+
+**ESG et création de valeur — Les 4 canaux de transmission**
+
+- **Coût du capital :** une bonne notation ESG améliore l’accès aux green bonds et aux prêts SLL (Sustainability-Linked Loans), réduisant le taux d’emprunt de 15 à 50 points de base selon les études.
+- **Risque opérationnel :** le risque climatique génère des actifs échoués (stranded assets) et des coûts réglementaires croissants (taxe carbone, conformité CSRD).
+- **Risque de réputation :** une controverse sociale peut entraîner un boycott consommateur ou une perte de contrats — impact direct sur le chiffre d’affaires.
+- **Risque de gouvernance :** fraude, sanctions AMF, retraitements comptables → effondrement du cours de bourse et perte de confiance des investisseurs.
+
+------------------------------------------------------------------------
+
+### 4. Instruments de finance durable
+
+| Instrument | Description | Engagement de l’émetteur |
+|:---|:---|:---|
+| **Green bonds** (obligations vertes) | Émission obligataire dont le produit est fléché vers des projets verts | Reporting annuel sur l’utilisation des fonds |
+| **Sustainability-Linked Loans (SLL)** | Prêt dont le taux d’intérêt est indexé sur des KPIs ESG | Réduction/majoration du taux selon atteinte des objectifs |
+| **Social bonds** | Obligations finançant des projets à impact social | Reporting sur les bénéficiaires et l’impact social |
+| **Sustainability bonds** | Combinaison green + social | Double reporting environnemental et social |
+
+------------------------------------------------------------------------
+
+### 5. Formules à retenir
+
+> **TIP:**
+>
+> \\Intensité\\carbone = \frac{Émissions\\GES\\(Scopes\\1+2)\\(tCO_2)}{Chiffre\\d'affaires\\(M€)}\\
+>
+> En clair : combien de tonnes de CO₂ l’entreprise émet pour produire un million d’euros de chiffre d’affaires. Plus le ratio est bas, plus l’activité est sobre en carbone.
+
+> **TIP:**
+>
+> \\WACC = \frac{E}{V} K_e + \frac{D}{V} K_d (1 - t)\\
+>
+> \\WACC\_{ajusté} = WACC\_{standard} + Prime\\ESG\\
+>
+> En clair : le WACC est le taux de rémunération moyen exigé par les actionnaires (\\E\\, coût \\K_e\\) et les prêteurs (\\D\\, coût \\K_d\\ après économie d’impôt \\t\\). La prime ESG majore ce taux quand l’entreprise est jugée plus risquée sur le plan extra-financier.
+
+La prime ESG peut être estimée à :
+
+- **0 à 0,5%** pour une entreprise bien notée ESG (leader sectoriel)
+- **0,5 à 1,5%** pour une entreprise dans la moyenne
+- **\> 1,5%** pour une entreprise avec controverses significatives ou notation ESG faible
+
+------------------------------------------------------------------------
+
+## Exemple travaillé — Intensité carbone
+
+Entreprise fictive (données illustratives) : émissions Scopes 1+2 de 120 000 tCO₂, chiffre d’affaires de 4 000 M€, moyenne sectorielle de 45 tCO₂/M€.
+
+\\Intensité\\carbone = \frac{120\\000}{4\\000} = 30\\ tCO_2/M€\\
+
+Avec 30 tCO₂/M€ contre 45 pour le secteur, l’entreprise émet un tiers de moins que la moyenne (30 / 45 − 1 = −33%) : elle est **meilleure que son secteur** sur ce critère.
+
+------------------------------------------------------------------------
+
+## Démonstration — Effet d’une prime de risque ESG sur le WACC
+
+> **CAUTION:**
+>
+> **Point de départ.** \\WACC = \frac{E}{V} K_e + \frac{D}{V} K_d (1 - t)\\, avec \\\frac{E}{V} + \frac{D}{V} = 1\\.
+>
+> **Étape 1 — Ajouter les primes.** Soit \\\Delta_e\\ la prime ESG sur le coût des fonds propres et \\\Delta_d\\ celle sur le coût de la dette :
+>
+> \\WACC' = \frac{E}{V}(K_e + \Delta_e) + \frac{D}{V}(K_d + \Delta_d)(1 - t)\\
+>
+> **Étape 2 — Développer.**
+>
+> \\WACC' = \underbrace{\frac{E}{V} K_e + \frac{D}{V} K_d (1 - t)}\_{WACC} + \frac{E}{V}\Delta_e + \frac{D}{V}\Delta_d (1 - t)\\
+>
+> **Étape 3 — Isoler l’écart.**
+>
+> \\\Delta WACC = \frac{E}{V}\Delta_e + \frac{D}{V}\Delta_d (1 - t)\\
+>
+> La prime sur les fonds propres est pondérée par leur poids dans le financement ; celle sur la dette l’est aussi, mais réduite par l’économie d’impôt \\(1 - t)\\.
+>
+> **Étape 4 — Application numérique** (GREENTECH SOLUTIONS SAS). Hypothèses illustratives de structure financière, choisies pour retrouver le WACC de la page : \\E/V = 50\\\\, \\D/V = 50\\\\, \\t = 25\\\\, \\K_e = 14\\\\, \\K_d = 4\\\\.
+>
+> \\WACC = 0{,}5 \times 14\\ + 0{,}5 \times 4\\ \times 0{,}75 = 7\\ + 1{,}5\\ = 8{,}5\\\\
+>
+> Une prime ESG de \\\Delta_e = 1{,}6\\\\ sur les fonds propres seuls (\\\Delta_d = 0\\) :
+>
+> \\\Delta WACC = 0{,}5 \times 1{,}6\\ = 0{,}8\\ \quad\Rightarrow\quad WACC' = 8{,}5\\ + 0{,}8\\ = 9{,}3\\\\
+>
+> On retrouve la prime de +0,8% de l’exemple GREENTECH (voir l’extension à la maison). Si la prime portait sur les deux coûts avec la même valeur \\\Delta\\, on aurait \\\Delta WACC = \Delta\\(0{,}5 + 0{,}5 \times 0{,}75) = 0{,}875\\\Delta\\, soit \\\Delta \approx 0{,}91\\\\ pour obtenir +0,8%.
+
+------------------------------------------------------------------------
+
+## Travaux demandés (en séance)
+
+Les équipes utilisent la **même entreprise que lors des quêtes 4 à 6** (ou en choisissent une nouvelle parmi le CAC 40 avec accord du formateur).
+
+**Exercice 1 (Lecture du rapport et grille ESG (Étapes 1 et 2))** **Étape 1 (15 min).** Téléchargez la DPEF ou le rapport de durabilité de l’entreprise (généralement intégré dans le Document d’Enregistrement Universel — DEU). Identifiez :
+
+- Les **3 principaux risques ESG** reconnus par l’entreprise elle-même
+- Les **engagements chiffrés** (neutralité carbone 2030, parité, etc.)
+- Les **instruments de finance durable** déjà utilisés
+
+**Étape 2 (25 min).** Complétez la grille d’évaluation ESG (ci-dessous) avec les données de l’entreprise et comparez-les à un benchmark sectoriel (fourni par le formateur ou issu des rapports sectoriels disponibles en ligne).
+
+Sources de données ESG :
+
+- **Rapport annuel / DEU** de l’entreprise (section DPEF ou durabilité)
+- **CDP** (Carbon Disclosure Project) : données carbone
+- **Refinitiv / Bloomberg ESG** : scores ESG si accès disponible
+- **Espace Actionnaires** de l’entreprise : résolutions d’AG, vote say-on-pay
+
+Solution
+
+Les réponses dépendent de l’entreprise choisie. Points de contrôle :
+
+- Les 3 risques cités proviennent bien de la **cartographie des risques de l’entreprise** (DPEF/DEU), pas d’une source externe.
+- Chaque ligne de la grille porte une valeur chiffrée **et** son benchmark sectoriel ; une donnée absente est notée « n.d. » et évaluée « en retard » (absence de données).
+- Les engagements chiffrés mentionnent une année cible et un périmètre.
+
+**Exercice 2 (Intensité carbone (Étape 3))** **Étape 3 (10 min).** Calculez l’intensité carbone de votre entreprise (Scopes 1+2 rapportés au chiffre d’affaires, en M€). Comparez ce ratio à la moyenne sectorielle et commentez la trajectoire de l’entreprise (en amélioration ? en retard sur ses objectifs ?).
+
+*Entraînement :* une entreprise émet 90 000 tCO₂ (Scopes 1+2) pour un chiffre d’affaires de 2 000 M€ ; la moyenne sectorielle est de 40 tCO₂/M€. Calculez son intensité carbone et situez-la par rapport au secteur.
+
+Solution
+
+\\Intensité\\carbone = \frac{90\\000}{2\\000} = 45\\ tCO_2/M€\\
+
+Soit \\45 / 40 - 1 = +12{,}5\\\\ au-dessus de la moyenne sectorielle : l’entreprise est **en retard** sur ce critère (« rouge » dans la grille).
+
+### Template — Grille d’évaluation ESG
+
+| Critère | Indicateur | Données entreprise | Benchmark secteur | Évaluation |
+|:---|:---|:---|:---|:---|
+| **Environnement** |  |  |  |  |
+| Intensité carbone | Scope 1+2 / CA (tCO₂/M€) |  |  |  |
+| Part énergies renouvelables | % énergie verte |  |  |  |
+| Objectif neutralité carbone | Année cible |  |  |  |
+| **Social** |  |  |  |  |
+| Taux d’accident | LTIFR |  |  |  |
+| Parité cadres | % femmes managers |  |  |  |
+| Taux d’engagement | % salariés satisfaits (enquête) |  |  |  |
+| **Gouvernance** |  |  |  |  |
+| Indépendance CA | % administrateurs indépendants |  |  |  |
+| Parité CA | % femmes au CA |  |  |  |
+| Say-on-pay | % vote favorable rémunérations dirigeants |  |  |  |
+| **Finance durable** |  |  |  |  |
+| Green bonds | Montant émis (M€) |  |  |  |
+| SLL | Taux lié à KPI ESG (oui/non + KPI) |  |  |  |
+
+**Comment évaluer ? Système de feux tricolores.** Utilisez un code couleur simple dans la colonne « Évaluation » :
+
+- **Vert** : meilleur de sa catégorie ou en avance sur l’objectif
+- **Orange** : dans la moyenne sectorielle ou sur la trajectoire prévue
+- **Rouge** : en retard ou absence de données / d’engagement
+
+------------------------------------------------------------------------
+
+## Livrables et critères d’évaluation
+
+**Livrables en séance**
+
+1.  **Grille d’évaluation ESG complétée** (tableau ci-dessus).
+2.  **Intensité carbone calculée et commentée** (Étape 3).
+3.  **Présentation orale** devant le Comité d’Investissement Responsable (soutenance + défense face aux questions du jury) : **12 minutes au maximum** par équipe, ramenées à 10 min (5 équipes) ou 8 min (6 équipes) pour tenir dans la séance.
+
+**Livrables à la maison (extension)**
+
+4.  **Calcul du WACC ajusté et de l’impact sur la valeur** (Étape 4).
+5.  **Rapport intégré de 1,5 page** (financier + ESG) (Étape 5).
+6.  **Résumé exécutif** (10 lignes max) : recommandation d’investissement intégrant la dimension ESG, à l’attention du Comité d’Investissement Responsable.
+
+**Exigences de la soutenance**
+
+Le Comité d’Investissement Responsable attend une présentation de niveau professionnel :
+
+- **Slides soignés** : pas de bullet points interminables, des graphiques et ratios en avant
+- **Prise de parole répartie** : chaque membre de l’équipe intervient
+- **Défense argumentée** : anticipez les questions sur vos hypothèses
+- **Posture professionnelle** : vous êtes des Associés de StratFin Corp, pas des étudiants qui récitent
+
+**Critères d’évaluation**
+
+| Critère | Pondération | Où |
+|:---|---:|:---|
+| Profondeur et exactitude de l’analyse ESG | 30% | En séance (grille, intensité carbone) |
+| Présentation orale et soutenance | 20% | En séance |
+| Intégration de l’ESG dans l’analyse financière | 25% | À la maison (Étape 4) |
+| Qualité du rapport écrit | 25% | À la maison (Étape 5) |
+
+Répartition : **50% en séance**, **50% pour l’extension à la maison**.
+
+------------------------------------------------------------------------
+
+## XP
+
+Cette quête rapporte **+250 XP** (boss de fin de journée et boss final).
+
+**À couper en premier si le temps manque.** Réduire la grille d’évaluation aux lignes Environnement et Gouvernance (les lignes Social et Finance durable passent en travail à la maison) et ramener le segment théorique « Instruments de finance durable » à une lecture autonome.
+
+------------------------------------------------------------------------
+
+## Extension à faire à la maison
+
+Ces deux étapes ne sont pas traitées en séance. Elles sont **évaluées** (50% de la note, voir ci-dessus) et à rendre à la date fixée par le formateur.
+
+### Étape 4 — Ajustement du coût du capital pour le risque ESG
+
+Dans un modèle DCF standard, le WACC reflète le risque financier. Pour intégrer les risques ESG, appliquez une **prime de risque ESG** (voir la formule et les fourchettes dans la section 5 ci-dessus et la démonstration associée).
+
+**Exemple — Ajustement du WACC pour le risque ESG**
+
+Hypothèses pour GREENTECH SOLUTIONS SAS :
+
+| Paramètre         |              Valeur |
+|:------------------|--------------------:|
+| WACC standard     |                8,5% |
+| Notation ESG      | Moyenne sectorielle |
+| Prime ESG estimée |               +0,8% |
+| WACC ajusté       |                9,3% |
+
+Impact sur la valorisation DCF (horizon 5 ans, flux annuel de 500 K€) :
+
+\\VE\_{standard} = \sum\_{t=1}^{5} \frac{500}{(1+0{,}085)^t} + \frac{500 / 0{,}085}{(1+0{,}085)^5} = 1\\970 + 3\\912 = 5\\882\\\text{K€}\\
+
+\\VE\_{ajusté} = \sum\_{t=1}^{5} \frac{500}{(1+0{,}093)^t} + \frac{500 / 0{,}093}{(1+0{,}093)^5} = 1\\930 + 3\\446 = 5\\376\\\text{K€}\\
+
+**Perte de valeur :** 506 K€ soit **-8,6%** de la valeur d’entreprise. Une notation ESG médiocre détruit significativement la valeur pour les actionnaires.
+
+**Exercice 3 (Valeur d’entreprise avec WACC ajusté (Étape 4))** Recalculez la valeur d’entreprise de votre société avec le WACC ajusté (prime ESG choisie selon sa notation et justifiée) et commentez l’impact par rapport à la valeur standard.
+
+Solution
+
+Méthode : (1) choisir la prime dans la fourchette correspondant à la notation ESG ; (2) \\WACC\_{ajusté} = WACC\_{standard} + Prime\\ ; (3) actualiser les mêmes flux et la même valeur terminale au nouveau taux ; (4) comparer.
+
+Contrôle sur GREENTECH : valeur terminale incluse, la valeur d’entreprise est celle d’une perpétuité de 500 K€ (le flux est constant), soit \\500 / 0{,}085 = 5\\882\\ K€ puis \\500 / 0{,}093 = 5\\376\\ K€ ; écart \\-506\\ K€, soit \\-8{,}6\\\\.
+
+### Étape 5 — Rapport intégré (1,5 page)
+
+**Exercice 4 (Rapport d’analyse intégrée (Étape 5))** Rédigez un rapport d’analyse intégrée structuré ainsi :
+
+1.  **Synthèse financière** (5–6 lignes) : rappel des ratios clés calculés lors des quêtes précédentes.
+2.  **Analyse ESG** (8–10 lignes) : forces, faiblesses, principaux risques et opportunités.
+3.  **Lien ESG–Finance** (5–6 lignes) : comment les risques ESG affectent (ou pourraient affecter) la valorisation, le coût du capital, la notation de crédit.
+4.  **Recommandation d’investissement** (5–6 lignes) : achat, conservation ou cession, avec justification intégrée.
+
+Solution
+
+Attendus : les ratios de la partie 1 sont repris des quêtes 4 à 6 sans recalcul incohérent ; la partie 3 s’appuie sur le WACC ajusté de l’Étape 4 (écart de valeur chiffré) ; la recommandation (achat, conservation ou cession) découle explicitement des parties 1 à 3.
+
+------------------------------------------------------------------------
+
+> **IMPORTANT:**
+>
+> Widget Shinylive à ajouter : curseurs pour la prime ESG, la structure financière (\\E/V\\, \\t\\) et l’affichage du WACC ajusté et de la perte de valeur d’entreprise.
+
+------------------------------------------------------------------------
+
+## Félicitations — Vous avez terminé les 9 quêtes !
+
+> **NOTE:**
+>
+> En complétant les 9 quêtes de **Les Stratèges de la Finance**, vous avez parcouru l’intégralité du cycle de l’analyse financière professionnelle :
+>
+> | Quête | Compétence maîtrisée | XP |
+> |:---|:---|---:|
+> | 1 Le Temple des Bilans | Lecture et retraitement des états financiers | +100 |
+> | 2 Les Archives Consolidées | Consolidation et comptes de groupe | +150 |
+> | 3 Le Détective du Diagnostic | Diagnostic financier complet — Boss J1 | +150 |
+> | 4 Les Chasseurs de Valeur | Analyse de la création de valeur | +100 |
+> | 5 Les Maîtres des Flux | Tableau de flux de trésorerie | +150 |
+> | 6 Les Oracles de la Valeur | Valorisation d’entreprise — Boss J2 | +200 |
+> | 7 Les Veilleurs du Marché | Veille réglementaire et impacts financiers | +150 |
+> | 8 Les Architectes de la Stratégie | Plan financier pluriannuel | +150 |
+> | 9 Les Gardiens de l’Extra-Financier | Analyse ESG intégrée — Boss Final | +250 |
+> |  | **TOTAL XP** | **1 500** |
+>
+> Vous êtes désormais capables de lire un jeu de comptes, de diagnostiquer une situation financière, de valoriser une entreprise, de construire un plan de financement et d’intégrer les enjeux ESG dans votre analyse. Ce sont les fondations du métier d’analyste financier.
+>
+> **Bienvenue dans la profession. StratFin Corp compte sur vous.**

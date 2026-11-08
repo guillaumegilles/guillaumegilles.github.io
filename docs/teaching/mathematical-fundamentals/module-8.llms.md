@@ -1,0 +1,229 @@
+> **NOTE:**
+>
+> By the end of this module, you should be able to:
+>
+> - Revise the essential results of Modules 1–7.
+> - Connect concepts across topics (sequences ↔︎ interest, functions ↔︎ optimisation).
+> - Identify the appropriate mathematical method without a chapter label.
+> - Practise on mixed problems under exam-like conditions.
+
+## 1 Diagnostic Activity
+
+Attempt these identification questions without consulting your notes. For each scenario, name the mathematical method or concept you would use and the module it comes from. Do not solve — only identify.
+
+1.  A retailer applies a 15% discount to a marked price. What method determines the final price and the overall percentage reduction?
+2.  A firm’s total cost consists of a fixed component and a variable component proportional to output. At what output does revenue equal cost?
+3.  A monthly salary grows by the same fixed amount each year. What type of sequence describes the salary?
+4.  A firm’s profit function is quadratic in the quantity produced. What tool finds the profit-maximising quantity?
+
+> **NOTE:**
+>
+> 1.  **Percentage change / successive discounts** — Module 1. The factor applied is \\(1 - 0.15) = 0.85\\.
+> 2.  **First-degree equation / break-even analysis** — Module 2. Set \\R(q) = C(q)\\ and solve for \\q\\.
+> 3.  **Arithmetic sequence** — Module 4. The constant addition per period is the common difference \\d\\.
+> 4.  **Derivative and optimisation** — Module 7. Set \\P'(q) = 0\\ and verify it is a maximum (since the parabola opens downward).
+
+Use your results to identify which topics need review before the exam.
+
+## 2 Opening Problem
+
+In the following problems, no chapter title or formula sheet is provided. The challenge is not to calculate — it is to recognise.
+
+> Before reading any solution, write down for each problem below: (1) which mathematical method applies, and (2) which module it comes from. Only then should you verify by expanding the solution.
+
+## 3 Core Concepts
+
+This module contains no new theory. The table below summarises the seven methods covered in the course and the conditions under which each applies.
+
+> **TIP:**
+>
+> | Method | When to apply | Key formula or concept |
+> |----|----|----|
+> | Percentages & indices (M1) | Price changes, market-share shifts, index tracking | \\\Delta\\ = (V_f - V_i)/V_i \times 100\\; factors multiply |
+> | Algebra & break-even (M2) | Fixed + variable costs; revenue vs. cost crossover | \\Q^\* = F/(p-v)\\; set \\R(q) = C(q)\\ |
+> | Lines & systems (M3) | Two linear relationships; equilibrium or crossover | \\y = mx+p\\; intersect at \\x^\* = (p_2-p_1)/(m_1-m_2)\\ |
+> | Sequences (M4) | Quantities evolving by constant addition or ratio | Arithmetic: \\u_n = u_0 + nr\\; Geometric: \\u_n = u_0 r^n\\ |
+> | Simple & compound interest (M5) | Savings, loans, investment comparisons | Simple: \\V_s = P(1+in)\\; Compound: \\V_c = P(1+i/k)^{nk}\\ |
+> | Functions & equations (M6) | Modelling, domain analysis, quadratic roots | Discriminant \\\Delta = b^2 - 4ac\\; quadratic formula |
+> | Derivatives & optimisation (M7) | Finding the maximum or minimum of a polynomial | \\f'(x^\*) = 0\\; sign of \\a\\ determines max or min |
+
+## 4 Worked Example
+
+### 4.1 Integrated problem — financing and break-even
+
+A firm borrows €50,000 at a compound annual rate of 6% to cover its fixed launch costs. The loan is repaid after 3 years. The firm sells a product at €25/unit with variable costs of €10/unit.
+
+**Step 1 — Total repayment (Module 5).**
+
+\\ V_c = 50{,}000 \times (1.06)^3 = 50{,}000 \times 1.191016 \approx 59{,}550.80 \text{ €}. \\
+
+The firm must repay approximately €59,551 — these become the effective fixed costs to cover over the product’s life.
+
+**Step 2 — Break-even quantity (Module 2).**
+
+\\ Q^\* = \frac{59{,}550.80}{25 - 10} = \frac{59{,}550.80}{15} \approx 3{,}970 \text{ units.} \\
+
+**Step 3 — Interpretation.** The firm must sell at least 3,970 units to recover the financed launch cost. Selling fewer means the interest cost alone makes the venture unprofitable.
+
+**Methods used**: Module 5 (compound interest) to find the repayment, then Module 2 (break-even equation) to find the minimum sales volume.
+
+## 5 Guided Practice
+
+A company’s revenue (thousands of euros) is modelled by \\R(t) = -0.5t^2 + 8t + 10\\, where \\t\\ is the number of years since launch. The company’s annual cost is a flat €20,000.
+
+1.  Find the year in which revenue is maximised.
+2.  What is the maximum annual revenue (in €)?
+3.  Is the company profitable in year \\t = 5\\? By how much?
+
+> **TIP:**
+>
+> For Q1 and Q2: use the derivative (Module 7) — compute \\R'(t)\\, set it to zero, and check that it is a maximum (leading coefficient \\\< 0\\). For Q3: convert to euros and compare with the cost.
+
+> **CAUTION:**
+>
+> 1.  \\R'(t) = -t + 8 = 0 \Rightarrow t = 8\\ years. Since \\a = -0.5 \< 0\\, this is a maximum.
+> 2.  \\R(8) = -0.5(64) + 64 + 10 = -32 + 74 = 42\\ thousand euros \$= \$ €42,000.
+> 3.  At \\t = 5\\: \\R(5) = -0.5(25) + 40 + 10 = 37.5\\ thousand euros \$= \$ €37,500. Cost is €20,000. Profit \$= 37{,}500 - 20{,}000 = \$ **€17,500** — profitable.
+
+## 6 Interactive Exploration
+
+The following problems are drawn from across Modules 1–7. Identify the appropriate mathematical method before expanding each problem.
+
+**Identify the method and module before expanding any problem.**
+
+> **CAUTION:**
+>
+> **Method**: Successive percentage changes — Module 1
+>
+> A winter jacket costs €180. The retailer applies a +20% mark-up for the premium season, then a −25% discount during the clearance sale.
+>
+> **Step 1 — Price after mark-up.** \\180 \times 1.20 = 216 \text{ €}.\\
+>
+> **Step 2 — Price after discount.** \\216 \times 0.75 = 162 \text{ €}.\\
+>
+> **Step 3 — Overall change.** \\\Delta\\ = \frac{162 - 180}{180} \times 100 = \frac{-18}{180} \times 100 = -10\\.\\
+>
+> The final price is €162 — a 10% reduction despite a 25% nominal discount, because the mark-up raised the base first.
+
+> **CAUTION:**
+>
+> **Method**: First-degree equation / break-even — Module 2
+>
+> A workshop producing custom furniture has fixed monthly costs of €4,200 and variable costs of €85 per item. Each piece sells for €220.
+>
+> Break-even: \\Q^\* = \frac{4{,}200}{220 - 85} = \frac{4{,}200}{135} \approx 31.1 \text{ items}.\\
+>
+> The workshop must sell at least **32 items per month** (rounding up to whole units) to be profitable.
+
+> **CAUTION:**
+>
+> **Method**: System of two linear equations / line intersection — Module 3
+>
+> A delivery firm considers two van-rental contracts. Contract A: €80/day fixed plus €0.15/km. Contract B: €30/day fixed plus €0.40/km.
+>
+> Let \\d\\ = distance driven per day (km).
+>
+> \\C_A(d) = 80 + 0.15d, \quad C_B(d) = 30 + 0.40d.\\
+>
+> Intersection: \\80 + 0.15d = 30 + 0.40d \Rightarrow 50 = 0.25d \Rightarrow d = 200 \text{ km/day.}\\
+>
+> For fewer than 200 km/day, Contract B is cheaper. For more than 200 km, Contract A is cheaper.
+
+> **CAUTION:**
+>
+> **Method**: Arithmetic sequence — Module 4
+>
+> An employee starts at €32,000 and receives a fixed raise of €1,200 per year.
+>
+> \\u_n = 32{,}000 + 1{,}200\\n.\\
+>
+> After 7 years: \\u_7 = 32{,}000 + 8{,}400 = 40{,}400\\ €.
+>
+> Cumulative salary over 8 years (years 0 to 7): \\S = \frac{8 \times (32{,}000 + 40{,}400)}{2} = 4 \times 72{,}400 = 289{,}600 \text{ €}.\\
+
+> **CAUTION:**
+>
+> **Method**: Compound interest — Module 5
+>
+> €6,000 is deposited in an account offering a compound annual rate of 3%, compounded semi-annually (\\k = 2\\), for 5 years.
+>
+> \\V_c = 6{,}000 \times \left(1 + \frac{0.03}{2}\right)^{5 \times 2} = 6{,}000 \times (1.015)^{10} \approx 6{,}000 \times 1.1605 \approx 6{,}963 \text{ €}.\\
+>
+> Interest earned: \\6{,}963 - 6{,}000 = 963\\ €.
+
+> **CAUTION:**
+>
+> **Method**: Second-degree equation / discriminant — Module 6
+>
+> A firm’s monthly revenue model is \\R(t) = -2t^2 + 14t - 12\\ (thousand €), where \\t\\ is the months of operation.
+>
+> Find the months when revenue is zero: \\\Delta = 14^2 - 4(-2)(-12) = 196 - 96 = 100 \> 0.\\ \\t = \frac{-14 \pm 10}{-4} \Rightarrow t = 1 \text{ or } t = 6.\\
+>
+> Revenue is positive (and the firm earns) during months 1 to 6 of operation (\\t \in \]1, 6\[\\).
+
+> **CAUTION:**
+>
+> **Method**: Derivative and optimisation — Module 7
+>
+> A firm’s profit function is \\P(q) = -0.3q^2 + 24q - 200\\ (thousand €).
+>
+> \\P'(q) = -0.6q + 24 = 0 \Rightarrow q^\* = 40 \text{ units.}\\
+>
+> Since \\a = -0.3 \< 0\\, this is a **maximum**. Maximum profit: \\P(40) = -0.3(1{,}600) + 24(40) - 200 = -480 + 960 - 200 = 280\\ thousand euros.
+
+> **CAUTION:**
+>
+> **Methods**: Compound interest (Module 5) + derivative / optimisation (Module 7)
+>
+> A fund manager invests €10,000 at a compound rate that grows at \\i(t) = -0.01t^2 + 0.12t\\ per year for \\t\\ years of commitment (where \\t \leq 6\\ years is the maximum).
+>
+> **Step 1 — Optimal investment period (Module 7).** Maximise \\i(t)\\: \\i'(t) = -0.02t + 0.12 = 0 \Rightarrow t^\* = 6 \text{ years.}\\ Maximum rate: \\i(6) = -0.36 + 0.72 = 0.36 = 36\\\\ per year.
+>
+> **Step 2 — Final value (Module 5).** At the optimal commitment of 6 years with annual compounding: \\V_c = 10{,}000 \times (1 + 0.36)^6 \approx 10{,}000 \times 6.328 \approx 63{,}280 \text{ €}.\\
+>
+> The 6-year commitment produces the highest rate and the largest accumulated value.
+
+## 7 Applied Problem
+
+A firm launches a new service. Its weekly subscriber count (in thousands) is modelled by \\N(t) = 2 \times 1.15^{t}\\, where \\t\\ is the number of weeks since launch.
+
+1.  Identify the type of sequence and give the first term and common ratio.
+2.  How many subscribers (in thousands) does the service have after 8 weeks?
+3.  A rival service models its growth as \\M(t) = 5 + 3t\\ (thousands). After how many weeks does the exponential service overtake the linear one? (Use trial or estimate.)
+4.  What module’s methods are needed for each sub-question?
+
+## 8 Common Errors
+
+> **WARNING:**
+>
+> Students often apply the **wrong method** because they recognise a surface feature (e.g., “there is a percentage, so I use the percentage formula”) rather than the underlying mathematical structure.
+>
+> **Diagnostic test**: Before choosing a method, ask: - Does the quantity change by a constant **amount** each period? → Arithmetic sequence (Module 4). - Does the quantity change by a constant **factor** each period? → Geometric sequence / compound interest (Modules 4–5). - Is there a quadratic and I need a maximum or minimum? → Derivative (Module 7). - Is there a quadratic and I need the values where it equals zero? → Discriminant / quadratic formula (Module 6). - Are there two linear relationships I need to equate? → System of equations / break-even (Modules 2–3).
+>
+> Distinguishing Module 4 (sequences) from Module 5 (interest) is the most common confusion: both involve geometric growth, but Module 5 focuses on the financial interpretation (principal, rate, period).
+
+## 9 Check Your Understanding
+
+1.  A company’s revenue increases by 8%, then falls by 5%. What is the overall percentage change?
+2.  A sequence has first term €1,000 and grows by €150 each period. What is the term after 12 periods? Is this arithmetic or geometric?
+3.  €20,000 is invested at a compound rate of 4% for 6 years (annual compounding). What is the acquired capital?
+4.  A profit function is \\P(x) = -2x^2 + 48x - 128\\. Without fully solving, explain whether the optimum is a maximum or minimum and why.
+5.  A student encounters the sentence “fixed costs are €5,000 and variable costs are €12 per unit”. Which module’s method is needed to find the break-even quantity if units sell for €20?
+
+## 10 Summary
+
+1.  **Method selection is the core examination skill**: no problem in this course tells you which formula to use — you must identify the mathematical structure (linear, quadratic, exponential, arithmetic, geometric) from the economic context.
+2.  **The seven methods connect**: compound interest is a geometric sequence; the derivative finds the vertex of a parabola; the break-even is a first-degree equation — understanding these links lets you transfer methods across unfamiliar problems.
+3.  **Verify your answer against the context**: a negative break-even quantity, a profit that is actually minimised, or an interest calculation that ignores compounding frequency are signals that a method was misapplied — always check that the result makes economic sense.
+
+## 11 Independent Work
+
+- Work through the eight challenge problems again without expanding the callouts — time yourself to simulate exam conditions.
+- Attempt the practice examination from your course materials.
+- Review the formula sheet (`formula-sheet.qmd`) and confirm you can derive each formula from first principles.
+- Correct any remaining errors in your error log and identify which method produced each error.
+- Review the learning guide (`learning-guide.qmd`) for the suggested two-week revision schedule before the final exam.
+
+## 12 Continue
+
+[Return to the course syllabus →](../../teaching/mathematical-fundamentals/index.llms.md)

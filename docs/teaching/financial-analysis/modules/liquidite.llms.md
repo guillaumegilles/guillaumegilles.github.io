@@ -1,0 +1,1 @@
+**Translation in progress.** This page is currently available in French only: [Analyse de la liquidité](../../../fr/teaching/financial-analysis/modules/liquidite.llms.md).

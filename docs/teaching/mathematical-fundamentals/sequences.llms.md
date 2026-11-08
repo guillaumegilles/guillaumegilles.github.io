@@ -1,0 +1,268 @@
+## 1 Diagnostic Activity
+
+Answer each question from memory before reading further.
+
+1.  What is the next term in the sequence 3, 7, 11, 15, …?
+2.  What is the next term in the sequence 2, 6, 18, 54, …?
+3.  Is the sequence 100, 50, 25, 12.5 arithmetic or geometric?
+
+> **NOTE:**
+>
+> 1.  **19** — each term increases by 4.
+> 2.  **162** — each term is multiplied by 3.
+> 3.  **Geometric**, with common ratio \\q = 0.5\\.
+
+Use your results to identify which sequence type needs more attention.
+
+## 2 Opening Problem
+
+Two colleagues are each offered a salary raise starting from €28,000 per year. Option A: a fixed raise of €1,500 per year. Option B: a 5% raise each year relative to the previous year’s salary.
+
+> After 10 years, which colleague earns more? Write down your prediction before continuing.
+
+## 3 Core Concepts
+
+### 3.1 Numerical Sequences
+
+A **numerical sequence** is an ordered list of numbers indexed by the whole numbers. The term of index \\n\\ is written \\u_n\\; \\u_0\\ (or \\u_1\\) is the **first term**. Sequences are used to model phenomena that evolve **regularly** — that is, over a constant period we add or multiply by the same value.
+
+> **TIP:**
+>
+> - **Savings or loan repayment**: a capital that grows or shrinks month by month.
+> - **Accounting**: computing annual depreciation.
+> - **Management**: forecasting when equipment must be replaced.
+> - **Macroeconomics**: tracking a price index over time.
+
+A sequence can be defined in two ways:
+
+- **recursively**, giving \\u_0\\ and a rule linking \\u\_{n+1}\\ to \\u_n\\;
+- **explicitly**, giving \\u_n\\ directly as a function of \\n\\.
+
+### 3.2 Arithmetic Sequences
+
+> **NOTE:**
+>
+> A sequence is **arithmetic** if each term is obtained by adding a constant number \\r\\, called the **common difference**, to the previous term: \\ u\_{n+1} = u_n + r. \\
+
+**Introductory example.** A person saves \\100\\ € per month (without interest), added to an initial capital of \\500\\ €. Each month we add the constant amount \\100\\ €, so the saved amount forms an arithmetic sequence with first term \\u_0 = 500\\ and common difference \\r = 100\\.
+
+> **TIP:**
+>
+> \\ u_n = u_0 + n\\r. \\ The sequence is **increasing** if \\r \> 0\\, **decreasing** if \\r \< 0\\, and **constant** if \\r = 0\\.
+
+For the savings example, \\u_n = 500 + 100\\n\\. After \\12\\ months, \\u\_{12} = 500 + 100 \times 12 = 1700\\ €.
+
+> **CAUTION:**
+>
+> Let \\S = u_0 + u_1 + \dots + u_n\\ (there are \\n + 1\\ terms). Write the sum forwards and backwards and add termwise (Gauss’s trick):
+>
+> \\ \begin{aligned} S &= u_0 + u_1 + \dots + u_n, \\ S &= u_n + u\_{n-1} + \dots + u_0. \end{aligned} \\
+>
+> Each vertical pair sums to \\u_0 + u_n\\ (because moving up on one line by \\r\\ is compensated by moving down on the other), and there are \\n + 1\\ such pairs, so \\2S = (n + 1)(u_0 + u_n)\\. Hence
+>
+> \\ S = \frac{(n + 1)(u_0 + u_n)}{2} = (\text{number of terms}) \times \frac{\text{first} + \text{last}}{2}. \\
+
+### 3.3 Geometric Sequences
+
+> **NOTE:**
+>
+> A sequence is **geometric** if each term is obtained by multiplying the previous term by a constant number \\q\\, called the **common ratio**: \\ u\_{n+1} = u_n \times q. \\
+
+**Introductory example.** Folding a sheet of paper doubles its thickness at every fold: at each fold we multiply by the constant \\2\\. The thickness forms a geometric sequence with common ratio \\q = 2\\.
+
+> **TIP:**
+>
+> \\ u_n = u_0 \times q^{\\n}. \\ For \\u_0 \> 0\\: the sequence is **increasing** if \\q \> 1\\, **decreasing** if \\0 \< q \< 1\\, and **constant** if \\q = 1\\.
+
+> **CAUTION:**
+>
+> Let \\S = u_0 + u_0 q + u_0 q^{2} + \dots + u_0 q^{n}\\. Multiply by \\q\\: \\qS = u_0 q + u_0 q^{2} + \dots + u_0 q^{n+1}\\. Subtracting,
+>
+> \\ S - qS = u_0 - u_0 q^{n+1} \\\Longrightarrow\\ S(1 - q) = u_0\\(1 - q^{\\n+1}). \\
+>
+> Therefore, for \\q \neq 1\\,
+>
+> \\ S = u_0 \\\frac{1 - q^{\\n+1}}{1 - q} = (\text{first term}) \times \frac{1 - q^{\\\text{number of terms}}}{1 - q}. \\
+
+> **CAUTION:**
+>
+> 1.  An arithmetic sequence has \\u_0 = 200\\ and \\r = 15\\. Give \\u\_{10}\\ and the sum \\u_0 + \dots + u\_{10}\\. \\u\_{10} = 200 + 150 = 350\\; \\S = 11 \times \tfrac{200 + 350}{2} = 3025\\.
+> 2.  A geometric sequence has \\u_0 = 1000\\ and \\q = 1.02\\. Give \\u_5\\ and the sum of the first \\6\\ terms. \\u_5 = 1000 \times 1.02^{5} \approx 1104.08\\; \\S = 1000 \times \tfrac{1 - 1.02^{6}}{1 - 1.02} \approx 6308.12\\.
+
+## 4 Worked Example
+
+### 4.1 Worked example — two salary-growth options
+
+An employee starts at €28,000/year. Compare a fixed raise of €1,500/year (Option A) vs. a 5% annual raise (Option B).
+
+**1. Nature of each sequence.** Option A adds a constant amount → **arithmetic** sequence (\\u_0 = 28{,}000\\, \\r = 1{,}500\\). Option B multiplies by a constant factor → **geometric** sequence (\\v_0 = 28{,}000\\, \\q = 1.05\\).
+
+**2. Salary after 6 years** (index \\6\\, the 7th year):
+
+- Option A: \\u_6 = 28{,}000 + 1{,}500 \times 6 = 37{,}000\\ €.
+- Option B: \\v_6 = 28{,}000 \times 1.05^{6} \approx 37{,}527\\ €.
+
+**3. Cumulative salary over the first 6 years** (indices \\0\\ to \\5\\, i.e. \\6\\ terms):
+
+- Option A: \\S_A = 6 \times \dfrac{u_0 + u_5}{2} = 6 \times \dfrac{28{,}000 + 35{,}500}{2} = 190{,}500\\ €.
+- Option B: \\S_B = 28{,}000 \times \dfrac{1 - 1.05^{6}}{1 - 1.05} \approx 190{,}570\\ €.
+
+**4–6. Comment.** Option A gives a higher annual salary in the early years, but Option B grows faster and overtakes Option A after a few years because geometric (percentage) growth eventually dominates arithmetic (fixed) growth. The crossover is read from the table of yearly values.
+
+## 5 Guided Practice
+
+A company purchases equipment worth €50,000. The equipment depreciates by €4,000 per year (straight-line). A rival company’s equipment depreciates by 12% of its remaining value each year, starting from the same price.
+
+1.  Write the value function \\u_n\\ for each company after \\n\\ years.
+2.  Compute the value for each company after 5 years.
+3.  After how many years does Company B’s equipment first fall below €20,000?
+
+> **TIP:**
+>
+> Company A: arithmetic with \\u_0 = 50{,}000\\ and \\r = -4{,}000\\. Company B: geometric with \\u_0 = 50{,}000\\ and \\q = 0.88\\.
+
+> **CAUTION:**
+>
+> - **Company A**: \\u_n = 50{,}000 - 4{,}000n\\. At \\n = 5\\: \\u_5 = 30{,}000\\ €.
+> - **Company B**: \\u_n = 50{,}000 \times 0.88^n\\. At \\n = 5\\: \\u_5 = 50{,}000 \times 0.88^5 \approx 27{,}442\\ €.
+> - **For Company B below €20,000**: \\50{,}000 \times 0.88^n \< 20{,}000 \Rightarrow 0.88^n \< 0.4\\. At \\n = 7\\: \\0.88^7 \approx 0.409\\; at \\n = 8\\: \\0.88^8 \approx 0.360 \< 0.4\\. So after **8 years**.
+
+## 6 Interactive Exploration
+
+Use the sliders below to explore how arithmetic and geometric sequences compare as you vary the initial term, common difference, and common ratio.
+
+``` js
+viewof u0 = Inputs.range([0, 100], {
+  value: 28,
+  step: 1,
+  label: "Initial term u₀"
+})
+
+viewof d = Inputs.range([-10, 10], {
+  value: 1.5,
+  step: 0.5,
+  label: "Common difference d (arithmetic)"
+})
+
+viewof r = Inputs.range([0.5, 2.0], {
+  value: 1.05,
+  step: 0.01,
+  label: "Common ratio r (geometric)"
+})
+
+viewof nTerms = Inputs.range([2, 20], {
+  value: 10,
+  step: 1,
+  label: "Number of terms n"
+})
+```
+
+``` js
+indices = Array.from({length: nTerms}, (_, i) => i)
+arithmeticSeq = indices.map(n => ({n, value: u0 + n * d, type: "Arithmetic"}))
+geometricSeq = indices.map(n => ({n, value: u0 * Math.pow(r, n), type: "Geometric"}))
+allData = [...arithmeticSeq, ...geometricSeq]
+
+seqChart = Plot.plot({
+  marks: [
+    Plot.line(allData, {x: "n", y: "value", stroke: "type"}),
+    Plot.dot(allData, {x: "n", y: "value", fill: "type"})
+  ],
+  x: {label: "Term index n"},
+  y: {label: "Value"},
+  color: {legend: true}
+})
+```
+
+``` js
+html`
+<div style="margin-bottom:1rem">${seqChart}</div>
+<div class="metric-grid">
+  <div class="metric-card">
+    <span class="metric-label">Arithmetic u₍ₙ₎ (last term)</span>
+    <strong>${(u0 + (nTerms-1)*d).toFixed(2)}</strong>
+  </div>
+  <div class="metric-card">
+    <span class="metric-label">Geometric u₍ₙ₎ (last term)</span>
+    <strong>${(u0 * Math.pow(r, nTerms-1)).toFixed(2)}</strong>
+  </div>
+</div>
+`
+```
+
+### 6.1 Investigation
+
+1.  Set \\u_0 = 28\\, \\d = 1.5\\, \\r = 1.05\\, \\n = 10\\. Which sequence is larger at the last term?
+2.  Increase \\n\\ to 20. At what point does the geometric sequence overtake the arithmetic one?
+3.  Set \\r = 0.88\\ and \\d = -4\\. Which model represents faster depreciation?
+
+## 7 Applied Problem
+
+A price index tracks the cost of a basket of goods. In 2020 the index stands at 100. Over the following 5 years, prices increase by a fixed €2 points per year (Scenario A) or by 2% per year (Scenario B).
+
+1.  Write the index value \\I_n\\ for each scenario after \\n\\ years (\\n = 0\\ is 2020).
+2.  Compute the index value for each scenario after 5 years.
+3.  Which scenario leads to a higher cumulative price increase over 10 years?
+4.  Interpret: what does an index above 100 mean for consumers?
+
+## 8 Common Errors
+
+> **WARNING:**
+>
+> A student is given the sequence 3, 6, 12, 24 and writes \\u_n = 3 + n \times 3\\.
+>
+> This is incorrect — the sequence is **geometric** (each term is multiplied by 2), not arithmetic (which adds a constant). The correct formula is \\u_n = 3 \times 2^n\\.
+>
+> Always check whether consecutive terms have a **constant difference** (arithmetic) or a **constant ratio** (geometric) before applying a formula.
+
+## 9 Check Your Understanding
+
+1.  A sequence has \\u_0 = 5\\ and \\u\_{n+1} = u_n + 3\\. What is \\u_6\\? What is the sum \\u_0 + u_1 + \dots + u_6\\?
+2.  Why does a geometric sequence with ratio \\r \> 1\\ grow faster than any arithmetic sequence with the same first term, for large enough \\n\\?
+3.  A savings account earns 4% interest per year (compound). Modelled as a geometric sequence, what is the common ratio?
+4.  A student claims the sum of the first 5 terms of the arithmetic sequence \\2, 5, 8, 11, 14\\ is \\5 \times 8 = 40\\ (using the average). Is this correct?
+5.  Two sequences both start at \\u_0 = 100\\. Sequence A has \\d = 10\\; Sequence B has \\r = 1.08\\. After how many terms does Sequence B first exceed Sequence A?
+
+## 10 Summary
+
+1.  An arithmetic sequence grows by a constant amount each period (\\u_n = u_0 + nr\\); a geometric sequence grows by a constant factor (\\u_n = u_0 r^n\\) — recognising which model applies is the first step in any analysis.
+2.  For the same starting value and similar short-term growth, geometric growth always eventually dominates arithmetic growth as \\n\\ increases — this is why compound interest outperforms simple interest over long horizons.
+3.  Sum formulas — arithmetic: \\S_n = (n+1)(u_0 + u_n)/2\\; geometric: \\S_n = u_0(1 - r^{n+1})/(1-r)\\ — let us aggregate total accumulations over time without summing term by term.
+
+## 11 Independent Work
+
+- Complete sequence exercises 1–10 in the exercise bank.
+
+- Work through the salary comparison case study.
+
+- Record errors in your error log.
+
+- Review glossary entries for: *arithmetic sequence*, *geometric sequence*, *common difference*, *common ratio*, *sum formula*.
+
+  ## 12 Module 4 — Numerical Sequences
+
+  **Arithmetic sequence — general term**
+
+  \\ u_n = u_0 + n\\d \\
+
+  \\u_0\\ is the first term; \\d\\ is the common difference (constant addition per step).
+
+  ------------------------------------------------------------------------
+
+  **Arithmetic sequence — sum of the first \\n+1\\ terms**
+
+  \\ S_n = \frac{(n+1)(u_0 + u_n)}{2} = (\text{number of terms}) \times \frac{\text{first} + \text{last}}{2} \\
+
+  ------------------------------------------------------------------------
+
+  **Geometric sequence — general term**
+
+  \\ u_n = u_0 \times r^{\\n} \\
+
+  \\u_0\\ is the first term; \\r\\ is the common ratio (constant factor per step).
+
+  ------------------------------------------------------------------------
+
+  **Geometric sequence — sum of the first \\n+1\\ terms (\\r \neq 1\\)**
+
+  \\ S_n = u_0 \\\frac{1 - r^{\\n+1}}{1 - r} \\

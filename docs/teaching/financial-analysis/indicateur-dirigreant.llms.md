@@ -1,0 +1,1 @@
+**Translation in progress.** This page is currently available in French only: [Indicateur Dirigeant](../../fr/teaching/financial-analysis/indicateur-dirigreant.llms.md).
