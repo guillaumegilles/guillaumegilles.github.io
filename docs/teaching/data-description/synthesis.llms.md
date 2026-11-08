@@ -1,0 +1,329 @@
+**The business question.** You have learned the full descriptive statistics toolkit: organising data (Modules 1–3), summarising one variable (Modules 4–7), and analysing two variables (Modules 8–9). This module puts it all together with a start-to-finish walkthrough on a fresh dataset, a common-pitfalls checklist, and an original mock exam mapped back to every module so you can pinpoint exactly what to revise.
+
+## 1 Theory
+
+### 1.1 Complete walkthrough — Lakeside Bakery
+
+The `lakeside-bakery.csv` dataset contains two outlets (`Riverside`, `Hilltop`) × 60 days = 120 rows. Variables: `outlet`, `day`, `date`, `day_of_week`, `month`, `weather`, `temperature_c`, `foot_traffic`, `customer_count`, `items_sold`, `daily_revenue_eur`, `waste_kg`, `satisfaction_rating`.
+
+**Step 1 — variable typing.** `outlet`, `weather`, `day_of_week`, `month` (ordinal), `satisfaction_rating` (ordinal) are qualitative. `temperature_c`, `daily_revenue_eur`, `waste_kg` are quantitative continuous. `day`, `foot_traffic`, `customer_count`, `items_sold` are quantitative discrete.
+
+**Step 2 — frequency tables and charts.** Build frequency tables for `weather` (nominal) and `satisfaction_rating` (ordinal) per outlet. Use bar charts (nominal) and ordered bar charts (ordinal). Identify the modal category for each.
+
+**Step 3 — five-number summary and boxplot.** For `daily_revenue_eur` per outlet: compute min, Q1, median, Q3, max, IQR, fences. Draw side-by-side boxplots. Check for outliers.
+
+**Step 4 — centre, spread, shape.** Compute mean, median, grouped mode, variance, standard deviation, CV, skewness for `daily_revenue_eur` per outlet. Compare outlets.
+
+**Step 5 — contingency table.** Cross `weather` with `daily_revenue_eur` class (€50 bins) per outlet. Compute conditional distributions (revenue class given weather). Look for visible dependence.
+
+**Step 6 — scatter plot, correlation, regression.** Plot `temperature_c` vs `daily_revenue_eur` per outlet. Compute covariance, correlation \\r\\, \\r^2\\, regression line. Interpret.
+
+### 1.2 Common pitfalls checklist
+
+> **WARNING:**
+>
+> 1.  **Unequal-width histogram heights** — use density \\n_i/h_i\\, not raw counts, when class widths differ (Module 3).
+> 2.  **\\n\\ vs \\n-1\\** — use sample formulas (`.S`) by default; population formulas (`.P`) only when you have the entire population (Module 6).
+> 3.  **Correlation vs causation** — \\r\\ measures linear association, not cause and effect (Module 9).
+> 4.  **\\r\\ vs \\r^2\\** — \\r\\ is correlation (direction + strength); \\r^2\\ is explained share (always 0 to 1) (Module 9).
+> 5.  **`QUARTILE.INC` vs `QUARTILE.EXC`** — the course uses exclusive (position \\(n+1)p\\); do not mix them (Module 5).
+> 6.  **Ordinal treated as ratio** — `satisfaction_rating` 1–5 has no equal intervals; median, not mean (Module 1).
+> 7.  **Extrapolation** — regression predictions outside the observed \\X\\ range are unjustified (Module 9).
+> 8.  **Raw counts vs conditional %** — compare rows with different totals using conditional distributions (Module 8).
+> 9.  **Grouped mean/mode as exact** — they are approximations; prefer raw data when available (Modules 3–4).
+> 10. **Mean/median/mode ordering heuristic** — for near-symmetric data, the gaps are tiny; trust the Fisher-Pearson skewness using all raw data (Module 7).
+> 11. **Fence rule vs standard deviations** — 1.5×IQR is for boxplots; 2σ is for normal distributions — different tools (Module 5).
+> 12. **Intercept as real prediction** — if \\X=0\\ is not meaningful, the intercept is just a mathematical anchor (Module 9).
+> 13. **Excel locale** — French Excel uses `;` and localised function names; use the Excel functions page to translate (Module 1).
+> 14. **Line chart vs scatter plot** — line charts imply sequence; scatter plots show relationship between two variables (Module 8).
+
+### 1.3 Notation recap
+
+This block comes after the mock exam debrief (see the time plan). Read each formula aloud with the class, then follow the link to the module that introduced it: its notation decoder, where the module has one, names every symbol.
+
+| Indicator | Formula | Read aloud | Module |
+|----|----|----|----|
+| Mean | \\\bar{x} = \frac{1}{n}\sum\_{i=1}^{n} x_i\\ | “add up all \\n\\ values and divide by \\n\\” | [Module 4](module-04.qmd) |
+| Interquartile range | \\IQR = Q_3 - Q_1\\ | “the third quartile minus the first quartile” | [Module 5](module-05.qmd) |
+| Sample variance | \\s^2 = \frac{1}{n-1}\sum\_{i=1}^{n}(x_i-\bar{x})^2\\ | “add up each value’s squared distance from the mean, divide by \\n-1\\” | [Module 6](module-06.qmd) |
+| Standard deviation | \\s = \sqrt{s^2}\\ | “s is the square root of the variance, back in the original unit” | [Module 6](module-06.qmd) |
+| Coefficient of variation | \\CV = \frac{s}{\bar{x}} \times 100\\\\ | “the standard deviation as a percentage of the mean” | [Module 6](module-06.qmd) |
+| Skewness (`SKEW`) | \\\frac{n}{(n-1)(n-2)}\sum\_{i=1}^{n}\left(\frac{x_i-\bar{x}}{s}\right)^3\\ | “cube each standardised deviation, add them up, apply the small-sample factor” | [Module 7](module-07.qmd) |
+| Covariance | \\\text{Cov}(X,Y) = \frac{1}{n-1}\sum\_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})\\ | “multiply the two deviations for each individual, add up, divide by \\n-1\\” | [Module 9](module-09.qmd) |
+| Correlation | \\r = \frac{\text{Cov}(X,Y)}{s_X\\ s_Y}\\ | “the covariance divided by the product of the two standard deviations” | [Module 9](module-09.qmd) |
+| Regression slope | \\b = \frac{\text{Cov}(X,Y)}{s_X^2}\\, \\a = \bar{y} - b\\\bar{x}\\ | “the covariance divided by the variance of X; the line passes through the point of means” | [Module 9](module-09.qmd) |
+
+## 2 Worked example — Lakeside Bakery (summary)
+
+| Statistic                             |       Riverside |         Hilltop |
+|---------------------------------------|----------------:|----------------:|
+| \\n\\                                 |              60 |              60 |
+| Mean revenue (€)                      |          205.69 |          216.91 |
+| Median revenue (€)                    |          184.94 |          195.16 |
+| \\Q_1\\ / \\Q_3\\ (€, `QUARTILE.EXC`) | 156.66 / 261.25 | 151.62 / 265.92 |
+| Std. dev. (€)                         |           83.48 |           81.96 |
+| CV                                    |           40.6% |           37.8% |
+| Skewness (`SKEW`)                     |           +0.93 |           +0.60 |
+| Outliers (1.5×IQR)                    |          2 high |            none |
+| \\r\\(temp, revenue)                  |          −0.087 |           0.125 |
+| Regression slope (€ per °C)           |           −1.78 |            2.38 |
+
+Both outlets are right-skewed (mean above median) with high relative variability (CV near 40%). Hilltop has a slightly higher average and slightly lower CV; Riverside is more skewed and has two unusually high days. Temperature tells us almost nothing about revenue at either outlet (\\\|r\| \< 0.13\\): look at weather categories instead (Module 8).
+
+## 3 Proof / derivation
+
+> **CAUTION:**
+>
+> Let a dataset be partitioned into \\k\\ groups (e.g., franchises). Group \\j\\ has \\n_j\\ observations with mean \\\bar{x}\_j\\. The overall mean is \\ \bar{x} = \frac{1}{n}\sum\_{i=1}^{n} x_i = \frac{1}{n}\sum\_{j=1}^{k} \sum\_{i \in \text{group } j} x_i = \frac{1}{n}\sum\_{j=1}^{k} n_j \bar{x}\_j = \sum\_{j=1}^{k} \frac{n_j}{n} \bar{x}\_j. \\
+>
+> This is exactly a **weighted mean** of the group means, with weights \\w_j = n_j/n\\ (the group’s share of total observations). For “The Wandering Fork”, the overall 240-day mean revenue is the weighted mean of the Harbour 120-day mean and the Campus 120-day mean, with equal weights (120/240 = 0.5 each): \\0.5 \times 413.49 + 0.5 \times 455.03 = 434.26\\ €, which is exactly what `=AVERAGE(tblFork[daily_revenue_eur])` returns.
+
+## 4 Visual intuition
+
+The full walkthrough on Lakeside Bakery data is the visual consolidation of the entire course: the frequency tables and bar charts (Module 2) show the qualitative shape; the boxplots (Module 5) show the five-number summary and outliers at a glance; the histogram (Module 3) shows the revenue distribution shape; the scatter plots (Module 8) show the temperature–revenue relationship; and the regression lines (Module 9) quantify that relationship. Together, these pictures tell the complete story that the numbers alone cannot.
+
+## 5 Interactive demo
+
+> **IMPORTANT:**
+>
+> TODO: an interactive full-workflow dashboard (upload CSV, auto-generate all tables/charts) would be a capstone OJS demo.
+
+## 6 Exercises
+
+The exercises for this module are the **mock exam** below. Two short by-hand review exercises (4–5) follow it, for the notation recap block.
+
+### 6.1 Mock exam — Modules 1–9
+
+> **IMPORTANT:**
+>
+> This is an **originally-authored** mock exam on “The Wandering Fork” and Lakeside Bakery data, mirroring the format and difficulty of the Midterm Exam (35%, 45 min) and Final Exam (65%, 90 min) described in the [syllabus](../index.qmd): a multiple-choice section followed by computational exercises. It does not reproduce any verbatim question or answer key from the source exam files.
+
+#### Part A — Multiple choice (1 point each)
+
+> **CAUTION:**
+>
+> “The Wandering Fork”’s `satisfaction_rating` (1–5) is: (a) Quantitative discrete (b) Qualitative ordinal (c) Qualitative nominal (d) Quantitative continuous **Answer: (b).** The categories have a natural order (1 \< 2 \< 3 \< 4 \< 5) but the distances between them are not necessarily equal.
+>
+> **Revise:** Module 1.
+
+> **CAUTION:**
+>
+> In any relative frequency table for a qualitative variable, the percentages sum to: (a) 100% exactly (b) Approximately 100% (rounding may cause 99.9% or 100.1%) (c) The sample size \\n\\ (d) 1 **Answer: (b).** Rounding often makes the sum 99.9% or 100.1%; the exact algebraic sum is 1 (or 100%), but printed percentages are rounded.
+>
+> **Revise:** Module 2.
+
+> **CAUTION:**
+>
+> When class widths are unequal, the bar height in a histogram must represent: (a) Absolute frequency \\n_i\\ (b) Relative frequency \\f_i\\ (c) Density \\n_i/h_i\\ (d) Cumulative frequency \\N_i^{+}\\ **Answer: (c).** Area = height × width must equal frequency; with unequal widths, height = density = \\n_i/h_i\\.
+>
+> **Revise:** Module 3.
+
+> **CAUTION:**
+>
+> “The Wandering Fork” Harbour 30-day revenue has fences at 171.52 and 1065.07. The observed minimum is 407.59 and maximum is 886.56. How many outliers? (a) 0 (b) 1 (c) 2 (d) Cannot be determined **Answer: (a).** Both extremes lie inside the fences.
+>
+> **Revise:** Module 5.
+
+> **CAUTION:**
+>
+> For a right-skewed distribution, the typical ordering is: (a) \\\bar{x} \< Me \< Mo\\ (b) \\\bar{x} = Me = Mo\\ (c) \\\bar{x} \> Me \> Mo\\ (d) No consistent ordering **Answer: (c).** The long right tail pulls the mean above the median above the mode.
+>
+> **Revise:** Module 4.
+
+> **CAUTION:**
+>
+> \\CV = 21.82\\\\ for Harbour 30-day daily revenue. This means: (a) The standard deviation is 21.82% of the mean (b) 21.82% of days are within one standard deviation (c) The variance is 21.82% of the mean (d) The data is 21.82% skewed **Answer: (a).** \\CV = s/\bar{x} \times 100\\\\.
+>
+> **Revise:** Module 6.
+
+> **CAUTION:**
+>
+> Three skewness formulas give different signs for the same near-symmetric data. Which one uses all raw observations and is the course standard? (a) Pearson skewness coefficient (b) Yule-Kendall skewness coefficient (c) Fisher-Pearson sample skewness (Excel’s `SKEW`) (d) They are all equally authoritative **Answer: (c).** The Fisher-Pearson coefficient uses every raw observation; the others use grouped estimates or only the five-number summary.
+>
+> **Revise:** Module 7.
+
+> **CAUTION:**
+>
+> To compare revenue distributions for Sunny vs Rainy days fairly, you should use: (a) Raw counts from the contingency table (b) Column percentages (c) Row percentages (conditional distribution of revenue given weather) (d) The grand total **Answer: (c).** Row percentages rescale each weather type to its own total, enabling fair comparison.
+>
+> **Revise:** Module 8.
+
+> **CAUTION:**
+>
+> \\r = 0.621\\ for temperature vs revenue (Harbour, 30 days). This means: (a) Temperature causes revenue to increase (b) 62.1% of revenue variability is explained by temperature (c) There is a moderate positive linear relationship (d) The regression slope is 0.621 **Answer: (c).** \\r\\ measures linear association strength and direction; \\r^2 = 0.386\\ is the explained share.
+>
+> **Revise:** Module 9.
+
+> **CAUTION:**
+>
+> For Harbour’s first 30 days the regression line is \\\widehat{\text{revenue}} = -22.01 + 28.71 \times \text{temperature\\c}\\. Predicting revenue at \\40\\ °C is:
+>
+> 1.  Reliable — the line is the best fit
+> 2.  Unreliable — extrapolation beyond the data range (16.4–27.1 °C)
+> 3.  Exact — the line passes through all points
+> 4.  Impossible — the intercept is negative **Answer: (b).** Extrapolation beyond observed \\X\\ values is unjustified.
+>
+> **Revise:** Module 9.
+
+#### Part B — Computational exercises (6 points each)
+
+> **CAUTION:**
+>
+> Using the **Harbour 120 days** of `wandering-fork.xlsx`, compute the complete descriptive summary for `daily_revenue_eur`: (a) Class table with classes of width €100 starting at €0. (b) Five-number summary, IQR, fences, outliers. (c) Mean, median, grouped mode. (d) Sample variance, standard deviation, CV. (e) Fisher-Pearson skewness. (f) Comment on symmetry and variability using the course conventions. **Solution.** (a) Classes: \\\[0,100\[\\ (9), \\\[100,200\[\\ (11), \\\[200,300\[\\ (17), \\\[300,400\[\\ (24), \\\[400,500\[\\ (21), \\\[500,600\[\\ (10), \\\[600,700\[\\ (16), \\\[700,800\[\\ (7), \\\[800,900\[\\ (3), \\\[900,1000\[\\ (0), \\\[1000,1100\[\\ (2); total 120. Modal class \\\[300,400\[\\. (b) Min=51.21, Q1=267.89, Me=391.47, Q3=567.32, Max=1050.00, IQR=299.43, fences=-181.25/1016.45, 1 high outlier (1050.00 \> 1016.45). (c) Mean=413.49, Me=391.47, grouped Mo ≈ 300 + 100×(24−17)/((24−17)+(24−21)) = 300 + 100×7/10 = 370. (d) \\s^2\\=46,661.10, \\s\\=216.01, CV=52.24%. (e) Skewness = 0.47 (mild right skew). (f) Mild right skew (skewness 0.47), high relative variability (CV 52.2% \> 35%), one high outlier. Mean \> median (413 \> 391) consistent with right skew.
+>
+> **Revise:** Module 3 (a), Module 5 (b), Module 4 (c), Module 6 (d), Module 7 (e–f).
+
+> **CAUTION:**
+>
+> Using the **Campus 120 days** of `wandering-fork.xlsx`: (a) Build a contingency table: `weather` (Rows) × `daily_revenue_eur` class (Columns, €100 bins). Show conditional distributions (% of row total). (b) Create a scatter plot of `customer_count` vs `daily_revenue_eur`. (c) Compute covariance, correlation \\r\\, \\r^2\\, regression line. (d) Predict revenue for a 30-customer day. Is this prediction reliable? (e) Verify the regression line passes through \\(\bar{x},\bar{y})\\. **Solution.** (a) Rows: Cloudy 48, Rainy 22, Sunny 50. 27.3% of Rainy days fall below €100 against 4.2% (Cloudy) and 4.0% (Sunny); all six days of €1,100 or more are Sunny. The row profiles differ: visible dependence. (b) Strong, upward, linear cloud with few outliers. (c) Cov=7,223.49, \\r\\=0.970, \\r^2\\=0.940, slope=12.30 € per customer, intercept=−22.75. (d) \\-22.75 + 12.30\times30 = 346.25\\ €. Reliable: 30 customers lies inside the observed range (3–106), and \\r^2 = 0.94\\. (e) \\\bar{x}\\=38.84, \\\bar{y}\\=455.03: \\-22.75 + 12.30\times38.84 = 454.98 \approx \bar{y}\\ (the small gap is rounding of the coefficients). ✓
+>
+> **Revise:** Module 8 (a–b), Module 9 (c–e).
+
+> **CAUTION:**
+>
+> Open `lakeside-bakery.csv`. For the **Riverside** outlet (60 days): (a) Classify all 13 variables by type and level of measurement. (b) Build frequency tables and charts for `weather` and `satisfaction_rating`. (c) Compute the five-number summary, boxplot, and outliers for `daily_revenue_eur`. (d) Compute mean, median, mode, variance, std, CV, skewness for `daily_revenue_eur`. (e) Build a contingency table: `weather` × `daily_revenue_eur` class (€50 bins). Compute conditional distributions. (f) Scatter plot, correlation, regression for `temperature_c` vs `daily_revenue_eur`. (g) Summarise the key differences between Riverside and Hilltop in three sentences. **Solution.** (a) Qualitative nominal: outlet, weather, day_of_week. Qualitative ordinal: month, satisfaction_rating. Quantitative discrete: day, foot_traffic, customer_count, items_sold. Quantitative continuous: temperature_c, daily_revenue_eur, waste_kg. (b) Weather: Sunny/Cloudy/Rainy frequencies; satisfaction: 1–5 frequencies. Bar charts for both. (c) Min=66.93, Q1=156.66, Me=184.94, Q3=261.25, Max=472.24, IQR=104.58, fences=−0.21/418.12, 2 high outliers (431.34, 472.24). (d) Mean=205.69, Me=184.94, modal class \[150,200\[ (22 days), grouped Mo ≈ 150 + 50×13/(13+14) ≈ 174.07, \\s\\=83.48, CV=40.6%, skew=+0.93 (clear right skew; Mo \< Me \< mean). (e) 63.6% of Rainy days earn below €150, against 20.0% of Cloudy and 6.9% of Sunny days: revenue clearly depends on weather. (f) \\r\\=−0.087, \\r^2\\=0.008, slope=−1.78, intercept=243.51: no linear link between temperature and revenue. (g) Hilltop earns slightly more on average (216.91 vs 205.69) with slightly lower relative spread (CV 37.8% vs 40.6%). Riverside is more right-skewed and has two outlier days; Hilltop has none. At both outlets weather matters, temperature does not.
+>
+> **Revise:** Module 1 (a), Module 2 (b), Module 5 (c), Modules 4, 6 and 7 (d), Module 8 (e), Module 9 (f).
+
+### 6.2 Review exercises (by hand)
+
+For the notation recap block, after the mock exam debrief. No calculator needed except for a single division in Exercise 4.
+
+> **CAUTION:**
+>
+> 1.  Read \\r = \frac{\text{Cov}(X,Y)}{s_X\\ s_Y}\\ aloud as one sentence. Why is \\r\\ easier to interpret than the covariance?
+>
+> 2.  Read \\CV = \frac{s}{\bar{x}} \times 100\\\\ aloud. Riverside has \\s = 83.48\\ € and \\\bar{x} = 205.69\\ €: check the \\CV\\ of 40.6% in the summary table.
+>
+> **Solution.** (a) “\\r\\ is the covariance of \\X\\ and \\Y\\ divided by the product of their standard deviations.” The division removes the unit (°C·€), so \\r\\ is a pure number between \\-1\\ and \\1\\. (b) “The standard deviation as a percentage of the mean.” \\83.48 / 205.69 = 0.406\\, i.e. \\CV = 40.6\\\\ ✓.
+>
+> **Revise:** Module 9 (a), Module 6 (b).
+
+> **CAUTION:**
+>
+> Write in symbols:
+>
+> 1.  “for each individual, multiply the two deviations from the means, add up the products, and divide by \\n-1\\”;
+>
+> 2.  “the slope is the covariance divided by the variance of \\X\\”;
+>
+> 3.  “the third quartile minus the first quartile”.
+>
+> 4.  A regression line has \\\bar{x} = 20\\, \\\bar{y} = 400\\ and \\b = 10\\. Compute the intercept \\a\\ and the prediction at \\x = 25\\.
+>
+> **Solution.** (a) \\\text{Cov}(X,Y) = \frac{1}{n-1}\sum\_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})\\. (b) \\b = \dfrac{\text{Cov}(X,Y)}{s_X^2}\\. (c) \\IQR = Q_3 - Q_1\\. (d) \\a = \bar{y} - b\\\bar{x} = 400 - 10 \times 20 = 200\\, so \\\hat{y} = 200 + 10 \times 25 = 450\\.
+>
+> **Revise:** Module 9 (a, b, d), Module 5 (c).
+
+## 7 Common mistakes
+
+> **WARNING:**
+>
+> - **Unequal-width histogram heights** — use density \\n_i/h_i\\, not raw counts, when class widths differ (Module 3).
+> - **\\n\\ vs \\n-1\\** — use sample formulas (`.S`) by default; population formulas (`.P`) only when you have the entire population (Module 6).
+> - **Correlation vs causation** — \\r\\ measures linear association, not cause and effect (Module 9).
+> - **\\r\\ vs \\r^2\\** — \\r\\ is correlation (direction + strength); \\r^2\\ is explained share (always 0 to 1) (Module 9).
+> - **`QUARTILE.INC` vs `QUARTILE.EXC`** — the course uses exclusive (position \\(n+1)p\\); do not mix them (Module 5).
+> - **Ordinal treated as ratio** — `satisfaction_rating` 1–5 has no equal intervals; median, not mean (Module 1).
+> - **Extrapolation** — regression predictions outside the observed \\X\\ range are unjustified (Module 9).
+> - **Raw counts vs conditional %** — compare rows with different totals using conditional distributions (Module 8).
+> - **Grouped mean/mode as exact** — they are approximations; prefer raw data when available (Modules 3–4).
+> - **Mean/median/mode ordering heuristic** — for near-symmetric data, the gaps are tiny; trust the Fisher-Pearson skewness using all raw data (Module 7).
+> - **Fence rule vs standard deviations** — 1.5×IQR is for boxplots; 2σ is for normal distributions — different tools (Module 5).
+> - **Intercept as real prediction** — if \\X=0\\ is not meaningful, the intercept is just a mathematical anchor (Module 9).
+> - **Excel locale** — French Excel uses `;` and localised function names; use the Excel functions page to translate (Module 1).
+> - **Line chart vs scatter plot** — line charts imply sequence; scatter plots show relationship between two variables (Module 8).
+
+## 8 Exit check
+
+Five minutes, no calculator needed except for question 5.
+
+1.  Read \\\text{Cov}(X,Y)=\frac{1}{n-1}\sum\_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})\\ aloud as a sentence.
+2.  `satisfaction_rating` (1–5) is ordinal. Which centre indicator do you report, and why not the mean?
+3.  Riverside has \\r = -0.087\\ between temperature and revenue. Interpret it in one sentence, and give \\r^2\\.
+4.  Why does the sample variance divide by \\n-1\\ rather than \\n\\?
+5.  Riverside revenue runs from €66.93 to €472.24, with \\IQR = 104.58\\. Compute the range. Which of the two spread measures do you trust more here, and why?
+
+> **CAUTION:**
+>
+> 1.  “For each day, multiply the deviation of \\x\\ from its mean by the deviation of \\y\\ from its mean, add up the \\n\\ products, and divide by \\n-1\\.” (Module 9)
+> 2.  The median (or the mode): the gaps between 1, 2, 3, 4, 5 are not equal, so averaging the codes has no meaning. (Module 1)
+> 3.  There is almost no linear link between temperature and revenue; \\r^2 = 0.087^2 \approx 0.008\\, so temperature explains under 1% of the revenue variability. (Module 9)
+> 4.  The deviations \\x_i-\bar{x}\\ sum to 0, so only \\n-1\\ of them are free; dividing by \\n-1\\ corrects for \\\bar{x}\\ being estimated from the same sample (Bessel’s correction). (Module 6)
+> 5.  Range \\= 472.24 - 66.93 = 405.31\\ €. The \\IQR\\: the range is set by the two extreme days (both high outliers), while the \\IQR\\ covers the middle 50% of days and ignores them. (Modules 5–6)
+
+## 9 Homework — Excel lab
+
+Replicate the walkthrough in Excel: reproduce the Lakeside Bakery summary you reviewed in class with the functions of Modules 1–9, then run the full walkthrough on the second outlet.
+
+**Estimated time:** about 50–60 minutes. Any spreadsheet application works, at home or in a campus computer room.
+
+**Follow-up:** there is no next module, so check yourself against the solutions on this page (Step 0 and Homework 1–2). If your group has a final-exam review session, bring any remaining question to it.
+
+### 9.1 Using Excel
+
+All functions from Modules 1–9. The complete list is on the [Excel functions](../../teaching/data-description/excel-functions.llms.md) page.
+
+| Walkthrough step | Excel function / steps |
+|----|----|
+| Keep one outlet | Filter `outlet`, or `FILTER(range, outlet_range="Riverside")` inside each function |
+| Step 2 — frequency tables | `=COUNTIF(range,"Sunny")`, or a PivotTable with `weather` in Rows |
+| Step 3 — five-number summary | `=MIN(range)`, `=QUARTILE.EXC(range,1)`, `=MEDIAN(range)`, `=QUARTILE.EXC(range,3)`, `=MAX(range)` |
+| Step 4 — centre, spread, shape | `=AVERAGE(range)`, `=STDEV.S(range)`, `=STDEV.S(range)/AVERAGE(range)`, `=SKEW(range)` |
+| Step 5 — contingency table | PivotTable: `weather` in Rows, revenue class in Columns, values shown as % of row total |
+| Step 6 — correlation, regression | `=COVARIANCE.S(x,y)`, `=CORREL(x,y)`, `=RSQ(y,x)`, `=SLOPE(y,x)`, `=INTERCEPT(y,x)` |
+
+### 9.2 Step 0 — check your class results
+
+1.  Open `lakeside-bakery.csv` and keep the 60 **Riverside** rows.
+2.  For `daily_revenue_eur`, compute `=AVERAGE`, `=MEDIAN`, `=QUARTILE.EXC(range,1)`, `=QUARTILE.EXC(range,3)`, `=STDEV.S`, `=STDEV.S(range)/AVERAGE(range)` and `=SKEW`.
+3.  With `temperature_c` as \\x\\ and revenue as \\y\\, compute `=CORREL(x,y)`, `=SLOPE(y,x)` and `=INTERCEPT(y,x)`.
+4.  Compare every result with the Riverside column of the summary table and with the solution of Exercise 3.
+
+> **CAUTION:**
+>
+> | Indicator                             |               Riverside |
+> |---------------------------------------|------------------------:|
+> | \\n\\                                 |                      60 |
+> | Mean revenue (€)                      |                  205.69 |
+> | Median revenue (€)                    |                  184.94 |
+> | \\Q_1\\ / \\Q_3\\ (€, `QUARTILE.EXC`) |         156.66 / 261.25 |
+> | Std. dev. (€)                         |                   83.48 |
+> | CV                                    |                   40.6% |
+> | Skewness (`SKEW`)                     |                   +0.93 |
+> | Outliers (1.5×IQR)                    | 2 high (431.34, 472.24) |
+> | \\r\\(temp, revenue)                  |                  −0.087 |
+> | Slope / intercept                     |          −1.78 / 243.51 |
+>
+> The exact \\Q_3\\ is 261.245, so some apps display 261.24: both are correct.
+
+> **CAUTION:**
+>
+> Repeat Steps 2–6 of the walkthrough for the **Hilltop** outlet (60 days) of `lakeside-bakery.csv`: (a) Modal category of `weather` and of `satisfaction_rating`. (b) Five-number summary, IQR, fences and outliers of `daily_revenue_eur`. (c) Mean, median, grouped mode (€50 classes from €50), standard deviation, CV and skewness. (d) Share of days below €150 for each weather type. (e) \\r\\, \\r^2\\, slope and intercept of `temperature_c` vs `daily_revenue_eur`.
+>
+> **How to.** Filter `outlet` to “Hilltop”, then follow the Using Excel table row by row; use `COUNTIFS` for the class counts in (c) and (d).
+>
+> **Solution.** (a) Weather: Sunny 30, Cloudy 23, Rainy 7 (modal: Sunny). Satisfaction: 2 (18 days), 3 (29), 4 (13) (modal: 3). (b) Min=69.91, Q1=151.62, Me=195.16, Q3=265.92, Max=417.35, IQR=114.31, fences=−19.85/437.39, no outlier. (c) Mean=216.91, Me=195.16, modal class \[150,200\[ (17 days), grouped Mo ≈ 150 + 50×5/(5+6) ≈ 172.73, \\s\\=81.96, CV=37.8%, skew=+0.60 (moderate right skew; Mo \< Me \< mean). (d) 71.4% of Rainy days earn below €150, against 30.4% of Cloudy and 6.7% of Sunny days: revenue depends on weather, as at Riverside. (e) \\r\\=0.125, \\r^2\\=0.016, slope=2.38, intercept=166.02: no useful linear link between temperature and revenue. Every value matches the Hilltop column of the summary table.
+
+> **CAUTION:**
+>
+> Compute the mean `daily_revenue_eur` over all 120 rows of `lakeside-bakery.csv`. Check the derivation on this page: is it the weighted mean of the two outlet means, with weights \\n_j/n\\?
+>
+> **How to.** Put `=AVERAGE` of the whole column in one cell and `=0.5*AVERAGE(FILTER(…,…="Riverside"))+0.5*AVERAGE(FILTER(…,…="Hilltop"))` in another.
+>
+> **Solution.** Overall mean = 211.30 €. Both outlets have 60 of the 120 days, so \\w_j = 60/120 = 0.5\\ and \\0.5 \times 205.69 + 0.5 \times 216.91 = 211.30\\ € ✓.
+
+## 10 Further reading
+
+| Source | Where | What it adds | Time | Verified |
+|----|----|----|----|----|
+| OpenStax IBS 2e | Chapter 2 Review (from book page 90: summary, practice, homework) | Comprehensive review of all univariate topics | ~10 pages | checked against the PDF contents (T046) |
+| OpenStax IBS 2e | Chapter 13 Review (from book page 570: summary, practice, homework) | Comprehensive review of bivariate topics | ~7 pages | checked against the PDF contents (T046) |
+| Khan Academy | Unit *Exploring bivariate numerical data* — practice | Full practice set on correlation and regression | ~30 min (estimate) | link check pending (T048) |
+| Khan Academy | Unit *Summarizing quantitative data* — practice | Full practice set on univariate summaries | ~30 min (estimate) | link check pending (T048) |
+
+OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## 11 What comes next
+
+This course describes data as a snapshot. Two natural sequels are **time series** (trend, seasonality, moving averages: the 120 days of “The Wandering Fork” are a time series) and **index numbers** (price and volume indices, base-year comparisons). Both are covered in the next course of the programme, together with probability and the inference tools that this course deliberately leaves out.
