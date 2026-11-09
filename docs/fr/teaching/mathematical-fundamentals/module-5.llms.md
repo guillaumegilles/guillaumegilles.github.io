@@ -282,3 +282,24 @@ Une entreprise doit rembourser un emprunt de 200 000 € dans 8 ans. Deux banque
 ## Continuer
 
 [Continuer vers le Module 6 →](../../../fr/teaching/mathematical-fundamentals/module-6.llms.md)
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {5️⃣ Application des mathématiques financières},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-5.html},
+  langid = {fr},
+  abstract = {Appliquez les suites numériques à la finance à travers les
+    intérêts simples et les intérêts composés : calculer les intérêts et
+    le capital acquis, convertir les taux d’intérêt entre périodes, et
+    analyser des situations financières simples.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “5️⃣ Application des mathématiques financières.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-5.html>.

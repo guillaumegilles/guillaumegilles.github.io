@@ -1,3 +1,7 @@
+![](../../assets/posts/quarto-codespaces.jpg)
+
+Van Tromp, going about to please his Masters, Ships a Sea, getting a Good…, Joseph Mallord William Turner. J. Paul Getty Museum
+
 ## The problem with local setup
 
 Every time you start a new project, you go through the same ritual: install the right version of Python, find the right extension for your editor, configure the environment, and debug why it doesn’t work on *your* local machine. With Quarto, this often means installing the CLI, setting up Jupyter, adding VS Code extensions, and getting the preview server running — before writing a single line.
@@ -135,3 +139,29 @@ Here is what the codespace looks like once it has finished loading: VS Code on t
 ![](preview.png)
 
 VS Code for the web with `hello.qmd` open and its Quarto preview side by side.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles2026,
+  author = {Gilles, Guillaume},
+  title = {GitHub {Codespaces} + {Quarto}},
+  date = {2026-06-23},
+  url = {https://ggilles.dev/posts/quarto-codespaces.html},
+  langid = {en},
+  abstract = {Setting up a working environment can be cumbersome and
+    time-consuming. To speed up this process and avoid wasting time
+    debugging local configurations, you can use {[}GitHub
+    Codespaces{]}(https://github.com/features/codespaces). In this post
+    I walk through a template repository I built to get a fully working
+    {[}Quarto{]}(https://quarto.org/) environment — editor, extensions,
+    Python, and live preview — running in the cloud in under two
+    minutes.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. 2026. “GitHub Codespaces + Quarto.” June 23. <https://ggilles.dev/posts/quarto-codespaces.html>.

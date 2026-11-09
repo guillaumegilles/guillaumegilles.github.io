@@ -183,3 +183,20 @@ La dérivée d’une combinaison linéaire est la même combinaison linéaire de
 \\ f'(x^\*) = 0 \\
 
 En un maximum ou un minimum d’une fonction dérivable, la tangente est horizontale. Pour \\f(x) = ax^2 + bx + c\\ : maximum si \\a \< 0\\, minimum si \\a \> 0\\.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Aide-mémoire},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/formula-sheet.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Aide-mémoire.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/formula-sheet.html>.

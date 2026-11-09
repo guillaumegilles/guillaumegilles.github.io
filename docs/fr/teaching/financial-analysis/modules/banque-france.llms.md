@@ -113,3 +113,27 @@ Today, as a member of the Eurosystem, the Banque de France provides a public ser
 - **1945**: nationalisation
 - **1993**: the Banque de France becomes independent
 - **2002**: changeover to the euro and introduction of the first euro banknotes
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Banque de France},
+  date = {2025-12-01},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/banque-france.html},
+  langid = {fr},
+  abstract = {Créée il y a plus de deux siècles, la Banque de France est
+    la banque centrale de notre pays. Elle est le pilier français de
+    l’Eurosystème, qui rassemble la Banque centrale européenne (BCE) et
+    les banques centrales nationales des pays ayant adopté l’euro.
+    Institution indépendante, son activité regroupe trois grandes
+    missions.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Banque de France.” December 1. <https://ggilles.dev/fr/teaching/financial-analysis/modules/banque-france.html>.

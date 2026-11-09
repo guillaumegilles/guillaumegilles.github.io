@@ -78,3 +78,30 @@ Several textbook formulas differ slightly; this course always uses the following
 | Khan Academy | *Statistics and Probability* (online course) | Current online version | Khan Academy ([khanacademy.org](https://www.khanacademy.org/math/statistics-probability)) |
 
 *Introductory Business Statistics 2e* is © Rice University and licensed under CC BY-NC-SA 4.0. Each module’s further-reading table names the exact OpenStax sections and Khan Academy units to read.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Data {Description}},
+  url = {https://ggilles.dev/teaching/data-description/},
+  langid = {en},
+  abstract = {**Welcome to MS03-001-G: Data Description.** This course
+    introduces the basic statistical tools corresponding to the first
+    stage of data analysis: numerical summaries and graphical
+    representation of data, computed hands-on in Excel. By the end of
+    the course, you will be able to take a raw column of business data
+    like sales, weather, customer counts and turn it into frequency
+    tables, charts, and summary indicators that support a real business
+    decision. A single running case study, **“The Wandering Fork”** (a
+    fictional food-truck business), carries every worked example so
+    results build on each other across the whole course.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Data Description.” <https://ggilles.dev/teaching/data-description/>.

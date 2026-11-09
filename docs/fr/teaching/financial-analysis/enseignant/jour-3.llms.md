@@ -45,3 +45,22 @@ Si l’équipe n’a pas préparé de DPEF (ou si l’édition du rapport a chan
 | D3-B4 | — | 10 | Nouveau bloc de clôture | — | Clore niveaux et badges |
 
 Aucune théorie, aucun exemple travaillé ni aucun exercice n’a été supprimé.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Guide enseignant — Jour 3},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/enseignant/jour-3.html},
+  langid = {fr},
+  abstract = {Rythme, corrigés, pièges, rapports de repli et journal des
+    modifications du Jour 3 (360 minutes).}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Guide enseignant — Jour 3.” <https://ggilles.dev/fr/teaching/financial-analysis/enseignant/jour-3.html>.

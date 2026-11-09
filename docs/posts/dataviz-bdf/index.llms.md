@@ -1552,3 +1552,21 @@ else:
 - Comparaison entre millésimes pour quantifier l’effet des politiques publiques (prime d’activité, RSA, plan pauvreté)
 
 > **Sources** : Banque de France (synthèses surendettement 2018–2024), INSEE FiLoSoFi 2021, INSEE chômage localisé, INSEE RP 2021, DREES (indicateurs sociaux départementaux). Périmètre : 96 départements métropolitains (DOM-TOM exclus).
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles2026,
+  author = {Gilles, Guillaume},
+  title = {Évolution de l’inclusion Financière Des Français},
+  date = {2026-05-18},
+  url = {https://ggilles.dev/posts/dataviz-bdf/},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. 2026. “Évolution de l’inclusion Financière Des Français.” May 18. <https://ggilles.dev/posts/dataviz-bdf/>.

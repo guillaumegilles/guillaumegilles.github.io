@@ -226,3 +226,21 @@ When the first or last class is open, we close it by convention.
 > \\ CV = \frac{23.953}{42.5}\times 100\\ \approx 56.4\\ \\
 >
 > Comment: the variability is **high** (\\CV\>35\\\\), so the wind speed data are **heterogeneous**.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 6 — {Reminder:} {Data} {Description} \& {Numerical}
+    {Summaries}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-06.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 6 — Reminder: Data Description & Numerical Summaries.” <https://ggilles.dev/teaching/decision-making-stat/session-06.html>.

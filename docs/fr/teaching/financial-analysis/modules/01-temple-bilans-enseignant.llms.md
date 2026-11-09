@@ -229,3 +229,23 @@ Total : **/90 points** (convertis ensuite en XP)
 # XP attribués aux étudiants
 
 **+100 XP (Niveau 3)**.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Le Temple des Bilans — Fiche Enseignant},
+  date = {2025-12-01},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/01-temple-bilans-enseignant.html},
+  langid = {fr},
+  abstract = {Corrigé et grille d’évaluation pour les trois niveaux du
+    Temple des Bilans. Document strictement réservé à l’enseignant.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Le Temple des Bilans — Fiche Enseignant.” December 1. <https://ggilles.dev/fr/teaching/financial-analysis/modules/01-temple-bilans-enseignant.html>.

@@ -381,3 +381,26 @@ A retail chain monitors the performance of three product categories over a quart
   \\ (1 + t_1)(1 + t_2) \\
 
   Two successive percentage changes \\t_1\\ and \\t_2\\ (expressed as decimals) multiply rather than add. For discounts, replace \\(1+t)\\ by \\(1-t)\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {1️⃣ {Essential} {Mathematical} {Calculations}},
+  url = {https://ggilles.dev/teaching/mathematical-fundamentals/essential-mathematical-calculations.html},
+  langid = {en},
+  abstract = {**Learning objectives** By the end of this module, you
+    should be able to: - Apply the correct order of operations in
+    numerical and business calculations. - Use absolute value, powers,
+    and square roots and know their properties. - Manipulate fractions,
+    percentages, and index numbers. - Solve everyday problems with the
+    rule of proportionality.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “1️⃣ Essential Mathematical Calculations.” <https://ggilles.dev/teaching/mathematical-fundamentals/essential-mathematical-calculations.html>.

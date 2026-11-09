@@ -642,3 +642,31 @@ The two medians are almost level (~391 vs ~390), but Harbour’s box is narrower
 | Khan Academy | Unit *Summarizing quantitative data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on quartiles, percentiles, and boxplots | Short videos and practice on position indicators and boxplots | ~30–45 min (estimate) | link check pending (T048) |
 
 OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {5️⃣ {Position} and Boxplot},
+  url = {https://ggilles.dev/teaching/data-description/position.html},
+  langid = {en},
+  abstract = {**Learning objectives** By the end of this module, you
+    will be able to: - Explain in one sentence what the median, the
+    quartiles, a percentile, the IQR and a boxplot tell you about a set
+    of days. - Compute the median, quartiles, and any percentile of raw
+    or grouped data. - Apply linear interpolation to find a quantile in
+    grouped (class-based) continuous data. - Build a boxplot from the
+    five-number summary and detect outliers with the fence rule. - Read
+    \$\textbackslash text\{rank\}(Q\_p) = p\textbackslash,(n+1)\$ and
+    the fence formulas aloud as sentences, and write them in symbols
+    from a description in words. - Use the interactive demo below to see
+    how changing the quartiles reshapes a boxplot.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “5️⃣ Position and Boxplot.” <https://ggilles.dev/teaching/data-description/position.html>.

@@ -361,3 +361,25 @@ Une chaîne de distribution suit les performances de trois catégories de produi
 ## Continuer
 
 [Continuer vers le Module 2 →](../../../fr/teaching/mathematical-fundamentals/module-2.llms.md)
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {1️⃣ Calculs mathématiques essentiels pour l’économie et la
+    gestion},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-1.html},
+  langid = {fr},
+  abstract = {Maîtrisez les opérations fondamentales et les propriétés
+    des nombres réels, avec des applications en économie et gestion :
+    priorité des opérations, valeur absolue, puissances, racines,
+    fractions, pourcentages, indices et proportionnalité.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “1️⃣ Calculs mathématiques essentiels pour l’économie et la gestion.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-1.html>.

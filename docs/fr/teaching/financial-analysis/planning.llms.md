@@ -59,3 +59,22 @@
 | **Total** |       **1 080 (18 h)** |
 
 Voir aussi les guides enseignant : [Jour 1](../../../fr/teaching/financial-analysis/enseignant/jour-1.llms.md), [Jour 2](../../../fr/teaching/financial-analysis/enseignant/jour-2.llms.md), [Jour 3](../../../fr/teaching/financial-analysis/enseignant/jour-3.llms.md).
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Planning des 3 journées (18 h)},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/planning.html},
+  langid = {fr},
+  abstract = {Emploi du temps complet du cours : 3 journées de 6 h
+    d’enseignement (360 minutes), soit 1 080 minutes au total.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Planning des 3 journées (18 h).” <https://ggilles.dev/fr/teaching/financial-analysis/planning.html>.

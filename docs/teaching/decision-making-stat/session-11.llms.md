@@ -332,3 +332,20 @@ with:
 > Since \\18.19\>3.24\\ and \\18.19\>5.29\\, we **reject** \\H_0\\ at both risk levels.
 >
 > **Conclusion:** the type of fertiliser has a highly significant effect on yield. Fertilisers B and C produce the highest average yields (\\29\\ and \\30\\ kg respectively) compared to A (\\23\\ kg) and D (\\25\\ kg).
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 11 — {ANOVA} {Test}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-11.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 11 — ANOVA Test.” <https://ggilles.dev/teaching/decision-making-stat/session-11.html>.

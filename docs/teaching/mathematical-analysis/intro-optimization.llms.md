@@ -94,3 +94,20 @@ Soit \\f(x)=x^2\\.
 # 4 Conclusion
 
 L’optimisation des fonctions univariées repose sur l’étude des dérivées première et seconde, outils essentiels pour l’analyse économique et la prise de décision rationnelle.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Optimisation d’une Fonction Univariée},
+  url = {https://ggilles.dev/teaching/mathematical-analysis/intro-optimization.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Optimisation d’une Fonction Univariée.” <https://ggilles.dev/teaching/mathematical-analysis/intro-optimization.html>.

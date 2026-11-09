@@ -47,3 +47,19 @@ Figure 1: Les lois marginales s’obtiennent en **intégrant la densité conjoi
 > **3.** Pour \\\|x\|\le 4\\, on intègre \\f\\ par rapport à \\y\\ sur \\\[-\sqrt{16-x^2},\\\sqrt{16-x^2}\]\\: \\ f_X(x)=\int\_{-\sqrt{16-x^2}}^{\sqrt{16-x^2}}\frac{1}{16\pi}\\dy =\frac{2\sqrt{16-x^2}}{16\pi}=\frac{\sqrt{16-x^2}}{8\pi}, \\ et \\f_X(x)=0\\ pour \\\|x\|\>4\\. Par symétrie, \\f_Y(y)=\dfrac{\sqrt{16-y^2}}{8\pi}\\ pour \\\|y\|\le 4\\.
 >
 > Les variables \\X\\ et \\Y\\ ne sont **pas indépendantes** : le support de \\f\\ est le disque \\D\\, qui n’est pas un rectangle, donc on ne peut pas écrire \\f(x,y)=f_X(x)f_Y(y)\\ sur tout \\\mathbb{R}^2\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  url = {https://ggilles.dev/teaching/probability/pair-continuous-rv-marginal-distribution.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. <https://ggilles.dev/teaching/probability/pair-continuous-rv-marginal-distribution.html>.

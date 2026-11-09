@@ -593,3 +593,34 @@ Cette logique constitue le passage clé entre statistique descriptive et statist
 > \\ E(S_3^2)=\sigma^2=216. \\
 >
 > On peut aussi vérifier directement : \\S_3^2=\frac{n}{n-1}S_3'^2=\frac{3}{2}S_3'^2\\, donc les valeurs prises sont \\0\\, \\300\\ et \\300\\, et \\ E(S_3^2)=0\times 0{,}064+300\times 0{,}288+300\times 0{,}432+0\times 0{,}216=216=\sigma^2.\\\checkmark \\
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Distribution d’échantillonnage},
+  url = {https://ggilles.dev/teaching/probability/sampling-distribution.html},
+  langid = {en},
+  abstract = {Ce chapitre introduit la logique de l“**échantillonnage
+    aléatoire** et la notion centrale de **distribution
+    d’échantillonnage** d’une statistique. On précise d’abord le lien
+    entre population, loi parente et n-échantillon i.i.d., puis on
+    étudie les statistiques fondamentales : la moyenne empirique, la
+    proportion empirique, la variance empirique non corrigée et la
+    variance empirique corrigée. Le chapitre établit leurs propriétés
+    d’espérance et de variance, introduit la notion d”**erreur-type**,
+    met en évidence le biais de la variance non corrigée, puis présente
+    les lois exactes dans le cas d’une loi parente gaussienne (loi
+    normale et loi du khi-deux) ainsi que le rôle du théorème central
+    limite. Enfin, il propose une méthode pratique pour analyser et
+    interpréter des résultats d’échantillonnage en statistique
+    inférentielle.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Distribution d’échantillonnage.” <https://ggilles.dev/teaching/probability/sampling-distribution.html>.

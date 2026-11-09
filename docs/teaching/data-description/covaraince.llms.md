@@ -701,3 +701,35 @@ For the **full table** (120 days per franchise) use the Excel Table `tblFork` an
 | Khan Academy | Unit *Exploring bivariate numerical data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on correlation, regression, and \\r^2\\ | Short videos and practice on correlation and regression | ~30–45 min (estimate) | link check pending (T048) |
 
 OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {9️⃣ {Correlation} and Regression},
+  url = {https://ggilles.dev/teaching/data-description/covaraince.html},
+  langid = {en},
+  abstract = {**By the end of this module, you will be able to:** -
+    Explain in one sentence what the covariance, the correlation
+    coefficient \$r\$, the coefficient of determination \$r\^{}2\$ and
+    the regression slope \$b\$ and intercept \$a\$ measure. - Compute by
+    hand a deviation-product table and, from it, the covariance, \$r\$
+    and \$r\^{}2\$ of a small dataset. - Compute the least-squares line
+    \$\textbackslash hat\{y\}=a+bx\$ by hand, use it to predict a value,
+    and check that it passes through \$(\textbackslash
+    bar\{x\},\textbackslash bar\{y\})\$. - Read the covariance,
+    correlation and regression formulas aloud as sentences, and write
+    them in symbols from a description in words. - Use the interactive
+    demo below to see how moving points changes \$r\$ and the regression
+    line live. - Prove that the correlation coefficient is bounded by
+    \$-1\$ and \$1\$, and that the regression line always passes through
+    \$(\textbackslash bar\{x\},\textbackslash bar\{y\})\$.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “9️⃣ Correlation and Regression.” <https://ggilles.dev/teaching/data-description/covaraince.html>.

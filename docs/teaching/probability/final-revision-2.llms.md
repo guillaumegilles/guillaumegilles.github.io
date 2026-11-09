@@ -101,3 +101,29 @@ On mesure le temps de réponse (en ms) d’un service web sur \\n = 100\\ requê
 **6.** *(5 pts)* Construire un **intervalle de confiance à 99 %** pour \\\mu\\.
 
 **7.** *(6 pts)* En conservant \\s = 15\\ ms comme estimation de \\\sigma\\, quel effectif minimal \\n\\ faut-il pour que la demi-largeur de l’IC à 95 % soit inférieure ou égale à **2 ms** ?
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Examen — {Statistiques} Et {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/final-revision-2.html},
+  langid = {en},
+  abstract = {Durée : **1 h 15**. Les documents de cours sont
+    **interdits**. Une table de la loi normale \$\textbackslash
+    mathcal\{N\}(0,1)\$ est fournie. Les calculatrices sont autorisées.
+    Toute réponse doit être **justifiée**. Les résultats numériques
+    seront arrondis à \$10\^{}\{-3\}\$ près. Les valeurs suivantes sont
+    fournies : \$z\_\{0\{,\}025\} = 1\{,\}96\$\,; \$z\_\{0\{,\}005\} =
+    2\{,\}58\$\,; \$\textbackslash
+    chi\^{}2\_\{2\textbackslash,;\textbackslash,0\{,\}05\} =
+    5\{,\}991\$.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Examen — Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/final-revision-2.html>.

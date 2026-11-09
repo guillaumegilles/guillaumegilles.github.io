@@ -105,3 +105,20 @@ Donc \\f\\ admet un **minimum local** en \\(1,2)\\.
     - \\\begin{pmatrix}1 & 0 \\ 0 & 1\end{pmatrix}\\
     - \\\begin{pmatrix}2 & 0 \\ 0 & -1\end{pmatrix}\\
     - \\\begin{pmatrix}0 & 3 & 2 \\ 2 & 1 & 0\end{pmatrix}\\
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Optimisation d’une Fonction Bivariée},
+  url = {https://ggilles.dev/teaching/mathematical-analysis/matrices.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Optimisation d’une Fonction Bivariée.” <https://ggilles.dev/teaching/mathematical-analysis/matrices.html>.

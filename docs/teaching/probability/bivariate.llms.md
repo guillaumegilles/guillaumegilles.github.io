@@ -503,3 +503,31 @@ Pour identifier quelles cellules contribuent le plus à la valeur de \\\chi^2\_{
 - Le test du \\\chi^2\\ **ne quantifie pas l’intensité** de l’association. Pour cela, on peut utiliser le coefficient de contingence \\C=\sqrt{\chi^2/(n+\chi^2)}\\ ou le \\V\\ de Cramér \\V=\sqrt{\chi^2/(n\cdot\min(p-1,q-1))}\\, qui sont normalisés entre 0 et 1.
 - Il ne s’applique qu’à des **données de comptage** dans un tableau de contingence (et non à des moyennes ou des proportions issues de mesures répétées sur les mêmes individus).
 - Il est **non directionnel** : il détecte l’existence d’une association mais n’en précise pas la direction ni la forme.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Statistiques Descriptives à Deux Variables},
+  url = {https://ggilles.dev/teaching/probability/bivariate.html},
+  langid = {en},
+  abstract = {Ce chapitre prolonge la statistique descriptive au cas de
+    deux caractères observés simultanément sur une même population. On
+    introduit la **distribution conjointe** d’un couple de variables via
+    les tableaux de contingence, puis les **distributions marginales**
+    et **conditionnelles**, indispensables pour décrire les relations
+    entre variables. Le chapitre formalise ensuite la notion
+    d’**indépendance** et la caractérisation par factorisation des
+    fréquences. Enfin, il présente le **test du khi-deux
+    d’indépendance** (conditions, construction des effectifs théoriques,
+    statistique, degrés de liberté, règle de décision) avec une
+    méthodologie complète d’interprétation.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Statistiques Descriptives à Deux Variables.” <https://ggilles.dev/teaching/probability/bivariate.html>.

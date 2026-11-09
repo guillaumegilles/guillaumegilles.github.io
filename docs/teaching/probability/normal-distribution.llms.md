@@ -654,3 +654,33 @@ On cherche l’intervalle \\\]x,\\ x+b\[\\ qui maximise \\P(x \< X \< x+b)\\.
 > - Les lois log-normale et khi-deux se construisent directement à partir de la loi normale.
 > - La loi de Student intervient dès que l’on remplace \\\sigma\\ par un estimateur ; elle converge vers \\\mathcal{N}(0,1)\\ pour \\n \> 30\\.
 > - Les quantiles (lecture inverse) sont indispensables pour fixer des seuils de risque.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Loi Normale Et Applications},
+  url = {https://ggilles.dev/teaching/probability/normal-distribution.html},
+  langid = {en},
+  abstract = {Ce chapitre présente la **loi normale**, modèle central en
+    probabilités et en statistique. On introduit d’abord la loi normale
+    centrée réduite \$\textbackslash mathcal\{N\}(0,1)\$, sa densité en
+    cloche et sa fonction de répartition \$\textbackslash Phi\$, puis
+    les règles de calcul associées (symétrie, lecture directe et inverse
+    des probabilités). On généralise ensuite à la loi \$\textbackslash
+    mathcal\{N\}(m,\textbackslash sigma\^{}2)\$ et à la
+    **standardisation**, outil clé pour ramener tout calcul à la table
+    de \$\textbackslash Phi\$. Le chapitre inclut les propriétés
+    fondamentales (espérance, variance, somme de normales indépendantes)
+    et se prolonge par deux applications classiques : la **loi
+    log-normale** et la **loi du khi-deux**, et conclut par la **loi de
+    Student**.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Loi Normale Et Applications.” <https://ggilles.dev/teaching/probability/normal-distribution.html>.

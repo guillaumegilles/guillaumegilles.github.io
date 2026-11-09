@@ -267,3 +267,24 @@ Une boulangerie vend du pain artisanal à 4 € la miche. La fonction de coût j
 ## Continuer
 
 [Continuer vers le Module 8 →](../../../fr/teaching/mathematical-fundamentals/module-8.llms.md)
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {7️⃣ Introduction à l’optimisation},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-7.html},
+  langid = {fr},
+  abstract = {Introduisez le taux de variation moyen et instantané, la
+    notion intuitive de dérivée et son application aux fonctions affines
+    et polynomiales de degré 2, afin de trouver des maxima et des minima
+    pour la prise de décision.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “7️⃣ Introduction à l’optimisation.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-7.html>.

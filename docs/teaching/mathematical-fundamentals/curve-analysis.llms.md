@@ -324,3 +324,25 @@ A logistics manager must choose between two delivery contracts for the coming ye
   \\ x^\* = \frac{p_2 - p_1}{m_1 - m_2}, \qquad y^\* = m_1\\x^\* + p_1 \\
 
   Valid when \\m_1 \neq m_2\\ (non-parallel lines). Models the equilibrium or crossover point between two linear relationships.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {3️⃣ {Curve} {Analysis}},
+  url = {https://ggilles.dev/teaching/mathematical-fundamentals/curve-analysis.html},
+  langid = {en},
+  abstract = {\#\#\#\# Learning objectives - Read information directly
+    from a graph in the Cartesian plane. - Find and interpret the
+    equation of a line. - Solve first-degree systems of equations
+    (graphically and algebraically). - Model and solve first-degree
+    inequalities and systems of inequalities.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “3️⃣ Curve Analysis.” <https://ggilles.dev/teaching/mathematical-fundamentals/curve-analysis.html>.

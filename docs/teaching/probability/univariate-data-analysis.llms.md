@@ -165,3 +165,19 @@ Un établissement relève les notes obtenues par 40 élèves à un devoir de mat
 > **6. Classe modale**
 >
 > Pour une distribution continue, la classe modale est celle dont la **densité est maximale** (et non l’effectif, pour ne pas avantager les classes larges). Ici \\d_3 = 0{,}100\\ est la valeur maximale : la classe modale est \\\[10,14\[\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  url = {https://ggilles.dev/teaching/probability/univariate-data-analysis.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. <https://ggilles.dev/teaching/probability/univariate-data-analysis.html>.

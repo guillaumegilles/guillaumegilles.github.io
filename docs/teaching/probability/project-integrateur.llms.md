@@ -172,3 +172,24 @@ Votre rendu doit explicitement contenir :
 - Evitez les conclusions sans quantification de l’incertitude.
 - Faites apparaitre clairement les hypotheses sous chaque resultat.
 - Distinguez ce qui est observe (donnees), estime (statistique) et theorique (modele).
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Projet Intégrateur — {Statistiques} Et {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/project-integrateur.html},
+  langid = {en},
+  abstract = {Ce projet de fin de module permet de mobiliser l’ensemble
+    des notions du cours sur un cas appliqué unique : modéliser,
+    simuler, estimer et interpréter la qualité d’un service à partir de
+    données.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Projet Intégrateur — Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/project-integrateur.html>.

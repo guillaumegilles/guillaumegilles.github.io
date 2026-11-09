@@ -58,3 +58,22 @@
 | **Total** | **1,080 (18 h)** |
 
 See also the instructor guides: [Day 1](../../teaching/financial-analysis/enseignant/jour-1.llms.md), [Day 2](../../teaching/financial-analysis/enseignant/jour-2.llms.md), [Day 3](../../teaching/financial-analysis/enseignant/jour-3.llms.md).
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {3-Day {Timetable} (18 h)},
+  url = {https://ggilles.dev/teaching/financial-analysis/planning.html},
+  langid = {en},
+  abstract = {Full timetable of the course: 3 days of 6 hours of
+    teaching (360 minutes each), 1,080 minutes in total.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “3-Day Timetable (18 h).” <https://ggilles.dev/teaching/financial-analysis/planning.html>.

@@ -170,3 +170,21 @@ Access it through:
 > **IMPORTANT:**
 >
 > To create a contingency table from raw data, place one variable in the **rows**, the other in the **columns**, and the **count** in the values area.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 14 — {Practical} {Work:} {ANOVA,} {Chi-Square} \&
+    {Correlation} in {Excel}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-14.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 14 — Practical Work: ANOVA, Chi-Square & Correlation in Excel.” <https://ggilles.dev/teaching/decision-making-stat/session-14.html>.

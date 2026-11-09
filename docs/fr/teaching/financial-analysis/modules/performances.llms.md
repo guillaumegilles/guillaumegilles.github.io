@@ -129,3 +129,20 @@ Le ratio d’endettement rapporté à la CAF_(r) indique combien d’années il 
 | RNR | \\\text{RCAI} \times \frac{3}{4}\\ | Résultat net récurrent, indépendant du financement |
 | CAF_(r) | \\\text{RNR} + \text{dotations nettes}\\ | Flux d’autofinancement récurrent |
 | Capacité de remboursement | \\\frac{\text{Dette nette}}{\text{CAF}\_r}\\ | \\\< 3\\ ans = situation saine |
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Analyse des performances},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/performances.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Analyse des performances.” <https://ggilles.dev/fr/teaching/financial-analysis/modules/performances.html>.

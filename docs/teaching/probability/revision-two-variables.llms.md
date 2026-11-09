@@ -175,3 +175,28 @@ Cette formule apparaît dès qu’on demande la loi d’une somme de deux variab
 \\ \operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y) \\
 
 \\ f\_{X+Y}(t)=\int\_{\mathbb{R}} f_X(x)f_Y(t-x)\\dx \\
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Révision — {Probabilités} Et Statistiques à Deux Variables},
+  url = {https://ggilles.dev/teaching/probability/revision-two-variables.html},
+  langid = {en},
+  abstract = {Cette fiche de révision synthétise les **cinq chapitres**
+    consacrés aux phénomènes à **deux variables** dans le cours de
+    probabilités et statistiques : statistiques bivariées, intégrales
+    doubles, loi conjointe d’un couple continu, lois marginales et
+    conditionnelles, puis couples de variables à densité (indépendance,
+    covariance, convolution). Elle met l’accent sur les **formules à
+    connaître**, les **méthodes de calcul** et les **pièges
+    classiques**.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Révision — Probabilités Et Statistiques à Deux Variables.” <https://ggilles.dev/teaching/probability/revision-two-variables.html>.

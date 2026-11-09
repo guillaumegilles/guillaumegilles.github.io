@@ -310,3 +310,25 @@ Produit de dividendes de STRATFIN : \\40+20 = 60\\. Écriture : débit *Produits
 > **IMPORTANT:**
 >
 > Ajouter une démo interactive (Shinylive) : l’étudiant saisit les pourcentages de détention et les opérations intragroupe, et voit le bilan consolidé et les minoritaires se recalculer.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Les Archives Consolidées},
+  date = {2025-12-01},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/02-archives-consolidees.html},
+  langid = {fr},
+  abstract = {Atelier collaboratif : reconstituer la consolidation à
+    partir des comptes individuels de la maison mère et de deux
+    filiales. Mise en pratique des éliminations intragroupe et calcul
+    des intérêts minoritaires.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Les Archives Consolidées.” December 1. <https://ggilles.dev/fr/teaching/financial-analysis/modules/02-archives-consolidees.html>.

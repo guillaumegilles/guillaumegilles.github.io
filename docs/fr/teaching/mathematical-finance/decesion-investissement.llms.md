@@ -1248,3 +1248,29 @@ Une PME du secteur agroalimentaire envisage d’acquérir une nouvelle ligne d�
 > **5. Valeur seuil :** revenus seuil ≈ 186 000 €/an pour atteindre \\VAN = 0\\.
 >
 > **6. Recommandation :** La VAN centrale et espérée sont légèrement négatives ; le projet présente un profil risqué (probabilité de VAN \< 0 = 80 %). Avant tout engagement, il est indispensable de renforcer les hypothèses de revenus par des contrats fermes ou des études de marché approfondies. En l’état, la recommandation est de **ne pas investir** ou de renégocier le prix d’acquisition sous le seuil de 543 000 € pour restaurer la rentabilité au taux exigé.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {3️⃣ Décision d’investissement},
+  url = {https://ggilles.dev/fr/teaching/mathematical-finance/decesion-investissement.html},
+  langid = {fr},
+  abstract = {**À la fin de cette journée, vous serez capables de :** 1.
+    construire les flux de trésorerie différentiels d’un projet
+    d’investissement\,; 2. calculer et interpréter la valeur actuelle
+    nette (VAN)\,; 3. calculer et discuter les limites du taux de
+    rentabilité interne (TRI)\,; 4. utiliser le délai de récupération
+    simple et actualisé\,; 5. comparer correctement des projets de
+    durées ou de tailles différentes\,; 6. mener une analyse de
+    sensibilité et raisonner par scénarios\,; 7. formuler une
+    recommandation d’investissement argumentée.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “3️⃣ Décision d’investissement.” <https://ggilles.dev/fr/teaching/mathematical-finance/decesion-investissement.html>.

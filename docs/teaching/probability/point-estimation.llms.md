@@ -594,3 +594,29 @@ Cet intervalle n’est pas symétrique autour de \\S_n^2\\, ce qui est naturel :
 >   - Variance (\\m\\ inconnu) : \\\chi^2(n-1)\\
 >   - Variance (\\m\\ connu) : \\\chi^2(n)\\
 > - **Information de Fisher et borne FDCR :** la variance d’un estimateur sans biais ne peut descendre en dessous de \\1/I_n(\theta)\\. Un estimateur atteignant cette borne est dit efficace ; s’il existe, c’est un EMV.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Estimation Ponctuelle Et Par Intervalle de Confiance},
+  url = {https://ggilles.dev/teaching/probability/point-estimation.html},
+  langid = {en},
+  abstract = {Ce chapitre présente les méthodes d“**estimation
+    statistique**. On étudie d’abord l”**estimation ponctuelle** :
+    propriétés des estimateurs (biais, convergence, erreur quadratique),
+    puis deux méthodes de construction — méthode des moments et maximum
+    de vraisemblance. On aborde ensuite l’**estimation par intervalle de
+    confiance** pour une proportion, une moyenne et une variance, en
+    mettant l’accent sur la comparaison d’estimateurs, le choix d’une
+    méthode de construction et l’interprétation pratique des marges
+    d’erreur dans un contexte d’ingénierie.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Estimation Ponctuelle Et Par Intervalle de Confiance.” <https://ggilles.dev/teaching/probability/point-estimation.html>.

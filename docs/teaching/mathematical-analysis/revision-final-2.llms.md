@@ -205,3 +205,20 @@ La valeur maximale est \\32\\ EUR/semaine, atteinte en \\S_3\\. Les deux contrai
 \\ (x^\*,y^\*)=(4,4),\qquad Z\_{\max}=32 \text{ EUR/semaine} \\
 
 > Interprétation : produire 4 unités de chaque produit par semaine maximise le profit sous les contraintes de capacité machine et d’approvisionnement.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Séance de Révisions 2},
+  url = {https://ggilles.dev/teaching/mathematical-analysis/revision-final-2.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Séance de Révisions 2.” <https://ggilles.dev/teaching/mathematical-analysis/revision-final-2.html>.

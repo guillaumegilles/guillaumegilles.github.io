@@ -119,3 +119,19 @@ viewof biv_rho = Inputs.range([-0.95, 0.95], {label: "Corrélation ρ :", value:
 > La densité conjointe et la répartition conjointe caractérisent la loi du couple.
 
 La fonction de répartition conjointe \\F(x,y)\\ est l’analogue bidimensionnel de la répartition usuelle : elle cumule la probabilité d’être dans le “quadrant inférieur gauche” \\(-\infty, x\] \times (-\infty, y\]\\. La proposition ci-dessus établit le lien fondamental avec la densité : dériver \\F\\ successivement par rapport à \\x\\ puis par rapport à \\y\\ redonne \\f\\. C’est le pendant exact de la relation \\F' = f\\ du cas unidimensionnel, généralisée à la dimension deux.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  url = {https://ggilles.dev/teaching/probability/pair-continuous-rv-joint-distribution.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. <https://ggilles.dev/teaching/probability/pair-continuous-rv-joint-distribution.html>.

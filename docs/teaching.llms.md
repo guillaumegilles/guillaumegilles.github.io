@@ -27,15 +27,21 @@ While browsing courses you can switch between French and English tracks using th
 
 How do we compare, value, and arbitrate financial flows that occur at different points in time? This course equips Master 1 business-school students with the tools to answer…
 
+Guillaume Gilles
+
 ![](./teaching/financial-analysis/image.jpg)
 
 ##### Financial and Strategic Analysis of the Company
+
+Guillaume Gilles
 
 ![](./teaching/information-systems-management/image.jpg)
 
 ##### Information Systems Management
 
 Diagnostic sur les comptes individuels et sur les comptes consolidés. Étude de la profitabilité, de la solvabilité, de la structure financière et de la rentabilité (ROCE…
+
+Guillaume Gilles
 
 ## Undergraduate
 
@@ -47,15 +53,21 @@ Diagnostic sur les comptes individuels et sur les comptes consolidés. Étude de
 
 This course introduces the basic statistical tools corresponding to the first stage of data analysis: numerical summaries and…
 
+Guillaume Gilles
+
 ![](./teaching/decision-making-stat/image.jpg)
 
 ##### Decision Making Statistics
 
 Undergraduate course providing the fondamental mathematical intuition to understand, describe, and analyse data in finance, economics, and management.
 
+Guillaume Gilles
+
 ![](./teaching/mathematical-analysis/image.jpg)
 
 ##### Mathematical Analysis
+
+Guillaume Gilles
 
 ![](./teaching/mathematical-fundamentals/image.jpg)
 
@@ -63,11 +75,15 @@ Undergraduate course providing the fondamental mathematical intuition to underst
 
 Provides the essential mathematical tools to analyse and solve quantitative problems in finance, economics, and management.
 
+Guillaume Gilles
+
 ![](./teaching/probability/image.jpg)
 
 ##### Probabilités & Statistiques
 
 Ce cours introduit les probabilités et les statistiques comme outils de modélisation de l’incertitude et d’analyse de données. Il couvre les variables aléatoires continues…
+
+Guillaume Gilles
 
 ## Honor Code
 

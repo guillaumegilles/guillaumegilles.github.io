@@ -277,3 +277,20 @@ degrees of freedom.
 > Since \\51.28\>9.488\\, we **reject** \\H_0\\.
 >
 > **Conclusion:** with a \\5\\\\ risk, the data confirm a **strong link between education level and job satisfaction**. Higher-educated employees report noticeably higher satisfaction levels.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 12 — {Chi-Square} {Test}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-12.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 12 — Chi-Square Test.” <https://ggilles.dev/teaching/decision-making-stat/session-12.html>.

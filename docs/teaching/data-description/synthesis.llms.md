@@ -327,3 +327,30 @@ OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductor
 ## 11 What comes next
 
 This course describes data as a snapshot. Two natural sequels are **time series** (trend, seasonality, moving averages: the 120 days of “The Wandering Fork” are a time series) and **index numbers** (price and volume indices, base-year comparisons). Both are covered in the next course of the programme, together with probability and the inference tools that this course deliberately leaves out.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {1️⃣0️⃣ {Review} and Mock Exam},
+  url = {https://ggilles.dev/teaching/data-description/synthesis.html},
+  langid = {en},
+  abstract = {**By the end of this module, you will be able to:** -
+    Perform a complete descriptive-analysis walkthrough on a new
+    dataset: variable typing, frequency tables and charts, five-number
+    summary and boxplot, centre, spread, shape, contingency table,
+    scatter plot, correlation, regression. - Identify and avoid the most
+    common pitfalls in descriptive statistics. - Self-assess exam
+    readiness with an original mock exam; use the worked solutions to
+    map every question to the module that covers it. - Read the course’s
+    key formulas aloud as sentences and name the module that introduced
+    each one.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “1️⃣0️⃣ Review and Mock Exam.” <https://ggilles.dev/teaching/data-description/synthesis.html>.

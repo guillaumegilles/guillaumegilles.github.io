@@ -84,3 +84,20 @@ Si la trésorerie au début de l’année était de 40, elle est de 40 + 60 = **
 
 - Le bilan montre le patrimoine, le compte de résultat la performance, le tableau de flux l’argent réellement bougé.
 - Les trois états sont liés : résultat net, BFR et trésorerie finale assurent la cohérence.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Les trois états financiers},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/etats-financiers.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Les trois états financiers.” <https://ggilles.dev/fr/teaching/financial-analysis/modules/etats-financiers.html>.

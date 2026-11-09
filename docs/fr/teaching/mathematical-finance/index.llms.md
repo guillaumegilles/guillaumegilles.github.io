@@ -50,9 +50,9 @@ Le cours suit une progression en trois temps :
 
 | Journée | Problématique centrale | Principaux thèmes | Production attendue |
 |----|----|----|----|
-| [**Journée 1**](../../../fr/teaching/mathematical-finance/module-01.llms.md) | Comment comparer des capitaux disponibles à des dates différentes ? | Intérêts, capitalisation, actualisation, taux, annuités | Modèle d’épargne ou de financement |
-| [**Journée 2**](../../../fr/teaching/mathematical-finance/module-02.llms.md) | Comment valoriser et comparer des modes de financement ? | Emprunts, tableaux d’amortissement, coût du crédit, obligations | Analyse comparative de financements |
-| [**Journée 3**](../../../fr/teaching/mathematical-finance/module-03.llms.md) | Comment sélectionner un investissement rentable et robuste ? | VAN, TRI, flux de trésorerie, sensibilité, scénarios | Note de recommandation d’investissement |
+| [**Journée 1**](module-01.qmd) | Comment comparer des capitaux disponibles à des dates différentes ? | Intérêts, capitalisation, actualisation, taux, annuités | Modèle d’épargne ou de financement |
+| [**Journée 2**](module-02.qmd) | Comment valoriser et comparer des modes de financement ? | Emprunts, tableaux d’amortissement, coût du crédit, obligations | Analyse comparative de financements |
+| [**Journée 3**](module-03.qmd) | Comment sélectionner un investissement rentable et robuste ? | VAN, TRI, flux de trésorerie, sensibilité, scénarios | Note de recommandation d’investissement |
 
 ## Ressources
 
@@ -84,3 +84,24 @@ Le cours suit une progression en trois temps :
 **Brealey, R. A., Myers, S. C. & Allen, F.** *Principles of Corporate Finance*, 14^(e) édition. McGraw-Hill Education, 2023. *(En anglais)*
 
 > La référence internationale, prescrite dans les cursus bilingues et les programmes MSc. Couvre l’intégralité du programme.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Mathématiques financières},
+  url = {https://ggilles.dev/fr/teaching/mathematical-finance/},
+  langid = {fr},
+  abstract = {Comment comparer, valoriser et arbitrer des flux
+    financiers qui interviennent à des dates différentes\,? Ce cours de
+    18 heures donne aux étudiants de Master 1 les outils pour répondre à
+    cette question de façon rigoureuse et managériale.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Mathématiques financières.” <https://ggilles.dev/fr/teaching/mathematical-finance/>.

@@ -371,3 +371,24 @@ Attendus : les ratios de la partie 1 sont repris des quêtes 4 à 6 sans recalcu
 > Vous êtes désormais capables de lire un jeu de comptes, de diagnostiquer une situation financière, de valoriser une entreprise, de construire un plan de financement et d’intégrer les enjeux ESG dans votre analyse. Ce sont les fondations du métier d’analyste financier.
 >
 > **Bienvenue dans la profession. StratFin Corp compte sur vous.**
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Les Gardiens de l’Extra-Financier},
+  date = {2025-12-03},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/09-gardiens-extra-financier.html},
+  langid = {fr},
+  abstract = {Boss final — Présentation d’un rapport stratégique
+    intégrant l’analyse financière et la performance extra-financière
+    (ESG) d’une entreprise réelle.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Les Gardiens de l’Extra-Financier.” December 3. <https://ggilles.dev/fr/teaching/financial-analysis/modules/09-gardiens-extra-financier.html>.

@@ -301,3 +301,21 @@ En soustrayant \\(1)\\ de \\(2)\\ : \\180 - 165 = \sigma + 0{,}50\\\sigma = 1{,}
 En reportant dans \\(2)\\ : \\m = 180 - \sigma = 180 - 10 = \boxed{170.}\\
 
 La durée de vie suit donc la loi \\\mathcal{N}(170,\\ 100)\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Correction — {Examen} · {Statistiques} Et {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/exam-1-correction.html},
+  langid = {en},
+  abstract = {Corrigé détaillé de l’{[}examen{]}(exam-1.qmd).}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Correction — Examen · Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/exam-1-correction.html>.

@@ -13,3 +13,23 @@ on part du résultat net consolidé, corrigé des éléments non décaissés pou
 | Δ disponibilités du bilan        | 62    | 158   | 264   |
 
 La variation de trésorerie du tableau des flux est rapprochée de la variation des disponibilités du [bilan consolidé](../../../../fr/teaching/financial-analysis/donnees/bilan-consolide.llms.md) : les deux montants sont égaux, par construction.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Tableau des flux de trésorerie — Groupe AUBÉPINE},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/donnees/flux-tresorerie.html},
+  langid = {fr},
+  abstract = {Tableau des flux de trésorerie consolidé (méthode
+    indirecte) du Groupe AUBÉPINE pour 2023, 2024 et 2025, en k€.
+    Données fictives.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Tableau des flux de trésorerie — Groupe AUBÉPINE.” <https://ggilles.dev/fr/teaching/financial-analysis/donnees/flux-tresorerie.html>.

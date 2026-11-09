@@ -284,3 +284,25 @@ A bakery sells artisan bread at €4 per loaf. The daily cost function is \\C(q)
   \\ f'(x^\*) = 0 \\
 
   At a maximum or minimum of a differentiable function the tangent is horizontal. For \\f(x) = ax^2 + bx + c\\: maximum if \\a \< 0\\, minimum if \\a \> 0\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {7️⃣ {Foundations} to Derivative},
+  url = {https://ggilles.dev/teaching/mathematical-fundamentals/derivatives.html},
+  langid = {en},
+  abstract = {\#\#\#\#\#\# Learning objectives - Compute an average rate
+    of change between two points. - Understand the instantaneous rate of
+    change and the intuitive notion of the derivative. - Differentiate
+    affine and degree-2 polynomial functions. - Use the derivative to
+    find a maximum or a minimum.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “7️⃣ Foundations to Derivative.” <https://ggilles.dev/teaching/mathematical-fundamentals/derivatives.html>.

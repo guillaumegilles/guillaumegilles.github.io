@@ -134,3 +134,20 @@ Contraintes :
 # 4 Conclusion
 
 La recherche opérationnelle transforme des problèmes réels en modèles quantitatifs exploitables pour prendre des décisions rationnelles et argumentees.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Module 5 - {Introduction} à La Recherche Opérationnelle},
+  url = {https://ggilles.dev/teaching/mathematical-analysis/operations-research.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Module 5 - Introduction à La Recherche Opérationnelle.” <https://ggilles.dev/teaching/mathematical-analysis/operations-research.html>.

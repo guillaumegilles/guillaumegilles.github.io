@@ -216,3 +216,20 @@ Ce document regroupe les tables de référence utilisées dans le cours : loi no
 | 55 | 0,255 | 0,433 | 0,679 | 0,848 | 1,163 | 1,297 | 1,673 | 2,004 | 2,396 | 2,668 | 3,245 |
 | 60 | 0,254 | 0,433 | 0,679 | 0,848 | 1,162 | 1,296 | 1,671 | 2,000 | 2,390 | 2,660 | 3,232 |
 | \\\infty\\ | 0,253 | 0,431 | 0,674 | 0,842 | 1,150 | 1,282 | 1,645 | 1,960 | 2,326 | 2,576 | 3,090 |
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Tables Statistiques},
+  url = {https://ggilles.dev/teaching/probability/tables.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Tables Statistiques.” <https://ggilles.dev/teaching/probability/tables.html>.

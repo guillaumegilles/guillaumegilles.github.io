@@ -336,3 +336,25 @@ Le Conseil des Sages attend votre verdict — montrez que vous êtes dignes de s
 > **IMPORTANT:**
 >
 > Widget Shinylive à créer : l’étudiant fait varier le multiple EV/EBITDA, la dette nette, les minoritaires et les associés, et observe l’Equity value de BIOTECH SERVICES.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Le Conseil des Sages},
+  date = {2025-12-02},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/06-conseil-sages.html},
+  langid = {fr},
+  abstract = {Boss de fin de Jour 2 — Étude comparative entre une
+    société cotée et une PME non cotée du même secteur. Analyse des
+    différences de reporting, de structure financière et de
+    performance.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Le Conseil des Sages.” December 2. <https://ggilles.dev/fr/teaching/financial-analysis/modules/06-conseil-sages.html>.

@@ -417,3 +417,24 @@ Les deux bilans s’équilibrent (35 100 et 35 400) ; les anomalies sont ailleur
 9.  **CFI positif (+800)** alors que les actifs financiers augmentent : cession non documentée.
 
 *Hypothèse stratégique possible* : embellissement du résultat (reprises de provisions) masquant une tension de trésorerie et un endettement à court terme croissant.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Le Temple des Bilans},
+  date = {2025-12-01},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/01-temple-bilans.html},
+  langid = {fr},
+  abstract = {Escape game financier : retrouver les erreurs dans des
+    états financiers volontairement falsifiés. Travail en équipes, 110
+    minutes (dont 25 min de théorie), livrables et présentation orale.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Le Temple des Bilans.” December 1. <https://ggilles.dev/fr/teaching/financial-analysis/modules/01-temple-bilans.html>.

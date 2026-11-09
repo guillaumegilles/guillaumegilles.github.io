@@ -166,3 +166,21 @@ For example, if \\p=0.975\\, then `NORM.S.INV(0.975)` returns approximately \\z=
 > **WARNING:**
 >
 > When the sample size is large, the adjusted standard deviation \\s\\ is very close to the standard deviation \\\sigma\\ seen in descriptive statistics.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 10 — {Practical} {Work:} {Statistical} {Inference} in
+    {Excel}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-10.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 10 — Practical Work: Statistical Inference in Excel.” <https://ggilles.dev/teaching/decision-making-stat/session-10.html>.

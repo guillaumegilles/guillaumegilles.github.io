@@ -227,3 +227,24 @@ Une entreprise lance un nouveau service. Son nombre d’abonnés hebdomadaire (e
 ## Continuer
 
 [Retour au programme du cours →](../../../fr/teaching/mathematical-fundamentals/index.llms.md)
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {8️⃣ Révision et préparation à l’examen final},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-8.html},
+  langid = {fr},
+  abstract = {Consolidez les idées clés des Modules 1 à 7,
+    entraînez-vous à identifier la bonne méthode mathématique uniquement
+    à partir du contexte, et préparez- vous à l’examen final avec des
+    problèmes mixtes et une stratégie d’examen.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “8️⃣ Révision et préparation à l’examen final.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-8.html>.

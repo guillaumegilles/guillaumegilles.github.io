@@ -1101,4 +1101,42 @@ Soit \\F\\ la fonction définie par : \\F(x) = \begin{cases} 0 & \text{si } x \<
 
 ## Footnotes
 
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Lois à Densité},
+  url = {https://ggilles.dev/teaching/probability/density-function.html},
+  langid = {en},
+  abstract = {Ce chapitre introduit les **variables aléatoires
+    absolument continues**, qui modélisent des grandeurs pouvant prendre
+    n’importe quelle valeur dans un intervalle — durées, distances,
+    températures. Contrairement aux variables discrètes, la probabilité
+    d’observer une valeur exacte est toujours nulle\,; c’est la
+    répartition de la probabilité sur des intervalles, décrite par une
+    **fonction densité**, qui porte toute l’information. Après un rappel
+    sur les **intégrales généralisées** (convergence, intégration par
+    parties, changement de variable), outils indispensables au calcul
+    des probabilités et des moments, on définit rigoureusement la
+    densité de probabilité et la **fonction de répartition**, et on
+    établit leur lien fondamental : dériver l’une redonne l’autre. Deux
+    lois classiques sont présentées en détail — la **loi uniforme**
+    (équiprobabilité sur un intervalle) et la **loi exponentielle**
+    (modèle de durée sans mémoire) — avec leurs propriétés et leurs
+    formules d’espérance et de variance. Le chapitre se conclut sur le
+    calcul de l’**espérance** et de la **variance** au sens continu, via
+    le théorème de transfert et la formule de König-Huygens, en
+    établissant le parallèle systématique avec le cas discret. Les
+    exercices sont intégrés au fil du cours, après chaque section
+    correspondante.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Lois à Densité.” <https://ggilles.dev/teaching/probability/density-function.html>.
+
 [^1]: Une v.a.r. absolument continue est également appelée **v.a.r. à densité**.

@@ -173,3 +173,20 @@ Module 8 : Révision et préparation à l’examen
 - Ian Jacques, *Mathematics for Economics and Business*, 5e édition, Pearson Education Limited, 2006.
 - Jean-Luc Dorier et Marc Duc-Jacquet, *Mathématiques pour l’économie et la gestion*, 1re édition, Gualino Éditeur, 1996.
 - Stéphane Rossignol, *Mathématiques en économie-gestion*, 2e édition, Dunod Éditions, 2022.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Fondements Mathématiques et Analyse de Données},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Fondements Mathématiques et Analyse de Données.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/>.

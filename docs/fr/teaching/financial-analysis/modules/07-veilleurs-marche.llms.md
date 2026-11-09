@@ -196,3 +196,24 @@ Les Veilleurs du Marché savent que la réglementation n’est jamais une contra
 > **IMPORTANT:**
 >
 > Ajouter une démo Shinylive : curseurs pour le loyer, la durée et le taux, affichage de la dette locative, de l’EBITDA et de la dette nette avant et après retraitement.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Les Veilleurs du Marché},
+  date = {2025-12-03},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/07-veilleurs-marche.html},
+  langid = {fr},
+  abstract = {Simulation d’un comité de veille stratégique : chaque
+    équipe présente une évolution réglementaire ou de marché et analyse
+    son impact sur la stratégie financière d’entreprise.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Les Veilleurs du Marché.” December 3. <https://ggilles.dev/fr/teaching/financial-analysis/modules/07-veilleurs-marche.html>.

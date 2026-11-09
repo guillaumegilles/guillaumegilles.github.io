@@ -186,3 +186,20 @@ où \\\text{RCAI}\\ est le résultat courant avant impôts récurrent et \\3/4\\
 
 1.  **Solvabilité** : les fonds propres retraités (FPNR) couvrent-ils les engagements ? Le taux d’endettement est-il acceptable ?
 2.  **Autonomie financière** : la CAFr permet-elle de rembourser la dette en moins de 3 ans et de couvrir les prochaines échéances ?
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Structure financière},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/structure-fi.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Structure financière.” <https://ggilles.dev/fr/teaching/financial-analysis/modules/structure-fi.html>.

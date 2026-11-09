@@ -545,3 +545,20 @@ quiz_widget = {
 # 3 Conclusion
 
 La dérivée mesure une variation marginale. Elle constitue un outil central pour l’analyse économique, la modélisation et la décision.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Dérivée d’une Fonction Univariée},
+  url = {https://ggilles.dev/teaching/mathematical-analysis/derivatives.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Dérivée d’une Fonction Univariée.” <https://ggilles.dev/teaching/mathematical-analysis/derivatives.html>.

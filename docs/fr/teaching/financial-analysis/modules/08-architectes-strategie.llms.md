@@ -355,3 +355,24 @@ Scénario +15% (k€) :
 ------------------------------------------------------------------------
 
 Les Architectes de la Stratégie ne construisent pas des maquettes — ils bâtissent des plans que des investisseurs sont prêts à signer. À vos modèles !
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Les Architectes de la Stratégie},
+  date = {2025-12-03},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/08-architectes-strategie.html},
+  langid = {fr},
+  abstract = {Construction d’un plan financier à 3 ans pour une PME en
+    croissance : projections de CA, de résultat, de BFR et de
+    trésorerie, avec identification des besoins de financement.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Les Architectes de la Stratégie.” December 3. <https://ggilles.dev/fr/teaching/financial-analysis/modules/08-architectes-strategie.html>.

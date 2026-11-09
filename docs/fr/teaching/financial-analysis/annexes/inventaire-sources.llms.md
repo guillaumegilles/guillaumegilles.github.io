@@ -40,3 +40,22 @@ Le classement ci-dessous a été établi à partir des **noms de fichiers** et d
 | `helloquence-61189-unsplash.jpg` | archivé | image non utilisée |
 
 Les dossiers vides `new/` et `old/` ont été supprimés.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Inventaire des sources : ce qui n’est pas dans les 18 h},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/annexes/inventaire-sources.html},
+  langid = {fr},
+  abstract = {Classement de chaque fichier du dossier du cours :
+    utilisé, optionnel ou archivé.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Inventaire des sources : ce qui n’est pas dans les 18 h.” <https://ggilles.dev/fr/teaching/financial-analysis/annexes/inventaire-sources.html>.

@@ -342,3 +342,22 @@ En élevant au carré :
 \\\boxed{n\_{\min} = 217 \text{ requêtes}.}\\
 
 *Interprétation :* avec 217 requêtes (au lieu de 100), la demi-largeur de l’IC à 95 % passe de 2,94 ms à 2 ms. Pour diviser la demi-largeur par un facteur \\k\\, il faut multiplier la taille de l’échantillon par \\k^2\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Correction — {Examen} · {Statistiques} Et {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/final-revision-2-correction.html},
+  langid = {en},
+  abstract = {Corrigé détaillé de l’{[}examen (sujet
+    4){]}(final-revision-2.qmd).}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Correction — Examen · Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/final-revision-2-correction.html>.

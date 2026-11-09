@@ -23,3 +23,20 @@ La personne physique fait l’objet, à titre personnel, d’une des décision 
 - Interdiction de diriger, gérer, administrer ou contrôler.
 - Jugement de redressement judiciaire. (durée d’attribution : maximum 2 ans si jugement sans suite)
 - Jugement de liquidation judiciaire. (durée d’attribution : maximum 5 ans à compter de la date du jugement)
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Indicateur Dirigeant},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/indicateur-dirigreant.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Indicateur Dirigeant.” <https://ggilles.dev/fr/teaching/financial-analysis/indicateur-dirigreant.html>.

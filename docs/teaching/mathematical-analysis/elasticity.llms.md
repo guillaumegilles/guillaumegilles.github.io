@@ -60,3 +60,20 @@ Soit :
 ## 7 Ressource
 
 https://www.investopedia.com/terms/e/elastic.asp
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Élasticité d’une Fonction Univariée},
+  url = {https://ggilles.dev/teaching/mathematical-analysis/elasticity.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Élasticité d’une Fonction Univariée.” <https://ggilles.dev/teaching/mathematical-analysis/elasticity.html>.

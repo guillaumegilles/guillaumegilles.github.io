@@ -258,3 +258,25 @@ La fonction de profit d’une entreprise (en milliers d’euros) est \\P(x) = -x
 ## Continuer
 
 [Continuer vers le Module 7 →](../../../fr/teaching/mathematical-fundamentals/module-7.llms.md)
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {6️⃣ Fonctions utiles en économie et gestion},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-6.html},
+  langid = {fr},
+  abstract = {Présentez les fonctions à une variable et leurs propriétés
+    (domaine, valeurs interdites, signe, sens de variation, parité), les
+    fonctions usuelles (affine, polynôme de degré 2, racine carrée,
+    logarithme, exponentielle) et la résolution d’équations du second
+    degré.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “6️⃣ Fonctions utiles en économie et gestion.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-6.html>.

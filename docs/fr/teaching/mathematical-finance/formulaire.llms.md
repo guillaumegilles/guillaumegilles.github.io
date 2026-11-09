@@ -167,3 +167,22 @@ Permet de comparer des projets de **durées différentes** sur une base annuelle
 > **WARNING:**
 >
 > Les **sorties de trésorerie** (remboursements, investissement) sont saisies en **négatif** ; les **entrées** (montant reçu, revenus) en **positif**. Utiliser la même convention dans tout le modèle.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Formulaire},
+  url = {https://ggilles.dev/fr/teaching/mathematical-finance/formulaire.html},
+  langid = {fr},
+  abstract = {Les 10 formules essentielles du cours, à consulter lors
+    des exercices et à maîtriser avant l’évaluation finale.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Formulaire.” <https://ggilles.dev/fr/teaching/mathematical-finance/formulaire.html>.

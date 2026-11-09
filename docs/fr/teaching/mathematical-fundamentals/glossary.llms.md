@@ -117,3 +117,22 @@ Le taux de variation instantané ; la pente de la tangente ; \\(x^{n})' = n x^{n
 
 **Optimisation** (*optimization*)  
 Recherche d’un maximum ou d’un minimum ; pour \\ax^{2} + bx + c\\, l’extremum est en \\x = -\dfrac{b}{2a}\\ (max si \\a \< 0\\, min si \\a \> 0\\).
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Glossaire},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/glossary.html},
+  langid = {fr},
+  abstract = {Glossaire français-anglais des symboles et termes utilisés
+    dans le cours de Fondements Mathématiques et Analyse de Données.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Glossaire.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/glossary.html>.

@@ -33,3 +33,20 @@ Grâce à la cotation, la Banque de France : - fournit aux prêteurs une informa
 Les entreprises cotées sont celles dont le siège social se trouve en France, à partir des informations contenues dans la base de données Fiben (Fichier bancaire des entreprises).
 
 Certaines entités ne reço
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Guide la cotation Banque de France},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/guide-reference.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Guide la cotation Banque de France.” <https://ggilles.dev/fr/teaching/financial-analysis/guide-reference.html>.

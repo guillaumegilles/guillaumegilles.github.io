@@ -261,3 +261,20 @@ The coefficient satisfies:
 > > **WARNING:**
 > >
 > > A high correlation does not imply that advertising directly **causes** revenue growth; other explanatory variables may be at play.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 13 — {Linear} {Correlation} {Coefficient} {Test}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-13.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 13 — Linear Correlation Coefficient Test.” <https://ggilles.dev/teaching/decision-making-stat/session-13.html>.

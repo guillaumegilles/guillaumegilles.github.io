@@ -670,3 +670,32 @@ They add up to 120 (the PivotTable does not show the empty 900–999 group). Day
 | Khan Academy | Unit *Displaying and comparing quantitative data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for the lessons on histograms and cumulative graphs | Short videos and practice questions on reading and building histograms | about 30–45 min (estimate) | link check pending (T048) |
 
 OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {3️⃣ {Organising} Quantitative Data},
+  url = {https://ggilles.dev/teaching/data-description/quantitative-data.html},
+  langid = {en},
+  abstract = {**By the end of this module, you will be able to:** -
+    Explain why a continuous variable must be grouped into classes
+    before it can be summarised in a frequency table. - Choose a
+    sensible number of classes and a class width, and write the classes
+    with the half-open convention \${[}L\_i, L\_i + h{[}\$. - Build a
+    class table with counts, relative frequencies and cumulative
+    frequencies, by hand and in Excel. - Draw and read a histogram, a
+    frequency polygon and a cumulative frequency curve, including a
+    histogram with unequal class widths. - Read a percentile or a share
+    of observations off the cumulative curve. - Read the symbols
+    \$n\_i\$, \$f\_i\$, \$N\_i\^{}\{+\}\$ and \$F\_i\^{}\{+\}\$ aloud as
+    sentences, and write them from a description in words.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “3️⃣ Organising Quantitative Data.” <https://ggilles.dev/teaching/data-description/quantitative-data.html>.

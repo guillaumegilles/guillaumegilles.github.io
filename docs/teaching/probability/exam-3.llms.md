@@ -107,3 +107,25 @@ La durée de vie (en heures) d’un composant électronique suit une loi \\\math
 - 97,72 % des composants ont une durée de vie inférieure à **560 heures**.
 
 **6.** *(8 pts)* En traduisant chacune de ces conditions en termes de \\\Phi\\, former un système de deux équations en \\m\\ et \\\sigma\\, puis déterminer \\m\\ et \\\sigma\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Examen {(Sujet} 3) — {Statistiques} Et {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/exam-3.html},
+  langid = {en},
+  abstract = {Durée : **1 h 30**. Les documents de cours sont
+    **interdits**. Une table de la loi normale \$\textbackslash
+    mathcal\{N\}(0,1)\$ est fournie. Les calculatrices sont autorisées.
+    Toute réponse doit être **justifiée**. Les résultats numériques
+    seront arrondis à \$10\^{}\{-3\}\$ près.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Examen (Sujet 3) — Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/exam-3.html>.

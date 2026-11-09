@@ -51,3 +51,20 @@ Une société provisionne, cette année, \\120\\ k€ d’engagements de retaite
 \| IS Exigible\
 (comptes sociaux) \| IS Économique\
 (comptes consolidés)
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Structure financière},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/05-structure-fi.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Structure financière.” <https://ggilles.dev/fr/teaching/financial-analysis/05-structure-fi.html>.

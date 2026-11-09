@@ -59,3 +59,20 @@ Total : **30h de TD**.
 | Belhaj, S. | *Mathématiques pour l’économie et la gestion — Analyse et algèbre (L1)* | 2011 | Dalloz |
 | Posiere, J.-P. | *Exercices de mathématiques appliquées à la gestion* | 2005 | Eyrolles |
 | Simon, C. P.; Blume, L. | *Mathematics for Economists* | 1994 | W.W. Norton & Company |
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Mathematical {Analysis}},
+  url = {https://ggilles.dev/teaching/mathematical-analysis/},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Mathematical Analysis.” <https://ggilles.dev/teaching/mathematical-analysis/>.

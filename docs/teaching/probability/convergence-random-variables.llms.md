@@ -798,3 +798,32 @@ Cette équivalence est très particulière : elle n’est vraie que lorsque la l
 > - Le **théorème limite central** justifie l’approximation normale pour de grands échantillons, **quelle que soit la loi parente**.
 > - Le **théorème de Slutsky** permet de combiner convergence en loi et convergence vers une constante.
 > - Les implications entre convergences sont : \\L^2 \Rightarrow P \Rightarrow \mathcal{L}\\ et \\p.s. \Rightarrow P \Rightarrow \mathcal{L}\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Convergence de Variables Aléatoires},
+  url = {https://ggilles.dev/teaching/probability/convergence-random-variables.html},
+  langid = {en},
+  abstract = {Ce chapitre étudie les différentes notions de
+    **convergence** pour des suites de variables aléatoires. On présente
+    d’abord les **inégalités de concentration** (Markov,
+    Bienaymé-Tchebychev) qui permettent de contrôler les déviations
+    d’une variable par rapport à son espérance. On introduit ensuite la
+    **convergence en probabilité** et la **convergence en moyenne
+    quadratique**, et on établit la **loi faible des grands nombres**.
+    On présente la **convergence presque sûre**, la **loi forte des
+    grands nombres** et la **méthode de Monte-Carlo**. Le chapitre se
+    poursuit par la **convergence en loi** et le **théorème limite
+    central**, puis se termine par les **résultats de continuité** et le
+    **théorème de Slutsky**.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Convergence de Variables Aléatoires.” <https://ggilles.dev/teaching/probability/convergence-random-variables.html>.

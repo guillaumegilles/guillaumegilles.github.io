@@ -245,3 +245,19 @@ Question 6 A code is made up of two digits and two letters of the alphabet in al
 Question 7 A code is made up of two digits and two letters of the alphabet in all possible orders. Thus, we can deduce that if the code begins with the letter A, then the total number of possible codes is equal to : • 26 x 10 x 10 x 2 • **26 x 10 x 10 x 3** • 26 x 10 x 10 x 4 • 26 x 10 x 10 x 6 Feedback: If the code begins with A, there are 1 letter and 2 numbers left to place. We multiply the number of possibilities to place the letter (therefore the 2 digits) among 3 positions: 𝐶31 = 𝐶32 = 3, by the number of possible letters 26 by the number of arrangements with repetition of 2 digits 10x10
 
 Question 8 A code is made up of two digits and two letters of the alphabet in all possible orders. Thus, we can deduce that if the code starts with two letters, then the total number of possible codes is equal to : • 26 x 25 x 10 x 10 • **26 x 26 x 10 x 10** • 26 x 25 x 10 x 9 • 26 x 26 x 10 x 9 Feedback: If the code starts with 2 letters, the positions of the 2 letters and the 2 digits are imposed. We just multiply the number of arrangements with repetition of 2 letters 26x26 by the number of arrangements with repetition of 2 digits 10x10
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-01.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. <https://ggilles.dev/teaching/decision-making-stat/session-01.html>.

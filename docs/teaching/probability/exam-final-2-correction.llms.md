@@ -295,3 +295,23 @@ La demi-largeur de l’IC à 95 % est \\z\_{0{,}025}\\\sigma/\sqrt{n}\\. On cher
 ------------------------------------------------------------------------
 
 **Fin du corrigé.**
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Correction — {Examen} {Final}},
+  url = {https://ggilles.dev/teaching/probability/exam-final-2-correction.html},
+  langid = {en},
+  abstract = {Corrigé complet de l’examen `exam-final-2`. Toutes les
+    étapes de calcul sont détaillées\,; les réponses encadrées
+    correspondent aux valeurs à retenir.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Correction — Examen Final.” <https://ggilles.dev/teaching/probability/exam-final-2-correction.html>.

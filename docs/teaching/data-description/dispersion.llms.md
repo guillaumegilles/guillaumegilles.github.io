@@ -610,3 +610,32 @@ Range = 154,834, \\s = 44{,}788\\, \\CV = 94.8\\\\. The \\CV\\ is close to 100% 
 | Khan Academy | Unit *Summarizing quantitative data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on variance, standard deviation, and coefficient of variation | Short videos and practice on dispersion measures | ~30–45 min (estimate) | link check pending (T048) |
 
 OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {6️⃣ {Dispersion}},
+  url = {https://ggilles.dev/teaching/data-description/dispersion.html},
+  langid = {en},
+  abstract = {**Learning objectives** By the end of this module, you
+    will be able to: - Explain in one sentence what the range, the
+    interquartile range, the standard deviation \$s\$ and the
+    coefficient of variation \$CV\$ measure. - Compute the range, the
+    sample variance \$s\^{}2\$ and the sample standard deviation \$s\$
+    by hand with a deviation table. - Read the variance formula aloud as
+    a sentence, and write \$\textbackslash sum\$ notation for a sum
+    described in words. - Compute and interpret the coefficient of
+    variation to compare variability across different means or units. -
+    Use the shortcut (computational) formula and explain why the mean
+    must not be rounded in it. - Use the interactive calculator below to
+    see how editing a sample changes its dispersion indicators live.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “6️⃣ Dispersion.” <https://ggilles.dev/teaching/data-description/dispersion.html>.

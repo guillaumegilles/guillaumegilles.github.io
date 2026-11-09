@@ -74,3 +74,23 @@ Une étudiante obtient 900 XP et 12/20 à l’examen.
 ## Usage de l’IA générative et variantes de données
 
 Le jeu de données du fil rouge ([Groupe AUBÉPINE](../../../fr/teaching/financial-analysis/donnees/index.llms.md)) est un support de cours fictif, pas un devoir à rendre tel quel. Pour les travaux notés individuels, l’enseignant peut distribuer une **variante individuelle** du classeur, générée à partir de votre identifiant étudiant : le fichier s’appelle `aubepine-variante-<identifiant>.xlsx` et quelques chiffres diffèrent du jeu publié. Le travail rendu doit correspondre à votre propre variante et être accompagné du fichier de travail (tableur avec les formules visibles). Les restitutions orales s’appliquent normalement. Cette politique est affichée volontairement, en prose, dans les pages concernées : rien n’est caché dans le cours.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Évaluation : XP, niveaux et note finale},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/evaluation.html},
+  langid = {fr},
+  abstract = {Règles uniques d’évaluation du cours : XP par quête, cas
+    «\,boss\,», niveaux, badges et calcul de la note finale (40 \% XP,
+    60 \% examen).}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Évaluation : XP, niveaux et note finale.” <https://ggilles.dev/fr/teaching/financial-analysis/evaluation.html>.

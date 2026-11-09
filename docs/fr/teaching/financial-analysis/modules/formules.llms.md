@@ -282,3 +282,24 @@ Notation : \\A\\ = total de l’actif, \\D\\ = dettes, \\CP\\ ou \\E\\ = capitau
 > | Controverses / faible notation | \> 1,5%       |
 >
 > **Ce que ça calcule.** La hausse du coût du capital quand l’entreprise présente des risques ESG. Plus le WACC monte, plus la valeur baisse. *Utilisé en Q9.*
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Formulaire de référence},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/formules.html},
+  langid = {fr},
+  abstract = {Toutes les formules du cours de 3 jours, rangées par
+    journée et par quête. Chaque formule est suivie de ce qu’elle
+    calcule et de la quête qui l’utilise. Les sigles sont expliqués dans
+    le {[}glossaire{]}(../glossaire.qmd).}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Formulaire de référence.” <https://ggilles.dev/fr/teaching/financial-analysis/modules/formules.html>.

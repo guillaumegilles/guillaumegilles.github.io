@@ -1,20 +1,4 @@
-## Objectifs de la journée
-
-À la fin de cette journée, vous saurez :
-
-- distinguer capitalisation et actualisation ;
-- convertir des taux exprimés sur des périodicités différentes ;
-- calculer la valeur actuelle ou acquise d’un capital isolé ;
-- valoriser une suite d’annuités constantes (fin, début, différées, perpétuité) ;
-- résoudre des problèmes d’épargne et de constitution de capital.
-
-> **IMPORTANT:**
->
-> Avant le moindre calcul, tracez la ligne du temps : placez chaque flux à sa date et repérez la date à laquelle vous voulez l’évaluer. Ce n’est qu’ensuite que l’on choisit de capitaliser (aller vers le futur) ou d’actualiser (revenir vers le présent). Cette règle vaut pour toute la journée ; elle est détaillée en cinq questions dans la Séquence 5.
-
 ## Introduction et diagnostic
-
-> *Durée : 30 minutes*
 
 ### Intuition économique
 
@@ -26,39 +10,30 @@ Choisissez une option, sans calculer, et justifiez votre choix :
 
 Ce choix simple fait émerger les concepts qui structurent toute la finance :
 
-> **NOTE:**
+> Pourquoi un euro aujourd’hui vaut-il plus qu’un euro demain ?
+
+Quatre raisons fondamentales :
+
+1.  **Préférence pour le présent :** nous préférons disposer d’une somme maintenant plutôt que de l’attendre.
+2.  **Coût d’opportunité :** 10 000 € aujourd’hui peuvent être placés et produire des intérêts.
+3.  **Inflation :** 11 000 € dans un an achèteront peut-être moins que 10 000 € aujourd’hui si les prix augmentent.
+4.  **Risque :** une somme future est incertaine ; une somme présente est certaine.
+
+Ces quatre raisons se condensent en un seul paramètre : le **taux d’actualisation**.
+
+Toute la finance repose sur une idée simple mais fondamentale : **un euro aujourd’hui vaut plus qu’un euro demain**. Comprendre cette notion de *valeur temps de l’argent*, c’est comprendre pourquoi on ne compare jamais directement des montants situés à des dates différentes. Il faut d’abord les ramener à une date commune. C’est le fondement de toutes les décisions financières, de l’épargne à l’investissement en passant par le crédit.
+
+## Intérêts simples et intérêts composés
+
+> **IMPORTANT:**
 >
-> Quatre raisons fondamentales :
->
-> 1.  **Préférence pour le présent** — nous préférons disposer d’une somme maintenant plutôt que de l’attendre.
-> 2.  **Coût d’opportunité** — 10 000 € aujourd’hui peuvent être placés et produire des intérêts.
-> 3.  **Inflation** — 11 000 € dans un an achèteront peut-être moins que 10 000 € aujourd’hui si les prix augmentent.
-> 4.  **Risque** — une somme future est incertaine ; une somme présente est certaine.
->
-> Ces quatre raisons se condensent en un seul paramètre : le **taux d’actualisation**.
+> Un placement est à **intérêts simples** lorsque les intérêts de chaque période sont calculés sur le seul capital initial \\C_0\\. Il est à **intérêts composés** lorsque les intérêts de chaque période sont ajoutés au capital et portent eux-mêmes intérêt aux périodes suivantes (capital courant \\C\_{t-1}\\).
 
-### Diagnostic initial
+Léa vient de recevoir une prime de **10 000 €** dont elle n’aura pas besoin avant **10 ans**. Sa banque lui propose deux placements au même taux de **3 % par an**. Le livret « Simple » verse chaque année 3 % de la somme de départ, soit 300 €, que Léa garde de côté sans les replacer. Le compte à terme « Cumul » ajoute chaque année les intérêts au capital, si bien que l’année suivante les 3 % portent sur un montant plus élevé. Le conseiller assure que « c’est le même taux, donc à peu près le même résultat ».
 
-Avant de démarrer, évaluez vos acquis sur :
-
-- pourcentages et taux de variation ;
-- calcul de puissances (\\1{,}05^{10}\\, \\1{,}03^{-5}\\) ;
-- résolution d’équations du type \\x(1+i)^n = C\\ ;
-- intérêt intuitif pour l’actualisation (ex. : « combien vaut 1 000 € dans 3 ans si le taux est 4 % ? »).
-
-## Séquence 2 — Intérêts simples et intérêts composés
-
-> *Durée : 1 heure*
-
-> **NOTE:**
->
-> Léa vient de recevoir une prime de **10 000 €** dont elle n’aura pas besoin avant **10 ans**. Sa banque lui propose deux placements au même taux de **3 % par an**. Le livret « Simple » verse chaque année 3 % de la somme de départ, soit 300 €, que Léa garde de côté sans les replacer. Le compte à terme « Cumul » ajoute chaque année les intérêts au capital, si bien que l’année suivante les 3 % portent sur un montant plus élevé. Le conseiller assure que « c’est le même taux, donc à peu près le même résultat ».
->
-> **Quelle offre Léa doit-elle choisir, et quel écart cela représente-t-il au bout de 10 ans ?**
+**Quelle offre Léa doit-elle choisir, et quel écart cela représente-t-il au bout de 10 ans ?**
 
 ### Exploration numérique
-
-*Règle d’or : tracez d’abord la ligne du temps (voir [Règle d’or](#rule-ligne-temps)).*
 
 Suivons les deux placements année par année. Avec le livret « Simple », Léa reçoit toujours 300 € (3 % de 10 000 €) : on **ajoute** 300 € chaque année. Avec le compte « Cumul », on **multiplie** chaque année le solde de l’année précédente par 1,03 : la première année, 10 000 × 1,03 = 10 300 € ; la deuxième, 10 300 × 1,03 = 10 609 € ; et ainsi de suite.
 
@@ -78,101 +53,111 @@ Suivons les deux placements année par année. Avec le livret « Simple », Léa
 
 *Valeurs arrondies à l’euro.*
 
-**Réponse à Léa :** au bout de 10 ans, le compte « Cumul » lui rapporte **13 439 €** contre **13 000 €** pour le livret « Simple », soit **439 €** de plus. Le conseiller se trompe : même taux ne veut pas dire même résultat. Léa a intérêt à choisir « Cumul », et l’écart se creuse d’année en année.
+#### Réponse à Léa
 
-> **TIP:**
->
-> - La colonne « Simple » augmente toujours du **même montant** (+300 €) : on part de 10 000 € et on ajoute \\t\\ fois 300 €, soit \\10\\000 \times (1 + t \times 0{,}03)\\.
-> - La colonne « Cumul » est multipliée chaque année par le **même facteur** (× 1,03) : après \\t\\ années, on a multiplié \\t\\ fois par 1,03, soit \\10\\000 \times 1{,}03^t\\.
-> - L’écart grandit de plus en plus vite : chaque année, les intérêts déjà gagnés **produisent à leur tour des intérêts**.
->
-> En remplaçant 10 000 € par un capital \\C_0\\, 3 % par un taux \\i\\ et la durée par \\n\\, on obtient les deux formules générales ci-dessous : \\C_0(1 + ni)\\ d’un côté, \\C_0(1+i)^n\\ de l’autre.
+Au bout de 10 ans, le compte « Cumul » lui rapporte **13 439 €** contre **13 000 €** pour le livret « Simple », soit **439 €** de plus. Le conseiller se trompe : même taux ne veut pas dire même résultat. Léa a intérêt à choisir « Cumul », et l’écart se creuse d’année en année.
 
-### Représentation (ligne du temps)
+- La colonne « Simple » augmente toujours du **même montant** (+300 €) : on part de 10 000 € et on ajoute \\t\\ fois 300 €, soit \\10\\000 \times (1 + t \times 0{,}03)\\.
+- La colonne « Cumul » est multipliée chaque année par le **même facteur** (× 1,03) : après \\t\\ années, on a multiplié \\t\\ fois par 1,03, soit \\10\\000 \times 1{,}03^t\\.
+- L’écart grandit de plus en plus vite : chaque année, les intérêts déjà gagnés **produisent à leur tour des intérêts**.
 
-``` mermaid
-flowchart LR
-    t0["t = 0<br/>C₀"]
-    t1["t = 1"]
-    t2["t = 2"]
-    tn["t = n<br/>Cₙ"]
-    t0 -->|"(1+i)"| t1
-    t1 -->|"(1+i)"| t2
-    t2 -.->|"..."| tn
+#### Visualisation des intérêts « simples » et « cumulés »
+
+``` js
+viewof C0_s2 = Inputs.range([1000, 50000], {
+  value: 10000, step: 500,
+  label: "Capital initial C₀ (€)"
+})
+viewof i_s2 = Inputs.range([0.01, 0.15], {
+  value: 0.03, step: 0.005,
+  label: "Taux d'intérêt i (par période)"
+})
+viewof n_s2 = Inputs.range([2, 30], {
+  value: 10, step: 1,
+  label: "Durée maximale n (périodes)"
+})
+
+data_s2 = Array.from({length: n_s2 + 1}, (_, t) => [
+  {t, valeur: C0_s2 * (1 + i_s2 * t), serie: "Intérêts simples"},
+  {t, valeur: C0_s2 * (1 + i_s2) ** t, serie: "Intérêts composés"}
+]).flat()
+
+Plot.plot({
+  title: "Simple (linéaire) vs composé (exponentiel)",
+  marks: [
+    Plot.line(data_s2, {x: "t", y: "valeur", stroke: "serie", tip: true}),
+    Plot.dot(data_s2, {x: "t", y: "valeur", fill: "serie", tip: true}),
+    Plot.ruleY([C0_s2], {stroke: "gray", strokeDasharray: "4", label: "C₀"})
+  ],
+  color: {legend: true},
+  x: {label: "Période t", tickFormat: d => `t=${d}`},
+  y: {label: "Capital (€)", grid: true},
+  marginBottom: 40
+})
 ```
 
-Un capital \\C_0\\ placé à la date 0 produit un capital \\C_n\\ à la date \\n\\.
+### Intérêts simples
 
-### A. Intérêts simples
+En intérêts simples, les intérêts sont calculés **uniquement sur le capital initial**, à chaque période, sans jamais être réinvestis. Si vous placez 10 000 € à 3 % par an, vous touchez 300 € chaque année et ce sera toujours 300 € dix ans plus tard, quelle que soit la durée. La formule est linéaire : \\C_n = C_0(1 + ni)\\. Ce régime est intuitif mais peu réaliste sur le long terme : il revient à garder les intérêts « de côté » sans qu’ils ne travaillent eux-mêmes, ce qui sous-estime le véritable rendement d’un placement.
 
-> **TIP:**
->
-> \\C_n = C_0(1 + ni)\\
->
-> **Intérêts produits :** \\I = C_0 \\ n \\ i\\
->
-> **Lecture :** les intérêts sont calculés *uniquement* sur le capital initial \\C_0\\, à chaque période. Ils ne s’accumulent pas.
+Prenons quelques valeurs abstraites :
 
-> **NOTE:**
->
-> **Ce que calcule cette formule** : la valeur acquise au bout de `n` périodes par un capital placé à intérêts simples, ainsi que le total des intérêts gagnés.
->
-> **Rôle de chaque paramètre** :
->
-> - `C_n` : le capital disponible à la fin du placement, intérêts compris.
-> - `C_0` : la somme placée au départ, seule base de calcul des intérêts.
-> - `n` : le nombre de périodes pendant lesquelles l’argent reste placé.
-> - `i` : le taux d’intérêt par période, exprimé en décimal (0,03 pour 3 %).
-> - `I` : le total des intérêts perçus, de même montant à chaque période.
->
-> **Ce que signifie le résultat** : `C_n` indique ce que l’épargnant récupère à l’échéance lorsque les intérêts ne sont jamais réinvestis, comme les 13 000 € du livret « Simple » de Léa.
->
-> **Intuition directionnelle** : si la durée `n` augmente d’une période, le capital `C_n` augmente toujours du même montant, `C_0` × `i`, soit 300 € par an pour Léa.
+- \\C_0\\ : le capital initial ;
+- \\n\\ : le nombre de périodes ;
+- \\i\\ : le taux d’intérêt.
 
-### B. Intérêts composés
+#### À la fin de la période 1
 
-> **TIP:**
->
-> \\C_n = C_0(1 + i)^n\\
->
-> **Intérêts produits :** \\I = C_0\left\[(1+i)^n - 1\right\]\\
->
-> **Lecture :** à chaque période, les intérêts s’ajoutent au capital et produisent eux-mêmes des intérêts lors des périodes suivantes. C’est l’effet des **intérêts composés** (ou « intérêts sur intérêts »).
+les intérêts valent \\C_0 \cdot i\\, on les ajoute au capital :
 
-> **NOTE:**
->
-> **Ce que calcule cette formule** : la valeur acquise au bout de `n` périodes par un capital placé à intérêts composés, ainsi que le total des intérêts cumulés.
->
-> **Rôle de chaque paramètre** :
->
-> - `C_n` : le capital final, intérêts et intérêts sur intérêts compris.
-> - `C_0` : la somme placée au départ.
-> - `i` : le taux par période, en décimal, appliqué chaque fois au capital courant.
-> - `n` : le nombre de périodes de capitalisation, qui figure en exposant.
-> - `I` : le total des intérêts gagnés, y compris ceux produits par les intérêts déjà capitalisés.
->
-> **Ce que signifie le résultat** : `C_n` est ce que l’épargnant récupère quand les intérêts sont réinvestis à chaque période, comme les 13 439 € du compte « Cumul » de Léa.
->
-> **Intuition directionnelle** : si la durée `n` augmente, `C_n` augmente de plus en plus vite, car chaque période ajoute des intérêts sur un capital déjà grossi.
+\\C_1 = C_0 + C_0 \cdot i\\ \\C_1 = C_0(1 + i)\\
 
-> **CAUTION:**
->
-> À la fin de la période 1 : \\C_1 = C_0 + C_0 \cdot i = C_0(1+i)\\
->
-> À la fin de la période 2 : \\C_2 = C_1(1+i) = C_0(1+i)^2\\
->
-> Par récurrence, à la fin de la période \\n\\ :
->
-> \\C_n = C_0(1+i)^n\\
->
-> La clé est que la base de calcul des intérêts est le *capital courant* \\C\_{t-1}\\, non le capital initial — d’où l’exposant \\n\\.
+#### À la fin de la période 2
 
-### C. Comparaison des deux régimes
+les intérêts sont à nouveau calculés sur le seul capital initial, donc toujours \\C_0 \cdot i\\ :
 
-| Régime            | Base de calcul des intérêts  | Croissance             |
-|-------------------|------------------------------|------------------------|
-| Intérêts simples  | Capital initial \\C_0\\      | Linéaire en \\n\\      |
-| Intérêts composés | Capital courant \\C\_{t-1}\\ | Exponentielle en \\n\\ |
+\\C_2 = C_1 + C_0 \cdot i\\ \\C_2 = C_0(1 + i) + C_0 \cdot i\\ \\C_2 = C_0(1 + 2i)\\
+
+#### À la fin de la période \\n\\
+
+**Le point clé :** en intérêts simples, on ajoute **toujours le même montant** \\C_0 \cdot i\\ à chaque période, car la base de calcul reste le capital initial \\C_0\\ (et non le capital courant \\C\_{t-1}\\ comme en intérêts composés).
+
+\\C_n = C_0 + \underbrace{C_0 \cdot i + C_0 \cdot i + \cdots + C_0 \cdot i}\_{n \text{ fois}}\\ \\C_n = C_0 + n \cdot C_0 \cdot i\\ \\\boxed{C_n = C_0(1 + ni)}\\
+
+#### Total des intérêts simple générés
+
+On peut déterminer rapidement ce que le placement rapporte, au-delà du capital. avec quelques valeurs abstraites :
+
+- \\I\\ : le total des intérêts perçus, de même montant à chaque période ;
+- \\C_0\\ : la somme placée au départ, seule base de calcul des intérêts ;
+- \\n\\ : le nombre de périodes pendant lesquelles l’argent reste placé ;
+- \\i\\ : le taux d’intérêt par période, exprimé en décimal (0,03 pour 3 %).
+
+\\I = C_n - C_0\\ \\I = C_0(1 + ni) - C_0\\ \\\boxed{I = C_0 \\ n \\ i}\\
+
+### Intérêts composés
+
+Les intérêts composés changent la donne : à chaque période, les intérêts sont **ajoutés au capital** et produisent eux-mêmes des intérêts pour les périodes suivantes. C’est l’effet « boule de neige » ou « intérêts sur intérêts ». La formule devient exponentielle : \\C_n = C_0(1+i)^n\\. Avec 10 000 € à 3 % sur 10 ans, on obtient 13 439 € en composé contre 13 000 € en simple. Cet écart peut sembler modeste, mais il s’amplifie considérablement avec la durée et le taux : c’est pourquoi commencer à épargner tôt est si puissant.
+
+#### À la fin de la période 1
+
+\\C_1 = C_0 + C_0 \cdot i\\ \\C_1 = C_0(1+i)\\
+
+#### À la fin de la période 2
+
+\\C_2 = C_1(1+i)\\ \\C_2 = C_0(1+i) \cdot (1+i)\\ \\C_2 = C_0(1+i)^2\\
+
+#### À la fin de la période \\n\\
+
+La clé est que la base de calcul des intérêts est le *capital courant* \\C\_{t-1}\\ etnon le capital initial, d’où l’exposant \\n\\.
+
+\\C_n = C_0 \underbrace{(1+i) \cdot (1+i) \cdot \dots \cdot (1+i)}\_{\text{\$n\$ fois}}\\ \\\boxed{C_n = C_0(1+i)^n}\\
+
+#### Total des intérêts composés générés
+
+À chaque période, les intérêts s’ajoutent au capital et produisent eux-mêmes des intérêts lors des périodes suivantes. C’est l’effet des **intérêts composés** (ou « intérêts sur intérêts »).
+
+**Intérêts produits :** \\I = C_0\left\[(1+i)^n - 1\right\]\\
 
 > **WARNING:**
 >
@@ -181,10 +166,6 @@ Un capital \\C_0\\ placé à la date 0 produit un capital \\C_n\\ à la date \\n
 > - **Pour \\n \< 1\\** (fraction d’année) : les intérêts simples donnent un montant *supérieur* aux intérêts composés.
 > - **Pour \\n \> 1\\** : les intérêts composés donnent toujours un montant *supérieur*.
 > - L’écart s’amplifie avec le taux et la durée.
-
-> **IMPORTANT:**
->
-> Un placement est à **intérêts simples** lorsque les intérêts de chaque période sont calculés sur le seul capital initial \\C_0\\. Il est à **intérêts composés** lorsque les intérêts de chaque période sont ajoutés au capital et portent eux-mêmes intérêt aux périodes suivantes (capital courant \\C\_{t-1}\\).
 
 ### Exemple résolu
 
@@ -223,11 +204,7 @@ L’écart (333 €) représente les intérêts générés par les intérêts ca
 > 3.  La **périodicité de calcul** (mensuelle, trimestrielle, annuelle…)
 > 4.  La **fréquence de capitalisation** (combien de fois par an les intérêts sont-ils capitalisés ?)
 
-------------------------------------------------------------------------
-
-## Séquence 3 — Actualisation et équivalence financière
-
-> *Durée : 1 heure*
+## Actualisation et équivalence financière
 
 > **NOTE:**
 >
@@ -238,6 +215,8 @@ L’écart (333 €) représente les intérêts générés par les intérêts ca
 ### Intuition économique
 
 Si la capitalisation répond à « combien vaut un capital *dans le futur* ? », l’actualisation répond à « combien vaut un capital futur *aujourd’hui* ? »
+
+La **capitalisation** est donc l’opération qui projette un capital vers l’avenir : on multiplie le capital par \\(1+i)\\ autant de fois qu’il y a de périodes. C’est le mouvement naturel de l’épargne — chaque euro placé aujourd’hui grossit avec le temps — et le cœur de la constitution d’un capital, que ce soit pour un projet immobilier ou pour la retraite.
 
 ### Exploration numérique
 
@@ -307,6 +286,8 @@ flowchart RL
 >
 > **Intuition directionnelle** : si le taux `i` ou la durée `n` augmente, la valeur actuelle `V_0` diminue, car l’attente coûte plus cher.
 
+L’**actualisation** est l’opération inverse de la capitalisation : au lieu de faire voyager l’argent vers le futur, on le ramène vers le présent. « Que vaut aujourd’hui une promesse de 1 100 € dans un an, si je peux placer à 5 % ? » On divise alors par \\(1+i)^n\\ : \\V_0 = V_n / (1+i)^n\\. Le facteur \\(1+i)^{-n}\\, toujours inférieur à 1, traduit l’idée que l’attente a un coût. L’actualisation est l’outil indispensable pour comparer des offres de paiement échelonné, valoriser un projet d’investissement ou calculer le prix « juste » d’un actif financier.
+
 ### B. Équivalence financière
 
 > **NOTE:**
@@ -314,6 +295,8 @@ flowchart RL
 > Deux capitaux sont **financièrement équivalents** s’ils ont la même valeur actualisée à une date de référence commune, au même taux.
 >
 > Pour comparer \\C_1\\ versé à la date \\n_1\\ et \\C_2\\ versé à la date \\n_2\\, on les ramène tous deux à une date commune (souvent \\t = 0\\).
+
+Deux capitaux sont **financièrement équivalents** lorsqu’ils ont la même valeur à une date commune, au même taux. Dire que 1 000 € aujourd’hui équivaut à 1 050 € dans un an à 5 %, c’est exactement la même chose que de dire que 1 050 € dans un an actualisés valent 1 000 € aujourd’hui. Ce concept permet de remplacer un flux futur par un flux présent (ou l’inverse) sans changer la richesse : c’est la base de tous les arbitrages financiers, qu’il s’agisse de choisir entre payer comptant ou à crédit, ou d’accepter un paiement immédiat ou différé.
 
 ### Exemple résolu — Décision d’arbitrage
 
@@ -476,6 +459,8 @@ Le douzième mois, les intérêts atteignent 81,42 € (contre 75 € le premier
 >
 > **Intuition directionnelle** : si le taux annuel `i_a` augmente, `i_m` augmente dans la même proportion, mais l’écart avec le coût réel des intérêts capitalisés chaque mois se creuse aussi.
 
+Lorsqu’un taux annuel de 9 % est « converti » en mensuel en divisant simplement par 12 (soit 0,75 % par mois), on obtient un **taux proportionnel**. Cette convention est linéaire et intuitive, mais elle a un défaut majeur : elle ignore que les intérêts mensuels, une fois capitalisés, produisent eux-mêmes des intérêts. En réalité, 0,75 % par mois capitalisé sur 12 mois donne un coût annuel de 9,38 %, et non 9 %. Le taux proportionnel n’est donc qu’une approximation, utilisée surtout pour des durées inférieures à un an ou dans des conventions simplifiées.
+
 ### B. Taux équivalent
 
 > **TIP:**
@@ -508,6 +493,8 @@ Le douzième mois, les intérêts atteignent 81,42 € (contre 75 € le premier
 > **Ce que signifie le résultat** : `i_p` est le seul taux par sous-période qui rend deux offres réellement comparables, puisque 9 % par an équivaut à environ 0,721 % par mois, et non 0,75 %.
 >
 > **Intuition directionnelle** : si le nombre de sous-périodes `m` augmente, le taux équivalent `i_p` devient un peu plus petit que la simple division par `m`, car des intérêts capitalisés plus souvent produisent davantage d’intérêts.
+
+Le **taux équivalent** est le seul qui permette une comparaison honnête entre des offres exprimées sur des périodicités différentes. Il répond à la question : « quel taux mensuel, capitalisé chaque mois, donne exactement le même résultat qu’un taux annuel de 9 % sur un an ? » La réponse s’obtient en prenant la racine douzième : \\i_m = (1+i_a)^{1/12} - 1\\, soit environ 0,721 % pour 9 % annuel. Deux taux sont équivalents quand \\(1+i_p)^m = 1+i_a\\ : c’est la définition même de l’équivalence actuarielle, et c’est toujours le taux équivalent qu’il faut utiliser pour comparer des prêts ou des placements réels.
 
 > **CAUTION:**
 >
@@ -542,6 +529,8 @@ Le taux annuel effectif est **6,17 %**, et non 6 % (qui serait le taux proportio
 > **NOTE:**
 >
 > Un taux affiché ne dit rien du coût réel tant que l’on ne connaît pas la fréquence de capitalisation. Si les intérêts sont capitalisés plus souvent (chaque mois, chaque jour), le coût annuel effectif augmente, à taux affiché identique ; l’écart grandit aussi avec le niveau du taux. Pour comparer deux offres de crédit ou de placement, il faut donc les convertir sur une même période avec des taux **équivalents** — c’est précisément le rôle du TAEG que les prêteurs doivent afficher : dans la situation concrète, 9,38 % pour B contre 9 % pour A.
+
+Le **TAEG** (taux annuel effectif global) est tout simplement le taux annuel effectif correspondant à un taux périodique donné, calculé par \\(1+i_p)^m - 1\\. Si une banque applique 0,5 % par mois, le TAEG est de \\(1{,}005)^{12} - 1 \approx 6{,}17\\\\\\, et non 6 %. En France, la loi oblige les prêteurs à afficher le TAEG précisément pour que l’emprunteur puisse comparer le coût réel de différentes offres de crédit, indépendamment de la fréquence de capitalisation affichée.
 
 > **WARNING:**
 >
@@ -587,6 +576,8 @@ Une **annuité** est un flux financier constant (versement ou encaissement) rép
 > 3.  Y a-t-il un **différé** (les flux commencent après plusieurs périodes) ?
 > 4.  Le taux et les flux sont-ils sur la **même périodicité** ?
 > 5.  Doit-on **capitaliser** (aller vers le futur) ou **actualiser** (revenir vers le présent) ?
+
+Avant toute formule, le réflexe absolu consiste à **tracer la ligne du temps** : placer chaque flux à sa date, repérer la date d’évaluation, vérifier si les versements sont en début ou en fin de période, s’il y a un différé, et si le taux et les flux partagent la même périodicité. Cinq questions simples qui, une fois posées, déterminent automatiquement la bonne formule à utiliser. Cette habitude visuelle évite la grande majorité des erreurs de décalage d’une période — l’erreur la plus fréquente en calcul financier.
 
 ### Exploration numérique
 
@@ -696,6 +687,8 @@ Les versements ont lieu aux dates \\t = 1, 2, \dots, n\\ (fin de période).
 >
 > **Intuition directionnelle** : si le taux `i` augmente, la valeur acquise `V_n` augmente tandis que la valeur actuelle `V_0` diminue.
 
+Une **annuité** est une suite de versements identiques et réguliers. Lorsqu’ils ont lieu en **fin de période** (terme échu) — par exemple 5 000 € chaque 31 décembre — chaque versement est capitalisé jusqu’à la date d’évaluation. La valeur acquise à la date du dernier versement est \\V_n = A \cdot \frac{(1+i)^n - 1}{i}\\, et la valeur actuelle (un an avant le premier versement) est \\V_0 = A \cdot \frac{1-(1+i)^{-n}}{i}\\. Ces formules condensent en une seule opération ce qui serait autrement un long tableau de capitalisation année par année.
+
 > **CAUTION:**
 >
 > La valeur actuelle est la somme des valeurs actuelles de chaque versement :
@@ -782,12 +775,16 @@ Chaque versement est avancé d’une période par rapport au cas précédent, do
 >
 > **Intuition directionnelle** : si le taux `i` augmente, l’avantage de verser en début de période augmente, car la période de capitalisation supplémentaire rapporte davantage.
 
+Si les versements ont lieu en **début de période** (terme à échoir) — par exemple 5 000 € chaque 1er janvier — chaque flux bénéficie d’une période de capitalisation supplémentaire. Il suffit donc de multiplier les formules du terme échu par \\(1+i)\\ : la valeur acquise devient \\V_n = A \cdot \frac{(1+i)^n - 1}{i} \cdot (1+i)\\. Concrètement, verser en début d’année plutôt qu’en fin d’année rapporte toujours plus, à effort égal — un avantage que la ligne du temps permet de visualiser immédiatement.
+
 ### C. Annuités différées
 
 Si les versements commencent après \\d\\ périodes de différé :
 
 1.  Calculer \\V\_{d}\\ : la valeur *juste avant le premier versement* (à \\t = d\\) à l’aide des formules habituelles.
 2.  Actualiser \\V\_{d}\\ jusqu’à la date souhaitée : \\V_0 = V\_{d} \cdot (1+i)^{-d}\\.
+
+Une annuité est **différée** lorsque les versements ne commencent qu’après un certain délai \\d\\. La méthode est en deux temps : on calcule d’abord la valeur de l’annuité à la date du premier versement (comme si elle commençait à \\t = d\\), puis on actualise ce montant jusqu’à la date d’évaluation souhaitée en le divisant par \\(1+i)^d\\. Cette double étape — évaluer à la date de début, puis ramener à aujourd’hui — est un schéma général que l’on retrouve dans de nombreux problèmes de finance.
 
 ### D. Perpétuités
 
@@ -818,6 +815,8 @@ Si les versements commencent après \\d\\ périodes de différé :
 > **Ce que signifie le résultat** : `V_0` est le prix maximal à payer aujourd’hui pour un revenu sans fin ; par exemple, 1 000 € par an à 4 % valent 25 000 €.
 >
 > **Intuition directionnelle** : si le taux `i` augmente ou si la croissance `g` diminue, la valeur `V_0` baisse, et elle explose lorsque `g` se rapproche de `i`.
+
+Une **perpetuité** est une annuité qui ne s’arrête jamais : des versements de montant constant \\A\\ à l’infini. Quand \\n\\ tend vers l’infini dans la formule de valeur actuelle, le terme \\(1+i)^{-n}\\ tend vers 0, et il reste simplement \\V_0 = A / i\\. Ainsi, recevoir 1 000 € par an à perpétuité au taux de 4 % « vaut » 25 000 € aujourd’hui. La perpétuité croissante (modèle de Gordon-Shapiro, \\V_0 = A_1/(i-g)\\) est le fondement de l’évaluation de nombreuses actions : elle valorise un dividende qui croît régulièrement avec le temps.
 
 ------------------------------------------------------------------------
 
@@ -1011,3 +1010,26 @@ Un cadre de 35 ans souhaite constituer un complément de retraite. Il envisage d
 > Soit un gain d’environ +85 246 € par rapport au scénario à 3 %.
 >
 > **5. Recommandation :** À 3 % de rendement annuel et 800 €/mois de versement, le plan permet de constituer environ 463 000 € en 30 ans, générant une rente d’environ 2 560 €/mois pendant 20 ans ; une hausse d’un point de taux augmenterait ce capital d’environ 85 000 € (près de 20 %), ce qui justifie d’arbitrer vers des supports plus dynamiques si le profil de risque le permet.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {1️⃣ Valeur temps de l’argent},
+  url = {https://ggilles.dev/fr/teaching/mathematical-finance/valeur-temps-argent.html},
+  langid = {fr},
+  abstract = {**À la fin de cette journée, vous saurez :** - distinguer
+    capitalisation et actualisation\,; - convertir des taux exprimés sur
+    des périodicités différentes\,; - calculer la valeur actuelle ou
+    acquise d’un capital isolé\,; - valoriser une suite d’annuités
+    constantes (fin, début, différées, perpétuité)\,; - résoudre des
+    problèmes d’épargne et de constitution de capital.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “1️⃣ Valeur temps de l’argent.” <https://ggilles.dev/fr/teaching/mathematical-finance/valeur-temps-argent.html>.

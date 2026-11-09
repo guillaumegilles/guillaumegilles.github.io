@@ -277,3 +277,22 @@ On veut : \\2 \times 1{,}96 \times \frac{\sigma}{\sqrt{n}} \leq 10 \implies \fra
 \\\sqrt{n} \geq \frac{30}{2{,}551} \approx 11{,}76 \implies n \geq 11{,}76^2 \approx 138{,}3.\\
 
 \\\boxed{n\_{\min} = 139 \text{ piles}.}\\
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Correction — {Examen} {Final} · {Statistiques} Et
+    {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/exam-final-correction.html},
+  langid = {en},
+  abstract = {Corrigé détaillé de l’{[}examen final{]}(exam-final.qmd).}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Correction — Examen Final · Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/exam-final-correction.html>.

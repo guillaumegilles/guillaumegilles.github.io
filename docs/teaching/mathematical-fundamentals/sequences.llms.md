@@ -266,3 +266,25 @@ A price index tracks the cost of a basket of goods. In 2020 the index stands at 
   **Geometric sequence — sum of the first \\n+1\\ terms (\\r \neq 1\\)**
 
   \\ S_n = u_0 \\\frac{1 - r^{\\n+1}}{1 - r} \\
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {4️⃣ {Sequences}},
+  url = {https://ggilles.dev/teaching/mathematical-fundamentals/sequences.html},
+  langid = {en},
+  abstract = {\#\#\#\#\#\# Learning objectives - Understand what a
+    numerical sequence is and use index notation. - Recognise, model,
+    and study **arithmetic** sequences. - Recognise, model, and study
+    **geometric** sequences. - Compute the sum of the first terms of
+    each type of sequence.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “4️⃣ Sequences.” <https://ggilles.dev/teaching/mathematical-fundamentals/sequences.html>.

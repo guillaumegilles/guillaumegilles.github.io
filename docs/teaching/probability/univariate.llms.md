@@ -214,3 +214,34 @@ Face a un jeu de donnees, il est facile de se perdre dans les calculs. La proced
 > 6.  **Interpreter** les resultats dans le contexte (asymetrie, valeurs extremes, stabilite).
 
 Cette demarche permet de passer des donnees brutes a une lecture quantitative robuste, utile avant toute phase d’inference statistique. En particulier, l’etape 6 est souvent negligee : les chiffres n’ont de sens que replaces dans leur contexte. Dire « l’ecart-type vaut 3{,}2 » ne signifie rien sans preciser l’unite et sans comparer cette dispersion a ce qui est attendu dans le domaine etudie.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Statistiques Descriptives à Une Variable},
+  url = {https://ggilles.dev/teaching/probability/univariate.html},
+  langid = {en},
+  abstract = {Ce chapitre presente les bases de la **statistique
+    descriptive univariée**, avec l’objectif de décrire rigoureusement
+    une population à partir d’un seul caractère. On introduit d’abord le
+    vocabulaire (population, individu, variable, modalité), puis les
+    outils de synthèse pour les séries **discrètes** (effectifs,
+    fréquences, cumuls, mode). Le chapitre traite ensuite le cas des
+    séries **continues** regroupées en classes, en expliquant l’usage
+    correct de l’histogramme (densités) et de la fonction de
+    répartition. Les indicateurs de position et de dispersion sont
+    ensuite developpés : médiane, quartiles, intervalle interquartile,
+    moyenne, variance, écart-type, avec les formules pratiques (dont
+    Konig-Huygens) et les transformations affines. Le chapitre se
+    termine par une synthese methodologique complète pour mener une
+    étude statistique de bout en bout.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Statistiques Descriptives à Une Variable.” <https://ggilles.dev/teaching/probability/univariate.html>.

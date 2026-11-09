@@ -26,3 +26,22 @@
 | **Total passif**                         | 9 094 | 9 404 | 9 765 |
 
 L’actif comprend les **écarts d’acquisition** (goodwill) constatés à l’acquisition des filiales et les **titres mis en équivalence** (TERROIR, 30 %). Au passif, les **intérêts minoritaires** isolent la part des capitaux propres des filiales qui n’appartient pas au groupe. Voir l’[annexe](../../../../fr/teaching/financial-analysis/donnees/annexe.llms.md) pour le détail des éliminations.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Bilan consolidé — Groupe AUBÉPINE},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/donnees/bilan-consolide.html},
+  langid = {fr},
+  abstract = {Bilan consolidé (modèle normal, PCG) du Groupe AUBÉPINE
+    pour 2023, 2024 et 2025, en k€. Données fictives.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Bilan consolidé — Groupe AUBÉPINE.” <https://ggilles.dev/fr/teaching/financial-analysis/donnees/bilan-consolide.html>.

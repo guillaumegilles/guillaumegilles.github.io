@@ -299,3 +299,25 @@ A firm needs to repay a loan of €200,000 in 8 years. Two banks compete for the
   \\ P = \frac{V_c}{(1 + i)^n} \\
 
   The initial capital that produces a future value \\V_c\\ at rate \\i\\ after \\n\\ years. Used to compare cash flows at different points in time.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {5️⃣ {Interests}},
+  url = {https://ggilles.dev/teaching/mathematical-fundamentals/interests.html},
+  langid = {en},
+  abstract = {\#\#\#\# Learning objectives - Compute simple interest and
+    the acquired capital. - Compute compound interest and analyse simple
+    financial situations. - Convert an interest rate from one period to
+    another. - Recognise which regime (simple or compound) applies to a
+    situation.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “5️⃣ Interests.” <https://ggilles.dev/teaching/mathematical-fundamentals/interests.html>.

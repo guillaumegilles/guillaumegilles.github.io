@@ -158,3 +158,20 @@ So about **41.7%** of app users have a premium account.
 > > \\ P(M_3 \mid D) = \frac{0.0125}{0.031} \approx 0.403 \\
 > >
 > > So the probability is about **0.403**, or **40.3%**.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 2 — {Calculation} of {Probabilities}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-02.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 2 — Calculation of Probabilities.” <https://ggilles.dev/teaching/decision-making-stat/session-02.html>.

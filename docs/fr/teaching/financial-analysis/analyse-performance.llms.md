@@ -20,3 +20,20 @@ Examen du profil du groupe :
 - Analyse au regard du point mort (couverture des charges fixes), décisions prises (restructuration en cours)…
 - Examen de l’origine de la variation de l’activité (analyse de l’impact de la variation du périmètre, du taux de change et de la croissance organique)
 - Comparaison avec les principaux concurrents
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Analyse des performances},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/analyse-performance.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Analyse des performances.” <https://ggilles.dev/fr/teaching/financial-analysis/analyse-performance.html>.

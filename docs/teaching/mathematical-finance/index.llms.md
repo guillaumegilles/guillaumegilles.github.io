@@ -21,3 +21,24 @@ A fully structured English version of this course (interactive exercises, OJS de
 In the meantime, the complete course materials are available in French:
 
 → [Mathématiques financières (version française)](../../fr/teaching/mathematics-finance/index.qmd)
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Financial {Mathematics}},
+  url = {https://ggilles.dev/teaching/mathematical-finance/},
+  langid = {en},
+  abstract = {How do we compare, value, and arbitrate financial flows
+    that occur at different points in time? This course equips Master 1
+    business-school students with the tools to answer that question
+    rigorously.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Financial Mathematics.” <https://ggilles.dev/teaching/mathematical-finance/>.

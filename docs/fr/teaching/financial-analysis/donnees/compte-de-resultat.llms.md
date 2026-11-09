@@ -17,3 +17,23 @@
 | dont part du groupe          | 680    | 784    | 890    |
 
 Le chiffre d’affaires et les achats consommés sont retraités de la vente intragroupe (200 k€) ; les dividendes intragroupe reçus par la mère sont éliminés des produits financiers. Le résultat net se répartit entre **intérêts minoritaires** et **part du groupe**.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Compte de résultat consolidé — Groupe AUBÉPINE},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/donnees/compte-de-resultat.html},
+  langid = {fr},
+  abstract = {Compte de résultat consolidé (par nature, modèle normal,
+    PCG) du Groupe AUBÉPINE pour 2023, 2024 et 2025, en k€. Données
+    fictives.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Compte de résultat consolidé — Groupe AUBÉPINE.” <https://ggilles.dev/fr/teaching/financial-analysis/donnees/compte-de-resultat.html>.

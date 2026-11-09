@@ -41,3 +41,22 @@ La fiche enseignant détaillée de Q1 (liste des erreurs cachées, barèmes, ind
 | D1-B4 (Q3) | 120 | 135 | Théorie 25 min ajoutée ; DSCR et dépendance bancaire quantifiée déplacés ; exemple N-2 ajouté | Extension (exercice optionnel) | Théorie d’abord ; boss de 30 min |
 
 Aucune théorie, aucun exemple travaillé ni aucun exercice n’a été supprimé.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Guide enseignant — Jour 1},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/enseignant/jour-1.html},
+  langid = {fr},
+  abstract = {Rythme, corrigés, pièges et journal des modifications du
+    Jour 1 (360 minutes).}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Guide enseignant — Jour 1.” <https://ggilles.dev/fr/teaching/financial-analysis/enseignant/jour-1.html>.

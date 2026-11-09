@@ -72,3 +72,24 @@ Ce jeu de données est un support de cours, pas un devoir à rendre tel quel. Po
 > **CAUTION:**
 >
 > Chaque écriture d’élimination de consolidation débite et crédite le **même montant** : l’élimination des titres (crédit) est compensée par le débit des capitaux propres de la filiale, de l’écart d’acquisition et des intérêts minoritaires ; l’élimination d’un prêt intragroupe touche une créance à l’actif et une dette au passif du même montant. Comme le bilan agrégé vérifie \\A = D + K\\, et que chaque écriture conserve cette égalité, le bilan consolidé s’équilibre toujours. Un bilan consolidé qui ne s’équilibre pas révèle une écriture unilatérale (par exemple une dette non comptabilisée par l’une des sociétés du groupe).
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Fil rouge — Groupe AUBÉPINE (données fictives)},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/donnees/},
+  langid = {fr},
+  abstract = {Présentation du groupe fictif dont les comptes consolidés
+    servent de fil rouge à toutes les études de cas du cours :
+    périmètre, états publiés (bilan, compte de résultat, annexe, flux)
+    et fichiers téléchargeables.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Fil rouge — Groupe AUBÉPINE (données fictives).” <https://ggilles.dev/fr/teaching/financial-analysis/donnees/>.

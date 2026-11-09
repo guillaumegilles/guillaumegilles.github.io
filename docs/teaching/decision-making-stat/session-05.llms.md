@@ -245,3 +245,20 @@ Review the context of the application exercise in **Session 4**. Then open `PW -
 >
 > - `probability`: a probability value \\p\\
 > - returns the value \\x\\ such that \\P(X \leq x)=p\\
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 5 — {Practical} {Work:} {Distributions} in {Excel}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-05.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 5 — Practical Work: Distributions in Excel.” <https://ggilles.dev/teaching/decision-making-stat/session-05.html>.

@@ -275,3 +275,26 @@ A firm’s profit function (in thousands of euros) is \\P(x) = -x^2 + 10x - 16\\
   \\ \ln(e^x) = x, \qquad e^{\ln x} = x \quad (x \> 0) \\
 
   Used to solve equations with exponential or logarithmic unknowns (e.g., finding the time to double a capital).
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {7️⃣ {Functions}},
+  url = {https://ggilles.dev/teaching/mathematical-fundamentals/functions.html},
+  langid = {en},
+  abstract = {\#\#\#\#\#\# Learning objectives - Identify a
+    single-variable function and determine its domain of definition. -
+    Study the sign, the sense of variation, and the parity of a
+    function. - Recognise the usual functions (affine, quadratic, square
+    root, logarithm, exponential). - Solve simple and general
+    second-degree equations.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “7️⃣ Functions.” <https://ggilles.dev/teaching/mathematical-fundamentals/functions.html>.

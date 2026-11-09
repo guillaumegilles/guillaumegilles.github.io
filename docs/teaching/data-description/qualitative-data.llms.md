@@ -444,3 +444,32 @@ Campus: Sunny 50 (41.7%), Cloudy 48 (40.0%), Rainy 22 (18.3%). The proportions a
 | Khan Academy | Unit *Displaying and comparing quantitative data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on categorical data displays | Additional practice on bar charts and pie charts | ~20 min (estimate) | link check pending (T048) |
 
 OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {2️⃣ {Organising} Qualitative Data},
+  url = {https://ggilles.dev/teaching/data-description/qualitative-data.html},
+  langid = {en},
+  abstract = {**By the end of this module, you will be able to:** -
+    Build a frequency table with absolute counts (\$n\_i\$), relative
+    frequencies (\$f\_i\$), and cumulative frequencies
+    (\$N\_i\^{}\{+\}\$, \$F\_i\^{}\{+\}\$) for a qualitative variable,
+    by hand. - Distinguish nominal from ordinal qualitative variables
+    and choose the appropriate chart (bar chart for nominal, bar chart
+    with ordered categories for ordinal, pie chart only for nominal with
+    few categories). - Read the mode as the modal category. - Read the
+    frequency and cumulative-frequency formulas aloud as sentences, and
+    write them from a description in words. - Use Excel’s `COUNTIF`,
+    `COUNTIFS`, PivotTable counts, and conditional formatting to build
+    the table and chart (homework).}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “2️⃣ Organising Qualitative Data.” <https://ggilles.dev/teaching/data-description/qualitative-data.html>.

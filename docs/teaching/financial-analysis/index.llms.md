@@ -148,4 +148,21 @@ The XP per quest, the levels, the badges and the calculation of the final grade 
 
 ## Footnotes
 
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Financial and {Strategic} {Analysis} of the {Company}},
+  url = {https://ggilles.dev/teaching/financial-analysis/},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Financial and Strategic Analysis of the Company.” <https://ggilles.dev/teaching/financial-analysis/>.
+
 [^1]: *[The Multiplayer Classroom: Designing Coursework as a Game, Lee Sheldon](https://www.goodreads.com/book/show/48805975-the-multiplayer-classroom)*

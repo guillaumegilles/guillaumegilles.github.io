@@ -126,3 +126,25 @@ La durée de vie (en heures) d’une batterie suit une loi \\\mathcal{N}(m, \sig
 - 84,13 % des batteries ont une durée de vie inférieure à **180 heures**.
 
 **9.** *(8 pts)* En traduisant chacune de ces conditions en termes de \\\Phi\\, former un système de deux équations en \\m\\ et \\\sigma\\, puis déterminer \\m\\ et \\\sigma\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Examen — {Statistiques} Et {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/exam-1.html},
+  langid = {en},
+  abstract = {Durée : **1 h 30**. Les documents de cours sont
+    **interdits**. Une table de la loi normale \$\textbackslash
+    mathcal\{N\}(0,1)\$ est fournie. Les calculatrices sont autorisées.
+    Toute réponse doit être **justifiée**. Les résultats numériques
+    seront arrondis à \$10\^{}\{-3\}\$ près.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Examen — Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/exam-1.html>.

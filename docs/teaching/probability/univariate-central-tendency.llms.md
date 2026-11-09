@@ -36,3 +36,19 @@ Pour les series continues en classes, on determine les quantiles par lecture de 
 ![](univariate-central-tendency_files/figure-html/fig-boite-moustaches-output-1.png)
 
 Figure 1: Boîte à moustaches de la série de l’exemple 5. Les quartiles \\Q_1\\, la médiane \\Me\\ et \\Q_3\\ délimitent la boîte centrale ; l’écart interquartile \\\mathrm{IQR} = Q_3 - Q_1\\ mesure la dispersion des 50 % centraux.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  url = {https://ggilles.dev/teaching/probability/univariate-central-tendency.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. <https://ggilles.dev/teaching/probability/univariate-central-tendency.html>.

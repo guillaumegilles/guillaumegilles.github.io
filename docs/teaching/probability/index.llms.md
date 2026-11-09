@@ -292,3 +292,20 @@ Le site du cours est votre **référence principale** tout au long du semestre. 
 | Saporta, G. | *Probabilités, analyse des données et statistique* | 3e | Technip |
 | Wackerly, D.; Mendenhall, W.; Scheaffer, R. | *Mathematical Statistics with Applications* | 7th | Cengage |
 | Ross, S. | *A First Course in Probability* | 10th | Pearson |
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Probabilités \& {Statistiques}},
+  url = {https://ggilles.dev/teaching/probability/},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Probabilités & Statistiques.” <https://ggilles.dev/teaching/probability/>.

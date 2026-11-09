@@ -246,3 +246,24 @@ Un indice de prix suit le coût d’un panier de biens. En 2020, l’indice est 
 ## Continuer
 
 [Continuer vers le Module 5 →](../../../fr/teaching/mathematical-fundamentals/module-5.llms.md)
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {4️⃣ Introduction aux outils de mathématiques financières},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-4.html},
+  langid = {fr},
+  abstract = {Étudiez les suites numériques — définition générale,
+    suites arithmétiques et suites géométriques — afin de comprendre et
+    de modéliser des phénomènes qui évoluent régulièrement dans le
+    temps, tels que l’épargne, les emprunts et les indices de prix.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “4️⃣ Introduction aux outils de mathématiques financières.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-4.html>.

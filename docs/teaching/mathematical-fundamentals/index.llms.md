@@ -113,3 +113,28 @@ When in doubt, enter more decimal places than you think you need. It never hurts
 - Ian Jacques, *Mathematics for Economics and Business*, 5th edition, Pearson Education Limited, 2006.
 - Jean-Luc Dorier and Marc Duc-Jacquet, *Mathématiques pour l’économie et la gestion*, 1st edition, Gualino Éditeur, 1996.
 - Stéphane Rossignol, *Mathématiques en économie-gestion*, 2nd edition, Dunod Éditions, 2022.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Mathematical {Fundamentals}},
+  url = {https://ggilles.dev/teaching/mathematical-fundamentals/},
+  langid = {en},
+  abstract = {**Welcome to MS01-001-G: Mathematical Fundamentals.** This
+    course will help you develop the mathematical reasoning and
+    calculation skills needed to solve quantitative problems in finance,
+    economics, and management. Throughout the course, you will learn to
+    perform calculations accurately, translate practical problems into
+    mathematical expression, choose an appropriate calculation method,
+    interpret equations, functions, graphs, and numerical results, and
+    use mathematical tools to support managerial decisions.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Mathematical Fundamentals.” <https://ggilles.dev/teaching/mathematical-fundamentals/>.

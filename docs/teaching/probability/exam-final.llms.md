@@ -123,3 +123,25 @@ On mesure la durée de vie (en heures) d’un échantillon de \\n = 36\\ piles. 
 **7.** *(3 pts)* Construire un **intervalle de confiance à 99 %** pour \\\mu\\. On utilisera \\z\_{0{,}005} = 2{,}58\\.
 
 **8.** *(3 pts)* Quel effectif minimal \\n\\ permet d’obtenir un IC à 95 % de largeur \\\leq 10\\ h ?
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Examen {Final} — {Statistiques} Et {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/exam-final.html},
+  langid = {en},
+  abstract = {Durée : **3 h**. Les documents de cours sont
+    **interdits**. Une table de la loi normale \$\textbackslash
+    mathcal\{N\}(0,1)\$ est fournie. Les calculatrices sont autorisées.
+    Toute réponse doit être **justifiée**. Les résultats numériques
+    seront arrondis à \$10\^{}\{-3\}\$ près.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Examen Final — Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/exam-final.html>.

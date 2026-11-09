@@ -15,3 +15,20 @@ The Banque de France employs teams of experts and economists to analyse the work
 ## Ensuring the smooth operation and security of payments
 
 The Banque de France is responsible for overseeing French payment systems and financial market infrastructures. It ensures the security of cashless payment instruments and the relevance of the standards applicable in this area. It also guarantees the smooth operation and security of payment systems, and the security of financial instrument clearing and settlement systems.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Stabilité Financère},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/financial-stability.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Stabilité Financère.” <https://ggilles.dev/fr/teaching/financial-analysis/financial-stability.html>.

@@ -98,3 +98,20 @@ French names for each function are on the [Excel functions](../../teaching/data-
 |----|----|----|----|----|
 | \\\bar{x}\_w\\ | Weighted mean | Mean of group means weighted by group sizes, \\\sum w_j \bar{x}\_j\\ with \\w_j = n_j/n\\ | — | Module 10 |
 | Mock exam | Original assessment | Newly authored MCQ + computational questions mapping to M1–M9 | — | Module 10 |
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Glossary},
+  url = {https://ggilles.dev/teaching/data-description/glossary.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Glossary.” <https://ggilles.dev/teaching/data-description/glossary.html>.

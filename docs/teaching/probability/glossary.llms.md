@@ -154,3 +154,22 @@ Variabilité naturelle d’une statistique d’un échantillon à l’autre, due
 
 **Information de Fisher** (*Fisher information*)  
 Quantité mesurant l’information qu’un échantillon apporte sur un paramètre, intervenant dans la borne de Cramér-Rao.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Glossaire},
+  url = {https://ggilles.dev/teaching/probability/glossary.html},
+  langid = {en},
+  abstract = {Glossaire français-anglais des termes de probabilités et
+    statistiques utilisés dans ce cours.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Glossaire.” <https://ggilles.dev/teaching/probability/glossary.html>.

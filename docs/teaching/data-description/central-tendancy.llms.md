@@ -641,3 +641,33 @@ Campus 120-day: mean = 455.03, median = 390.39, mode (no unique mode). Over the 
 | Khan Academy | Unit *Summarizing quantitative data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on mean, median, mode, and weighted mean | Short videos and practice on central tendency measures | ~30–45 min (estimate) | link check pending (T048) |
 
 OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {4️⃣ {Measures} of Central Tendency},
+  url = {https://ggilles.dev/teaching/data-description/central-tendancy.html},
+  langid = {en},
+  abstract = {**Learning objectives** By the end of this module, you
+    will be able to: - Compute the arithmetic mean, median, and mode of
+    raw data. - Compute the grouped-data mean (using class midpoints)
+    and the weighted mean (for portfolio returns, GPA, etc.). - Explain
+    why the mean, median, and mode can differ, and choose the most
+    appropriate one for a given business question. - Read
+    \$\textbackslash bar\{x\}=\textbackslash
+    frac\{1\}\{n\}\textbackslash sum\_\{i=1\}\^{}\{n\}x\_i\$ aloud as a
+    sentence, and write a sum described in words with the
+    \$\textbackslash sum\$ symbol and the subscript \$x\_i\$. - Prove
+    that the arithmetic mean is the value that minimizes the sum of
+    squared deviations — the property that makes it the natural partner
+    of the variance (Module 6).}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “4️⃣ Measures of Central Tendency.” <https://ggilles.dev/teaching/data-description/central-tendancy.html>.

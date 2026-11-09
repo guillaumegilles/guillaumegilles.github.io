@@ -157,3 +157,20 @@ If \\X \sim \mathcal{N}(\mu,\sigma^2)\\, then the standardized variable is:
 > > \\ a = 176 + 7 \times 1.282 \approx 184.97 \\
 > >
 > > So the required height is approximately **184.97 cm**.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 4 — {Continuous} {Random} {Variable}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-04.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 4 — Continuous Random Variable.” <https://ggilles.dev/teaching/decision-making-stat/session-04.html>.

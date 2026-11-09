@@ -667,3 +667,23 @@ Définition : \\-I_0 + \sum CF_t/(1+k)^t\\ : enrichissement net généré par un
 **Pourquoi ça importe** : C’est le critère de décision principal : on accepte un projet si sa VAN est positive.
 
 **Intuition clé** : Une VAN nulle ne signifie pas que le projet ne rapporte rien, mais qu’il rapporte exactement le rendement exigé.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Glossaire},
+  url = {https://ggilles.dev/fr/teaching/mathematical-finance/glossaire.html},
+  langid = {fr},
+  abstract = {Référence centralisée de tous les symboles et termes
+    introduits dans les trois journées du cours de mathématiques
+    financières.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Glossaire.” <https://ggilles.dev/fr/teaching/mathematical-finance/glossaire.html>.

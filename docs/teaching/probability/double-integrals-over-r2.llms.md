@@ -36,3 +36,19 @@ La positivité est essentielle. Si \\f\\ change de signe, des compensations entr
 > **1b.** On intègre d’abord en \\y\\ : \\ \iint_D xy(x+y)\\dx\\dy =\int_0^1\int_0^{1-x}(x^2y+xy^2)\\dy\\dx =\int_0^1\left\[\frac{x^2y^2}{2}+\frac{xy^3}{3}\right\]\_0^{1-x}dx =\int_0^1\left(\frac{x^2(1-x)^2}{2}+\frac{x(1-x)^3}{3}\right)dx. \\ On développe séparément : \\ \int_0^1\frac{x^2(1-x)^2}{2}\\dx=\frac{1}{2}\int_0^1(x^2-2x^3+x^4)\\dx =\frac{1}{2}\\\left(\frac{1}{3}-\frac{1}{2}+\frac{1}{5}\right)=\frac{1}{2}\cdot\frac{1}{30}=\frac{1}{60}, \\ \\ \int_0^1\frac{x(1-x)^3}{3}\\dx=\frac{1}{3}\int_0^1(x-3x^2+3x^3-x^4)\\dx =\frac{1}{3}\\\left(\frac{1}{2}-1+\frac{3}{4}-\frac{1}{5}\right)=\frac{1}{3}\cdot\frac{1}{20}=\frac{1}{60}. \\ Total : \\\dfrac{1}{60}+\dfrac{1}{60}=\boxed{\dfrac{1}{30}}\\.
 >
 > **2.** Le domaine d’intégration est \\\\0\le x\le y\\\\ (i.e. \\x\ge 0\\ et \\y\ge x\\). On intègre d’abord en \\y\\ de \\x\\ à \\+\infty\\ : \\ \iint\_{\mathbb{R}^2} f(x,y)\\dx\\dy =\int_0^{+\infty}\int_x^{+\infty}2e^{-(x+y)}\\dy\\dx =2\int_0^{+\infty}e^{-x}\Bigl\[-e^{-y}\Bigr\]\_x^{+\infty}dx =2\int_0^{+\infty}e^{-x}\cdot e^{-x}\\dx =2\int_0^{+\infty}e^{-2x}\\dx=2\cdot\frac{1}{2}=\boxed{1}. \\ Ainsi \\f\\ est bien normalisée pour jouer le rôle d’une densité conjointe.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  url = {https://ggilles.dev/teaching/probability/double-integrals-over-r2.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. <https://ggilles.dev/teaching/probability/double-integrals-over-r2.html>.

@@ -131,3 +131,20 @@ This final session is dedicated to revision and to a **mock exam** covering the 
 > - Chi-square test,
 > - linear correlation coefficient test,
 > - interpretation of rejection and non-rejection of \\H_0\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 15 — {Mock} {Exam} \& {Revision}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-15.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 15 — Mock Exam & Revision.” <https://ggilles.dev/teaching/decision-making-stat/session-15.html>.

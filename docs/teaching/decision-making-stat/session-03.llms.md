@@ -159,3 +159,20 @@ The expected number of accepted meetings is **1.2**.
 > > \\ P(X \leq 2) = e^{-3}\left(1 + 3 + \frac{3^2}{2}\right) = e^{-3}(1 + 3 + 4.5) \\
 > >
 > > \\ P(X \leq 2) = e^{-3} \cdot 8.5 \approx 0.4232 \\
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 3 — {Discrete} {Random} {Variable}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-03.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 3 — Discrete Random Variable.” <https://ggilles.dev/teaching/decision-making-stat/session-03.html>.

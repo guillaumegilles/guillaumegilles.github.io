@@ -396,3 +396,23 @@ En élevant au carré :
 \\\boxed{n\_{\min} = 385 \text{ requêtes}.}\\
 
 *Interprétation :* avec 385 observations (contre 100 dans l’énoncé), la précision de l’IC à 95 % passe de \\\pm 3{,}92\\ ms à \\\pm 2\\ ms. Multiplier la précision par un facteur \\k\\ nécessite de multiplier la taille de l’échantillon par \\k^2\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Correction — {Révision} {Examen} {Final} · {Statistiques} Et
+    {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/final-revision-correction.html},
+  langid = {en},
+  abstract = {Corrigé détaillé de la {[}fiche de révision examen
+    final{]}(final-revision.qmd).}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Correction — Révision Examen Final · Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/final-revision-correction.html>.

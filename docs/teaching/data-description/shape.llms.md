@@ -585,3 +585,33 @@ For the **full table** (120 days per franchise) use the Excel Table `tblFork` an
 | Khan Academy | Unit *Modeling data distributions* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on skewness and comparing distributions | Short videos and practice on skewness and distribution shape | ~30–45 min (estimate) | link check pending (T048) |
 
 OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {7️⃣ {Shape} and Univariate Review},
+  url = {https://ggilles.dev/teaching/data-description/shape.html},
+  langid = {en},
+  abstract = {**By the end of this module, you will be able to:** -
+    Explain what a symmetric, right-skewed, and left-skewed distribution
+    look like, and how the mean, median, and mode typically order
+    themselves in each case. - Compute the Fisher-Pearson sample
+    skewness coefficient for a small dataset with a cubed-deviation
+    table, explain why the deviations are cubed, and read its formula
+    aloud as a sentence. - Compute the Pearson skewness coefficient
+    (mode and median forms) and the Yule-Kendall skewness coefficient by
+    hand, and recognize that different formulas can disagree in sign or
+    magnitude for near-symmetric data. - Read skewness directly off a
+    histogram or boxplot. - Describe kurtosis in words (leptokurtic,
+    mesokurtic, platykurtic) and tell it apart from skewness. - Write a
+    skewness formula in symbols from a description in words.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “7️⃣ Shape and Univariate Review.” <https://ggilles.dev/teaching/data-description/shape.html>.

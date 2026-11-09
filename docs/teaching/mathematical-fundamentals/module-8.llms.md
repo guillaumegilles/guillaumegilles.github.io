@@ -227,3 +227,24 @@ A firm launches a new service. Its weekly subscriber count (in thousands) is mod
 ## 12 Continue
 
 [Return to the course syllabus →](../../teaching/mathematical-fundamentals/index.llms.md)
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Revision and {Final-Exam} {Preparation}},
+  url = {https://ggilles.dev/teaching/mathematical-fundamentals/module-8.html},
+  langid = {en},
+  abstract = {Consolidate the key ideas of Modules 1–7, practise
+    identifying the right mathematical method from context alone, and
+    prepare for the final examination with mixed problems and exam
+    strategy.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Revision and Final-Exam Preparation.” <https://ggilles.dev/teaching/mathematical-fundamentals/module-8.html>.

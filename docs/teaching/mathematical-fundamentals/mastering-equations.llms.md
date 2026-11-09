@@ -330,4 +330,24 @@ A technology startup developing a mobile application estimates: fixed monthly co
 
 ## Footnotes
 
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {2️⃣ {Mastering} {Equations}},
+  url = {https://ggilles.dev/teaching/mathematical-fundamentals/mastering-equations.html},
+  langid = {en},
+  abstract = {**Learning objectives** - Simplify and rewrite an
+    algebraic expression. - Reveal a structure (common factor, notable
+    identity). - Solve first-degree equations in context.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “2️⃣ Mastering Equations.” <https://ggilles.dev/teaching/mathematical-fundamentals/mastering-equations.html>.
+
 [^1]: An expression formed only from products and sums of constants and variables (usually written \\x\\, \\y\\, \\z\\, …).

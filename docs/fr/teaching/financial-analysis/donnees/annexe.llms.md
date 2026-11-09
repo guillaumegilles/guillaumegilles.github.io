@@ -44,3 +44,23 @@ Les comptes consolidés sont établis selon le règlement **CRC 99-02** (normes 
 | AUBÉPINE SUD SAS         | 80 % | 27   | 31   | 36   |
 | VERGER Export SARL       | 60 % | 50   | 60   | 69   |
 | **Total (CR consolidé)** | —    | 137  | 159  | 181  |
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Annexe des comptes consolidés — Groupe AUBÉPINE},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/donnees/annexe.html},
+  langid = {fr},
+  abstract = {Annexe du Groupe AUBÉPINE : principes comptables (CRC
+    99-02), périmètre, écarts d’acquisition, opérations intragroupe et
+    intérêts minoritaires. Données fictives.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Annexe des comptes consolidés — Groupe AUBÉPINE.” <https://ggilles.dev/fr/teaching/financial-analysis/donnees/annexe.html>.

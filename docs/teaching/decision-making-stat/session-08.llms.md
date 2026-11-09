@@ -355,3 +355,21 @@ We compare an observed proportion \\p\\ with a reference value \\p_0\\.
 > we do **not** reject \\H_0\\.
 >
 > Conclusion: with 1% risk, we do **not** have enough evidence to confirm that the defect rate has decreased.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 8 — {Hypothesis} {Testing:} {Concept} \& {Conformity}
+    {Tests}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-08.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 8 — Hypothesis Testing: Concept & Conformity Tests.” <https://ggilles.dev/teaching/decision-making-stat/session-08.html>.

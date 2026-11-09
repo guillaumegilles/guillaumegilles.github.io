@@ -2,11 +2,11 @@
 
 [ Subscribe via RSS](blog.xml)
 
-[![](./posts/github-codespaces-quarto/image.jpg)](posts/github-codespaces-quarto/index.llms.md)
+[![](./assets/posts/quarto-codespaces.jpg)](posts/quarto-codespaces/index.llms.md)
 
-### [GitHub Codespaces + Quarto](posts/github-codespaces-quarto/index.llms.md)
+### [GitHub Codespaces + Quarto](posts/quarto-codespaces/index.llms.md)
 
-[GitHub Codespaces gets you up and coding faster with fully configured, secure cloud development environments native to GitHub.](posts/github-codespaces-quarto/index.llms.md)
+[GitHub Codespaces gets you up and coding faster with fully configured, secure cloud development environments native to GitHub.](posts/quarto-codespaces/index.llms.md)
 
 Jun 23, 2026
 

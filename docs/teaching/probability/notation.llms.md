@@ -262,3 +262,26 @@ Le tableau ci-dessous rassemble les notations essentielles du cours, classées p
 |  \\\overline{X}\_n\\   | Moyenne empirique (v.a.)      |
 |       \\S_n^2\\        | Variance corrigée (v.a.)      |
 |  \\\hat{\theta}\_n\\   | Estimateur de \\\theta\\      |
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Notations Mathématiques En Statistiques},
+  url = {https://ggilles.dev/teaching/probability/notation.html},
+  langid = {en},
+  abstract = {Ce chapitre est un **guide de lecture** des notations
+    mathématiques utilisées tout au long du cours. Il n’introduit pas de
+    résultats nouveaux : il explique **pourquoi** il existe plusieurs
+    symboles pour des concepts proches (moyenne, variance, etc.) et
+    **comment** les distinguer. Il est conçu pour être consulté à tout
+    moment comme référence.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Notations Mathématiques En Statistiques.” <https://ggilles.dev/teaching/probability/notation.html>.

@@ -537,3 +537,35 @@ For the **full table** (120 days per franchise) use the Excel Table `tblFork` an
 | Khan Academy | Unit *Exploring bivariate numerical data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on scatter plots and correlation | Short videos and practice on scatter plots | ~30–45 min (estimate) | link check pending (T048) |
 
 OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {8️⃣ {Contingency} Tables and Scatter Plots},
+  url = {https://ggilles.dev/teaching/data-description/contingency-table.html},
+  langid = {en},
+  abstract = {**By the end of this module, you will be able to:** -
+    Build a contingency table by hand from a list of individuals, and
+    read a cell count \$n\_\{ij\}\$ and the margins
+    \$n\_\{i\textbackslash cdot\}\$, \$n\_\{\textbackslash cdot j\}\$
+    aloud. - Compute row and column marginal distributions from a
+    contingency table, as \$n\_\{i\textbackslash cdot\}/n\$ and
+    \$n\_\{\textbackslash cdot j\}/n\$. - Compute a **conditional
+    distribution** — the distribution of one variable restricted to a
+    single modality of the other — and use it to compare sub-groups
+    fairly. - Read a share such as \$n\_\{ij\}/n\_\{i\textbackslash
+    cdot\}\$ aloud as a sentence, and write a share described in words
+    in this notation. - Draw a scatter plot of two quantitative
+    variables by hand and describe the pattern it shows (direction,
+    form, exceptions). - Distinguish “a visible pattern” from “a proven
+    relationship” — formalised numerically in Module 9.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “8️⃣ Contingency Tables and Scatter Plots.” <https://ggilles.dev/teaching/data-description/contingency-table.html>.

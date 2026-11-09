@@ -344,3 +344,21 @@ Construisez le compte de résultat prévisionnel de VERIDIAN SA pour N+1. Prése
 | **Total** |                                | **100** |
 
 **Conseil de gestion du temps :** P1 (30 min) → P2 (20 min) → P3 (35 min) → P4 (25 min) → P5 (15 min) → P6 (20 min) → P7 (10 min) → P8 (20 min) → P9 (10 min) → Relecture (15 min)
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2026,
+  author = {Gilles, Guillaume},
+  title = {Examen Final — Analyse Financière et Stratégique},
+  date = {2026-11-09},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/exercices/examen-final.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2026. “Examen Final — Analyse Financière et Stratégique.” November 9. <https://ggilles.dev/fr/teaching/financial-analysis/exercices/examen-final.html>.

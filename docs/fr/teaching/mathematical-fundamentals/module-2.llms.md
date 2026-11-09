@@ -320,4 +320,26 @@ Une start-up technologique développant une application mobile estime : charges 
 
 ## Notes de bas de page
 
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {2️⃣ Maîtriser les équations pour mieux décider},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-2.html},
+  langid = {fr},
+  abstract = {Maîtrisez les expressions algébriques et les équations à
+    l’aide des outils essentiels que sont la factorisation, le
+    développement, les identités remarquables et la résolution
+    d’équations du premier degré, afin de renforcer les compétences
+    analytiques et d’aide à la décision.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “2️⃣ Maîtriser les équations pour mieux décider.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-2.html>.
+
 [^1]: Expression formée uniquement de produits et de sommes de constantes et de variables (généralement notées \\x\\, \\y\\, \\z\\, …).

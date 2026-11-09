@@ -340,3 +340,20 @@ For a large sample such that \\n\hat{p}\geq 5\\ and \\n(1-\hat{p})\geq 5\\:
 > > **WARNING:**
 > >
 > > For a proportion, the most direct method would be to count how many of the 100 machines lasted more than 12 months. Since this count is absent, the result above relies on an additional modeling assumption.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 7 — {Estimation} \& {Confidence} {Intervals}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-07.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 7 — Estimation & Confidence Intervals.” <https://ggilles.dev/teaching/decision-making-stat/session-07.html>.

@@ -98,3 +98,23 @@
 | Trésorerie nette (k€)    | 1 905 | 2 063 | 2 327 |
 
 Vérification : `python scripts/financial-analysis/generate-dataset.py --check` recalcule tous ces chiffres depuis `dataset_params.py` et doit afficher OK (exit 0).
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Corrigé — Groupe AUBÉPINE (page enseignant)},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/enseignant/corrige-aubepine.html},
+  langid = {fr},
+  abstract = {Corrigé complet du fil rouge : éliminations intragroupe,
+    écarts d’acquisition, intérêts minoritaires, états consolidés et
+    ratios Banque de France pour 2023-2025. Données fictives.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Corrigé — Groupe AUBÉPINE (page enseignant).” <https://ggilles.dev/fr/teaching/financial-analysis/enseignant/corrige-aubepine.html>.

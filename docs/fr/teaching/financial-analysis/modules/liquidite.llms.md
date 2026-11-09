@@ -149,3 +149,20 @@ L’appréciation finale croise deux dimensions : l’**horizon de trésorerie**
 | Trésorerie nette | FRNG – BFR | \< 0 : tension de liquidité |
 | FTA / CA | Flux d’activité / Chiffre d’affaires | Tendance à surveiller sur plusieurs exercices |
 | FTD | FTA – Investissements maint. – Dividendes | Capacité de désendettement libre |
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Analyse de la liquidité},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/liquidite.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Analyse de la liquidité.” <https://ggilles.dev/fr/teaching/financial-analysis/modules/liquidite.html>.

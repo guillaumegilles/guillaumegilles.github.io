@@ -93,3 +93,24 @@ Les quêtes sont notées Q1 à Q9 (Jour 1 : Q1–Q3 ; Jour 2 : Q4–Q6 ; Jour 3 
 | XP | Points d’expérience gagnés en réussissant une quête. | Toutes les quêtes |
 | Quête | Séance de travail du cours (Q1 à Q9). | [Planning](../../../fr/teaching/financial-analysis/planning.llms.md) |
 | Boss | Quête de fin de journée (Q3, Q6) ou finale (Q9), plus lourde. | Q3, Q6, Q9 |
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Glossaire},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/glossaire.html},
+  langid = {fr},
+  abstract = {Les sigles et termes du cours de 3 jours, avec une
+    définition en langage simple et l’endroit où ils sont utilisés. Les
+    formules sont dans le {[}formulaire de
+    référence{]}(modules/formules.qmd).}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Glossaire.” <https://ggilles.dev/fr/teaching/financial-analysis/glossaire.html>.

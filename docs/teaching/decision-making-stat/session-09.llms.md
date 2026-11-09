@@ -318,3 +318,20 @@ The Ministry of Education compares hiring rates between engineering and business
 > Since \\\|2.681\| \> 1.96\\ and \\\|2.681\| \> 2.576\\, we **reject** \\H_0\\ at both risk levels.
 >
 > Conclusion: with both \\5\\\\ and \\1\\\\ risk, the renewal rates in the North and South regions are **significantly different**. The North region has a higher renewal rate (\\66\\\\ vs. \\54.8\\\\).
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Session 9 — {Hypothesis} {Testing:} {Comparison} {Tests}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/session-09.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Session 9 — Hypothesis Testing: Comparison Tests.” <https://ggilles.dev/teaching/decision-making-stat/session-09.html>.

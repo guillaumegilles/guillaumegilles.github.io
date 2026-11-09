@@ -101,3 +101,20 @@ Donc \\p_0=17.5\\ est un maximum.
 ### 3.5 5) Si le prix depasse le prix optimal
 
 Le profit diminue : la fonction est une parabole concave (coefficient de \\p^2\\ négatif) et son sommet est atteint en \\p_0=17.5\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Examen Intermédiaire},
+  url = {https://ggilles.dev/teaching/mathematical-analysis/revision-midterm.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Examen Intermédiaire.” <https://ggilles.dev/teaching/mathematical-analysis/revision-midterm.html>.

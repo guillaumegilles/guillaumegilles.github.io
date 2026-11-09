@@ -244,3 +244,24 @@ Quête terminée : **+150 XP**.
 ------------------------------------------------------------------------
 
 Les meilleurs cartographes ne se contentent pas de décrire le territoire — ils anticipent les routes à venir. À vos stylos stratégiques !
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Les Cartographes du Modèle Économique},
+  date = {2025-12-02},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/05-cartographes-modele-eco.html},
+  langid = {fr},
+  abstract = {Atelier de cartographie stratégique : construction d’un
+    Business Model Canvas et d’une matrice SWOT pour une entreprise
+    réelle, intégrant les enjeux RSE.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Les Cartographes du Modèle Économique.” December 2. <https://ggilles.dev/fr/teaching/financial-analysis/modules/05-cartographes-modele-eco.html>.

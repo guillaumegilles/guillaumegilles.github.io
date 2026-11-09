@@ -15,3 +15,20 @@ The Banque de France guarantees that physical cash (banknotes and coins) circula
 ## Consolidating its role as the central bank for markets
 
 The Banque de France holds and manages France’s foreign exchange reserves. It monitors capital markets and ensures they operate smoothly, helping to keep the Paris financial centre secure and competitive.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Monetary Strategy},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/monetary-strategy.html},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Monetary Strategy.” <https://ggilles.dev/fr/teaching/financial-analysis/monetary-strategy.html>.

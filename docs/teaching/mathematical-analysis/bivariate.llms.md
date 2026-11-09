@@ -103,3 +103,20 @@ Interprétation économique :
 2.  Calculer les dérivées partielles au point \\(1,2)\\ pour \\g(x,y)=4x^2y-3y^2\\.
 3.  Calculer les dérivées premières et secondes de \\h(x,y)=\ln(1+x^2+y^2)\\.
 4.  Pour \\Q(K,L)=L^{0.6}K^{0.4}\\, calculer l’élasticité de \\Q\\ par rapport à \\L\\ puis à \\K\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Dérivée d’une Fonction Bivariée Et {Élasticité} Partielle},
+  url = {https://ggilles.dev/teaching/mathematical-analysis/bivariate.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Dérivée d’une Fonction Bivariée Et Élasticité Partielle.” <https://ggilles.dev/teaching/mathematical-analysis/bivariate.html>.

@@ -388,3 +388,27 @@
 > 3.  Pour l’indépendance, ne concluez jamais sur une intuition seule : vérifiez la **factorisation**.
 > 4.  Pour la covariance, calculez séparément \\E(X)\\, \\E(Y)\\ et \\E(XY)\\.
 > 5.  Pour une somme de variables indépendantes, pensez immédiatement à la **convolution**.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Feuille d’exercices — {Probabilités} Et Statistiques à Deux
+    Variables},
+  url = {https://ggilles.dev/teaching/probability/exercises-two-variables.html},
+  langid = {en},
+  abstract = {Cette feuille propose **8 exercices progressifs** pour
+    s’entraîner sur la partie **Deux variables** du cours : statistiques
+    bivariées, intégrales doubles, densité conjointe, lois marginales et
+    conditionnelles, indépendance, covariance, corrélation et
+    convolution. Chaque exercice est suivi d’un **corrigé repliable**
+    pour permettre un vrai temps de recherche avant la vérification.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Feuille d’exercices — Probabilités Et Statistiques à Deux Variables.” <https://ggilles.dev/teaching/probability/exercises-two-variables.html>.

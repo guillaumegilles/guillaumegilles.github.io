@@ -53,3 +53,20 @@ Each session folder contains:
 | Kachour, M. | *Inferential Statistics — Course Notes (MS04-001-G_04_EN_2023)* | N/A | ESSCA |
 | Newbold, P.; Carlson, W.; Thorne, B. | *Statistics for Business and Economics* | 9th | Pearson |
 | Anderson, D.; Sweeney, D.; Williams, T. | *Statistics for Business and Economics* | 14th | Cengage |
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Decision {Making} {Statistics}},
+  url = {https://ggilles.dev/teaching/decision-making-stat/},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Decision Making Statistics.” <https://ggilles.dev/teaching/decision-making-stat/>.

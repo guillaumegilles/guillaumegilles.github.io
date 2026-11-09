@@ -158,3 +158,20 @@ The following French names are inferred from Microsoft documentation and have no
 - `COVARIANCE.P` → `COVARIANCE.PEARSON`
 - `SKEW` → `COEFFICIENT.ASYMETRIE`
 - `RSQ` → `COEFFICIENT.DETERMINATION`
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Excel {Functions} — {English} / {French}},
+  url = {https://ggilles.dev/teaching/data-description/excel-functions.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Excel Functions — English / French.” <https://ggilles.dev/teaching/data-description/excel-functions.html>.

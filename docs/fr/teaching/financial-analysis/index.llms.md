@@ -160,4 +160,21 @@ Les XP par quête, les niveaux, les badges et le calcul de la note finale (40 % 
 
 ## Notes de bas de page
 
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Analyse Financière et Stratégique de l’Entreprise},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/},
+  langid = {fr}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Analyse Financière et Stratégique de l’Entreprise.” <https://ggilles.dev/fr/teaching/financial-analysis/>.
+
 [^1]: *[The Multiplayer Classroom: Designing Coursework as a Game, Lee Sheldon](https://www.goodreads.com/book/show/48805975-the-multiplayer-classroom)*

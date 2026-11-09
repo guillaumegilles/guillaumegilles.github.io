@@ -253,3 +253,22 @@ En soustrayant \\(1)\\ de \\(2)\\ : \\560 - 540 = 2\\\sigma - \sigma = \sigma \i
 En reportant dans \\(1)\\ : \\m = 540 - \sigma = 540 - 20 = \boxed{520.}\\
 
 La durée de vie suit donc la loi \\\mathcal{N}(520,\\ 400)\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Correction — {Examen} {(Sujet} 3) · {Statistiques} Et
+    {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/exam-3-correction.html},
+  langid = {en},
+  abstract = {Corrigé détaillé de l’{[}examen (sujet 3){]}(exam-3.qmd).}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Correction — Examen (Sujet 3) · Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/exam-3-correction.html>.

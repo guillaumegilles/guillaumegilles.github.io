@@ -275,3 +275,24 @@ Que les meilleures équipes entrent dans l’arène — et que les chiffres parl
 2.  La partie DuPont de la théorie (6 min → 3 min).
 3.  L’exercice « Signe du levier » (à faire à la maison).
 4.  La note écrite d’une demi-page (à rendre après la séance).
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Les Arènes de la Rentabilité},
+  date = {2025-12-02},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/04-arenes-rentabilite.html},
+  langid = {fr},
+  abstract = {Tournoi de ratios : chaque équipe calcule et défend ses
+    indicateurs de rentabilité économique et financière sur un rapport
+    annuel réel.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Les Arènes de la Rentabilité.” December 2. <https://ggilles.dev/fr/teaching/financial-analysis/modules/04-arenes-rentabilite.html>.

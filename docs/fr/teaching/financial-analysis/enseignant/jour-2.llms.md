@@ -39,3 +39,22 @@ Pauses (non comptées) : 15 min, 60 min de déjeuner, 15 min.
 | D2-B3 (Q6) | 150 | 135 | Étape 5 fusionnée dans la préparation du boss ; oral 10 → 5 min par équipe | Extension (note de synthèse complète, fourchette de multiples) | Tenir 135 min |
 
 Aucune théorie, aucun exemple travaillé ni aucun exercice n’a été supprimé.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Guide enseignant — Jour 2},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/enseignant/jour-2.html},
+  langid = {fr},
+  abstract = {Rythme, corrigés, pièges et journal des modifications du
+    Jour 2 (360 minutes).}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “Guide enseignant — Jour 2.” <https://ggilles.dev/fr/teaching/financial-analysis/enseignant/jour-2.html>.

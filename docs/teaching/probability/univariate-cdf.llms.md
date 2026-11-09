@@ -64,3 +64,19 @@ On cherche \\m\\ tel que \\F(m) = 0{,}5\\. Comme \\F(40) = 0{,}44 \< 0{,}5 \< 0{
 Par interpolation linéaire :
 
 \\ m = 40 + \frac{0{,}5 - 0{,}44}{0{,}72 - 0{,}44} \times 5 = 40 + \frac{0{,}06}{0{,}28} \times 5 \approx 41{,}1. \\
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  url = {https://ggilles.dev/teaching/probability/univariate-cdf.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. <https://ggilles.dev/teaching/probability/univariate-cdf.html>.

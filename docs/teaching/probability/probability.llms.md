@@ -303,3 +303,33 @@ On lance indéfiniment un dé équilibré à 6 faces. Soit \\X\\ le rang d’app
 > Par la propriété sans mémoire : \\P(X \> 12 \mid X \> 6) = P(X \> 6) = (5/6)^6 \simeq 0{,}335.\\
 >
 > **c.** Sachant que les 6 premiers lancers n’ont donné aucun 6, la probabilité de devoir encore attendre au moins 6 lancers est exactement la même que la probabilité initiale de devoir attendre au moins 6 lancers. Le dé « ne se souvient pas » des résultats passés : c’est la propriété sans mémoire de la loi géométrique.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Rappels de Probabilités Discrètes},
+  url = {https://ggilles.dev/teaching/probability/probability.html},
+  langid = {en},
+  abstract = {Ce chapitre constitue un rappel des notions fondamentales
+    sur les **variables aléatoires discrètes**, supposées connues des
+    années précédentes. On y définit les variables aléatoires à valeurs
+    dans un ensemble fini ou dénombrable, leur **loi de probabilité**
+    (fonction de masse), leur **fonction de répartition** (fonction en
+    escalier), ainsi que les indicateurs numériques — **espérance** et
+    **variance** — qui résument leur comportement. On passe ensuite en
+    revue les **lois discrètes classiques** : loi de Bernoulli, loi
+    binomiale (et le schéma de Bernoulli qui la fait apparaître), loi
+    uniforme discrète, loi géométrique (et sa propriété sans mémoire),
+    et loi de Poisson (loi des événements rares, avec l’approximation de
+    la loi binomiale). Ces rappels serviront de point de comparaison
+    constant avec les lois à densité étudiées dans la suite du cours.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Rappels de Probabilités Discrètes.” <https://ggilles.dev/teaching/probability/probability.html>.

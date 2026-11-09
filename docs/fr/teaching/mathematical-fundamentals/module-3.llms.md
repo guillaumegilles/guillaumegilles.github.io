@@ -307,3 +307,25 @@ Un responsable logistique doit choisir entre deux contrats de livraison pour l�
 ## Continuer
 
 [Continuer vers le Module 4 →](../../../fr/teaching/mathematical-fundamentals/module-4.llms.md)
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {3️⃣ Analyse de courbes en économie et gestion},
+  url = {https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-3.html},
+  langid = {fr},
+  abstract = {Analysez les courbes en économie et gestion à l’aide de la
+    lecture graphique, de l’équation d’une droite et de la résolution de
+    systèmes d’équations et d’inéquations du premier degré, afin de
+    visualiser et d’interpréter des situations de décision, de
+    contrainte et d’équilibre.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “3️⃣ Analyse de courbes en économie et gestion.” <https://ggilles.dev/fr/teaching/mathematical-fundamentals/module-3.html>.

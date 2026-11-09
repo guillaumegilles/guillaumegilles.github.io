@@ -114,3 +114,26 @@ Le système de cotation de la Banque de France bénéficie du statut d’organis
 Dans ce contexte, les cotes, mises à disposition des établissements de crédit, sont exploitées comme un outil d’aide à la décision, de suivi et de mesure de la qualité de leur portefeuille de crédit aux entreprises. Elles permettent également la surveillance de la solidité des actifs des établissements de crédit par l’Autorité de Contrôle Prudentiel et de Résolution, ACPR.
 
 ## Qui peut accéder à la cote
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Comprendre la cotation Banque de France},
+  date = {2025-12-11},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/banque-france-cotation.html},
+  langid = {fr},
+  abstract = {À la Banque de France, le terme «\,cotation des
+    entreprises\,» désigne le processus d’analyse de la situation des
+    entreprises qui conduit à l’attribution d’une «\,cote\,» de crédit,
+    laquelle traduit la capacité d’une entreprise à faire face à ses
+    engagements financiers à un horizon de trois ans.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Comprendre la cotation Banque de France.” December 11. <https://ggilles.dev/fr/teaching/financial-analysis/modules/banque-france-cotation.html>.

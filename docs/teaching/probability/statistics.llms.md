@@ -15,3 +15,26 @@ La statistique inférentielle utilise un **échantillon** pour estimer les param
 
 - [Distribution d’échantillonnage](../../teaching/probability/sampling-distribution.llms.md) — échantillon i.i.d., moyenne et variance empiriques, lois exactes en cas gaussien.
 - [Estimation ponctuelle et par intervalle de confiance](../../teaching/probability/point-estimation.llms.md) — propriétés des estimateurs, méthode des moments, maximum de vraisemblance, intervalles de confiance.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Statistiques},
+  url = {https://ggilles.dev/teaching/probability/statistics.html},
+  langid = {en},
+  abstract = {Les statistiques se divisent en deux branches
+    complémentaires : la **statistique descriptive**, qui résume et
+    visualise les données observées, et la **statistique
+    inférentielle**, qui utilise un échantillon pour tirer des
+    conclusions sur une population entière. Cette page présente
+    l’articulation entre ces deux volets dans le cours.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Statistiques.” <https://ggilles.dev/teaching/probability/statistics.html>.

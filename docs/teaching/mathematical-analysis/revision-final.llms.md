@@ -212,3 +212,20 @@ La valeur maximale est \\8940\\, atteinte en \\S_3\\. Le sommet \\S_2\\ donne m�
 Figure 3: Le maximum \\Z = 8\\940\\ est atteint au sommet \\S_3(600,\\60)\\, représenté par l’étoile.
 
 > Interprétation : vendre 600 unités et financer 60 publicités maximise le bénéfice sous les contraintes du problème.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Séance de Révisions},
+  url = {https://ggilles.dev/teaching/mathematical-analysis/revision-final.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Séance de Révisions.” <https://ggilles.dev/teaching/mathematical-analysis/revision-final.html>.

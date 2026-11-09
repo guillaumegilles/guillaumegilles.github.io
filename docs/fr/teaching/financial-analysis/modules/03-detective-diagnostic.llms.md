@@ -406,3 +406,26 @@ Solution
 - Couverture des charges financières : \\140 / 220 \approx 0{,}64\\ : le REX ne couvre pas les intérêts.
 - DSCR simplifié (sans remboursements, non fournis) : \\170 / 220 \approx 0{,}77 \< 1\\. Avec les remboursements de capital, il serait encore plus bas : c’est une borne supérieure.
 - Propositions : garanties réelles sur l’atelier ou caution des dirigeants ; covenants sur le gearing et la couverture des intérêts ; information financière annuelle (idéalement trimestrielle).
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles2025,
+  author = {Gilles, Guillaume},
+  title = {Le Détective du Diagnostic},
+  date = {2025-12-01},
+  url = {https://ggilles.dev/fr/teaching/financial-analysis/modules/03-detective-diagnostic.html},
+  langid = {fr},
+  abstract = {Boss de fin de journée : diagnostic financier complet
+    d’une PME, MEDITECH SAS, fabricant de dispositifs médicaux en
+    demande de crédit bancaire. Les équipes appliquent la méthodologie
+    en 6 étapes pour produire une synthèse diagnostique et une
+    recommandation de financement.}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. 2025. “Le Détective du Diagnostic.” December 1. <https://ggilles.dev/fr/teaching/financial-analysis/modules/03-detective-diagnostic.html>.

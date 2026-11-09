@@ -301,3 +301,22 @@ En soustrayant \\(2)\\ de \\(1)\\ : \\530 - 470 = 1{,}50\\\sigma + \sigma = 2{,}
 En reportant dans \\(2)\\ : \\m = 470 + \sigma = 470 + 24 = \boxed{494.}\\
 
 La masse suit donc la loi \\\mathcal{N}(494,\\ 576)\\.
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Correction — {Examen} {(Sujet} 2) · {Statistiques} Et
+    {Probabilités}},
+  url = {https://ggilles.dev/teaching/probability/exam-2-correction.html},
+  langid = {en},
+  abstract = {Corrigé détaillé de l’{[}examen (sujet 2){]}(exam-2.qmd).}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Correction — Examen (Sujet 2) · Statistiques Et Probabilités.” <https://ggilles.dev/teaching/probability/exam-2-correction.html>.

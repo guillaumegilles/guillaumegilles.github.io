@@ -1,19 +1,6 @@
-## Objectifs de la journée
-
-À la fin de cette journée, vous serez capables de :
-
-- construire un tableau d’amortissement à annuités constantes ou à amortissement constant ;
-- distinguer intérêt, amortissement et annuité à chaque échéance ;
-- comparer plusieurs modalités de remboursement sur les critères coût total, trésorerie et risque ;
-- calculer le taux actuariel d’un emprunt intégrant des frais ;
-- valoriser une obligation à taux fixe ;
-- mesurer la sensibilité du prix d’une obligation aux variations de taux (duration de Macaulay, duration modifiée).
-
 > **IMPORTANT:**
 >
 > Avant d’écrire la moindre formule, tracez la ligne du temps : placez chaque flux (montant emprunté, échéance, frais, coupon, nominal) à sa date, avec son sens (reçu ou versé). Un emprunt, un taux actuariel ou un prix d’obligation ne sont que des flux datés que l’on ramène à une même date. La plupart des erreurs de la journée — frais oubliés, décalage d’une période, nominal omis — se voient immédiatement sur ce schéma.
-
-------------------------------------------------------------------------
 
 ## Séquence 1 — Réactivation des acquis
 
@@ -1004,3 +991,29 @@ Un gestionnaire de portefeuille détient une obligation de nominal **5 000 €**
 > **4. Conclusion sur la convexité :**
 >
 > La duration surestime la baisse de prix (\\-526\\ € estimés vs \\-495\\ € réels). L’écart (\\\approx 32\\ €) est dû à la convexité positive de la courbe prix-taux : la relation réelle est plus douce que la tangente linéaire, toujours en faveur de l’investisseur.
+
+## Citation
+
+BibTeX
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {2️⃣ Emprunts et obligations},
+  url = {https://ggilles.dev/fr/teaching/mathematical-finance/emprunts-obligations.html},
+  langid = {fr},
+  abstract = {**À la fin de cette journée, vous serez capables de :** -
+    construire un tableau d’amortissement à annuités constantes ou à
+    amortissement constant\,; - distinguer intérêt, amortissement et
+    annuité à chaque échéance\,; - comparer plusieurs modalités de
+    remboursement sur les critères coût total, trésorerie et risque\,; -
+    calculer le taux actuariel d’un emprunt intégrant des frais\,; -
+    valoriser une obligation à taux fixe\,; - mesurer la sensibilité du
+    prix d’une obligation aux variations de taux (duration de Macaulay,
+    duration modifiée).}
+}
+```
+
+Veuillez citer ce travail comme suit :
+
+Gilles, Guillaume. n.d. “2️⃣ Emprunts et obligations.” <https://ggilles.dev/fr/teaching/mathematical-finance/emprunts-obligations.html>.

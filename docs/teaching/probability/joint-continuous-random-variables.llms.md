@@ -807,3 +807,30 @@ En **coordonnées polaires**, le jacobien vaut \\r\\ : à grand rayon, un même 
 > **3. Cas \\a\le l\\.** Pour tout \\\theta\in\[0,\tfrac{\pi}{2}\]\\, on a \\\tfrac{a}{2}\sin\theta\le\tfrac{a}{2}\le\tfrac{l}{2}\\, donc la contrainte \\Y\le\tfrac{a}{2}\sin\theta\\ ne sature pas la borne supérieure de \\Y\\. On intègre : \\ P(A)=\int_0^{\pi/2}\int_0^{(a/2)\sin\theta}\frac{4}{l\pi}\\dy\\d\theta =\frac{4}{l\pi}\int_0^{\pi/2}\frac{a}{2}\sin\theta\\d\theta =\frac{2a}{l\pi}\Bigl\[-\cos\theta\Bigr\]\_0^{\pi/2} =\frac{2a}{l\pi}. \\
 >
 > **Cas \\a\>l\\.** Pour les angles \\\theta\\ petits, \\\tfrac{a}{2}\sin\theta\\ peut dépasser \\\tfrac{l}{2}\\. On pose \\\theta_0=\arcsin\\\bigl(\tfrac{l}{a}\bigr)\\. On découpe l’intégrale : \\ P(A)=\frac{4}{l\pi}\left\[ \int_0^{\theta_0}\frac{a}{2}\sin\theta\\d\theta +\int\_{\theta_0}^{\pi/2}\frac{l}{2}\\d\theta \right\] =\frac{2a}{l\pi}\left(1-\cos\theta_0\right)+\frac{2}{\pi}\left(\frac{\pi}{2}-\theta_0\right). \\ Avec \\\cos\theta_0=\sqrt{1-\tfrac{l^2}{a^2}}\\, on obtient : \\ P(A)=\frac{2a}{l\pi}\left(1-\sqrt{1-\frac{l^2}{a^2}}\right)+1-\frac{2\theta_0}{\pi}. \\
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Couples de Variables à Densité},
+  url = {https://ggilles.dev/teaching/probability/joint-continuous-random-variables.html},
+  langid = {en},
+  abstract = {Ce chapitre étend la théorie des lois à densité au cas de
+    deux variables aléatoires réelles. On introduit d’abord les
+    intégrales doubles sur \$\textbackslash mathbb\{R\}\^{}2\$ (cadre de
+    Tonelli/Fubini), puis la **loi conjointe** d’un couple \$(X,Y)\$
+    absolument continu. On construit ensuite les **lois marginales**, on
+    caractérise l“**indépendance** par factorisation de la densité, puis
+    on généralise les notions d”**espérance** et de **covariance**. Le
+    chapitre se termine par une application centrale : la loi de la
+    somme de deux variables indépendantes via la **convolution** des
+    densités.}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Couples de Variables à Densité.” <https://ggilles.dev/teaching/probability/joint-continuous-random-variables.html>.
