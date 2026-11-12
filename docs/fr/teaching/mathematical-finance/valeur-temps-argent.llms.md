@@ -691,13 +691,41 @@ Une **annuité** est une suite de versements identiques et réguliers. Lorsqu’
 
 > **CAUTION:**
 >
-> La valeur actuelle est la somme des valeurs actuelles de chaque versement :
+> **Hypothèses.** \\n\\ versements de même montant \\A\\ ont lieu aux dates \\t = 1, 2, \dots, n\\ ; le taux périodique \\i\\ est constant et strictement positif (\\i \> 0\\), de même périodicité que les versements.
 >
-> \\V_0 = \frac{A}{(1+i)^1} + \frac{A}{(1+i)^2} + \cdots + \frac{A}{(1+i)^n}\\
+> **Étape 1 — Actualiser chaque flux.** Un montant \\A\\ reçu à la date \\t\\ vaut aujourd’hui \\A(1+i)^{-t}\\ (formule d’actualisation). La valeur actuelle de l’annuité est, par définition, la somme des valeurs actuelles de tous les versements :
 >
-> C’est une suite géométrique de premier terme \\A/(1+i)\\, de raison \\1/(1+i)\\, avec \\n\\ termes. Sa somme vaut :
+> \\V_0 = \sum\_{t=1}^{n} \frac{A}{(1+i)^t} = \frac{A}{1+i} + \frac{A}{(1+i)^2} + \cdots + \frac{A}{(1+i)^n} \qquad (1)\\
 >
-> \\V_0 = \frac{A}{1+i} \cdot \frac{1 - (1/(1+i))^n}{1 - 1/(1+i)} = A \cdot \frac{1 - (1+i)^{-n}}{i}\\
+> **Étape 2 — Multiplier par \\(1+i)\\.** Chaque terme « avance » d’une période : l’exposant de chaque dénominateur diminue de 1.
+>
+> \\(1+i)\\V_0 = A + \frac{A}{1+i} + \cdots + \frac{A}{(1+i)^{n-1}} \qquad (2)\\
+>
+> **Étape 3 — Soustraire (1) de (2).** Les termes de \\\dfrac{A}{1+i}\\ à \\\dfrac{A}{(1+i)^{n-1}}\\ apparaissent dans les deux sommes et s’annulent. Il ne reste que le premier terme de (2) et le dernier terme de (1) :
+>
+> \\(1+i)\\V_0 - V_0 = A - \frac{A}{(1+i)^n}\\
+>
+> \\i \\ V_0 = A\left\[1 - (1+i)^{-n}\right\]\\
+>
+> **Étape 4 — Diviser par \\i\\** (licite puisque \\i \> 0\\) :
+>
+> \\\boxed{V_0 = A \cdot \frac{1 - (1+i)^{-n}}{i}}\\
+>
+> **Variante — Lecture par la suite géométrique.** La somme (1) est celle d’une suite géométrique de premier terme \\u_1 = \dfrac{A}{1+i}\\, de raison \\q = \dfrac{1}{1+i}\\ et de \\n\\ termes. Comme \\i \> 0\\, on a \\0 \< q \< 1\\, donc \\q \neq 1\\ et l’on peut appliquer \\u_1 + u_1 q + \cdots + u_1 q^{n-1} = u_1 \dfrac{1 - q^n}{1 - q}\\. Or \\1 - q = 1 - \dfrac{1}{1+i} = \dfrac{i}{1+i}\\, d’où :
+>
+> \\V_0 = \frac{A}{1+i} \cdot \frac{1 - (1+i)^{-n}}{\dfrac{i}{1+i}} = \frac{A}{1+i} \cdot \frac{1+i}{i} \cdot \left\[1 - (1+i)^{-n}\right\] = A \cdot \frac{1 - (1+i)^{-n}}{i}\\
+>
+> On retrouve le même résultat : l’étape 3 n’est rien d’autre que la preuve de la formule de la somme géométrique, appliquée directement aux flux.
+>
+> **Corollaire — Valeur acquise.** \\V_0\\ et \\V_n\\ décrivent les mêmes flux à deux dates séparées de \\n\\ périodes ; par équivalence financière, \\V_n = V_0 (1+i)^n\\ :
+>
+> \\V_n = A \cdot \frac{1 - (1+i)^{-n}}{i} \cdot (1+i)^n = A \cdot \frac{(1+i)^n - 1}{i}\\
+>
+> **Contrôles de cohérence.**
+>
+> - *Taux nul* : quand \\i \to 0\\, \\(1+i)^{-n} \approx 1 - n i\\, donc \\V_0 \to A \cdot \dfrac{n i}{i} = nA\\. Sans rémunération du temps, la valeur actuelle est simplement la somme des versements.
+> - *Horizon infini* : quand \\n \to +\infty\\, \\(1+i)^{-n} \to 0\\ (car \\1 + i \> 1\\), donc \\V_0 \to \dfrac{A}{i}\\ : c’est la formule de la perpétuité (section D).
+> - *Application numérique (Thomas)* : \\A = 5\\000\\ €, \\i = 3\\\\\\, \\n = 5\\ : \\V_0 = 5\\000 \times \dfrac{1 - 1{,}03^{-5}}{0{,}03} \approx 5\\000 \times 4{,}57971 \approx 22\\898{,}54\\ €, et \\22\\898{,}54 \times 1{,}03^5 \approx 26\\545{,}68\\ € \\= V_5\\. \\\blacksquare\\
 
 > **IMPORTANT:**
 >

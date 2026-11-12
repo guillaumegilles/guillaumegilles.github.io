@@ -49,6 +49,8 @@ I continuously develop my knowledge of quantitative methods, machine learning, d
 
 Ultimately, my goal is to contribute to meaningful projects that combine **analytical rigour, technological innovation, and positive real-world impact**.
 
+For more information about my experience, education and research interests, see my [full professional profile](cv.llms.md)
+
 ## Colophon
 
 This site is built with [Quarto](https://quarto.org) and served from [GitHub Pages](https://pages.github.com). The theme is a custom SCSS layer set in IBM Plex Sans and IBM Plex Mono; interactive figures are written in [Observable JS](https://observablehq.com), scrollytelling posts use the [Closeread](https://qmd-lab.github.io/closeread/) extension, and comments are powered by [Giscus](https://giscus.app).
@@ -56,3 +58,7 @@ This site is built with [Quarto](https://quarto.org) and served from [GitHub Pag
 > **NOTE:**
 >
 > If my work is useful to you, consider [sponsoring me on GitHub](https://github.com/sponsors/guillaumegilles).
+>
+> **Current sponsors:**
+>
+> [![carusogabriele07-ux](https://github.com/carusogabriele07-ux.png?size=64)](https://github.com/carusogabriele07-ux)

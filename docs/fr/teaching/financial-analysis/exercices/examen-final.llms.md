@@ -353,7 +353,7 @@ BibTeX
 @online{gilles2026,
   author = {Gilles, Guillaume},
   title = {Examen Final — Analyse Financière et Stratégique},
-  date = {2026-11-09},
+  date = {2026-11-12},
   url = {https://ggilles.dev/fr/teaching/financial-analysis/exercices/examen-final.html},
   langid = {fr}
 }
@@ -361,4 +361,4 @@ BibTeX
 
 Veuillez citer ce travail comme suit :
 
-Gilles, Guillaume. 2026. “Examen Final — Analyse Financière et Stratégique.” November 9. <https://ggilles.dev/fr/teaching/financial-analysis/exercices/examen-final.html>.
+Gilles, Guillaume. 2026. “Examen Final — Analyse Financière et Stratégique.” November 12. <https://ggilles.dev/fr/teaching/financial-analysis/exercices/examen-final.html>.

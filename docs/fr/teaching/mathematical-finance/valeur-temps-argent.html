@@ -1706,11 +1706,32 @@ window.Quarto = {
 </div>
 <div id="callout-31" class="callout-31-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>La valeur actuelle est la somme des valeurs actuelles de chaque versement :</p>
-<p><span class="math display">\[V_0 = \frac{A}{(1+i)^1} + \frac{A}{(1+i)^2} + \cdots + \frac{A}{(1+i)^n}\]</span></p>
-<p>C’est une suite géométrique de premier terme <span class="math inline">\(A/(1+i)\)</span>, de raison <span class="math inline">\(1/(1+i)\)</span>, avec <span class="math inline">\(n\)</span> termes. Sa somme vaut :</p>
-<p><span class="math display">\[V_0 = \frac{A}{1+i} \cdot \frac{1 - (1/(1+i))^n}{1 - 1/(1+i)}
+<p><strong>Hypothèses.</strong> <span class="math inline">\(n\)</span> versements de même montant <span class="math inline">\(A\)</span> ont lieu aux dates <span class="math inline">\(t = 1, 2, \dots, n\)</span> ; le taux périodique <span class="math inline">\(i\)</span> est constant et strictement positif (<span class="math inline">\(i &gt; 0\)</span>), de même périodicité que les versements.</p>
+<p><strong>Étape 1 — Actualiser chaque flux.</strong> Un montant <span class="math inline">\(A\)</span> reçu à la date <span class="math inline">\(t\)</span> vaut aujourd’hui <span class="math inline">\(A(1+i)^{-t}\)</span> (formule d’actualisation). La valeur actuelle de l’annuité est, par définition, la somme des valeurs actuelles de tous les versements :</p>
+<p><span class="math display">\[V_0 = \sum_{t=1}^{n} \frac{A}{(1+i)^t}
+     = \frac{A}{1+i} + \frac{A}{(1+i)^2} + \cdots + \frac{A}{(1+i)^n} \qquad (1)\]</span></p>
+<p><strong>Étape 2 — Multiplier par <span class="math inline">\((1+i)\)</span>.</strong> Chaque terme « avance » d’une période : l’exposant de chaque dénominateur diminue de 1.</p>
+<p><span class="math display">\[(1+i)\,V_0 = A + \frac{A}{1+i} + \cdots + \frac{A}{(1+i)^{n-1}} \qquad (2)\]</span></p>
+<p><strong>Étape 3 — Soustraire (1) de (2).</strong> Les termes de <span class="math inline">\(\dfrac{A}{1+i}\)</span> à <span class="math inline">\(\dfrac{A}{(1+i)^{n-1}}\)</span> apparaissent dans les deux sommes et s’annulent. Il ne reste que le premier terme de (2) et le dernier terme de (1) :</p>
+<p><span class="math display">\[(1+i)\,V_0 - V_0 = A - \frac{A}{(1+i)^n}\]</span></p>
+<p><span class="math display">\[i \, V_0 = A\left[1 - (1+i)^{-n}\right]\]</span></p>
+<p><strong>Étape 4 — Diviser par <span class="math inline">\(i\)</span></strong> (licite puisque <span class="math inline">\(i &gt; 0\)</span>) :</p>
+<p><span class="math display">\[\boxed{V_0 = A \cdot \frac{1 - (1+i)^{-n}}{i}}\]</span></p>
+<p><strong>Variante — Lecture par la suite géométrique.</strong> La somme (1) est celle d’une suite géométrique de premier terme <span class="math inline">\(u_1 = \dfrac{A}{1+i}\)</span>, de raison <span class="math inline">\(q = \dfrac{1}{1+i}\)</span> et de <span class="math inline">\(n\)</span> termes. Comme <span class="math inline">\(i &gt; 0\)</span>, on a <span class="math inline">\(0 &lt; q &lt; 1\)</span>, donc <span class="math inline">\(q \neq 1\)</span> et l’on peut appliquer <span class="math inline">\(u_1 + u_1 q + \cdots + u_1 q^{n-1} = u_1 \dfrac{1 - q^n}{1 - q}\)</span>. Or <span class="math inline">\(1 - q = 1 - \dfrac{1}{1+i} = \dfrac{i}{1+i}\)</span>, d’où :</p>
+<p><span class="math display">\[V_0 = \frac{A}{1+i} \cdot \frac{1 - (1+i)^{-n}}{\dfrac{i}{1+i}}
+     = \frac{A}{1+i} \cdot \frac{1+i}{i} \cdot \left[1 - (1+i)^{-n}\right]
      = A \cdot \frac{1 - (1+i)^{-n}}{i}\]</span></p>
+<p>On retrouve le même résultat : l’étape 3 n’est rien d’autre que la preuve de la formule de la somme géométrique, appliquée directement aux flux.</p>
+<p><strong>Corollaire — Valeur acquise.</strong> <span class="math inline">\(V_0\)</span> et <span class="math inline">\(V_n\)</span> décrivent les mêmes flux à deux dates séparées de <span class="math inline">\(n\)</span> périodes ; par équivalence financière, <span class="math inline">\(V_n = V_0 (1+i)^n\)</span> :</p>
+<p><span class="math display">\[V_n = A \cdot \frac{1 - (1+i)^{-n}}{i} \cdot (1+i)^n
+     = A \cdot \frac{(1+i)^n - 1}{i}\]</span></p>
+<p><strong>Contrôles de cohérence.</strong></p>
+<ul>
+<li><em>Taux nul</em> : quand <span class="math inline">\(i \to 0\)</span>, <span class="math inline">\((1+i)^{-n} \approx 1 - n i\)</span>, donc <span class="math inline">\(V_0 \to A \cdot \dfrac{n i}{i} = nA\)</span>. Sans rémunération du temps, la valeur actuelle est simplement la somme des versements.</li>
+<li><em>Horizon infini</em> : quand <span class="math inline">\(n \to +\infty\)</span>, <span class="math inline">\((1+i)^{-n} \to 0\)</span> (car <span class="math inline">\(1 + i &gt; 1\)</span>), donc <span class="math inline">\(V_0 \to \dfrac{A}{i}\)</span> : c’est la formule de la perpétuité (section D).</li>
+<li><em>Application numérique (Thomas)</em> : <span class="math inline">\(A = 5\,000\)</span> €, <span class="math inline">\(i = 3\,\%\)</span>, <span class="math inline">\(n = 5\)</span> : <span class="math inline">\(V_0 = 5\,000 \times \dfrac{1 - 1{,}03^{-5}}{0{,}03}
+\approx 5\,000 \times 4{,}57971 \approx 22\,898{,}54\)</span> €, et <span class="math inline">\(22\,898{,}54 \times 1{,}03^5 \approx 26\,545{,}68\)</span> € <span class="math inline">\(= V_5\)</span>. <span class="math inline">\(\blacksquare\)</span></li>
+</ul>
 </div>
 </div>
 </div>
