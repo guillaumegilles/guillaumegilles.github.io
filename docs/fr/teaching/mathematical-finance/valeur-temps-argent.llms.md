@@ -1039,6 +1039,30 @@ Un cadre de 35 ans souhaite constituer un complément de retraite. Il envisage d
 >
 > **5. Recommandation :** À 3 % de rendement annuel et 800 €/mois de versement, le plan permet de constituer environ 463 000 € en 30 ans, générant une rente d’environ 2 560 €/mois pendant 20 ans ; une hausse d’un point de taux augmenterait ce capital d’environ 85 000 € (près de 20 %), ce qui justifie d’arbitrer vers des supports plus dynamiques si le profil de risque le permet.
 
+|            |
+|------------|
+| \######### |
+
+### Comment sont calculés les intérêts du Livret A ?
+
+https://www.boursorama.com/epargne/simulateurs/simulateur-livret-ahttps://www.boursorama.com/epargne/simulateurs/simulateur-livret-a
+
+Les taux sont-ils réglementés ? Sont-ils variables dans le temps ? Découvrez ci-après la logique de calcul des intérêts du livret A.
+
+- Les intérêts sont fixés par l’Etat en fonction du niveau d’inflation constaté.
+- Le taux d’intérêt annuel du Livret A est commun à toutes les banques. À compter du 1er août 2026 : le taux d’intérêt annuel du livret A est fixé à 1,70 % (contre 1,7% du 1er août 2025 au 31 janvier 2026).
+- Les intérêts versés sont exonérés d’Impôt sur le Revenu et de Prélèvements Sociaux.
+- Le taux intérêt de l’année 1 s’applique au montant de l’année 1, puis celui en vigueur l’année 2 s’appliquera au nouveau montant de l’année 1 revalorisée ainsi qu’aux nouveaux versements effectués etc.
+- Le calcul des intérêts du Livret A se fait 1er et le 16 de chaque mois.
+
+### Modifié par Décret n°2008-1263 du 4 décembre 2008 - art. 2
+
+https://www.legifrance.gouv.fr/codes/id/LEGIARTI000020030846
+
+L’intérêt servi aux déposants sur un livret A est fixé par arrêté du ministre chargé de l’économie.
+
+L’intérêt servi aux déposants part du 1er ou du 16 de chaque mois après le jour du versement. Il cesse de courir à la fin de la quinzaine qui précède le jour du remboursement. Au 31 décembre de chaque année, l’intérêt acquis s’ajoute au capital et devient lui-même productif d’intérêts.
+
 ## Citation
 
 BibTeX
