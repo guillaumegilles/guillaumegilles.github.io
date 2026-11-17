@@ -1,0 +1,411 @@
+---
+title: "🎓 Training exam — 2 hours"
+subtitle: "Data Description | Exam practice"
+abstract: |
+  **A full-length fictional exam to train for the Midterm (45 min, Modules 1–5) and the Final (90 min, Modules 1–10).**
+
+  This page is an original 2-hour (120 min), 100-point mock exam covering all ten modules of the course. It is entirely fictional: the café "Le Relais du Port" and its numbers are invented for this exam, and the only real course data used is a printed 10-day extract of The Wandering Fork (Harbour, days 91–100) plus references to `payroll-skew.csv` and the Campus franchise. Solutions are collapsible and mapped back to the module that covers each question, so you can pinpoint what to revise.
+order: 11
+date-modified: 2026-11-17
+---
+
+## Rules and format
+
+- **Duration**: 120 minutes. **Total**: 100 points.
+- **Individual work.** Calculator allowed. No Excel needed: every dataset you need is printed on this page or is one of the small course CSVs (`payroll-skew.csv`, `wandering-fork.csv`) described on the [dataset page](dataset.qmd).
+- **Conventions** (same as the whole course — see the [glossary](glossary.qmd)):
+
+| Question | Convention | Excel |
+|---|---|---|
+| Quartiles and percentiles | Position $p\,(n+1)$ with linear interpolation | `QUARTILE.EXC`, `PERCENTILE.EXC` |
+| Variance and standard deviation | Sample formulas ($n-1$) | `VAR.S`, `STDEV.S` |
+| Skewness | Adjusted Fisher–Pearson coefficient | `SKEW` |
+| Classes | Half-open $[a, b[$: lower bound included, upper bound excluded | — |
+
+- **Suggested time plan**:
+
+| Part | Content | Points | Suggested time |
+|---|---|---:|---:|
+| A | Multiple choice, 10 × 2 pts | 20 | 20 min |
+| B | By-hand univariate study (fictional café, $n=10$) | 30 | 40 min |
+| C | Wandering Fork extract (Harbour, days 91–100) | 35 | 40 min |
+| D | Short answers on course datasets | 15 | 20 min |
+
+All business names and all data in Part B are **invented for this exam**. The Part C extract is copied verbatim from `wandering-fork.csv` (Harbour, days 91–100), so you can optionally verify your results in Excel afterwards.
+
+---
+
+## Part A — Multiple choice (10 × 2 = 20 points)
+
+Choose the single best answer.
+
+**A1.** In the Wandering Fork dataset, `staff_on_duty` (the number of employees working a given day) is:
+(a) qualitative nominal (b) qualitative ordinal (c) quantitative discrete (d) quantitative continuous
+
+**A2.** In a frequency table of a qualitative variable with total $n$, the relative frequency of modality $i$ is:
+(a) $n_i \times n$ (b) $n_i / n$ (c) $n - n_i$ (d) $n_i / k$
+
+**A3.** Sturges' rule gives $k \approx 1 + 3.3\,\log_{10}(n)$ classes. For $n = 240$ observations, $k \approx 8.85$, so you would use about:
+(a) 5 classes (b) 7 classes (c) 9 classes (d) 24 classes
+
+**A4.** In `payroll-skew.csv` the mean salary is €47,231 and the median is €38,050 (the CEO earns €180,000). To report a "typical" salary you should report:
+(a) the mean, because it uses every observation (b) the median, because the distribution is right-skewed with an outlier (c) the mode (d) either one, they are equal here
+
+**A5.** With $n = 10$ sorted values, the course convention places $Q_1$ at rank $0.25 \times (10+1) = 2.75$. $Q_1$ is therefore:
+(a) the 2nd value (b) the 3rd value (c) between the 2nd and 3rd values, three-quarters of the way toward the 3rd (d) the average of the 2nd and 3rd values
+
+**A6.** The sample variance (`VAR.S`) divides the sum of squared deviations by $n-1$ rather than $n$ because:
+(a) it makes the variance smaller (b) one degree of freedom is spent estimating the mean — the deviations $x_i - \bar{x}$ always sum to 0 (c) Excel requires it (d) $n-1$ is always the larger divisor
+
+**A7.** Excel's `SKEW` returns $-0.50$ for a dataset. This indicates:
+(a) a right-skewed distribution (b) a left-skewed distribution (c) a perfectly symmetric distribution (d) a bimodal distribution
+
+**A8.** To show the relationship between two quantitative variables (e.g. `customer_count` and `daily_revenue_eur`) you use:
+(a) a line chart (b) a pie chart (c) a scatter plot (d) a histogram
+
+**A9.** A true property of the least-squares regression line $\hat{y} = a + b\,x$ is:
+(a) it always passes through the origin (b) it always passes through the point of means $(\bar{x}, \bar{y})$ (c) its slope is always between $-1$ and $1$ (d) it minimizes the sum of absolute deviations
+
+**A10.** Over the Campus franchise's 120 days, $r(\text{temperature\_c}, \text{daily\_revenue\_eur}) = -0.12$, while rainy days visibly earn less than sunny days. A manager concludes "temperature drives revenue". The best criticism is:
+(a) $r$ is always positive (b) $r$ measures linear association only — here $|r| \approx 0.12$ shows no linear link — and correlation is not causation; the relevant variable is weather, not temperature (c) $r$ should be computed on 30 days only (d) nothing — the conclusion is correct
+
+---
+
+## Part B — Le Relais du Port, a fictional harbour café (30 points)
+
+"Le Relais du Port" is a small invented café. Here is its daily revenue (€) over 10 consecutive days in June:
+
+$$180,\ 200,\ 220,\ 230,\ 240,\ 240,\ 260,\ 280,\ 300,\ 620$$
+
+(The €620 day was a private booking — do not remove it.)
+
+**(a)** (6 pts) Build the class frequency table with classes $[150,200[$, $[200,250[$, $[250,300[$, $[300,700[$. Give the absolute frequencies $n_i$, the **densities** $n_i/h_i$ (the class widths differ — check this), the cumulative frequencies $N_i^{+}$, and the cumulative shares $F_i^{+}$ in %. Which class is the modal class?
+
+**(b)** (4 pts) From the cumulative curve: (i) the share of days with revenue below €250; (ii) an estimate of $P_{75}$, the revenue below which 75% of days fall (interpolate linearly between class bounds).
+
+**(c)** (6 pts) Compute the five-number summary of the raw data under the course convention (`QUARTILE.EXC`, rank $p\,(n+1)$ with interpolation), the IQR, the fences, and the outliers. Sketch the boxplot.
+
+**(d)** (6 pts) Compute the mean, median and mode of the **raw** data; then the grouped mean (class midpoints) and the grouped mode from the table in (a).
+
+**(e)** (4 pts) Compute the sample variance $s^2$, the sample standard deviation $s$, and the coefficient of variation $CV$.
+
+**(f)** (4 pts) Compute the Fisher–Pearson skewness (`SKEW`) by hand. *Hint: express the deviations in tens of euros so the cubes stay small.* Interpret the sign.
+
+---
+
+## Part C — The Wandering Fork: Harbour, days 91–100 (35 points)
+
+The table below is an extract of `wandering-fork.csv` (Harbour franchise, days 91–100):
+
+| day | date | day_of_week | weather | promo_active | customer_count | daily_revenue_eur | satisfaction_rating |
+|---:|---|---|---|---|---:|---:|---:|
+| 91 | 2026-07-05 | Sunday | Rainy | No | 7 | 119.97 | 1 |
+| 92 | 2026-07-06 | Monday | Sunny | Yes | 35 | 549.51 | 4 |
+| 93 | 2026-07-07 | Tuesday | Sunny | Yes | 29 | 401.30 | 5 |
+| 94 | 2026-07-08 | Wednesday | Cloudy | No | 11 | 137.45 | 4 |
+| 95 | 2026-07-09 | Thursday | Cloudy | No | 24 | 271.02 | 2 |
+| 96 | 2026-07-10 | Friday | Rainy | No | 21 | 267.04 | 3 |
+| 97 | 2026-07-11 | Saturday | Cloudy | No | 22 | 329.19 | 3 |
+| 98 | 2026-07-12 | Sunday | Sunny | No | 46 | 634.78 | 3 |
+| 99 | 2026-07-13 | Monday | Sunny | No | 23 | 297.20 | 4 |
+| 100 | 2026-07-14 | Tuesday | Cloudy | Yes | 15 | 166.48 | 2 |
+
+**(a)** (5 pts) Give the statistical type of `weather`, `promo_active` and `satisfaction_rating`. Build the frequency tables for `weather` and for `satisfaction_rating` (categories in order 1–5), give the modal category of each, and the median satisfaction rating.
+
+**(b)** (6 pts) For `daily_revenue_eur`: five-number summary (course convention), IQR, fences, outliers. What does the boxplot look like?
+
+**(c)** (4 pts) For `daily_revenue_eur`: mean, sample standard deviation, $CV$. Compare the mean and the median — what does the gap suggest?
+
+**(d)** (8 pts) Build the contingency table `promo_active` (rows) × revenue class (columns: $[0,200[$, $[200,400[$, $[400,600[$, $[600,900[$). Show counts **and** row percentages (conditional distribution of revenue given promo status). Do promo days and non-promo days have different revenue profiles?
+
+**(e)** (12 pts) Take `customer_count` as $X$ and `daily_revenue_eur` as $Y$. (i) Describe the scatter plot. (ii) Compute by hand — show $\sum x$, $\sum y$, $\sum x^2$, $\sum y^2$, $\sum xy$ — the covariance, $r$, $r^2$, the slope $b$ and the intercept $a$. (iii) Predict the revenue of a 40-customer day; is this prediction reliable? (iv) Verify that the line passes through $(\bar{x}, \bar{y})$.
+
+---
+
+## Part D — Short answers (15 points)
+
+**D1.** (5 pts) Open `payroll-skew.csv` (11 salaries, one CEO at €180,000). Compute the mean and the median of `annual_salary_eur`. Which of the two is the better "typical salary" here, and why (mention the outlier rule if you use it)?
+
+**D2.** (5 pts) Over the full Campus franchise (120 days), `customer_count` vs `daily_revenue_eur` gives $r = 0.970$, $r^2 = 0.940$, slope $b = 12.30$ € per customer, intercept $a = -22.75$. (i) Interpret $r$ in one sentence, then $r^2$ in one sentence. (ii) Predict the revenue of a 120-customer day. Is this prediction reliable? Why or why not?
+
+**D3.** (5 pts) Using your Part C(d) result, write at most three sentences for the truck owner answering: "Do promotions seem to boost revenue?" Include the appropriate caution.
+
+---
+
+## Solutions
+
+Work through the exam before opening these. Each solution ends with the module to revise if you missed the question.
+
+### Part A
+
+::: {.callout-caution collapse="true"}
+#### A1 (Module 1) — answer (c)
+`staff_on_duty` is counted in whole people: its possible values are isolated points (0, 1, 2, …), so it is **quantitative discrete**. Nominal/ordinal are qualitative; continuous variables can take any value in an interval.
+
+**Revise:** Module 1.
+:::
+
+::: {.callout-caution collapse="true"}
+#### A2 (Module 2) — answer (b)
+$f_i = n_i / n$: the count of the modality divided by the total. It always lies between 0 and 1 and the $f_i$ sum to 1.
+
+**Revise:** Module 2.
+:::
+
+::: {.callout-caution collapse="true"}
+#### A3 (Module 3) — answer (c)
+$k \approx 1 + 3.3 \times \log_{10}(240) = 1 + 3.3 \times 2.380 \approx 8.85$, rounded to about **9 classes**.
+
+**Revise:** Module 3.
+:::
+
+::: {.callout-caution collapse="true"}
+#### A4 (Module 4) — answer (b)
+The CEO's €180,000 is a $1.5 \times IQR$ outlier (upper fence ≈ €72,878) and pulls the mean up: the distribution is right-skewed (`SKEW` ≈ +3.12), so the **median** is the honest "typical" salary.
+
+**Revise:** Modules 4, 5, 7.
+:::
+
+::: {.callout-caution collapse="true"}
+#### A5 (Module 5) — answer (c)
+Rank $2.75$ means: take the 2nd value and add $0.75 \times$ (3rd − 2nd). This is exactly what `QUARTILE.EXC` does.
+
+**Revise:** Module 5.
+:::
+
+::: {.callout-caution collapse="true"}
+#### A6 (Module 6) — answer (b)
+The $n$ deviations $x_i - \bar{x}$ sum to 0, so only $n-1$ are free; dividing by $n-1$ (Bessel's correction) makes $s^2$ an unbiased estimator of the population variance.
+
+**Revise:** Module 6.
+:::
+
+::: {.callout-caution collapse="true"}
+#### A7 (Module 7) — answer (b)
+Negative `SKEW` = **left-skewed**: the long tail drags toward low values, and typically $\bar{x} < Me < Mo$. (Right-skewed is positive; 0 is symmetric.)
+
+**Revise:** Module 7.
+:::
+
+::: {.callout-caution collapse="true"}
+#### A8 (Module 8) — answer (c)
+A **scatter plot** (XY) shows the association between two quantitative variables. A line chart implies a sequence in $X$; a histogram or pie chart is for one variable.
+
+**Revise:** Module 8.
+:::
+
+::: {.callout-caution collapse="true"}
+#### A9 (Module 9) — answer (b)
+$a = \bar{y} - b\,\bar{x}$ by construction, so the line always passes through $(\bar{x}, \bar{y})$. The slope $b = \text{Cov}(X,Y)/s_X^2$ can be any real number and the least-squares criterion minimizes *squared* deviations.
+
+**Revise:** Module 9.
+:::
+
+::: {.callout-caution collapse="true"}
+#### A10 (Module 10) — answer (b)
+$r = -0.12$ says there is essentially **no linear** link between temperature and revenue ($r^2 \approx 0.014$). The weather *category* is what separates good from bad days — a contingency-table question (Module 8), not a correlation one. And even a large $r$ would not prove causation.
+
+**Revise:** Modules 8, 9, 10.
+:::
+
+### Part B
+
+::: {.callout-caution collapse="true"}
+#### B(a) — class table (Module 3)
+Sorted data: 180, 200, 220, 230, 240, 240, 260, 280, 300, 620 ($n = 10$).
+
+| Class (€) | $h_i$ | $n_i$ | density $n_i/h_i$ | $N_i^{+}$ | $F_i^{+}$ |
+|---|---:|---:|---:|---:|---:|
+| $[150,200[$ | 50 | 1 | 0.020 | 1 | 10% |
+| $[200,250[$ | 50 | 5 | **0.100** | 6 | 60% |
+| $[250,300[$ | 50 | 2 | 0.040 | 8 | 80% |
+| $[300,700[$ | 400 | 2 | 0.005 | 10 | 100% |
+
+The last class is 8× wider, so its **density** (0.005), not its raw count, is what the histogram bar height must show. Modal class: $[200,250[$ with $n = 5$.
+
+**Revise:** Module 3.
+:::
+
+::: {.callout-caution collapse="true"}
+#### B(b) — reading the cumulative curve (Module 3)
+(i) Below €250: $F^{+}$ at the upper bound 250 is **60%** (6 of 10 days).
+(ii) $P_{75}$: 75% lies inside $[250,300[$ because $F^{+}$ goes from 60% (at 250) to 80% (at 300). Linear interpolation: $250 + \frac{75-60}{80-60}\times 50 = 250 + 37.5 = \mathbf{287.5}$ €.
+
+**Revise:** Module 3.
+:::
+
+::: {.callout-caution collapse="true"}
+#### B(c) — five-number summary, fences, boxplot (Module 5)
+- min = 180
+- $Q_1$: rank $0.25 \times 11 = 2.75$ → between 200 (2nd) and 220 (3rd): $200 + 0.75 \times 20 = \mathbf{215}$
+- $Me$: positions 5 and 6 → $(240 + 240)/2 = \mathbf{240}$
+- $Q_3$: rank $0.75 \times 11 = 8.25$ → between 280 (8th) and 300 (9th): $280 + 0.25 \times 20 = \mathbf{285}$
+- max = 620
+- $IQR = 285 - 215 = 70$; fences: $215 - 1.5 \times 70 = \mathbf{110}$ and $285 + 1.5 \times 70 = \mathbf{390}$
+- **Outlier: 620** (above the upper fence 390). No low outlier.
+
+Boxplot: whisker from 180 down to 300 (largest value inside the fence), box from 215 to 285 with the median line at 240, and one dot at 620.
+
+**Revise:** Module 5.
+:::
+
+::: {.callout-caution collapse="true"}
+#### B(d) — centre, raw and grouped (Module 4)
+- Mean: $\bar{x} = 2770/10 = \mathbf{277}$ €
+- Median: $\mathbf{240}$ €
+- Mode (raw): $\mathbf{240}$ € (appears twice)
+- Grouped mean (midpoints 175, 225, 275, 500): $(1\times175 + 5\times225 + 2\times275 + 2\times500)/10 = 2850/10 = \mathbf{285}$ €
+- Grouped mode: modal class $[200,250[$, $L = 200$, $h = 50$, $f_1 = 5$, $f_0 = 1$, $f_2 = 2$:
+$$Mo = 200 + 50 \times \frac{5-1}{(5-1)+(5-2)} = 200 + \frac{200}{7} \approx \mathbf{228.57}\ \text{€}$$
+
+Note the grouped mean (285) differs from the raw mean (277): grouping is an approximation, and the wide last class contributes a lot.
+
+**Revise:** Modules 3, 4.
+:::
+
+::: {.callout-caution collapse="true"}
+#### B(e) — dispersion (Module 6)
+$\sum x = 2770$, $\sum x^2 = 909{,}300$.
+$$\sum (x_i - \bar{x})^2 = 909{,}300 - \frac{2770^2}{10} = 142{,}010$$
+$$s^2 = \frac{142{,}010}{9} = \mathbf{15{,}778.89}\ \text{€}^2, \qquad s = \sqrt{15{,}778.89} = \mathbf{125.61}\ \text{€}, \qquad CV = \frac{125.61}{277} \times 100\% \approx \mathbf{45.3\%}$$
+High relative variability (CV well above 35%).
+
+**Revise:** Module 6.
+:::
+
+::: {.callout-caution collapse="true"}
+#### B(f) — Fisher–Pearson skewness by hand (Module 7)
+Work in tens of €: deviations $d_i = (x_i - 277)/10$:
+$-9.7,\ -7.7,\ -5.7,\ -4.7,\ -3.7,\ -3.7,\ -1.7,\ 0.3,\ 2.3,\ 34.3$
+Cubes: $-912.67,\ -456.53,\ -185.19,\ -103.82,\ -50.65,\ -50.65,\ -4.91,\ 0.03,\ 12.17,\ 40{,}353.61$; sum $\approx 38{,}601.36$.
+With $s/10 = 12.5614$:
+$$\text{SKEW} = \frac{10}{9 \times 8} \times \frac{38{,}601.36}{12.5614^3} \approx 0.1389 \times \frac{38{,}601.36}{1{,}982.05} \approx \mathbf{+2.70}$$
+Strong **right skew** — consistent with the ordering mean (277) > median (240) = mode (240) and with the €620 outlier dragging the right tail.
+
+**Revise:** Module 7.
+:::
+
+### Part C
+
+::: {.callout-caution collapse="true"}
+#### C(a) — types and frequency tables (Modules 1–2)
+- `weather`: qualitative **nominal**; `promo_active`: qualitative **nominal** (binary); `satisfaction_rating`: qualitative **ordinal** (order 1 < 2 < … < 5, but gaps not equal → median, not mean).
+
+| weather | $n_i$ | $f_i$ |
+|---|---:|---:|
+| Sunny | 4 | 40% |
+| Cloudy | 4 | 40% |
+| Rainy | 2 | 20% |
+
+Modal category: Sunny and Cloudy (tie, 4 each).
+
+| satisfaction | 1 | 2 | 3 | 4 | 5 |
+|---|---:|---:|---:|---:|---:|
+| $n_i$ | 1 | 2 | 3 | 3 | 1 |
+
+Modal ratings: 3 and 4 (tie). Median: sorted 1, 2, 2, 3, 3, 3, 4, 4, 4, 5 → $(3+3)/2 = \mathbf{3}$.
+
+**Revise:** Modules 1, 2.
+:::
+
+::: {.callout-caution collapse="true"}
+#### C(b) — five-number summary of revenue (Module 5)
+Sorted revenue: 119.97, 137.45, 166.48, 267.04, 271.02, 297.20, 329.19, 401.30, 549.51, 634.78.
+
+- min = 119.97
+- $Q_1$: rank 2.75 → $137.45 + 0.75 \times (166.48 - 137.45) = \mathbf{159.22}$
+- $Me = (271.02 + 297.20)/2 = \mathbf{284.11}$
+- $Q_3$: rank 8.25 → $401.30 + 0.25 \times (549.51 - 401.30) = \mathbf{438.35}$
+- max = 634.78
+- $IQR = 438.35 - 159.22 = 279.13$; fences: $159.22 - 418.70 = \mathbf{-259.47}$ and $438.35 + 418.70 = \mathbf{857.05}$
+- **No outliers**: both extremes lie inside the fences.
+
+Boxplot: box from 159.22 to 438.35, median line at 284.11, whiskers out to 119.97 and 634.78.
+
+**Revise:** Module 5.
+:::
+
+::: {.callout-caution collapse="true"}
+#### C(c) — centre and spread of revenue (Modules 4, 6)
+$\sum y = 3173.94$, so $\bar{y} = \mathbf{317.39}$ €.
+$$s^2 = \frac{1}{9}\sum(y_i - \bar{y})^2 = \mathbf{29{,}001.78}\ \text{€}^2, \quad s = \mathbf{170.30}\ \text{€}, \quad CV = \frac{170.30}{317.39} \times 100\% \approx \mathbf{53.7\%}$$
+Mean (317.39) > median (284.11): the gap suggests a **mild right skew** (indeed `SKEW` ≈ +0.78 on these 10 days) — and very high relative variability (CV ≈ 54%).
+
+**Revise:** Modules 4, 6, 7.
+:::
+
+::: {.callout-caution collapse="true"}
+#### C(d) — contingency table promo × revenue class (Module 8)
+Counts:
+
+| promo_active | $[0,200[$ | $[200,400[$ | $[400,600[$ | $[600,900[$ | total |
+|---|---:|---:|---:|---:|---:|
+| No | 2 | 4 | 0 | 1 | 7 |
+| Yes | 1 | 0 | 2 | 0 | 3 |
+
+Row percentages (conditional distribution of revenue given promo status):
+
+| promo_active | $[0,200[$ | $[200,400[$ | $[400,600[$ | $[600,900[$ |
+|---|---:|---:|---:|---:|
+| No | 28.6% | 57.1% | 0% | 14.3% |
+| Yes | 33.3% | 0% | 66.7% | 0% |
+
+The row profiles differ sharply: **2 of 3 promo days (66.7%) earn €400–600, against 1 of 7 non-promo days (14.3%)** — and no promo day falls in $[200,400[$. Visible dependence (keep the tiny sample in mind: association, not proof of causation).
+
+**Revise:** Module 8.
+:::
+
+::: {.callout-caution collapse="true"}
+#### C(e) — customer_count vs revenue (Module 9)
+(i) The scatter plot is a strong, upward, roughly linear cloud: more customers, more revenue.
+
+(ii) Computational table ($n = 10$):
+$$\sum x = 233,\quad \sum y = 3173.94,\quad \sum x^2 = 6607,\quad \sum y^2 = 1{,}268{,}405.57,\quad \sum xy = 91{,}109.47$$
+$$\bar{x} = 23.3,\quad \bar{y} = 317.394,\quad s_X = 11.44,\quad s_Y = 170.30$$
+$$\text{Cov}(X,Y) = \frac{1}{9}\sum(x_i-\bar{x})(y_i-\bar{y}) = \mathbf{1906.30}\ \text{cust·€}$$
+$$r = \frac{1906.30}{11.44 \times 170.30} = \mathbf{0.978}, \qquad r^2 = \mathbf{0.957}$$
+$$b = \frac{\text{Cov}(X,Y)}{s_X^2} = \frac{1906.30}{11.44^2} = \mathbf{14.56}\ \text{€ per customer}, \qquad a = \bar{y} - b\,\bar{x} = 317.394 - 14.563 \times 23.3 = \mathbf{-21.92}\ \text{€}$$
+
+(iii) Prediction at 40 customers: $\hat{y} = -21.92 + 14.56 \times 40 = \mathbf{560.60}$ €. **Reliable**: 40 lies inside the observed range (7–46 customers) and $r^2 = 0.957$.
+
+(iv) Check: $a + b\,\bar{x} = -21.92 + 14.563 \times 23.3 = 317.39 = \bar{y}$ ✓ — the line passes through the point of means.
+
+**Revise:** Module 9.
+:::
+
+### Part D
+
+::: {.callout-caution collapse="true"}
+#### D1 — payroll-skew (Modules 4, 5, 7)
+Sum of the 11 salaries = 519,537 €, so **mean = 47,230.64 €**. Sorted, the 6th value is 38,050 €, so **median = 38,050 €**.
+Report the **median**: the CEO's €180,000 is a $1.5 \times IQR$ outlier (fences ≈ [−2,914; 72,878]) and the distribution is strongly right-skewed (`SKEW` ≈ +3.12), so the mean is pulled far above what a typical employee earns.
+
+**Revise:** Modules 4, 5, 7.
+:::
+
+::: {.callout-caution collapse="true"}
+#### D2 — Campus correlation and extrapolation (Module 9)
+(i) $r = 0.970$: a **very strong positive linear association** between customer count and revenue. $r^2 = 0.940$: **94% of the variability of revenue is explained by customer count**.
+(ii) $\hat{y} = -22.75 + 12.30 \times 120 = \mathbf{1453.25}$ €. **Not reliable**: the observed customer counts run from 3 to 106, so 120 customers is **extrapolation** beyond the data range.
+
+**Revise:** Module 9.
+:::
+
+::: {.callout-caution collapse="true"}
+#### D3 — do promotions help? (Modules 8, 10)
+Yes — on these 10 days the association is visible: two of the three promo days earned €400–600, against only one of seven non-promo days. But three promo days is a very small sample, and a contingency table shows association, not causation (promos may simply be scheduled on already-busy days). Recommend more promo days before concluding.
+
+**Revise:** Modules 8, 10.
+:::
+
+## Score yourself
+
+| Part | Points | Your score |
+|---|---:|---:|
+| A — MCQ | 20 | |
+| B — Le Relais du Port | 30 | |
+| C — Wandering Fork extract | 35 | |
+| D — Short answers | 15 | |
+| **Total** | **100** | |
+
+Below 50: redo Modules 1–3 and 4–7 with the by-hand exercises. 50–75: focus on the modules tagged in the solutions you opened. Above 75: you are ready for the 90-minute final format — redo this exam under timed conditions.
