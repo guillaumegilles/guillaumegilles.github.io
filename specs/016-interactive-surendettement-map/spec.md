@@ -1,4 +1,4 @@
-# Feature Specification: Interactive Surendettement Map — Hybrid Cartography for the dataviz-bdf Post
+# Feature Specification: Interactive Surendettement Map — Hybrid Cartography for the overindebtedness Post
 
 **Feature Branch**: `016-interactive-surendettement-map`
 
@@ -7,7 +7,8 @@
 **Status**: Draft
 
 **Input**: User description: "Based on the brainstorming session on
-posts/dataviz-bdf/, create the spec for: format option C (hybrid —
+the overindebtedness post (formerly posts/dataviz-bdf/), create the spec
+for: format option C (hybrid —
 interactive explorer plus a static hero map); fix the encoding choices
 (rate-based levels, quantile classes, diverging variation scale); build
 the full interactive explorer and replace the static matplotlib maps in
@@ -16,7 +17,9 @@ the cartography section; reframe the evolution by fixing the BdF API so
 
 ## Context
 
-`posts/dataviz-bdf/index.qmd` currently renders four static matplotlib
+`posts/overindebtedness/index.qmd` (moved from `posts/dataviz-bdf/`; hero
+image now `assets/posts/overindebtedness.jpg`, default site theme applies)
+currently renders four static matplotlib
 choropleths (over-indebtedness level, evolution, four explanatory
 variables, fragility score). Two concrete defects motivate this feature:
 
@@ -36,12 +39,38 @@ explorable year by year.
 decision); DOM-TOM; spatial regression models; any change to the OLS
 modelling sections; the existing bivariate scatter plots stay as they are.
 
+## Clarifications
+
+### Session 2026-11-20
+
+- Q: When the reader selects an indicator whose values do not change across
+  years (chômage, pauvreté, part des locataires), how should the year
+  slider behave? → A: Option A — the year slider and play button stay
+  visible but have no effect on the map of a single-millésime indicator,
+  and a badge next to the variable selector shows the indicator's actual
+  source millésime (encoded as FR-022).
+- Q: What level of keyboard and screen-reader support must the interactive
+  SVG map provide? → A: Option A — every department polygon is
+  keyboard-focusable and Enter-activatable with an `aria-label` stating
+  name, value and rank; all controls are keyboard-operable; a collapsible
+  data table lists the 96 departments' values for the current
+  variable/year as a text alternative (encoded as FR-023).
+- Q: What page-weight budget should the inlined map data respect? → A:
+  Option A — total inlined map payload (geometry + data) ≤ ~200 KB:
+  coordinates rounded to 3 decimals, only `code`/`nom` properties kept
+  (encoded in FR-017 and SC-010).
+- Q: What should the static hero/preview image show? → A: Option B — the
+  in-section no-JS fallback stays the latest-year level map, and the post
+  preview image (`assets/posts/overindebtedness.jpg`) is the variation map
+  from the trough year to the latest year, so the rebound is visible on the
+  blog index (encoded in FR-016).
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 — Reader sees the territorial level of over-indebtedness (Priority: P1)
 
-A reader opens the cartography section of the dataviz-bdf post and sees
-one map of metropolitan France where each of the 96 departments is
+A reader opens the cartography section of the overindebtedness post and
+sees one map of metropolitan France where each of the 96 departments is
 colored by the over-indebtedness filing rate (filings per 10,000
 inhabitants) for the most recent year, with a readable legend, source
 and year.
@@ -157,9 +186,10 @@ panel updates; click again to unpin.
 
 ### User Story 5 — Reader without JavaScript still gets the picture (Priority: P3)
 
-A reader with JavaScript disabled (or a social-media crawler fetching the
-post's preview image) still sees a static map of the filing rate for the
-latest year, and the post's `image.jpg` reflects that map.
+A reader with JavaScript disabled still sees a static map of the filing
+rate for the latest year, and a social-media crawler fetching the post's
+preview image (`assets/posts/overindebtedness.jpg`) gets the rebound
+variation map (trough → latest year).
 
 **Why this priority**: Hybrid format decision: the interactive explorer
 replaces the in-section static maps, but one static hero map remains for
@@ -167,7 +197,7 @@ the og:image and the no-JS fallback. Not blocking the interactive core.
 
 **Independent Test**: Render the page, disable JavaScript, and verify
 the static hero map and an explanatory note are visible; check that
-`posts/dataviz-bdf/image.jpg` is regenerated from the latest year.
+`assets/posts/overindebtedness.jpg` is regenerated from the latest year.
 
 **Acceptance Scenarios**:
 
@@ -176,7 +206,8 @@ the static hero map and an explanatory note are visible; check that
    plus a note pointing to the interactive version (for JS-enabled
    readers) are displayed.
 2. **Given** the rendered site, **when** the post card is previewed,
-   **then** the preview image is the latest-year static map.
+   **then** the preview image is the trough→latest-year variation
+   (rebound) map.
 
 ---
 
@@ -189,9 +220,10 @@ without manual edits.
 **Why this priority**: Reproducibility is a standing project principle;
 the 2018 gap must be fixed in the versioned scripts, not by hand.
 
-**Independent Test**: Follow the post README from a clean checkout:
-download → clean → merge → validate → render; verify the dataset
-covers 2018–2024 × 96 departments and the render exits 0.
+**Independent Test**: Run the documented pipeline from a clean checkout
+(`posts/overindebtedness/scripts/`: download → clean → merge → validate →
+render); verify the dataset covers 2018–2024 × 96 departments and the
+render exits 0.
 
 **Acceptance Scenarios**:
 
@@ -207,10 +239,11 @@ covers 2018–2024 × 96 departments and the render exits 0.
 
 ### Edge Cases
 
-- What happens when a variable has only a single millésime (e.g. FiLoSoFi
-  poverty if its values are carried forward)? → The variable shows a
-  badge with its actual millésime and the year slider either does not
-  change its values or is marked as such.
+- What happens with variables that have a single source millésime?
+  → Confirmed in the current dataset: chômage, pauvreté (FiLoSoFi) and
+  renter share (RP) are constant across 2019–2024 for all 96 departments.
+  The year slider has no effect on their map and a badge shows the actual
+  source millésime (FR-022).
 - What happens when a department has no value for a variable/year? →
   The polygon gets a distinct neutral "données manquantes" style and the
   tooltip says so; it is excluded from ranks.
@@ -259,7 +292,9 @@ covers 2018–2024 × 96 departments and the render exits 0.
   "données manquantes".
 - **FR-007**: The variable selector MUST offer: filing rate,
   unemployment rate, poverty rate, RSA share, renter share, fragility
-  score. The Gini index MUST NOT be offered (coverage too low).
+  score. The Gini index MUST NOT be offered in the selector (the six
+  indicators answer the research questions; Gini stays in the EDA
+  section).
 
 #### Interactive explorer (replaces the static maps in the cartography section)
 
@@ -288,13 +323,28 @@ covers 2018–2024 × 96 departments and the render exits 0.
   a descriptive title, a legend with units, the data source and year, and
   a one-line interpretive caption. The caption figures MUST be computed
   from the data, not hand-typed.
+- **FR-022**: For indicators whose values are constant across years
+  (single source millésime — currently chômage, pauvreté and renter
+  share), the year slider and play button MUST remain visible but MUST
+  NOT change the map, and a badge next to the variable selector MUST
+  show the indicator's actual source millésime (e.g. « INSEE 2021 »).
+- **FR-023**: The map MUST be fully operable by keyboard and exposed to
+  screen readers: every department polygon MUST be focusable and
+  Enter-activatable with an `aria-label` stating name, value and rank;
+  all controls (year slider, play, variable selector, mode toggle)
+  MUST be keyboard-operable; and a collapsible data table MUST list the
+  96 departments' values for the current variable and year as a text
+  alternative.
 
 #### Static hero map and fallback
 
-- **FR-016**: One static choropleth (latest year, filing rate, same
+- **FR-016**: A static choropleth of the latest-year filing rate (same
   encoding rules FR-003–FR-006) MUST remain in the section as the no-JS
-  fallback with a note, and MUST be regenerated as the post's
-  `image.jpg` preview image.
+  fallback with a note. In addition, a static variation map (trough year
+  → latest year, in %, diverging scale per FR-005) MUST be generated as
+  the post's preview image (`assets/posts/overindebtedness.jpg`); the
+  trough year MUST be computed from the data (2020 in the current
+  dataset).
 
 #### Site rules (constitution)
 
@@ -302,13 +352,19 @@ covers 2018–2024 × 96 departments and the render exits 0.
   third-party hosts: no tile servers, no CDN, no analytics. Geometry and
   the panel dataset MUST be inlined into the rendered page at build time
   (from the versioned data files), so the widget works offline and
-  tracking-free.
+  tracking-free. To keep the page light, geometry coordinates MUST be
+  rounded to 3 decimals and only `code`/`nom` properties kept, so the
+  total inlined map payload (geometry + data) stays ≤ ~200 KB.
 - **FR-018**: Widget styling MUST use CSS classes through the site's
   single styling entry point; the `.qmd` MUST NOT contain inline
   `style=` attributes or page-level `<style>` blocks for the widget.
-- **FR-019**: The post front matter MUST reference an existing theme
-  stylesheet — the current `theme: ../../assets/dark.scss` target no
-  longer exists and MUST be corrected so the render gate passes.
+- **FR-019**: The post front matter MUST reference existing files so the
+  render gate passes: the current `image: ../../assetsoverindebtedness.jpg`
+  path is broken (missing `posts/`) and MUST be corrected to
+  `../../assets/posts/overindebtedness.jpg`. The post now uses the site's
+  default light theme, so the static hero map MUST be styled for that
+  theme (the dark «blackboard» matplotlib palette no longer matches the
+  page).
 - **FR-020**: Linked map↔scatter brushing is OUT of scope; the existing
   bivariate scatter section MUST remain unchanged.
 - **FR-021**: Prose in the modified `.qmd` MUST wrap at 80 characters;
@@ -347,8 +403,8 @@ covers 2018–2024 × 96 departments and the render exits 0.
   page reload, and every department polygon shows a tooltip on hover
   (manual check across all 96).
 - **SC-003**: With JavaScript disabled, the static hero map and its note
-  are visible in the cartography section, and the post's preview image
-  is the latest-year map.
+  are visible in the cartography section, and the post's preview image is
+  the rebound variation map (trough → latest year).
 - **SC-004**: The browser's network panel shows zero requests to
   third-party hosts initiated by the map widget.
 - **SC-005**: After re-running the pipeline, the surendettement series
@@ -362,6 +418,11 @@ covers 2018–2024 × 96 departments and the render exits 0.
 - **SC-008**: Every explorer state shows title, legend with units, source
   and year, and a data-generated caption (spot-check all 6 variables × 3
   modes).
+- **SC-009**: All 96 department polygons are reachable by keyboard tab
+  order and expose name/value/rank via `aria-label`; the collapsible data
+  table shows the current variable and year for all 96 departments.
+- **SC-010**: The inlined map payload in the rendered page (geometry +
+  panel data) is ≤ 200 KB, measured on the built HTML.
 
 ## Assumptions
 
@@ -370,19 +431,19 @@ covers 2018–2024 × 96 departments and the render exits 0.
 - The interactive widget uses a native `{ojs}` block with d3 / Observable
   Plot (available by default in Quarto), per the site's convention for
   interactive demos; the static hero map stays in the existing Python
-  (matplotlib/geopandas) pipeline so the `image.jpg` workflow is
-  unchanged.
-- Whether the FiLoSoFi poverty values for years other than 2021 are real
-  millésimes or carried forward will be verified during planning; if
-  carried forward, the poverty variable shows its actual millésime as a
-  badge (see edge cases).
+  (matplotlib/geopandas) pipeline so the preview-image workflow
+  (`assets/posts/overindebtedness.jpg`) is unchanged.
+- Confirmed against the current dataset: chômage, poverty (FiLoSoFi) and
+  renter share (RP) are constant across 2019–2024 for all 96 departments
+  — they are single-millésime indicators carried forward, handled per
+  FR-022.
 - The existing OLS/EDA sections and the bivariate scatter plots are
   untouched; only the cartography section and the BdF download script
   change.
 - The post exists only in the English `posts/` tree (there is no
   `fr/posts/` counterpart today), so no translation stub is required by
   this feature.
-- `assets/dark.scss` was removed when the single styling entry point
-  became `assets/custom.scss` (constitution v3.0.0); FR-019 covers the
-  front-matter fix, and any dark-specific widget styles move into the
-  single styling file as classes.
+- The post now renders with the site's default theme (`assets/custom.scss`)
+  after the move to `posts/overindebtedness/`; widget styles go into the
+  single styling file as classes (FR-018), and palettes are adapted to the
+  light theme (FR-006, FR-019).
