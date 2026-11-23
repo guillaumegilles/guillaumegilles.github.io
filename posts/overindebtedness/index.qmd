@@ -1345,7 +1345,11 @@ locataires et au score de fragilité ; le sélecteur de mode affiche le
 niveau, la variation depuis la première année, la variation d'une année
 sur l'autre ou le rang. L'encodage du niveau est fixe et documenté : le
 **taux** de dépôts pour 10 000 habitants est toujours représenté (jamais
-le nombre brut de dossiers), classé en six classes quantiles.
+le nombre brut de dossiers), classé en six classes quantiles. Cliquez sur
+un département (ou validez-le au clavier avec Entrée) pour l'épingler :
+un panneau latéral affiche alors sa trajectoire complète sur toutes les
+années, pour le taux de dépôts et pour l'indicateur sélectionné, avec les
+valeurs annuelles ; recliquez pour désépingler.
 
 ```{ojs}
 //| echo: false
@@ -1393,7 +1397,8 @@ le nombre brut de dossiers), classé en six classes quantiles.
     { key: "var_n1",   label: "Variation vs année précédente (%)" },
     { key: "rang",     label: "Rang" },
   ];
-  const state = { year: latestYear, variable: "suren", mode: "niveau", timer: null };
+  const state = { year: latestYear, variable: "suren", mode: "niveau",
+                  timer: null, pinned: null };
   const ind = () => indByKey[state.variable];
   // FR-022 : indicateur à millésime unique → année effective fixée sur le
   // millésime source ; le curseur d'année reste visible mais inerte.
@@ -1507,6 +1512,11 @@ le nombre brut de dossiers), classé en six classes quantiles.
   const pathByCode = {};
   const tip = html`<div class="od-tooltip" role="tooltip" hidden></div>`;
   const stage = html`<div class="od-stage">${mapSvg}${tip}</div>`;
+  // Panneau latéral épinglé (FR-013) : sparklines sur toutes les années du
+  // taux de dépôt et de l'indicateur sélectionné, avec valeurs annuelles.
+  const panel = html`<aside class="od-panel" hidden
+    aria-label="Trajectoire du département épinglé"></aside>`;
+  const body = html`<div class="od-body">${stage}${panel}</div>`;
 
   const legendSvg = html`<svg class="od-legend-svg" role="img"
     aria-label="Légende de la carte"></svg>`;
@@ -1523,7 +1533,7 @@ le nombre brut de dossiers), classé en six classes quantiles.
   const tableVarEl = table.querySelector(".od-table-var");
   const tableValEl = table.querySelector(".od-table-val");
 
-  const root = html`<div class="od-map">${titleEl}${controls}${stage}
+  const root = html`<div class="od-map">${titleEl}${controls}${body}
     ${legendSvg}${captionEl}${sourceEl}${table}</div>`;
 
   for (const p of od_paths) {
@@ -1538,11 +1548,11 @@ le nombre brut de dossiers), classé en six classes quantiles.
     el.addEventListener("mouseleave", hideTip);
     el.addEventListener("focus", ev => showTip(el, p, ev, true));
     el.addEventListener("blur", hideTip);
+    el.addEventListener("click", () => togglePin(p.code));
     el.addEventListener("keydown", ev => {
       if (ev.key === "Enter" || ev.key === " ") {
         ev.preventDefault();
-        const on = el.classList.toggle("od-pinned");
-        el.setAttribute("aria-pressed", String(on));
+        togglePin(p.code);
       }
     });
   }
@@ -1584,6 +1594,102 @@ le nombre brut de dossiers), classé en six classes quantiles.
   }
   function hideTip() { tip.hidden = true; }
 
+  // ── épinglage d'un département (FR-013) ───────────────────────────────
+  // Clic ou Entrée : épingler ; reclic sur le même : désépingler.
+  function togglePin(code) {
+    state.pinned = (state.pinned === code) ? null : code;
+    render();
+  }
+
+  // Série complète (toutes les années) d'un indicateur pour un département.
+  const sparkSeries = (code, key) =>
+    years.map(y => ({ y, v: val(code, y, key), nb: nbOf(code, y) }));
+
+  // Sparkline SVG pure (zéro d3) ; la ligne est interrompue sur les null.
+  function sparkSvg(series, decimals) {
+    const w = 250, h = 58, pad = 8;
+    const el = svg`<svg class="od-spark" viewBox="0 0 ${w} ${h}"
+      role="img" aria-label="Courbe annuelle"></svg>`;
+    const vs = series.filter(s => s.v != null).map(s => s.v);
+    if (!vs.length) {
+      el.appendChild(svg`<text x=${w / 2} y=${h / 2} text-anchor="middle"
+        class="od-spark-year">données manquantes</text>`);
+      return el;
+    }
+    const lo = Math.min(...vs), hi = Math.max(...vs), span = (hi - lo) || 1;
+    const x = i => pad + i * (w - 2 * pad) / (series.length - 1);
+    const yOf = v => pad + (1 - (v - lo) / span) * (h - 2 * pad - 8);
+    let seg = [];
+    const flush = () => {
+      if (seg.length > 1) el.insertBefore(svg`<polyline class="od-spark-line"
+        points=${seg.map(s => `${x(s.i).toFixed(1)},${yOf(s.v).toFixed(1)}`)
+          .join(" ")}></polyline>`, el.firstChild);
+      seg = [];
+    };
+    series.forEach((s, i) => {
+      if (s.v == null) { flush(); return; }
+      seg.push({ i, v: s.v });
+      el.appendChild(svg`<circle
+        class="od-spark-dot${s.y === effYear() ? " od-spark-now" : ""}"
+        cx=${x(i).toFixed(1)} cy=${yOf(s.v).toFixed(1)} r="2.4">
+        <title>${s.y} : ${s.v.toFixed(decimals)}</title></circle>`);
+    });
+    flush();
+    el.appendChild(svg`<text x=${pad} y=${h - 2}
+      class="od-spark-year">${series[0].y}</text>`);
+    el.appendChild(svg`<text x=${w - pad} y=${h - 2} text-anchor="end"
+      class="od-spark-year">${series[series.length - 1].y}</text>`);
+    return el;
+  }
+
+  // Valeurs annuelles sous-jacentes (FR-013) ; le nombre brut de dossiers
+  // n'apparaît que dans l'infobulle et ce panneau (FR-003).
+  function sparkVals(series, indMeta, key) {
+    return html`<div class="od-spark-vals">${series.map(s =>
+      html`<span class="od-spark-yv"><b>${s.y}</b> ${
+        s.v == null ? "—" : s.v.toFixed(indMeta.decimals) +
+        (key === "suren" && s.nb != null ? ` (${fmt(s.nb)} dossiers)` : "")
+      }</span>`)}</div>`;
+  }
+
+  // Panneau latéral : reconstruit à chaque render() → les séries restent
+  // complètes quand l'année ou l'indicateur change (FR-013, scénario 2),
+  // et la surbrillance de la carte suit le département épinglé.
+  function renderPanel() {
+    if (!state.pinned) { panel.hidden = true; panel.innerHTML = ""; return; }
+    const d = byCode[state.pinned], g = geoByCode[state.pinned];
+    const nom = g ? g.nom : (d ? d.nom : state.pinned);
+    const surenInd = indByKey["suren"], selInd = ind();
+    const same = selInd.key === "suren";
+    const anneeSel = selInd.varies_by_year ? effYear() : selInd.millesime;
+    const closeBtn = html`<button type="button" class="od-panel-close"
+      aria-label="Désépingler ${nom}">✕</button>`;
+    closeBtn.addEventListener("click", () => togglePin(state.pinned));
+    const seriesSuren = sparkSeries(state.pinned, "suren");
+    const seriesSel = sparkSeries(state.pinned, selInd.key);
+    panel.innerHTML = "";
+    panel.appendChild(html`<div class="od-panel-head">
+      <span class="od-panel-title">${nom} (${state.pinned})</span>${closeBtn}
+    </div>`);
+    panel.appendChild(html`<div class="od-panel-block">
+      <div class="od-panel-label">${surenInd.label}
+        <span class="od-panel-unit">${surenInd.unit} — ${surenInd.source}</span>
+      </div>
+      ${sparkSvg(seriesSuren, surenInd.decimals)}
+      ${sparkVals(seriesSuren, surenInd, "suren")}
+    </div>`);
+    panel.appendChild(html`<div class="od-panel-block">
+      <div class="od-panel-label">${selInd.label}
+        <span class="od-panel-unit">${selInd.unit} — ${selInd.source},
+          ${anneeSel}</span>
+        ${same ? html`<span class="od-panel-note">(même série que ci-dessus)</span>` : ""}
+      </div>
+      ${sparkSvg(seriesSel, selInd.decimals)}
+      ${sparkVals(seriesSel, selInd, selInd.key)}
+    </div>`);
+    panel.hidden = false;
+  }
+
   // ── rendu (FR-015 : titre, légende+unités, source, année, légende textuelle) ──
   function render() {
     lastStats = computeStats();
@@ -1593,13 +1699,15 @@ le nombre brut de dossiers), classé en six classes quantiles.
     for (const p of od_paths) {
       const el = pathByCode[p.code];
       const v = displayValue(p.code, st);
+      const pinned = state.pinned === p.code;
       el.setAttribute("fill", colorOf(p.code, st));
       el.setAttribute("class", "od-dep"
         + (v == null ? " od-missing" : "")
-        + (el.classList.contains("od-pinned") ? " od-pinned" : ""));
+        + (pinned ? " od-pinned" : ""));
+      el.setAttribute("aria-pressed", String(pinned));
       el.setAttribute("aria-label",
         `${p.nom} (${p.code}) : ${v == null ? "données manquantes" : `${fmtVal(v)} ${unitOf(st)}`}, ` +
-        `rang ${st.rank[p.code] ?? "—"}/96, ${yLab}`);
+        `rang ${st.rank[p.code] ?? "—"}/96, ${yLab}${pinned ? ", épinglé" : ""}`);
     }
 
     // légende selon le mode
@@ -1716,6 +1824,9 @@ le nombre brut de dossiers), classé en six classes quantiles.
       `<tr><td>${r.code}</td><td>${r.nom}</td>` +
       `<td>${fmtVal(displayValue(r.code, st))}</td>` +
       `<td>${st.rank[r.code] ?? "—"}</td></tr>`).join("");
+
+    // panneau épinglé (FR-013) : mis à jour à chaque changement d'état
+    renderPanel();
   }
 
   // ── lecture / curseur (FR-009 : le manuel interrompt l'animation) ──────
