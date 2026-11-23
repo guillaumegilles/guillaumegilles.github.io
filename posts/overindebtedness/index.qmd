@@ -1262,7 +1262,13 @@ try:
         geom = row.geometry
         polys = list(geom.geoms) if geom.geom_type == "MultiPolygon" else [geom]
         d = "".join(_ring_path(p.exterior.coords) for p in polys)
-        od_paths.append({"code": row["code"], "nom": row["nom"], "d": d})
+        # centroïde (point représentatif) en coordonnées viewBox, pour les
+        # étiquettes top-5 des modes variation (FR-014)
+        cent = geom.representative_point()
+        cx = round((cent.x - minx) * _scale)
+        cy = round((maxy - cent.y) * _scale)
+        od_paths.append({"code": row["code"], "nom": row["nom"], "d": d,
+                         "cx": cx, "cy": cy})
 
     IND_COL = {
         "suren": "suren_depot_taux",
@@ -1333,9 +1339,13 @@ except Exception as e:
 L'explorateur ci-dessous remplace les quatre cartes statiques précédentes :
 il suffit de déplacer le curseur d'année (ou de lancer la lecture) pour
 voir le territoire se recolorer, et de survoler un département pour
-obtenir son détail. L'encodage est fixe et documenté : le **taux** de
-dépôts pour 10 000 habitants est toujours représenté (jamais le nombre
-brut de dossiers), classé en six classes quantiles.
+obtenir son détail. Le sélecteur d'indicateur compare le taux de dépôts au
+chômage, à la pauvreté, à la part d'allocataires RSA, à la part de
+locataires et au score de fragilité ; le sélecteur de mode affiche le
+niveau, la variation depuis la première année, la variation d'une année
+sur l'autre ou le rang. L'encodage du niveau est fixe et documenté : le
+**taux** de dépôts pour 10 000 habitants est toujours représenté (jamais
+le nombre brut de dossiers), classé en six classes quantiles.
 
 ```{ojs}
 //| echo: false
@@ -1347,12 +1357,18 @@ brut de dossiers), classé en six classes quantiles.
 
   const W = od_viewBox[0], H = od_viewBox[1];
   const years = od_years.map(String);
+  const firstYear = years[0];
+  const latestYear = years[years.length - 1];
   const byCode = Object.fromEntries(od_data.map(d => [d.code, d]));
-  const UNIT = "dépôts / 10 000 hab.";
+  const geoByCode = Object.fromEntries(od_paths.map(p => [p.code, p]));
+  const indByKey = Object.fromEntries(od_indicators.map(i => [i.key, i]));
 
   // ── palettes ColorBrewer (sûres pour les daltoniens) ─────────────────
   const YLORRD = ["#ffffb2","#fee391","#fec44f","#fe9929","#ec7014",
                   "#d94801","#cc4c02","#993404","#662506"];
+  // RdBu inversé : rouge = hausse, bleu = baisse, centré sur 0 (FR-005, R5)
+  const RDBU_R = ["#2166ac","#4393c3","#92c5de","#d1e5f0","#f7f7f7",
+                  "#fddbc7","#f4a582","#d6604d","#b2182b"];
   const MISSING = "#d9d9d9";
 
   // ── utilitaires couleur / quantiles (sans d3 : zéro requête CDN) ──────
@@ -1370,65 +1386,124 @@ brut de dossiers), classé en six classes quantiles.
     return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo); };
   const fmt = n => n.toLocaleString("fr-FR");
 
+  // ── état (FR-010/FR-011/FR-009/FR-022) ────────────────────────────────
+  const MODES = [
+    { key: "niveau",   label: "Niveau" },
+    { key: "var_base", label: `Variation vs ${firstYear} (%)` },
+    { key: "var_n1",   label: "Variation vs année précédente (%)" },
+    { key: "rang",     label: "Rang" },
+  ];
+  const state = { year: latestYear, variable: "suren", mode: "niveau", timer: null };
+  const ind = () => indByKey[state.variable];
+  // FR-022 : indicateur à millésime unique → année effective fixée sur le
+  // millésime source ; le curseur d'année reste visible mais inerte.
+  const effYear = () => ind().varies_by_year ? state.year
+    : (years.includes(String(ind().millesime)) ? String(ind().millesime) : firstYear);
+  const modeLabel = () => MODES.find(m => m.key === state.mode).label;
+
   // ── accès aux valeurs ─────────────────────────────────────────────────
-  const val = (code, year, key="suren") => {
+  const val = (code, year, key) => {
     const d = byCode[code]; if (!d) return null;
     const y = d.years[year]; return y ? y[key] : null; };
   const nbOf = (code, year) => {
     const d = byCode[code]; if (!d) return null;
     const y = d.years[year]; return y ? y.nb : null; };
 
-  // ── statistiques de l'année courante (rang, z, delta, seuils) ─────────
-  function yearStats(year) {
+  // ── statistiques de l'état courant ────────────────────────────────────
+  function computeStats() {
+    const y = effYear(), k = state.variable;
     const rows = od_data.map(d => ({ code: d.code, nom: d.nom,
-      v: val(d.code, year), nb: nbOf(d.code, year) }));
+      v: val(d.code, y, k), nb: nbOf(d.code, y) }));
     const vals = rows.filter(r => r.v != null).map(r => r.v).sort((a,b) => a-b);
     const n = vals.length || 1;
     const mean = vals.reduce((s,x) => s+x, 0) / n;
     const sd = Math.sqrt(vals.reduce((s,x) => s+(x-mean)**2, 0) / n) || 1;
     const thresholds = [1,2,3,4,5].map(i => quantile(vals, i/6));
-    const rank = {}, z = {}, delta = {};
+    const vmap = {}, rank = {}, z = {}, nbs = {}, deltaN1 = {}, deltaBase = {};
     rows.filter(r => r.v != null).sort((a,b) => b.v - a.v)
         .forEach((r,i) => { rank[r.code] = i + 1; });
-    const prev = years[years.indexOf(year) - 1];
+    const prev = years[years.indexOf(y) - 1];
     rows.forEach(r => {
+      nbs[r.code] = r.nb;
       if (r.v == null) return;
+      vmap[r.code] = r.v;
       z[r.code] = (r.v - mean) / sd;
-      const vp = prev ? val(r.code, prev) : null;
-      delta[r.code] = (vp != null && vp !== 0) ? (r.v - vp) / vp * 100 : null;
+      const vp = prev ? val(r.code, prev, k) : null;
+      deltaN1[r.code] = (vp != null && vp !== 0) ? (r.v - vp) / vp * 100 : null;
+      const vb = val(r.code, firstYear, k);
+      deltaBase[r.code] = (vb != null && vb !== 0) ? (r.v - vb) / vb * 100 : null;
     });
-    const nbs = Object.fromEntries(rows.map(r => [r.code, r.nb]));
-    return { rows, vals, mean, sd, thresholds, rank, z, delta, nbs };
+    // rang : classes quantiles sur les rangs 1..n (R5) ; étendue symétrique
+    // des variations pour l'échelle divergente centrée sur 0 (FR-005)
+    const ranks = Object.values(rank).sort((a,b) => a-b);
+    const rankThresholds = [1,2,3,4,5].map(i => quantile(ranks, i/6));
+    const deltasAll = Object.values(state.mode === "var_n1" ? deltaN1 : deltaBase)
+      .filter(d => d != null);
+    const extent = deltasAll.length ? Math.max(...deltasAll.map(Math.abs)) : 1;
+    return { rows, vals, mean, sd, thresholds, vmap, rank, z, nbs,
+             deltaN1, deltaBase, rankThresholds, extent, prevYear: prev, n };
   }
-  const classIndex = (v, th) => th.reduce((acc, t) => acc + (v >= t ? 1 : 0), 0);
-  const classColor = i => paletteAt(YLORRD, i / 5);
 
-  // ── totaux nationaux par année (pour la légende d'évolution) ──────────
+  // valeur affichée selon le mode (FR-011)
+  const displayValue = (code, st) => state.mode === "niveau" ? (st.vmap[code] ?? null)
+    : state.mode === "rang" ? (st.rank[code] ?? null)
+    : state.mode === "var_n1" ? (st.deltaN1[code] ?? null)
+    : (st.deltaBase[code] ?? null);
+  const unitOf = st => state.mode.startsWith("var_") ? "%"
+    : state.mode === "rang" ? "rang" : ind().unit;
+  const decimalsOf = () => state.mode.startsWith("var_") ? 1
+    : state.mode === "rang" ? 0 : ind().decimals;
+  const fmtVal = v => v == null ? "—" : v.toFixed(decimalsOf());
+
+  // couleur selon le mode (FR-003/FR-004/FR-005/FR-006)
+  function colorOf(code, st) {
+    const v = displayValue(code, st);
+    if (v == null) return MISSING;
+    if (state.mode === "niveau") {
+      const i = st.thresholds.reduce((acc,t) => acc + (v >= t ? 1 : 0), 0);
+      return paletteAt(YLORRD, i / 5);
+    }
+    if (state.mode === "rang") {
+      // rang 1 = valeur la plus forte = classe la plus foncée
+      const i = st.rankThresholds.reduce((acc,t) => acc + (v < t ? 1 : 0), 0);
+      return paletteAt(YLORRD, i / 5);
+    }
+    const t = (v + st.extent) / (2 * st.extent);
+    return paletteAt(RDBU_R, t);
+  }
+
+  // ── totaux nationaux par année (légende d'évolution, indicateur suren) ─
   const totals = {};
   years.forEach(y => { totals[y] = od_data.reduce((s,d) => s + (nbOf(d.code, y) || 0), 0); });
   const troughYear = years.reduce((a,b) => totals[a] <= totals[b] ? a : b);
-  const latestYear = years[years.length - 1];
   const rebound = (totals[latestYear] - totals[troughYear]) / totals[troughYear] * 100;
-
-  // ── état ──────────────────────────────────────────────────────────────
-  const state = { year: latestYear, timer: null };
-  let lastStats = yearStats(state.year);
 
   // ── construction du DOM ───────────────────────────────────────────────
   const titleEl = html`<div class="od-title"></div>`;
-  const yearLabel = html`<span class="od-year">${state.year}</span>`;
+  const yearLabelEl = html`<span class="od-year">${state.year}</span>`;
   const slider = html`<input type="range" class="od-slider"
     min=${years[0]} max=${years[years.length-1]} step="1" value=${state.year}
     aria-label="Année d'observation">`;
   const playBtn = html`<button type="button" class="od-play" aria-pressed="false"
     aria-label="Lire l'animation année par année">Lire l'animation</button>`;
-  const controls = html`<div class="od-controls">${slider} ${yearLabel} ${playBtn}</div>`;
+  const varSelect = html`<select class="od-select"
+    aria-label="Indicateur cartographié">${od_indicators.map(i =>
+      html`<option value=${i.key}>${i.label}</option>`)}</select>`;
+  const badge = html`<span class="od-badge" hidden></span>`;
+  const modeInputs = MODES.map(m =>
+    html`<input type="radio" name="od-mode" class="od-mode-radio" value=${m.key}
+      aria-label=${m.label}>`);
+  const modeToggle = html`<div class="od-modes" role="radiogroup"
+    aria-label="Mode d'affichage">${MODES.map((m,i) =>
+      html`<label class="od-mode">${modeInputs[i]}<span>${m.label}</span></label>`)}</div>`;
+  const controls = html`<div class="od-controls">${slider} ${yearLabelEl}
+    ${playBtn} ${varSelect} ${badge} ${modeToggle}</div>`;
 
-  // NB: variable nommée mapSvg pour ne pas masquer le builtin `svg` (htl),
-  // utilisé ci-dessous pour créer les <path>/<rect>/<text> dans le
-  // namespace SVG — `html`<path>` produirait un élément HTML invisible.
+  // NB: mapSvg (et non svg) pour ne pas masquer le builtin `svg` (htl),
+  // utilisé pour créer les <path>/<rect>/<text>/<g> dans le namespace SVG.
   const mapSvg = html`<svg class="od-svg" viewBox="0 0 ${W} ${H}" role="application"
     aria-label="Carte choroplèthe de France métropolitaine, 96 départements"></svg>`;
+  const labelsG = svg`<g class="od-labels"></g>`;
   const pathByCode = {};
   const tip = html`<div class="od-tooltip" role="tooltip" hidden></div>`;
   const stage = html`<div class="od-stage">${mapSvg}${tip}</div>`;
@@ -1436,15 +1511,17 @@ brut de dossiers), classé en six classes quantiles.
   const legendSvg = html`<svg class="od-legend-svg" role="img"
     aria-label="Légende de la carte"></svg>`;
   const captionEl = html`<div class="od-caption"></div>`;
-  const sourceEl = html`<div class="od-source">Source : Banque de France
-    (WebStat). 96 départements métropolitains — DOM-TOM exclus.</div>`;
+  const sourceEl = html`<div class="od-source"></div>`;
   const tableSummaryYear = html`<span></span>`;
   const tbody = html`<tbody></tbody>`;
   const table = html`<details class="od-table">
-    <summary>Tableau des 96 départements — taux de dépôt, année ${tableSummaryYear}</summary>
+    <summary>Tableau des 96 départements — <span class="od-table-var"></span>,
+      année ${tableSummaryYear}</summary>
     <table><thead><tr><th>Code</th><th>Département</th>
-      <th>Taux (dépôts / 10 000 hab.)</th><th>Rang</th></tr></thead>${tbody}</table>
+      <th class="od-table-val">Valeur</th><th>Rang</th></tr></thead>${tbody}</table>
   </details>`;
+  const tableVarEl = table.querySelector(".od-table-var");
+  const tableValEl = table.querySelector(".od-table-val");
 
   const root = html`<div class="od-map">${titleEl}${controls}${stage}
     ${legendSvg}${captionEl}${sourceEl}${table}</div>`;
@@ -1469,21 +1546,31 @@ brut de dossiers), classé en six classes quantiles.
       }
     });
   }
+  mapSvg.appendChild(labelsG);
 
-  // ── infobulle ─────────────────────────────────────────────────────────
+  // ── infobulle (FR-012) ────────────────────────────────────────────────
   function showTip(el, p, ev, fromFocus=false) {
     const st = lastStats;
-    const v = val(p.code, state.year);
+    const v = displayValue(p.code, st);
     let txt = `<strong>${p.nom}</strong> (${p.code})<br>`;
     if (v == null) {
       txt += "données manquantes";
     } else {
-      txt += `${v.toFixed(1)} ${UNIT}<br>rang ${st.rank[p.code]}/96<br>`;
-      if (st.nbs[p.code] != null) txt += `dossiers déposés : ${fmt(st.nbs[p.code])}<br>`;
-      const prev = years[years.indexOf(state.year) - 1];
-      const d = st.delta[p.code];
-      if (d != null && prev) txt += `vs ${prev} : ${d >= 0 ? "+" : ""}${d.toFixed(1)} %<br>`;
-      txt += `z = ${st.z[p.code].toFixed(2)} (moy. nat. ${st.mean.toFixed(1)})`;
+      txt += `${fmtVal(v)} ${unitOf(st)}<br>rang ${st.rank[p.code]}/96<br>`;
+      // FR-003 : le nombre brut de dossiers n'apparaît qu'en infobulle
+      if (state.variable === "suren" && state.mode === "niveau"
+          && st.nbs[p.code] != null) {
+        txt += `dossiers déposés : ${fmt(st.nbs[p.code])}<br>`;
+      }
+      if (state.mode === "niveau" && st.prevYear) {
+        const d = st.deltaN1[p.code];
+        if (d != null) txt += `vs ${st.prevYear} : ${d >= 0 ? "+" : ""}${d.toFixed(1)} %<br>`;
+      }
+      if (state.mode.startsWith("var_")) {
+        const lv = st.vmap[p.code];
+        if (lv != null) txt += `niveau ${effYear()} : ${lv.toFixed(ind().decimals)} ${ind().unit}<br>`;
+      }
+      txt += `z = ${st.z[p.code].toFixed(2)} (moy. nat. ${st.mean.toFixed(ind().decimals)})`;
     }
     tip.innerHTML = txt;
     tip.hidden = false;
@@ -1497,74 +1584,149 @@ brut de dossiers), classé en six classes quantiles.
   }
   function hideTip() { tip.hidden = true; }
 
-  // ── rendu ─────────────────────────────────────────────────────────────
+  // ── rendu (FR-015 : titre, légende+unités, source, année, légende textuelle) ──
   function render() {
-    lastStats = yearStats(state.year);
+    lastStats = computeStats();
     const st = lastStats;
+    const yLab = effYear();
+
     for (const p of od_paths) {
       const el = pathByCode[p.code];
-      const v = val(p.code, state.year);
-      if (v == null) {
-        el.setAttribute("fill", MISSING);
-        el.setAttribute("class", "od-dep od-missing"
-          + (el.classList.contains("od-pinned") ? " od-pinned" : ""));
-        el.setAttribute("aria-label",
-          `${p.nom} (${p.code}) : données manquantes en ${state.year}`);
-      } else {
-        el.setAttribute("fill", classColor(classIndex(v, st.thresholds)));
-        el.setAttribute("class", "od-dep"
-          + (el.classList.contains("od-pinned") ? " od-pinned" : ""));
-        el.setAttribute("aria-label",
-          `${p.nom} (${p.code}) : ${v.toFixed(1)} ${UNIT}, rang ${st.rank[p.code]}/96, année ${state.year}`);
-      }
+      const v = displayValue(p.code, st);
+      el.setAttribute("fill", colorOf(p.code, st));
+      el.setAttribute("class", "od-dep"
+        + (v == null ? " od-missing" : "")
+        + (el.classList.contains("od-pinned") ? " od-pinned" : ""));
+      el.setAttribute("aria-label",
+        `${p.nom} (${p.code}) : ${v == null ? "données manquantes" : `${fmtVal(v)} ${unitOf(st)}`}, ` +
+        `rang ${st.rank[p.code] ?? "—"}/96, ${yLab}`);
     }
-    // légende : 6 classes quantiles
-    const th = st.thresholds;
-    const labels = [];
-    for (let i = 0; i < 6; i++) {
-      const lo = i === 0 ? null : th[i-1];
-      const hi = i === 5 ? null : th[i];
-      labels.push(lo == null ? `< ${hi.toFixed(1)}`
-        : hi == null ? `≥ ${lo.toFixed(1)}`
-        : `${lo.toFixed(1)} – ${hi.toFixed(1)}`);
-    }
+
+    // légende selon le mode
     legendSvg.setAttribute("viewBox", "0 0 1000 46");
     legendSvg.innerHTML = "";
     const sw = 150, gap = 12;
+    const unit = unitOf(st);
+    let labels = [];
     for (let i = 0; i < 6; i++) {
+      let fill;
+      if (state.mode === "niveau") {
+        const th = st.thresholds;
+        const lo = i === 0 ? null : th[i-1], hi = i === 5 ? null : th[i];
+        fill = paletteAt(YLORRD, i / 5);
+        labels.push(lo == null ? `< ${hi.toFixed(ind().decimals)}`
+          : hi == null ? `≥ ${lo.toFixed(ind().decimals)}`
+          : `${lo.toFixed(ind().decimals)} – ${hi.toFixed(ind().decimals)}`);
+      } else if (state.mode === "rang") {
+        const th = st.rankThresholds;
+        const lo = i === 0 ? 1 : Math.floor(th[i-1]) + 1;
+        const hi = i === 5 ? st.n : Math.round(th[i]);
+        fill = paletteAt(YLORRD, i / 5);
+        labels.push(`${lo} – ${hi}`);
+      } else {
+        const ext = st.extent, step = 2 * ext / 6;
+        const lo = -ext + i * step, hi = lo + step;
+        fill = paletteAt(RDBU_R, ((lo + hi) / 2 + ext) / (2 * ext));
+        labels.push(i === 0 ? `< ${hi.toFixed(0)} %`
+          : i === 5 ? `≥ ${lo.toFixed(0)} %`
+          : `${lo.toFixed(0)} – ${hi.toFixed(0)} %`);
+      }
       const x = i * (sw + gap);
       const rect = svg`<rect x=${x} y="0" width=${sw} height="14"
-        fill=${classColor(i)} class="od-swatch"></rect>`;
+        fill=${fill} class="od-swatch"></rect>`;
       const text = svg`<text x=${x} y="30" class="od-range">${labels[i]}</text>`;
-      const unit = svg`<text x=${x} y="43" class="od-unit">${i === 5 ? UNIT : ""}</text>`;
-      legendSvg.appendChild(rect); legendSvg.appendChild(text); legendSvg.appendChild(unit);
+      const unitT = svg`<text x=${x} y="43" class="od-unit">${i === 5 ? unit : ""}</text>`;
+      legendSvg.appendChild(rect); legendSvg.appendChild(text); legendSvg.appendChild(unitT);
     }
-    // titre / légende textuelle / source / année
-    titleEl.textContent = `Taux de dépôt de dossiers de surendettement — ${state.year}`;
-    yearLabel.textContent = state.year;
-    tableSummaryYear.textContent = state.year;
-    const med = quantile(st.vals, 0.5), max = st.vals[st.vals.length - 1];
-    captionEl.textContent =
-      `En ${state.year}, le taux médian est de ${med.toFixed(1)} et le maximum ` +
-      `de ${max.toFixed(1)} ${UNIT}. Au niveau national, les dépôts sont passés ` +
-      `de ${fmt(totals[troughYear])} dossiers en ${troughYear} (creux) à ` +
-      `${fmt(totals[latestYear])} en ${latestYear}, soit ${rebound >= 0 ? "+" : ""}${rebound.toFixed(0)} %.`;
-    // tableau
-    const rows = st.rows.filter(r => true)
+
+    // étiquettes top-5 hausses / baisses en mode variation (FR-014)
+    labelsG.innerHTML = "";
+    if (state.mode.startsWith("var_")) {
+      const deltas = Object.entries(state.mode === "var_n1" ? st.deltaN1 : st.deltaBase)
+        .filter(([,d]) => d != null);
+      const risers = deltas.slice().sort((a,b) => b[1] - a[1]).slice(0, 5);
+      const fallers = deltas.slice().sort((a,b) => a[1] - b[1]).slice(0, 5);
+      for (const [code, d] of risers) {
+        const g = geoByCode[code]; if (!g) continue;
+        labelsG.appendChild(svg`<text x=${g.cx} y=${g.cy} text-anchor="middle"
+          class="od-toplabel od-rise">${g.nom} +${d.toFixed(0)} %</text>`);
+      }
+      for (const [code, d] of fallers) {
+        const g = geoByCode[code]; if (!g) continue;
+        labelsG.appendChild(svg`<text x=${g.cx} y=${g.cy} text-anchor="middle"
+          class="od-toplabel od-fall">${g.nom} ${d.toFixed(0)} %</text>`);
+      }
+    }
+
+    // titre / source / année / badge millésime (FR-022)
+    titleEl.textContent = `${ind().label} — ${modeLabel()} — ${yLab}`;
+    yearLabelEl.textContent = yLab;
+    sourceEl.textContent = `Source : ${ind().source} — ${yLab}. ` +
+      "96 départements métropolitains — DOM-TOM exclus.";
+    const varies = ind().varies_by_year;
+    slider.disabled = !varies;
+    playBtn.disabled = !varies;
+    badge.hidden = varies;
+    if (!varies) badge.textContent = `${ind().source} ${ind().millesime}`;
+    varSelect.value = state.variable;
+    modeInputs.forEach((r, i) => { r.checked = MODES[i].key === state.mode; });
+
+    // légende textuelle calculée (FR-015)
+    if (state.mode === "niveau") {
+      const med = quantile(st.vals, 0.5), max = st.vals[st.vals.length - 1];
+      const top = st.rows.filter(r => r.v === max)[0];
+      captionEl.textContent =
+        `En ${yLab}, la médiane est de ${med.toFixed(ind().decimals)} ` +
+        `${ind().unit} et le maximum de ${max.toFixed(ind().decimals)} ` +
+        `(${top ? top.nom : "—"})${state.variable === "suren" ? `. Au niveau national, ` +
+        `les dépôts sont passés de ${fmt(totals[troughYear])} dossiers en ` +
+        `${troughYear} (creux) à ${fmt(totals[latestYear])} en ${latestYear}, ` +
+        `soit ${rebound >= 0 ? "+" : ""}${rebound.toFixed(0)} %.` : "."}`;
+    } else if (state.mode === "rang") {
+      const top = st.rows.filter(r => r.rank === 1)[0];
+      const med = st.rows.filter(r => r.rank === Math.round(st.n / 2))[0];
+      captionEl.textContent =
+        `En ${yLab}, le rang 1 est ${top ? top.nom : "—"} ` +
+        `(${top ? fmtVal(top.v) : "—"} ${ind().unit}) ; le rang médian ` +
+        `(${Math.round(st.n / 2)}) est ${med ? med.nom : "—"}.`;
+    } else {
+      const ref = state.mode === "var_base" ? firstYear : (st.prevYear ?? firstYear);
+      const deltas = Object.entries(state.mode === "var_n1" ? st.deltaN1 : st.deltaBase)
+        .filter(([,d]) => d != null);
+      const up = deltas.filter(([,d]) => d > 0).length;
+      const down = deltas.filter(([,d]) => d < 0).length;
+      const riser = deltas.slice().sort((a,b) => b[1] - a[1])[0];
+      const faller = deltas.slice().sort((a,b) => a[1] - b[1])[0];
+      captionEl.textContent =
+        `Variation ${yLab} vs ${ref} : ${up} départements en hausse, ` +
+        `${down} en baisse ; plus forte hausse : ${riser ? geoByCode[riser[0]].nom : "—"} ` +
+        `(${riser ? "+" + riser[1].toFixed(0) : "—"} %), plus forte baisse : ` +
+        `${faller ? geoByCode[faller[0]].nom : "—"} (${faller ? faller[1].toFixed(0) : "—"} %).`;
+    }
+
+    // tableau des 96 départements (FR-023)
+    tableVarEl.textContent = ind().label;
+    tableSummaryYear.textContent = yLab;
+    tableValEl.textContent = state.mode === "rang" ? "Rang"
+      : state.mode.startsWith("var_") ? "Variation (%)"
+      : `${ind().label} (${ind().unit})`;
+    const rows = st.rows.slice()
       .sort((a,b) => (b.v ?? -Infinity) - (a.v ?? -Infinity));
     tbody.innerHTML = rows.map(r =>
       `<tr><td>${r.code}</td><td>${r.nom}</td>` +
-      `<td>${r.v == null ? "—" : r.v.toFixed(1)}</td>` +
+      `<td>${fmtVal(displayValue(r.code, st))}</td>` +
       `<td>${st.rank[r.code] ?? "—"}</td></tr>`).join("");
   }
 
   // ── lecture / curseur (FR-009 : le manuel interrompt l'animation) ──────
+  let lastStats = computeStats();
   function stopPlay() {
     if (state.timer) { clearInterval(state.timer); state.timer = null; }
     playBtn.setAttribute("aria-pressed", "false");
     playBtn.textContent = "Lire l'animation";
   }
   playBtn.addEventListener("click", () => {
+    if (!ind().varies_by_year) return; // FR-022 : lecture inerte
     if (state.timer) { stopPlay(); return; }
     playBtn.setAttribute("aria-pressed", "true");
     playBtn.textContent = "Pause";
@@ -1581,6 +1743,16 @@ brut de dossiers), classé en six classes quantiles.
     state.year = slider.value;
     render();
   });
+  varSelect.addEventListener("change", () => {
+    stopPlay();
+    state.variable = varSelect.value;
+    render();
+  });
+  modeInputs.forEach((r, i) => r.addEventListener("change", () => {
+    stopPlay();
+    state.mode = MODES[i].key;
+    render();
+  }));
 
   render();
   return root;
