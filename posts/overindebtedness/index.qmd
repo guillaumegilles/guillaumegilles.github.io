@@ -2,7 +2,7 @@
 title: "Map of Overindebtedness in France"
 subtitle: "Analyse de la corrélation entre conditions économiques départementales et surendettement"
 date: 2026-05-18
-image: ../../assetsoverindebtedness.jpg
+image: ../../assets/posts/overindebtedness.jpg
 ---
 
 ## Ressource à revoir
@@ -1215,392 +1215,378 @@ variables explicatives.
 :::
 
 ```{python}
-#| label: carto-setup
-#| include: false
+#| label: od-payload
+#| echo: false
+#| output: false
+# NB: ne PAS passer include: false ici — Quarto n'émet le bloc
+# <script type="ojs-define"> que si la cellule produit une sortie.
 
+# Construction du payload inline pour l'explorateur cartographique {ojs} :
+# - od_paths      : chemins SVG pré-projetés (EPSG:2154 -> viewBox 1000 px)
+# - od_indicators : métadonnées des 6 indicateurs (FR-007)
+# - od_data       : valeurs par département x année (null = manquant)
+# - od_years / od_viewBox
+# Zéro requête réseau côté client (FR-017) : la géométrie est aplatie en
+# chaînes `d` SVG à la compilation — repli documenté (research R3), le
+# runtime OJS de Quarto chargeant d3 depuis un CDN à l'exécution.
+
+import json
 import geopandas as gpd
-import matplotlib.colors as mcolors
-import matplotlib.cm as cm
-import matplotlib.patches as mpatches
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-CARTO_AVAILABLE = False
-gdf_merged = None
-
+OD_AVAILABLE = False
 try:
+    if not DATA_AVAILABLE or len(df) == 0:
+        raise FileNotFoundError("analytical_dataset.csv indisponible")
+
     gdf = gpd.read_file(GEO_DIR / "departements.geojson")
-    # Normaliser le code département
-    if "code" in gdf.columns:
-        gdf = gdf.rename(columns={"code": "dep_code"})
-    elif "properties.code" in gdf.columns:
-        gdf = gdf.rename(columns={"properties.code": "dep_code"})
-    gdf["dep_code"] = gdf["dep_code"].astype(str).str.zfill(2)
+    gdf["code"] = gdf["code"].astype(str).str.zfill(2)
+    gdf = gdf.to_crs(epsg=2154)  # Lambert-93, référence France métro
+    # Simplification sub-pixel (800 m ≈ 0,7 px à 1000 px de large) pour
+    # rester sous le budget de 200 Ko de payload inline (SC-010).
+    gdf["geometry"] = gdf.geometry.simplify(800, preserve_topology=True)
+    minx, miny, maxx, maxy = gdf.total_bounds
+    OD_W = 1000.0
+    _scale = OD_W / (maxx - minx)
+    OD_H = (maxy - miny) * _scale
 
-    if DATA_AVAILABLE and len(df) > 0:
-        df_map = df[df["annee"] == YEAR_TARGET].copy()
-        df_map["dep_code"] = df_map["dep_code"].astype(str).str.zfill(2)
+    def _ring_path(ring) -> str:
+        pts = []
+        for x, y in ring:
+            px = (x - minx) * _scale
+            py = (maxy - y) * _scale  # Y inversé pour SVG
+            pts.append(f"{px:.0f},{py:.0f}")
+        return "M" + "L".join(pts) + "Z"
 
-        for col in df_map.select_dtypes(include="object").columns:
-            try:
-                df_map[col] = pd.to_numeric(df_map[col], errors="ignore")
-            except Exception:
-                pass
+    od_paths = []
+    for _, row in gdf.iterrows():
+        geom = row.geometry
+        polys = list(geom.geoms) if geom.geom_type == "MultiPolygon" else [geom]
+        d = "".join(_ring_path(p.exterior.coords) for p in polys)
+        od_paths.append({"code": row["code"], "nom": row["nom"], "d": d})
 
-        gdf_merged = gdf.merge(df_map, on="dep_code", how="left")
-        n_matched = gdf_merged["suren_depot_taux"].notna().sum()
+    IND_COL = {
+        "suren": "suren_depot_taux",
+        "chomage": "chomage_taux",
+        "pauvrete": "taux_pauvrete",
+        "rsa": "rsa_taux",
+        "locataires": "part_locataires",
+        "score": "score_fragilite",
+    }
+    od_indicators = [
+        {"key": "suren", "label": "Taux de dépôt de dossiers",
+         "unit": "dépôts / 10 000 hab.", "source": "Banque de France",
+         "millesime": None, "decimals": 1, "varies_by_year": True},
+        {"key": "chomage", "label": "Taux de chômage",
+         "unit": "%", "source": "INSEE TCRD", "millesime": "2024",
+         "decimals": 1, "varies_by_year": False},
+        {"key": "pauvrete", "label": "Taux de pauvreté",
+         "unit": "%", "source": "INSEE FiLoSoFi", "millesime": "2023",
+         "decimals": 1, "varies_by_year": False},
+        {"key": "rsa", "label": "Part allocataires RSA",
+         "unit": "%", "source": "DREES", "millesime": None,
+         "decimals": 2, "varies_by_year": True},
+        {"key": "locataires", "label": "Part ménages locataires",
+         "unit": "%", "source": "INSEE RP", "millesime": "2022",
+         "decimals": 1, "varies_by_year": False},
+        {"key": "score", "label": "Score de fragilité",
+         "unit": "z-score composite", "source": "calculé (0,3/0,3/0,2/0,2)",
+         "millesime": None, "decimals": 2, "varies_by_year": True},
+    ]
 
-        # Vérifier les codes Corse
-        corse_ok = all(c in gdf_merged["dep_code"].values for c in ["2A", "2B"])
-        CARTO_AVAILABLE = len(gdf_merged) >= 90
+    od_years = sorted(int(y) for y in df["annee"].unique())
+    od_data = []
+    for code, grp in df.groupby("dep_code"):
+        grp = grp.sort_values("annee")
+        years_map = {}
+        for _, r in grp.iterrows():
+            y = str(int(r["annee"]))
+            vals = {}
+            for k, col in IND_COL.items():
+                v = r.get(col)
+                vals[k] = None if v is None or pd.isna(v) else round(float(v), 3)
+            nb = r.get("suren_depot_nb")
+            vals["nb"] = None if nb is None or pd.isna(nb) else int(nb)
+            years_map[y] = vals
+        od_data.append({
+            "code": str(code).zfill(2),
+            "nom": str(grp["dep_nom"].iloc[0]),
+            "years": years_map,
+        })
 
-        print(f"✓ GeoDataFrame chargé : {len(gdf_merged)} polygones, {n_matched} matchés avec les données {YEAR_TARGET}")
-        if not corse_ok:
-            print("ℹ️ Codes Corse 2A/2B : vérifier la cohérence des codes dans le GeoJSON")
-    else:
-        print("⚠️ Données analytiques non disponibles pour la cartographie.")
-except FileNotFoundError:
-    print("⚠️ GeoJSON non trouvé dans data/geo/ — exécuter scripts/01_download.py")
+    OD_AVAILABLE = len(od_data) == 96 and len(od_paths) == 96
+    _payload_kb = len(json.dumps(
+        {"p": od_paths, "d": od_data, "i": od_indicators}
+    )) / 1024
+    print(f"✓ payload carte : {len(od_data)} départements, "
+          f"années {od_years[0]}–{od_years[-1]}, ~{_payload_kb:.0f} Ko sérialisé")
+
+    ojs_define(od_paths=od_paths, od_indicators=od_indicators, od_data=od_data,
+               od_years=od_years, od_viewBox=[OD_W, OD_H])
 except Exception as e:
-    print(f"⚠️ Erreur chargement GeoDataFrame : {e}")
+    print(f"⚠️ Payload cartographie indisponible : {e}")
+    ojs_define(od_paths=[], od_indicators=[], od_data=[], od_years=[],
+               od_viewBox=[1000.0, 1000.0])
 ```
 
-### Taux de surendettement par département {#sec-carto-suren}
+### Explorateur cartographique interactif {#sec-carto-explorer}
 
-Cette première carte dresse le **portrait territorial du surendettement**. Elle
-constitue la variable à expliquer tout au long de cette analyse. Les
-départements les plus touchés (teinte rouge foncée) sont généralement situés
-dans le Nord industriel, l'Île-de-France périphérique et certains territoires
-du bassin méditerranéen. Les départements alpins, bretons et du Grand Ouest
-présentent historiquement les taux les plus faibles.
+L'explorateur ci-dessous remplace les quatre cartes statiques précédentes :
+il suffit de déplacer le curseur d'année (ou de lancer la lecture) pour
+voir le territoire se recolorer, et de survoler un département pour
+obtenir son détail. L'encodage est fixe et documenté : le **taux** de
+dépôts pour 10 000 habitants est toujours représenté (jamais le nombre
+brut de dossiers), classé en six classes quantiles.
 
-```{python}
-#| label: fig-carto-suren
-#| fig-cap: "Taux de surendettement par département (année de référence). Palette YlOrRd : plus la couleur est foncée, plus le taux est élevé. Source : Banque de France."
-#| fig-alt: "Carte choroplèthe de France métropolitaine représentant le nombre de dossiers de surendettement déposés pour 1 000 ménages par département durant l'année de référence. Les départements du Nord, du Pas-de-Calais et de la Seine-Saint-Denis apparaissent en rouge foncé."
-#| fig-width: 10
-#| fig-height: 8
-#| column: page
+```{ojs}
+//| echo: false
+{
+  if (!od_paths || od_paths.length === 0) {
+    return html`<p class="od-note">Explorateur cartographique indisponible :
+    données non chargées (exécuter les scripts 01–04).</p>`;
+  }
 
-if CARTO_AVAILABLE and gdf_merged is not None:
-    col_map = "suren_depot_nb"
-    col_label = "Dossiers déposés (nb)"
+  const W = od_viewBox[0], H = od_viewBox[1];
+  const years = od_years.map(String);
+  const byCode = Object.fromEntries(od_data.map(d => [d.code, d]));
+  const UNIT = "dépôts / 10 000 hab.";
 
-    # Utiliser le taux / 10 000 hab. si disponible (RP 2022 PMUN)
-    suren_vals = pd.to_numeric(gdf_merged["suren_depot_taux"], errors="coerce")
-    if suren_vals.median() < 100:
-        col_map = "suren_depot_taux"
-        col_label = "Dépôts pour 10 000 habitants"
+  // ── palettes ColorBrewer (sûres pour les daltoniens) ─────────────────
+  const YLORRD = ["#ffffb2","#fee391","#fec44f","#fe9929","#ec7014",
+                  "#d94801","#cc4c02","#993404","#662506"];
+  const MISSING = "#d9d9d9";
 
-    gdf_plot = gdf_merged.copy()
-    gdf_plot[col_map] = pd.to_numeric(gdf_plot[col_map], errors="coerce")
+  // ── utilitaires couleur / quantiles (sans d3 : zéro requête CDN) ──────
+  const hex2rgb = h => { h = h.replace("#","");
+    return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)]; };
+  const rgb2hex = (r,g,b) => "#" + [r,g,b]
+    .map(v => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2,"0")).join("");
+  const lerp = (c1, c2, t) => { const a = hex2rgb(c1), b = hex2rgb(c2);
+    return rgb2hex(a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t); };
+  const paletteAt = (stops, t) => { t = Math.max(0, Math.min(1, t));
+    const pos = t * (stops.length - 1), i = Math.floor(pos), f = pos - i;
+    return lerp(stops[i], stops[Math.min(i+1, stops.length-1)], f); };
+  const quantile = (sorted, q) => { const pos = (sorted.length - 1) * q;
+    const lo = Math.floor(pos), hi = Math.ceil(pos);
+    return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo); };
+  const fmt = n => n.toLocaleString("fr-FR");
 
-    fig, ax = plt.subplots(1, 1, figsize=(10, 8))
-    divider = make_axes_locatable(ax)
-    cax = divider.append_axes("right", size="4%", pad=0.1)
-    cax.set_facecolor("none")
+  // ── accès aux valeurs ─────────────────────────────────────────────────
+  const val = (code, year, key="suren") => {
+    const d = byCode[code]; if (!d) return null;
+    const y = d.years[year]; return y ? y[key] : null; };
+  const nbOf = (code, year) => {
+    const d = byCode[code]; if (!d) return null;
+    const y = d.years[year]; return y ? y.nb : null; };
 
-    gdf_plot.plot(
-        column=col_map,
-        cmap="YlOrRd",
-        legend=True,
-        legend_kwds={"label": col_label, "orientation": "vertical"},
-        missing_kwds={"color": _BOARD_LIGHT, "label": "Données manquantes"},
-        ax=ax,
-        cax=cax,
-        linewidth=0.4,
-        edgecolor=_BOARD_LIGHTER,
-    )
-    ax.set_axis_off()
-    ax.set_facecolor("none")
-    ax.set_title(
-        f"Surendettement par département — {YEAR_TARGET}\n({col_label})",
-        fontsize=13, fontweight="bold", pad=15,
-    )
-    fig.text(
-        0.5, 0.02,
-        f"Source : Banque de France, Synthèses surendettement {YEAR_TARGET}. "
-        "96 départements métropolitains (DOM-TOM exclus). "
-        "Les zones les plus foncées concentrent les dossiers de surendettement les plus nombreux.",
-        ha="center", fontsize=8, style="italic", wrap=True,
-    )
-    plt.tight_layout()
-    plt.show()
-else:
-    print("⚠️ Cartographie non disponible — GeoDataFrame non chargé ou données manquantes.")
+  // ── statistiques de l'année courante (rang, z, delta, seuils) ─────────
+  function yearStats(year) {
+    const rows = od_data.map(d => ({ code: d.code, nom: d.nom,
+      v: val(d.code, year), nb: nbOf(d.code, year) }));
+    const vals = rows.filter(r => r.v != null).map(r => r.v).sort((a,b) => a-b);
+    const n = vals.length || 1;
+    const mean = vals.reduce((s,x) => s+x, 0) / n;
+    const sd = Math.sqrt(vals.reduce((s,x) => s+(x-mean)**2, 0) / n) || 1;
+    const thresholds = [1,2,3,4,5].map(i => quantile(vals, i/6));
+    const rank = {}, z = {}, delta = {};
+    rows.filter(r => r.v != null).sort((a,b) => b.v - a.v)
+        .forEach((r,i) => { rank[r.code] = i + 1; });
+    const prev = years[years.indexOf(year) - 1];
+    rows.forEach(r => {
+      if (r.v == null) return;
+      z[r.code] = (r.v - mean) / sd;
+      const vp = prev ? val(r.code, prev) : null;
+      delta[r.code] = (vp != null && vp !== 0) ? (r.v - vp) / vp * 100 : null;
+    });
+    const nbs = Object.fromEntries(rows.map(r => [r.code, r.nb]));
+    return { rows, vals, mean, sd, thresholds, rank, z, delta, nbs };
+  }
+  const classIndex = (v, th) => th.reduce((acc, t) => acc + (v >= t ? 1 : 0), 0);
+  const classColor = i => paletteAt(YLORRD, i / 5);
+
+  // ── totaux nationaux par année (pour la légende d'évolution) ──────────
+  const totals = {};
+  years.forEach(y => { totals[y] = od_data.reduce((s,d) => s + (nbOf(d.code, y) || 0), 0); });
+  const troughYear = years.reduce((a,b) => totals[a] <= totals[b] ? a : b);
+  const latestYear = years[years.length - 1];
+  const rebound = (totals[latestYear] - totals[troughYear]) / totals[troughYear] * 100;
+
+  // ── état ──────────────────────────────────────────────────────────────
+  const state = { year: latestYear, timer: null };
+  let lastStats = yearStats(state.year);
+
+  // ── construction du DOM ───────────────────────────────────────────────
+  const titleEl = html`<div class="od-title"></div>`;
+  const yearLabel = html`<span class="od-year">${state.year}</span>`;
+  const slider = html`<input type="range" class="od-slider"
+    min=${years[0]} max=${years[years.length-1]} step="1" value=${state.year}
+    aria-label="Année d'observation">`;
+  const playBtn = html`<button type="button" class="od-play" aria-pressed="false"
+    aria-label="Lire l'animation année par année">Lire l'animation</button>`;
+  const controls = html`<div class="od-controls">${slider} ${yearLabel} ${playBtn}</div>`;
+
+  // NB: variable nommée mapSvg pour ne pas masquer le builtin `svg` (htl),
+  // utilisé ci-dessous pour créer les <path>/<rect>/<text> dans le
+  // namespace SVG — `html`<path>` produirait un élément HTML invisible.
+  const mapSvg = html`<svg class="od-svg" viewBox="0 0 ${W} ${H}" role="application"
+    aria-label="Carte choroplèthe de France métropolitaine, 96 départements"></svg>`;
+  const pathByCode = {};
+  const tip = html`<div class="od-tooltip" role="tooltip" hidden></div>`;
+  const stage = html`<div class="od-stage">${mapSvg}${tip}</div>`;
+
+  const legendSvg = html`<svg class="od-legend-svg" role="img"
+    aria-label="Légende de la carte"></svg>`;
+  const captionEl = html`<div class="od-caption"></div>`;
+  const sourceEl = html`<div class="od-source">Source : Banque de France
+    (WebStat). 96 départements métropolitains — DOM-TOM exclus.</div>`;
+  const tableSummaryYear = html`<span></span>`;
+  const tbody = html`<tbody></tbody>`;
+  const table = html`<details class="od-table">
+    <summary>Tableau des 96 départements — taux de dépôt, année ${tableSummaryYear}</summary>
+    <table><thead><tr><th>Code</th><th>Département</th>
+      <th>Taux (dépôts / 10 000 hab.)</th><th>Rang</th></tr></thead>${tbody}</table>
+  </details>`;
+
+  const root = html`<div class="od-map">${titleEl}${controls}${stage}
+    ${legendSvg}${captionEl}${sourceEl}${table}</div>`;
+
+  for (const p of od_paths) {
+    const el = svg`<path d=${p.d} class="od-dep" tabindex="0" role="button"
+      aria-pressed="false"></path>`;
+    el.dataset.code = p.code;
+    pathByCode[p.code] = el;
+    mapSvg.appendChild(el);
+
+    el.addEventListener("mouseenter", ev => showTip(el, p, ev));
+    el.addEventListener("mousemove", ev => showTip(el, p, ev));
+    el.addEventListener("mouseleave", hideTip);
+    el.addEventListener("focus", ev => showTip(el, p, ev, true));
+    el.addEventListener("blur", hideTip);
+    el.addEventListener("keydown", ev => {
+      if (ev.key === "Enter" || ev.key === " ") {
+        ev.preventDefault();
+        const on = el.classList.toggle("od-pinned");
+        el.setAttribute("aria-pressed", String(on));
+      }
+    });
+  }
+
+  // ── infobulle ─────────────────────────────────────────────────────────
+  function showTip(el, p, ev, fromFocus=false) {
+    const st = lastStats;
+    const v = val(p.code, state.year);
+    let txt = `<strong>${p.nom}</strong> (${p.code})<br>`;
+    if (v == null) {
+      txt += "données manquantes";
+    } else {
+      txt += `${v.toFixed(1)} ${UNIT}<br>rang ${st.rank[p.code]}/96<br>`;
+      if (st.nbs[p.code] != null) txt += `dossiers déposés : ${fmt(st.nbs[p.code])}<br>`;
+      const prev = years[years.indexOf(state.year) - 1];
+      const d = st.delta[p.code];
+      if (d != null && prev) txt += `vs ${prev} : ${d >= 0 ? "+" : ""}${d.toFixed(1)} %<br>`;
+      txt += `z = ${st.z[p.code].toFixed(2)} (moy. nat. ${st.mean.toFixed(1)})`;
+    }
+    tip.innerHTML = txt;
+    tip.hidden = false;
+    const rect = root.getBoundingClientRect();
+    const x = fromFocus ? el.getBoundingClientRect().left - rect.left
+                        : ev.clientX - rect.left;
+    const y = fromFocus ? el.getBoundingClientRect().top - rect.top
+                        : ev.clientY - rect.top;
+    tip.style.left = Math.max(0, Math.min(x + 14, rect.width - 240)) + "px";
+    tip.style.top = Math.max(0, y + 14) + "px";
+  }
+  function hideTip() { tip.hidden = true; }
+
+  // ── rendu ─────────────────────────────────────────────────────────────
+  function render() {
+    lastStats = yearStats(state.year);
+    const st = lastStats;
+    for (const p of od_paths) {
+      const el = pathByCode[p.code];
+      const v = val(p.code, state.year);
+      if (v == null) {
+        el.setAttribute("fill", MISSING);
+        el.setAttribute("class", "od-dep od-missing"
+          + (el.classList.contains("od-pinned") ? " od-pinned" : ""));
+        el.setAttribute("aria-label",
+          `${p.nom} (${p.code}) : données manquantes en ${state.year}`);
+      } else {
+        el.setAttribute("fill", classColor(classIndex(v, st.thresholds)));
+        el.setAttribute("class", "od-dep"
+          + (el.classList.contains("od-pinned") ? " od-pinned" : ""));
+        el.setAttribute("aria-label",
+          `${p.nom} (${p.code}) : ${v.toFixed(1)} ${UNIT}, rang ${st.rank[p.code]}/96, année ${state.year}`);
+      }
+    }
+    // légende : 6 classes quantiles
+    const th = st.thresholds;
+    const labels = [];
+    for (let i = 0; i < 6; i++) {
+      const lo = i === 0 ? null : th[i-1];
+      const hi = i === 5 ? null : th[i];
+      labels.push(lo == null ? `< ${hi.toFixed(1)}`
+        : hi == null ? `≥ ${lo.toFixed(1)}`
+        : `${lo.toFixed(1)} – ${hi.toFixed(1)}`);
+    }
+    legendSvg.setAttribute("viewBox", "0 0 1000 46");
+    legendSvg.innerHTML = "";
+    const sw = 150, gap = 12;
+    for (let i = 0; i < 6; i++) {
+      const x = i * (sw + gap);
+      const rect = svg`<rect x=${x} y="0" width=${sw} height="14"
+        fill=${classColor(i)} class="od-swatch"></rect>`;
+      const text = svg`<text x=${x} y="30" class="od-range">${labels[i]}</text>`;
+      const unit = svg`<text x=${x} y="43" class="od-unit">${i === 5 ? UNIT : ""}</text>`;
+      legendSvg.appendChild(rect); legendSvg.appendChild(text); legendSvg.appendChild(unit);
+    }
+    // titre / légende textuelle / source / année
+    titleEl.textContent = `Taux de dépôt de dossiers de surendettement — ${state.year}`;
+    yearLabel.textContent = state.year;
+    tableSummaryYear.textContent = state.year;
+    const med = quantile(st.vals, 0.5), max = st.vals[st.vals.length - 1];
+    captionEl.textContent =
+      `En ${state.year}, le taux médian est de ${med.toFixed(1)} et le maximum ` +
+      `de ${max.toFixed(1)} ${UNIT}. Au niveau national, les dépôts sont passés ` +
+      `de ${fmt(totals[troughYear])} dossiers en ${troughYear} (creux) à ` +
+      `${fmt(totals[latestYear])} en ${latestYear}, soit ${rebound >= 0 ? "+" : ""}${rebound.toFixed(0)} %.`;
+    // tableau
+    const rows = st.rows.filter(r => true)
+      .sort((a,b) => (b.v ?? -Infinity) - (a.v ?? -Infinity));
+    tbody.innerHTML = rows.map(r =>
+      `<tr><td>${r.code}</td><td>${r.nom}</td>` +
+      `<td>${r.v == null ? "—" : r.v.toFixed(1)}</td>` +
+      `<td>${st.rank[r.code] ?? "—"}</td></tr>`).join("");
+  }
+
+  // ── lecture / curseur (FR-009 : le manuel interrompt l'animation) ──────
+  function stopPlay() {
+    if (state.timer) { clearInterval(state.timer); state.timer = null; }
+    playBtn.setAttribute("aria-pressed", "false");
+    playBtn.textContent = "Lire l'animation";
+  }
+  playBtn.addEventListener("click", () => {
+    if (state.timer) { stopPlay(); return; }
+    playBtn.setAttribute("aria-pressed", "true");
+    playBtn.textContent = "Pause";
+    state.timer = setInterval(() => {
+      const i = years.indexOf(state.year);
+      if (i >= years.length - 1) { stopPlay(); return; }
+      state.year = years[i + 1];
+      slider.value = state.year;
+      render();
+    }, 800);
+  });
+  slider.addEventListener("input", () => {
+    stopPlay();
+    state.year = slider.value;
+    render();
+  });
+
+  render();
+  return root;
+}
 ```
 
-### Évolution du surendettement depuis 2018 {#sec-carto-evol}
-
-Entre 2018 et l'année de référence retenue, le nombre de dossiers de
-surendettement a connu une **baisse généralisée** au niveau national. Cette
-tendance est attribuable à plusieurs facteurs : la réforme de la procédure de
-surendettement (loi Lagarde, effets de long terme), la baisse du chômage
-jusqu'en 2020 et le renforcement des minimas sociaux.
-
-La carte suivante représente la **variation absolue** entre 2018 et l'année de
-référence par département. La palette divergente (rouge = hausse, bleu = baisse) permet
-d'identifier :
-
-- Les départements qui ont **le plus bénéficié** de la tendance baissière
-  (bleu intense) ;
-- Les rares départements qui restent structurellement fragilisés et
-  **résistants à la baisse** (rouge).
-
-```{python}
-#| label: fig-carto-evol
-#| fig-cap: "Variation du nombre de dossiers de surendettement entre 2018 et l'année de référence. Palette divergente RdYlBu_r : rouge = hausse, bleu = baisse. Source : Banque de France."
-#| fig-alt: "Carte choroplèthe montrant l'évolution du surendettement entre 2018 et l'année de référence par département. La majorité des départements affiche une baisse (bleu), avec quelques exceptions en rouge."
-#| fig-width: 10
-#| fig-height: 8
-#| column: page
-
-if CARTO_AVAILABLE and gdf_merged is not None and DATA_AVAILABLE:
-    df_2018 = df[df["annee"] == 2018].copy()
-    df_2021_evol = df[df["annee"] == YEAR_TARGET].copy()
-
-    if len(df_2018) >= 50 and len(df_2021_evol) >= 50:
-        df_2018["dep_code"] = df_2018["dep_code"].astype(str).str.zfill(2)
-        df_2021_evol["dep_code"] = df_2021_evol["dep_code"].astype(str).str.zfill(2)
-        df_2018["suren_depot_nb"] = pd.to_numeric(df_2018["suren_depot_nb"], errors="coerce")
-        df_2021_evol["suren_depot_nb"] = pd.to_numeric(df_2021_evol["suren_depot_nb"], errors="coerce")
-
-        df_evol = df_2021_evol[["dep_code", "suren_depot_nb"]].merge(
-            df_2018[["dep_code", "suren_depot_nb"]], on="dep_code", suffixes=("_target", "_2018")
-        )
-        df_evol["variation_abs"] = df_evol["suren_depot_nb_target"] - df_evol["suren_depot_nb_2018"]
-        df_evol["variation_pct"] = (
-            (df_evol["suren_depot_nb_target"] - df_evol["suren_depot_nb_2018"])
-            / df_evol["suren_depot_nb_2018"].replace(0, np.nan)
-        ) * 100
-
-        gdf_evol = gdf.merge(df_evol[["dep_code", "variation_abs", "variation_pct"]], on="dep_code", how="left")
-
-        fig, ax = plt.subplots(1, 1, figsize=(10, 8))
-        divider = make_axes_locatable(ax)
-        cax = divider.append_axes("right", size="4%", pad=0.1)
-        cax.set_facecolor("none")
-
-        vmax = gdf_evol["variation_abs"].abs().quantile(0.95)
-        gdf_evol.plot(
-            column="variation_abs",
-            cmap="RdYlBu_r",
-            vmin=-vmax,
-            vmax=vmax,
-            legend=True,
-            legend_kwds={"label": "Variation absolue (nb dossiers)", "orientation": "vertical"},
-            missing_kwds={"color": _BOARD_LIGHT, "label": "Données manquantes"},
-            ax=ax,
-            cax=cax,
-            linewidth=0.4,
-            edgecolor=_BOARD_LIGHTER,
-        )
-        ax.set_axis_off()
-        ax.set_facecolor("none")
-        ax.set_title(
-            f"Évolution du surendettement 2018–{YEAR_TARGET}\n(Variation absolue du nombre de dossiers déposés)",
-            fontsize=13, fontweight="bold", pad=15,
-        )
-        n_baisse = (df_evol["variation_abs"] < 0).sum()
-        n_total  = df_evol["variation_abs"].notna().sum()
-        fig.text(
-            0.5, 0.02,
-            f"Source : Banque de France 2018 et {YEAR_TARGET}. "
-            f"{n_baisse}/{n_total} départements enregistrent une baisse entre 2018 et {YEAR_TARGET}. "
-            "La tendance nationale à la baisse masque des disparités territoriales persistantes.",
-            ha="center", fontsize=8, style="italic", wrap=True,
-        )
-        plt.tight_layout()
-        plt.show()
-    else:
-        print(f"⚠️ Données 2018 insuffisantes ({len(df_2018)} départements) — carte d'évolution non produite.")
-else:
-    print("⚠️ Cartographie non disponible.")
-```
-
-### Variables explicatives clés {#sec-carto-vars}
-
-Ces quatre cartes présentent les **principales variables explicatives** retenues
-dans le modèle OLS. La comparaison visuelle avec la carte du surendettement
-(section précédente) permet d'identifier des structures géographiques similaires,
-cohérentes avec les corrélations mesurées dans la matrice de corrélation.
-
-Un **clustering géographique** similaire entre deux cartes suggère une
-corrélation spatiale entre les deux indicateurs. À titre d'exemple, si les
-mêmes départements apparaissent en rouge foncé sur la carte du chômage et sur
-la carte du surendettement, cela renforce l'hypothèse d'une association entre
-les deux indicateurs au-delà des résultats statistiques.
-
-```{python}
-#| label: fig-carto-vars
-#| fig-cap: "Cartes choroplèthes des principales variables explicatives (année de référence). Palette viridis. Source : INSEE et DREES."
-#| fig-alt: "Quatre cartes de France métropolitaine côte à côte représentant le taux de chômage, le taux de pauvreté, le taux de RSA et la part de ménages locataires par département durant l'année de référence."
-#| fig-width: 14
-#| fig-height: 10
-#| column: screen-inset
-
-if CARTO_AVAILABLE and gdf_merged is not None:
-    carto_vars = [
-        ("chomage_taux",      "Taux de chômage (%)",            f"INSEE {YEAR_TARGET}"),
-        ("taux_pauvrete",     "Taux de pauvreté (%)",           f"FiLoSoFi {YEAR_FILOSOFI}"),
-        ("rsa_taux",          "Part allocataires RSA (%)",      f"DREES {YEAR_TARGET}"),
-        ("part_locataires",   "Part ménages locataires (%)",    f"RP {YEAR_TARGET}"),
-    ]
-    available_carto = [
-        (col, label, src)
-        for col, label, src in carto_vars
-        if col in gdf_merged.columns
-        and pd.to_numeric(gdf_merged[col], errors="coerce").notna().sum() >= 30
-    ]
-
-    if available_carto:
-        n_cols = min(2, len(available_carto))
-        n_rows = (len(available_carto) + n_cols - 1) // n_cols
-        fig, axes = plt.subplots(n_rows, n_cols, figsize=(14, 6 * n_rows))
-        if len(available_carto) == 1:
-            axes = [[axes]]
-        elif n_rows == 1:
-            axes = [axes]
-
-        for idx, (col, label, src) in enumerate(available_carto):
-            row, col_idx = divmod(idx, n_cols)
-            ax = axes[row][col_idx] if n_rows > 1 else axes[0][col_idx]
-            gdf_plot = gdf_merged.copy()
-            gdf_plot[col] = pd.to_numeric(gdf_plot[col], errors="coerce")
-            gdf_plot.plot(
-                column=col,
-                cmap="viridis",
-                legend=True,
-                missing_kwds={"color": _BOARD_LIGHT},
-                ax=ax,
-                linewidth=0.3,
-                edgecolor=_BOARD_LIGHTER,
-            )
-            ax.set_axis_off()
-            ax.set_facecolor("none")
-            ax.set_title(label, fontsize=10, fontweight="bold")
-            ax.text(
-                0.02, 0.02, f"Source : {src}",
-                transform=ax.transAxes, fontsize=7, style="italic", va="bottom",
-            )
-
-        # Masquer axes inutilisés
-        for idx in range(len(available_carto), n_rows * n_cols):
-            row, col_idx = divmod(idx, n_cols)
-            if n_rows > 1:
-                axes[row][col_idx].set_visible(False)
-            else:
-                axes[0][col_idx].set_visible(False)
-
-        fig.suptitle(
-            f"Variables explicatives clés — Disparités départementales ({YEAR_TARGET})",
-            fontsize=13, fontweight="bold", y=1.01,
-        )
-        fig.text(
-            0.5, -0.01,
-            f"Source : INSEE (chômage localisé {YEAR_TARGET}, FiLoSoFi {YEAR_FILOSOFI}), DREES. "
-            "Les cartes révèlent une concentration géographique similaire à celle du surendettement.",
-            ha="center", fontsize=8, style="italic", wrap=True,
-        )
-        plt.tight_layout()
-        plt.show()
-    else:
-        print(
-            "⚠️ Cartes des variables explicatives non disponibles — "
-            "données FiLoSoFi, RP et minimas sociaux absentes.\n"
-            "Exécuter scripts/01_download.py pour télécharger les données INSEE."
-        )
-else:
-    print("⚠️ Cartographie non disponible.")
-```
-
-### Score de fragilité territoriale {#sec-carto-score}
-
-Le **score de fragilité financière territoriale** est un indicateur composite
-qui synthétise quatre dimensions de vulnérabilité en un seul chiffre par
-département. Il est calculé comme une combinaison pondérée de z-scores :
-
-$$\text{Score} = 0{,}3 \times z_{\text{chômage}} + 0{,}3 \times z_{\text{pauvreté}} + 0{,}2 \times z_{\text{RSA}} + 0{,}2 \times z_{\text{locataires}}$$
-
-Les **z-scores** permettent de comparer des variables d'unités différentes en
-les ramenant à une échelle commune (moyenne 0, écart-type 1). Les pondérations
-reflètent la hiérarchie des corrélations observées avec le surendettement.
-
-::: {.callout-tip appearance="simple"}
-**Interprétation :** un score positif indique que le département cumule
-plusieurs facteurs de vulnérabilité **au-dessus de la moyenne nationale** ;
-un score négatif reflète une situation favorable. La corrélation de Pearson
-entre le score et le taux de surendettement évalue la pertinence prédictive
-de cet agrégat.
-:::
-
-```{python}
-#| label: fig-carto-score
-#| fig-cap: "Score de fragilité financière territoriale par département (année de référence). Formule : chomage_z × 0,3 + pauvreté_z × 0,3 + RSA_z × 0,2 + locataires_z × 0,2. Palette divergente RdYlBu_r. Source : BdF, INSEE, DREES."
-#| fig-alt: "Carte choroplèthe du score composite de fragilité financière. Les départements en rouge présentent une fragilité élevée (score positif), les bleus une fragilité faible."
-#| fig-width: 10
-#| fig-height: 8
-#| column: page
-
-if CARTO_AVAILABLE and gdf_merged is not None:
-    gdf_score = gdf_merged.copy()
-    gdf_score["score_fragilite"] = pd.to_numeric(gdf_score["score_fragilite"], errors="coerce")
-
-    if gdf_score["score_fragilite"].notna().sum() >= 50:
-        # Corrélation spatiale avec surendettement
-        gdf_score["suren_depot_nb_num"] = pd.to_numeric(gdf_score["suren_depot_nb"], errors="coerce")
-        corr_score_suren = np.nan
-        valid_pair = gdf_score[["score_fragilite", "suren_depot_nb_num"]].dropna()
-        if len(valid_pair) >= 10:
-            from scipy import stats as scipy_stats
-            corr_score_suren, _ = scipy_stats.pearsonr(
-                valid_pair["score_fragilite"], valid_pair["suren_depot_nb_num"]
-            )
-
-        fig, ax = plt.subplots(1, 1, figsize=(10, 8))
-        divider = make_axes_locatable(ax)
-        cax = divider.append_axes("right", size="4%", pad=0.1)
-        cax.set_facecolor("none")
-
-        vabs = gdf_score["score_fragilite"].abs().quantile(0.95)
-        gdf_score.plot(
-            column="score_fragilite",
-            cmap="RdYlBu_r",
-            vmin=-vabs,
-            vmax=vabs,
-            legend=True,
-            legend_kwds={"label": "Score de fragilité (z-score composite)", "orientation": "vertical"},
-            missing_kwds={"color": _BOARD_LIGHT, "label": "Données manquantes"},
-            ax=ax,
-            cax=cax,
-            linewidth=0.4,
-            edgecolor=_BOARD_LIGHTER,
-        )
-        ax.set_axis_off()
-        ax.set_facecolor("none")
-        ax.set_title(
-            f"Score de fragilité financière territoriale ({YEAR_TARGET})\n"
-            "chômage×0,3 + pauvreté×0,3 + RSA×0,2 + locataires×0,2 (z-scores)",
-            fontsize=12, fontweight="bold", pad=15,
-        )
-        corr_txt = (
-            f"r = {corr_score_suren:.2f} avec le surendettement"
-            if not np.isnan(corr_score_suren)
-            else "corrélation avec surendettement : données insuffisantes"
-        )
-        fig.text(
-            0.5, 0.02,
-            f"Source : Banque de France, INSEE, DREES {YEAR_TARGET}. "
-            f"Corrélation de Pearson score–surendettement : {corr_txt}. "
-            "Les zones rouges concentrent les multiples facteurs de vulnérabilité financière.",
-            ha="center", fontsize=8, style="italic", wrap=True,
-        )
-        plt.tight_layout()
-        plt.show()
-    else:
-        print("⚠️ Score de fragilité indisponible ou insuffisamment couvert (< 50 départements avec données).")
-else:
-    print("⚠️ Cartographie non disponible.")
-```
 
 ### Graphiques bivariés : surendettement vs. prédicteurs {#sec-carto-scatter}
 

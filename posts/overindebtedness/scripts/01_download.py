@@ -184,6 +184,86 @@ def download_bdf():
 
 
 # ---------------------------------------------------------------------------
+# Bloc BdF — synthèse annuelle 2018 (PDF) : seule source départementale
+# faisant foi pour l'année 2018 (plancher API WebStat = 2019-01).
+# Le téléchargement est best-effort : en cas d'échec, le pipeline
+# (02_clean.py) journalise le trou dans coverage_report.csv et démarre
+# à la première année disponible (cas limite documenté dans la spec 016).
+# ---------------------------------------------------------------------------
+
+BDF_SYNTHESE_2018_URLS = [
+    #Rapport d'activité des commissions de surendettement — synthèse 2018
+    "https://www.banque-france.fr/system/files/2023-02/"
+    "SUREN-2018_Rapport_d_activite-des-commissions_web.pdf",
+    "https://www.banque-france.fr/system/files/2023-04/"
+    "SUREN-2018_Rapport_d_activite-des-commissions_web.pdf",
+    "https://www.banque-france.fr/system/files/2024-03/"
+    "SUREN-2018_Rapport_d_activite-des-commissions_web.pdf",
+]
+
+
+def _is_pdf(path: pathlib.Path) -> bool:
+    """Vrai si le fichier ressemble à un PDF (en-tête %PDF-)."""
+    try:
+        with open(path, "rb") as f:
+            return f.read(5) == b"%PDF-"
+    except OSError:
+        return False
+
+
+def download_bdf_synthese_2018():
+    """Télécharge la synthèse annuelle surendettement 2018 (niveau départemental).
+
+    Le fichier local peut être une page d'erreur HTML (téléchargement
+    antérieur bloqué) : on ne le conserve que s'il s'agit d'un vrai PDF.
+    """
+    print("\n=== BdF — Synthèse annuelle 2018 (PDF, best-effort) ===")
+    dest = RAW / "bdf" / "synthese_2018.pdf"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+
+    if dest.exists() and _is_pdf(dest):
+        print(f"  ✓ Déjà présent et valide : {dest.name} "
+              f"({dest.stat().st_size // 1024} Ko)")
+        RESULTS["BdF synthèse 2018 PDF"] = True
+        return
+
+    if dest.exists():
+        print(f"  ⚠️  {dest.name} existe mais n'est pas un PDF valide "
+              f"(page d'erreur HTML ?) — nouvelle tentative de téléchargement.")
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (X11; Linux x86_64; rv:120.0) Gecko/20100101 Firefox/120.0"
+        ),
+        "Accept": "application/pdf,*/*",
+    }
+    for url in BDF_SYNTHESE_2018_URLS:
+        print(f"  ↓ Tentative : {url}")
+        try:
+            resp = requests.get(url, headers=headers, timeout=90, stream=True)
+            resp.raise_for_status()
+            content = resp.content
+            tmp = dest.with_suffix(".pdf.tmp")
+            with open(tmp, "wb") as f:
+                f.write(content)
+            if _is_pdf(tmp):
+                tmp.replace(dest)
+                print(f"  ✓ {dest.name} ({dest.stat().st_size // 1024} Ko)")
+                RESULTS["BdF synthèse 2018 PDF"] = True
+                return
+            tmp.unlink(missing_ok=True)
+            print(f"  ✗ Réponse non-PDF ({len(content)} o) — URL incorrect ou blocage.")
+        except Exception as exc:
+            print(f"  ✗ Échec ({exc})")
+
+    print("  ⚠️  Téléchargement de la synthèse 2018 impossible depuis cette "
+          "machine (protection anti-bot ou URL obsolète).")
+    print("  → 02_clean.py journalisera le trou 2018 et utilisera la première "
+          "année disponible (2019) comme référence (cas limite spec 016).")
+    RESULTS["BdF synthèse 2018 PDF"] = False
+
+
+# ---------------------------------------------------------------------------
 # T006 — Bloc FiLoSoFi : revenus et inégalités départementales
 # ---------------------------------------------------------------------------
 
@@ -381,6 +461,9 @@ def main():
     print("=" * 60)
 
     download_bdf()
+    # Tentative 2018 : synthèse annuelle PDF (l'API WebStat ne couvre pas
+    # avant 2019-01 — vérifié le 2026-11-20, cf. specs/016 research R1).
+    download_bdf_synthese_2018()
     download_filosofi()
     download_chomage()
     download_rp()

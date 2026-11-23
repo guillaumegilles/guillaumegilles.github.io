@@ -8,7 +8,8 @@ Chaque fonction de nettoyage est indépendante : si une source est absente,
 un avertissement est affiché et l'exécution continue normalement.
 
 Sorties dans data/processed/ :
-  surendettement.csv   — BdF API WebStat 2019–2024 (mensuel agrégé annuel)
+  surendettement.csv   — BdF API WebStat, plage dynamique (années complètes,
+                         + 2018 si la synthèse annuelle PDF a été parsée)
   filosofi.csv         — FiLoSoFi 2021 (revenu, pauvreté, interdécile)
   filosofi_gini.csv    — FiLoSoFi SUPRA 2019 (Gini)
   chomage.csv          — Chômage localisé INSEE
@@ -55,12 +56,65 @@ def normalize_name(name: str) -> str:
 # T011 — BdF : API WebStat CSV → surendettement.csv
 # ---------------------------------------------------------------------------
 
+def _parse_synthese_2018(pdf_path: pathlib.Path) -> pd.DataFrame | None:
+    """Extrait le tableau départemental des dossiers déposés en 2018 (PDF BdF).
+
+    Best-effort : parcourt toutes les tables du PDF et retient celle qui
+    contient le plus de codes département valides (>= 90). Retourne un
+    DataFrame [dep_code, suren_depot_nb] ou None si l'extraction échoue.
+    """
+    import pdfplumber
+
+    if not pdf_path.exists():
+        return None
+    try:
+        with pdfplumber.open(pdf_path) as pdf:
+            best: list[list] = []
+            for page in pdf.pages:
+                for table in page.extract_tables():
+                    if not table:
+                        continue
+                    rows = []
+                    for row in table:
+                        if not row or row[0] is None:
+                            continue
+                        code = str(row[0]).strip().upper()
+                        if not re.match(r"^([0-9]{2}|2[AB])$", code):
+                            continue
+                        # première cellule numérique entière = nb dossiers
+                        nb = None
+                        for cell in row[1:]:
+                            if cell is None:
+                                continue
+                            txt = str(cell).strip().replace(" ", "").replace("\u202f", "")
+                            txt = txt.replace(",", ".")
+                            if re.match(r"^\d+(\.\d+)?$", txt):
+                                nb = int(float(txt))
+                                break
+                        if nb is not None:
+                            rows.append([code.zfill(2), nb])
+                    if len(rows) > len(best):
+                        best = rows
+            if len(best) >= 90:
+                print(f"  ✓ Synthèse 2018 : tableau de {len(best)} départements extrait")
+                return pd.DataFrame(best, columns=["dep_code", "suren_depot_nb"])
+            if best:
+                print(f"  ⚠️  Synthèse 2018 : seulement {len(best)} départements "
+                      f"extraits (< 90) — extraction rejetée")
+    except Exception as exc:
+        print(f"  ⚠️  Lecture PDF synthèse 2018 échouée : {exc}")
+    return None
+
+
 def clean_surendettement():
     """Agrège les données mensuelles BdF (API WebStat) en totaux annuels par département.
 
     Lit data/raw/bdf/surendettement_api.csv (délimiteur ;), extrait l'année
     depuis time_period (YYYY-MM), somme les obs_value mensuelles par
-    (dep_code, annee), et filtre les années complètes (2019–2024).
+    (dep_code, annee). La plage d'années est **dynamique** (FR-001/FR-002) :
+    on conserve les années complètes (12 mois observés) ainsi que la première
+    année détectée — à laquelle on ajoute 2018 si la synthèse annuelle PDF
+    a pu être téléchargée et parsée (plancher API WebStat = 2019-01).
     Produit data/processed/surendettement.csv.
     """
     print("\n=== Nettoyage BdF — surendettement ===")
@@ -81,12 +135,17 @@ def clean_surendettement():
     # series_key "IFI.M.D01.SUREN.DEPOT" → dep_code "01", "2A", etc.
     df["dep_code"] = df["series_key"].str.split(".").str[2].str[1:]
 
-    # time_period "2019-01" → annee 2019
+    # time_period "2019-01" → annee 2019 ; mois pour détecter les années complètes
     df["annee"] = df["time_period"].str[:4].astype(int)
+    df["mois"] = df["time_period"].str[5:7].astype(int)
 
-    # Garder uniquement les années complètes 2019–2024
-    ANNEES_COMPLETES = list(range(2019, 2025))
-    df = df[df["annee"].isin(ANNEES_COMPLETES)]
+    # Années complètes = 12 mois distincts observés
+    mois_par_annee = df.groupby("annee")["mois"].nunique()
+    annees_completes = set(mois_par_annee[mois_par_annee == 12].index.tolist())
+    annee_min = int(df["annee"].min())
+    annee_max_complete = int(max(annees_completes)) if annees_completes else annee_min
+    print(f"  ↳ Années complètes détectées : {sorted(annees_completes)} "
+          f"(max complète = {annee_max_complete}, min détectée = {annee_min})")
 
     # Agréger : somme mensuelle → total annuel par département
     df_annual = (
@@ -96,12 +155,53 @@ def clean_surendettement():
     )
     df_annual["suren_depot_nb"] = df_annual["suren_depot_nb"].round().astype(int)
 
+    # ── Tentative 2018 via la synthèse annuelle PDF (FR-001) ─────────────
+    pdf_2018 = RAW / "bdf" / "synthese_2018.pdf"
+    df_2018 = _parse_synthese_2018(pdf_2018)
+    if df_2018 is not None:
+        df_2018 = df_2018.copy()
+        df_2018["annee"] = 2018
+        df_2018["source_url"] = (
+            "https://www.banque-france.fr/fr/publications-et-statistiques/"
+            "publications/synthese-nationale-des-rapports-dactivite-des-"
+            "commissions-de-surendettement"
+        )
+        df_2018["source_millesime"] = "2018"
+        df_annual = pd.concat(
+            [df_annual[["dep_code", "annee", "suren_depot_nb"]],
+             df_2018[["dep_code", "annee", "suren_depot_nb"]]],
+            ignore_index=True,
+        )
+        annee_min = min(annee_min, 2018)
+        print("  ✓ 2018 ajouté depuis la synthèse PDF")
+    else:
+        print("  ⚠️  2018 non disponible (PDF absent ou non parsable) — "
+              "le trou sera journalisé dans coverage_report.csv (04_validate.py)")
+
+    # ── Filtre dynamique : années complètes ∪ {première année détectée} ──
+    annees_gardees = annees_completes | {annee_min}
+    df_annual = df_annual[
+        (df_annual["annee"] >= annee_min)
+        & (df_annual["annee"] <= annee_max_complete)
+        & (df_annual["annee"].isin(annees_gardees))
+    ]
+
     # Joindre les noms de département
     df_annual = df_annual.merge(dep_ref[["dep_code", "dep_nom"]], on="dep_code", how="left")
 
-    # Métadonnées source
-    df_annual["source_url"] = df_annual["dep_code"].apply(
-        lambda c: f"https://webstat.banque-france.fr/fr/catalogue/ifi/IFI.M.D{c}.SUREN.DEPOT"
+    # Métadonnées source : URL de la synthèse PDF pour 2018, API WebStat sinon
+    SYNTHESE_2018_URL = (
+        "https://www.banque-france.fr/fr/publications-et-statistiques/"
+        "publications/synthese-nationale-des-rapports-dactivite-des-"
+        "commissions-de-surendettement"
+    )
+    df_annual["source_url"] = df_annual.apply(
+        lambda r: (
+            SYNTHESE_2018_URL
+            if r["annee"] == 2018
+            else f"https://webstat.banque-france.fr/fr/catalogue/ifi/IFI.M.D{r['dep_code']}.SUREN.DEPOT"
+        ),
+        axis=1,
     )
     df_annual["source_millesime"] = df_annual["annee"].astype(str)
 
@@ -110,12 +210,13 @@ def clean_surendettement():
 
     # Contrôle qualité
     nb_dep_par_annee = df_annual.groupby("annee")["dep_code"].count()
-    for annee, nb in nb_dep_par_annee.items():
+    for annee, nb in sorted(nb_dep_par_annee.items()):
         flag = "✓" if nb == 96 else "⚠️ "
         print(f"  {flag} {annee} : {nb}/96 départements")
 
     df_annual.to_csv(PROCESSED / "surendettement.csv", index=False)
-    print(f"  ✓ surendettement.csv — {len(df_annual)} lignes")
+    print(f"  ✓ surendettement.csv — {len(df_annual)} lignes "
+          f"(plage {int(df_annual['annee'].min())}–{int(df_annual['annee'].max())})")
 
 
 # ---------------------------------------------------------------------------
@@ -579,8 +680,9 @@ def clean_minimas():
                     year, month = parsed.year, parsed.month
             except Exception:
                 continue
-            # Snapshot fin d'année (décembre)
-            if month != 12 or year < 2019 or year > 2024:
+            # Snapshot fin d'année (décembre) — borne basse dynamique (2018
+            # possible via la synthèse PDF) ; pas de borne haute codée en dur.
+            if month != 12 or year < 2018:
                 continue
             for ci, dep_code in col_to_dep.items():
                 raw = row[ci]

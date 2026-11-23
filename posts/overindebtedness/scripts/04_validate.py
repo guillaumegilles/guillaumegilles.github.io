@@ -189,6 +189,35 @@ def main() -> int:
         if status == "WARNING":
             warnings_count += 1
 
+    # ── Couverture par année (plage dynamique, FR-001/FR-002) ─────────────
+    # Vérifie que la série surendettement couvre chaque année de
+    # [min..max] × 96 départements ; journalise un éventuel trou (ex. 2018
+    # si la synthèse PDF n'a pas pu être téléchargée/parsée).
+    print("\n  === Couverture par année (suren_depot_nb) ===")
+    if "suren_depot_nb" in df.columns and "annee" in df.columns:
+        sub = df.dropna(subset=["suren_depot_nb"])
+        annee_min, annee_max = int(sub["annee"].min()), int(sub["annee"].max())
+        par_annee = sub.groupby("annee")["dep_code"].nunique()
+        for annee in range(annee_min, annee_max + 1):
+            n = int(par_annee.get(annee, 0))
+            cov = n / 96 * 100
+            flag = "✓" if n == 96 else "⚠️ "
+            print(f"  {flag} {annee} : {n}/96 départements ({cov:.1f}%)")
+            report_rows.append({
+                "variable":      f"annee_{annee}",
+                "n_total":       96,
+                "n_notna":       n,
+                "coverage_pct":  round(cov, 1),
+                "threshold_pct": 100.0,
+                "status":        "OK" if n == 96 else "WARNING",
+                "min": None, "max": None, "median": None,
+            })
+            if n < 96:
+                warnings_count += 1
+        if annee_min > 2018:
+            print(f"  ⚠️  Trou 2018–{annee_min - 1} : la synthèse annuelle PDF "
+                  f"n'a pas été intégrée — référence = {annee_min} (cas limite spec 016)")
+
     # Export coverage_report.csv
     report_df = pd.DataFrame(report_rows)
     report_path = PROCESSED / "coverage_report.csv"
