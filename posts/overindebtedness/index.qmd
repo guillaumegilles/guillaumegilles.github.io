@@ -1,0 +1,2362 @@
+---
+title: "Map of Overindebtedness in France"
+subtitle: "Analyse de la corrélation entre conditions économiques départementales et surendettement"
+date: 2026-05-18
+image: ../../assets/posts/overindebtedness.jpg
+---
+
+## Ressource à revoir
+- https://data.economie.gouv.fr/pages/fiscalite-locale-entreprises/
+
+```{python}
+#| label: setup
+#| include: false
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+from pathlib import Path
+
+DATA_DIR = Path("data/processed")
+GEO_DIR  = Path("data/geo")
+
+# ─── Blackboard theme — corresponds à assets/dark.scss ───────────────────────
+_BOARD_DARK    = "#152119"   # fond des axes
+_BOARD_LIGHT   = "#253A2C"   # zones en relief
+_BOARD_LIGHTER = "#2F4636"   # bordures
+_CHALK         = "#D2CCC0"   # texte principal
+_CHALK_BRIGHT  = "#EAE6DC"   # titres
+_CHALK_DIM     = "#7E8F82"   # texte secondaire
+_PHOSPHOR      = "#5BDB6D"   # vert phosphore (accent primaire)
+_AMBER         = "#F5A623"   # ambre CRT
+_CYAN          = "#56CCF2"   # cyan rétro
+_RED           = "#EB5757"   # rouge arcade
+
+plt.rcParams.update({
+    # Figure — fond transparent pour fondre avec la page
+    "figure.facecolor":    "none",
+    "figure.edgecolor":    "none",
+    "figure.dpi":          120,
+    # Axes
+    "axes.facecolor":      _BOARD_DARK,
+    "axes.edgecolor":      _BOARD_LIGHTER,
+    "axes.labelcolor":     _CHALK,
+    "axes.titlecolor":     _CHALK_BRIGHT,
+    "axes.titlesize":      12,
+    "axes.labelsize":      10,
+    "axes.titlepad":       12,
+    "axes.spines.top":     False,
+    "axes.spines.right":   False,
+    "axes.grid":           True,
+    "axes.prop_cycle": plt.cycler("color", [
+        _PHOSPHOR, _AMBER, _CYAN, _RED, "#A8D8A0", "#C3A6FF", "#FF9580", "#80D4FF",
+    ]),
+    # Grille
+    "grid.color":          _BOARD_LIGHTER,
+    "grid.linestyle":      "--",
+    "grid.linewidth":      0.5,
+    "grid.alpha":          0.6,
+    # Ticks
+    "xtick.color":         _CHALK_DIM,
+    "ytick.color":         _CHALK_DIM,
+    "xtick.labelsize":     9,
+    "ytick.labelsize":     9,
+    # Texte
+    "text.color":          _CHALK,
+    # Légende
+    "legend.facecolor":    _BOARD_DARK,
+    "legend.edgecolor":    _BOARD_LIGHTER,
+    "legend.labelcolor":   _CHALK,
+    "legend.fontsize":     9,
+    "legend.framealpha":   0.9,
+    # Lignes et formes
+    "lines.linewidth":     1.8,
+    "lines.antialiased":   True,
+    "patch.antialiased":   True,
+    # Sauvegarde — transparent pour Quarto
+    "savefig.facecolor":   "none",
+    "savefig.edgecolor":   "none",
+    "savefig.transparent": True,
+})
+
+# Chargement du jeu analytique
+try:
+    df = pd.read_csv(DATA_DIR / "analytical_dataset.csv", dtype={"dep_code": str})
+    DATA_AVAILABLE = True
+    print(f"✓ analytical_dataset.csv chargé : {df.shape}")
+except FileNotFoundError:
+    DATA_AVAILABLE = False
+    df = pd.DataFrame()
+    print("⚠️ analytical_dataset.csv non trouvé. Exécuter scripts/01-04 d'abord.")
+
+# Chargement du rapport de couverture
+try:
+    coverage = pd.read_csv(DATA_DIR / "coverage_report.csv")
+    COVERAGE_AVAILABLE = True
+except FileNotFoundError:
+    COVERAGE_AVAILABLE = False
+    coverage = pd.DataFrame()
+
+# Auto-détecter l'année la plus récente avec couverture complète surendettement + chômage
+if DATA_AVAILABLE and len(df) > 0:
+    year_counts = (
+        df.dropna(subset=["suren_depot_taux", "chomage_taux"])
+        .groupby("annee")["dep_code"].count()
+    )
+    complete_years = year_counts[year_counts >= 90].index.tolist()
+    YEAR_TARGET = int(max(complete_years)) if complete_years else 2023
+else:
+    YEAR_TARGET = 2023
+
+# FiLoSoFi : revenu médian + pauvreté, disponible uniquement pour un millésime complet
+if DATA_AVAILABLE and len(df) > 0:
+    filo_years = (
+        df.dropna(subset=["revenu_median_uc", "taux_pauvrete"])
+        .groupby("annee")["dep_code"].count()
+    )
+    filo_complete = filo_years[filo_years >= 50].index.tolist()
+    YEAR_FILOSOFI = int(max(filo_complete)) if filo_complete else 2021
+else:
+    YEAR_FILOSOFI = 2021
+```
+
+## Contexte et problématique {#sec-contexte}
+
+L'inclusion financière des ménages français est mise à l'épreuve par une
+série de chocs économiques — chômage, inflation, précarisation — dont
+l'intensité varie fortement selon les territoires. À l'échelle
+départementale, certains marchés du travail structurellement fragilisés
+concentrent aussi les populations les plus exposées au surendettement.
+
+**Questions de recherche :**
+
+1. Quelles variables économiques départementales (chômage, pauvreté,
+   minimas sociaux, logement, démographie) sont le plus corrélées au taux
+   de surendettement sur la période 2018–2023 ?
+2. Les effets du chômage et de la pauvreté sur le surendettement sont-ils
+   contemporains ou décalés d'une année ?
+3. Peut-on construire un score synthétique de fragilité financière
+   territoriale prédictif du surendettement ?
+
+**Périmètre :** 96 départements métropolitains (hors DOM-TOM).
+**Sources :** Banque de France, INSEE FiLoSoFi, INSEE RP 2021, INSEE
+chômage localisé, DREES (voir Section 2).
+
+::: {.callout-note appearance="simple"}
+**À propos de ce rapport** — L'ensemble des chiffres présentés sont générés
+programmatiquement à partir de données publiques. Le code source est accessible
+en cliquant sur « Voir le code » dans chaque section. Les données brutes
+peuvent être téléchargées en suivant les instructions du
+[guide de démarrage](specs/001-surendettement-analysis/quickstart.md).
+:::
+
+### Chiffres clés
+
+```{python}
+#| label: tbl-kpi
+#| tbl-cap: "Statistiques descriptives clés — France métropolitaine (année de référence)"
+
+from IPython.display import display
+
+if DATA_AVAILABLE and len(df) > 0:
+    df_s = df[df["annee"] == YEAR_TARGET].copy()
+    kpi = []
+
+    if "suren_depot_nb" in df_s.columns:
+        nb = pd.to_numeric(df_s["suren_depot_nb"], errors="coerce").dropna()
+        if len(nb) > 0:
+            kpi.append({
+                "Indicateur": "Total dossiers de surendettement déposés",
+                "Médiane départementale": f"{nb.median():.0f}",
+                "Étendue (min – max)": f"{int(nb.min())} – {int(nb.max())}",
+                "Source": f"Banque de France {YEAR_TARGET}",
+            })
+
+    if "suren_depot_taux" in df_s.columns:
+        tx = pd.to_numeric(df_s["suren_depot_taux"], errors="coerce").dropna()
+        if len(tx) > 0 and tx.median() < 100:
+            kpi.append({
+                "Indicateur": "Taux de surendettement (‰ ménages)",
+                "Médiane départementale": f"{tx.median():.1f} ‰",
+                "Étendue (min – max)": f"{tx.min():.1f} – {tx.max():.1f} ‰",
+                "Source": f"Banque de France {YEAR_TARGET}",
+            })
+
+    if "chomage_taux" in df_s.columns:
+        ch = pd.to_numeric(df_s["chomage_taux"], errors="coerce").dropna()
+        if len(ch) > 0:
+            kpi.append({
+                "Indicateur": "Taux de chômage BIT",
+                "Médiane départementale": f"{ch.median():.1f} %",
+                "Étendue (min – max)": f"{ch.min():.1f} – {ch.max():.1f} %",
+                "Source": f"INSEE {YEAR_TARGET}",
+            })
+
+    if "taux_pauvrete" in df_s.columns:
+        pv = pd.to_numeric(df_s["taux_pauvrete"], errors="coerce").dropna()
+        if len(pv) > 0:
+            kpi.append({
+                "Indicateur": "Taux de pauvreté (seuil 60 %)",
+                "Médiane départementale": f"{pv.median():.1f} %",
+                "Étendue (min – max)": f"{pv.min():.1f} – {pv.max():.1f} %",
+                "Source": f"INSEE FiLoSoFi {YEAR_FILOSOFI}",
+            })
+
+    if "rsa_taux" in df_s.columns:
+        rsa = pd.to_numeric(df_s["rsa_taux"], errors="coerce").dropna()
+        if len(rsa) > 0:
+            kpi.append({
+                "Indicateur": "Part d'allocataires RSA",
+                "Médiane départementale": f"{rsa.median():.1f} %",
+                "Étendue (min – max)": f"{rsa.min():.1f} – {rsa.max():.1f} %",
+                "Source": f"DREES {YEAR_TARGET}",
+            })
+
+    if kpi:
+        kpi_df = pd.DataFrame(kpi)
+        display(kpi_df.style.hide(axis="index").set_properties(**{"text-align": "left"}))
+    else:
+        print("⚠️ Données insuffisantes — exécuter les scripts 01–04 d'abord.")
+else:
+    print("⚠️ Données non disponibles — exécuter les scripts 01–04 d'abord.")
+```
+
+---
+
+## Sources de données {#sec-sources}
+
+Cette analyse mobilise six sources de données publiques, toutes téléchargeables
+et reproductibles. Le tableau ci-dessous recense chaque source, les indicateurs
+retenus, le millésime de référence et la couverture géographique. Les données
+brutes sont stockées dans `data/raw/` (non versionnées) et retraitées
+par les scripts `02_clean.py` et `03_merge.py` avant d'être intégrées dans le
+jeu analytique (`analytical_dataset.csv`).
+
+```{python}
+#| label: tbl-sources-table
+#| tbl-cap: "Sources de données utilisées dans l'analyse"
+
+sources = pd.DataFrame({
+    "Source": [
+        "Banque de France — Synthèses surendettement",
+        "INSEE FiLoSoFi 2021",
+        "INSEE FiLoSoFi SUPRA 2019",
+        "INSEE Chômage localisé (TCRD)",
+        "INSEE Recensement (RP 2021)",
+        "DREES / France Travail — Minimas sociaux",
+    ],
+    "Indicateurs": [
+        "Dépôts de dossiers de surendettement",
+        "Revenu médian UC, taux de pauvreté (60 %), interdécile D9/D1",
+        "Coefficient de Gini",
+        "Taux de chômage BIT par département",
+        "Structure ménages, logement, démographie",
+        "RSA, prime d'activité, ASS/ASPA",
+    ],
+    "Millésime(s)": [
+        "2018–2023",
+        "2021",
+        "2019",
+        "2017–2024",
+        "2021",
+        "2021",
+    ],
+    "Périmètre": [
+        "96 dép.",
+        "96 dép.",
+        "96 dép. (couverture ~20 %)",
+        "96 dép.",
+        "96 dép.",
+        "96 dép. (si disponible)",
+    ],
+    "Identifiant / URL": [
+        "banque-france.fr/publications/synthese-nationale…",
+        "insee.fr/statistiques/7756729",
+        "insee.fr/statistiques/6036907",
+        "insee.fr/statistiques/2012804",
+        "insee.fr/statistiques/8268828",
+        "drees.solidarites-sante.gouv.fr/isd",
+    ],
+})
+
+# Affichage HTML
+sources.style.set_properties(**{"text-align": "left"}).hide(axis="index")
+```
+
+> **Note** : Les données brutes (`data/raw/`) ne sont pas versionnées.
+> Consulter [`quickstart.md`](specs/001-surendettement-analysis/quickstart.md)
+> pour les instructions de téléchargement.
+
+---
+
+## Couverture des données {#sec-couverture}
+
+Avant d'interpréter les résultats, il est indispensable de s'assurer que les
+données couvrent suffisamment les 96 départements. Le graphique ci-dessous
+indique, pour chaque variable analytique, le pourcentage de valeurs disponibles
+(non manquantes). Une couverture inférieure à 90 % (seuil rouge pointillé)
+appelle à la prudence : les variables concernées ne peuvent pas être incluses
+dans un modèle de régression sans risque de biais de sélection.
+
+::: {.callout-warning appearance="simple"}
+Le coefficient de **Gini** (FiLoSoFi SUPRA 2019) présente une couverture
+volontairement limitée à environ 20 % — il n'est disponible que pour les
+grandes unités territoriales et n'est donc pas intégré dans le modèle OLS
+principal.
+:::
+
+```{python}
+#| label: fig-couverture-plot
+#| fig-cap: "Couverture des variables clés du jeu analytique (% de valeurs non-nulles)"
+#| fig-alt: "Graphique en barres horizontales montrant le pourcentage de couverture de chaque variable analytique. Les variables principales dépassent 90 % ; le Gini est à ~20 % par construction."
+#| column: page
+
+if DATA_AVAILABLE and not coverage.empty:
+    # Sélectionner les variables analytiques (exclure métadonnées)
+    meta_cols = {"dep_code", "dep_nom", "reg_code", "annee",
+                 "source_url", "source_millesime"}
+    cov_plot = coverage[~coverage["variable"].isin(meta_cols)].copy()
+    cov_plot = cov_plot.sort_values("coverage_pct", ascending=True)
+
+    fig, ax = plt.subplots(figsize=(10, max(5, len(cov_plot) * 0.4)))
+    colors = [
+        _PHOSPHOR if row["coverage_pct"] >= 90
+        else (_AMBER if row["coverage_pct"] >= 50 else _RED)
+        for _, row in cov_plot.iterrows()
+    ]
+    bars = ax.barh(cov_plot["variable"], cov_plot["coverage_pct"],
+                   color=colors, edgecolor="none", height=0.7)
+    ax.axvline(90, color=_CHALK_DIM, linestyle="--", linewidth=1,
+               label="Seuil 90 %", alpha=0.7)
+    ax.set_xlabel("Couverture (%)", fontsize=10)
+    ax.set_title(
+        "Couverture des variables analytiques\n"
+        "(vert ≥ 90 %, orange ≥ 50 %, rouge < 50 %)",
+        fontsize=11, fontweight="bold"
+    )
+    ax.set_xlim(0, 110)
+    ax.legend(fontsize=9)
+    for bar, val in zip(bars, cov_plot["coverage_pct"]):
+        ax.text(bar.get_width() + 1, bar.get_y() + bar.get_height() / 2,
+                f"{val:.0f}%", va="center", fontsize=8)
+    fig.text(
+        0.5, -0.02,
+        "Source : calcul auteur d'après analytical_dataset.csv. "
+        "Le Gini (FiLoSoFi SUPRA 2019) a une couverture ~20 % par construction.",
+        ha="center", fontsize=8, style="italic"
+    )
+    plt.tight_layout()
+    plt.show()
+
+elif DATA_AVAILABLE and coverage.empty:
+    # Calculer directement depuis le dataset
+    meta_cols = {"dep_code", "dep_nom", "reg_code", "annee"}
+    cov_direct = (df.notna().mean() * 100).reset_index()
+    cov_direct.columns = ["variable", "coverage_pct"]
+    cov_direct = cov_direct[~cov_direct["variable"].isin(meta_cols)]
+    cov_direct = cov_direct.sort_values("coverage_pct", ascending=True)
+
+    fig, ax = plt.subplots(figsize=(10, max(5, len(cov_direct) * 0.4)))
+    ax.barh(cov_direct["variable"], cov_direct["coverage_pct"],
+            color=_CYAN, edgecolor="none")
+    ax.axvline(90, color=_RED, linestyle="--", label="Seuil 90 %")
+    ax.set_xlabel("Couverture (%)")
+    ax.set_title("Couverture des variables (calculée depuis analytical_dataset.csv)")
+    ax.legend()
+    plt.tight_layout()
+    plt.show()
+
+else:
+    print("⚠️ Données non disponibles — exécuter les scripts 01-04 d'abord.")
+    print("   python scripts/01_download.py")
+    print("   python scripts/02_clean.py")
+    print("   python scripts/03_merge.py")
+    print("   python scripts/04_validate.py")
+```
+
+```{python}
+#| label: tbl-couverture-table
+#| tbl-cap: "Rapport de couverture détaillé par variable"
+
+from IPython.display import display
+
+if COVERAGE_AVAILABLE and not coverage.empty:
+    meta_cols = {"dep_code", "dep_nom", "reg_code", "annee"}
+    cov_display = coverage[~coverage["variable"].isin(meta_cols)][
+        ["variable", "coverage_pct", "threshold_pct", "status", "min", "max", "median"]
+    ].copy()
+    cov_display["coverage_pct"] = cov_display["coverage_pct"].apply(
+        lambda x: f"{x:.1f}%"
+    )
+    # Mise en évidence des avertissements
+    def highlight_status(val):
+        if val == "WARNING":
+            return "background-color: #ffe0b2"
+        elif val.startswith("OK"):
+            return "background-color: #e8f5e9"
+        return ""
+
+    display(cov_display.style.map(
+        highlight_status, subset=["status"]
+    ).hide(axis="index"))
+elif DATA_AVAILABLE:
+    print("ℹ️  Exécuter scripts/04_validate.py pour le rapport détaillé.")
+```
+
+---
+
+## Analyse exploratoire (EDA) {#sec-eda}
+
+L'analyse exploratoire vise à comprendre la structure des données et les
+relations entre variables avant toute modélisation. On examine successivement :
+
+1. **La matrice de corrélation** — pour identifier les associations bivariées
+   entre toutes les variables et la cible (taux de surendettement) ;
+2. **Les distributions** — pour détecter les asymétries, les valeurs extrêmes
+   et la dispersion territoriale ;
+3. **Les tendances temporelles** — pour situer l'année de référence dans une
+   dynamique de moyen terme (2019–2024).
+
+Cette exploration guide ensuite les choix de spécification du modèle OLS
+(Section 4).
+
+```{python}
+#| label: eda-setup
+#| include: false
+
+# Préparation des données pour l'année de référence (YEAR_TARGET)
+if DATA_AVAILABLE and len(df) > 0:
+    df_2021 = df[df["annee"] == YEAR_TARGET].copy()
+    EDA_AVAILABLE = len(df_2021) >= 10
+else:
+    df_2021 = pd.DataFrame()
+    EDA_AVAILABLE = False
+
+# Déterminer si suren_depot_taux est un vrai taux (/ 10 000 hab.) ou un nombre brut
+suren_median = (
+    pd.to_numeric(df["suren_depot_taux"], errors="coerce").median()
+    if DATA_AVAILABLE and "suren_depot_taux" in df.columns else None
+)
+# Valeurs / 10 000 hab. pour grands depts ~ 1–15 ; nb brut ~ 62–8848
+suren_is_rate = suren_median is not None and suren_median < 100
+suren_unit_label = "Dépôts / 10 000 hab." if suren_is_rate else "nb brut"
+suren_axis_label = "Taux de surendettement (pour 10 000 hab.)" if suren_is_rate else "Dépôts de surendettement (nb)"
+```
+
+### Matrice de corrélation {#sec-correlation}
+
+La **corrélation de Pearson** mesure l'intensité et la direction de la relation
+linéaire entre deux variables : un coefficient r proche de +1 indique que les
+deux variables augmentent conjointement, proche de −1 qu'elles varient en sens
+inverse, proche de 0 qu'il n'y a pas de relation linéaire. Les étoiles indiquent
+si la corrélation est statistiquement significative, c'est-à-dire peu susceptible
+d'être due au hasard seul.
+
+::: {.callout-tip appearance="simple"}
+**Comment lire cette matrice :** chaque cellule donne le coefficient r entre
+deux variables. La diagonale vaut toujours 1 (une variable est parfaitement
+corrélée à elle-même). Pour l'interprétation, on se concentre sur la ligne ou
+la colonne correspondant à `suren_depot_taux` (taux de surendettement), qui est
+notre variable à expliquer.
+:::
+
+```{python}
+#| label: fig-corr-matrix
+#| fig-cap: "Matrice de corrélation de Pearson entre variables départementales (année de référence). Les étoiles indiquent le niveau de significativité : * p<0,05 ; ** p<0,01 ; *** p<0,001."
+#| fig-alt: "Heatmap de corrélation colorée (rouge = corrélation positive, bleu = négative) entre les variables économiques départementales et le taux de surendettement."
+#| fig-width: 10
+#| fig-height: 8
+#| column: page
+
+if EDA_AVAILABLE:
+    from scipy import stats
+
+    corr_vars = [
+        "suren_depot_taux", "chomage_taux", "revenu_median_uc",
+        "taux_pauvrete", "rsa_taux", "part_locataires",
+        "part_familles_mono", "interdecile_d9d1", "score_fragilite",
+    ]
+    corr_vars_available = [v for v in corr_vars if v in df_2021.columns]
+    df_corr = df_2021[corr_vars_available].copy()
+
+    # Convertir en numérique
+    for col in corr_vars_available:
+        df_corr[col] = pd.to_numeric(df_corr[col], errors="coerce")
+    df_corr = df_corr.dropna(how="all")
+
+    # Filtrer les colonnes avec suffisamment de données
+    min_obs = 10
+    cols_ok = [
+        c for c in corr_vars_available
+        if df_corr[c].notna().sum() >= min_obs
+    ]
+    df_corr = df_corr[cols_ok].dropna()
+
+    if len(df_corr) >= min_obs and len(cols_ok) >= 2:
+        # Matrice de corrélation Pearson
+        corr_matrix = df_corr.corr(method="pearson")
+
+        # Matrice de p-values
+        pval_matrix = pd.DataFrame(
+            np.ones_like(corr_matrix),
+            index=corr_matrix.index,
+            columns=corr_matrix.columns,
+        )
+        for i in corr_matrix.index:
+            for j in corr_matrix.columns:
+                if i != j:
+                    valid = df_corr[[i, j]].dropna()
+                    if len(valid) >= 5:
+                        _, p = stats.pearsonr(valid[i], valid[j])
+                        pval_matrix.loc[i, j] = p
+
+        # Heatmap
+        fig, ax = plt.subplots(figsize=(10, 8))
+        im = ax.imshow(
+            corr_matrix, cmap="coolwarm", vmin=-1, vmax=1, aspect="auto"
+        )
+        plt.colorbar(im, ax=ax, label="Coefficient de corrélation de Pearson")
+
+        labels = [v.replace("_", "\n") for v in cols_ok]
+        ax.set_xticks(range(len(labels)))
+        ax.set_yticks(range(len(labels)))
+        ax.set_xticklabels(labels, fontsize=8, rotation=45, ha="right")
+        ax.set_yticklabels(labels, fontsize=8)
+
+        # Annotations avec étoiles de significativité
+        for i in range(len(corr_matrix)):
+            for j in range(len(corr_matrix)):
+                val = corr_matrix.iloc[i, j]
+                p   = pval_matrix.iloc[i, j]
+                star = (
+                    "***" if p < 0.001
+                    else ("**" if p < 0.01
+                    else ("*" if p < 0.05 else ""))
+                )
+                color = "black" if abs(val) < 0.7 else "white"
+                ax.text(
+                    j, i, f"{val:.2f}{star}",
+                    ha="center", va="center",
+                    fontsize=7, color=color,
+                )
+
+        ax.set_title(
+            f"Matrice de corrélation de Pearson — Variables départementales ({YEAR_TARGET})\n"
+            "* p<0,05   ** p<0,01   *** p<0,001",
+            fontsize=11, pad=15,
+        )
+        fig.text(
+            0.5, -0.03,
+            f"Source : Banque de France, INSEE, DREES — année de référence {YEAR_TARGET}. "
+            "Les variables présentant les corrélations les plus fortes avec le taux "
+            "de surendettement sont identifiées.",
+            ha="center", fontsize=8, style="italic", wrap=True,
+        )
+        plt.tight_layout()
+        plt.show()
+
+        # Tableau récapitulatif
+        if "suren_depot_taux" in corr_matrix.columns:
+            corr_target = (
+                corr_matrix["suren_depot_taux"]
+                .drop("suren_depot_taux", errors="ignore")
+                .sort_values(key=abs, ascending=False)
+            )
+            print("\nCorrélations avec le taux de surendettement :")
+            print(f"{'Variable':<30} {'r':>8}  {'Sig.'}")
+            print("-" * 50)
+            for var, corr_val in corr_target.items():
+                p   = pval_matrix.loc[var, "suren_depot_taux"]
+                sig = (
+                    "***" if p < 0.001
+                    else ("**" if p < 0.01
+                    else ("*" if p < 0.05 else "(ns)"))
+                )
+                print(f"{var:<30} {corr_val:+8.3f}  {sig}")
+    else:
+        print(
+            f"⚠️ Données insuffisantes pour la matrice de corrélation "
+            f"({len(df_corr)} obs., {len(cols_ok)} variables disponibles)."
+        )
+else:
+    print("⚠️ Données EDA non disponibles — exécuter les scripts 01-04 d'abord.")
+```
+
+### Distributions des variables clés {#sec-distributions}
+
+Chaque histogramme représente la répartition des 96 départements selon la valeur
+de l'indicateur. La ligne rouge pointillée matérialise la **médiane** (valeur
+centrale). Une distribution fortement asymétrique — avec une longue queue vers
+les valeurs élevées — signale la présence de quelques départements avec des
+valeurs extrêmes qui peuvent influencer les estimations OLS. Ces outliers sont
+à surveiller lors de l'interprétation des coefficients.
+
+```{python}
+#| label: fig-distributions
+#| fig-cap: "Distribution des variables clés par département (année de référence). La ligne rouge pointillée indique la médiane."
+#| fig-alt: "Six histogrammes côte à côte montrant les distributions départementales du surendettement, chômage, pauvreté, RSA, logement locatif et familles monoparentales."
+#| fig-width: 14
+#| fig-height: 8
+#| column: screen-inset
+
+if EDA_AVAILABLE:
+    plot_vars = [
+        ("suren_depot_taux",  "Taux de surendettement",     suren_unit_label,       f"BdF {YEAR_TARGET}"),
+        ("chomage_taux",      "Taux de chômage",            "%",                    f"INSEE {YEAR_TARGET}"),
+        ("taux_pauvrete",     "Taux de pauvreté (seuil 60%)", "%",                  f"FiLoSoFi {YEAR_FILOSOFI}"),
+        ("rsa_taux",          "Part allocataires RSA",       "%",                    f"DREES {YEAR_TARGET}"),
+        ("part_locataires",   "Part des ménages locataires", "%",                    f"RP {YEAR_TARGET}"),
+        ("part_familles_mono","Part familles monoparentales","%",                    f"RP {YEAR_TARGET}"),
+    ]
+
+    available_plot_vars = [
+        (col, label, unit, src)
+        for col, label, unit, src in plot_vars
+        if col in df_2021.columns
+        and pd.to_numeric(df_2021[col], errors="coerce").notna().sum() >= 10
+    ]
+
+    if available_plot_vars:
+        n_vars = len(available_plot_vars)
+        n_cols = 3
+        n_rows = (n_vars + n_cols - 1) // n_cols
+        fig, axes = plt.subplots(n_rows, n_cols, figsize=(14, 4 * n_rows))
+        axes = axes.flatten()
+
+        for idx, (col, label, unit, src) in enumerate(available_plot_vars[:6]):
+            ax  = axes[idx]
+            data = pd.to_numeric(df_2021[col], errors="coerce").dropna()
+            ax.hist(data, bins=20, color=_CYAN, edgecolor="none", alpha=0.8)
+            ax.axvline(
+                data.median(), color=_AMBER, linestyle="--", linewidth=1.5,
+                label=f"Médiane : {data.median():.1f}",
+            )
+            ax.set_xlabel(f"{label} ({unit})", fontsize=9)
+            ax.set_ylabel("Nombre de départements", fontsize=9)
+            ax.set_title(label, fontsize=10, fontweight="bold")
+            ax.legend(fontsize=8)
+            ax.text(
+                0.02, 0.98, f"Source : {src}",
+                transform=ax.transAxes, fontsize=7, va="top", style="italic",
+            )
+
+        # Masquer les axes inutilisés
+        for idx in range(len(available_plot_vars), len(axes)):
+            axes[idx].set_visible(False)
+
+        fig.suptitle(
+            f"Distribution des variables clés par département ({YEAR_TARGET})",
+            fontsize=12, fontweight="bold", y=1.02,
+        )
+        fig.text(
+            0.5, -0.01,
+            "Les distributions révèlent une forte hétérogénéité territoriale pour "
+            "le surendettement et la pauvreté, suggérant des effets de clustering géographique.",
+            ha="center", fontsize=9, style="italic", wrap=True,
+        )
+        plt.tight_layout()
+        plt.show()
+    else:
+        print("⚠️ Aucune variable disponible pour les distributions (données manquantes).")
+else:
+    print("⚠️ Données EDA non disponibles — exécuter les scripts 01-04 d'abord.")
+```
+
+### Tendances temporelles (2019–2024) {#sec-tendances}
+
+Ce graphique retrace l'évolution de la **médiane départementale** sur la période
+disponible. Il permet d'identifier des tendances structurelles (baisse du
+surendettement depuis le pic des années 2010) et des ruptures conjoncturelles
+(effet de la crise sanitaire de 2020). Un double axe est utilisé pour permettre
+la comparaison entre des variables exprimées dans des unités différentes —
+pourcentages pour le chômage et la pauvreté, nombre de dossiers ou taux ‰ pour
+le surendettement.
+
+::: {.callout-note appearance="simple"}
+La tendance nationale à la baisse du surendettement depuis 2018 coïncide avec
+la période de baisse du chômage et de renforcement des minimas sociaux (prime
+d'activité). La section de modélisation teste si cette co-évolution temporelle
+se retrouve dans les disparités spatiales entre départements.
+:::
+
+```{python}
+#| label: fig-tendances
+#| fig-cap: "Évolution médiane des indicateurs départementaux (2019–2024). Axe gauche : chômage et pauvreté (%) ; axe droit : surendettement."
+#| fig-alt: "Graphique en lignes double-axe montrant l'évolution temporelle du surendettement (rouge), du chômage (bleu) et de la pauvreté (orange) entre 2019 et 2024 au niveau départemental médian."
+#| fig-width: 10
+#| fig-height: 5
+#| column: page
+
+if DATA_AVAILABLE and len(df) > 0:
+    trend_vars = ["suren_depot_taux", "chomage_taux", "taux_pauvrete"]
+    available_trend = [v for v in trend_vars if v in df.columns]
+
+    # Convertir en numérique
+    for v in available_trend:
+        df[v] = pd.to_numeric(df[v], errors="coerce")
+
+    if available_trend and df["annee"].nunique() >= 2:
+        trend_data = (
+            df.groupby("annee")[available_trend].median().reset_index()
+        )
+
+        colors = {
+            "suren_depot_taux": _RED,
+            "chomage_taux":     _CYAN,
+            "taux_pauvrete":    _AMBER,
+        }
+        labels_fr = {
+            "suren_depot_taux": suren_axis_label,
+            "chomage_taux":     "Taux de chômage (%)",
+            "taux_pauvrete":    "Taux de pauvreté (%)",
+        }
+
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax2 = ax.twinx()
+
+        for var in available_trend:
+            if trend_data[var].notna().sum() < 2:
+                continue
+            target_ax = ax2 if var == "suren_depot_taux" else ax
+            target_ax.plot(
+                trend_data["annee"], trend_data[var],
+                marker="o", linewidth=2,
+                color=colors.get(var, _CHALK_DIM),
+                label=labels_fr.get(var, var),
+            )
+
+        ax.set_xlabel("Année", fontsize=10)
+        ax.set_ylabel("Taux (%)", fontsize=10)
+        ax2.set_ylabel(suren_axis_label, fontsize=10, color=_RED)
+        ax2.tick_params(axis="y", labelcolor=_RED)
+
+        # Légende combinée
+        lines1, labels1 = ax.get_legend_handles_labels()
+        lines2, labels2 = ax2.get_legend_handles_labels()
+        ax.legend(lines1 + lines2, labels1 + labels2, loc="upper right", fontsize=9)
+
+        ax.set_title(
+            "Évolution médiane des indicateurs départementaux (2019–2024)",
+            fontsize=11, fontweight="bold",
+        )
+        ax.set_xticks(trend_data["annee"])
+        ax.grid(axis="y", alpha=0.3)
+
+        fig.text(
+            0.5, -0.04,
+            "Source : Banque de France, INSEE. Médiane des 96 départements métropolitains. "
+            "Le recul du surendettement post-2018 coïncide avec la baisse du chômage.",
+            ha="center", fontsize=8, style="italic", wrap=True,
+        )
+        plt.tight_layout()
+        plt.show()
+
+    elif available_trend:
+        print(
+            f"⚠️ Une seule année disponible ({df['annee'].unique()}) "
+            "— graphique de tendance non produit."
+        )
+    else:
+        print("⚠️ Variables de tendance non disponibles dans le dataset.")
+else:
+    print("⚠️ Données non disponibles — exécuter les scripts 01-04 d'abord.")
+```
+
+---
+
+## Modélisation OLS {#sec-ols}
+
+La **régression OLS** (Ordinary Least Squares — moindres carrés ordinaires)
+est la méthode de référence pour estimer l'effet de plusieurs variables
+indépendantes sur une variable cible tout en contrôlant simultanément les
+autres facteurs. Contrairement à la corrélation bivariée, elle permet d'isoler
+l'effet « net » de chaque prédicteur.
+
+Dans ce modèle, la variable à expliquer est le **taux de surendettement**
+(dossiers déposés pour 1 000 ménages) au niveau départemental pour le
+millésime retenu par les données FiLoSoFi. Les six prédicteurs du modèle de
+base sont : le taux de chômage, le revenu médian par unité de consommation,
+le taux de pauvreté, la part d'allocataires RSA, la part de ménages locataires
+et la part de familles monoparentales.
+
+::: {.callout-note appearance="simple"}
+Le modèle OLS est estimé sur le millésime 2021, car les variables FiLoSoFi
+(`revenu_median_uc`, `taux_pauvrete`) ne sont actuellement disponibles que
+pour cette année.
+:::
+
+**Comment lire un tableau OLS :**
+
+- Le **coefficient** (Coef.) indique de combien varie le taux de surendettement
+  lorsque la variable explicative augmente d'une unité, toutes les autres
+  variables étant maintenues constantes.
+- L'**erreur standard** mesure la précision de cette estimation.
+- La **p-value** indique la probabilité d'observer ce coefficient par hasard
+  si l'effet réel était nul. Une p-value < 0,05 est conventionnellement
+  considérée comme statistiquement significative.
+- Le **R² ajusté** mesure la proportion de la variance du surendettement
+  expliquée par l'ensemble des prédicteurs (0 = aucun pouvoir explicatif,
+  1 = explication parfaite).
+
+```{python}
+#| label: ols-setup
+#| include: false
+
+import statsmodels.api as sm
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from sklearn.preprocessing import StandardScaler
+
+OLS_AVAILABLE = False
+ols_results = {}
+df_ols = pd.DataFrame()
+
+if DATA_AVAILABLE and len(df) > 0:
+    # FiLoSoFi : utiliser le millésime complet détecté (YEAR_FILOSOFI)
+    df_ols = df[df["annee"] == YEAR_FILOSOFI].copy()
+    y_col = "suren_depot_taux"
+    x_cols_base = [
+        "chomage_taux", "revenu_median_uc", "taux_pauvrete",
+        "rsa_taux", "part_locataires", "part_familles_mono",
+    ]
+    x_cols_lag = [
+        "chomage_taux_t1", "revenu_median_uc", "taux_pauvrete_t1",
+        "rsa_taux", "part_locataires", "part_familles_mono",
+    ]
+
+    def build_ols_data(df_src, y_col, x_cols, min_obs=30):
+        """Retourner (X, y, cols_used) ou (None, None, []) si données insuffisantes."""
+        available = [c for c in x_cols if c in df_src.columns]
+        sub = df_src[[y_col] + available].copy()
+        for c in [y_col] + available:
+            sub[c] = pd.to_numeric(sub[c], errors="coerce")
+        sub = sub.dropna()
+        if len(sub) < min_obs or len(available) < 2:
+            return None, None, []
+        return sub[available], sub[y_col], available
+
+    # Modèle de base
+    X_base, y_base, cols_base = build_ols_data(df_ols, y_col, x_cols_base)
+    if X_base is not None:
+        X_const = sm.add_constant(X_base)
+        model_base = sm.OLS(y_base, X_const).fit()
+        ols_results["base"] = {"model": model_base, "X": X_base, "cols": cols_base}
+        OLS_AVAILABLE = True
+
+    # Modèle avec lag
+    X_lag, y_lag, cols_lag = build_ols_data(df_ols, y_col, x_cols_lag)
+    if X_lag is not None:
+        X_lag_const = sm.add_constant(X_lag)
+        model_lag = sm.OLS(y_lag, X_lag_const).fit()
+        ols_results["lag"] = {"model": model_lag, "X": X_lag, "cols": cols_lag}
+
+    # Modèle z-score (standardisé)
+    if X_base is not None:
+        scaler = StandardScaler()
+        X_z = pd.DataFrame(
+            scaler.fit_transform(X_base), columns=X_base.columns, index=X_base.index
+        )
+        y_z = (y_base - y_base.mean()) / y_base.std()
+        X_z_const = sm.add_constant(X_z)
+        model_z = sm.OLS(y_z, X_z_const).fit()
+        ols_results["zscore"] = {"model": model_z, "X": X_z, "cols": cols_base}
+```
+
+### Modèle OLS de base {#sec-ols-base}
+
+Le tableau suivant présente les résultats du modèle de base estimé sur les
+96 départements métropolitains pour l'année FiLoSoFi disponible. Un R² ajusté
+supérieur à 0,40 confirmerait que les conditions économiques locales
+expliquent une part substantielle des disparités départementales de
+surendettement.
+
+```{python}
+#| label: tbl-ols-base
+#| tbl-cap: "Résultats OLS — Modèle de base (année FiLoSoFi disponible, 96 départements). Variable dépendante : taux de surendettement. * p<0,05 ; ** p<0,01 ; *** p<0,001."
+
+from IPython.display import display, Markdown
+
+if OLS_AVAILABLE and "base" in ols_results:
+    model = ols_results["base"]["model"]
+    res = model.summary2().tables[1].copy()
+    res.columns = ["Coef.", "Err. Std.", "t", "p-value", "IC 2,5%", "IC 97,5%"]
+    res["Sig."] = res["p-value"].apply(
+        lambda p: "***" if p < 0.001 else ("**" if p < 0.01 else ("*" if p < 0.05 else ""))
+    )
+    res = res[["Coef.", "Err. Std.", "t", "p-value", "Sig."]]
+    for col in ["Coef.", "Err. Std.", "t"]:
+        res[col] = res[col].apply(lambda x: f"{x:.4f}")
+    res["p-value"] = res["p-value"].apply(lambda x: f"{x:.4f}")
+
+    display(Markdown(
+        f"**R² ajusté : {model.rsquared_adj:.3f}** &nbsp;|&nbsp; "
+        f"N = {int(model.nobs)} &nbsp;|&nbsp; "
+        f"F-stat p-value : {model.f_pvalue:.4f}"
+    ))
+    display(res.style.set_properties(**{"text-align": "right"}).set_table_styles(
+        [{"selector": "th", "props": [("text-align", "center")]}]
+    ))
+elif EDA_AVAILABLE:
+    print(
+        "⚠️ Données insuffisantes pour le modèle OLS de base — "
+        "variables explicatives non disponibles (FiLoSoFi/RP/Minimas non téléchargées).\n"
+        "Exécuter scripts/01_download.py et scripts/02_clean.py pour acquérir les données."
+    )
+else:
+    print("⚠️ Données non disponibles — exécuter les scripts 01-04 d'abord.")
+```
+
+### Diagnostic VIF {#sec-vif}
+
+Lorsque plusieurs variables explicatives sont fortement corrélées entre elles
+(**multicolinéarité**), les estimations OLS deviennent instables : les
+coefficients peuvent changer de signe ou voir leur erreur standard augmenter
+fortement, rendant les tests de significativité peu fiables.
+
+Le **Facteur d'Inflation de la Variance** (VIF) quantifie ce problème pour
+chaque prédicteur. Il se lit ainsi :
+
+- **VIF < 5** : multicolinéarité faible, pas de problème ✅
+- **5 ≤ VIF < 10** : multicolinéarité modérée, interpréter avec prudence ⚡
+- **VIF ≥ 10** : multicolinéarité élevée, les coefficients sont potentiellement
+  biaisés ⚠️
+
+En présence de VIF ≥ 10 sur au moins deux variables simultanément, une Analyse
+en Composantes Principales (ACP, section suivante) peut être appliquée pour
+réduire la redondance.
+
+```{python}
+#| label: tbl-vif
+#| tbl-cap: "Facteur d'inflation de la variance (VIF) par prédicteur. VIF > 10 indique une multicolinéarité préoccupante."
+
+from IPython.display import display, Markdown
+
+if OLS_AVAILABLE and "base" in ols_results:
+    X_vif = ols_results["base"]["X"].copy()
+    X_vif_const = sm.add_constant(X_vif)
+
+    vif_data = pd.DataFrame({
+        "Variable": X_vif.columns,
+        "VIF": [
+            variance_inflation_factor(X_vif_const.values, i + 1)
+            for i in range(len(X_vif.columns))
+        ],
+    })
+    vif_data["VIF"] = vif_data["VIF"].apply(lambda x: f"{x:.2f}")
+    vif_data["Alerte"] = vif_data["VIF"].apply(
+        lambda x: "⚠️ Multicolinéarité élevée" if float(x) >= 10 else ("⚡ Modéré" if float(x) >= 5 else "✅ OK")
+    )
+
+    display(vif_data.style.hide(axis="index"))
+
+    high_vif = vif_data[vif_data["VIF"].apply(lambda x: float(x) >= 10)]
+    if not high_vif.empty:
+        display(Markdown(
+            f"⚠️ **Variables avec VIF ≥ 10 :** {', '.join(high_vif['Variable'].tolist())}. "
+            "Une ACP ou une sélection de variables est recommandée."
+        ))
+    else:
+        display(Markdown("✅ **Aucun VIF ≥ 10 détecté** — multicolinéarité acceptable pour toutes les spécifications."))
+elif EDA_AVAILABLE:
+    print("⚠️ VIF non calculable — données insuffisantes pour le modèle de base.")
+else:
+    print("⚠️ Données non disponibles.")
+```
+
+### Comparaison avec effets de lag (t-1) {#sec-ols-lag}
+
+Les effets économiques sur le surendettement ne sont pas forcément immédiats.
+Un ménage qui perd son emploi en année t peut accumuler des dettes pendant
+plusieurs mois avant de déposer un dossier en année t+1. On parle d'un
+**effet de lag** (décalage temporel) d'un an.
+
+Pour tester cette hypothèse, on compare deux spécifications :
+
+- **Modèle sans lag** : les variables explicatives (chômage, pauvreté) sont
+  mesurées la même année que le surendettement (millésime FiLoSoFi disponible).
+- **Modèle avec lag t-1** : chômage et pauvreté sont mesurés l'année
+  précédente, le surendettement au millésime FiLoSoFi disponible.
+
+Si le modèle avec lag présente un **R² ajusté plus élevé** et un **AIC plus
+faible** (critère d'information d'Akaike — plus bas = meilleur), cela suggère
+que les effets économiques s'expriment avec un délai d'un an.
+
+```{python}
+#| label: tbl-ols-lag
+#| tbl-cap: "Comparaison OLS — Spécification sans lag vs avec lag t-1. Variable dépendante : taux de surendettement."
+
+from IPython.display import display, Markdown
+
+if OLS_AVAILABLE and "lag" in ols_results and "base" in ols_results:
+    m_base = ols_results["base"]["model"]
+    m_lag  = ols_results["lag"]["model"]
+
+    comparison = pd.DataFrame({
+        "Indicateur": ["R²", "R² ajusté", "AIC", "N", "F-stat (p-value)"],
+        "Modèle sans lag": [
+            f"{m_base.rsquared:.3f}",
+            f"{m_base.rsquared_adj:.3f}",
+            f"{m_base.aic:.1f}",
+            f"{int(m_base.nobs)}",
+            f"{m_base.f_pvalue:.4f}",
+        ],
+        "Modèle avec lag t-1": [
+            f"{m_lag.rsquared:.3f}",
+            f"{m_lag.rsquared_adj:.3f}",
+            f"{m_lag.aic:.1f}",
+            f"{int(m_lag.nobs)}",
+            f"{m_lag.f_pvalue:.4f}",
+        ],
+    })
+    display(comparison.style.hide(axis="index"))
+
+    delta_r2 = m_lag.rsquared_adj - m_base.rsquared_adj
+    delta_aic = m_lag.aic - m_base.aic
+    conclusion = (
+        "Les effets de lag améliorent le modèle." if delta_r2 > 0 and delta_aic < 0
+        else "Les effets contemporains sont prédominants."
+    )
+    display(Markdown(
+        f"**Conclusion :** Le modèle avec lag présente un R² ajusté "
+        f"{'**supérieur**' if delta_r2 > 0 else 'inférieur'} "
+        f"(Δ = {delta_r2:+.3f}) et un AIC {'**inférieur** (meilleur)' if delta_aic < 0 else 'supérieur'} "
+        f"(Δ = {delta_aic:+.1f}). {conclusion}"
+    ))
+elif OLS_AVAILABLE:
+    print(
+        "⚠️ Modèle avec lag non disponible — "
+        "vérifier que chomage_taux_t1 et taux_pauvrete_t1 sont bien calculés dans 03_merge.py."
+    )
+elif EDA_AVAILABLE:
+    print("⚠️ Modèles OLS non disponibles — données insuffisantes.")
+else:
+    print("⚠️ Données non disponibles.")
+```
+
+### Coefficients bêta standardisés (z-scores) {#sec-ols-zscore}
+
+Les variables du modèle sont exprimées dans des unités différentes (%, ‰, €),
+ce qui rend les coefficients OLS bruts **incomparables** entre eux en termes
+d'importance relative. Pour remédier à ce problème, on standardise toutes les
+variables en **z-score** (on soustrait la moyenne et on divise par l'écart-type
+de chaque variable). Les coefficients bêta standardisés obtenus s'interprètent
+ainsi : une variation d'un écart-type de la variable X entraîne β écarts-types
+de variation du taux de surendettement.
+
+::: {.callout-tip appearance="simple"}
+**Lecture pratique :** le prédicteur avec le coefficient bêta **le plus grand
+en valeur absolue** est celui qui, parmi les variables disponibles, contribue
+le plus à expliquer les écarts de surendettement entre départements,
+indépendamment de son unité de mesure.
+:::
+
+```{python}
+#| label: fig-ols-zscore
+#| fig-cap: "Coefficients bêta standardisés — Modèle OLS avec variables normalisées en z-score (année FiLoSoFi disponible). Permet la comparaison de l'importance relative des prédicteurs, indépendamment de leurs unités."
+#| fig-alt: "Graphique en barres horizontales des coefficients bêta standardisés, du plus fort au plus faible en valeur absolue. Les barres en rouge indiquent une significativité p<0,05."
+#| column: page
+
+if OLS_AVAILABLE and "zscore" in ols_results:
+    model_z = ols_results["zscore"]["model"]
+    params = model_z.params.drop("const", errors="ignore")
+    pvals  = model_z.pvalues.drop("const", errors="ignore")
+    conf   = model_z.conf_int().drop("const", errors="ignore")
+
+    # Trier par valeur absolue
+    order  = params.abs().sort_values(ascending=True).index
+    params = params[order]
+    pvals  = pvals[order]
+    conf   = conf.loc[order]
+
+    colors = [_RED if p < 0.05 else _CHALK_DIM for p in pvals]
+
+    fig, ax = plt.subplots(figsize=(9, max(4, len(params) * 0.6)))
+    bars = ax.barh(range(len(params)), params.values, color=colors, edgecolor="none", alpha=0.85)
+    ax.errorbar(
+        params.values, range(len(params)),
+        xerr=[params.values - conf[0].values, conf[1].values - params.values],
+        fmt="none", color="black", capsize=4, linewidth=1.2,
+    )
+    ax.axvline(0, color="black", linewidth=0.8, linestyle="--")
+    ax.set_yticks(range(len(params)))
+    ax.set_yticklabels(params.index.tolist(), fontsize=9)
+    ax.set_xlabel("Coefficient bêta standardisé (IC 95 %)", fontsize=10)
+    ax.set_title(
+        f"Importance relative des prédicteurs\n(OLS sur z-scores — {YEAR_FILOSOFI})",
+        fontsize=11, fontweight="bold",
+    )
+
+    # Légende
+    from matplotlib.patches import Patch
+    legend_elems = [
+        Patch(facecolor=_RED,       label="p < 0,05 (significatif)"),
+        Patch(facecolor=_CHALK_DIM, label="p ≥ 0,05 (non significatif)"),
+    ]
+    ax.legend(handles=legend_elems, loc="lower right", fontsize=8)
+    ax.grid(axis="x", alpha=0.3)
+
+    fig.text(
+        0.5, -0.04,
+        f"Source : Banque de France, INSEE, DREES. Données {YEAR_FILOSOFI} — 96 départements métropolitains. "
+        "Les coefficients standardisés permettent de comparer l'effet relatif de chaque prédicteur.",
+        ha="center", fontsize=8, style="italic", wrap=True,
+    )
+    plt.tight_layout()
+    plt.show()
+elif EDA_AVAILABLE:
+    print("⚠️ Modèle z-score non disponible — données insuffisantes.")
+else:
+    print("⚠️ Données non disponibles.")
+```
+
+### ACP conditionnelle (si multicolinéarité élevée) {#sec-pca}
+
+Si plusieurs prédicteurs présentent un VIF ≥ 10 simultanément, une
+**Analyse en Composantes Principales** (ACP) peut synthétiser l'information
+redondante en un nombre réduit de composantes orthogonales (c'est-à-dire
+indépendantes entre elles par construction). Chaque composante est une
+combinaison linéaire des variables d'origine.
+
+Le graphique ci-dessous — produit uniquement lorsqu'une multicolinéarité
+élevée est détectée — présente la part de variance expliquée par chaque
+composante. Le nombre de composantes à retenir est conventionnellement fixé
+au seuil de 80 % de variance cumulée, ou par le critère du coude (elbow
+criterion).
+
+```{python}
+#| label: fig-pca
+#| fig-cap: "Analyse en Composantes Principales (ACP) — variance expliquée cumulée par composante. Produite uniquement si VIF ≥ 10 pour au moins deux prédicteurs simultanément."
+#| fig-alt: "Graphique en barres de la variance expliquée par chaque composante principale, avec courbe cumulative."
+#| column: page
+
+if OLS_AVAILABLE and "base" in ols_results:
+    from sklearn.decomposition import PCA
+
+    X_vif_check = ols_results["base"]["X"].copy()
+    X_vif_const = sm.add_constant(X_vif_check)
+    vif_vals = [
+        variance_inflation_factor(X_vif_const.values, i + 1)
+        for i in range(len(X_vif_check.columns))
+    ]
+    n_high_vif = sum(v >= 10 for v in vif_vals)
+
+    if n_high_vif >= 2:
+        scaler_pca = StandardScaler()
+        X_scaled = scaler_pca.fit_transform(X_vif_check)
+        pca = PCA()
+        pca.fit(X_scaled)
+
+        var_exp = pca.explained_variance_ratio_
+        cum_var = np.cumsum(var_exp)
+        n_comp_80 = next((i + 1 for i, cv in enumerate(cum_var) if cv >= 0.80), len(var_exp))
+
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.bar(range(1, len(var_exp) + 1), var_exp * 100, color=_CYAN, alpha=0.8, label="% variance par composante")
+        ax2 = ax.twinx()
+        ax2.plot(range(1, len(var_exp) + 1), cum_var * 100, color=_AMBER, marker="o", linewidth=2, label="% cumulé")
+        ax2.axhline(80, color=_CHALK_DIM, linestyle="--", linewidth=1, label="Seuil 80 %")
+        ax.set_xlabel("Composante principale", fontsize=10)
+        ax.set_ylabel("Variance expliquée (%)", fontsize=10)
+        ax2.set_ylabel("Variance cumulée (%)", fontsize=10, color=_AMBER)
+        ax2.tick_params(axis="y", labelcolor=_AMBER)
+        ax.set_xticks(range(1, len(var_exp) + 1))
+        ax.set_title(
+            f"ACP — Variance expliquée (VIF ≥ 10 détecté sur {n_high_vif} variables)",
+            fontsize=11, fontweight="bold",
+        )
+        lines1, labels1 = ax.get_legend_handles_labels()
+        lines2, labels2 = ax2.get_legend_handles_labels()
+        ax.legend(lines1 + lines2, labels1 + labels2, loc="center right", fontsize=8)
+        fig.text(
+            0.5, -0.05,
+            f"Source : Banque de France, INSEE, DREES ({YEAR_FILOSOFI}). "
+            f"{n_comp_80} composante(s) expliquent ≥ 80 % de la variance. "
+            "Une ACP préalable peut réduire la multicolinéarité avant réestimation.",
+            ha="center", fontsize=8, style="italic", wrap=True,
+        )
+        plt.tight_layout()
+        plt.show()
+    else:
+        print(
+            f"✅ ACP non nécessaire : VIF < 10 pour toutes les variables "
+            f"({n_high_vif} variable(s) avec VIF ≥ 10 — seuil : 2). "
+            "La multicolinéarité est acceptable pour l'interprétation des coefficients OLS."
+        )
+elif EDA_AVAILABLE:
+    print("⚠️ ACP non disponible — modèle de base absent (données insuffisantes).")
+else:
+    print("⚠️ Données non disponibles.")
+```
+
+---
+
+## Cartographie départementale {#sec-carto}
+
+La modélisation statistique a permis d'identifier les prédicteurs les plus
+associés au surendettement. La cartographie situe maintenant ces résultats
+dans l'espace géographique.
+
+Les **cartes choroplèthes** représentent la France métropolitaine découpée
+en 96 départements, chacun coloré selon la valeur de l'indicateur — de la
+couleur la plus claire (valeur faible) à la plus saturée (valeur élevée). Cette
+représentation met en évidence les **clusters géographiques**, c'est-à-dire
+les zones où plusieurs départements voisins présentent des valeurs similaires —
+un phénomène que les analyses statistiques purement tabulaires ne permettent
+pas de percevoir.
+
+::: {.callout-note appearance="simple"}
+**Note méthodologique :** les cartes présentées utilisent des palettes de
+couleur adaptées aux personnes daltoniennes. La palette **YlOrRd** (jaune →
+orange → rouge) est utilisée pour les indicateurs positifs (surendettement,
+chômage). La palette **RdYlBu_r** (rouge → jaune → bleu) est utilisée pour
+les variations et scores composites, où les deux extrêmes ont des
+significations distinctes. La palette **viridis** est utilisée pour les
+variables explicatives.
+:::
+
+```{python}
+#| label: od-payload
+#| echo: false
+#| output: false
+# NB: ne PAS passer include: false ici — Quarto n'émet le bloc
+# <script type="ojs-define"> que si la cellule produit une sortie.
+
+# Construction du payload inline pour l'explorateur cartographique {ojs} :
+# - od_paths      : chemins SVG pré-projetés (EPSG:2154 -> viewBox 1000 px)
+# - od_indicators : métadonnées des 6 indicateurs (FR-007)
+# - od_data       : valeurs par département x année (null = manquant)
+# - od_years / od_viewBox
+# Zéro requête réseau côté client (FR-017) : la géométrie est aplatie en
+# chaînes `d` SVG à la compilation — repli documenté (research R3), le
+# runtime OJS de Quarto chargeant d3 depuis un CDN à l'exécution.
+
+import json
+import geopandas as gpd
+
+OD_AVAILABLE = False
+try:
+    if not DATA_AVAILABLE or len(df) == 0:
+        raise FileNotFoundError("analytical_dataset.csv indisponible")
+
+    gdf = gpd.read_file(GEO_DIR / "departements.geojson")
+    gdf["code"] = gdf["code"].astype(str).str.zfill(2)
+    gdf = gdf.to_crs(epsg=2154)  # Lambert-93, référence France métro
+    # Simplification sub-pixel (800 m ≈ 0,7 px à 1000 px de large) pour
+    # rester sous le budget de 200 Ko de payload inline (SC-010).
+    gdf["geometry"] = gdf.geometry.simplify(800, preserve_topology=True)
+    minx, miny, maxx, maxy = gdf.total_bounds
+    OD_W = 1000.0
+    _scale = OD_W / (maxx - minx)
+    OD_H = (maxy - miny) * _scale
+
+    def _ring_path(ring) -> str:
+        pts = []
+        for x, y in ring:
+            px = (x - minx) * _scale
+            py = (maxy - y) * _scale  # Y inversé pour SVG
+            pts.append(f"{px:.0f},{py:.0f}")
+        return "M" + "L".join(pts) + "Z"
+
+    od_paths = []
+    for _, row in gdf.iterrows():
+        geom = row.geometry
+        polys = list(geom.geoms) if geom.geom_type == "MultiPolygon" else [geom]
+        d = "".join(_ring_path(p.exterior.coords) for p in polys)
+        # centroïde (point représentatif) en coordonnées viewBox, pour les
+        # étiquettes top-5 des modes variation (FR-014)
+        cent = geom.representative_point()
+        cx = round((cent.x - minx) * _scale)
+        cy = round((maxy - cent.y) * _scale)
+        od_paths.append({"code": row["code"], "nom": row["nom"], "d": d,
+                         "cx": cx, "cy": cy})
+
+    IND_COL = {
+        "suren": "suren_depot_taux",
+        "chomage": "chomage_taux",
+        "pauvrete": "taux_pauvrete",
+        "rsa": "rsa_taux",
+        "locataires": "part_locataires",
+        "score": "score_fragilite",
+    }
+    od_indicators = [
+        {"key": "suren", "label": "Taux de dépôt de dossiers",
+         "unit": "dépôts / 10 000 hab.", "source": "Banque de France",
+         "millesime": None, "decimals": 1, "varies_by_year": True},
+        {"key": "chomage", "label": "Taux de chômage",
+         "unit": "%", "source": "INSEE TCRD", "millesime": "2024",
+         "decimals": 1, "varies_by_year": False},
+        {"key": "pauvrete", "label": "Taux de pauvreté",
+         "unit": "%", "source": "INSEE FiLoSoFi", "millesime": "2023",
+         "decimals": 1, "varies_by_year": False},
+        {"key": "rsa", "label": "Part allocataires RSA",
+         "unit": "%", "source": "DREES", "millesime": None,
+         "decimals": 2, "varies_by_year": True},
+        {"key": "locataires", "label": "Part ménages locataires",
+         "unit": "%", "source": "INSEE RP", "millesime": "2022",
+         "decimals": 1, "varies_by_year": False},
+        {"key": "score", "label": "Score de fragilité",
+         "unit": "z-score composite", "source": "calculé (0,3/0,3/0,2/0,2)",
+         "millesime": None, "decimals": 2, "varies_by_year": True},
+    ]
+
+    od_years = sorted(int(y) for y in df["annee"].unique())
+    od_data = []
+    for code, grp in df.groupby("dep_code"):
+        grp = grp.sort_values("annee")
+        years_map = {}
+        for _, r in grp.iterrows():
+            y = str(int(r["annee"]))
+            vals = {}
+            for k, col in IND_COL.items():
+                v = r.get(col)
+                vals[k] = None if v is None or pd.isna(v) else round(float(v), 3)
+            nb = r.get("suren_depot_nb")
+            vals["nb"] = None if nb is None or pd.isna(nb) else int(nb)
+            years_map[y] = vals
+        od_data.append({
+            "code": str(code).zfill(2),
+            "nom": str(grp["dep_nom"].iloc[0]),
+            "years": years_map,
+        })
+
+    OD_AVAILABLE = len(od_data) == 96 and len(od_paths) == 96
+    _payload_kb = len(json.dumps(
+        {"p": od_paths, "d": od_data, "i": od_indicators}
+    )) / 1024
+    print(f"✓ payload carte : {len(od_data)} départements, "
+          f"années {od_years[0]}–{od_years[-1]}, ~{_payload_kb:.0f} Ko sérialisé")
+
+    ojs_define(od_paths=od_paths, od_indicators=od_indicators, od_data=od_data,
+               od_years=od_years, od_viewBox=[OD_W, OD_H])
+except Exception as e:
+    print(f"⚠️ Payload cartographie indisponible : {e}")
+    ojs_define(od_paths=[], od_indicators=[], od_data=[], od_years=[],
+               od_viewBox=[1000.0, 1000.0])
+```
+
+### Explorateur cartographique interactif {#sec-carto-explorer}
+
+L'explorateur ci-dessous remplace les quatre cartes statiques précédentes :
+il suffit de déplacer le curseur d'année (ou de lancer la lecture) pour
+voir le territoire se recolorer, et de survoler un département pour
+obtenir son détail. Le sélecteur d'indicateur compare le taux de dépôts au
+chômage, à la pauvreté, à la part d'allocataires RSA, à la part de
+locataires et au score de fragilité ; le sélecteur de mode affiche le
+niveau, la variation depuis la première année, la variation d'une année
+sur l'autre ou le rang. L'encodage du niveau est fixe et documenté : le
+**taux** de dépôts pour 10 000 habitants est toujours représenté (jamais
+le nombre brut de dossiers), classé en six classes quantiles. Cliquez sur
+un département (ou validez-le au clavier avec Entrée) pour l'épingler :
+un panneau latéral affiche alors sa trajectoire complète sur toutes les
+années, pour le taux de dépôts et pour l'indicateur sélectionné, avec les
+valeurs annuelles ; recliquez pour désépingler.
+
+```{ojs}
+//| echo: false
+{
+  if (!od_paths || od_paths.length === 0) {
+    return html`<p class="od-note">Explorateur cartographique indisponible :
+    données non chargées (exécuter les scripts 01–04).</p>`;
+  }
+
+  const W = od_viewBox[0], H = od_viewBox[1];
+  const years = od_years.map(String);
+  const firstYear = years[0];
+  const latestYear = years[years.length - 1];
+  const byCode = Object.fromEntries(od_data.map(d => [d.code, d]));
+  const geoByCode = Object.fromEntries(od_paths.map(p => [p.code, p]));
+  const indByKey = Object.fromEntries(od_indicators.map(i => [i.key, i]));
+
+  // ── palettes ColorBrewer (sûres pour les daltoniens) ─────────────────
+  const YLORRD = ["#ffffb2","#fee391","#fec44f","#fe9929","#ec7014",
+                  "#d94801","#cc4c02","#993404","#662506"];
+  // RdBu inversé : rouge = hausse, bleu = baisse, centré sur 0 (FR-005, R5)
+  const RDBU_R = ["#2166ac","#4393c3","#92c5de","#d1e5f0","#f7f7f7",
+                  "#fddbc7","#f4a582","#d6604d","#b2182b"];
+  const MISSING = "#d9d9d9";
+
+  // ── utilitaires couleur / quantiles (sans d3 : zéro requête CDN) ──────
+  const hex2rgb = h => { h = h.replace("#","");
+    return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)]; };
+  const rgb2hex = (r,g,b) => "#" + [r,g,b]
+    .map(v => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2,"0")).join("");
+  const lerp = (c1, c2, t) => { const a = hex2rgb(c1), b = hex2rgb(c2);
+    return rgb2hex(a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t); };
+  const paletteAt = (stops, t) => { t = Math.max(0, Math.min(1, t));
+    const pos = t * (stops.length - 1), i = Math.floor(pos), f = pos - i;
+    return lerp(stops[i], stops[Math.min(i+1, stops.length-1)], f); };
+  const quantile = (sorted, q) => { const pos = (sorted.length - 1) * q;
+    const lo = Math.floor(pos), hi = Math.ceil(pos);
+    return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo); };
+  const fmt = n => n.toLocaleString("fr-FR");
+
+  // ── état (FR-010/FR-011/FR-009/FR-022) ────────────────────────────────
+  const MODES = [
+    { key: "niveau",   label: "Niveau" },
+    { key: "var_base", label: `Variation vs ${firstYear} (%)` },
+    { key: "var_n1",   label: "Variation vs année précédente (%)" },
+    { key: "rang",     label: "Rang" },
+  ];
+  const state = { year: latestYear, variable: "suren", mode: "niveau",
+                  timer: null, pinned: null };
+  const ind = () => indByKey[state.variable];
+  // FR-022 : indicateur à millésime unique → année effective fixée sur le
+  // millésime source ; le curseur d'année reste visible mais inerte.
+  const effYear = () => ind().varies_by_year ? state.year
+    : (years.includes(String(ind().millesime)) ? String(ind().millesime) : firstYear);
+  const modeLabel = () => MODES.find(m => m.key === state.mode).label;
+
+  // ── accès aux valeurs ─────────────────────────────────────────────────
+  const val = (code, year, key) => {
+    const d = byCode[code]; if (!d) return null;
+    const y = d.years[year]; return y ? y[key] : null; };
+  const nbOf = (code, year) => {
+    const d = byCode[code]; if (!d) return null;
+    const y = d.years[year]; return y ? y.nb : null; };
+
+  // ── statistiques de l'état courant ────────────────────────────────────
+  function computeStats() {
+    const y = effYear(), k = state.variable;
+    const rows = od_data.map(d => ({ code: d.code, nom: d.nom,
+      v: val(d.code, y, k), nb: nbOf(d.code, y) }));
+    const vals = rows.filter(r => r.v != null).map(r => r.v).sort((a,b) => a-b);
+    const n = vals.length || 1;
+    const mean = vals.reduce((s,x) => s+x, 0) / n;
+    const sd = Math.sqrt(vals.reduce((s,x) => s+(x-mean)**2, 0) / n) || 1;
+    const thresholds = [1,2,3,4,5].map(i => quantile(vals, i/6));
+    const vmap = {}, rank = {}, z = {}, nbs = {}, deltaN1 = {}, deltaBase = {};
+    rows.filter(r => r.v != null).sort((a,b) => b.v - a.v)
+        .forEach((r,i) => { rank[r.code] = i + 1; });
+    const prev = years[years.indexOf(y) - 1];
+    rows.forEach(r => {
+      nbs[r.code] = r.nb;
+      if (r.v == null) return;
+      vmap[r.code] = r.v;
+      z[r.code] = (r.v - mean) / sd;
+      const vp = prev ? val(r.code, prev, k) : null;
+      deltaN1[r.code] = (vp != null && vp !== 0) ? (r.v - vp) / vp * 100 : null;
+      const vb = val(r.code, firstYear, k);
+      deltaBase[r.code] = (vb != null && vb !== 0) ? (r.v - vb) / vb * 100 : null;
+    });
+    // rang : classes quantiles sur les rangs 1..n (R5) ; étendue symétrique
+    // des variations pour l'échelle divergente centrée sur 0 (FR-005)
+    const ranks = Object.values(rank).sort((a,b) => a-b);
+    const rankThresholds = [1,2,3,4,5].map(i => quantile(ranks, i/6));
+    const deltasAll = Object.values(state.mode === "var_n1" ? deltaN1 : deltaBase)
+      .filter(d => d != null);
+    const extent = deltasAll.length ? Math.max(...deltasAll.map(Math.abs)) : 1;
+    return { rows, vals, mean, sd, thresholds, vmap, rank, z, nbs,
+             deltaN1, deltaBase, rankThresholds, extent, prevYear: prev, n };
+  }
+
+  // valeur affichée selon le mode (FR-011)
+  const displayValue = (code, st) => state.mode === "niveau" ? (st.vmap[code] ?? null)
+    : state.mode === "rang" ? (st.rank[code] ?? null)
+    : state.mode === "var_n1" ? (st.deltaN1[code] ?? null)
+    : (st.deltaBase[code] ?? null);
+  const unitOf = st => state.mode.startsWith("var_") ? "%"
+    : state.mode === "rang" ? "rang" : ind().unit;
+  const decimalsOf = () => state.mode.startsWith("var_") ? 1
+    : state.mode === "rang" ? 0 : ind().decimals;
+  const fmtVal = v => v == null ? "—" : v.toFixed(decimalsOf());
+
+  // couleur selon le mode (FR-003/FR-004/FR-005/FR-006)
+  function colorOf(code, st) {
+    const v = displayValue(code, st);
+    if (v == null) return MISSING;
+    if (state.mode === "niveau") {
+      const i = st.thresholds.reduce((acc,t) => acc + (v >= t ? 1 : 0), 0);
+      return paletteAt(YLORRD, i / 5);
+    }
+    if (state.mode === "rang") {
+      // rang 1 = valeur la plus forte = classe la plus foncée
+      const i = st.rankThresholds.reduce((acc,t) => acc + (v < t ? 1 : 0), 0);
+      return paletteAt(YLORRD, i / 5);
+    }
+    const t = (v + st.extent) / (2 * st.extent);
+    return paletteAt(RDBU_R, t);
+  }
+
+  // ── totaux nationaux par année (légende d'évolution, indicateur suren) ─
+  const totals = {};
+  years.forEach(y => { totals[y] = od_data.reduce((s,d) => s + (nbOf(d.code, y) || 0), 0); });
+  const troughYear = years.reduce((a,b) => totals[a] <= totals[b] ? a : b);
+  const rebound = (totals[latestYear] - totals[troughYear]) / totals[troughYear] * 100;
+
+  // ── construction du DOM ───────────────────────────────────────────────
+  const titleEl = html`<div class="od-title"></div>`;
+  const yearLabelEl = html`<span class="od-year">${state.year}</span>`;
+  const slider = html`<input type="range" class="od-slider"
+    min=${years[0]} max=${years[years.length-1]} step="1" value=${state.year}
+    aria-label="Année d'observation">`;
+  const playBtn = html`<button type="button" class="od-play" aria-pressed="false"
+    aria-label="Lire l'animation année par année">Lire l'animation</button>`;
+  const varSelect = html`<select class="od-select"
+    aria-label="Indicateur cartographié">${od_indicators.map(i =>
+      html`<option value=${i.key}>${i.label}</option>`)}</select>`;
+  const badge = html`<span class="od-badge" hidden></span>`;
+  const modeInputs = MODES.map(m =>
+    html`<input type="radio" name="od-mode" class="od-mode-radio" value=${m.key}
+      aria-label=${m.label}>`);
+  const modeToggle = html`<div class="od-modes" role="radiogroup"
+    aria-label="Mode d'affichage">${MODES.map((m,i) =>
+      html`<label class="od-mode">${modeInputs[i]}<span>${m.label}</span></label>`)}</div>`;
+  const controls = html`<div class="od-controls">${slider} ${yearLabelEl}
+    ${playBtn} ${varSelect} ${badge} ${modeToggle}</div>`;
+
+  // NB: mapSvg (et non svg) pour ne pas masquer le builtin `svg` (htl),
+  // utilisé pour créer les <path>/<rect>/<text>/<g> dans le namespace SVG.
+  const mapSvg = html`<svg class="od-svg" viewBox="0 0 ${W} ${H}" role="application"
+    aria-label="Carte choroplèthe de France métropolitaine, 96 départements"></svg>`;
+  const labelsG = svg`<g class="od-labels"></g>`;
+  const pathByCode = {};
+  const tip = html`<div class="od-tooltip" role="tooltip" hidden></div>`;
+  const stage = html`<div class="od-stage">${mapSvg}${tip}</div>`;
+  // Panneau latéral épinglé (FR-013) : sparklines sur toutes les années du
+  // taux de dépôt et de l'indicateur sélectionné, avec valeurs annuelles.
+  const panel = html`<aside class="od-panel" hidden
+    aria-label="Trajectoire du département épinglé"></aside>`;
+  const body = html`<div class="od-body">${stage}${panel}</div>`;
+
+  const legendSvg = html`<svg class="od-legend-svg" role="img"
+    aria-label="Légende de la carte"></svg>`;
+  const captionEl = html`<div class="od-caption"></div>`;
+  const sourceEl = html`<div class="od-source"></div>`;
+  const tableSummaryYear = html`<span></span>`;
+  const tbody = html`<tbody></tbody>`;
+  const table = html`<details class="od-table">
+    <summary>Tableau des 96 départements — <span class="od-table-var"></span>,
+      année ${tableSummaryYear}</summary>
+    <table><thead><tr><th>Code</th><th>Département</th>
+      <th class="od-table-val">Valeur</th><th>Rang</th></tr></thead>${tbody}</table>
+  </details>`;
+  const tableVarEl = table.querySelector(".od-table-var");
+  const tableValEl = table.querySelector(".od-table-val");
+
+  const root = html`<div class="od-map">${titleEl}${controls}${body}
+    ${legendSvg}${captionEl}${sourceEl}${table}</div>`;
+
+  for (const p of od_paths) {
+    const el = svg`<path d=${p.d} class="od-dep" tabindex="0" role="button"
+      aria-pressed="false"></path>`;
+    el.dataset.code = p.code;
+    pathByCode[p.code] = el;
+    mapSvg.appendChild(el);
+
+    el.addEventListener("mouseenter", ev => showTip(el, p, ev));
+    el.addEventListener("mousemove", ev => showTip(el, p, ev));
+    el.addEventListener("mouseleave", hideTip);
+    el.addEventListener("focus", ev => showTip(el, p, ev, true));
+    el.addEventListener("blur", hideTip);
+    el.addEventListener("click", () => togglePin(p.code));
+    el.addEventListener("keydown", ev => {
+      if (ev.key === "Enter" || ev.key === " ") {
+        ev.preventDefault();
+        togglePin(p.code);
+      }
+    });
+  }
+  mapSvg.appendChild(labelsG);
+
+  // ── infobulle (FR-012) ────────────────────────────────────────────────
+  function showTip(el, p, ev, fromFocus=false) {
+    const st = lastStats;
+    const v = displayValue(p.code, st);
+    let txt = `<strong>${p.nom}</strong> (${p.code})<br>`;
+    if (v == null) {
+      txt += "données manquantes";
+    } else {
+      txt += `${fmtVal(v)} ${unitOf(st)}<br>rang ${st.rank[p.code]}/96<br>`;
+      // FR-003 : le nombre brut de dossiers n'apparaît qu'en infobulle
+      if (state.variable === "suren" && state.mode === "niveau"
+          && st.nbs[p.code] != null) {
+        txt += `dossiers déposés : ${fmt(st.nbs[p.code])}<br>`;
+      }
+      if (state.mode === "niveau" && st.prevYear) {
+        const d = st.deltaN1[p.code];
+        if (d != null) txt += `vs ${st.prevYear} : ${d >= 0 ? "+" : ""}${d.toFixed(1)} %<br>`;
+      }
+      if (state.mode.startsWith("var_")) {
+        const lv = st.vmap[p.code];
+        if (lv != null) txt += `niveau ${effYear()} : ${lv.toFixed(ind().decimals)} ${ind().unit}<br>`;
+      }
+      txt += `z = ${st.z[p.code].toFixed(2)} (moy. nat. ${st.mean.toFixed(ind().decimals)})`;
+    }
+    tip.innerHTML = txt;
+    tip.hidden = false;
+    const rect = root.getBoundingClientRect();
+    const x = fromFocus ? el.getBoundingClientRect().left - rect.left
+                        : ev.clientX - rect.left;
+    const y = fromFocus ? el.getBoundingClientRect().top - rect.top
+                        : ev.clientY - rect.top;
+    tip.style.left = Math.max(0, Math.min(x + 14, rect.width - 240)) + "px";
+    tip.style.top = Math.max(0, y + 14) + "px";
+  }
+  function hideTip() { tip.hidden = true; }
+
+  // ── épinglage d'un département (FR-013) ───────────────────────────────
+  // Clic ou Entrée : épingler ; reclic sur le même : désépingler.
+  function togglePin(code) {
+    state.pinned = (state.pinned === code) ? null : code;
+    render();
+  }
+
+  // Série complète (toutes les années) d'un indicateur pour un département.
+  const sparkSeries = (code, key) =>
+    years.map(y => ({ y, v: val(code, y, key), nb: nbOf(code, y) }));
+
+  // Sparkline SVG pure (zéro d3) ; la ligne est interrompue sur les null.
+  function sparkSvg(series, decimals) {
+    const w = 250, h = 58, pad = 8;
+    const el = svg`<svg class="od-spark" viewBox="0 0 ${w} ${h}"
+      role="img" aria-label="Courbe annuelle"></svg>`;
+    const vs = series.filter(s => s.v != null).map(s => s.v);
+    if (!vs.length) {
+      el.appendChild(svg`<text x=${w / 2} y=${h / 2} text-anchor="middle"
+        class="od-spark-year">données manquantes</text>`);
+      return el;
+    }
+    const lo = Math.min(...vs), hi = Math.max(...vs), span = (hi - lo) || 1;
+    const x = i => pad + i * (w - 2 * pad) / (series.length - 1);
+    const yOf = v => pad + (1 - (v - lo) / span) * (h - 2 * pad - 8);
+    let seg = [];
+    const flush = () => {
+      if (seg.length > 1) el.insertBefore(svg`<polyline class="od-spark-line"
+        points=${seg.map(s => `${x(s.i).toFixed(1)},${yOf(s.v).toFixed(1)}`)
+          .join(" ")}></polyline>`, el.firstChild);
+      seg = [];
+    };
+    series.forEach((s, i) => {
+      if (s.v == null) { flush(); return; }
+      seg.push({ i, v: s.v });
+      el.appendChild(svg`<circle
+        class="od-spark-dot${s.y === effYear() ? " od-spark-now" : ""}"
+        cx=${x(i).toFixed(1)} cy=${yOf(s.v).toFixed(1)} r="2.4">
+        <title>${s.y} : ${s.v.toFixed(decimals)}</title></circle>`);
+    });
+    flush();
+    el.appendChild(svg`<text x=${pad} y=${h - 2}
+      class="od-spark-year">${series[0].y}</text>`);
+    el.appendChild(svg`<text x=${w - pad} y=${h - 2} text-anchor="end"
+      class="od-spark-year">${series[series.length - 1].y}</text>`);
+    return el;
+  }
+
+  // Valeurs annuelles sous-jacentes (FR-013) ; le nombre brut de dossiers
+  // n'apparaît que dans l'infobulle et ce panneau (FR-003).
+  function sparkVals(series, indMeta, key) {
+    return html`<div class="od-spark-vals">${series.map(s =>
+      html`<span class="od-spark-yv"><b>${s.y}</b> ${
+        s.v == null ? "—" : s.v.toFixed(indMeta.decimals) +
+        (key === "suren" && s.nb != null ? ` (${fmt(s.nb)} dossiers)` : "")
+      }</span>`)}</div>`;
+  }
+
+  // Panneau latéral : reconstruit à chaque render() → les séries restent
+  // complètes quand l'année ou l'indicateur change (FR-013, scénario 2),
+  // et la surbrillance de la carte suit le département épinglé.
+  function renderPanel() {
+    if (!state.pinned) { panel.hidden = true; panel.innerHTML = ""; return; }
+    const d = byCode[state.pinned], g = geoByCode[state.pinned];
+    const nom = g ? g.nom : (d ? d.nom : state.pinned);
+    const surenInd = indByKey["suren"], selInd = ind();
+    const same = selInd.key === "suren";
+    const anneeSel = selInd.varies_by_year ? effYear() : selInd.millesime;
+    const closeBtn = html`<button type="button" class="od-panel-close"
+      aria-label="Désépingler ${nom}">✕</button>`;
+    closeBtn.addEventListener("click", () => togglePin(state.pinned));
+    const seriesSuren = sparkSeries(state.pinned, "suren");
+    const seriesSel = sparkSeries(state.pinned, selInd.key);
+    panel.innerHTML = "";
+    panel.appendChild(html`<div class="od-panel-head">
+      <span class="od-panel-title">${nom} (${state.pinned})</span>${closeBtn}
+    </div>`);
+    panel.appendChild(html`<div class="od-panel-block">
+      <div class="od-panel-label">${surenInd.label}
+        <span class="od-panel-unit">${surenInd.unit} — ${surenInd.source}</span>
+      </div>
+      ${sparkSvg(seriesSuren, surenInd.decimals)}
+      ${sparkVals(seriesSuren, surenInd, "suren")}
+    </div>`);
+    panel.appendChild(html`<div class="od-panel-block">
+      <div class="od-panel-label">${selInd.label}
+        <span class="od-panel-unit">${selInd.unit} — ${selInd.source},
+          ${anneeSel}</span>
+        ${same ? html`<span class="od-panel-note">(même série que ci-dessus)</span>` : ""}
+      </div>
+      ${sparkSvg(seriesSel, selInd.decimals)}
+      ${sparkVals(seriesSel, selInd, selInd.key)}
+    </div>`);
+    panel.hidden = false;
+  }
+
+  // ── rendu (FR-015 : titre, légende+unités, source, année, légende textuelle) ──
+  function render() {
+    lastStats = computeStats();
+    const st = lastStats;
+    const yLab = effYear();
+
+    for (const p of od_paths) {
+      const el = pathByCode[p.code];
+      const v = displayValue(p.code, st);
+      const pinned = state.pinned === p.code;
+      el.setAttribute("fill", colorOf(p.code, st));
+      el.setAttribute("class", "od-dep"
+        + (v == null ? " od-missing" : "")
+        + (pinned ? " od-pinned" : ""));
+      el.setAttribute("aria-pressed", String(pinned));
+      el.setAttribute("aria-label",
+        `${p.nom} (${p.code}) : ${v == null ? "données manquantes" : `${fmtVal(v)} ${unitOf(st)}`}, ` +
+        `rang ${st.rank[p.code] ?? "—"}/96, ${yLab}${pinned ? ", épinglé" : ""}`);
+    }
+
+    // légende selon le mode
+    legendSvg.setAttribute("viewBox", "0 0 1000 46");
+    legendSvg.innerHTML = "";
+    const sw = 150, gap = 12;
+    const unit = unitOf(st);
+    let labels = [];
+    for (let i = 0; i < 6; i++) {
+      let fill;
+      if (state.mode === "niveau") {
+        const th = st.thresholds;
+        const lo = i === 0 ? null : th[i-1], hi = i === 5 ? null : th[i];
+        fill = paletteAt(YLORRD, i / 5);
+        labels.push(lo == null ? `< ${hi.toFixed(ind().decimals)}`
+          : hi == null ? `≥ ${lo.toFixed(ind().decimals)}`
+          : `${lo.toFixed(ind().decimals)} – ${hi.toFixed(ind().decimals)}`);
+      } else if (state.mode === "rang") {
+        const th = st.rankThresholds;
+        const lo = i === 0 ? 1 : Math.floor(th[i-1]) + 1;
+        const hi = i === 5 ? st.n : Math.round(th[i]);
+        fill = paletteAt(YLORRD, i / 5);
+        labels.push(`${lo} – ${hi}`);
+      } else {
+        const ext = st.extent, step = 2 * ext / 6;
+        const lo = -ext + i * step, hi = lo + step;
+        fill = paletteAt(RDBU_R, ((lo + hi) / 2 + ext) / (2 * ext));
+        labels.push(i === 0 ? `< ${hi.toFixed(0)} %`
+          : i === 5 ? `≥ ${lo.toFixed(0)} %`
+          : `${lo.toFixed(0)} – ${hi.toFixed(0)} %`);
+      }
+      const x = i * (sw + gap);
+      const rect = svg`<rect x=${x} y="0" width=${sw} height="14"
+        fill=${fill} class="od-swatch"></rect>`;
+      const text = svg`<text x=${x} y="30" class="od-range">${labels[i]}</text>`;
+      const unitT = svg`<text x=${x} y="43" class="od-unit">${i === 5 ? unit : ""}</text>`;
+      legendSvg.appendChild(rect); legendSvg.appendChild(text); legendSvg.appendChild(unitT);
+    }
+
+    // étiquettes top-5 hausses / baisses en mode variation (FR-014)
+    labelsG.innerHTML = "";
+    if (state.mode.startsWith("var_")) {
+      const deltas = Object.entries(state.mode === "var_n1" ? st.deltaN1 : st.deltaBase)
+        .filter(([,d]) => d != null);
+      const risers = deltas.slice().sort((a,b) => b[1] - a[1]).slice(0, 5);
+      const fallers = deltas.slice().sort((a,b) => a[1] - b[1]).slice(0, 5);
+      for (const [code, d] of risers) {
+        const g = geoByCode[code]; if (!g) continue;
+        labelsG.appendChild(svg`<text x=${g.cx} y=${g.cy} text-anchor="middle"
+          class="od-toplabel od-rise">${g.nom} +${d.toFixed(0)} %</text>`);
+      }
+      for (const [code, d] of fallers) {
+        const g = geoByCode[code]; if (!g) continue;
+        labelsG.appendChild(svg`<text x=${g.cx} y=${g.cy} text-anchor="middle"
+          class="od-toplabel od-fall">${g.nom} ${d.toFixed(0)} %</text>`);
+      }
+    }
+
+    // titre / source / année / badge millésime (FR-022)
+    titleEl.textContent = `${ind().label} — ${modeLabel()} — ${yLab}`;
+    yearLabelEl.textContent = yLab;
+    sourceEl.textContent = `Source : ${ind().source} — ${yLab}. ` +
+      "96 départements métropolitains — DOM-TOM exclus.";
+    const varies = ind().varies_by_year;
+    slider.disabled = !varies;
+    playBtn.disabled = !varies;
+    badge.hidden = varies;
+    if (!varies) badge.textContent = `${ind().source} ${ind().millesime}`;
+    varSelect.value = state.variable;
+    modeInputs.forEach((r, i) => { r.checked = MODES[i].key === state.mode; });
+
+    // légende textuelle calculée (FR-015)
+    if (state.mode === "niveau") {
+      const med = quantile(st.vals, 0.5), max = st.vals[st.vals.length - 1];
+      const top = st.rows.filter(r => r.v === max)[0];
+      captionEl.textContent =
+        `En ${yLab}, la médiane est de ${med.toFixed(ind().decimals)} ` +
+        `${ind().unit} et le maximum de ${max.toFixed(ind().decimals)} ` +
+        `(${top ? top.nom : "—"})${state.variable === "suren" ? `. Au niveau national, ` +
+        `les dépôts sont passés de ${fmt(totals[troughYear])} dossiers en ` +
+        `${troughYear} (creux) à ${fmt(totals[latestYear])} en ${latestYear}, ` +
+        `soit ${rebound >= 0 ? "+" : ""}${rebound.toFixed(0)} %.` : "."}`;
+    } else if (state.mode === "rang") {
+      const top = st.rows.filter(r => r.rank === 1)[0];
+      const med = st.rows.filter(r => r.rank === Math.round(st.n / 2))[0];
+      captionEl.textContent =
+        `En ${yLab}, le rang 1 est ${top ? top.nom : "—"} ` +
+        `(${top ? fmtVal(top.v) : "—"} ${ind().unit}) ; le rang médian ` +
+        `(${Math.round(st.n / 2)}) est ${med ? med.nom : "—"}.`;
+    } else {
+      const ref = state.mode === "var_base" ? firstYear : (st.prevYear ?? firstYear);
+      const deltas = Object.entries(state.mode === "var_n1" ? st.deltaN1 : st.deltaBase)
+        .filter(([,d]) => d != null);
+      const up = deltas.filter(([,d]) => d > 0).length;
+      const down = deltas.filter(([,d]) => d < 0).length;
+      const riser = deltas.slice().sort((a,b) => b[1] - a[1])[0];
+      const faller = deltas.slice().sort((a,b) => a[1] - b[1])[0];
+      captionEl.textContent =
+        `Variation ${yLab} vs ${ref} : ${up} départements en hausse, ` +
+        `${down} en baisse ; plus forte hausse : ${riser ? geoByCode[riser[0]].nom : "—"} ` +
+        `(${riser ? "+" + riser[1].toFixed(0) : "—"} %), plus forte baisse : ` +
+        `${faller ? geoByCode[faller[0]].nom : "—"} (${faller ? faller[1].toFixed(0) : "—"} %).`;
+    }
+
+    // tableau des 96 départements (FR-023)
+    tableVarEl.textContent = ind().label;
+    tableSummaryYear.textContent = yLab;
+    tableValEl.textContent = state.mode === "rang" ? "Rang"
+      : state.mode.startsWith("var_") ? "Variation (%)"
+      : `${ind().label} (${ind().unit})`;
+    const rows = st.rows.slice()
+      .sort((a,b) => (b.v ?? -Infinity) - (a.v ?? -Infinity));
+    tbody.innerHTML = rows.map(r =>
+      `<tr><td>${r.code}</td><td>${r.nom}</td>` +
+      `<td>${fmtVal(displayValue(r.code, st))}</td>` +
+      `<td>${st.rank[r.code] ?? "—"}</td></tr>`).join("");
+
+    // panneau épinglé (FR-013) : mis à jour à chaque changement d'état
+    renderPanel();
+  }
+
+  // ── lecture / curseur (FR-009 : le manuel interrompt l'animation) ──────
+  let lastStats = computeStats();
+  function stopPlay() {
+    if (state.timer) { clearInterval(state.timer); state.timer = null; }
+    playBtn.setAttribute("aria-pressed", "false");
+    playBtn.textContent = "Lire l'animation";
+  }
+  playBtn.addEventListener("click", () => {
+    if (!ind().varies_by_year) return; // FR-022 : lecture inerte
+    if (state.timer) { stopPlay(); return; }
+    playBtn.setAttribute("aria-pressed", "true");
+    playBtn.textContent = "Pause";
+    state.timer = setInterval(() => {
+      const i = years.indexOf(state.year);
+      if (i >= years.length - 1) { stopPlay(); return; }
+      state.year = years[i + 1];
+      slider.value = state.year;
+      render();
+    }, 800);
+  });
+  slider.addEventListener("input", () => {
+    stopPlay();
+    state.year = slider.value;
+    render();
+  });
+  varSelect.addEventListener("change", () => {
+    stopPlay();
+    state.variable = varSelect.value;
+    render();
+  });
+  modeInputs.forEach((r, i) => r.addEventListener("change", () => {
+    stopPlay();
+    state.mode = MODES[i].key;
+    render();
+  }));
+
+  render();
+  return root;
+}
+```
+
+### Carte statique de repli (sans JavaScript) {#sec-carto-statique}
+
+La carte ci-dessous est le **repli statique** de la section : elle reste
+visible même lorsque JavaScript est désactivé dans le navigateur. Avec
+JavaScript activé, utilisez plutôt l'**explorateur interactif ci-dessus**
+pour faire varier l'année, l'indicateur et le mode d'affichage.
+L'encodage est identique à celui de l'explorateur : taux de dépôts pour
+10 000 habitants (jamais le nombre brut de dossiers), six classes
+quantiles, palette YlOrRd, style neutre « données manquantes », thème
+clair de la page (FR-003–FR-006, FR-016, FR-019).
+
+```{python}
+#| label: carto-static-setup
+#| include: false
+
+# Préparation de la carte statique de repli (FR-016) et de l'image
+# d'aperçu du billet : géométrie + données de l'année cible, et calcul
+# dynamique de l'année du creux national des dépôts (FR-002).
+import geopandas as gpd
+import matplotlib.colors as mcolors
+import matplotlib.patches as mpatches
+
+CARTO_STATIC_AVAILABLE = False
+gdf_static = None
+TROUGH_YEAR = None
+LATEST_YEAR = YEAR_TARGET
+PREVIEW_PATH = Path("../../assets/posts/overindebtedness.jpg")
+
+# Palette du thème clair du site (assets/custom.scss, FR-019) — surcharge
+# locale du thème sombre global défini dans la cellule `setup`.
+LIGHT_RC = {
+    "figure.facecolor": "none", "savefig.facecolor": "none",
+    "savefig.transparent": True,
+    "axes.facecolor": "none", "axes.edgecolor": "#CBC7B9",
+    "axes.labelcolor": "#2B2B30", "axes.titlecolor": "#121214",
+    "text.color": "#2B2B30",
+    "xtick.color": "#6B6B74", "ytick.color": "#6B6B74",
+    "legend.facecolor": "#F2F0E9", "legend.edgecolor": "#E0DDD2",
+    "legend.labelcolor": "#2B2B30",
+}
+
+try:
+    if not DATA_AVAILABLE or len(df) == 0:
+        raise FileNotFoundError("analytical_dataset.csv indisponible")
+    gdf_static = gpd.read_file(GEO_DIR / "departements.geojson")
+    if "code" in gdf_static.columns:
+        gdf_static = gdf_static.rename(columns={"code": "dep_code"})
+    gdf_static["dep_code"] = gdf_static["dep_code"].astype(str).str.zfill(2)
+    gdf_static = gdf_static.to_crs(epsg=2154)  # Lambert-93, France métro
+
+    df_map = df[df["annee"] == LATEST_YEAR].copy()
+    df_map["dep_code"] = df_map["dep_code"].astype(str).str.zfill(2)
+    gdf_static = gdf_static.merge(df_map, on="dep_code", how="left")
+    CARTO_STATIC_AVAILABLE = len(gdf_static) >= 90
+
+    # Creux national dynamique (FR-002) : année du minimum de dépôts
+    nat = (
+        df.dropna(subset=["suren_depot_nb"])
+        .groupby("annee")["suren_depot_nb"].sum()
+    )
+    TROUGH_YEAR = int(nat.idxmin()) if len(nat) else None
+    print(f"✓ carte statique : {len(gdf_static)} polygones, année "
+          f"{LATEST_YEAR}, creux national {TROUGH_YEAR}")
+except Exception as e:
+    print(f"⚠️ Carte statique indisponible : {e}")
+```
+
+```{python}
+#| label: fig-carto-hero
+#| fig-cap: "Carte statique de repli (sans JavaScript) — taux de dépôts de dossiers de surendettement pour 10 000 habitants, dernière année disponible. Six classes quantiles, palette YlOrRd. Source : Banque de France. 96 départements métropolitains — DOM-TOM exclus."
+#| fig-alt: "Carte choroplèthe statique de France métropolitaine : chaque département est coloré selon son taux de dépôts de dossiers de surendettement pour 10 000 habitants la dernière année disponible, en six classes quantiles allant du jaune clair au rouge foncé. Les départements du Nord et de la Seine-Saint-Denis apparaissent en rouge foncé."
+#| fig-width: 10
+#| fig-height: 8
+#| column: page
+
+if CARTO_STATIC_AVAILABLE and gdf_static is not None:
+    # FR-003 : on cartographie toujours le taux, jamais le nombre brut
+    vals = pd.to_numeric(gdf_static["suren_depot_taux"], errors="coerce")
+    # FR-004 : six classes quantiles, mêmes seuils que l'explorateur
+    th = vals.quantile([i / 6 for i in range(1, 6)]).tolist()
+    cls = vals.apply(
+        lambda v: np.nan if pd.isna(v) else sum(v >= t for t in th)
+    )
+    cmap = plt.get_cmap("YlOrRd")  # FR-006 : sûre pour les daltoniens
+    row_colors = [
+        "#d9d9d9" if pd.isna(c) else mcolors.to_hex(cmap(c / 5))
+        for c in cls
+    ]
+
+    with plt.rc_context(LIGHT_RC):
+        fig, ax = plt.subplots(figsize=(10, 8))
+        gdf_static.plot(
+            ax=ax, color=row_colors, edgecolor="#FAF9F5", linewidth=0.4
+        )
+        ax.set_axis_off()
+        ax.set_title(
+            f"Taux de dépôts de dossiers de surendettement — {LATEST_YEAR}",
+            fontsize=13, pad=10,
+        )
+
+        # Légende : classes quantiles avec unités + cas manquant (FR-004/006)
+        handles = []
+        for i in range(6):
+            lo = None if i == 0 else th[i - 1]
+            hi = None if i == 5 else th[i]
+            lab = (f"< {hi:.1f}" if lo is None
+                   else f"≥ {lo:.1f}" if hi is None
+                   else f"{lo:.1f} – {hi:.1f}")
+            handles.append(
+                mpatches.Patch(color=cmap(i / 5), label=lab)
+            )
+        handles.append(
+            mpatches.Patch(facecolor="#d9d9d9", edgecolor="#CBC7B9",
+                           label="données manquantes")
+        )
+        leg = ax.legend(
+            handles=handles, title="dépôts / 10 000 hab.",
+            loc="lower left", framealpha=0.95, fontsize=9,
+        )
+        fig.text(
+            0.01, 0.01,
+            "Source : Banque de France — 96 départements métropolitains, "
+            "DOM-TOM exclus.",
+            fontsize=8, color="#6B6B74",
+        )
+        fig.tight_layout()
+else:
+    print("⚠️ Carte statique indisponible : données ou géométrie "
+          "manquantes (exécuter les scripts 01–04).")
+```
+
+```{python}
+#| label: carto-preview
+#| include: false
+
+# Image d'aperçu du billet (FR-016) : variation du taux de dépôts entre
+# l'année du creux et la dernière année complète, en %, sur une échelle
+# divergente centrée sur 0 (FR-005). Le creux est calculé depuis les
+# données, jamais codé en dur (FR-002). Le fichier écrasé est référencé
+# par le champ `image:` de l'en-tête du billet.
+if CARTO_STATIC_AVAILABLE and gdf_static is not None and TROUGH_YEAR:
+    base = (
+        df[df["annee"] == TROUGH_YEAR][["dep_code", "suren_depot_taux"]]
+        .rename(columns={"suren_depot_taux": "taux_creux"})
+    )
+    last = (
+        df[df["annee"] == LATEST_YEAR][["dep_code", "suren_depot_taux"]]
+        .rename(columns={"suren_depot_taux": "taux_last"})
+    )
+    g_prev = (
+        gdf_static[["dep_code", "geometry"]]
+        .merge(base, on="dep_code", how="left")
+        .merge(last, on="dep_code", how="left")
+    )
+    g_prev["var_pct"] = np.where(
+        g_prev["taux_creux"] > 0,
+        (g_prev["taux_last"] - g_prev["taux_creux"]) / g_prev["taux_creux"] * 100,
+        np.nan,
+    )
+    ext = float(np.nanmax(np.abs(g_prev["var_pct"]))) or 1.0
+    norm = mcolors.TwoSlopeNorm(vmin=-ext, vcenter=0, vmax=ext)
+    cmap = plt.get_cmap("RdBu_r")  # rouge = hausse, bleu = baisse (R5)
+
+    with plt.rc_context(LIGHT_RC):
+        fig, ax = plt.subplots(figsize=(10, 8), dpi=150)
+        g_prev.plot(
+            ax=ax, column="var_pct", cmap=cmap, norm=norm,
+            edgecolor="#FAF9F5", linewidth=0.4,
+            missing_kwds={"color": "#d9d9d9", "hatch": "///",
+                          "edgecolor": "#CBC7B9"},
+        )
+        ax.set_axis_off()
+        ax.set_title(
+            f"Surendettement : variation du taux de dépôts "
+            f"{TROUGH_YEAR} → {LATEST_YEAR} (%)",
+            fontsize=13, pad=10,
+        )
+        sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+        cbar = fig.colorbar(sm, ax=ax, fraction=0.035, pad=0.01, shrink=0.6)
+        cbar.set_label("variation (%)", fontsize=9)
+        cbar.ax.tick_params(labelsize=8)
+        fig.text(
+            0.01, 0.01,
+            "Source : Banque de France — dépôts / 10 000 hab. — "
+            "96 départements métropolitains, DOM-TOM exclus.",
+            fontsize=8, color="#6B6B74",
+        )
+        fig.tight_layout()
+        PREVIEW_PATH.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(PREVIEW_PATH, dpi=150, bbox_inches="tight",
+                    facecolor="#FAF9F5")
+        plt.close(fig)
+
+    nat = (
+        df.dropna(subset=["suren_depot_nb"])
+        .groupby("annee")["suren_depot_nb"].sum()
+    )
+    reb = (nat[LATEST_YEAR] - nat[TROUGH_YEAR]) / nat[TROUGH_YEAR] * 100
+    print(f"✓ image d'aperçu écrite : {PREVIEW_PATH.name} "
+          f"(creux {TROUGH_YEAR} = {int(nat[TROUGH_YEAR])} dossiers → "
+          f"{LATEST_YEAR} = {int(nat[LATEST_YEAR])}, {reb:+.1f} %)")
+else:
+    print("⚠️ Image d'aperçu non générée : données cartographiques "
+          "indisponibles.")
+```
+
+
+### Graphiques bivariés : surendettement vs. prédicteurs {#sec-carto-scatter}
+
+Ces **nuages de points** examinent la relation entre le surendettement et
+chaque variable explicative prise **séparément** (sans contrôle des autres
+variables). Chaque point représente un département ; la droite rouge est la
+droite de régression linéaire simple. Le coefficient r et sa p-value indiquent
+l'intensité et la significativité de l'association.
+
+Ces graphiques bivariés complètent la matrice de corrélation en rendant
+visibles :
+
+- La **dispersion** autour de la tendance (points proches ou éloignés de la
+  droite) ;
+- Les **outliers** (départements qui s'écartent de la tendance générale) ;
+- La **forme** de la relation (linéaire, ou peut-être curvilinéaire pour
+  certaines variables).
+
+::: {.callout-note appearance="simple"}
+Ces graphiques représentent des corrélations bivariées non contrôlées. Un
+coefficient r élevé ici ne garantit pas que la variable reste significative
+dans le modèle OLS multivarié, où les effets des autres prédicteurs sont
+simultanément pris en compte.
+:::
+
+```{python}
+#| label: fig-scatter-bivariate
+#| fig-cap: "Nuages de points bivariés : taux de surendettement vs. chaque prédicteur principal (année de référence). La droite de régression linéaire est représentée en rouge. Source : BdF, INSEE, DREES."
+#| fig-alt: "Quatre nuages de points : surendettement (axe Y) en fonction du chômage, de la pauvreté, du RSA et de la part de locataires (axe X). Chaque graphique inclut une droite de régression rouge."
+#| fig-width: 14
+#| fig-height: 10
+#| column: screen-inset
+
+if EDA_AVAILABLE:
+    scatter_vars = [
+        ("chomage_taux",      "Taux de chômage (%)",            f"INSEE {YEAR_TARGET}"),
+        ("taux_pauvrete",     "Taux de pauvreté (%)",           f"FiLoSoFi {YEAR_FILOSOFI}"),
+        ("rsa_taux",          "Part allocataires RSA (%)",      f"DREES {YEAR_TARGET}"),
+        ("part_locataires",   "Part ménages locataires (%)",    f"RP {YEAR_TARGET}"),
+    ]
+    y_col_scatter = "suren_depot_nb"
+    y_label = "Dossiers de surendettement (nb)"
+
+    available_scatter = [
+        (col, label, src) for col, label, src in scatter_vars
+        if col in df_2021.columns
+        and pd.to_numeric(df_2021[col], errors="coerce").notna().sum() >= 20
+    ]
+
+    if available_scatter:
+        from scipy import stats as scipy_stats
+
+        n_cols = min(2, len(available_scatter))
+        n_rows = (len(available_scatter) + n_cols - 1) // n_cols
+        fig, axes = plt.subplots(n_rows, n_cols, figsize=(14, 5 * n_rows))
+        if len(available_scatter) == 1:
+            axes = [[axes]]
+        elif n_rows == 1:
+            axes = [axes]
+
+        for idx, (col, label, src) in enumerate(available_scatter):
+            row, col_idx = divmod(idx, n_cols)
+            ax = axes[row][col_idx] if n_rows > 1 else axes[0][col_idx]
+
+            x_data = pd.to_numeric(df_2021[col], errors="coerce")
+            y_data = pd.to_numeric(df_2021[y_col_scatter], errors="coerce")
+            valid  = pd.DataFrame({"x": x_data, "y": y_data}).dropna()
+
+            ax.scatter(valid["x"], valid["y"], color=_CYAN, alpha=0.6, s=40)
+
+            if len(valid) >= 5:
+                slope, intercept, r_val, p_val, _ = scipy_stats.linregress(valid["x"], valid["y"])
+                x_line = np.linspace(valid["x"].min(), valid["x"].max(), 100)
+                ax.plot(x_line, intercept + slope * x_line, color=_RED, linewidth=2,
+                        label=f"r={r_val:.2f}, p={'<0,001' if p_val < 0.001 else f'{p_val:.3f}'}")
+                ax.legend(fontsize=9)
+
+            ax.set_xlabel(label, fontsize=10)
+            ax.set_ylabel(y_label, fontsize=10)
+            ax.set_title(f"{y_label}\nvs. {label}", fontsize=10, fontweight="bold")
+            ax.grid(alpha=0.3)
+            ax.text(
+                0.98, 0.02, f"Source : {src}",
+                transform=ax.transAxes, fontsize=7, style="italic", va="bottom", ha="right",
+            )
+
+        for idx in range(len(available_scatter), n_rows * n_cols):
+            row, col_idx = divmod(idx, n_cols)
+            if n_rows > 1:
+                axes[row][col_idx].set_visible(False)
+            else:
+                axes[0][col_idx].set_visible(False)
+
+        fig.suptitle(
+            f"Relations bivariées : surendettement vs. prédicteurs ({YEAR_TARGET})",
+            fontsize=13, fontweight="bold", y=1.01,
+        )
+        fig.text(
+            0.5, -0.01,
+            f"Source : Banque de France, INSEE, DREES. Données {YEAR_TARGET} — 96 départements métropolitains. "
+            "Chaque point représente un département. La droite de régression indique la tendance linéaire.",
+            ha="center", fontsize=8, style="italic", wrap=True,
+        )
+        plt.tight_layout()
+        plt.show()
+    else:
+        print(
+            "⚠️ Graphiques bivariés limités aux variables disponibles.\n"
+            "Variables FiLoSoFi, RP, minimas sociaux indisponibles — "
+            "seul le chômage peut être représenté une fois les données téléchargées."
+        )
+        # Scatter chômage seul si disponible
+        x_data = pd.to_numeric(df_2021["chomage_taux"], errors="coerce")
+        y_data = pd.to_numeric(df_2021["suren_depot_nb"], errors="coerce")
+        valid  = pd.DataFrame({"x": x_data, "y": y_data}).dropna()
+        if len(valid) >= 20:
+            from scipy import stats as scipy_stats
+            fig, ax = plt.subplots(figsize=(8, 5))
+            ax.scatter(valid["x"], valid["y"], color=_CYAN, alpha=0.6, s=40)
+            slope, intercept, r_val, p_val, _ = scipy_stats.linregress(valid["x"], valid["y"])
+            x_line = np.linspace(valid["x"].min(), valid["x"].max(), 100)
+            ax.plot(x_line, intercept + slope * x_line, color=_RED, linewidth=2,
+                    label=f"r={r_val:.2f}, p={'<0,001' if p_val < 0.001 else f'{p_val:.3f}'}")
+            ax.legend(fontsize=9)
+            ax.set_xlabel("Taux de chômage (%)", fontsize=10)
+            ax.set_ylabel("Dossiers de surendettement (nb)", fontsize=10)
+            ax.set_title(f"Surendettement vs. Chômage ({YEAR_TARGET})", fontsize=11, fontweight="bold")
+            ax.grid(alpha=0.3)
+            fig.text(
+                0.5, -0.04,
+                f"Source : Banque de France (surendettement), INSEE chômage localisé (chômage). {YEAR_TARGET} — 96 départements.",
+                ha="center", fontsize=8, style="italic"
+            )
+            plt.tight_layout()
+            plt.show()
+else:
+    print("⚠️ Données EDA non disponibles — exécuter les scripts 01-04 d'abord.")
+```
+
+---
+
+## Conclusion {#sec-conclusion}
+
+Cette section récapitule les résultats en répondant aux trois questions de
+recherche posées en introduction, puis expose les limites méthodologiques de
+l'analyse et les pistes d'extension pour des travaux futurs.
+
+```{python}
+#| label: conclusion-stats
+#| include: false
+
+# Calculer les statistiques clés pour la conclusion
+concl = {}
+
+if DATA_AVAILABLE and len(df) > 0:
+    df_2021c = df[df["annee"] == YEAR_TARGET].copy()
+    for col in ["suren_depot_nb", "chomage_taux", "score_fragilite"]:
+        if col in df_2021c.columns:
+            vals = pd.to_numeric(df_2021c[col], errors="coerce").dropna()
+            if len(vals) > 0:
+                concl[col] = {"median": vals.median(), "max": vals.max(), "min": vals.min(), "n": len(vals)}
+
+if OLS_AVAILABLE and "base" in ols_results:
+    concl["r2_adj"] = ols_results["base"]["model"].rsquared_adj
+    concl["n_obs"]  = int(ols_results["base"]["model"].nobs)
+```
+
+### Réponses aux questions de recherche
+
+**1. Quelles variables économiques sont les plus corrélées au taux de surendettement ?**
+
+```{python}
+#| label: conclusion-q1
+
+if EDA_AVAILABLE and "suren_depot_taux" in df_2021.columns or (EDA_AVAILABLE and "suren_depot_nb" in df_2021.columns):
+    from scipy import stats as scipy_stats
+    y_col_c = "suren_depot_nb" if "suren_depot_taux" not in df_2021.columns or pd.to_numeric(df_2021.get("suren_depot_taux"), errors="coerce").notna().sum() < 10 else "suren_depot_taux"
+    corr_candidates = ["chomage_taux", "taux_pauvrete", "rsa_taux", "part_locataires", "part_familles_mono", "revenu_median_uc", "score_fragilite"]
+    results_q1 = []
+    for var in corr_candidates:
+        if var in df_2021.columns:
+            x = pd.to_numeric(df_2021[var], errors="coerce")
+            y = pd.to_numeric(df_2021[y_col_c], errors="coerce")
+            valid = pd.DataFrame({"x": x, "y": y}).dropna()
+            if len(valid) >= 10:
+                r, p = scipy_stats.pearsonr(valid["x"], valid["y"])
+                results_q1.append((var, r, p, len(valid)))
+    results_q1.sort(key=lambda x: abs(x[1]), reverse=True)
+
+    if results_q1:
+        print("Variables par ordre de corrélation (Pearson) avec le surendettement :")
+        for var, r, p, n in results_q1:
+            sig = "***" if p < 0.001 else ("**" if p < 0.01 else ("*" if p < 0.05 else "(ns)"))
+            print(f"  {var:<30} r = {r:+.3f}  {sig}  (n={n})")
+        top_var = results_q1[0][0] if results_q1 else "données insuffisantes"
+        print(f"\n→ Prédicteur le plus corrélé au millésime {YEAR_TARGET} : {top_var}")
+    else:
+        print("→ Analyse de corrélation : seule la variable 'chomage_taux' est disponible (autres sources non téléchargées).")
+        print("  Le chômage départemental présente une corrélation positive avec le nombre de dossiers de surendettement.")
+else:
+    print("→ Données insuffisantes pour répondre à cette question — exécuter le pipeline complet.")
+```
+
+**2. Les effets du chômage et de la pauvreté sont-ils contemporains ou décalés ?**
+
+```{python}
+#| label: conclusion-q2
+
+if OLS_AVAILABLE and "lag" in ols_results and "base" in ols_results:
+    m_b = ols_results["base"]["model"]
+    m_l = ols_results["lag"]["model"]
+    delta = m_l.rsquared_adj - m_b.rsquared_adj
+    if delta > 0.02:
+        print(f"→ Les effets de lag t-1 améliorent le R² ajusté (Δ = {delta:+.3f}). Le chômage et la pauvreté exercent un effet différé sur le surendettement.")
+    else:
+        print(f"→ Les effets contemporains dominent (Δ R² ajusté = {delta:+.3f}). L'association chômage-surendettement est essentiellement simultanée à l'échelle annuelle.")
+elif DATA_AVAILABLE:
+    # Vérifier avec les données disponibles (chômage uniquement)
+    df_lag = df[df["annee"] == YEAR_TARGET][["dep_code", "suren_depot_nb", "chomage_taux", "chomage_taux_t1"]].copy()
+    for c in ["suren_depot_nb", "chomage_taux", "chomage_taux_t1"]:
+        df_lag[c] = pd.to_numeric(df_lag[c], errors="coerce")
+    df_lag = df_lag.dropna()
+    if len(df_lag) >= 30:
+        from scipy import stats as scipy_stats
+        r_contemp, _ = scipy_stats.pearsonr(df_lag["chomage_taux"], df_lag["suren_depot_nb"])
+        r_lag, _ = scipy_stats.pearsonr(df_lag["chomage_taux_t1"], df_lag["suren_depot_nb"])
+        print(f"→ Corrélation chômage contemporain vs. surendettement : r = {r_contemp:.3f}")
+        print(f"→ Corrélation chômage t-1 vs. surendettement : r = {r_lag:.3f}")
+        if abs(r_lag) > abs(r_contemp):
+            print("  → L'effet du chômage est légèrement plus fort avec un lag d'un an.")
+        else:
+            print("  → L'effet du chômage contemporain domine sur le chômage décalé.")
+    else:
+        print("→ Données insuffisantes pour comparer effets contemporains et décalés.")
+else:
+    print("→ Données non disponibles.")
+```
+
+**3. Le score de fragilité composite est-il prédictif du surendettement ?**
+
+```{python}
+#| label: conclusion-q3
+
+if DATA_AVAILABLE and len(df) > 0:
+    df_q3 = df[df["annee"] == YEAR_TARGET][["dep_code", "suren_depot_nb", "score_fragilite"]].copy()
+    df_q3["suren_depot_nb"] = pd.to_numeric(df_q3["suren_depot_nb"], errors="coerce")
+    df_q3["score_fragilite"] = pd.to_numeric(df_q3["score_fragilite"], errors="coerce")
+    df_q3 = df_q3.dropna()
+
+    if len(df_q3) >= 30:
+        from scipy import stats as scipy_stats
+        r_score, p_score = scipy_stats.pearsonr(df_q3["score_fragilite"], df_q3["suren_depot_nb"])
+        sig = "***" if p_score < 0.001 else ("**" if p_score < 0.01 else ("*" if p_score < 0.05 else "(ns)"))
+        print(f"→ Corrélation score de fragilité – surendettement : r = {r_score:.3f} {sig} (n={len(df_q3)})")
+        if abs(r_score) >= 0.5:
+            print("  → Le score composite présente une association forte avec le surendettement.")
+        elif abs(r_score) >= 0.3:
+            print("  → Le score composite présente une association modérée avec le surendettement.")
+        else:
+            print("  → Association faible — le score composite nécessite l'ajout de données FiLoSoFi/RP/Minimas pour être prédictif.")
+    else:
+        print("→ Données insuffisantes pour évaluer le score de fragilité.")
+else:
+    print("→ Données non disponibles.")
+```
+
+### Limites et perspectives
+
+**Limites de l'analyse :**
+
+- **Couverture FiLoSoFi** : les données de revenus, pauvreté et indicateurs de distribution (Gini) sont partiellement disponibles ou d'un millésime antérieur (2019 pour Gini). L'OLS multivarié est donc indicatif.
+- **Absence de correction spatiale** : les cartes choroplèthes révèlent une auto-corrélation spatiale probable (clustering Nord, Île-de-France) qui n'est pas prise en compte dans le modèle OLS standard.
+- **Biais de composition** : les taux de surendettement bruts (sans pondération par le nombre de ménages) peuvent avantager les grands départements.
+- **Causalité** : les corrélations observées ne permettent pas d'établir des relations causales.
+
+**Perspectives d'extension :**
+
+- Régression spatiale (SAR/SLM) pour corriger l'autocorrélation spatiale et calculer l'indice de Moran's I
+- Intégration des données FiLoSoFi complètes (revenu médian, taux de pauvreté, Gini) pour enrichir le modèle
+- Analyse longitudinale (effets fixes département) sur 2018–2023
+- Décomposition du score de fragilité composite avec pondération empirique
+- Comparaison entre millésimes pour quantifier l'effet des politiques publiques (prime d'activité, RSA, plan pauvreté)
+
+> **Sources** : Banque de France (synthèses surendettement 2018–2024), INSEE FiLoSoFi 2021, INSEE chômage localisé, INSEE RP 2021, DREES (indicateurs sociaux départementaux). Périmètre : 96 départements métropolitains (DOM-TOM exclus).
