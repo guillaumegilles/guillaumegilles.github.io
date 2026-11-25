@@ -7,7 +7,7 @@ Les statistiques fournissent les outils pour collecter, résumer et interpréter
 La statistique descriptive consiste à **résumer** un jeu de données à l’aide d’indicateurs numériques (moyenne, variance, médiane, quartiles) et de représentations graphiques (histogrammes, diagrammes en boîte, nuages de points).
 
 - [Statistiques descriptives à une variable](../../teaching/probability/univariate.llms.md) — séries discrètes et continues, effectifs, fréquences, indicateurs de position et de dispersion.
-- [Statistiques descriptives à deux variables](../../teaching/probability/bivariate.llms.md) — tableaux de contingence, distributions marginales et conditionnelles, indépendance, test du \\\chi^2\\.
+- [Statistiques descriptives à deux variables](../../teaching/probability/bivariate.llms.md) — tableaux de contingence, distributions marginales et conditionnelles, indépendance, test du $\chi^2$.
 
 ## 2 Statistique inférentielle
 

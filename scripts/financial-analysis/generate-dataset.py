@@ -3,7 +3,7 @@
 
 Source de vérité unique : dataset-params.py (research.md R3). Ce script dérive
 tous les états consolidés N-2..N et émet :
-  - fragments markdown -> fr/teaching/financial-analysis/donnees/fragments/
+  - fragments markdown -> teaching/data-description/financial-analysis/donnees/fragments/
   - aubepine-consolide.xlsx / .pdf -> .../donnees/fichiers/
   - figures.json (chiffres clés pour le corrigé)
 
@@ -33,9 +33,9 @@ sys.path.insert(0, str(Path(__file__).parent))
 from dataset_params import YEARS, TAUX_IMPOT, GROUPE, ENTITIES, IG_KEYS, INTRA
 
 ROOT = Path(__file__).resolve().parents[2]
-FR_DIR = ROOT / "fr" / "teaching" / "financial-analysis" / "donnees"
-FRAG_DIR = FR_DIR / "fragments"
-FILES_DIR = FR_DIR / "fichiers"
+COURSE_DIR = ROOT / "teaching" / "data-description" / "financial-analysis" / "donnees"
+FRAG_DIR = COURSE_DIR / "fragments"
+FILES_DIR = COURSE_DIR / "fichiers"
 
 OPENING = 2022  # exercice d'ouverture pour le tableau des flux de N-2
 ALL_YEARS = [OPENING] + YEARS
@@ -336,7 +336,7 @@ def compute_ratios(cons):
 
 # ------------------------------------------------------------------ corrigé
 def emit_corrige(ent, cons, ratios):
-    path = ROOT / "fr" / "teaching" / "financial-analysis" / "enseignant" / "corrige-aubepine.qmd"
+    path = ROOT / "teaching" / "data-description" / "financial-analysis" / "enseignant" / "corrige-aubepine.qmd"
     path.parent.mkdir(parents=True, exist_ok=True)
     years = YEARS
     L = []

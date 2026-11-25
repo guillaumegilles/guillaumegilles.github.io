@@ -22,7 +22,7 @@ There is no number to average here: the weather is a word, and even the rating i
 
 > **NOTE:**
 >
-> **Try it.** Tally the `weather` column of the five days above (\\n = 5\\) and complete the table.
+> **Try it.** Tally the `weather` column of the five days above ($n = 5$) and complete the table.
 >
 > | Category  | Tally | Count | Share of days |
 > |-----------|-------|------:|--------------:|
@@ -99,19 +99,19 @@ In plain words: count how many times each category appears, divide by the total,
 
 > **NOTE:**
 >
-> For a qualitative variable with \\k\\ categories (modalities) observed on \\n\\ individuals, category \\i\\ has an **absolute frequency** (count) \\n_i\\ and a **relative frequency** \\ f_i = \frac{n_i}{n}, \\ usually reported as a percentage. By construction, \\\sum\_{i=1}^{k} n_i = n\\ and \\\sum\_{i=1}^{k} f_i = 1\\.
+> For a qualitative variable with $k$ categories (modalities) observed on $n$ individuals, category $i$ has an **absolute frequency** (count) $n_i$ and a **relative frequency** $$f_i = \frac{n_i}{n},$$ usually reported as a percentage. By construction, $\sum_{i=1}^{k} n_i = n$ and $\sum_{i=1}^{k} f_i = 1$.
 
 #### Notation decoder: absolute and relative frequency
 
 | Symbol | Read aloud | In our example (`weather`, five days) |
 |----|----|----|
-| \\k\\ | “k” | 3 categories (Sunny, Cloudy, Rainy) |
-| \\n\\ | “n” | 5 days |
-| \\n_i\\ | “n sub i” | the count of category \\i\\, e.g. \\n\_{\text{Sunny}} = 3\\ |
-| \\f_i\\ | “f sub i” | the share of category \\i\\, e.g. \\f\_{\text{Sunny}} = 3/5 = 60\\\\ |
-| \\\sum\_{i=1}^{k}\\ | “add up, for i from 1 to k” | \\3+1+1 = 5\\, and \\0.6+0.2+0.2 = 1\\ |
+| $k$ | “k” | 3 categories (Sunny, Cloudy, Rainy) |
+| $n$ | “n” | 5 days |
+| $n_i$ | “n sub i” | the count of category $i$, e.g. $n_{\text{Sunny}} = 3$ |
+| $f_i$ | “f sub i” | the share of category $i$, e.g. $f_{\text{Sunny}} = 3/5 = 60\%$ |
+| $\sum_{i=1}^{k}$ | “add up, for i from 1 to k” | $3+1+1 = 5$, and $0.6+0.2+0.2 = 1$ |
 
-**Whole formula as a sentence:** “the relative frequency of category \\i\\ is its count divided by the total number of individuals; the counts add up to \\n\\ and the relative frequencies add up to 1.”
+**Whole formula as a sentence:** “the relative frequency of category $i$ is its count divided by the total number of individuals; the counts add up to $n$ and the relative frequencies add up to 1.”
 
 ### 1.4 Cumulative frequency for ordinal data
 
@@ -138,7 +138,7 @@ Check your answer
 | 4      |     3 |             4 |           80% |
 | 5      |     1 |             5 |          100% |
 
-80% of the days had a rating of 4 or less. The last running count is always \\n = 5\\ and the last running share is always 100%.
+80% of the days had a rating of 4 or less. The last running count is always $n = 5$ and the last running share is always 100%.
 
 **See it.** Each bar of the figure below is a rating level, in order; the number under each bar is the running total of the bar heights from the left, computed from the same five days.
 
@@ -175,19 +175,21 @@ In plain words: for ordinal data like `satisfaction_rating` (1 \< 2 \< 3 \< 4 \<
 
 > **TIP:**
 >
-> If the categories have a natural order (ordinal), you can cumulate: \\ N_i^{+} = \sum\_{j=1}^{i} n_j, \qquad F_i^{+} = \frac{N_i^{+}}{n}. \\ \\N_i^{+}\\ is the running total of counts up to and including category \\i\\; \\F_i^{+}\\ is the running share. For nominal data, cumulative frequencies are meaningless because there is no order.
+> If the categories have a natural order (ordinal), you can cumulate: $$N_i^{+} = \sum_{j=1}^{i} n_j,
+> \qquad
+> F_i^{+} = \frac{N_i^{+}}{n}.$$ $N_i^{+}$ is the running total of counts up to and including category $i$; $F_i^{+}$ is the running share. For nominal data, cumulative frequencies are meaningless because there is no order.
 
 #### Notation decoder: cumulative frequency
 
 | Symbol | Read aloud | In our example (ratings, five days) |
 |----|----|----|
-| \\n_j\\ | “n sub j” | the count of rating \\j\\, e.g. \\n_4 = 3\\ |
-| \\\sum\_{j=1}^{i}\\ | “add up, for j from 1 to i” | stop at the rating \\i\\ you ask about |
-| \\N_i^{+}\\ | “capital N sub i plus” | the running count: \\N_4^{+} = 0+0+1+3 = 4\\ |
-| \\n\\ | “n” | 5 days |
-| \\F_i^{+}\\ | “capital F sub i plus” | the running share: \\F_4^{+} = 4/5 = 80\\\\ |
+| $n_j$ | “n sub j” | the count of rating $j$, e.g. $n_4 = 3$ |
+| $\sum_{j=1}^{i}$ | “add up, for j from 1 to i” | stop at the rating $i$ you ask about |
+| $N_i^{+}$ | “capital N sub i plus” | the running count: $N_4^{+} = 0+0+1+3 = 4$ |
+| $n$ | “n” | 5 days |
+| $F_i^{+}$ | “capital F sub i plus” | the running share: $F_4^{+} = 4/5 = 80\%$ |
 
-**Whole formula as a sentence:** “the cumulative count up to category \\i\\ is the sum of the counts of categories 1 through \\i\\; the cumulative frequency is that running count divided by the total.”
+**Whole formula as a sentence:** “the cumulative count up to category $i$ is the sum of the counts of categories 1 through $i$; the cumulative frequency is that running count divided by the total.”
 
 ### 1.5 Nominal vs ordinal — choosing the chart
 
@@ -207,7 +209,7 @@ Check your answer
 | `weather` | nominal (no order) | bar chart, or pie chart (3 categories) |
 | `satisfaction_rating` | ordinal (1 \< … \< 5) | bar chart, categories in order 1 to 5 |
 
-Sunny’s share is 60%, so its slice spans \\0.6 \times 360° = 216°\\ (Cloudy and Rainy: \\72°\\ each; \\216°+72°+72° = 360°\\).
+Sunny’s share is 60%, so its slice spans $0.6 \times 360° = 216°$ (Cloudy and Rainy: $72°$ each; $216°+72°+72° = 360°$).
 
 **See it.** The two bar charts above are the right pictures: the weather bars can be in any order, while the rating bars must follow 1 to 5, because the running totals only make sense in that order. A pie chart has no starting point, so it could not show that order.
 
@@ -232,14 +234,14 @@ In plain words: the mode is the “most common” category.
 
 > **TIP:**
 >
-> The **mode** is the category with the highest absolute frequency \\n_i\\. For a frequency table, it is simply the row with the largest count.
+> The **mode** is the category with the highest absolute frequency $n_i$. For a frequency table, it is simply the row with the largest count.
 
 #### Notation decoder: mode of a qualitative variable
 
 | Symbol | Read aloud | In our example (five days) |
 |----|----|----|
-| \\n_i\\ | “n sub i” | the count of category \\i\\: 3, 1, 1 for Sunny, Cloudy, Rainy |
-| mode | “the modal category” | Sunny, the row with the largest \\n_i\\ |
+| $n_i$ | “n sub i” | the count of category $i$: 3, 1, 1 for Sunny, Cloudy, Rainy |
+| mode | “the modal category” | Sunny, the row with the largest $n_i$ |
 
 **Whole formula as a sentence:** “the mode is the category whose absolute frequency is the largest.”
 
@@ -247,52 +249,55 @@ In plain words: the mode is the “most common” category.
 
 We use the **Harbour 30-day subset** (sheet `harbour_30d`). The variable `weather` (nominal, 3 categories) and `satisfaction_rating` (ordinal, 5 categories) are summarised below.
 
-### 2.1 `weather` (nominal, \\n=30\\)
+### 2.1 `weather` (nominal, $n=30$)
 
-| Category  | \\n_i\\ | \\f_i\\ (%) |
-|-----------|--------:|------------:|
-| Sunny     |      13 |        43.3 |
-| Cloudy    |      12 |        40.0 |
-| Rainy     |       5 |        16.7 |
-| **Total** |  **30** |   **100.0** |
+| Category  |  $n_i$ | $f_i$ (%) |
+|-----------|-------:|----------:|
+| Sunny     |     13 |      43.3 |
+| Cloudy    |     12 |      40.0 |
+| Rainy     |      5 |      16.7 |
+| **Total** | **30** | **100.0** |
 
-**Step 1 — counts.** Each day’s `weather` value is tallied: 13 Sunny, 12 Cloudy, 5 Rainy; \\13+12+5=30=n\\. ✓
+**Step 1 — counts.** Each day’s `weather` value is tallied: 13 Sunny, 12 Cloudy, 5 Rainy; $13+12+5=30=n$. ✓
 
-**Step 2 — relative frequencies.** \\f\_{\text{Sunny}} = 13/30 = 43.3\\\\, \\f\_{\text{Cloudy}} = 12/30 = 40.0\\\\, \\f\_{\text{Rainy}} = 5/30 = 16.7\\\\; the three sum to \\100.0\\\\.
+**Step 2 — relative frequencies.** $f_{\text{Sunny}} = 13/30 = 43.3\%$, $f_{\text{Cloudy}} = 12/30 = 40.0\%$, $f_{\text{Rainy}} = 5/30 = 16.7\%$; the three sum to $100.0\%$.
 
-**Step 3 — choosing a chart.** `weather` is nominal with only 3 categories: both a **bar chart** (one bar per category, height = count or frequency) and a **pie chart** (one slice per category, angle \\= f_i \times 360°\\) are appropriate. Sunny’s slice spans \\0.433 \times 360° \approx 156°\\; Cloudy’s \\\approx 144°\\; Rainy’s \\\approx 60°\\.
+**Step 3 — choosing a chart.** `weather` is nominal with only 3 categories: both a **bar chart** (one bar per category, height = count or frequency) and a **pie chart** (one slice per category, angle $=
+f_i \times 360°$) are appropriate. Sunny’s slice spans $0.433 \times 360° \approx 156°$; Cloudy’s $\approx 144°$; Rainy’s $\approx 60°$.
 
-**Step 4 — mode.** The modal category is **Sunny** (\\n_i = 13\\).
+**Step 4 — mode.** The modal category is **Sunny** ($n_i = 13$).
 
-### 2.2 `satisfaction_rating` (ordinal, \\n=30\\)
+### 2.2 `satisfaction_rating` (ordinal, $n=30$)
 
-| Rating | \\n_i\\ | \\f_i\\ (%) | \\N_i^{+}\\ | \\F_i^{+}\\ (%) |
-|--------|--------:|------------:|------------:|----------------:|
-| 1      |       0 |         0.0 |           0 |             0.0 |
-| 2      |       6 |        20.0 |           6 |            20.0 |
-| 3      |       6 |        20.0 |          12 |            40.0 |
-| 4      |      16 |        53.3 |          28 |            93.3 |
-| 5      |       2 |         6.7 |          30 |           100.0 |
+| Rating | $n_i$ | $f_i$ (%) | $N_i^{+}$ | $F_i^{+}$ (%) |
+|--------|------:|----------:|----------:|--------------:|
+| 1      |     0 |       0.0 |         0 |           0.0 |
+| 2      |     6 |      20.0 |         6 |          20.0 |
+| 3      |     6 |      20.0 |        12 |          40.0 |
+| 4      |    16 |      53.3 |        28 |          93.3 |
+| 5      |     2 |       6.7 |        30 |         100.0 |
 
 **Step 1 — counts and shares.** Tallied from the 30 days. No day was rated 1, but the category stays in the table with a count of 0: an ordinal scale keeps all its levels.
 
-**Step 2 — cumulative frequencies.** \\N_i^{+}\\ and \\F_i^{+}\\ are the running totals. For example, \\F_3^{+} = 40.0\\\\ means 40% of days had a rating of 3 or less.
+**Step 2 — cumulative frequencies.** $N_i^{+}$ and $F_i^{+}$ are the running totals. For example, $F_3^{+} = 40.0\%$ means 40% of days had a rating of 3 or less.
 
 **Step 3 — chart.** A **bar chart** with categories in order 1, 2, 3, 4, 5. The bars show the distribution’s shape: more than half of the days are rated 4.
 
-**Step 4 — mode.** The modal category is **4** (\\n_i = 16\\).
+**Step 4 — mode.** The modal category is **4** ($n_i = 16$).
 
 ## 3 Proof / derivation
 
 > **CAUTION:**
 >
-> Let a qualitative variable have \\k\\ categories with counts \\n_1, \dots, n_k\\, and let \\n = \sum\_{i=1}^{k} n_i\\ be the total number of individuals (every individual falls into exactly one category, so the counts partition the population — the same partition idea used for PivotTable groups in Module 1). Then \\ \sum\_{i=1}^{k} f_i = \sum\_{i=1}^{k} \frac{n_i}{n} = \frac{1}{n}\sum\_{i=1}^{k} n_i = \frac{n}{n} = 1. \\ For “The Wandering Fork” `weather`: \\f\_{\text{Sunny}}+f\_{\text{Cloudy}}+f\_{\text{Rainy}} = 0.433+0.400+0.167 = 1.000\\. ✓
+> Let a qualitative variable have $k$ categories with counts $n_1, \dots, n_k$, and let $n = \sum_{i=1}^{k} n_i$ be the total number of individuals (every individual falls into exactly one category, so the counts partition the population — the same partition idea used for PivotTable groups in Module 1). Then $$\sum_{i=1}^{k} f_i = \sum_{i=1}^{k} \frac{n_i}{n}
+> = \frac{1}{n}\sum_{i=1}^{k} n_i = \frac{n}{n} = 1.$$ For “The Wandering Fork” `weather`: $f_{\text{Sunny}}+f_{\text{Cloudy}}+f_{\text{Rainy}}
+> = 0.433+0.400+0.167 = 1.000$. ✓
 
 ## 4 Visual intuition
 
-The pie chart’s geometry makes the frequency-sum-to-1 property *visible*: the three slices’ angles, \\156°+144°+60°=360°\\, always complete a full circle no matter how the 30 days split across Sunny/Cloudy/Rainy — exactly as the algebra above guarantees.
+The pie chart’s geometry makes the frequency-sum-to-1 property *visible*: the three slices’ angles, $156°+144°+60°=360°$, always complete a full circle no matter how the 30 days split across Sunny/Cloudy/Rainy — exactly as the algebra above guarantees.
 
-For ordinal data, the bar chart with ordered categories makes the cumulative frequency visible: the running total of bar heights up to category \\i\\ is exactly \\N_i^{+}\\.
+For ordinal data, the bar chart with ordered categories makes the cumulative frequency visible: the running total of bar heights up to category $i$ is exactly $N_i^{+}$.
 
 ## 5 Interactive demo
 
@@ -304,11 +309,11 @@ For ordinal data, the bar chart with ordered categories makes the cumulative fre
 
 All exercises below are done by hand; the Excel ones are in the [homework](#homework-excel-lab).
 
-**Exercise 1 (Frequency table for `satisfaction_rating`)** Using the worked-example table for `satisfaction_rating`, verify that the cumulative frequencies \\N_i^{+}\\ and \\F_i^{+}\\ are correct. What percentage of days had a rating of 3 or less?
+**Exercise 1 (Frequency table for `satisfaction_rating`)** Using the worked-example table for `satisfaction_rating`, verify that the cumulative frequencies $N_i^{+}$ and $F_i^{+}$ are correct. What percentage of days had a rating of 3 or less?
 
 Solution
 
-\\F_3^{+} = 40.0\\\\ (from the table). Check: \\N_3^{+} = 0+6+6 = 12\\; \\12/30 = 0.400 = 40.0\\\\.
+$F_3^{+} = 40.0\%$ (from the table). Check: $N_3^{+} = 0+6+6 = 12$; $12/30 = 0.400 = 40.0\%$.
 
 **Exercise 2 (Choosing the right chart)** Which chart type(s) would you use for `weather`, and why would a **line chart** be a poor choice?
 
@@ -320,45 +325,46 @@ A bar chart or a pie chart, because `weather` is nominal qualitative with no mea
 
 Solution
 
-Angle \\= f\_{\text{Cloudy}} \times 360° = 0.400 \times 360° = 144°\\. Since a pie chart’s slice area is proportional to its angle, Cloudy also represents \\40.0\\\\ of the circle’s area — matching its relative frequency exactly, by construction.
+Angle $= f_{\text{Cloudy}} \times 360° = 0.400 \times
+360° = 144°$. Since a pie chart’s slice area is proportional to its angle, Cloudy also represents $40.0\%$ of the circle’s area — matching its relative frequency exactly, by construction.
 
-**Exercise 4 (Formula to words)** Read \\F_i^{+} = \dfrac{1}{n}\sum\_{j=1}^{i} n_j\\ aloud as one sentence. Which indicator is it, and for which kind of variable does it make sense?
-
-Solution
-
-“The cumulative relative frequency up to category \\i\\ is the sum of the counts of categories 1 through \\i\\, divided by the total number \\n\\ of individuals.” It is the running share, and it only makes sense for **ordinal** variables, where the categories have an order.
-
-**Exercise 5 (Words to formula)** Write in symbols: (a) “the share of category \\i\\ is its count divided by the total”; (b) “the counts of the \\k\\ categories add up to the total”; (c) “the running count up to category \\i\\”.
+**Exercise 4 (Formula to words)** Read $F_i^{+} = \dfrac{1}{n}\sum_{j=1}^{i} n_j$ aloud as one sentence. Which indicator is it, and for which kind of variable does it make sense?
 
 Solution
 
-1.  \\f_i = \dfrac{n_i}{n}\\. (b) \\\sum\_{i=1}^{k} n_i = n\\.
-2.  \\N_i^{+} = \sum\_{j=1}^{i} n_j\\.
+“The cumulative relative frequency up to category $i$ is the sum of the counts of categories 1 through $i$, divided by the total number $n$ of individuals.” It is the running share, and it only makes sense for **ordinal** variables, where the categories have an order.
+
+**Exercise 5 (Words to formula)** Write in symbols: (a) “the share of category $i$ is its count divided by the total”; (b) “the counts of the $k$ categories add up to the total”; (c) “the running count up to category $i$”.
+
+Solution
+
+1.  $f_i = \dfrac{n_i}{n}$. (b) $\sum_{i=1}^{k} n_i = n$.
+2.  $N_i^{+} = \sum_{j=1}^{i} n_j$.
 
 ## 7 Common mistakes
 
 > **WARNING:**
 >
 > - **Using a pie chart for ordinal data.** A pie chart destroys the order information; use a bar chart with categories in their natural order.
-> - **Cumulative frequencies for nominal data.** \\N_i^{+}\\ and \\F_i^{+}\\ only make sense when the categories have a natural order.
-> - **Forgetting that percentages may not sum to exactly 100% due to rounding.** \\43.3\\ + 40.0\\ + 16.7\\ = 100.0\\\\ here, but with more categories you might get \\99.9\\\\ or \\100.1\\\\ — this is a rounding artifact, not an error.
+> - **Cumulative frequencies for nominal data.** $N_i^{+}$ and $F_i^{+}$ only make sense when the categories have a natural order.
+> - **Forgetting that percentages may not sum to exactly 100% due to rounding.** $43.3\% + 40.0\% + 16.7\% = 100.0\%$ here, but with more categories you might get $99.9\%$ or $100.1\%$ — this is a rounding artifact, not an error.
 > - **Using `COUNT` instead of `COUNTA` for text categories.** `COUNT` only counts numbers; `COUNTA` counts everything non-empty.
 
 ## 8 Exit check
 
 Five minutes, no calculator needed.
 
-1.  In one sentence, what does a relative frequency \\f_i\\ measure?
+1.  In one sentence, what does a relative frequency $f_i$ measure?
 2.  Why are cumulative frequencies meaningless for `weather`?
-3.  Read \\f_i = n_i / n\\ aloud as a sentence.
+3.  Read $f_i = n_i / n$ aloud as a sentence.
 4.  Five days are rated 1, 2, 2, 4, 5. Build the table of counts and running shares, and give the mode.
 5.  Which chart would you use for the five ratings, and why not a pie chart?
 
 Answers
 
-1.  The share of the \\n\\ individuals that fall into category \\i\\: its count divided by the total.
+1.  The share of the $n$ individuals that fall into category $i$: its count divided by the total.
 2.  `weather` is nominal: there is no order, so “running total up to Rainy” depends on an arbitrary listing order.
-3.  “The relative frequency of category \\i\\ is its count divided by the total number of individuals.”
+3.  “The relative frequency of category $i$ is its count divided by the total number of individuals.”
 4.  Counts for ratings 1 to 5: 1, 2, 0, 1, 1. Running counts: 1, 3, 3, 4, 5; running shares: 20%, 60%, 60%, 80%, 100%. The mode is rating 2 (2 days).
 5.  A bar chart with the ratings in the order 1 to 5: the rating is ordinal, and a pie chart has no starting point, so it cannot show the order.
 

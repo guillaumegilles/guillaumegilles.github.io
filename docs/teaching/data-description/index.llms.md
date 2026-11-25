@@ -1,6 +1,6 @@
 ## 1 Syllabus
 
-This course is the natural sequel to [Mathematical Fundamentals (MS01)](../../teaching/mathematical-fundamentals/index.llms.md) and [Mathematical Analysis (MS02)](../../teaching/mathematical-analysis/index.llms.md), and it is itself the prerequisite refresher for [Inferential Statistics (MS04)](../../teaching/decision-making-stat/index.llms.md), whose own Session 6 explicitly revisits the numerical summaries introduced here before moving on to confidence intervals and hypothesis testing.
+> This course is the natural sequel to [Mathematical Fundamentals (MS01)](../../teaching/mathematical-fundamentals/index.llms.md) and [Mathematical Analysis (MS02)](../../teaching/mathematical-analysis/index.llms.md), and it is itself the prerequisite refresher for [Inferential Statistics (MS04)](../../teaching/decision-making-stat/index.llms.md).
 
 - **Department**: Operations Management and Decision Science
 - **Code**: MS03-001-G
@@ -57,8 +57,8 @@ Several textbook formulas differ slightly; this course always uses the following
 
 | Question | Convention | Excel |
 |----|----|----|
-| Quartiles and percentiles | Position \\(n+1)\times p\\ with interpolation | `QUARTILE.EXC`, `PERCENTILE.EXC` |
-| Variance and standard deviation | Sample formulas (\\n-1\\) by default | `VAR.S`, `STDEV.S` |
+| Quartiles and percentiles | Position $(n+1)\times p$ with interpolation | `QUARTILE.EXC`, `PERCENTILE.EXC` |
+| Variance and standard deviation | Sample formulas ($n-1$) by default | `VAR.S`, `STDEV.S` |
 | Skewness | Adjusted Fisher–Pearson coefficient | `SKEW` |
 | Kurtosis | Conceptual only: no formula | — |
 | Excel function names | English locale; French names on the [functions page](modules/excel-functions.qmd) | — |
@@ -67,17 +67,9 @@ Several textbook formulas differ slightly; this course always uses the following
 
 | Author(s) | Title | Edition | Publisher/Source |
 |----|----|----|----|
-| Pupion, P.-C. | *Statistiques pour la gestion* | 2004 | Dunod |
-| Avenel, M.; Riffault, J.-F. | *Mathématiques appliquées à la gestion* | 2005 | Sup’Foucher |
-| Posière, J.-P. | *Mathématiques appliquées à la gestion* | 2005 | Gualino |
-| Roger, P. | *Mathématiques pour l’économie et la gestion* | 2006 | Pearson Education |
-| Saporta, G. | *Probabilités, Analyse des données et Statistique* | 2006 | Technip |
-| Py, B. | *Statistique descriptive* | 2007 | Economica |
 | Sydsaeter, K.; Hammond, P. | *Essential Mathematics for Economic Analysis* | 2012 | Pearson |
 | Holmes, A.; Illowsky, B.; Dean, S. | *Introductory Business Statistics* | 2nd ed. | OpenStax, Rice University (free online, [openstax.org](https://openstax.org/details/books/introductory-business-statistics-2e)) |
 | Khan Academy | *Statistics and Probability* (online course) | Current online version | Khan Academy ([khanacademy.org](https://www.khanacademy.org/math/statistics-probability)) |
-
-*Introductory Business Statistics 2e* is © Rice University and licensed under CC BY-NC-SA 4.0. Each module’s further-reading table names the exact OpenStax sections and Khan Academy units to read.
 
 ## Citation
 

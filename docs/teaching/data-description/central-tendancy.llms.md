@@ -18,24 +18,24 @@ The owner wants to tell the bank what an everyday day looks like. Four days brou
 
 ### 1.2 Arithmetic mean
 
-**Try it.** Truck C’s revenue over \\n = 5\\ days is below. Add up the five values, then split the total evenly across the days.
+**Try it.** Truck C’s revenue over $n = 5$ days is below. Add up the five values, then split the total evenly across the days.
 
-| Day \\i\\     | \\x_i\\ (€) |
-|---------------|------------:|
-| 1             |         580 |
-| 2             |         590 |
-| 3             |         600 |
-| 4             |         610 |
-| 5             |       1,320 |
-| **Total**     |       **?** |
-| **Total ÷ 5** |       **?** |
+| Day $i$       | $x_i$ (€) |
+|---------------|----------:|
+| 1             |       580 |
+| 2             |       590 |
+| 3             |       600 |
+| 4             |       610 |
+| 5             |     1,320 |
+| **Total**     |     **?** |
+| **Total ÷ 5** |     **?** |
 
 How many of the five days earned less than your result?
 
 Check your answer
 
-- Total: \\580+590+600+610+1{,}320 = 3{,}700\\.
-- Split evenly: \\3{,}700 / 5 = 740\\ €.
+- Total: $580+590+600+610+1{,}320 = 3{,}700$.
+- Split evenly: $3{,}700 / 5 = 740$ €.
 - Four of the five days earned less than €740: the one festival day pulled the mean up.
 
 **See it.** The figure draws the five days as dots on a revenue axis. Step 2 draws the distance from each dot to the mean: the days below (red) exactly offset the day above (green), so the mean is the balance point of the dots.
@@ -141,25 +141,25 @@ In plain words: the mean is the “fair share” — what each day would earn if
 
 > **NOTE:**
 >
-> The **arithmetic mean** (or average) \\\bar{x}\\ of \\n\\ values \\x_1,\dots,x_n\\ is their sum divided by their count. It uses every single observation, which makes it efficient but also sensitive to extreme values: one very large or very small \\x_i\\ pulls \\\bar{x}\\ toward it.
+> The **arithmetic mean** (or average) $\bar{x}$ of $n$ values $x_1,\dots,x_n$ is their sum divided by their count. It uses every single observation, which makes it efficient but also sensitive to extreme values: one very large or very small $x_i$ pulls $\bar{x}$ toward it.
 
 > **TIP:**
 >
-> \\ \bar{x} = \frac{1}{n}\sum\_{i=1}^{n} x_i. \\ In plain terms: add up all the observations, then split the total evenly across them — the “if everyone got the same amount” value.
+> $$\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i.$$ In plain terms: add up all the observations, then split the total evenly across them — the “if everyone got the same amount” value.
 
 #### Notation decoder: arithmetic mean
 
 | Symbol | Read aloud | In our example (Truck C) |
 |----|----|----|
-| \\n\\ | “n” | 5 days |
-| \\x_i\\ | “x sub i” | the value on day \\i\\, e.g. \\x_3 = 600\\ |
-| \\\sum\_{i=1}^{n}\\ | “add up, for i from 1 to n” | \\x_1+x_2+\dots+x_5 = 3{,}700\\ |
-| \\\frac{1}{n}\\ | “one over n”, i.e. “divided by n” | ÷ 5 |
-| \\\bar{x}\\ | “x-bar” | the mean, 740 € |
+| $n$ | “n” | 5 days |
+| $x_i$ | “x sub i” | the value on day $i$, e.g. $x_3 = 600$ |
+| $\sum_{i=1}^{n}$ | “add up, for i from 1 to n” | $x_1+x_2+\dots+x_5 = 3{,}700$ |
+| $\frac{1}{n}$ | “one over n”, i.e. “divided by n” | ÷ 5 |
+| $\bar{x}$ | “x-bar” | the mean, 740 € |
 
-**Whole formula as a sentence:** “the mean is one over \\n\\ times the sum, for \\i\\ from 1 to \\n\\, of the values \\x_i\\ — in other words, add up all \\n\\ values and divide by \\n\\.”
+**Whole formula as a sentence:** “the mean is one over $n$ times the sum, for $i$ from 1 to $n$, of the values $x_i$ — in other words, add up all $n$ values and divide by $n$.”
 
-The small number \\i\\ under \\x\\ is only a label: \\x_1\\ is the first day’s value, \\x_2\\ the second’s, and so on up to \\x_n\\. The symbol \\\sum\_{i=1}^{n}\\ is a loop written compactly: start with \\i=1\\, add \\x_i\\, move to \\i=2\\, and continue until \\i=n\\.
+The small number $i$ under $x$ is only a label: $x_1$ is the first day’s value, $x_2$ the second’s, and so on up to $x_n$. The symbol $\sum_{i=1}^{n}$ is a loop written compactly: start with $i=1$, add $x_i$, move to $i=2$, and continue until $i=n$.
 
 ### 1.3 Median
 
@@ -182,7 +182,7 @@ Check your answer
 
 - Ordered: 580, 590, 600, 610, 1,320 (already in order here).
 - The middle rank is the 3rd: the median is **600** €, with 2 days below and 2 days above. The mean (740) is far above it; the median ignores how big the festival day was.
-- Truck A, four days: the middle sits between the 2nd and 3rd values, so take their average: \\(610+630)/2 = 620\\ €.
+- Truck A, four days: the middle sits between the 2nd and 3rd values, so take their average: $(610+630)/2 = 620$ €.
 
 **See it.** Step 3 of the figure above adds the median line: it sits where the ordered list reaches its middle, while the mean (dotted) is dragged toward the festival day.
 
@@ -190,22 +190,22 @@ In plain words: the median is the middle of the ordered list — half the days e
 
 > **NOTE:**
 >
-> The **median** \\Me\\ is the value that splits an ordered series into two equal halves: at least 50% of observations are \\\leq Me\\ and at least 50% are \\\geq Me\\. Unlike the mean, the median only cares about the *rank* of each value, not its magnitude, so a single extreme observation cannot drag it far.
+> The **median** $Me$ is the value that splits an ordered series into two equal halves: at least 50% of observations are $\leq Me$ and at least 50% are $\geq Me$. Unlike the mean, the median only cares about the *rank* of each value, not its magnitude, so a single extreme observation cannot drag it far.
 
 > **TIP:**
 >
-> For \\n\\ ordered values, the median sits at position \\(n+1)/2\\: if \\n\\ is odd this is a single observation; if \\n\\ is even, it is the average of the two middle observations. This is exactly the quantile formula with \\p=0.5\\ (see Module 5).
+> For $n$ ordered values, the median sits at position $(n+1)/2$: if $n$ is odd this is a single observation; if $n$ is even, it is the average of the two middle observations. This is exactly the quantile formula with $p=0.5$ (see Module 5).
 
 #### Notation decoder: median position
 
 | Symbol | Read aloud | In our example (Truck C, then Truck A) |
 |----|----|----|
-| \\n\\ | “n” | 5 days (Truck C); 4 days (Truck A’s first four) |
-| \\(n+1)/2\\ | “n plus one, over two” | position 3 for \\n=5\\; position 2.5 for \\n=4\\ |
-| \\Me\\ | “M-e”, the median | 600 € (Truck C); 620 € (Truck A) |
-| \\p=0.5\\ | “p equals one half” | the half-way point: half the days below, half above |
+| $n$ | “n” | 5 days (Truck C); 4 days (Truck A’s first four) |
+| $(n+1)/2$ | “n plus one, over two” | position 3 for $n=5$; position 2.5 for $n=4$ |
+| $Me$ | “M-e”, the median | 600 € (Truck C); 620 € (Truck A) |
+| $p=0.5$ | “p equals one half” | the half-way point: half the days below, half above |
 
-**Whole formula as a sentence:** “after sorting the \\n\\ values, the median is the value at position \\n+1\\ over two; if that position falls between two days, average those two days.”
+**Whole formula as a sentence:** “after sorting the $n$ values, the median is the value at position $n+1$ over two; if that position falls between two days, average those two days.”
 
 ### 1.4 Mode
 
@@ -243,11 +243,11 @@ In plain words: the mode is the most popular value — the tallest bar, the most
 
 > **NOTE:**
 >
-> The **mode** \\Mo\\ is the most frequently occurring value (for discrete or categorical data) or the center of the most frequent *class* (for grouped continuous data — the “peak” of the histogram from Module 3). A distribution can have one mode (unimodal), two (bimodal), or more.
+> The **mode** $Mo$ is the most frequently occurring value (for discrete or categorical data) or the center of the most frequent *class* (for grouped continuous data — the “peak” of the histogram from Module 3). A distribution can have one mode (unimodal), two (bimodal), or more.
 
 ### 1.5 Mode of grouped data
 
-**Try it.** Ten days of a street-food truck are grouped into classes of width \\h = 100\\ €:
+**Try it.** Ten days of a street-food truck are grouped into classes of width $h = 100$ €:
 
 | Class (€)    | Frequency |
 |--------------|----------:|
@@ -256,17 +256,17 @@ In plain words: the mode is the most popular value — the tallest bar, the most
 | \[600, 700\[ |         3 |
 | \[700, 800\[ |         2 |
 
-1.  Which class is the modal class? What is its lower bound \\L\\?
+1.  Which class is the modal class? What is its lower bound $L$?
 2.  Which frequencies come just before and just after it?
-3.  Compute the gap \\f_1 - f_0\\ and the gap \\f_1 - f_2\\. Which neighbour is closer in frequency?
-4.  The mode sits a fraction \\\frac{f_1-f_0}{(f_1-f_0)+(f_1-f_2)}\\ of the way across the class. Compute it and place the mode.
+3.  Compute the gap $f_1 - f_0$ and the gap $f_1 - f_2$. Which neighbour is closer in frequency?
+4.  The mode sits a fraction $\frac{f_1-f_0}{(f_1-f_0)+(f_1-f_2)}$ of the way across the class. Compute it and place the mode.
 
 Check your answer
 
-1.  The modal class is \\\[500, 600\[\\ (highest frequency, 4); \\L=500\\.
-2.  Before: \\f_0 = 1\\; after: \\f_2 = 3\\.
-3.  \\f_1-f_0 = 3\\ and \\f_1-f_2 = 1\\: the next class (frequency 3) competes harder.
-4.  Fraction \\= 3/(3+1) = 0.75\\, so \\Mo = 500 + 100 \times 0.75 = 575\\ €. The mode is pulled toward the right edge of the class, where the competing neighbour is.
+1.  The modal class is $[500, 600[$ (highest frequency, 4); $L=500$.
+2.  Before: $f_0 = 1$; after: $f_2 = 3$.
+3.  $f_1-f_0 = 3$ and $f_1-f_2 = 1$: the next class (frequency 3) competes harder.
+4.  Fraction $= 3/(3+1) = 0.75$, so $Mo = 500 + 100 \times 0.75 = 575$ €. The mode is pulled toward the right edge of the class, where the competing neighbour is.
 
 **See it.** The same table as a histogram, one block per day, placed at the class midpoints:
 
@@ -281,18 +281,18 @@ In plain words: inside the modal class, lean toward the neighbour that competes 
 
 > **TIP:**
 >
-> For continuous data grouped into classes of equal width \\h\\, the mode is estimated by linear interpolation *inside* the modal class (the class with the highest frequency \\f_1\\): \\ Mo = L + h \cdot \frac{f_1-f_0}{(f_1-f_0)+(f_1-f_2)}, \\ where \\L\\ is the modal class’s lower bound, \\f_0\\ is the frequency of the preceding class, and \\f_2\\ is the frequency of the following class. Intuitively, the mode leans toward whichever neighboring class is “competing” harder with the modal class for observations: a much lower \\f_0\\ than \\f_2\\ pulls the estimated mode toward the left edge of the class, and vice versa.
+> For continuous data grouped into classes of equal width $h$, the mode is estimated by linear interpolation *inside* the modal class (the class with the highest frequency $f_1$): $$Mo = L + h \cdot \frac{f_1-f_0}{(f_1-f_0)+(f_1-f_2)},$$ where $L$ is the modal class’s lower bound, $f_0$ is the frequency of the preceding class, and $f_2$ is the frequency of the following class. Intuitively, the mode leans toward whichever neighboring class is “competing” harder with the modal class for observations: a much lower $f_0$ than $f_2$ pulls the estimated mode toward the left edge of the class, and vice versa.
 
 #### Notation decoder: mode of grouped continuous data
 
-| Symbol  | Read aloud      | In our example (ten-day table)      |
-|---------|-----------------|-------------------------------------|
-| \\Mo\\  | “M-o”, the mode | 575 €                               |
-| \\L\\   | “L”             | lower bound of the modal class, 500 |
-| \\h\\   | “h”             | class width, 100                    |
-| \\f_1\\ | “f sub 1”       | frequency of the modal class, 4     |
-| \\f_0\\ | “f sub 0”       | frequency of the class before, 1    |
-| \\f_2\\ | “f sub 2”       | frequency of the class after, 3     |
+| Symbol | Read aloud      | In our example (ten-day table)      |
+|--------|-----------------|-------------------------------------|
+| $Mo$   | “M-o”, the mode | 575 €                               |
+| $L$    | “L”             | lower bound of the modal class, 500 |
+| $h$    | “h”             | class width, 100                    |
+| $f_1$  | “f sub 1”       | frequency of the modal class, 4     |
+| $f_0$  | “f sub 0”       | frequency of the class before, 1    |
+| $f_2$  | “f sub 2”       | frequency of the class after, 3     |
 
 **Whole formula as a sentence:** “the mode is the modal class’s lower bound plus the class width times a fraction: the lead over the class before, divided by the lead over the class before plus the lead over the class after.”
 
@@ -300,27 +300,27 @@ In plain words: inside the modal class, lean toward the neighbour that competes 
 
 **Try it.** Same ten-day table. Pretend every day sits exactly at the midpoint of its class, then compute the usual mean.
 
-| Class (€)    | Midpoint \\m_i\\ | Frequency \\f_i\\ | \\f_i \times m_i\\ |
-|--------------|-----------------:|------------------:|-------------------:|
-| \[400, 500\[ |              450 |                 1 |                  ? |
-| \[500, 600\[ |                ? |                 4 |                  ? |
-| \[600, 700\[ |                ? |                 3 |                  ? |
-| \[700, 800\[ |                ? |                 2 |                  ? |
-| **Total**    |                  |             **?** |              **?** |
+| Class (€)    | Midpoint $m_i$ | Frequency $f_i$ | $f_i \times m_i$ |
+|--------------|---------------:|----------------:|-----------------:|
+| \[400, 500\[ |            450 |               1 |                ? |
+| \[500, 600\[ |              ? |               4 |                ? |
+| \[600, 700\[ |              ? |               3 |                ? |
+| \[700, 800\[ |              ? |               2 |                ? |
+| **Total**    |                |           **?** |            **?** |
 
 Divide the last total by the total frequency.
 
 Check your answer
 
-| Class (€)    | Midpoint \\m_i\\ | Frequency \\f_i\\ | \\f_i \times m_i\\ |
-|--------------|-----------------:|------------------:|-------------------:|
-| \[400, 500\[ |              450 |                 1 |                450 |
-| \[500, 600\[ |              550 |                 4 |              2,200 |
-| \[600, 700\[ |              650 |                 3 |              1,950 |
-| \[700, 800\[ |              750 |                 2 |              1,500 |
-| **Total**    |                  |            **10** |          **6,100** |
+| Class (€)    | Midpoint $m_i$ | Frequency $f_i$ | $f_i \times m_i$ |
+|--------------|---------------:|----------------:|-----------------:|
+| \[400, 500\[ |            450 |               1 |              450 |
+| \[500, 600\[ |            550 |               4 |            2,200 |
+| \[600, 700\[ |            650 |               3 |            1,950 |
+| \[700, 800\[ |            750 |               2 |            1,500 |
+| **Total**    |                |          **10** |        **6,100** |
 
-\\6{,}100 / 10 = 610\\ € — an approximation, since we do not know where inside each class the days really fell.
+$6{,}100 / 10 = 610$ € — an approximation, since we do not know where inside each class the days really fell.
 
 **See it.** In the histogram above, the 10 blocks sit at 450, 550, 550, 550, 550, 650, 650, 650, 750, 750. Their balance point is 610, to the right of the mode (575): the mean uses every block, the mode only the tallest column.
 
@@ -328,49 +328,50 @@ In plain words: treat every observation in a class as if it were exactly at the 
 
 > **TIP:**
 >
-> When raw data is unavailable and only a class frequency table exists, the mean is approximated using class midpoints \\m_i\\: \\ \bar{x}\_{\text{grouped}} = \frac{\sum\_{i=1}^{k} f_i m_i}{\sum\_{i=1}^{k} f_i} = \frac{\sum\_{i=1}^{k} n_i m_i}{n}, \\ where \\n_i\\ is the count in class \\i\\, \\m_i = (L_i + L_i + h)/2\\ is the class midpoint, and \\k\\ is the number of classes. This is a weighted mean where the weights are the class frequencies.
+> When raw data is unavailable and only a class frequency table exists, the mean is approximated using class midpoints $m_i$: $$\bar{x}_{\text{grouped}} = \frac{\sum_{i=1}^{k} f_i m_i}{\sum_{i=1}^{k} f_i}
+> = \frac{\sum_{i=1}^{k} n_i m_i}{n},$$ where $n_i$ is the count in class $i$, $m_i = (L_i + L_i + h)/2$ is the class midpoint, and $k$ is the number of classes. This is a weighted mean where the weights are the class frequencies.
 
 #### Notation decoder: grouped-data mean
 
 | Symbol | Read aloud | In our example (ten-day table) |
 |----|----|----|
-| \\\bar{x}\_{\text{grouped}}\\ | “x-bar, grouped” | 610 € |
-| \\k\\ | “k” | 4 classes |
-| \\i\\ | “i” | the class number, from 1 to 4 |
-| \\m_i\\ | “m sub i” | class midpoint, e.g. \\m_2 = 550\\ |
-| \\f_i\\, \\n_i\\ | “f sub i”, “n sub i” | class frequency, e.g. \\n_2 = 4\\ |
-| \\\sum\_{i=1}^{k}\\ | “add up, for i from 1 to k” | the Total row: 6,100 and 10 |
-| \\n\\ | “n” | total count, 10 days |
-| \\L_i\\ | “L sub i” | lower bound of class \\i\\, e.g. \\L_2 = 500\\ |
-| \\h\\ | “h” | class width, 100 |
+| $\bar{x}_{\text{grouped}}$ | “x-bar, grouped” | 610 € |
+| $k$ | “k” | 4 classes |
+| $i$ | “i” | the class number, from 1 to 4 |
+| $m_i$ | “m sub i” | class midpoint, e.g. $m_2 = 550$ |
+| $f_i$, $n_i$ | “f sub i”, “n sub i” | class frequency, e.g. $n_2 = 4$ |
+| $\sum_{i=1}^{k}$ | “add up, for i from 1 to k” | the Total row: 6,100 and 10 |
+| $n$ | “n” | total count, 10 days |
+| $L_i$ | “L sub i” | lower bound of class $i$, e.g. $L_2 = 500$ |
+| $h$ | “h” | class width, 100 |
 
-**Whole formula as a sentence:** “the grouped mean is the sum, over all \\k\\ classes, of frequency times midpoint, divided by the total frequency.”
+**Whole formula as a sentence:** “the grouped mean is the sum, over all $k$ classes, of frequency times midpoint, divided by the total frequency.”
 
 ### 1.7 Weighted mean
 
 **Try it.** The Wandering Fork has three sites. The numbers are a simplified extract: the mean daily revenue per truck, and the number of trucks at each site.
 
-| Site \\i\\ | Mean daily revenue \\x_i\\ (€) | Trucks \\w_i\\ | \\w_i \times x_i\\ |
-|------------|-------------------------------:|---------------:|-------------------:|
-| Harbour    |                            600 |              3 |                  ? |
-| Campus     |                            500 |              1 |                  ? |
-| Station    |                            800 |              1 |                  ? |
-| **Total**  |                                |          **?** |              **?** |
+| Site $i$  | Mean daily revenue $x_i$ (€) | Trucks $w_i$ | $w_i \times x_i$ |
+|-----------|-----------------------------:|-------------:|-----------------:|
+| Harbour   |                          600 |            3 |                ? |
+| Campus    |                          500 |            1 |                ? |
+| Station   |                          800 |            1 |                ? |
+| **Total** |                              |        **?** |            **?** |
 
 1.  Compute the plain average of the three site means, ignoring trucks.
 2.  Compute the average revenue *per truck*: total of the last column divided by the total number of trucks. Why is it different?
 
 Check your answer
 
-| Site \\i\\ | \\x_i\\ (€) | \\w_i\\ | \\w_i \times x_i\\ |
-|------------|------------:|--------:|-------------------:|
-| Harbour    |         600 |       3 |              1,800 |
-| Campus     |         500 |       1 |                500 |
-| Station    |         800 |       1 |                800 |
-| **Total**  |             |   **5** |          **3,100** |
+| Site $i$  | $x_i$ (€) | $w_i$ | $w_i \times x_i$ |
+|-----------|----------:|------:|-----------------:|
+| Harbour   |       600 |     3 |            1,800 |
+| Campus    |       500 |     1 |              500 |
+| Station   |       800 |     1 |              800 |
+| **Total** |           | **5** |        **3,100** |
 
-1.  \\(600+500+800)/3 = 633.33\\ € — it treats each site as equal.
-2.  \\3{,}100 / 5 = 620\\ € per truck. It is lower because Harbour, with a below-average mean, hosts three of the five trucks and so counts three times.
+1.  $(600+500+800)/3 = 633.33$ € — it treats each site as equal.
+2.  $3{,}100 / 5 = 620$ € per truck. It is lower because Harbour, with a below-average mean, hosts three of the five trucks and so counts three times.
 
 **See it.** Each truck is one “vote” for its site’s mean:
 
@@ -384,20 +385,20 @@ In plain words: multiply each value by its weight, sum the products, and divide 
 
 > **TIP:**
 >
-> When observations carry different importance (weights \\w_i\\), the **weighted mean** is \\ \bar{x}\_w = \frac{\sum\_{i=1}^{n} w_i x_i}{\sum\_{i=1}^{n} w_i}. \\ Common business uses: portfolio return (weights = amounts invested), GPA (weights = credit hours), price indices (weights = quantities).
+> When observations carry different importance (weights $w_i$), the **weighted mean** is $$\bar{x}_w = \frac{\sum_{i=1}^{n} w_i x_i}{\sum_{i=1}^{n} w_i}.$$ Common business uses: portfolio return (weights = amounts invested), GPA (weights = credit hours), price indices (weights = quantities).
 
 #### Notation decoder: weighted mean
 
 | Symbol | Read aloud | In our example (three sites) |
 |----|----|----|
-| \\n\\ | “n” | 3 sites |
-| \\x_i\\ | “x sub i” | site \\i\\’s mean revenue, e.g. \\x_1 = 600\\ |
-| \\w_i\\ | “w sub i” | site \\i\\’s weight (trucks), e.g. \\w_1 = 3\\ |
-| \\w_i x_i\\ | “w sub i times x sub i” | the last column: 1,800, 500, 800 |
-| \\\sum\_{i=1}^{n}\\ | “add up, for i from 1 to n” | numerator 3,100; denominator 5 |
-| \\\bar{x}\_w\\ | “x-bar, weighted” | 620 € |
+| $n$ | “n” | 3 sites |
+| $x_i$ | “x sub i” | site $i$’s mean revenue, e.g. $x_1 = 600$ |
+| $w_i$ | “w sub i” | site $i$’s weight (trucks), e.g. $w_1 = 3$ |
+| $w_i x_i$ | “w sub i times x sub i” | the last column: 1,800, 500, 800 |
+| $\sum_{i=1}^{n}$ | “add up, for i from 1 to n” | numerator 3,100; denominator 5 |
+| $\bar{x}_w$ | “x-bar, weighted” | 620 € |
 
-**Whole formula as a sentence:** “the weighted mean is the sum, over all \\n\\ values, of weight times value, divided by the sum of the weights.”
+**Whole formula as a sentence:** “the weighted mean is the sum, over all $n$ values, of weight times value, divided by the sum of the weights.”
 
 ### 1.8 Choosing the right measure
 
@@ -417,11 +418,11 @@ We use the **Harbour 30-day subset** (sheet `harbour_30d`) and the **payroll-ske
 
 ### 2.1 Harbour 30-day revenue (symmetric case)
 
-| Statistic           |  Value |
-|---------------------|-------:|
-| Mean \\\bar{x}\\    | 628.34 |
-| Median \\Me\\       | 643.63 |
-| Grouped mode \\Mo\\ | 666.67 |
+| Statistic         |  Value |
+|-------------------|-------:|
+| Mean $\bar{x}$    | 628.34 |
+| Median $Me$       | 643.63 |
+| Grouped mode $Mo$ | 666.67 |
 
 Class frequency table (class width 100, from Module 3):
 
@@ -433,11 +434,13 @@ Class frequency table (class width 100, from Module 3):
 | \[700, 800\[ |         7 |
 | \[800, 900\[ |         3 |
 
-**Step 1 — mean.** Summing all 30 daily revenues and dividing by 30 gives \\\bar{x} = 628.34\\: on average, “The Wandering Fork” brings in about €628 per day.
+**Step 1 — mean.** Summing all 30 daily revenues and dividing by 30 gives $\bar{x} = 628.34$: on average, “The Wandering Fork” brings in about €628 per day.
 
-**Step 2 — median.** As found in Module 5, \\Me = 643.63\\: half the trading days earned less than this, half earned more.
+**Step 2 — median.** As found in Module 5, $Me = 643.63$: half the trading days earned less than this, half earned more.
 
-**Step 3 — mode.** The modal class is \\\[600,700\[\\ with \\f_1=8\\, flanked by \\\[500,600\[\\ (\\f_0=6\\) and \\\[700,800\[\\ (\\f_2=7\\). With \\L=600\\ and \\h=100\\: \\ Mo = 600 + 100 \times \frac{8-6}{(8-6)+(8-7)} = 600 + 100 \times \frac{2}{3} \approx 666.67. \\ The single most “typical” revenue band, estimated from the histogram shape, centers around €666.67.
+**Step 3 — mode.** The modal class is $[600,700[$ with $f_1=8$, flanked by $[500,600[$ ($f_0=6$) and $[700,800[$ ($f_2=7$). With $L=600$ and $h=100$: $$Mo = 600 + 100 \times \frac{8-6}{(8-6)+(8-7)}
+= 600 + 100 \times \frac{2}{3}
+\approx 666.67.$$ The single most “typical” revenue band, estimated from the histogram shape, centers around €666.67.
 
 **Putting it together.** The three indicators — 628.34, 643.63, and 666.67 — are all close to one another, which is itself informative: it signals a roughly symmetric, well-behaved distribution rather than one dominated by a skewed tail.
 
@@ -445,11 +448,11 @@ Class frequency table (class width 100, from Module 3):
 
 The `payroll-skew.csv` dataset contains 11 salaries: one CEO at €180,000 and ten staff members between €25,000–€45,000.
 
-| Statistic        |                                         Value |
-|------------------|----------------------------------------------:|
-| Mean \\\bar{x}\\ |                                        47,231 |
-| Median \\Me\\    |                                        38,050 |
-| Mode \\Mo\\      | 25,166 (no unique mode; smallest value shown) |
+| Statistic      |                                         Value |
+|----------------|----------------------------------------------:|
+| Mean $\bar{x}$ |                                        47,231 |
+| Median $Me$    |                                        38,050 |
+| Mode $Mo$      | 25,166 (no unique mode; smallest value shown) |
 
 **Step 1 — mean.** The CEO’s €180,000 pulls the mean up to €47,231, well above what 10 out of 11 employees earn.
 
@@ -461,11 +464,15 @@ The `payroll-skew.csv` dataset contains 11 salaries: one CEO at €180,000 and t
 
 > **CAUTION:**
 >
-> Consider the function that measures the total squared “distance” between every observation and some reference point \\a\\: \\ f(a) = \sum\_{i=1}^{n} (x_i - a)^2. \\ To find the value of \\a\\ that minimizes \\f\\, differentiate with respect to \\a\\ and set the result to zero: \\ f'(a) = -2\sum\_{i=1}^{n} (x_i - a) = 0 \\\\\Longrightarrow\\\\ \sum\_{i=1}^{n} x_i - na = 0 \\\\\Longrightarrow\\\\ a = \frac{1}{n}\sum\_{i=1}^{n} x_i = \bar{x}. \\ The second derivative, \\f''(a) = 2n \> 0\\, confirms this is a minimum, not a maximum. In words: **no other single number sits closer, on average in squared terms, to every observation than the arithmetic mean does.** This is exactly why the variance (Module 6) is defined as the average squared deviation *from the mean* specifically — any other reference point would only make the total squared deviation larger.
+> Consider the function that measures the total squared “distance” between every observation and some reference point $a$: $$f(a) = \sum_{i=1}^{n} (x_i - a)^2.$$ To find the value of $a$ that minimizes $f$, differentiate with respect to $a$ and set the result to zero: $$f'(a) = -2\sum_{i=1}^{n} (x_i - a) = 0
+> \;\;\Longrightarrow\;\;
+> \sum_{i=1}^{n} x_i - na = 0
+> \;\;\Longrightarrow\;\;
+> a = \frac{1}{n}\sum_{i=1}^{n} x_i = \bar{x}.$$ The second derivative, $f''(a) = 2n > 0$, confirms this is a minimum, not a maximum. In words: **no other single number sits closer, on average in squared terms, to every observation than the arithmetic mean does.** This is exactly why the variance (Module 6) is defined as the average squared deviation *from the mean* specifically — any other reference point would only make the total squared deviation larger.
 
 ## 4 Visual intuition
 
-Picture each day’s revenue as a small weight placed on a number line. The **mean** is the physical balance point (center of mass): if the number line were a rigid rod, it would balance perfectly on a pivot placed at \\\bar{x}=628.34\\. The **median** is a purely positional idea: the point that has exactly as many weights to its left as to its right, regardless of how heavy any of them are. The **mode** is simply the tallest bar on the histogram — the single most crowded spot on the number line. When the histogram is close to symmetric, all three landmarks cluster near the same spot, which is exactly the pattern seen above (628.34, 643.63, 666.67). When a single extreme weight is added (the CEO’s salary), the balance point (mean) shifts dramatically, while the positional median barely moves.
+Picture each day’s revenue as a small weight placed on a number line. The **mean** is the physical balance point (center of mass): if the number line were a rigid rod, it would balance perfectly on a pivot placed at $\bar{x}=628.34$. The **median** is a purely positional idea: the point that has exactly as many weights to its left as to its right, regardless of how heavy any of them are. The **mode** is simply the tallest bar on the histogram — the single most crowded spot on the number line. When the histogram is close to symmetric, all three landmarks cluster near the same spot, which is exactly the pattern seen above (628.34, 643.63, 666.67). When a single extreme weight is added (the CEO’s salary), the balance point (mean) shifts dramatically, while the positional median barely moves.
 
 ## 5 Interactive demo
 
@@ -481,49 +488,51 @@ All exercises below are done by hand; the Excel ones are in the [homework](#home
 
 Solution
 
-Mean \\= (32+35+33+34+210)/5 = 344/5 = 68.8\\. Ordering the values gives \\32, 33, 34, 35, 210\\, so the median (the middle value) is \\34\\. The median is the better representative here: the single very high salary (210) pulls the mean far above what four out of five employees actually earn, while the median, using only rank, is unaffected by how extreme that one value is.
+Mean $= (32+35+33+34+210)/5 = 344/5 = 68.8$. Ordering the values gives $32, 33, 34, 35, 210$, so the median (the middle value) is $34$. The median is the better representative here: the single very high salary (210) pulls the mean far above what four out of five employees actually earn, while the median, using only rank, is unaffected by how extreme that one value is.
 
-**Exercise 2 (Choosing an indicator for The Wandering Fork)** The owner of “The Wandering Fork” asks for “one typical number” for daily revenue. Given \\\bar{x}=628.34\\ and \\Me=643.63\\, which would you recommend, and why?
+**Exercise 2 (Choosing an indicator for The Wandering Fork)** The owner of “The Wandering Fork” asks for “one typical number” for daily revenue. Given $\bar{x}=628.34$ and $Me=643.63$, which would you recommend, and why?
 
 Solution
 
 Since Module 5 showed **zero outliers** in the daily revenue data, the mean is not being distorted by extreme values, so either indicator is defensible here. The mean is generally the better recommendation in this specific case: it uses every one of the 30 observations (not just their ranks), and it is the indicator that feeds directly into the variance, standard deviation, and coefficient of variation computed in Module 6 — keeping the reporting consistent across the analysis.
 
-**Exercise 3 (Grouped mode for a different class table)** A rival street-food vendor’s daily revenue has a modal class \\\[500,600\[\\ (\\L=500\\, \\h=100\\) with frequency \\f_1=18\\, preceded by a class with frequency \\f_0=10\\ and followed by a class with frequency \\f_2=15\\. Estimate the grouped mode.
+**Exercise 3 (Grouped mode for a different class table)** A rival street-food vendor’s daily revenue has a modal class $[500,600[$ ($L=500$, $h=100$) with frequency $f_1=18$, preceded by a class with frequency $f_0=10$ and followed by a class with frequency $f_2=15$. Estimate the grouped mode.
 
 Solution
 
-\\ Mo = 500 + 100 \times \frac{18-10}{(18-10)+(18-15)} = 500 + 100 \times \frac{8}{11} \approx 572.73. \\ The estimated most-typical revenue band for the rival vendor centers around €572.73 — lower than “The Wandering Fork”’s €666.67, and leaning toward the lower-frequency neighboring class (\\f_0=10\\ vs. \\f_2=15\\) rather than the middle of the modal class.
+$$Mo = 500 + 100 \times \frac{18-10}{(18-10)+(18-15)}
+= 500 + 100 \times \frac{8}{11}
+\approx 572.73.$$ The estimated most-typical revenue band for the rival vendor centers around €572.73 — lower than “The Wandering Fork”’s €666.67, and leaning toward the lower-frequency neighboring class ($f_0=10$ vs. $f_2=15$) rather than the middle of the modal class.
 
 **Exercise 4 (Formula to words)**  
 
-1.  Read \\\bar{x}=\frac{1}{n}\sum\_{i=1}^{n}x_i\\ aloud as one sentence. Which indicator is it?
+1.  Read $\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i$ aloud as one sentence. Which indicator is it?
 
-2.  Read \\\bar{x}\_w=\frac{\sum\_{i=1}^{n}w_i x_i}{\sum\_{i=1}^{n}w_i}\\ aloud as one sentence. Which indicator is it, and what does it become when all \\w_i\\ are equal?
+2.  Read $\bar{x}_w=\frac{\sum_{i=1}^{n}w_i x_i}{\sum_{i=1}^{n}w_i}$ aloud as one sentence. Which indicator is it, and what does it become when all $w_i$ are equal?
 
-3.  For \\x_1=4\\, \\x_2=6\\, \\x_3=8\\, compute \\\sum\_{i=1}^{3} x_i\\ and \\\bar{x}\\.
+3.  For $x_1=4$, $x_2=6$, $x_3=8$, compute $\sum_{i=1}^{3} x_i$ and $\bar{x}$.
 
 Solution
 
-1.  “Add up the \\n\\ observations \\x_1\\ to \\x_n\\ and divide by \\n\\.” It is the arithmetic mean.
+1.  “Add up the $n$ observations $x_1$ to $x_n$ and divide by $n$.” It is the arithmetic mean.
 
-2.  “Multiply each value by its weight, add up the products, and divide by the sum of the weights.” It is the weighted mean; with equal weights the \\w_i\\ cancel and it becomes the ordinary mean.
+2.  “Multiply each value by its weight, add up the products, and divide by the sum of the weights.” It is the weighted mean; with equal weights the $w_i$ cancel and it becomes the ordinary mean.
 
-3.  \\\sum\_{i=1}^{3} x_i = 4+6+8 = 18\\, so \\\bar{x} = 18/3 = 6\\.
+3.  $\sum_{i=1}^{3} x_i = 4+6+8 = 18$, so $\bar{x} = 18/3 = 6$.
 
 **Exercise 5 (Words to formula)** Write in symbols:
 
 1.  “add up the first four observations”;
-2.  “the median position for \\n\\ ordered values”;
+2.  “the median position for $n$ ordered values”;
 3.  “the sum of weight times value over three sites”;
 4.  “the distance between the 2nd observation and the mean”.
 
 Solution
 
-1.  \\\sum\_{i=1}^{4} x_i\\.
-2.  \\(n+1)/2\\.
-3.  \\\sum\_{i=1}^{3} w_i x_i\\.
-4.  \\x_2-\bar{x}\\ (negative if the 2nd observation is below the mean).
+1.  $\sum_{i=1}^{4} x_i$.
+2.  $(n+1)/2$.
+3.  $\sum_{i=1}^{3} w_i x_i$.
+4.  $x_2-\bar{x}$ (negative if the 2nd observation is below the mean).
 
 ## 7 Common mistakes
 
@@ -541,7 +550,7 @@ Five minutes, no calculator needed except for question 4.
 
 1.  In one sentence, what does the arithmetic mean measure?
 2.  Why can one extreme value move the mean a lot but the median hardly at all?
-3.  Read \\\bar{x}=\frac{1}{n}\sum\_{i=1}^{n}x_i\\ aloud as a sentence.
+3.  Read $\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i$ aloud as a sentence.
 4.  Compute the mean, the median and the mode of 2, 4, 4, 6, 9.
 5.  A report must give “the typical salary” for a company with a few very high executive salaries. Which indicator do you choose, and why?
 
@@ -549,8 +558,8 @@ Answers
 
 1.  The “fair share”: the value each observation would have if the total were split evenly (the balance point of the data).
 2.  The mean uses the size of every value, so a large one drags it; the median only uses the ranking, so the largest value could be 10 or 10,000 without changing the middle position.
-3.  “Add up all \\n\\ observations, for \\i\\ from 1 to \\n\\, and divide the sum by \\n\\.”
-4.  Mean \\= 25/5 = 5\\; median = the 3rd of the ordered values = 4; mode = 4 (appears twice).
+3.  “Add up all $n$ observations, for $i$ from 1 to $n$, and divide the sum by $n$.”
+4.  Mean $= 25/5 = 5$; median = the 3rd of the ordered values = 4; mode = 4 (appears twice).
 5.  The median: the executive salaries are outliers that would inflate the mean well above what most employees earn.
 
 ## 9 Homework — Excel lab
@@ -573,7 +582,7 @@ The complete list of function names, with their French equivalents, is on the [E
 | Mode, raw data (all modes, array formula) | `=MODE.MULT(range)` |
 | Weighted mean | `=SUMPRODUCT(values, weights)/SUM(weights)` |
 | Grouped mean | No direct one-cell function — use `SUMPRODUCT(midpoints, frequencies)/SUM(frequencies)` |
-| Mode, grouped continuous data | No direct one-cell function — use `FREQUENCY(range, bins)` to get \\f_0, f_1, f_2\\, then apply the interpolation formula manually |
+| Mode, grouped continuous data | No direct one-cell function — use `FREQUENCY(range, bins)` to get $f_0, f_1, f_2$, then apply the interpolation formula manually |
 
 For the **full table** (120 days per franchise) use the Excel Table `tblFork` and add the franchise as one more condition, for example `=AVERAGEIFS(tblFork[daily_revenue_eur], tblFork[franchise], "Harbour")`.
 

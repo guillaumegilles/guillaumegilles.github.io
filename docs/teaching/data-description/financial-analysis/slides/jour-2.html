@@ -1,0 +1,2592 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Guillaume Gilles">
+
+<title>Jour 2 — Banque de France, cotation et analyse des groupes (étapes 1 à 3) – Guillaume Gilles</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../">
+<link href="../../../../teaching/data-description/financial-analysis/slides/jour-3.html" rel="next">
+<link href="../../../../teaching/data-description/financial-analysis/slides/jour-1.html" rel="prev">
+<link href="../../../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../site_libs/bootstrap/bootstrap-04e2b25f2d5273009d62512832ec6cb3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+<script src="../../../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Jour 2 — Banque de France, cotation et analyse des groupes (étapes 1 à 3) – Guillaume Gilles">
+<meta property="og:description" content="Analyse financière et stratégique · INSEEC MSc">
+<meta property="og:image" content="https://ggilles.dev/assets/og-image.jpg">
+<meta property="og:site_name" content="Guillaume Gilles">
+<meta property="og:image:height" content="1440">
+<meta property="og:image:width" content="1920">
+<meta name="twitter:title" content="Jour 2 — Banque de France, cotation et analyse des groupes (étapes 1 à 3) – Guillaume Gilles">
+<meta name="twitter:description" content="Analyse financière et stratégique · INSEEC MSc">
+<meta name="twitter:image" content="https://ggilles.dev/assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="citation_title" content="Jour 2 — Banque de France, cotation et analyse des groupes (étapes 1 à 3)">
+<meta name="citation_author" content="Guillaume Gilles">
+<meta name="citation_fulltext_html_url" content="https://ggilles.dev/teaching/data-description/financial-analysis/slides/jour-2.html">
+<meta name="citation_language" content="en">
+</head>
+
+<body class="nav-sidebar floating nav-fixed slimcontent quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../../assets/mark.png" alt="" class="navbar-logo light-content">
+    <img src="../../../../assets/mark.png" alt="" class="navbar-logo dark-content">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../../teaching/data-description/index.html">Data Description</a></li><li class="breadcrumb-item"><a href="../../../../teaching/data-description/financial-analysis/index.html">Analyse Financière et Stratégique de l’Entreprise</a></li><li class="breadcrumb-item"><a href="../../../../teaching/data-description/financial-analysis/slides/jour-1.html">Slides</a></li><li class="breadcrumb-item"><a href="../../../../teaching/data-description/financial-analysis/slides/jour-2.html">Jour 2 — Banque de France, cotation et analyse des groupes (étapes 1 à 3)</a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../../teaching/data-description/index.html">Data Description</a></li><li class="breadcrumb-item"><a href="../../../../teaching/data-description/financial-analysis/index.html">Analyse Financière et Stratégique de l’Entreprise</a></li><li class="breadcrumb-item"><a href="../../../../teaching/data-description/financial-analysis/slides/jour-1.html">Slides</a></li><li class="breadcrumb-item"><a href="../../../../teaching/data-description/financial-analysis/slides/jour-2.html">Jour 2 — Banque de France, cotation et analyse des groupes (étapes 1 à 3)</a></li></ol></nav>
+      <h1 class="title">Jour 2 — Banque de France, cotation et analyse des groupes (étapes 1 à 3)</h1>
+            <p class="subtitle lead">Analyse financière et stratégique · INSEEC MSc</p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p><a href="https://ggilles.dev">Guillaume Gilles</a> </p>
+            </div>
+    </div>
+      
+    
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">October 18, 2026</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../../teaching/data-description/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Data Description</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section: Data Description">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1️⃣ What are statistics?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/qualitative-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2️⃣ Organising qualitative data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/quantitative-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3️⃣ Organising quantitative data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/central-tendancy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4️⃣ Measures of central tendency</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/position.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5️⃣ Position and boxplot</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/dispersion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">6️⃣ Dispersion</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/shape.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">7️⃣ Shape and univariate review</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/contingency-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">8️⃣ Contingency tables and scatter plots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/covaraince.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">9️⃣ Correlation and regression</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/synthesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1️⃣0️⃣ Review and mock exam</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/exam-training.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🎓 Training exam — 2 hours</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The Wandering Fork Dataset</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/excel-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Excel Functions — English / French</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../../teaching/data-description/financial-analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Analyse Financière et Stratégique de l'Entreprise</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section: Analyse Financière et Stratégique de l'Entreprise">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/05-structure-fi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Structure financière</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/analyse-performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyse des performances</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Évaluation : XP, niveaux et note finale</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/financial-stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stabilité Financère</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/glossaire.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossaire</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/guide-reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide la cotation Banque de France</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/indicateur-dirigreant.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Indicateur Dirigeant</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/monetary-strategy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Monetary Strategy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/planning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Planning des 3 journées (18 h)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/society-services.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Economy and Society Services</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Annexes</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/annexes/inventaire-sources.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inventaire des sources : ce qui n’est pas dans les 18 h</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Enseignant</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/enseignant/corrige-aubepine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Corrigé — Groupe AUBÉPINE (page enseignant)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/enseignant/jour-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide enseignant — Jour 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/enseignant/jour-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide enseignant — Jour 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/enseignant/jour-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide enseignant — Jour 3</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Exercices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/exercices/examen-1h.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Examen — Diagnostic Financier Retraité</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/exercices/examen-final.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Examen Final — Analyse Financière et Stratégique</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../../teaching/data-description/financial-analysis/donnees/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Fil rouge — Groupe AUBÉPINE (données fictives)</span></a>
+            <button type="button" class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section: Fil rouge — Groupe AUBÉPINE (données fictives)">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/donnees/annexe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Annexe des comptes consolidés — Groupe AUBÉPINE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/donnees/bilan-consolide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bilan consolidé — Groupe AUBÉPINE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/donnees/compte-de-resultat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compte de résultat consolidé — Groupe AUBÉPINE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/donnees/flux-tresorerie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tableau des flux de trésorerie — Groupe AUBÉPINE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/donnees/telechargements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Téléchargements — Groupe AUBÉPINE</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-controls="quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-7-label">Modules</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-7" aria-labelledby="quarto-sidebar-section-7-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/01-temple-bilans.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Le Temple des Bilans</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/01-temple-bilans-enseignant.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Le Temple des Bilans — Fiche Enseignant</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/02-archives-consolidees.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Archives Consolidées</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/03-detective-diagnostic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Le Détective du Diagnostic</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/04-arenes-rentabilite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Arènes de la Rentabilité</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/05-cartographes-modele-eco.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Cartographes du Modèle Économique</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/06-conseil-sages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Le Conseil des Sages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/07-veilleurs-marche.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Veilleurs du Marché</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/08-architectes-strategie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Architectes de la Stratégie</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/09-gardiens-extra-financier.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Gardiens de l’Extra-Financier</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/banque-france.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Banque de France</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/banque-france-cotation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendre la cotation Banque de France</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/etats-financiers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les trois états financiers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/formules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Formulaire de référence</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/liquidite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyse de la liquidité</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/performances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyse des performances</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/modules/structure-fi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Structure financière</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-controls="quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-8-label">Slides</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-8" aria-labelledby="quarto-sidebar-section-8-label" class="collapse list-unstyled sidebar-section depth3 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/slides/jour-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jour 1 — Les fondamentaux de l’analyse financière</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/slides/jour-2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Jour 2 — Banque de France, cotation et analyse des groupes (étapes 1 à 3)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../../teaching/data-description/financial-analysis/slides/jour-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jour 3 — Structure financière, liquidité, décision de cotation et enjeux actuels</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#programme-de-la-journée" id="toc-programme-de-la-journée" class="nav-link active" data-scroll-target="#programme-de-la-journée"><span class="header-section-number">0.1</span> Programme de la journée</a></li>
+  <li><a href="#objectifs" id="toc-objectifs" class="nav-link" data-scroll-target="#objectifs"><span class="header-section-number">0.2</span> Objectifs</a></li>
+  <li><a href="#bloc-2.0-ouverture-et-rappel-du-jour-1" id="toc-bloc-2.0-ouverture-et-rappel-du-jour-1" class="nav-link" data-scroll-target="#bloc-2.0-ouverture-et-rappel-du-jour-1"><span class="header-section-number">1</span> Bloc 2.0 — Ouverture et rappel du Jour 1</a>
+  <ul class="collapse">
+  <li><a href="#rappel-du-jour-1-3-questions" id="toc-rappel-du-jour-1-3-questions" class="nav-link" data-scroll-target="#rappel-du-jour-1-3-questions"><span class="header-section-number">1.1</span> Rappel du Jour 1 — 3 questions</a></li>
+  <li><a href="#la-méthode-en-six-étapes-où-en-sommes-nous" id="toc-la-méthode-en-six-étapes-où-en-sommes-nous" class="nav-link" data-scroll-target="#la-méthode-en-six-étapes-où-en-sommes-nous"><span class="header-section-number">1.2</span> La méthode en six étapes — où en sommes-nous ?</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.1-découvrir-la-banque-de-france" id="toc-bloc-2.1-découvrir-la-banque-de-france" class="nav-link" data-scroll-target="#bloc-2.1-découvrir-la-banque-de-france"><span class="header-section-number">2</span> Bloc 2.1 — Découvrir la Banque de France</a>
+  <ul class="collapse">
+  <li><a href="#trois-missions-un-réseau-européen" id="toc-trois-missions-un-réseau-européen" class="nav-link" data-scroll-target="#trois-missions-un-réseau-européen"><span class="header-section-number">2.1</span> Trois missions, un réseau européen</a></li>
+  <li><a href="#pourquoi-la-banque-de-france-cote-t-elle-les-entreprises" id="toc-pourquoi-la-banque-de-france-cote-t-elle-les-entreprises" class="nav-link" data-scroll-target="#pourquoi-la-banque-de-france-cote-t-elle-les-entreprises"><span class="header-section-number">2.2</span> Pourquoi la Banque de France cote-t-elle les entreprises ?</a></li>
+  <li><a href="#pour-aller-plus-loin" id="toc-pour-aller-plus-loin" class="nav-link" data-scroll-target="#pour-aller-plus-loin"><span class="header-section-number">2.3</span> Pour aller plus loin</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.2-la-cotation-banque-de-france" id="toc-bloc-2.2-la-cotation-banque-de-france" class="nav-link" data-scroll-target="#bloc-2.2-la-cotation-banque-de-france"><span class="header-section-number">3</span> Bloc 2.2 — La cotation Banque de France</a>
+  <ul class="collapse">
+  <li><a href="#cotation-ou-notation" id="toc-cotation-ou-notation" class="nav-link" data-scroll-target="#cotation-ou-notation"><span class="header-section-number">3.1</span> Cotation ou notation ?</a></li>
+  <li><a href="#à-dire-dexpert-et-horizon" id="toc-à-dire-dexpert-et-horizon" class="nav-link" data-scroll-target="#à-dire-dexpert-et-horizon"><span class="header-section-number">3.2</span> « À dire d’expert » et horizon</a></li>
+  <li><a href="#sur-quoi-sappuie-la-cotation" id="toc-sur-quoi-sappuie-la-cotation" class="nav-link" data-scroll-target="#sur-quoi-sappuie-la-cotation"><span class="header-section-number">3.3</span> Sur quoi s’appuie la cotation ?</a></li>
+  <li><a href="#lire-une-cotation-cote-dactivité-cote-de-crédit" id="toc-lire-une-cotation-cote-dactivité-cote-de-crédit" class="nav-link" data-scroll-target="#lire-une-cotation-cote-dactivité-cote-de-crédit"><span class="header-section-number">3.4</span> Lire une cotation : cote d’activité + cote de crédit</a></li>
+  <li><a href="#cote-dactivité" id="toc-cote-dactivité" class="nav-link" data-scroll-target="#cote-dactivité"><span class="header-section-number">3.5</span> Cote d’activité</a></li>
+  <li><a href="#cote-de-crédit-22-positions" id="toc-cote-de-crédit-22-positions" class="nav-link" data-scroll-target="#cote-de-crédit-22-positions"><span class="header-section-number">3.6</span> Cote de crédit : 22 positions</a></li>
+  <li><a href="#avant-aujourdhui-léchelle-de-cote-de-crédit" id="toc-avant-aujourdhui-léchelle-de-cote-de-crédit" class="nav-link" data-scroll-target="#avant-aujourdhui-léchelle-de-cote-de-crédit"><span class="header-section-number">3.7</span> Avant / aujourd’hui : l’échelle de cote de crédit</a></li>
+  <li><a href="#taux-de-défaut-à-un-an-par-cote-de-crédit" id="toc-taux-de-défaut-à-un-an-par-cote-de-crédit" class="nav-link" data-scroll-target="#taux-de-défaut-à-un-an-par-cote-de-crédit"><span class="header-section-number">3.8</span> Taux de défaut à un an, par cote de crédit</a></li>
+  <li><a href="#fondements-juridiques-l.141-6-oeec-icas" id="toc-fondements-juridiques-l.141-6-oeec-icas" class="nav-link" data-scroll-target="#fondements-juridiques-l.141-6-oeec-icas"><span class="header-section-number">3.9</span> Fondements juridiques : L.141-6, OEEC, ICAS</a></li>
+  <li><a href="#indicateur-dirigeant-et-fiben" id="toc-indicateur-dirigeant-et-fiben" class="nav-link" data-scroll-target="#indicateur-dirigeant-et-fiben"><span class="header-section-number">3.10</span> Indicateur dirigeant et FIBEN</a></li>
+  <li><a href="#pour-aller-plus-loin-1" id="toc-pour-aller-plus-loin-1" class="nav-link" data-scroll-target="#pour-aller-plus-loin-1"><span class="header-section-number">3.11</span> Pour aller plus loin</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.3-groupes-et-comptes-consolidés" id="toc-bloc-2.3-groupes-et-comptes-consolidés" class="nav-link" data-scroll-target="#bloc-2.3-groupes-et-comptes-consolidés"><span class="header-section-number">4</span> Bloc 2.3 — Groupes et comptes consolidés</a>
+  <ul class="collapse">
+  <li><a href="#notion-de-groupe" id="toc-notion-de-groupe" class="nav-link" data-scroll-target="#notion-de-groupe"><span class="header-section-number">4.1</span> Notion de groupe</a></li>
+  <li><a href="#pourquoi-analyser-le-groupe" id="toc-pourquoi-analyser-le-groupe" class="nav-link" data-scroll-target="#pourquoi-analyser-le-groupe"><span class="header-section-number">4.2</span> Pourquoi analyser le groupe ?</a></li>
+  <li><a href="#qui-doit-consolider" id="toc-qui-doit-consolider" class="nav-link" data-scroll-target="#qui-doit-consolider"><span class="header-section-number">4.3</span> Qui doit consolider ?</a></li>
+  <li><a href="#particularités-des-comptes-consolidés" id="toc-particularités-des-comptes-consolidés" class="nav-link" data-scroll-target="#particularités-des-comptes-consolidés"><span class="header-section-number">4.4</span> Particularités des comptes consolidés</a></li>
+  <li><a href="#documentation-et-entretien-de-cotation" id="toc-documentation-et-entretien-de-cotation" class="nav-link" data-scroll-target="#documentation-et-entretien-de-cotation"><span class="header-section-number">4.5</span> Documentation et entretien de cotation</a></li>
+  <li><a href="#méthodes-de-consolidation" id="toc-méthodes-de-consolidation" class="nav-link" data-scroll-target="#méthodes-de-consolidation"><span class="header-section-number">4.6</span> Méthodes de consolidation</a></li>
+  <li><a href="#focus-les-sci-à-intégrer-dans-le-périmètre" id="toc-focus-les-sci-à-intégrer-dans-le-périmètre" class="nav-link" data-scroll-target="#focus-les-sci-à-intégrer-dans-le-périmètre"><span class="header-section-number">4.7</span> Focus — les SCI à intégrer dans le périmètre</a></li>
+  <li><a href="#pour-aller-plus-loin-2" id="toc-pour-aller-plus-loin-2" class="nav-link" data-scroll-target="#pour-aller-plus-loin-2"><span class="header-section-number">4.8</span> Pour aller plus loin</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.4-archives-consolidées-version-courte" id="toc-bloc-2.4-archives-consolidées-version-courte" class="nav-link" data-scroll-target="#bloc-2.4-archives-consolidées-version-courte"><span class="header-section-number">5</span> Bloc 2.4 — Archives consolidées (version courte)</a>
+  <ul class="collapse">
+  <li><a href="#exercice-archives-consolidées" id="toc-exercice-archives-consolidées" class="nav-link" data-scroll-target="#exercice-archives-consolidées"><span class="header-section-number">5.1</span> Exercice — Archives consolidées</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.5-étape-1-environnement-stratégie-organisation" id="toc-bloc-2.5-étape-1-environnement-stratégie-organisation" class="nav-link" data-scroll-target="#bloc-2.5-étape-1-environnement-stratégie-organisation"><span class="header-section-number">6</span> Bloc 2.5 — Étape 1 : environnement, stratégie, organisation</a>
+  <ul class="collapse">
+  <li><a href="#étape-1-sur-6-objectifs" id="toc-étape-1-sur-6-objectifs" class="nav-link" data-scroll-target="#étape-1-sur-6-objectifs"><span class="header-section-number">6.1</span> Étape 1 sur 6 — Objectifs</a></li>
+  <li><a href="#matrice-swot" id="toc-matrice-swot" class="nav-link" data-scroll-target="#matrice-swot"><span class="header-section-number">6.2</span> Matrice SWOT</a></li>
+  <li><a href="#organisation-juridique" id="toc-organisation-juridique" class="nav-link" data-scroll-target="#organisation-juridique"><span class="header-section-number">6.3</span> Organisation juridique</a></li>
+  <li><a href="#organisation-économique-et-financière" id="toc-organisation-économique-et-financière" class="nav-link" data-scroll-target="#organisation-économique-et-financière"><span class="header-section-number">6.4</span> Organisation économique et financière</a></li>
+  <li><a href="#faits-marquants-et-choix-de-lagrégat-dendettement" id="toc-faits-marquants-et-choix-de-lagrégat-dendettement" class="nav-link" data-scroll-target="#faits-marquants-et-choix-de-lagrégat-dendettement"><span class="header-section-number">6.5</span> Faits marquants et choix de l’agrégat d’endettement</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.6-business-model-canvas-apport-pour-la-quête-5" id="toc-bloc-2.6-business-model-canvas-apport-pour-la-quête-5" class="nav-link" data-scroll-target="#bloc-2.6-business-model-canvas-apport-pour-la-quête-5"><span class="header-section-number">7</span> Bloc 2.6 — Business Model Canvas (apport pour la Quête 5)</a>
+  <ul class="collapse">
+  <li><a href="#business-model-canvas-les-9-blocs" id="toc-business-model-canvas-les-9-blocs" class="nav-link" data-scroll-target="#business-model-canvas-les-9-blocs"><span class="header-section-number">7.1</span> Business Model Canvas : les 9 blocs</a></li>
+  <li><a href="#du-canevas-au-swot" id="toc-du-canevas-au-swot" class="nav-link" data-scroll-target="#du-canevas-au-swot"><span class="header-section-number">7.2</span> Du canevas au SWOT</a></li>
+  <li><a href="#pour-aller-plus-loin-3" id="toc-pour-aller-plus-loin-3" class="nav-link" data-scroll-target="#pour-aller-plus-loin-3"><span class="header-section-number">7.3</span> Pour aller plus loin</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.7-exercice-cp1-swot-granulats" id="toc-bloc-2.7-exercice-cp1-swot-granulats" class="nav-link" data-scroll-target="#bloc-2.7-exercice-cp1-swot-granulats"><span class="header-section-number">8</span> Bloc 2.7 — Exercice : CP1 SWOT (granulats)</a>
+  <ul class="collapse">
+  <li><a href="#exercice-cp1-groupe-de-granulats" id="toc-exercice-cp1-groupe-de-granulats" class="nav-link" data-scroll-target="#exercice-cp1-groupe-de-granulats"><span class="header-section-number">8.1</span> Exercice — CP1 : groupe de granulats</a></li>
+  <li><a href="#cp1-activité-et-marché" id="toc-cp1-activité-et-marché" class="nav-link" data-scroll-target="#cp1-activité-et-marché"><span class="header-section-number">8.2</span> CP1 — Activité et marché</a></li>
+  <li><a href="#cp1-marché-et-clientèle" id="toc-cp1-marché-et-clientèle" class="nav-link" data-scroll-target="#cp1-marché-et-clientèle"><span class="header-section-number">8.3</span> CP1 — Marché et clientèle</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.8-étape-2-examen-critique-de-linformation" id="toc-bloc-2.8-étape-2-examen-critique-de-linformation" class="nav-link" data-scroll-target="#bloc-2.8-étape-2-examen-critique-de-linformation"><span class="header-section-number">9</span> Bloc 2.8 — Étape 2 : examen critique de l’information</a>
+  <ul class="collapse">
+  <li><a href="#étape-2-sur-6-objectifs" id="toc-étape-2-sur-6-objectifs" class="nav-link" data-scroll-target="#étape-2-sur-6-objectifs"><span class="header-section-number">9.1</span> Étape 2 sur 6 — Objectifs</a></li>
+  <li><a href="#qualité-et-transparence" id="toc-qualité-et-transparence" class="nav-link" data-scroll-target="#qualité-et-transparence"><span class="header-section-number">9.2</span> Qualité et transparence</a></li>
+  <li><a href="#avant-aujourdhui-activités-abandonnées-ifrs-5" id="toc-avant-aujourdhui-activités-abandonnées-ifrs-5" class="nav-link" data-scroll-target="#avant-aujourdhui-activités-abandonnées-ifrs-5"><span class="header-section-number">9.3</span> Avant / aujourd’hui : activités abandonnées (IFRS 5)</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.9-étape-3-performances-et-résultat-net-récurrent" id="toc-bloc-2.9-étape-3-performances-et-résultat-net-récurrent" class="nav-link" data-scroll-target="#bloc-2.9-étape-3-performances-et-résultat-net-récurrent"><span class="header-section-number">10</span> Bloc 2.9 — Étape 3 : performances et résultat net récurrent</a>
+  <ul class="collapse">
+  <li><a href="#étape-3-sur-6-éléments-récurrents" id="toc-étape-3-sur-6-éléments-récurrents" class="nav-link" data-scroll-target="#étape-3-sur-6-éléments-récurrents"><span class="header-section-number">10.1</span> Étape 3 sur 6 — Éléments récurrents</a></li>
+  <li><a href="#résultat-net-récurrent-rnr" id="toc-résultat-net-récurrent-rnr" class="nav-link" data-scroll-target="#résultat-net-récurrent-rnr"><span class="header-section-number">10.2</span> Résultat net récurrent (RNR)</a></li>
+  <li><a href="#pourquoi-¾" id="toc-pourquoi-¾" class="nav-link" data-scroll-target="#pourquoi-¾"><span class="header-section-number">10.3</span> Pourquoi ¾ ?</a></li>
+  <li><a href="#exemple-de-rcai-à-rnr" id="toc-exemple-de-rcai-à-rnr" class="nav-link" data-scroll-target="#exemple-de-rcai-à-rnr"><span class="header-section-number">10.4</span> Exemple — de RCAI à RNR</a></li>
+  <li><a href="#tendances-et-variation-de-lactivité" id="toc-tendances-et-variation-de-lactivité" class="nav-link" data-scroll-target="#tendances-et-variation-de-lactivité"><span class="header-section-number">10.5</span> Tendances et variation de l’activité</a></li>
+  <li><a href="#pour-aller-plus-loin-4" id="toc-pour-aller-plus-loin-4" class="nav-link" data-scroll-target="#pour-aller-plus-loin-4"><span class="header-section-number">10.6</span> Pour aller plus loin</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.10-exercice-cp2-rnr-tv-hôtelière" id="toc-bloc-2.10-exercice-cp2-rnr-tv-hôtelière" class="nav-link" data-scroll-target="#bloc-2.10-exercice-cp2-rnr-tv-hôtelière"><span class="header-section-number">11</span> Bloc 2.10 — Exercice : CP2 RNR (TV hôtelière)</a>
+  <ul class="collapse">
+  <li><a href="#exercice-cp2-groupe-de-télévision-hôtelière" id="toc-exercice-cp2-groupe-de-télévision-hôtelière" class="nav-link" data-scroll-target="#exercice-cp2-groupe-de-télévision-hôtelière"><span class="header-section-number">11.1</span> Exercice — CP2 : groupe de télévision hôtelière</a></li>
+  <li><a href="#cp2-compte-de-résultat-consolidé-k" id="toc-cp2-compte-de-résultat-consolidé-k" class="nav-link" data-scroll-target="#cp2-compte-de-résultat-consolidé-k"><span class="header-section-number">11.2</span> CP2 — Compte de résultat consolidé (K€)</a></li>
+  <li><a href="#cp2-éléments-danalyse" id="toc-cp2-éléments-danalyse" class="nav-link" data-scroll-target="#cp2-éléments-danalyse"><span class="header-section-number">11.3</span> CP2 — Éléments d’analyse</a></li>
+  </ul></li>
+  <li><a href="#bloc-2.11-récapitulatif-et-demain" id="toc-bloc-2.11-récapitulatif-et-demain" class="nav-link" data-scroll-target="#bloc-2.11-récapitulatif-et-demain"><span class="header-section-number">12</span> Bloc 2.11 — Récapitulatif et demain</a></li>
+  <li><a href="#récapitulatif" id="toc-récapitulatif" class="nav-link" data-scroll-target="#récapitulatif"><span class="header-section-number">13</span> Récapitulatif</a>
+  <ul class="collapse">
+  <li><a href="#ce-quil-faut-retenir" id="toc-ce-quil-faut-retenir" class="nav-link" data-scroll-target="#ce-quil-faut-retenir"><span class="header-section-number">13.1</span> Ce qu’il faut retenir</a></li>
+  <li><a href="#demain" id="toc-demain" class="nav-link" data-scroll-target="#demain"><span class="header-section-number">13.2</span> Demain</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="jour-2.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div><div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="../../dataset.html"><i class="bi bi-file-spreadsheet"></i>The Wandering Fork Dataset</a></li><li><a href="glossary.html"><i class="bi bi-book"></i>Glossary</a></li><li><a href="../../excel-functions.html"><i class="bi bi-file-code"></i>Excel Functions</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content" tabindex="-1">
+
+
+
+
+
+<section id="programme-de-la-journée" class="level2 smaller" data-number="0.1">
+<h2 class="smaller anchored" data-number="0.1" data-anchor-id="programme-de-la-journée"><span class="header-section-number">0.1</span> Programme de la journée</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 43%">
+<col style="width: 12%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Horaire</th>
+<th style="text-align: left;">Bloc</th>
+<th style="text-align: right;">Durée</th>
+<th style="text-align: left;">Activité / quête</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">9:00 – 9:15</td>
+<td style="text-align: left;">2.0 Ouverture et rappel du Jour 1</td>
+<td style="text-align: right;">15 min</td>
+<td style="text-align: left;">Quiz de rappel, objectifs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9:15 – 9:35</td>
+<td style="text-align: left;">2.1 Découvrir la Banque de France</td>
+<td style="text-align: right;">20 min</td>
+<td style="text-align: left;">Cours</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">9:35 – 10:25</td>
+<td style="text-align: left;">2.2 La cotation Banque de France</td>
+<td style="text-align: right;">50 min</td>
+<td style="text-align: left;">Cours (étape 6 en aperçu)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10:25 – 11:10</td>
+<td style="text-align: left;">2.3 Groupes et comptes consolidés</td>
+<td style="text-align: right;">45 min</td>
+<td style="text-align: left;">Cours → Quête 2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">11:10 – 12:00</td>
+<td style="text-align: left;">2.4 Archives consolidées (version courte)</td>
+<td style="text-align: right;">60 min</td>
+<td style="text-align: left;">Atelier <strong>Quête 2</strong> (50 min le matin)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">13:30 – 13:40</td>
+<td style="text-align: left;">2.4 Archives consolidées (suite)</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: left;">Fin de l’atelier (10 min)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">13:40 – 14:10</td>
+<td style="text-align: left;">2.5 Étape 1 — Environnement, stratégie, organisation</td>
+<td style="text-align: right;">30 min</td>
+<td style="text-align: left;">Cours</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14:10 – 14:20</td>
+<td style="text-align: left;">2.6 Business Model Canvas</td>
+<td style="text-align: right;">10 min</td>
+<td style="text-align: left;">Apport pour la <strong>Quête 5</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">14:20 – 14:50</td>
+<td style="text-align: left;">2.7 Exercice — CP1 SWOT (granulats)</td>
+<td style="text-align: right;">30 min</td>
+<td style="text-align: left;">Exercice</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14:50 – 15:20</td>
+<td style="text-align: left;">2.8 Étape 2 — Examen critique de l’information</td>
+<td style="text-align: right;">30 min</td>
+<td style="text-align: left;">Cours</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">15:20 – 15:50</td>
+<td style="text-align: left;">2.9 Étape 3 — Performances et RNR</td>
+<td style="text-align: right;">30 min</td>
+<td style="text-align: left;">Cours</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">15:50 – 16:20</td>
+<td style="text-align: left;">2.10 Exercice — CP2 RNR (TV hôtelière)</td>
+<td style="text-align: right;">30 min</td>
+<td style="text-align: left;">Exercice</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">16:20 – 16:30</td>
+<td style="text-align: left;">2.11 Récapitulatif et demain</td>
+<td style="text-align: right;">10 min</td>
+<td style="text-align: left;">Bilan</td>
+</tr>
+</tbody>
+</table>
+<p>Total : <strong>360 min</strong>.</p>
+<div class="notes">
+<p>Durée : 360 min au total (hors pauses : adapter les horaires à la pause réelle). Le bloc 2.4 (60 min) est coupé par le déjeuner. Corrigés : voir chaque bloc.</p>
+</div>
+</section>
+<section id="objectifs" class="level2" data-number="0.2">
+<h2 data-number="0.2" class="anchored" data-anchor-id="objectifs"><span class="header-section-number">0.2</span> Objectifs</h2>
+<p>À la fin de la journée, vous saurez :</p>
+<ul>
+<li><strong>expliquer</strong> pourquoi et comment la Banque de France cote les entreprises ;</li>
+<li><strong>lire</strong> une cotation (cote d’activité + cote de crédit) et <strong>situer</strong> les taux de défaut par cote ;</li>
+<li><strong>identifier</strong> les groupes tenus de consolider et <strong>distinguer</strong> les méthodes de consolidation ;</li>
+<li><strong>construire</strong> une matrice SWOT et <strong>analyser</strong> l’organisation d’un groupe (étape 1) ;</li>
+<li><strong>critiquer</strong> la qualité de l’information et le périmètre (étape 2) ;</li>
+<li><strong>calculer</strong> un résultat net récurrent (RNR) et <strong>interpréter</strong> les tendances (étape 3).</li>
+</ul>
+</section>
+<section id="bloc-2.0-ouverture-et-rappel-du-jour-1" class="level1 page-columns page-full" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Bloc 2.0 — Ouverture et rappel du Jour 1</h1>
+<div class="notes">
+<p>Durée : 15 min · Corrigé : aucun (quiz oral, réponses données à l’oral par l’enseignant) · Optionnel : —</p>
+</div>
+<section id="rappel-du-jour-1-3-questions" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="rappel-du-jour-1-3-questions"><span class="header-section-number">1.1</span> Rappel du Jour 1 — 3 questions</h2>
+<p>Réfléchissez 2 minutes en binôme, puis nous mettons en commun.</p>
+<ol type="1">
+<li>Pourquoi la CAF n’est-elle pas un flux de trésorerie disponible ?</li>
+<li>Comment passe-t-on du fonds de roulement net global (FRNG) et du BFR à la trésorerie nette ?</li>
+<li>Dans quelles conditions l’endettement améliore-t-il la rentabilité des capitaux propres (effet de levier) ?</li>
+</ol>
+<div class="notes">
+<p>Durée : 15 min pour tout le bloc. Pas de réponses affichées : relancer oralement.</p>
+</div>
+</section>
+<section id="la-méthode-en-six-étapes-où-en-sommes-nous" class="level2 page-columns page-full" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="la-méthode-en-six-étapes-où-en-sommes-nous"><span class="header-section-number">1.2</span> La méthode en six étapes — où en sommes-nous ?</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+
+<pre class="mermaid mermaid-js">flowchart LR
+  E1["1&lt;br/&gt;Environnement,&lt;br/&gt;stratégie&lt;br/&gt;▶ AUJOURD'HUI"]
+  E2["2&lt;br/&gt;Information&lt;br/&gt;(examen critique)&lt;br/&gt;▶ AUJOURD'HUI"]
+  E3["3&lt;br/&gt;Performances&lt;br/&gt;▶ AUJOURD'HUI"]
+  E4["4&lt;br/&gt;Structure&lt;br/&gt;financière&lt;br/&gt;Jour 3"]
+  E5["5&lt;br/&gt;Liquidité&lt;br/&gt;Jour 3"]
+  E6["6&lt;br/&gt;Décision&lt;br/&gt;de cotation&lt;br/&gt;Aperçu aujourd'hui,&lt;br/&gt;jour 3"]
+  E1 --&gt; E2 --&gt; E3 --&gt; E4 --&gt; E5 --&gt; E6
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Le Jour 2 couvre les <strong>étapes 1 à 3</strong> et présente la cotation (étape 6) pour comprendre ce que l’on cherche à produire.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : démarche d’analyse des groupes de la Banque de France, reformulée.</p>
+</div></div></section>
+</section>
+<section id="bloc-2.1-découvrir-la-banque-de-france" class="level1 page-columns page-full" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Bloc 2.1 — Découvrir la Banque de France</h1>
+<div class="notes">
+<p>Durée : 20 min · Corrigé : aucun · Optionnel : montrer la vidéo « Qu’est-ce que la cotation ? » (lien en dernière diapositive du bloc).</p>
+</div>
+<section id="trois-missions-un-réseau-européen" class="level2 page-columns page-full" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="trois-missions-un-réseau-européen"><span class="header-section-number">2.1</span> Trois missions, un réseau européen</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Les trois grandes missions</strong></p>
+<ul>
+<li><strong>Stratégie monétaire</strong> : participer, au sein de l’Eurosystème, à la politique monétaire de la zone euro.</li>
+<li><strong>Stabilité financière</strong> : contribuer à la solidité des banques et des assurances (supervision via l’ACPR).</li>
+<li><strong>Services à l’économie</strong> : entreprises, particuliers (surendettement, droit au compte), moyens de paiement.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>L’Eurosystème</strong></p>
+<ul>
+<li>Il réunit la Banque centrale européenne (BCE) et les banques centrales nationales des pays de la zone euro.</li>
+<li>La Banque de France en est un membre ; son gouverneur siège au Conseil des gouverneurs de la BCE.</li>
+<li>La cotation des entreprises est l’un des services rendus à l’économie, avec des effets sur la politique monétaire.</li>
+</ul>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, présentation institutionnelle (banque-france.fr), reformulée.</p>
+</div></div></section>
+<section id="pourquoi-la-banque-de-france-cote-t-elle-les-entreprises" class="level2 page-columns page-full" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="pourquoi-la-banque-de-france-cote-t-elle-les-entreprises"><span class="header-section-number">2.2</span> Pourquoi la Banque de France cote-t-elle les entreprises ?</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Usage</th>
+<th>Ce que permet la cote</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Politique monétaire</td>
+<td>Évaluer la qualité des créances apportées en garantie des refinancements (ECAF)</td>
+</tr>
+<tr class="even">
+<td>Réglementation prudentielle</td>
+<td>Aider les banques à calculer leurs fonds propres réglementaires (statut d’OEEC)</td>
+</tr>
+<tr class="odd">
+<td>Dialogue banque–entreprise</td>
+<td>Offrir une référence commune, gratuite pour l’entreprise</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p><strong>Focus — Cotation, un service rendu aux prêteurs.</strong> La Banque de France ne perçoit aucune rémunération de l’entreprise cotée : ce sont les institutions financières utilisatrices qui sont facturées.</p>
+</blockquote>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, <em>5 questions sur la cotation</em>, nov. 2021 ; code de conduite de l’activité de cotation.</p>
+</div></div></section>
+<section id="pour-aller-plus-loin" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="pour-aller-plus-loin"><span class="header-section-number">2.3</span> Pour aller plus loin</h2>
+<ul>
+<li>Vidéo : <a href="https://www.youtube.com/watch?v=VHvdDBbcSn4">« Qu’est-ce que la cotation ? », Banque de France (YouTube)</a></li>
+<li>Vidéo de présentation des missions : <a href="https://www.youtube.com/watch?v=N_z1nhTETuk">« Quelles sont nos missions ? », Banque de France (YouTube)</a></li>
+<li>Page de cours : <a href="../../../../teaching/data-description/financial-analysis/modules/banque-france.html">La Banque de France</a></li>
+</ul>
+</section>
+</section>
+<section id="bloc-2.2-la-cotation-banque-de-france" class="level1 page-columns page-full" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Bloc 2.2 — La cotation Banque de France</h1>
+<div class="notes">
+<p>Durée : 50 min · Corrigé : aucun (cours) · Optionnel : FIBEN et indicateur dirigeant en 5 min si le temps manque. Prolongement : page banque-france-cotation.qmd.</p>
+</div>
+<section id="cotation-ou-notation" class="level2 smaller page-columns page-full" data-number="3.1">
+<h2 class="smaller anchored" data-number="3.1" data-anchor-id="cotation-ou-notation"><span class="header-section-number">3.1</span> Cotation ou notation ?</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Notation d’une agence</th>
+<th>Cotation Banque de France</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Objet</td>
+<td>Risque d’un prêteur</td>
+<td>Même objet : risque de crédit</td>
+</tr>
+<tr class="even">
+<td>Périmètre</td>
+<td>Produits financiers (émissions)</td>
+<td>Entreprises non financières résidentes uniquement</td>
+</tr>
+<tr class="odd">
+<td>Diffusion</td>
+<td>Publique</td>
+<td><strong>Non publique</strong> : destinataires définis par le Code monétaire et financier</td>
+</tr>
+<tr class="even">
+<td>Rémunération</td>
+<td>Payée par l’émetteur (souvent)</td>
+<td>Aucune rémunération de l’entreprise cotée</td>
+</tr>
+<tr class="odd">
+<td>États, collectivités</td>
+<td>Notés</td>
+<td><strong>Non cotés</strong></td>
+</tr>
+</tbody>
+</table>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, <em>Guide de référence de la cotation</em>, janv. 2022, reformulé.</p>
+</div></div></section>
+<section id="à-dire-dexpert-et-horizon" class="level2 page-columns page-full" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="à-dire-dexpert-et-horizon"><span class="header-section-number">3.2</span> « À dire d’expert » et horizon</h2>
+<ul>
+<li>La cotation apprécie la capacité d’une entreprise à <strong>honorer ses engagements financiers à un horizon de un à trois ans</strong>. Trois ans est la référence des statistiques de défaut.</li>
+<li>« À dire d’expert » : un <strong>analyste</strong> applique des règles méthodologiques communes à tout le réseau.</li>
+<li>Pas de procédé <strong>automatique</strong> ni fondé <strong>uniquement sur des données financières</strong>.</li>
+<li>Un <strong>entretien</strong> peut avoir lieu avant la cotation, pour comprendre l’évolution de la situation.</li>
+<li>Au 31/12/2024, <strong>322 504</strong> entreprises étaient cotées (325 105 un an plus tôt). Le seuil ayant été relevé en janvier 2025, ce nombre baisse.</li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, « Comprendre la cotation et l’indicateur dirigeant » ; <em>Guide de référence de la cotation</em> (sept. 2026) ; <em>Cotation – chiffres clés au 31 décembre 2024</em> (07/2025).</p>
+</div></div></section>
+<section id="sur-quoi-sappuie-la-cotation" class="level2 smaller page-columns page-full" data-number="3.3">
+<h2 class="smaller anchored" data-number="3.3" data-anchor-id="sur-quoi-sappuie-la-cotation"><span class="header-section-number">3.3</span> Sur quoi s’appuie la cotation ?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Informations</strong></p>
+<ul>
+<li>Comptes sociaux et consolidés</li>
+<li>Engagements financiers, incidents de paiement</li>
+<li>Événements judiciaires (greffes, publications légales)</li>
+<li>Secteur, liens économiques et financiers</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Éléments qualitatifs</strong></p>
+<ul>
+<li>Marché et positionnement</li>
+<li>Clients, fournisseurs</li>
+<li>Solidité de l’actionnariat</li>
+<li>Stratégie, perspectives, flexibilité financière</li>
+<li>Transparence de la communication</li>
+</ul>
+</div>
+</div>
+<p><strong>Sources de collecte</strong> : les entreprises, les greffes des tribunaux de commerce, les banques, les acteurs du financement, l’Insee.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, <em>Guide de référence de la cotation</em>, janv. 2022, reformulé.</p>
+</div></div></section>
+<section id="lire-une-cotation-cote-dactivité-cote-de-crédit" class="level2 page-columns page-full" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="lire-une-cotation-cote-dactivité-cote-de-crédit"><span class="header-section-number">3.4</span> Lire une cotation : cote d’activité + cote de crédit</h2>
+<blockquote class="blockquote">
+<p>Cotation = <strong>une lettre</strong> (taille de l’activité) + <strong>un chiffre</strong> (capacité à honorer ses engagements), par exemple <strong>G3+</strong>.</p>
+</blockquote>
+<ul>
+<li>La <strong>lettre</strong> donne la tranche de chiffre d’affaires.</li>
+<li>Le <strong>chiffre</strong>, nuancé par + ou −, mesure le risque de crédit.</li>
+<li>La cotation n’est attribuée, <strong>depuis le 12/01/2025</strong>, que si le chiffre d’affaires hors taxes est <strong>≥ 1 250 K€</strong> (750 K€ auparavant, seuil inchangé depuis plus de 40 ans).</li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, <em>Évaluation des performances 2024</em>, sept. 2025, encadré 1.</p>
+</div></div></section>
+<section id="cote-dactivité" class="level2 smaller page-columns page-full" data-number="3.5">
+<h2 class="smaller anchored" data-number="3.5" data-anchor-id="cote-dactivité"><span class="header-section-number">3.5</span> Cote d’activité</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Cote</th>
+<th>CA (M€)</th>
+<th>Cote</th>
+<th>CA (M€)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>≥ 750</td>
+<td>H</td>
+<td>≥ 1,25 et &lt; 1,5</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>≥ 150 et &lt; 750</td>
+<td>J</td>
+<td>≥ 0,50 et &lt; 1,25</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>≥ 50 et &lt; 150</td>
+<td>K</td>
+<td>≥ 0,25 et &lt; 0,50</td>
+</tr>
+<tr class="even">
+<td>D</td>
+<td>≥ 30 et &lt; 50</td>
+<td>L</td>
+<td>≥ 0,10 et &lt; 0,25</td>
+</tr>
+<tr class="odd">
+<td>E</td>
+<td>≥ 15 et &lt; 30</td>
+<td>M</td>
+<td>&lt; 0,10</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>≥ 7,5 et &lt; 15</td>
+<td>N</td>
+<td>Non significatif</td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>≥ 1,5 et &lt; 7,5</td>
+<td><strong>X</strong></td>
+<td>CA inconnu ou trop ancien (exercice clos depuis plus de 23 mois)</td>
+</tr>
+</tbody>
+</table>
+<p>La grille couvre la cote d’activité (M€ de chiffre d’affaires) : les tranches J à M descendent sous le seuil de 1 250 K€ en vigueur depuis le 12/01/2025. Elles restent utiles pour lire les cotations historiques. Il n’y a pas de lettre I.</p>
+<p>La validité d’une cotation est de <strong>24 mois</strong> après la date d’arrêté des comptes pris en compte.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, <em>Guide de référence de la cotation</em> (sept. 2026), §2.2 (cote X : 23 mois) ; <em>Évaluation des performances 2024</em>, sept. 2025, note 14 (validité de 24 mois).</p>
+</div></div></section>
+<section id="cote-de-crédit-22-positions" class="level2 smaller page-columns page-full" data-number="3.6">
+<h2 class="smaller anchored" data-number="3.6" data-anchor-id="cote-de-crédit-22-positions"><span class="header-section-number">3.6</span> Cote de crédit : 22 positions</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Cote</th>
+<th>Appréciation</th>
+<th>Cote</th>
+<th>Appréciation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1+</td>
+<td>Excellente ++</td>
+<td>4-</td>
+<td>Intermédiaire +</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Excellente +</td>
+<td>5+</td>
+<td>Intermédiaire −</td>
+</tr>
+<tr class="odd">
+<td>1-</td>
+<td>Excellente</td>
+<td>5</td>
+<td>Fragile</td>
+</tr>
+<tr class="even">
+<td>2+</td>
+<td>Très satisfaisante ++</td>
+<td>5-</td>
+<td>Assez faible</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Très satisfaisante +</td>
+<td>6+</td>
+<td>Très faible</td>
+</tr>
+<tr class="even">
+<td>2-</td>
+<td>Très satisfaisante</td>
+<td>6</td>
+<td>Menacée</td>
+</tr>
+<tr class="odd">
+<td>3+</td>
+<td>Forte ++</td>
+<td>6-</td>
+<td>Compromise</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Forte +</td>
+<td>7</td>
+<td>Très compromise</td>
+</tr>
+<tr class="odd">
+<td>3-</td>
+<td>Forte</td>
+<td>8</td>
+<td>Fortement compromise</td>
+</tr>
+<tr class="even">
+<td>4+</td>
+<td>Bonne +</td>
+<td>P</td>
+<td>Défaillante</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>Bonne</td>
+<td>0</td>
+<td>Non significative</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Éligibles au refinancement de l’Eurosystème : 1+ à 2-.</strong> Un dispositif exceptionnel a accepté aussi les cotes 3+ à 4+ jusqu’au 16/12/2024.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, <em>Guide de référence de la cotation</em> (sept. 2026) ; lettre d’information BdF, déc. 2024. Le libellé « Forte ++ » de la cote 3+ est déduit de la logique de l’échelle.</p>
+</div></div></section>
+<section id="avant-aujourdhui-léchelle-de-cote-de-crédit" class="level2 page-columns page-full" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="avant-aujourdhui-léchelle-de-cote-de-crédit"><span class="header-section-number">3.7</span> Avant / aujourd’hui : l’échelle de cote de crédit</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Avant le 8 janvier 2022</strong></p>
+<p>Échelle « avant 2022 » : 3++, 3+, 3, 4+, 4, 5+, 5, 6, 7, 8, 9, P.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Aujourd’hui</strong></p>
+<p>22 positions : 1+ à 8, plus P et 0, avec des nuances +/− sur chaque famille de 1 à 6.</p>
+</div>
+</div>
+<p>Attention en lisant d’anciens documents : une « cote 3 » de l’ancienne échelle <strong>n’est pas</strong> la cote 3 actuelle.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, <em>Évaluation des performances 2024</em>, sept. 2025, encadré 2.</p>
+</div></div></section>
+<section id="taux-de-défaut-à-un-an-par-cote-de-crédit" class="level2 page-columns page-full" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="taux-de-défaut-à-un-an-par-cote-de-crédit"><span class="header-section-number">3.8</span> Taux de défaut à un an, par cote de crédit</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+
+<pre class="mermaid mermaid-js">xychart-beta
+    title "Défaut à 1 an (%) : global 1,75 %"
+    x-axis ["1+", "1", "1-", "2+", "2", "2-", "3+", "3", "3-", "4+", "4", "4-", "5+", "5", "5-", "6+", "6", "6-", "7", "8"]
+    y-axis "Taux de défaut (%)" 0 --&gt; 30
+    bar [0.00, 0.02, 0.02, 0.06, 0.03, 0.10, 0.22, 0.18, 0.30, 0.51, 1.26, 1.90, 2.82, 5.21, 3.89, 5.63, 8.17, 15.03, 20.02, 27.42]
+    line [0.00, 0.02, 0.02, 0.06, 0.03, 0.10, 0.22, 0.18, 0.30, 0.51, 1.26, 1.90, 2.82, 5.21, 3.89, 5.63, 8.17, 15.03, 20.02, 27.42]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Firmes cotées au 31/12/2023, défaut observé en 2024 ; global : 1,75 % à 1 an, 3,22 % à 2 ans, 3,68 % à 3 ans. Source : Banque de France, <em>Évaluation des performances 2024</em>, sept. 2025, annexe 2 et §2.1.</p>
+</div></div><div class="notes">
+<p>Faire remarquer l’écart entre 4+ (0,51 %) et 4 (1,26 %), et les points 5 / 5- peu monotones (taux observés sur un seul exercice). Éligibilité à l’Eurosystème : 1+ à 2- (3+ à 4+ : dispositif exceptionnel terminé le 16/12/2024).</p>
+</div>
+</section>
+<section id="fondements-juridiques-l.141-6-oeec-icas" class="level2 page-columns page-full" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="fondements-juridiques-l.141-6-oeec-icas"><span class="header-section-number">3.9</span> Fondements juridiques : L.141-6, OEEC, ICAS</h2>
+<ul>
+<li><strong>National</strong> : article L.141-6 du Code monétaire et financier.</li>
+<li><strong>OEEC</strong> (organisme externe d’évaluation du crédit), reconnu depuis le <strong>19 juin 2007</strong> : les banques peuvent s’appuyer sur la cotation pour calculer leurs fonds propres réglementaires. Condition : objectivité, indépendance, acceptation par le marché, vérification annuelle des taux de défaut.</li>
+<li><strong>ICAS</strong> (<em>In-house Credit Assessment System</em>) : la BCE valide le système d’évaluation de la Banque de France. Il sert à juger la qualité des créances apportées en garantie dans l’ECAF (<em>Eurosystem Credit Assessment Framework</em>).</li>
+<li>D’autres banques centrales de l’Eurosystème disposent aussi d’un ICAS.</li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, <em>Guide de référence de la cotation</em>, janv. 2022 ; <em>Évaluation des performances 2024</em>, reformulé.</p>
+</div></div></section>
+<section id="indicateur-dirigeant-et-fiben" class="level2 page-columns page-full" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="indicateur-dirigeant-et-fiben"><span class="header-section-number">3.10</span> Indicateur dirigeant et FIBEN</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Indicateur dirigeant</strong> — attribué aux personnes physiques qui dirigent ou ont dirigé une entreprise. Deux valeurs :</p>
+<ul>
+<li><strong>000</strong> : neutre ;</li>
+<li><strong>060</strong> : significatif, si
+<ul>
+<li>3 liquidations judiciaires de moins de 5 ans, <strong>ou</strong></li>
+<li>faillite personnelle, interdiction de gérer, redressement (2 ans max. si sans suite) ou liquidation (5 ans max.).</li>
+</ul></li>
+</ul>
+<p>Données publiques des greffes seulement ; <strong>aucun jugement de valeur</strong> sur le dirigeant.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>FIBEN</strong> — le fichier bancaire des entreprises, base de référence de la profession bancaire.</p>
+<ul>
+<li>Accessible aux <strong>adhérents</strong> (banques, institutions financières).</li>
+<li>Contient la cotation, l’indicateur dirigeant, les informations d’incidents.</li>
+<li>Le dirigeant a un droit d’accès à ses informations.</li>
+</ul>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, <em>L’indicateur dirigeant</em>, fiche de présentation ; <em>Guide de référence de la cotation</em>, janv. 2022.</p>
+</div></div></section>
+<section id="pour-aller-plus-loin-1" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="pour-aller-plus-loin-1"><span class="header-section-number">3.11</span> Pour aller plus loin</h2>
+<ul>
+<li><a href="../../../../teaching/data-description/financial-analysis/modules/banque-france-cotation.html">La cotation Banque de France</a></li>
+<li><a href="../../../../teaching/data-description/financial-analysis/modules/banque-france.html">La Banque de France</a></li>
+<li>Banque de France, <a href="https://www.banque-france.fr/system/files/2025-12/FR_Eval_performances_cotation_2025_VClean.pdf">« Évaluation des performances de la cotation 2024 »</a></li>
+</ul>
+</section>
+</section>
+<section id="bloc-2.3-groupes-et-comptes-consolidés" class="level1 page-columns page-full" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Bloc 2.3 — Groupes et comptes consolidés</h1>
+<div class="notes">
+<p>Durée : 45 min · Corrigé : aucun (cours) · Optionnel : —. Introduit la Quête 2.</p>
+</div>
+<section id="notion-de-groupe" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="notion-de-groupe"><span class="header-section-number">4.1</span> Notion de groupe</h2>
+<ul>
+<li>Notion <strong>économique</strong> : des sociétés liées par des intérêts communs et une unité de décision.</li>
+<li><strong>Pas de personnalité juridique</strong> : chaque entité répond de ses propres engagements ; les engagements bancaires sont pris au niveau des entités.</li>
+<li><strong>Pas d’assujettissement à l’impôt</strong> en tant que tel : régime mère-fille, intégration fiscale.</li>
+</ul>
+</section>
+<section id="pourquoi-analyser-le-groupe" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="pourquoi-analyser-le-groupe"><span class="header-section-number">4.2</span> Pourquoi analyser le groupe ?</h2>
+<ul>
+<li>Montages de plus en plus complexes, même pour de petites entités (LBO, SCI, objectifs fiscaux ou patrimoniaux).</li>
+<li>L’approche groupe donne :
+<ul>
+<li>la <strong>vision globale</strong> du regroupement ;</li>
+<li>les <strong>opérations intragroupe</strong> ;</li>
+<li>l’<strong>intérêt commun</strong>.</li>
+</ul></li>
+<li>À la Banque de France, les groupes sont suivis par des analystes spécialisés (pôle Groupes), avec une méthode propre aux têtes de groupe et aux filiales.</li>
+</ul>
+</section>
+<section id="qui-doit-consolider" class="level2 smaller page-columns page-full" data-number="4.3">
+<h2 class="smaller anchored" data-number="4.3" data-anchor-id="qui-doit-consolider"><span class="header-section-number">4.3</span> Qui doit consolider ?</h2>
+<p>Consolidation <strong>obligatoire</strong> pour un groupe, selon l’un des critères suivants :</p>
+<ul>
+<li>ses titres sont <strong>offerts au public</strong> (marché réglementé) ;</li>
+<li>il dépasse <strong>deux des trois seuils</strong>, appréciés sur deux exercices consécutifs :</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Critère</th>
+<th>Jusqu’au 31/12/2024</th>
+<th>Exercices ouverts à compter du 01/01/2025</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Total du bilan</td>
+<td>24 M€</td>
+<td><strong>30 M€</strong></td>
+</tr>
+<tr class="even">
+<td>Chiffre d’affaires</td>
+<td>48 M€</td>
+<td><strong>60 M€</strong></td>
+</tr>
+<tr class="odd">
+<td>Effectif</td>
+<td>250 salariés</td>
+<td><strong>250 salariés</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Règles applicables : le règlement <strong>ANC 2020-01</strong> (il abroge CRC 99-02, exercices ouverts depuis le 01/01/2021) pour les comptes français ; les normes <strong>IFRS</strong> pour les sociétés cotées.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : décret n° 2024-152 ; articles L.233-17 et D.230-2 du Code de commerce ; ANC, règlement n° 2020-01.</p>
+</div></div></section>
+<section id="particularités-des-comptes-consolidés" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="particularités-des-comptes-consolidés"><span class="header-section-number">4.4</span> Particularités des comptes consolidés</h2>
+<ul>
+<li>Pas de <strong>document standard</strong> : présentation et informations très variables.</li>
+<li><strong>Deux référentiels</strong> coexistent : normes françaises (ANC 2020-01) et IFRS.</li>
+<li><strong>Marges de manœuvre</strong> : options permises par les règlements.</li>
+<li><strong>Déperdition d’information</strong> : activités diverses présentées de façon synthétique.</li>
+<li><strong>Comparaison difficile</strong> d’un exercice à l’autre : variations de périmètre, pro forma.</li>
+</ul>
+</section>
+<section id="documentation-et-entretien-de-cotation" class="level2 smaller" data-number="4.5">
+<h2 class="smaller anchored" data-number="4.5" data-anchor-id="documentation-et-entretien-de-cotation"><span class="header-section-number">4.5</span> Documentation et entretien de cotation</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Documentation</strong></p>
+<ul>
+<li>Réglementation comptable (ANC 2020-01, IFRS) et référentiel de cotation.</li>
+<li>Comptes consolidés : bilan, compte de résultat, tableau de flux.</li>
+<li>Annexes : périmètre, méthodes comptables, rapport des commissaires aux comptes.</li>
+<li>Rapport de gestion, organigramme.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>L’entretien de cotation permet de</strong></p>
+<ul>
+<li>comprendre ce que les comptes détaillent peu : stratégie, environnement, risques financiers, événements post-clôture ;</li>
+<li>lever les doutes : liquidité, soutien aux filiales, covenants ;</li>
+<li>améliorer la transparence et la fraîcheur de la cotation.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="méthodes-de-consolidation" class="level2 smaller page-columns page-full" data-number="4.6">
+<h2 class="smaller anchored" data-number="4.6" data-anchor-id="méthodes-de-consolidation"><span class="header-section-number">4.6</span> Méthodes de consolidation</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Degré de contrôle</th>
+<th>Méthode</th>
+<th>Effet sur les comptes consolidés</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Contrôle exclusif</td>
+<td><strong>Intégration globale</strong> (IG)</td>
+<td>100 % des actifs, passifs, produits et charges, après élimination des opérations intragroupe ; part des <strong>minoritaires</strong> isolée</td>
+</tr>
+<tr class="even">
+<td>Contrôle conjoint</td>
+<td><strong>Intégration proportionnelle</strong> (IP)</td>
+<td>Quote-part des actifs, passifs, produits et charges. Normes françaises (ANC 2020-01, art. 221-3) ; interdite en IFRS (IFRS 11 impose la mise en équivalence)</td>
+</tr>
+<tr class="odd">
+<td>Influence notable</td>
+<td><strong>Mise en équivalence</strong> (MEE)</td>
+<td>Une ligne « titres mis en équivalence » et la quote-part de résultat net ; aucune dette intégrée</td>
+</tr>
+<tr class="even">
+<td>Ni contrôle ni influence</td>
+<td>Non consolidée</td>
+<td>Titres de participation ou VMP ; dividendes en produits financiers</td>
+</tr>
+</tbody>
+</table>
+<p>Plus le contrôle est faible, moins les <strong>risques</strong> (dettes) de la filiale entrent dans les comptes du groupe.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : ANC, règlement n° 2020-01 (version au 1er janvier 2026), art. 221-1 et 221-3 ; IFRS 10 et 11.</p>
+</div></div></section>
+<section id="focus-les-sci-à-intégrer-dans-le-périmètre" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="focus-les-sci-à-intégrer-dans-le-périmètre"><span class="header-section-number">4.7</span> Focus — les SCI à intégrer dans le périmètre</h2>
+<p>Une SCI non détenue financièrement entre dans le périmètre si elle cumule <strong>trois conditions</strong> :</p>
+<ol type="1">
+<li>elle est liée au <strong>démembrement du patrimoine professionnel</strong> d’une ou plusieurs entités du groupe ;</li>
+<li>elle détient des <strong>actifs professionnels</strong> utilisés principalement par le groupe ;</li>
+<li>elle est <strong>sous le contrôle</strong> d’une ou plusieurs entités du groupe (unité économique).</li>
+</ol>
+<p>→ Rendez-vous dans le prochain bloc : l’atelier <strong>Archives consolidées</strong> (Quête 2).</p>
+</section>
+<section id="pour-aller-plus-loin-2" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="pour-aller-plus-loin-2"><span class="header-section-number">4.8</span> Pour aller plus loin</h2>
+<ul>
+<li><a href="../../../../teaching/data-description/financial-analysis/modules/02-archives-consolidees.html">Les Archives consolidées (Quête 2)</a></li>
+<li><a href="../../../../teaching/data-description/financial-analysis/modules/banque-france.html">La Banque de France</a></li>
+</ul>
+</section>
+</section>
+<section id="bloc-2.4-archives-consolidées-version-courte" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Bloc 2.4 — Archives consolidées (version courte)</h1>
+<div class="notes">
+<p>Durée : 60 min (50 min le matin, 10 min après le déjeuner) · Corrigé : à rédiger (cf.&nbsp;coverage map) · Optionnel : version complète de 2 h (page du module).</p>
+</div>
+<section id="exercice-archives-consolidées" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="exercice-archives-consolidées"><span class="header-section-number">5.1</span> Exercice — Archives consolidées</h2>
+<div id="exr-archives-consolidees" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1 (Archives consolidées)</strong></span> <strong>Mission.</strong> Produire, en équipes de 3 à 5, le tableau de consolidation (bilan et compte de résultat consolidés) de STRATFIN HOLDING et de ses deux filiales PHOENIX SA (80 %) et ORION SARL (60 %).</p>
+<p><strong>Données.</strong> Comptes individuels simplifiés dans la page <a href="../../../../teaching/data-description/financial-analysis/modules/02-archives-consolidees.html">Archives consolidées</a> (montants en k€).</p>
+<p><strong>À rendre.</strong> Éliminations intragroupe, retraitement des participations, intérêts minoritaires, bilan et compte de résultat consolidés.</p>
+<p><strong>Durée.</strong> 60 minutes (version courte, au lieu de 2 h).</p>
+</div>
+<div class="notes">
+<p>Durée : 60 min · Corrigé : à rédiger (corrigé de l’atelier, voir coverage map).</p>
+</div>
+</section>
+</section>
+<section id="bloc-2.5-étape-1-environnement-stratégie-organisation" class="level1 page-columns page-full" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Bloc 2.5 — Étape 1 : environnement, stratégie, organisation</h1>
+<div class="notes">
+<p>Durée : 30 min · Corrigé : aucun (cours) · Optionnel : —</p>
+</div>
+<section id="étape-1-sur-6-objectifs" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="étape-1-sur-6-objectifs"><span class="header-section-number">6.1</span> Étape 1 sur 6 — Objectifs</h2>
+<p>Étape <strong>1/6</strong> de la démarche (puis étapes 2 et 3 aujourd’hui).</p>
+<ul>
+<li>Comprendre l’<strong>environnement</strong> et l’organisation du groupe.</li>
+<li>Faire un panorama des <strong>opportunités et menaces</strong> et des forces et faiblesses (matrice SWOT).</li>
+<li>Apprécier la <strong>stratégie</strong> et sa cohérence avec les actions menées.</li>
+<li>Repérer les <strong>risques liés à l’organisation</strong>.</li>
+<li>Choisir l’<strong>agrégat d’endettement</strong> (brut ou net) et le <strong>degré d’intégration</strong> des filiales.</li>
+</ul>
+</section>
+<section id="matrice-swot" class="level2 page-columns page-full" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="matrice-swot"><span class="header-section-number">6.2</span> Matrice SWOT</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Favorable</strong></th>
+<th><strong>Défavorable</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Interne (le groupe)</strong></td>
+<td><strong>Forces</strong> : diversification des activités ou des zones, produit de niche, brevets, partenariats</td>
+<td><strong>Faiblesses</strong> : portefeuille clients ou fournisseurs peu diversifié</td>
+</tr>
+<tr class="even">
+<td><strong>Externe (l’environnement)</strong></td>
+<td><strong>Opportunités</strong> : secteur en croissance, barrières à l’entrée</td>
+<td><strong>Menaces</strong> : secteur en récession, forte intensité concurrentielle ou capitalistique, volatilité des cours</td>
+</tr>
+</tbody>
+</table>
+<p>Objectif : caractériser les <strong>enjeux</strong> du groupe et la <strong>stratégie</strong> adoptée pour y répondre.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : séminaire INSEEC M2 Banque d’affaires et ingénierie financière, grille SWOT, reformulée.</p>
+</div></div></section>
+<section id="organisation-juridique" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="organisation-juridique"><span class="header-section-number">6.3</span> Organisation juridique</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+
+<pre class="mermaid mermaid-js">flowchart TD
+  H["Holding, tête de groupe"] --&gt;|100 %| F1["Filiale A"]
+  H --&gt;|60 %| F2["Filiale B"]
+  H --&gt;|35 %| F3["Filiale C, minoritaires de contrôle"]
+  F2 --&gt;|100 %| F4["Sous-filiale D, située à l'étranger"]
+  F4 -. "frein 1 : circulation de la trésorerie limitée" .-&gt; H
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>À examiner : type d’organigramme, périmètre (filiales dans des paradis fiscaux, freins), catégorie juridique des filiales (SNC, GIE…), actionnariat (poids des minoritaires, pacte), équipe dirigeante, homme-clé.</p>
+<p>→ <strong>degré d’intégration juridique</strong> des filiales.</p>
+</section>
+<section id="organisation-économique-et-financière" class="level2 smaller" data-number="6.4">
+<h2 class="smaller anchored" data-number="6.4" data-anchor-id="organisation-économique-et-financière"><span class="header-section-number">6.4</span> Organisation économique et financière</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Économique</strong></p>
+<ul>
+<li>Branches d’activité et objectifs des filiales</li>
+<li>Caractère stratégique ou non</li>
+<li>Logique d’organisation (fonctionnelle, par division, mixte), intégration verticale ou horizontale</li>
+<li>Relations entre sociétés du groupe</li>
+</ul>
+<p>→ <strong>degré d’intégration économique</strong></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Financière</strong></p>
+<ul>
+<li>Localiser la dette et la trésorerie</li>
+<li>Centres de profit et de perte</li>
+<li>Logique de trésorerie : délais intragroupe, sociétés pivots, centralisation bancaire</li>
+<li>Circulation des flux, freins éventuels</li>
+</ul>
+<p>→ <strong>degré d’intégration financière</strong></p>
+</div>
+</div>
+</section>
+<section id="faits-marquants-et-choix-de-lagrégat-dendettement" class="level2 page-columns page-full" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="faits-marquants-et-choix-de-lagrégat-dendettement"><span class="header-section-number">6.5</span> Faits marquants et choix de l’agrégat d’endettement</h2>
+<ul>
+<li>Identifier les <strong>faits marquants</strong> de l’exercice et post-clôture : variation de périmètre, actionnariat, gouvernance, refinancement. Les <strong>chiffrer</strong> et les mettre en perspective avec la stratégie.</li>
+<li>Choisir l’endettement : <strong>brut</strong> (toutes les dettes financières) ou <strong>net</strong> (moins la trésorerie disponible). Le choix dépend de la libre circulation de la trésorerie dans le groupe.</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Focus — Entreprises françaises (2020)</strong> : la dette brute atteint 87,6 % du PIB, mais la dette nette seulement 55,5 %, soit une dette nette / EBE de 2,7×. Leçon : l’agrégat brut surestime l’endettement net réel ; comparer des chiffres bruts et nets conduit à de mauvaises conclusions.</p>
+</blockquote>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : <em>Lettre Vernimmen</em> n° 190, juillet 2021.</p>
+</div></div></section>
+</section>
+<section id="bloc-2.6-business-model-canvas-apport-pour-la-quête-5" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Bloc 2.6 — Business Model Canvas (apport pour la Quête 5)</h1>
+<div class="notes">
+<p>Durée : 10 min · Corrigé : aucun · Optionnel : —</p>
+</div>
+<section id="business-model-canvas-les-9-blocs" class="level2 smaller" data-number="7.1">
+<h2 class="smaller anchored" data-number="7.1" data-anchor-id="business-model-canvas-les-9-blocs"><span class="header-section-number">7.1</span> Business Model Canvas : les 9 blocs</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Bloc</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Segments de clientèle</td>
+<td>Qui sont les clients ?</td>
+</tr>
+<tr class="even">
+<td>Proposition de valeur</td>
+<td>Quel problème résolvons-nous ?</td>
+</tr>
+<tr class="odd">
+<td>Canaux</td>
+<td>Comment atteint-on les clients ?</td>
+</tr>
+<tr class="even">
+<td>Relations clients</td>
+<td>Quel type de relation ?</td>
+</tr>
+<tr class="odd">
+<td>Sources de revenus</td>
+<td>Comment gagne-t-on de l’argent ?</td>
+</tr>
+<tr class="even">
+<td>Ressources clés</td>
+<td>De quoi a-t-on besoin ?</td>
+</tr>
+<tr class="odd">
+<td>Activités clés</td>
+<td>Que faut-il faire ?</td>
+</tr>
+<tr class="even">
+<td>Partenaires clés</td>
+<td>Avec qui ?</td>
+</tr>
+<tr class="odd">
+<td>Structure de coûts</td>
+<td>Quels coûts ?</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="du-canevas-au-swot" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="du-canevas-au-swot"><span class="header-section-number">7.2</span> Du canevas au SWOT</h2>
+<ul>
+<li>Les <strong>forces et faiblesses</strong> du SWOT se lisent dans la colonne des ressources, activités, partenaires et proposition de valeur.</li>
+<li>Les <strong>opportunités et menaces</strong> se lisent du côté des segments, canaux et concurrents.</li>
+<li>La Quête 5 demande de <strong>cartographier le modèle économique</strong> d’un groupe pour préparer l’analyse.</li>
+</ul>
+</section>
+<section id="pour-aller-plus-loin-3" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="pour-aller-plus-loin-3"><span class="header-section-number">7.3</span> Pour aller plus loin</h2>
+<ul>
+<li><a href="../../../../teaching/data-description/financial-analysis/modules/05-cartographes-modele-eco.html">Quête 5 — Cartographes du modèle économique</a></li>
+</ul>
+</section>
+</section>
+<section id="bloc-2.7-exercice-cp1-swot-granulats" class="level1 page-columns page-full" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Bloc 2.7 — Exercice : CP1 SWOT (granulats)</h1>
+<div class="notes">
+<p>Durée : 30 min · Corrigé : Cas pratiques d’analyse financière corrigé.docx · Optionnel : —</p>
+</div>
+<section id="exercice-cp1-groupe-de-granulats" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="exercice-cp1-groupe-de-granulats"><span class="header-section-number">8.1</span> Exercice — CP1 : groupe de granulats</h2>
+<div id="exr-cp1-swot" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2 (CP1 SWOT — groupe de granulats)</strong></span> <strong>Tâche.</strong> Compléter une matrice SWOT : quels éléments de l’environnement sont des <strong>opportunités</strong> ou des <strong>menaces</strong>, quels sont les <strong>forces</strong> et <strong>faiblesses</strong> du groupe face à ses concurrents ?</p>
+<p><strong>Données.</strong> Contexte aux deux diapositives suivantes.</p>
+<p><strong>Format.</strong> Matrice 2×2 (grille de la diapositive « Matrice SWOT »), 3 à 4 éléments par case, justifiés en une phrase.</p>
+<p><strong>Durée.</strong> 30 minutes, en binôme.</p>
+</div>
+<div class="notes">
+<p>Durée : 30 min · Corrigé : Cas pratiques d’analyse financière corrigé.docx.</p>
+</div>
+</section>
+<section id="cp1-activité-et-marché" class="level2 smaller page-columns page-full" data-number="8.2">
+<h2 class="smaller anchored" data-number="8.2" data-anchor-id="cp1-activité-et-marché"><span class="header-section-number">8.2</span> CP1 — Activité et marché</h2>
+<ul>
+<li><strong>Activité</strong> : carrières de granulats (90 % du CA), une cinquantaine de sites à l’ouest d’une ligne Rouen–Montpellier ; le reste en bétons et travaux publics.</li>
+<li><strong>Autorisation préfectorale</strong> : 2 à 3 ans de formalités, durée temporaire (10 à 15 ou 20 à 30 ans, renouvelable) ; normes environnementales croissantes, réaménagement obligatoire en fin de vie, nuisances de moins en moins acceptées.</li>
+<li><strong>Réserves</strong> : 25 à 35 années, sites diversifiés ; achats de gisements d’opportunité, de moins en moins nombreux.</li>
+<li><strong>Taille modeste</strong>, bonne réactivité (intérim, organisation resserrée).</li>
+<li><strong>Matériels</strong> lourds à renouvellement rapide, très énergivores (fuel, électricité), tension sur les prix.</li>
+<li><strong>Travaux publics</strong> : dirigeants remplacés pour mauvaise gestion, activité en perte depuis 2 ans, cession possible après restructuration.</li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : énoncé du cas pratique 1, <em>Cas pratiques d’analyse financière</em>, support de cours.</p>
+</div></div></section>
+<section id="cp1-marché-et-clientèle" class="level2 smaller page-columns page-full" data-number="8.3">
+<h2 class="smaller anchored" data-number="8.3" data-anchor-id="cp1-marché-et-clientèle"><span class="header-section-number">8.3</span> CP1 — Marché et clientèle</h2>
+<ul>
+<li><strong>Concurrents</strong> : routiers (VINCI, COLAS, EIFFAGE, EUROVIA), cimentiers (LAFARGE, HOLCIM) et indépendants dont le groupe, <strong>leader</strong>, avec 15 millions de tonnes produites cette année.</li>
+<li>Le groupe dépend du <strong>marché du BTP français</strong> ; ses grands concurrents profitent des marchés internationaux.</li>
+<li><strong>Clientèle</strong> diffuse : 60 % d’entreprises de terrassement et de travaux publics ; le solde regroupe des concurrents et la SNCF (ballast).</li>
+<li>Marché <strong>local</strong> : rayon de 60 km, car le transport pèse 50 à 60 % du prix.</li>
+<li>Pas de carnet de commandes (ventes au fil de l’eau) ; les gros chantiers représentent moins de 10 % du CA.</li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : énoncé du cas pratique 1, <em>Cas pratiques d’analyse financière</em>, support de cours.</p>
+</div></div></section>
+</section>
+<section id="bloc-2.8-étape-2-examen-critique-de-linformation" class="level1 page-columns page-full" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Bloc 2.8 — Étape 2 : examen critique de l’information</h1>
+<div class="notes">
+<p>Durée : 30 min · Corrigé : aucun (cours) · Optionnel : —</p>
+</div>
+<section id="étape-2-sur-6-objectifs" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="étape-2-sur-6-objectifs"><span class="header-section-number">9.1</span> Étape 2 sur 6 — Objectifs</h2>
+<ul>
+<li>Apprécier la <strong>qualité de l’information</strong> transmise et en tirer des conséquences sur la cotation.</li>
+<li>Porter un <strong>regard critique</strong> sur le périmètre de consolidation et les pratiques comptables.</li>
+<li>Mesurer l’impact des <strong>variations de périmètre</strong> et des <strong>changements comptables</strong>.</li>
+</ul>
+</section>
+<section id="qualité-et-transparence" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="qualité-et-transparence"><span class="header-section-number">9.2</span> Qualité et transparence</h2>
+<p><strong>Le périmètre est-il exhaustif ?</strong></p>
+<ul>
+<li>Décomposer le poste « titres de participation ».</li>
+<li>Recouper avec les liens financiers et les fonctions de direction.</li>
+<li>Consulter l’annexe sur le périmètre de consolidation.</li>
+</ul>
+<p><strong>Les méthodes correspondent-elles au contrôle réel ?</strong></p>
+<ul>
+<li>Repérer les méthodes <strong>opportunistes</strong> : une méthode plus favorable que le contrôle exercé.</li>
+<li>Contrôler les postes « participations non consolidées » et « titres mis en équivalence » : détecter les <strong>exclusions à tort</strong>.</li>
+</ul>
+<p><strong>Certification</strong> des comptes par les commissaires aux comptes (CAC) : lire l’opinion et ses réserves.</p>
+</section>
+<section id="avant-aujourdhui-activités-abandonnées-ifrs-5" class="level2 page-columns page-full" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="avant-aujourdhui-activités-abandonnées-ifrs-5"><span class="header-section-number">9.3</span> Avant / aujourd’hui : activités abandonnées (IFRS 5)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Avant</strong></p>
+<p>Les activités cédées pouvaient rester mêlées aux lignes habituelles, d’où une comparaison délicate d’un exercice à l’autre.</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Aujourd’hui (IFRS 5)</strong></p>
+<p>Les activités abandonnées ou en cours de cession sont isolées sur une ligne ; les données de <strong>N-1 sont retraitées</strong> pour rester comparables.</p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Focus — AREVA</strong> : le chiffre d’affaires publié passe de 5,6 à 1,6 Md€ une fois les activités cédées reclassées (IFRS 5). Leçon : toujours comparer N à N-1 <strong>retraité</strong>.</p>
+</blockquote>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, <em>Les actualités comptables</em>, 2018.</p>
+</div></div></section>
+</section>
+<section id="bloc-2.9-étape-3-performances-et-résultat-net-récurrent" class="level1 page-columns page-full" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Bloc 2.9 — Étape 3 : performances et résultat net récurrent</h1>
+<div class="notes">
+<p>Durée : 30 min · Corrigé : aucun (cours) · Optionnel : —</p>
+</div>
+<section id="étape-3-sur-6-éléments-récurrents" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="étape-3-sur-6-éléments-récurrents"><span class="header-section-number">10.1</span> Étape 3 sur 6 — Éléments récurrents</h2>
+<ul>
+<li><strong>Objectif</strong> : mesurer la rentabilité <strong>récurrente</strong> (analyse statique) et les <strong>tendances</strong> (analyse dynamique).</li>
+<li>On ne garde que les produits et charges <strong>récurrents</strong>.
+<ul>
+<li>Certains éléments exceptionnels sont récurrents (plus-values de cession, restructurations répétées).</li>
+<li>Certains éléments d’exploitation ou financiers ne le sont pas (dotation à provision exceptionnelle, dépréciation de titres).</li>
+</ul></li>
+<li>Les dotations aux amortissements des <strong>écarts d’acquisition</strong> et tout élément exceptionnel sont <strong>écartés</strong>.</li>
+<li>On retient l’<strong>impôt effectif</strong> du groupe.</li>
+</ul>
+</section>
+<section id="résultat-net-récurrent-rnr" class="level2 page-columns page-full" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="résultat-net-récurrent-rnr"><span class="header-section-number">10.2</span> Résultat net récurrent (RNR)</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[\text{RNR} \approx \text{RCAI} \times (1 - 25\,\%) = \tfrac{3}{4} \times \text{RCAI}\]</span></p>
+</div>
+</div>
+<p>Ce que mesure le RNR : le résultat net que le groupe dégage chaque année de façon répétable, après impôt, hors éléments exceptionnels.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : Banque de France, démarche d’analyse des groupes ; taux normal de l’IS à 25 % (art. 219 du CGI).</p>
+</div></div></section>
+<section id="pourquoi-¾" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="pourquoi-¾"><span class="header-section-number">10.3</span> Pourquoi ¾ ?</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Dérivation de RNR ≈ ¾ × RCAI
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Le RCAI est le résultat courant, avant impôt.</li>
+<li>Taux normal de l’impôt sur les sociétés : 25 %, donc impôt ≈ 0,25 × RCAI.</li>
+<li>RNR = RCAI − impôt = RCAI × (1 − 0,25) = <strong>¾ × RCAI</strong>.</li>
+<li>Si l’on connaît la <strong>charge d’impôt réelle</strong>, ou si des déficits ou des impôts différés faussent le taux, on utilise l’impôt effectif à la place de 25 %.</li>
+</ol>
+<p>Un ancien support utilisait ⅔ (taux de 33⅓ %) : ce taux n’est plus d’actualité.</p>
+</div>
+</div>
+</section>
+<section id="exemple-de-rcai-à-rnr" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="exemple-de-rcai-à-rnr"><span class="header-section-number">10.4</span> Exemple — de RCAI à RNR</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Étape</th>
+<th>Montant (K€)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RCAI publié</td>
+<td>1 000</td>
+</tr>
+<tr class="even">
+<td>Reprise de provision exceptionnelle comptée en exploitation (non récurrente)</td>
+<td>− 90</td>
+</tr>
+<tr class="odd">
+<td>Frais ponctuels de refinancement dans les charges financières</td>
+<td>+ 50</td>
+</tr>
+<tr class="even">
+<td>RCAI <strong>récurrent</strong></td>
+<td>960</td>
+</tr>
+</tbody>
+</table>
+<p>. . .</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Calcul</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RNR ≈ ¾ × 960</td>
+<td><strong>720 K€</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Exemple fictif, pour illustrer la méthode ; le cas CP2 suit.</p>
+</section>
+<section id="tendances-et-variation-de-lactivité" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="tendances-et-variation-de-lactivité"><span class="header-section-number">10.5</span> Tendances et variation de l’activité</h2>
+<ul>
+<li><strong>Groupe à forte croissance</strong> : gestion du BFR ?</li>
+<li><strong>Marché mature</strong> : maîtrise des coûts ?</li>
+<li><strong>Groupe en perte de vitesse</strong> : capacité d’adaptation ? Restructuration en cours ?</li>
+<li><strong>Origine de la variation du chiffre d’affaires</strong> : croissance <strong>organique</strong>, effet de <strong>périmètre</strong>, effet de <strong>change</strong>.</li>
+<li><strong>Point mort</strong> : couverture des charges fixes.</li>
+<li>Comparaison avec les principaux concurrents.</li>
+</ul>
+</section>
+<section id="pour-aller-plus-loin-4" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="pour-aller-plus-loin-4"><span class="header-section-number">10.6</span> Pour aller plus loin</h2>
+<ul>
+<li><a href="../../../../teaching/data-description/financial-analysis/modules/performances.html">Analyse des performances</a></li>
+</ul>
+</section>
+</section>
+<section id="bloc-2.10-exercice-cp2-rnr-tv-hôtelière" class="level1 page-columns page-full" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Bloc 2.10 — Exercice : CP2 RNR (TV hôtelière)</h1>
+<div class="notes">
+<p>Durée : 30 min · Corrigé : Cas pratiques d’analyse financière corrigé.docx ; version recalculée à 25 % : specs/014-financial-analysis-slides/answer-keys-25pct.md (le corrigé d’origine utilise ⅔, à signaler).</p>
+</div>
+<section id="exercice-cp2-groupe-de-télévision-hôtelière" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="exercice-cp2-groupe-de-télévision-hôtelière"><span class="header-section-number">11.1</span> Exercice — CP2 : groupe de télévision hôtelière</h2>
+<div id="exr-cp2-rnr" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 3 (CP2 RNR — télévision hôtelière)</strong></span> <strong>Tâche.</strong> Calculer le résultat net récurrent (RNR) du groupe.</p>
+<p><strong>Convention.</strong> Taux d’impôt de <strong>25 %</strong> : RNR ≈ ¾ × RCAI récurrent. Justifiez chaque retraitement.</p>
+<p><strong>Données.</strong> Compte de résultat et éléments d’analyse aux deux diapositives suivantes.</p>
+<p><strong>Format.</strong> Tableau de passage RCAI → RCAI récurrent → RNR.</p>
+<p><strong>Durée.</strong> 30 minutes.</p>
+</div>
+<div class="notes">
+<p>Durée : 30 min · Corrigé : Cas pratiques d’analyse financière corrigé.docx ; versions à 25 % : specs/014-financial-analysis-slides/answer-keys-25pct.md.</p>
+</div>
+</section>
+<section id="cp2-compte-de-résultat-consolidé-k" class="level2 smaller scrollable page-columns page-full" data-number="11.2">
+<h2 class="smaller scrollable anchored" data-number="11.2" data-anchor-id="cp2-compte-de-résultat-consolidé-k"><span class="header-section-number">11.2</span> CP2 — Compte de résultat consolidé (K€)</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Rubrique</th>
+<th style="text-align: right;">Montant</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Chiffre d’affaires</td>
+<td style="text-align: right;">50 807</td>
+</tr>
+<tr class="even">
+<td>Achats consommés, autres achats et charges externes</td>
+<td style="text-align: right;">21 739</td>
+</tr>
+<tr class="odd">
+<td>Charges de personnel</td>
+<td style="text-align: right;">15 083</td>
+</tr>
+<tr class="even">
+<td>Impôts et taxes</td>
+<td style="text-align: right;">699</td>
+</tr>
+<tr class="odd">
+<td>Dotations nettes aux amortissements</td>
+<td style="text-align: right;">3 922</td>
+</tr>
+<tr class="even">
+<td>Dotations nettes aux provisions</td>
+<td style="text-align: right;">583</td>
+</tr>
+<tr class="odd">
+<td>Autres charges et produits d’exploitation</td>
+<td style="text-align: right;">567</td>
+</tr>
+<tr class="even">
+<td><strong>Résultat d’exploitation</strong></td>
+<td style="text-align: right;"><strong>8 214</strong></td>
+</tr>
+<tr class="odd">
+<td>Produits financiers</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="even">
+<td>Charges financières</td>
+<td style="text-align: right;">3 750</td>
+</tr>
+<tr class="odd">
+<td><strong>Résultat financier</strong></td>
+<td style="text-align: right;"><strong>− 3 686</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Résultat courant avant impôt (RCAI)</strong></td>
+<td style="text-align: right;"><strong>4 528</strong></td>
+</tr>
+<tr class="odd">
+<td>Produits exceptionnels</td>
+<td style="text-align: right;">1 500</td>
+</tr>
+<tr class="even">
+<td>Charges exceptionnelles</td>
+<td style="text-align: right;">2 227</td>
+</tr>
+<tr class="odd">
+<td>Résultat exceptionnel</td>
+<td style="text-align: right;">− 727</td>
+</tr>
+<tr class="even">
+<td>Charge d’impôt</td>
+<td style="text-align: right;">1 802</td>
+</tr>
+<tr class="odd">
+<td>Dotation aux amortissements sur écart d’acquisition</td>
+<td style="text-align: right;">1 227</td>
+</tr>
+<tr class="even">
+<td><strong>Résultat net consolidé (RNC)</strong></td>
+<td style="text-align: right;"><strong>772</strong></td>
+</tr>
+</tbody>
+</table>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : énoncé du cas pratique 2, <em>Cas pratiques d’analyse financière</em>, support de cours.</p>
+</div></div></section>
+<section id="cp2-éléments-danalyse" class="level2 smaller page-columns page-full" data-number="11.3">
+<h2 class="smaller anchored" data-number="11.3" data-anchor-id="cp2-éléments-danalyse"><span class="header-section-number">11.3</span> CP2 — Éléments d’analyse</h2>
+<ol type="1">
+<li>Les charges de personnel comprennent le coût de restructuration lié à l’<strong>arrêt total des activités en Belgique</strong> : <strong>1,8 M€</strong>.</li>
+<li>Un <strong>litige important</strong> avec un ancien dirigeant est provisionné pour <strong>500 K€</strong> dans le résultat d’exploitation.</li>
+<li>Les charges financières comprennent les <strong>frais de refinancement</strong> d’un emprunt : <strong>1,3 M€</strong>.</li>
+<li>Les produits exceptionnels comprennent le <strong>résultat de cession de matériel de location</strong> : <strong>1 M€</strong>.</li>
+</ol>
+<p><strong>Rappel</strong> : convention d’impôt à <strong>25 %</strong> ; utiliser l’impôt réel si les circonstances l’exigent.</p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Source : énoncé du cas pratique 2, <em>Cas pratiques d’analyse financière</em>, support de cours.</p>
+</div></div></section>
+</section>
+<section id="bloc-2.11-récapitulatif-et-demain" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Bloc 2.11 — Récapitulatif et demain</h1>
+<div class="notes">
+<p>Durée : 10 min · Corrigé : aucun · Optionnel : —</p>
+</div>
+</section>
+<section id="récapitulatif" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> Récapitulatif</h1>
+<section id="ce-quil-faut-retenir" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="ce-quil-faut-retenir"><span class="header-section-number">13.1</span> Ce qu’il faut retenir</h2>
+<ul>
+<li>La <strong>cotation Banque de France</strong> = cote d’activité (lettre) + cote de crédit (chiffre), attribuée « à dire d’expert », avec un seuil de <strong>1 250 K€ de CA</strong> depuis le 12/01/2025.</li>
+<li>Les taux de défaut à un an vont de <strong>0 % (1+)</strong> à <strong>27 %</strong> (8) ; moyenne <strong>1,75 %</strong>.</li>
+<li>Les groupes consolident au-delà de <strong>30 M€ / 60 M€ / 250 salariés</strong> (exercices ouverts dès le 01/01/2025), selon <strong>ANC 2020-01</strong> ou IFRS.</li>
+<li><strong>Étape 1</strong> : SWOT, organisation juridique, économique et financière, choix de l’agrégat de dette.</li>
+<li><strong>Étape 2</strong> : critiquer périmètre, méthodes et certification ; retraiter N-1 en cas d’IFRS 5.</li>
+<li><strong>Étape 3</strong> : RNR ≈ <strong>¾ × RCAI</strong> récurrent (impôt à 25 %) ; on utilise l’impôt réel si besoin.</li>
+</ul>
+</section>
+<section id="demain" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="demain"><span class="header-section-number">13.2</span> Demain</h2>
+<p>Jour 3 : <strong>étapes 4 à 6</strong> — fonds propres retraités, endettement retraité, autonomie financière, liquidité, décision de cotation, puis veille réglementaire, ESG et synthèse avant l’examen.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+
+<pre class="mermaid mermaid-js">flowchart LR
+  E1["1&lt;br/&gt;Environnement,&lt;br/&gt;stratégie&lt;br/&gt;fait ✔"]
+  E2["2&lt;br/&gt;Information&lt;br/&gt;(examen critique)&lt;br/&gt;fait ✔"]
+  E3["3&lt;br/&gt;Performances&lt;br/&gt;fait ✔"]
+  E4["4&lt;br/&gt;Structure&lt;br/&gt;financière&lt;br/&gt;Jour 3"]
+  E5["5&lt;br/&gt;Liquidité&lt;br/&gt;Jour 3"]
+  E6["6&lt;br/&gt;Décision&lt;br/&gt;de cotation&lt;br/&gt;Jour 3"]
+  E1 --&gt; E2 --&gt; E3 --&gt; E4 --&gt; E5 --&gt; E6
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Jour 2 — {Banque} de {France,} Cotation Et Analyse Des
+    Groupes (Étapes 1 à 3)},
+  url = {https://ggilles.dev/teaching/data-description/financial-analysis/slides/jour-2.html},
+  langid = {en}
+}
+</code></pre><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-gilles" class="csl-entry quarto-appendix-citeas" role="listitem">
+Gilles, Guillaume. n.d. <span>“Jour 2 — Banque de France, Cotation Et
+Analyse Des Groupes (Étapes 1 à 3).”</span> <a href="https://ggilles.dev/teaching/data-description/financial-analysis/slides/jour-2.html">https://ggilles.dev/teaching/data-description/financial-analysis/slides/jour-2.html</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ggilles\.dev");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../../teaching/data-description/financial-analysis/slides/jour-1.html" class="pagination-link" aria-label="Jour 1 — Les fondamentaux de l'analyse financière">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Jour 1 — Les fondamentaux de l’analyse financière</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../../teaching/data-description/financial-analysis/slides/jour-3.html" class="pagination-link" aria-label="Jour 3 — Structure financière, liquidité, décision de cotation et enjeux actuels">
+        <span class="nav-page-text">Jour 3 — Structure financière, liquidité, décision de cotation et enjeux actuels</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a> · Source on <a href="https://github.com/guillaumegilles/guillaumegilles.github.io"><i class="bi bi-github"></i> GitHub</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>This site respects your privacy — no cookies, no tracking.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -27,46 +27,48 @@ This final session is dedicated to revision and to a **mock exam** covering the 
 
 > **CAUTION:**
 >
-> The HR department of a large company \\E\\ wants to study the number of absent employees per day. The head of the HR department randomly chose \\120\\ days of activity and counted the absent employees. The results are:
+> The HR department of a large company $E$ wants to study the number of absent employees per day. The head of the HR department randomly chose $120$ days of activity and counted the absent employees. The results are:
 >
 > | Number of absentees |   0 |   1 |   2 |   3 |   4 |   5 |   8 |
 > |---------------------|----:|----:|----:|----:|----:|----:|----:|
 > | Number of days      |  25 |  35 |  30 |  20 |   5 |   3 |   2 |
 >
-> Let \\m\\ be the mean daily number of absent employees and \\p\\ the probability of choosing a day where all employees are present.
+> Let $m$ be the mean daily number of absent employees and $p$ the probability of choosing a day where all employees are present.
 >
 > Answer **True** or **False** for each statement, and justify your answer.
 >
-> 1.  There is a \\95\\\\ chance that \\p\\ varies approximately between \\0.1357\\ and \\0.2810\\.
-> 2.  There is a \\95\\\\ chance that \\m\\ varies approximately between \\1.756\\ and \\1.954\\.
-> 3.  The data do not allow confirming, with a \\5\\\\ risk, that the probability of choosing a day where all employees are present is less than \\30\\\\.
-> 4.  The data do not allow confirming, with a \\5\\\\ risk, that the mean daily number of absent employees is less than \\2\\.
-> 5.  The HR department of company \\F\\ (a direct competitor) chose \\100\\ random activity days with mean \\1.42\\ and variance \\0.921\\. The data allow confirming, with \\5\\\\ risk, that employees of company \\F\\ are more assiduous.
+> 1.  There is a $95\%$ chance that $p$ varies approximately between $0.1357$ and $0.2810$.
+> 2.  There is a $95\%$ chance that $m$ varies approximately between $1.756$ and $1.954$.
+> 3.  The data do not allow confirming, with a $5\%$ risk, that the probability of choosing a day where all employees are present is less than $30\%$.
+> 4.  The data do not allow confirming, with a $5\%$ risk, that the mean daily number of absent employees is less than $2$.
+> 5.  The HR department of company $F$ (a direct competitor) chose $100$ random activity days with mean $1.42$ and variance $0.921$. The data allow confirming, with $5\%$ risk, that employees of company $F$ are more assiduous.
 
 > **CAUTION:**
 >
 > Useful summaries:
 >
-> \\ \bar{x}\approx 1.7167, \qquad s\approx 1.4843 \\
+> $$\bar{x}\approx 1.7167,
+> \qquad
+> s\approx 1.4843$$
 >
-> - Statement 1: **True** — the \\95\\\\ confidence interval for \\p\\ is approximately \\\[0.1357,\\0.2810\]\\.
-> - Statement 2: **False** — a more appropriate interval is approximately \\\[1.451,\\1.982\]\\.
-> - Statement 3: **False** — for the conformity test \\H_1:p\<0.30\\, we obtain \\U\_{obs}\approx -2.191\\, so we reject \\H_0\\.
-> - Statement 4: **False** — for the conformity test \\H_1:m\<2\\, we obtain \\U\_{obs}\approx -2.091\\, so we reject \\H_0\\.
-> - Statement 5: **True** — for the comparison of means with \\H_1:m_E\>m_F\\, we obtain \\U\_{obs}\approx 1.787\\, which supports the statement that company \\F\\ is more assiduous.
+> - Statement 1: **True** — the $95\%$ confidence interval for $p$ is approximately $[0.1357,\,0.2810]$.
+> - Statement 2: **False** — a more appropriate interval is approximately $[1.451,\,1.982]$.
+> - Statement 3: **False** — for the conformity test $H_1:p<0.30$, we obtain $U_{obs}\approx -2.191$, so we reject $H_0$.
+> - Statement 4: **False** — for the conformity test $H_1:m<2$, we obtain $U_{obs}\approx -2.091$, so we reject $H_0$.
+> - Statement 5: **True** — for the comparison of means with $H_1:m_E>m_F$, we obtain $U_{obs}\approx 1.787$, which supports the statement that company $F$ is more assiduous.
 
 ### 2.2 Exercise 2 — Linear correlation coefficient test
 
 > **CAUTION:**
 >
-> The HR department of company \\E\\ also studies the possible link between the daily number of absent employees and the morning temperature. From \\120\\ randomly selected activity days, the empirical linear correlation coefficient is:
+> The HR department of company $E$ also studies the possible link between the daily number of absent employees and the morning temperature. From $120$ randomly selected activity days, the empirical linear correlation coefficient is:
 >
-> \\ r=-0.18932 \\
+> $$r=-0.18932$$
 >
 > Answer **True** or **False** for each statement.
 >
-> 1.  The data allow confirming, with \\1\\\\ risk, that the two variables are not independent.
-> 2.  The data do not allow confirming, with \\5\\\\ risk, that the two variables are not independent.
+> 1.  The data allow confirming, with $1\%$ risk, that the two variables are not independent.
+> 2.  The data do not allow confirming, with $5\%$ risk, that the two variables are not independent.
 > 3.  The company’s employees represent the population concerned by this study.
 > 4.  The data for both studied variables vary in the same direction.
 > 5.  The intensity of the linear relationship between the data is rather very low.
@@ -75,17 +77,17 @@ This final session is dedicated to revision and to a **mock exam** covering the 
 >
 > Using
 >
-> \\ U\_{obs}=r\sqrt{\frac{n-2}{1-r^2}} \\
+> $$U_{obs}=r\sqrt{\frac{n-2}{1-r^2}}$$
 >
-> with \\n=120\\, we obtain:
+> with $n=120$, we obtain:
 >
-> \\ U\_{obs}\approx -2.094 \\
+> $$U_{obs}\approx -2.094$$
 >
-> - Statement 1: **False** — at \\1\\\\ risk, \\z\_{0.005}=2.576\\ and \\\|U\_{obs}\|\<2.576\\.
-> - Statement 2: **False** — at \\5\\\\ risk, \\z\_{0.025}=1.960\\ and \\\|U\_{obs}\|\>1.960\\, so we do confirm a link.
+> - Statement 1: **False** — at $1\%$ risk, $z_{0.005}=2.576$ and $|U_{obs}|<2.576$.
+> - Statement 2: **False** — at $5\%$ risk, $z_{0.025}=1.960$ and $|U_{obs}|>1.960$, so we do confirm a link.
 > - Statement 3: **True** — the employees of the company are the individuals studied.
-> - Statement 4: **False** — since \\r\<0\\, the variables vary in **opposite** directions.
-> - Statement 5: **True** — \\\|r\|=0.18932\\ is close to \\0\\, so the linear relationship is weak.
+> - Statement 4: **False** — since $r<0$, the variables vary in **opposite** directions.
+> - Statement 5: **True** — $|r|=0.18932$ is close to $0$, so the linear relationship is weak.
 
 ### 2.3 Exercise 3 — Chi-square test
 
@@ -100,25 +102,25 @@ This final session is dedicated to revision and to a **mock exam** covering the 
 >
 > Answer **True** or **False** for each statement.
 >
-> 1.  The data allow, with \\1\\\\ risk, to confirm the existence of a link between gender and result in the mathematics test.
+> 1.  The data allow, with $1\%$ risk, to confirm the existence of a link between gender and result in the mathematics test.
 > 2.  The Chi-square test is adequate to check if the success rate for males is lower than for females.
-> 3.  The number of participants in the study \\n\\ is equal to \\360\\.
-> 4.  The success rate among females is equal to \\54.545\\\\.
-> 5.  The data do not allow, with \\1\\\\ risk, to confirm that the success rate for males is higher than for females.
+> 3.  The number of participants in the study $n$ is equal to $360$.
+> 4.  The success rate among females is equal to $54.545\%$.
+> 5.  The data do not allow, with $1\%$ risk, to confirm that the success rate for males is higher than for females.
 
 > **CAUTION:**
 >
-> - Statement 1: **True** — the Chi-square statistic is approximately \\U\_{obs}\approx 17.28\\, while \\\chi^2\_{1\\}(1)=6.635\\.
+> - Statement 1: **True** — the Chi-square statistic is approximately $U_{obs}\approx 17.28$, while $\chi^2_{1\%}(1)=6.635$.
 > - Statement 2: **False** — the Chi-square test only checks **independence**, not the direction of the difference. A comparison test for proportions is needed for that question.
 > - Statement 3: **False** —
 >
-> \\ n=45+75+140+90=350 \\
+> $$n=45+75+140+90=350$$
 >
 > - Statement 4: **True** — the female success rate is:
 >
-> \\ \frac{90}{75+90}=\frac{90}{165}\approx 54.545\\ \\
+> $$\frac{90}{75+90}=\frac{90}{165}\approx 54.545\%$$
 >
-> - Statement 5: **False** — a one-sided comparison test on proportions gives a statistic of about \\4.157\\, so we can confirm that the male success rate is higher.
+> - Statement 5: **False** — a one-sided comparison test on proportions gives a statistic of about $4.157$, so we can confirm that the male success rate is higher.
 
 ## 3 Final revision checklist
 
@@ -130,7 +132,7 @@ This final session is dedicated to revision and to a **mock exam** covering the 
 > - ANOVA,
 > - Chi-square test,
 > - linear correlation coefficient test,
-> - interpretation of rejection and non-rejection of \\H_0\\.
+> - interpretation of rejection and non-rejection of $H_0$.
 
 ## Citation
 

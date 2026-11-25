@@ -27,7 +27,7 @@ This session is a **computer lab** devoted to applying the inferential tools stu
 >
 > Open `PW 10 - CI.xlsx` and, for each question:
 >
-> 1.  identify the parameter to estimate (\\\mu\\ or \\p\\),
+> 1.  identify the parameter to estimate ($\mu$ or $p$),
 > 2.  compute the sample quantities needed,
 > 3.  determine the critical quantile,
 > 4.  calculate the confidence interval,
@@ -41,7 +41,7 @@ This session is a **computer lab** devoted to applying the inferential tools stu
 >
 > 1.  write the null and alternative hypotheses,
 > 2.  identify whether the test is left-tailed, right-tailed, or two-tailed,
-> 3.  compute the observed statistic \\U\_{obs}\\,
+> 3.  compute the observed statistic $U_{obs}$,
 > 4.  compare it with the critical value,
 > 5.  conclude in words at the chosen significance level.
 
@@ -65,11 +65,11 @@ This session is a **computer lab** devoted to applying the inferential tools stu
 >
 > For a large sample and an unknown mean:
 >
-> \\ IC\_{1-\alpha}(m)=\left\[\bar{x}-z\_{\alpha/2}\frac{s}{\sqrt{n}},\\\bar{x}+z\_{\alpha/2}\frac{s}{\sqrt{n}}\right\] \\
+> $$IC_{1-\alpha}(m)=\left[\bar{x}-z_{\alpha/2}\frac{s}{\sqrt{n}},\;\bar{x}+z_{\alpha/2}\frac{s}{\sqrt{n}}\right]$$
 >
 > For an unknown proportion:
 >
-> \\ IC\_{1-\alpha}(p)=\left\[\hat{p}-z\_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}},\\\hat{p}+z\_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\right\] \\
+> $$IC_{1-\alpha}(p)=\left[\hat{p}-z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}},\;\hat{p}+z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\right]$$
 
 ### 3.2 Hypothesis tests
 
@@ -77,26 +77,26 @@ This session is a **computer lab** devoted to applying the inferential tools stu
 >
 > Conformity test for a mean:
 >
-> \\ U\_{obs}=\frac{\bar{x}-\mu_0}{s/\sqrt{n}} \\
+> $$U_{obs}=\frac{\bar{x}-\mu_0}{s/\sqrt{n}}$$
 >
 > Conformity test for a proportion:
 >
-> \\ U\_{obs}=\frac{\hat{p}-p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}} \\
+> $$U_{obs}=\frac{\hat{p}-p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}$$
 >
 > Comparison test between two means:
 >
-> \\ U\_{obs}=\frac{\bar{x}\_1-\bar{x}\_2}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}} \\
+> $$U_{obs}=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}}$$
 >
 > Comparison test between two proportions:
 >
-> \\ U\_{obs}=\frac{\hat{p}\_1-\hat{p}\_2}{\sqrt{\hat{p}(1-\hat{p})\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}} \\
+> $$U_{obs}=\frac{\hat{p}_1-\hat{p}_2}{\sqrt{\hat{p}(1-\hat{p})\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}}$$
 
 > **IMPORTANT:**
 >
 > In every Excel exercise, keep the same structure:
 >
 > 1.  **identify** the parameter,
-> 2.  **write** \\H_0\\ and \\H_1\\ when there is a test,
+> 2.  **write** $H_0$ and $H_1$ when there is a test,
 > 3.  **compute** the statistic or the interval,
 > 4.  **interpret** the result in a full sentence.
 
@@ -106,22 +106,22 @@ This session is a **computer lab** devoted to applying the inferential tools stu
 
 > **NOTE:**
 >
-> Let \\X \sim \mathcal{N}(\mu, \sigma^2)\\ and let \\a\\ be a fixed real number. Computing \\P(X \leq a)\\ is equivalent to determining the area under the density curve to the left of \\a\\.
+> Let $X \sim \mathcal{N}(\mu, \sigma^2)$ and let $a$ be a fixed real number. Computing $P(X \leq a)$ is equivalent to determining the area under the density curve to the left of $a$.
 
-We saw in class that a table of the distribution function of \\\mathcal{N}(0,1)\\ allows these computations.
+We saw in class that a table of the distribution function of $\mathcal{N}(0,1)$ allows these computations.
 
 ### 4.2 Inverse problem
 
-Suppose the probability \\p\\ is known but the quantile \\z\\ is unknown. We seek \\z\\ such that:
+Suppose the probability $p$ is known but the quantile $z$ is unknown. We seek $z$ such that:
 
-\\ P(Z \leq z)=p \\
+$$P(Z \leq z)=p$$
 
 > **TIP:**
 >
 > - To obtain a cumulative probability from a standardized value, use `NORM.S.DIST(z, TRUE)`.
-> - To obtain the quantile associated with a probability \\p\\, use `NORM.S.INV(p)`.
+> - To obtain the quantile associated with a probability $p$, use `NORM.S.INV(p)`.
 
-For example, if \\p=0.975\\, then `NORM.S.INV(0.975)` returns approximately \\z=1.96\\.
+For example, if $p=0.975$, then `NORM.S.INV(0.975)` returns approximately $z=1.96$.
 
 ## 5 Appendix 2 — Standard functions in Excel
 
@@ -143,17 +143,17 @@ For example, if \\p=0.975\\, then `NORM.S.INV(0.975)` returns approximately \\z=
 >
 > In Anglo-Saxon literature, one often uses the **adjusted** or **corrected** variance:
 >
-> \\ s^2=\frac{1}{n-1}\sum\_{i=1}^{n}(x_i-\bar{x})^2 \\
+> $$s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2$$
 >
 > This differs from the variance presented in class:
 >
-> \\ \sigma^2=\frac{1}{n}\sum\_{i=1}^{n}(x_i-\bar{x})^2 \\
+> $$\sigma^2=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^2$$
 
 > **TIP:**
 >
-> \\ s^2=\frac{n}{n-1}\cdot \sigma^2 \\
+> $$s^2=\frac{n}{n-1}\cdot \sigma^2$$
 >
-> When \\n\\ is large, \\s^2 \approx \sigma^2\\.
+> When $n$ is large, $s^2 \approx \sigma^2$.
 
 ## 7 Appendix 4 — Standard deviation and adjusted standard deviation
 
@@ -161,11 +161,11 @@ For example, if \\p=0.975\\, then `NORM.S.INV(0.975)` returns approximately \\z=
 >
 > The adjusted standard deviation is:
 >
-> \\ s=\sqrt{s^2}=\sqrt{\frac{1}{n-1}\sum\_{i=1}^{n}(x_i-\bar{x})^2} \\
+> $$s=\sqrt{s^2}=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}$$
 
 > **WARNING:**
 >
-> When the sample size is large, the adjusted standard deviation \\s\\ is very close to the standard deviation \\\sigma\\ seen in descriptive statistics.
+> When the sample size is large, the adjusted standard deviation $s$ is very close to the standard deviation $\sigma$ seen in descriptive statistics.
 
 ## Citation
 

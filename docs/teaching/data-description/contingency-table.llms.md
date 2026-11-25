@@ -17,7 +17,7 @@ The truck had **9 medium days when it was sunny, and only 6 when it rained**. Is
 
 Where does a table like the one above come from? From a plain list of days, each one described by **two** variables at once.
 
-**Try it.** Here are ten days of the same truck’s log. Tally them into the table below, then add the row and column totals. Number the rows \\i = 1\\ (Sunny), \\i = 2\\ (Rainy) and the columns \\j = 1\\ (Low), \\j = 2\\ (Medium), \\j = 3\\ (High).
+**Try it.** Here are ten days of the same truck’s log. Tally them into the table below, then add the row and column totals. Number the rows $i = 1$ (Sunny), $i = 2$ (Rainy) and the columns $j = 1$ (Low), $j = 2$ (Medium), $j = 3$ (High).
 
 | Day | Weather | Revenue level |
 |-----|---------|---------------|
@@ -63,20 +63,20 @@ In plain words: a contingency table is a two-dimensional frequency table. The ma
 
 > **NOTE:**
 >
-> A **contingency table** (or cross-tabulation) crosses the modalities of two variables observed on the same individuals: cell \\(i,j)\\ holds the count \\n\_{ij}\\ of individuals with modality \\i\\ of the first variable **and** modality \\j\\ of the second. The **row margin** \\n\_{i\cdot} = \sum_j n\_{ij}\\ and **column margin** \\n\_{\cdot j} = \sum_i n\_{ij}\\ recover each variable’s own (univariate) frequency table from the same data.
+> A **contingency table** (or cross-tabulation) crosses the modalities of two variables observed on the same individuals: cell $(i,j)$ holds the count $n_{ij}$ of individuals with modality $i$ of the first variable **and** modality $j$ of the second. The **row margin** $n_{i\cdot} = \sum_j n_{ij}$ and **column margin** $n_{\cdot j} = \sum_i n_{ij}$ recover each variable’s own (univariate) frequency table from the same data.
 
 > **NOTE:**
 >
 > | Symbol | Read aloud | In our example (ten days) |
 > |----|----|----|
-> | \\(i,j)\\ | “cell i, j” — row first, then column | \\(1,3)\\ is the Sunny–High cell |
-> | \\n\_{ij}\\ | “n sub i j” | \\n\_{13} = 3\\ Sunny and High days |
-> | \\n\_{i\cdot}\\ | “n sub i dot” — the dot replaces the index that was added up | \\n\_{1\cdot} = 6\\ Sunny days |
-> | \\n\_{\cdot j}\\ | “n sub dot j” | \\n\_{\cdot 3} = 4\\ High days |
-> | \\\sum_j\\ | “add up over all columns j” | across a row: \\1+2+3 = 6\\ |
-> | \\\sum_i\\ | “add up over all rows i” | down a column: \\3+1 = 4\\ |
+> | $(i,j)$ | “cell i, j” — row first, then column | $(1,3)$ is the Sunny–High cell |
+> | $n_{ij}$ | “n sub i j” | $n_{13} = 3$ Sunny and High days |
+> | $n_{i\cdot}$ | “n sub i dot” — the dot replaces the index that was added up | $n_{1\cdot} = 6$ Sunny days |
+> | $n_{\cdot j}$ | “n sub dot j” | $n_{\cdot 3} = 4$ High days |
+> | $\sum_j$ | “add up over all columns j” | across a row: $1+2+3 = 6$ |
+> | $\sum_i$ | “add up over all rows i” | down a column: $3+1 = 4$ |
 >
-> **Whole formula as a sentence:** “the row margin \\n\_{i\cdot}\\ is the sum of the counts across row \\i\\; the column margin \\n\_{\cdot j}\\ is the sum of the counts down column \\j\\.” Adding all the cells gives the grand total \\n = 10\\.
+> **Whole formula as a sentence:** “the row margin $n_{i\cdot}$ is the sum of the counts across row $i$; the column margin $n_{\cdot j}$ is the sum of the counts down column $j$.” Adding all the cells gives the grand total $n = 10$.
 
 ### 1.3 Marginal distributions
 
@@ -98,7 +98,7 @@ In plain words: a contingency table is a two-dimensional frequency table. The ma
 > | **Column total**  |  **15** |  **15** |  **20** |    **50** |               |
 > | **% of all days** | **30%** | **30%** | **40%** |           |      **100%** |
 >
-> The truck had 30 Sunny days (\\30/50 = 60\\\\) and 20 Rainy days (\\40\\\\). Separately, 40% of all days were High. Notice that Sunny days are simply **more numerous** — this already explains part of “9 against 6”.
+> The truck had 30 Sunny days ($30/50 = 60\%$) and 20 Rainy days ($40\%$). Separately, 40% of all days were High. Notice that Sunny days are simply **more numerous** — this already explains part of “9 against 6”.
 
 **See it.** The two margins are two ordinary one-variable bar charts (each block = 10% of the 50 days):
 
@@ -110,23 +110,24 @@ In plain words: a contingency table is a two-dimensional frequency table. The ma
 |                         | Medium   | ███ 30%              |
 |                         | High     | ████ 40%             |
 
-**Recall.** In [Module 2](module-02.qmd) you computed relative frequencies \\f_i = n_i/n\\ for one variable. A marginal distribution is exactly that, using the margins of the table as the counts.
+**Recall.** In [Module 2](module-02.qmd) you computed relative frequencies $f_i = n_i/n$ for one variable. A marginal distribution is exactly that, using the margins of the table as the counts.
 
-In plain words: a marginal distribution is the share of all \\n\\ individuals in each modality of one variable, read off the edge of the table — as if the other variable did not exist.
+In plain words: a marginal distribution is the share of all $n$ individuals in each modality of one variable, read off the edge of the table — as if the other variable did not exist.
 
 > **TIP:**
 >
-> Dividing each margin by the grand total \\n\\ gives the two **marginal distributions** (relative frequencies, as in Module 2): \\ \frac{n\_{i\cdot}}{n} \quad \text{(row variable)}, \qquad \frac{n\_{\cdot j}}{n} \quad \text{(column variable)}. \\ Each one sums to 1 (100%) and ignores the other variable entirely.
+> Dividing each margin by the grand total $n$ gives the two **marginal distributions** (relative frequencies, as in Module 2): $$\frac{n_{i\cdot}}{n} \quad \text{(row variable)}, \qquad
+> \frac{n_{\cdot j}}{n} \quad \text{(column variable)}.$$ Each one sums to 1 (100%) and ignores the other variable entirely.
 
 > **NOTE:**
 >
 > | Symbol | Read aloud | In our example (50 days) |
 > |----|----|----|
-> | \\n\\ | “n” | 50 days |
-> | \\n\_{i\cdot}\\ | “n sub i dot” | row totals: \\n\_{1\cdot} = 30\\, \\n\_{2\cdot} = 20\\ |
-> | \\n\_{\cdot j}\\ | “n sub dot j” | column totals: 15, 15, 20 |
-> | \\\frac{n\_{i\cdot}}{n}\\ | “n sub i dot over n” | \\30/50 = 60\\\\ Sunny, \\20/50 = 40\\\\ Rainy |
-> | \\\frac{n\_{\cdot j}}{n}\\ | “n sub dot j over n” | \\15/50 = 30\\\\, 30%, \\20/50 = 40\\\\ |
+> | $n$ | “n” | 50 days |
+> | $n_{i\cdot}$ | “n sub i dot” | row totals: $n_{1\cdot} = 30$, $n_{2\cdot} = 20$ |
+> | $n_{\cdot j}$ | “n sub dot j” | column totals: 15, 15, 20 |
+> | $\frac{n_{i\cdot}}{n}$ | “n sub i dot over n” | $30/50 = 60\%$ Sunny, $20/50 = 40\%$ Rainy |
+> | $\frac{n_{\cdot j}}{n}$ | “n sub dot j over n” | $15/50 = 30\%$, 30%, $20/50 = 40\%$ |
 >
 > **Whole formula as a sentence:** “the marginal share of a modality is its row (or column) total divided by the grand total.”
 
@@ -134,11 +135,11 @@ In plain words: a marginal distribution is the share of all \\n\\ individuals in
 
 **Try it.** To answer the hook, compute percentages **within each row**: divide every cell by its own row total (30 for Sunny, 20 for Rainy), not by 50.
 
-| Weather  Revenue       | Low | Medium | High | Total |
-|------------------------|----:|-------:|-----:|------:|
-| Sunny (\\\div 30\\)    |   ? |      ? |    ? |  100% |
-| Rainy (\\\div 20\\)    |   ? |      ? |    ? |  100% |
-| All days (\\\div 50\\) | 30% |    30% |  40% |  100% |
+| Weather  Revenue     | Low | Medium | High | Total |
+|----------------------|----:|-------:|-----:|------:|
+| Sunny ($\div 30$)    |   ? |      ? |    ? |  100% |
+| Rainy ($\div 20$)    |   ? |      ? |    ? |  100% |
+| All days ($\div 50$) | 30% |    30% |  40% |  100% |
 
 1.  Is a medium day more likely when it is sunny?
 2.  How do High days compare between the two kinds of weather?
@@ -146,15 +147,15 @@ In plain words: a marginal distribution is the share of all \\n\\ individuals in
 
 > **CAUTION:**
 >
-> | Weather  Revenue       | Low | Medium | High | Total |
-> |------------------------|----:|-------:|-----:|------:|
-> | Sunny (\\\div 30\\)    | 10% |    30% |  60% |  100% |
-> | Rainy (\\\div 20\\)    | 60% |    30% |  10% |  100% |
-> | All days (\\\div 50\\) | 30% |    30% |  40% |  100% |
+> | Weather  Revenue     | Low | Medium | High | Total |
+> |----------------------|----:|-------:|-----:|------:|
+> | Sunny ($\div 30$)    | 10% |    30% |  60% |  100% |
+> | Rainy ($\div 20$)    | 60% |    30% |  10% |  100% |
+> | All days ($\div 50$) | 30% |    30% |  40% |  100% |
 >
-> 1.  No: \\9/30 = 30\\\\ and \\6/20 = 30\\\\. “9 against 6” only reflects that there were more Sunny days.
-> 2.  \\18/30 = 60\\\\ of Sunny days were High, against \\2/20 = 10\\\\ of Rainy days: here the weather really makes a difference.
-> 3.  \\18/20 = 90\\\\ of High days were Sunny. This is a different question (“given High”) from question 2 (“given Sunny”), so it has a different answer.
+> 1.  No: $9/30 = 30\%$ and $6/20 = 30\%$. “9 against 6” only reflects that there were more Sunny days.
+> 2.  $18/30 = 60\%$ of Sunny days were High, against $2/20 = 10\%$ of Rainy days: here the weather really makes a difference.
+> 3.  $18/20 = 90\%$ of High days were Sunny. This is a different question (“given High”) from question 2 (“given Sunny”), so it has a different answer.
 
 **See it.** Each row now has its own 100% bar (each block = 10% of that row):
 
@@ -170,21 +171,21 @@ In plain words: to compare Sunny vs Rainy days fairly, don’t compare raw count
 
 > **NOTE:**
 >
-> A **conditional distribution** is the distribution of one variable *restricted* to a single modality of the other — one row (or one column), rescaled to its own row (or column) total instead of the grand total \\n\\. It answers “given this category, how is the other variable distributed?”, which the raw counts alone cannot, since row totals differ in size.
+> A **conditional distribution** is the distribution of one variable *restricted* to a single modality of the other — one row (or one column), rescaled to its own row (or column) total instead of the grand total $n$. It answers “given this category, how is the other variable distributed?”, which the raw counts alone cannot, since row totals differ in size.
 
 > **TIP:**
 >
-> Given row modality \\i\\, the share of column modality \\j\\ is \\ \frac{n\_{ij}}{n\_{i\cdot}} \quad \text{(row percentages)}, \\ and given column modality \\j\\, the share of row modality \\i\\ is \\ \frac{n\_{ij}}{n\_{\cdot j}} \quad \text{(column percentages)}. \\ Each conditional distribution sums to 1 (100%) over its own row (or column).
+> Given row modality $i$, the share of column modality $j$ is $$\frac{n_{ij}}{n_{i\cdot}} \quad \text{(row percentages)},$$ and given column modality $j$, the share of row modality $i$ is $$\frac{n_{ij}}{n_{\cdot j}} \quad \text{(column percentages)}.$$ Each conditional distribution sums to 1 (100%) over its own row (or column).
 
 > **NOTE:**
 >
 > | Symbol | Read aloud | In our example (50 days) |
 > |----|----|----|
-> | \\n\_{ij}\\ | “n sub i j” | \\n\_{13} = 18\\ Sunny and High days |
-> | \\n\_{i\cdot}\\ | “n sub i dot” | \\n\_{1\cdot} = 30\\ Sunny days |
-> | \\n\_{\cdot j}\\ | “n sub dot j” | \\n\_{\cdot 3} = 20\\ High days |
-> | \\\frac{n\_{ij}}{n\_{i\cdot}}\\ | “n sub i j over n sub i dot” — “given row i” | \\18/30 = 60\\\\ of Sunny days were High |
-> | \\\frac{n\_{ij}}{n\_{\cdot j}}\\ | “n sub i j over n sub dot j” — “given column j” | \\18/20 = 90\\\\ of High days were Sunny |
+> | $n_{ij}$ | “n sub i j” | $n_{13} = 18$ Sunny and High days |
+> | $n_{i\cdot}$ | “n sub i dot” | $n_{1\cdot} = 30$ Sunny days |
+> | $n_{\cdot j}$ | “n sub dot j” | $n_{\cdot 3} = 20$ High days |
+> | $\frac{n_{ij}}{n_{i\cdot}}$ | “n sub i j over n sub i dot” — “given row i” | $18/30 = 60\%$ of Sunny days were High |
+> | $\frac{n_{ij}}{n_{\cdot j}}$ | “n sub i j over n sub dot j” — “given column j” | $18/20 = 90\%$ of High days were Sunny |
 >
 > **Whole formula as a sentence:** “the conditional share is the count in one cell divided by the total of the row (or column) you are restricting to — not by the grand total.”
 
@@ -192,9 +193,9 @@ In plain words: to compare Sunny vs Rainy days fairly, don’t compare raw count
 
 When both variables are **quantitative**, grouping them into classes throws information away. Plot the raw pairs instead.
 
-**Try it.** Five days from the same truck (a simplified extract): temperature \\x\\ and number of items sold \\y\\.
+**Try it.** Five days from the same truck (a simplified extract): temperature $x$ and number of items sold $y$.
 
-| Day | Temperature \\x\\ (°C) | Items sold \\y\\ | \\x\\ above its mean? | \\y\\ above its mean? |
+| Day | Temperature $x$ (°C) | Items sold $y$ | $x$ above its mean? | $y$ above its mean? |
 |----|---:|---:|----|----|
 | 1 | 12 | 40 | ? | ? |
 | 2 | 16 | 55 | ? | ? |
@@ -204,21 +205,21 @@ When both variables are **quantitative**, grouping them into classes throws info
 | **Total** | **?** | **?** |  |  |
 | **Mean** | **?** | **?** |  |  |
 
-1.  On squared paper, draw an \\x\\ axis from 10 to 30 °C and a \\y\\ axis from 30 to 90 items. Plot one point per day at \\(x, y)\\.
+1.  On squared paper, draw an $x$ axis from 10 to 30 °C and a $y$ axis from 30 to 90 items. Plot one point per day at $(x, y)$.
 2.  Compute both means, draw a vertical line at the mean temperature and a horizontal line at the mean number of items, then fill the last two columns.
 3.  How many points lie in the lower-left or upper-right quarters of the plot? Which day goes against the trend?
 
 > **CAUTION:**
 >
-> | Day       | \\x\\ (°C) |   \\y\\ | \\x\\ above 20? | \\y\\ above 60? |
-> |-----------|-----------:|--------:|-----------------|-----------------|
-> | 1         |         12 |      40 | no              | no              |
-> | 2         |         16 |      55 | no              | no              |
-> | 3         |         21 |      50 | yes             | no              |
-> | 4         |         24 |      70 | yes             | yes             |
-> | 5         |         27 |      85 | yes             | yes             |
-> | **Total** |    **100** | **300** |                 |                 |
-> | **Mean**  |     **20** |  **60** |                 |                 |
+> | Day       | $x$ (°C) |     $y$ | $x$ above 20? | $y$ above 60? |
+> |-----------|---------:|--------:|---------------|---------------|
+> | 1         |       12 |      40 | no            | no            |
+> | 2         |       16 |      55 | no            | no            |
+> | 3         |       21 |      50 | yes           | no            |
+> | 4         |       24 |      70 | yes           | yes           |
+> | 5         |       27 |      85 | yes           | yes           |
+> | **Total** |  **100** | **300** |               |               |
+> | **Mean**  |   **20** |  **60** |               |               |
 >
 > Four of the five points (Days 1, 2, 4, 5) are in the lower-left or upper-right quarter: warmer days tend to sell more. Day 3 (21 °C, 50 items) is slightly warmer than average but sells below average — the points rise to the right, but not along a perfect line.
 
@@ -320,7 +321,7 @@ In plain words: each day becomes a dot at (temperature, revenue). The cloud of d
 
 > **NOTE:**
 >
-> A **scatter plot** places one point per individual, using one quantitative variable for the \\x\\-coordinate and another for the \\y\\-coordinate. It is the standard first look at a possible relationship between two quantitative variables, before computing any numerical summary.
+> A **scatter plot** places one point per individual, using one quantitative variable for the $x$-coordinate and another for the $y$-coordinate. It is the standard first look at a possible relationship between two quantitative variables, before computing any numerical summary.
 
 ## 2 Worked example
 
@@ -339,7 +340,7 @@ From “The Wandering Fork”’s Harbour 30-day subset (`wandering-fork.xlsx`, 
 
 **Step 2 — read the pattern.** All 6 days in the lowest revenue class \[400,500\[ were either Cloudy or Rainy — zero Sunny days earned under €500. Conversely, Sunny days account for 10 of the 18 days earning €600 or more, including 6 of the 8 days in \[600,700\[. This is a first, purely visual hint that better weather is associated with higher revenue.
 
-**Step 3 — conditional distribution.** Restricting to Sunny days only (row total 13) and rescaling each cell by 13 instead of 30 gives the *conditional* distribution of revenue class **given Sunny**: \\0\\, 23.1\\, 46.2\\, 23.1\\, 7.7\\\\ for the five classes (rounded; they sum to \\100\\\\ before rounding) — compare this to the *unconditional* column percentages from Module 3 (20.0%, 20.0%, 26.7%, 23.3%, 10.0%): Sunny days are visibly shifted toward the higher revenue classes, confirming the pattern from Step 2 with actual percentages instead of raw counts.
+**Step 3 — conditional distribution.** Restricting to Sunny days only (row total 13) and rescaling each cell by 13 instead of 30 gives the *conditional* distribution of revenue class **given Sunny**: $0\%, 23.1\%, 46.2\%, 23.1\%, 7.7\%$ for the five classes (rounded; they sum to $100\%$ before rounding) — compare this to the *unconditional* column percentages from Module 3 (20.0%, 20.0%, 26.7%, 23.3%, 10.0%): Sunny days are visibly shifted toward the higher revenue classes, confirming the pattern from Step 2 with actual percentages instead of raw counts.
 
 ### 2.2 Scatter plot — `temperature_c` vs `daily_revenue_eur`
 
@@ -349,7 +350,7 @@ Plotting `temperature_c` (x-axis) against `daily_revenue_eur` (y-axis) for all 3
 
 > **CAUTION:**
 >
-> Let \\n\_{ij}\\ be the contingency table’s cell counts, with row modalities \\i=1,\dots,r\\ and column modalities \\j=1,\dots,c\\. Every one of the \\n\\ individuals is counted in exactly one cell, so summing across all columns for a fixed row \\i\\ recovers that row modality’s total univariate count: \\ n\_{i\cdot} = \sum\_{j=1}^{c} n\_{ij}. \\ For “The Wandering Fork”, row \\i=\text{Sunny}\\: \\0+3+6+3+1 = 13\\, matching Module 2’s Sunny count exactly — this is not a coincidence but a direct consequence of the contingency table partitioning the same 30 rows both by `weather` and, independently, by `daily_revenue_eur` class.
+> Let $n_{ij}$ be the contingency table’s cell counts, with row modalities $i=1,\dots,r$ and column modalities $j=1,\dots,c$. Every one of the $n$ individuals is counted in exactly one cell, so summing across all columns for a fixed row $i$ recovers that row modality’s total univariate count: $$n_{i\cdot} = \sum_{j=1}^{c} n_{ij}.$$ For “The Wandering Fork”, row $i=\text{Sunny}$: $0+3+6+3+1 = 13$, matching Module 2’s Sunny count exactly — this is not a coincidence but a direct consequence of the contingency table partitioning the same 30 rows both by `weather` and, independently, by `daily_revenue_eur` class.
 
 ## 4 Visual intuition
 
@@ -369,13 +370,14 @@ Step 2 of the five-day scatter figure shows where that number comes from: the tw
 >
 > Out of the 12 Cloudy days, what proportion earned in the top two revenue classes (\[700,800\[ or \[800,900\[)?
 >
-> **Solution.** Cloudy row: \\3+2=5\\ days in the top two classes out of 12 Cloudy days total, i.e. \\5/12 \approx 41.7\\\\.
+> **Solution.** Cloudy row: $3+2=5$ days in the top two classes out of 12 Cloudy days total, i.e. $5/12 \approx 41.7\%$.
 
 > **CAUTION:**
 >
 > Verify that the column total for \[600,700\[ (8) is consistent with Module 3’s class frequency table.
 >
-> **Solution.** Column \[600,700\[: \\6\\(\text{Sunny}) + 2\\(\text{Cloudy}) + 0\\(\text{Rainy}) = 8\\, matching Module 3’s \\n\_{\[600,700\[}=8\\ exactly.
+> **Solution.** Column \[600,700\[: $6\,(\text{Sunny}) + 2\,(\text{Cloudy})
+> + 0\,(\text{Rainy}) = 8$, matching Module 3’s $n_{[600,700[}=8$ exactly.
 
 > **CAUTION:**
 >
@@ -385,26 +387,26 @@ Step 2 of the five-day scatter figure shows where that number comes from: the tw
 
 > **CAUTION:**
 >
-> Use the Harbour 30-day table of the worked example, with rows \\i = 1\\ (Sunny), \\2\\ (Cloudy), \\3\\ (Rainy) and columns \\j = 1\\ (\[400,500\[) to \\j = 5\\ (\[800,900\[).
+> Use the Harbour 30-day table of the worked example, with rows $i = 1$ (Sunny), $2$ (Cloudy), $3$ (Rainy) and columns $j = 1$ (\[400,500\[) to $j = 5$ (\[800,900\[).
 >
-> 1.  Read \\\frac{n\_{ij}}{n\_{i\cdot}}\\ aloud as one sentence. Which distribution is it?
+> 1.  Read $\frac{n_{ij}}{n_{i\cdot}}$ aloud as one sentence. Which distribution is it?
 >
-> 2.  Compute \\n\_{3\cdot}\\, \\n\_{\cdot 1}\\ and \\\frac{n\_{31}}{n\_{3\cdot}}\\, and say in words what the last number means.
+> 2.  Compute $n_{3\cdot}$, $n_{\cdot 1}$ and $\frac{n_{31}}{n_{3\cdot}}$, and say in words what the last number means.
 >
-> 3.  Compute \\\frac{n\_{31}}{n\_{\cdot 1}}\\. Why is it different from (b)?
+> 3.  Compute $\frac{n_{31}}{n_{\cdot 1}}$. Why is it different from (b)?
 >
-> **Solution.** (a) “The count in cell \\i\\, \\j\\ divided by the total of row \\i\\”: the conditional distribution of the column variable given row modality \\i\\ (row percentages). (b) \\n\_{3\cdot} = 3+1+0+1+0 = 5\\ Rainy days; \\n\_{\cdot 1} = 0+3+3 = 6\\ days in \[400,500\[; \\\frac{n\_{31}}{n\_{3\cdot}} = 3/5 = 60\\\\: “60% of Rainy days earned under €500”. (c) \\\frac{n\_{31}}{n\_{\cdot 1}} = 3/6 = 50\\\\: “half of the days under €500 were Rainy”. The cell is the same, but (b) restricts to the Rainy row and (c) to the \[400,500\[ column.
+> **Solution.** (a) “The count in cell $i$, $j$ divided by the total of row $i$”: the conditional distribution of the column variable given row modality $i$ (row percentages). (b) $n_{3\cdot} = 3+1+0+1+0 = 5$ Rainy days; $n_{\cdot 1} = 0+3+3 = 6$ days in \[400,500\[; $\frac{n_{31}}{n_{3\cdot}} = 3/5 = 60\%$: “60% of Rainy days earned under €500”. (c) $\frac{n_{31}}{n_{\cdot 1}} = 3/6 = 50\%$: “half of the days under €500 were Rainy”. The cell is the same, but (b) restricts to the Rainy row and (c) to the \[400,500\[ column.
 
 > **CAUTION:**
 >
-> Use the 50-day table of the hook, with rows \\i = 1\\ (Sunny), \\2\\ (Rainy) and columns \\j = 1\\ (Low), \\2\\ (Medium), \\3\\ (High). Write in symbols, then compute:
+> Use the 50-day table of the hook, with rows $i = 1$ (Sunny), $2$ (Rainy) and columns $j = 1$ (Low), $2$ (Medium), $3$ (High). Write in symbols, then compute:
 >
 > 1.  “the number of Rainy days with High revenue”;
 > 2.  “the share of all days that were Sunny”;
 > 3.  “among High days, the share that were Sunny”;
 > 4.  “the total number of Medium days, adding down the column”.
 >
-> **Solution.** (a) \\n\_{23} = 2\\. (b) \\\frac{n\_{1\cdot}}{n} = 30/50 = 60\\\\. (c) \\\frac{n\_{13}}{n\_{\cdot 3}} = 18/20 = 90\\\\. (d) \\n\_{\cdot 2} = \sum_i n\_{i2} = 9 + 6 = 15\\.
+> **Solution.** (a) $n_{23} = 2$. (b) $\frac{n_{1\cdot}}{n} = 30/50 = 60\%$. (c) $\frac{n_{13}}{n_{\cdot 3}} = 18/20 = 90\%$. (d) $n_{\cdot 2} = \sum_i n_{i2} = 9 + 6 = 15$.
 
 ## 7 Common mistakes
 
@@ -422,16 +424,16 @@ Five minutes, no calculator needed except for question 4.
 
 1.  In one sentence, what is the difference between a marginal and a conditional distribution?
 2.  Why compare row percentages rather than raw counts when the row totals differ?
-3.  Read \\n\_{\cdot j} = \sum_i n\_{ij}\\ aloud as a sentence.
+3.  Read $n_{\cdot j} = \sum_i n_{ij}$ aloud as a sentence.
 4.  Harbour had 12 good days and 8 bad days; Campus had 9 good days and 21 bad days. Compute the share of good days given each franchise.
 5.  A scatter plot of temperature and items sold rises to the right. Can you conclude that heat causes the extra sales? Why?
 
 > **CAUTION:**
 >
-> 1.  A marginal distribution describes one variable over all \\n\\ individuals, ignoring the other; a conditional distribution describes it within one modality of the other variable only.
+> 1.  A marginal distribution describes one variable over all $n$ individuals, ignoring the other; a conditional distribution describes it within one modality of the other variable only.
 > 2.  Because a bigger row has bigger counts even when nothing differs: in the hook, 9 vs 6 medium days were 30% vs 30%.
-> 3.  “The column margin \\n\_{\cdot j}\\ is the sum, over all rows \\i\\, of the counts in column \\j\\.”
-> 4.  Harbour: \\12/20 = 60\\\\; Campus: \\9/30 = 30\\\\ (row totals 20 and 30, not the grand total 50).
+> 3.  “The column margin $n_{\cdot j}$ is the sum, over all rows $i$, of the counts in column $j$.”
+> 4.  Harbour: $12/20 = 60\%$; Campus: $9/30 = 30\%$ (row totals 20 and 30, not the grand total 50).
 > 5.  No: a scatter plot only shows association. Other factors (season, events, foot traffic) can drive both; Module 9 measures the linear association, but neither proves causation.
 
 ## 9 Homework — Excel lab
@@ -478,7 +480,7 @@ For the **full table** (120 days per franchise) use the Excel Table `tblFork` an
 > | Rainy                        | 60% |    30% |  10% |   20 days |
 > | Grand total (% of all days)  | 30% |    30% |  40% |   50 days |
 >
-> Scatter plot: five points rising to the right; `AVERAGE` gives 20 °C and 60 items. If the chart looks wrong, check that temperature is the left-hand column (Excel uses it for the \\x\\ axis).
+> Scatter plot: five points rising to the right; `AVERAGE` gives 20 °C and 60 items. If the chart looks wrong, check that temperature is the left-hand column (Excel uses it for the $x$ axis).
 
 > **CAUTION:**
 >
@@ -502,7 +504,7 @@ For the **full table** (120 days per franchise) use the Excel Table `tblFork` an
 >
 > **How to.** Filter `tblFork` to Harbour, select `foot_traffic` then `daily_revenue_eur` (x column first), and choose **Insert → Chart → Scatter (X Y)**.
 >
-> **Solution.** Strong positive linear trend: more foot traffic clearly associates with higher revenue. The points cluster tightly around an upward line — much tighter than temperature vs revenue. This visually confirms the \\r \ge 0.80\\ correlation from the dataset design.
+> **Solution.** Strong positive linear trend: more foot traffic clearly associates with higher revenue. The points cluster tightly around an upward line — much tighter than temperature vs revenue. This visually confirms the $r \ge 0.80$ correlation from the dataset design.
 
 > **CAUTION:**
 >

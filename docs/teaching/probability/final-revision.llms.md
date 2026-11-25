@@ -4,7 +4,7 @@
 
 ## 1 Exercice 1 — Statistiques bivariées (30 points)
 
-### 1.1 Partie A — Tableau de contingence et test du \\\chi^2\\ (16 points)
+### 1.1 Partie A — Tableau de contingence et test du $\chi^2$ (16 points)
 
 Une enquête de satisfaction est menée auprès de **200 salariés** d’une entreprise. On croise deux variables :
 
@@ -21,58 +21,60 @@ Une enquête de satisfaction est menée auprès de **200 salariés** d’une ent
 
 **2.** *(3 pts)* Calculer les probabilités suivantes :
 
-- \\P(\text{Insatisfait} \mid \text{Cadre})\\,
-- \\P(\text{Satisfait})\\,
-- \\P(\text{Cadre} \mid \text{Neutre})\\.
+- $P(\text{Insatisfait} \mid \text{Cadre})$,
+- $P(\text{Satisfait})$,
+- $P(\text{Cadre} \mid \text{Neutre})$.
 
-**3.** *(4 pts)* Calculer les **effectifs théoriques** \\e\_{ij}\\ sous l’hypothèse d’indépendance. Vérifier qu’ils sont tous supérieurs à 5.
+**3.** *(4 pts)* Calculer les **effectifs théoriques** $e_{ij}$ sous l’hypothèse d’indépendance. Vérifier qu’ils sont tous supérieurs à 5.
 
-**4.** *(4 pts)* Calculer la **statistique du test** \\T = \sum\_{i,j} \frac{(o\_{ij} - e\_{ij})^2}{e\_{ij}}.\\ Conclure au seuil \\\alpha = 5\\\\\\ en comparant \\T\\ à \\\chi^2\_{2\\;\\0{,}05} = 5{,}991\\.
+**4.** *(4 pts)* Calculer la **statistique du test** $$T = \sum_{i,j} \frac{(o_{ij} - e_{ij})^2}{e_{ij}}.$$ Conclure au seuil $\alpha = 5\,\%$ en comparant $T$ à $\chi^2_{2\,;\,0{,}05} = 5{,}991$.
 
-**5.** *(2 pts)* Interpréter le résultat en termes de lien entre le statut et le niveau de satisfaction. Quelle case contribue le plus à \\T\\ ?
+**5.** *(2 pts)* Interpréter le résultat en termes de lien entre le statut et le niveau de satisfaction. Quelle case contribue le plus à $T$ ?
 
 ------------------------------------------------------------------------
 
 ### 1.2 Partie B — Droite de régression (14 points)
 
-Un analyste relève, pour 5 actifs financiers, la **volatilité annuelle** \\x_i\\ (en %) et le **rendement moyen** \\y_i\\ (en %) :
+Un analyste relève, pour 5 actifs financiers, la **volatilité annuelle** $x_i$ (en %) et le **rendement moyen** $y_i$ (en %) :
 
-|    Actif    |  A  |  B  |  C  |  D  |  E  |
-|:-----------:|:---:|:---:|:---:|:---:|:---:|
-|   \\x_i\\   |  1  |  2  |  3  |  4  |  5  |
-| \\y_i\\ (%) |  2  |  4  |  5  |  8  | 11  |
+|   Actif   |  A  |  B  |  C  |  D  |  E  |
+|:---------:|:---:|:---:|:---:|:---:|:---:|
+|   $x_i$   |  1  |  2  |  3  |  4  |  5  |
+| $y_i$ (%) |  2  |  4  |  5  |  8  | 11  |
 
-*On donne :* \\\displaystyle\sum\_{i=1}^5 x_i^2 = 55\\, \\\displaystyle\sum\_{i=1}^5 x_iy_i = 112\\, \\\displaystyle\sum\_{i=1}^5 y_i^2 = 230\\.
+*On donne :* $\displaystyle\sum_{i=1}^5 x_i^2 = 55$, $\displaystyle\sum_{i=1}^5 x_iy_i = 112$, $\displaystyle\sum_{i=1}^5 y_i^2 = 230$.
 
-**6.** *(3 pts)* Calculer \\\bar{x}\\, \\\bar{y}\\, puis \\S\_{xx} = \sum x_i^2 - n\bar{x}^2, \quad S\_{xy} = \sum x_iy_i - n\bar{x}\bar{y}, \quad S\_{yy} = \sum y_i^2 - n\bar{y}^2.\\
+**6.** *(3 pts)* Calculer $\bar{x}$, $\bar{y}$, puis $$S_{xx} = \sum x_i^2 - n\bar{x}^2, \quad
+  S_{xy} = \sum x_iy_i - n\bar{x}\bar{y}, \quad
+  S_{yy} = \sum y_i^2 - n\bar{y}^2.$$
 
-**7.** *(4 pts)* Déterminer les coefficients \\\hat{b} = S\_{xy}/S\_{xx}\\ et \\\hat{a} = \bar{y} - \hat{b}\\\bar{x}\\ et écrire l’équation de la droite de régression \\\hat{y} = \hat{a} + \hat{b}\\x\\.
+**7.** *(4 pts)* Déterminer les coefficients $\hat{b} = S_{xy}/S_{xx}$ et $\hat{a} = \bar{y} - \hat{b}\,\bar{x}$ et écrire l’équation de la droite de régression $\hat{y} = \hat{a} + \hat{b}\,x$.
 
-**8.** *(4 pts)* Calculer le **coefficient de corrélation de Pearson** \\r = S\_{xy}/\sqrt{S\_{xx}\\S\_{yy}}\\ et le coefficient de détermination \\r^2\\. Commenter la qualité de l’ajustement.
+**8.** *(4 pts)* Calculer le **coefficient de corrélation de Pearson** $r = S_{xy}/\sqrt{S_{xx}\,S_{yy}}$ et le coefficient de détermination $r^2$. Commenter la qualité de l’ajustement.
 
-**9.** *(3 pts)* Un sixième actif a une volatilité \\x = 6\\\\\\. Donner la prédiction de son rendement et discuter la fiabilité de cette extrapolation.
+**9.** *(3 pts)* Un sixième actif a une volatilité $x = 6\,\%$. Donner la prédiction de son rendement et discuter la fiabilité de cette extrapolation.
 
 ------------------------------------------------------------------------
 
 ## 2 Exercice 2 — Couple de variables aléatoires continues (40 points)
 
-Soit \\(X,Y)\\ un couple de variables aléatoires dont la **densité conjointe** est \\f(x,y) = \begin{cases} 2 & \text{si } 0 \leq y \leq x \leq 1, \\ 0 & \text{sinon.} \end{cases}\\
+Soit $(X,Y)$ un couple de variables aléatoires dont la **densité conjointe** est $$f(x,y) = \begin{cases} 2 & \text{si } 0 \leq y \leq x \leq 1, \\ 0 & \text{sinon.} \end{cases}$$
 
-**1.** *(2 pts)* Vérifier que \\\displaystyle\iint\_{\mathbb{R}^2} f(x,y)\\dx\\dy = 1\\. *(Préciser le domaine d’intégration et justifier le calcul par l’ordre choisi.)*
+**1.** *(2 pts)* Vérifier que $\displaystyle\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy = 1$. *(Préciser le domaine d’intégration et justifier le calcul par l’ordre choisi.)*
 
-**2.** *(6 pts)* Calculer les **densités marginales** \\f_X(x)\\ et \\f_Y(y)\\ sur leur support respectif. Vérifier dans chaque cas que la densité intègre à 1.
+**2.** *(6 pts)* Calculer les **densités marginales** $f_X(x)$ et $f_Y(y)$ sur leur support respectif. Vérifier dans chaque cas que la densité intègre à 1.
 
-**3.** *(4 pts)* Montrer que \\X\\ et \\Y\\ ne sont **pas indépendantes**. *(Comparer \\f(x,y)\\ au produit \\f_X(x)\\f_Y(y)\\ pour un couple de valeurs particulier.)*
+**3.** *(4 pts)* Montrer que $X$ et $Y$ ne sont **pas indépendantes**. *(Comparer* $f(x,y)$ au produit $f_X(x)\,f_Y(y)$ pour un couple de valeurs particulier.)
 
-**4.** *(8 pts)* Calculer \\\mathbb{E}\[X\]\\, \\\mathbb{E}\[X^2\]\\ et \\\mathrm{Var}(X)\\. Puis calculer \\\mathbb{E}\[Y\]\\, \\\mathbb{E}\[Y^2\]\\ et \\\mathrm{Var}(Y)\\.
+**4.** *(8 pts)* Calculer $\mathbb{E}[X]$, $\mathbb{E}[X^2]$ et $\mathrm{Var}(X)$. Puis calculer $\mathbb{E}[Y]$, $\mathbb{E}[Y^2]$ et $\mathrm{Var}(Y)$.
 
-**5.** *(7 pts)* Calculer \\\mathbb{E}\[XY\]\\, puis la **covariance** \\\mathrm{Cov}(X,Y)\\ et le **coefficient de corrélation** \\\rho(X,Y) = \mathrm{Cov}(X,Y)/\sqrt{\mathrm{Var}(X)\\\mathrm{Var}(Y)}\\. Interpréter le signe et la valeur de \\\rho\\.
+**5.** *(7 pts)* Calculer $\mathbb{E}[XY]$, puis la **covariance** $\mathrm{Cov}(X,Y)$ et le **coefficient de corrélation** $\rho(X,Y) = \mathrm{Cov}(X,Y)/\sqrt{\mathrm{Var}(X)\,\mathrm{Var}(Y)}$. Interpréter le signe et la valeur de $\rho$.
 
-**6.** *(5 pts)* Déterminer la **densité conditionnelle** \\f\_{Y\mid X=x}(y)\\ de \\Y\\ sachant \\X = x\\. Reconnaître la loi de \\Y \mid X = x\\ et vérifier la normalisation.
+**6.** *(5 pts)* Déterminer la **densité conditionnelle** $f_{Y\mid X=x}(y)$ de $Y$ sachant $X = x$. Reconnaître la loi de $Y \mid X = x$ et vérifier la normalisation.
 
-**7.** *(4 pts)* En utilisant la densité conditionnelle de la question 6, calculer \\P\\\left(Y \< \dfrac{X}{2}\right)\\. *(On pourra conditionner par \\X\\ et utiliser la loi totale des probabilités.)*
+**7.** *(4 pts)* En utilisant la densité conditionnelle de la question 6, calculer $P\!\left(Y < \dfrac{X}{2}\right)$. *(On pourra conditionner par* $X$ et utiliser la loi totale des probabilités.)
 
-**8.** *(4 pts)* Calculer \\P\\\left(X \> \dfrac{3}{4}\right)\\ à partir de \\f_X\\, puis \\P\\\left(Y \< \dfrac{1}{4} \\\middle\|\\ X = \dfrac{3}{4}\right)\\.
+**8.** *(4 pts)* Calculer $P\!\left(X > \dfrac{3}{4}\right)$ à partir de $f_X$, puis $P\!\left(Y < \dfrac{1}{4} \;\middle|\; X = \dfrac{3}{4}\right)$.
 
 ------------------------------------------------------------------------
 
@@ -80,39 +82,39 @@ Soit \\(X,Y)\\ un couple de variables aléatoires dont la **densité conjointe**
 
 ### 3.1 Partie A — Inégalités de concentration (8 points)
 
-Soit \\X\\ une variable aléatoire **positive**, d’espérance \\\mathbb{E}\[X\] = 6\\ et de variance \\\mathrm{Var}(X) = 9\\.
+Soit $X$ une variable aléatoire **positive**, d’espérance $\mathbb{E}[X] = 6$ et de variance $\mathrm{Var}(X) = 9$.
 
-**1.** *(2 pts)* En appliquant l’**inégalité de Markov**, majorer \\P(X \geq 18)\\.
+**1.** *(2 pts)* En appliquant l’**inégalité de Markov**, majorer $P(X \geq 18)$.
 
-**2.** *(3 pts)* En appliquant l’**inégalité de Bienaymé-Tchebychev**, majorer \\P(\|X - 6\| \geq 6)\\. En déduire une borne inférieure de \\P(0 \< X \< 12)\\.
+**2.** *(3 pts)* En appliquant l’**inégalité de Bienaymé-Tchebychev**, majorer $P(|X - 6| \geq 6)$. En déduire une borne inférieure de $P(0 < X < 12)$.
 
-**3.** *(3 pts)* On suppose maintenant \\X \sim \mathcal{N}(6,\\9)\\. Calculer \\P(0 \< X \< 12)\\ **exactement** à l’aide de la table \\\Phi\\, et comparer avec la borne de la question 2. Commenter.
+**3.** *(3 pts)* On suppose maintenant $X \sim \mathcal{N}(6,\,9)$. Calculer $P(0 < X < 12)$ **exactement** à l’aide de la table $\Phi$, et comparer avec la borne de la question 2. Commenter.
 
 ------------------------------------------------------------------------
 
 ### 3.2 Partie B — Maximum de vraisemblance (10 points)
 
-Des temps de traitement \\T_1, \ldots, T_n\\ sont supposés **i.i.d.** de loi \\\mathcal{E}(\lambda)\\, de densité \\f(t\\;\\\lambda) = \lambda\\e^{-\lambda t}\\ pour \\t \> 0\\.
+Des temps de traitement $T_1, \ldots, T_n$ sont supposés **i.i.d.** de loi $\mathcal{E}(\lambda)$, de densité $f(t\,;\,\lambda) = \lambda\,e^{-\lambda t}$ pour $t > 0$.
 
-**4.** *(4 pts)* Écrire la **vraisemblance** \\L(\lambda) = \prod\_{i=1}^n f(T_i\\;\\\lambda)\\ et la **log-vraisemblance** \\\ell(\lambda) = \ln L(\lambda)\\. *(Simplifier au maximum les deux expressions.)*
+**4.** *(4 pts)* Écrire la **vraisemblance** $L(\lambda) = \prod_{i=1}^n f(T_i\,;\,\lambda)$ et la **log-vraisemblance** $\ell(\lambda) = \ln L(\lambda)$. *(Simplifier au maximum les deux expressions.)*
 
-**5.** *(4 pts)* Calculer \\\dfrac{d\ell}{d\lambda}\\ et résoudre \\\dfrac{d\ell}{d\lambda} = 0\\ pour déterminer l’**estimateur du maximum de vraisemblance** \\\hat{\lambda}\\.
+**5.** *(4 pts)* Calculer $\dfrac{d\ell}{d\lambda}$ et résoudre $\dfrac{d\ell}{d\lambda} = 0$ pour déterminer l’**estimateur du maximum de vraisemblance** $\hat{\lambda}$.
 
-**6.** *(2 pts)* Sur un échantillon de \\n = 25\\ observations, on mesure \\\bar{t} = 4{,}0\\ s. Calculer \\\hat{\lambda}\\ et estimer \\\mathbb{E}\[T\] = 1/\lambda\\.
+**6.** *(2 pts)* Sur un échantillon de $n = 25$ observations, on mesure $\bar{t} = 4{,}0$ s. Calculer $\hat{\lambda}$ et estimer $\mathbb{E}[T] = 1/\lambda$.
 
 ------------------------------------------------------------------------
 
 ### 3.3 Partie C — Intervalle de confiance pour une moyenne (12 points)
 
-On mesure le temps de réponse (en ms) d’une API sur \\n = 100\\ requêtes indépendantes. On obtient \\\bar{x} = 85\\ ms et une **variance empirique corrigée** \\s^2 = 400\\ ms².
+On mesure le temps de réponse (en ms) d’une API sur $n = 100$ requêtes indépendantes. On obtient $\bar{x} = 85$ ms et une **variance empirique corrigée** $s^2 = 400$ ms².
 
-**7.** *(2 pts)* Justifier pourquoi on peut utiliser la loi normale pour construire un intervalle de confiance pour \\\mu\\. Donner la loi approchée de \\\bar{X}\_{100}\\ et préciser ses paramètres.
+**7.** *(2 pts)* Justifier pourquoi on peut utiliser la loi normale pour construire un intervalle de confiance pour $\mu$. Donner la loi approchée de $\bar{X}_{100}$ et préciser ses paramètres.
 
-**8.** *(3 pts)* Construire un **intervalle de confiance à 95 %** pour \\\mu\\.
+**8.** *(3 pts)* Construire un **intervalle de confiance à 95 %** pour $\mu$.
 
-**9.** *(3 pts)* Construire un **intervalle de confiance à 99 %** pour \\\mu\\.
+**9.** *(3 pts)* Construire un **intervalle de confiance à 99 %** pour $\mu$.
 
-**10.** *(4 pts)* En conservant \\s = 20\\ ms comme estimation de \\\sigma\\, quel effectif minimal \\n\\ faut-il pour que la demi-largeur de l’IC à 95 % soit inférieure ou égale à **2 ms** ?
+**10.** *(4 pts)* En conservant $s = 20$ ms comme estimation de $\sigma$, quel effectif minimal $n$ faut-il pour que la demi-largeur de l’IC à 95 % soit inférieure ou égale à **2 ms** ?
 
 ## Citation
 

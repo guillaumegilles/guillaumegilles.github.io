@@ -15,23 +15,11 @@ To get started:
 
 Annotations are **public by default**. Your questions and comments are visible to other students, which turns the course material into a shared living document. If you prefer to annotate privately, switch to *Only me* in the Hypothesis panel before posting.
 
-### English or French Track 
-
-While browsing courses you can switch between French and English tracks using the icon at the top of the page.
-
 ## Graduate
 
-![](./teaching/mathematical-finance/image.jpg)
+![](./teaching/data-description/financial-analysis/image.jpg)
 
-##### Financial Mathematics
-
-How do we compare, value, and arbitrate financial flows that occur at different points in time? This course equips Master 1 business-school students with the tools to answer…
-
-Guillaume Gilles
-
-![](./teaching/financial-analysis/image.jpg)
-
-##### Financial and Strategic Analysis of the Company
+##### Analyse Financière et Stratégique de l’Entreprise
 
 Guillaume Gilles
 
@@ -40,6 +28,14 @@ Guillaume Gilles
 ##### Information Systems Management
 
 Diagnostic sur les comptes individuels et sur les comptes consolidés. Étude de la profitabilité, de la solvabilité, de la structure financière et de la rentabilité (ROCE…
+
+Guillaume Gilles
+
+![](./teaching/mathematical-finance/image.jpg)
+
+##### Mathématiques financières
+
+Comment comparer, valoriser et arbitrer des flux financiers qui interviennent à des dates différentes ? Ce cours de 18 heures donne aux étudiants de Master 1 les outils pour…
 
 Guillaume Gilles
 

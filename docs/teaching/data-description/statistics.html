@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Guillaume Gilles">
 
-<title>1️⃣ What is statistics? – Guillaume Gilles</title>
+<title>1️⃣ What are statistics? – Guillaume Gilles</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -27,26 +27,42 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -61,14 +77,15 @@ div.csl-indent {
 <link href="../../assets/favicon.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-bd80c826246aa7a07474d267acf3e75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-04e2b25f2d5273009d62512832ec6cb3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -103,63 +120,8 @@ div.csl-indent {
     document.body.classList.add('hypothesis-enabled');
   });
 </script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  var path = window.location.pathname;
-  var isEnTeaching = path.startsWith('/teaching/');
-  var isFrTeaching = path.startsWith('/fr/teaching/');
-
-  function translateTool() {
-    var icon = document.querySelector('.bi-translate');
-    return icon ? icon.closest('.dropdown') : null;
-  }
-
-  // Outside the teaching section: hide the translate tool
-  if (!isEnTeaching && !isFrTeaching) {
-    var tool = translateTool();
-    if (tool) tool.style.display = 'none';
-    return;
-  }
-
-  // Skip RevealJS slides
-  if (document.body.classList.contains('reveal')) return;
-
-  // Courses with full page-for-page FR translations [EN prefix, FR prefix]
-  var fullPairs = [
-    ['/teaching/mathematical-fundamentals/', '/fr/teaching/mathematical-fundamentals/'],
-  ];
-
-  function frCounterpart(p) {
-    for (var i = 0; i < fullPairs.length; i++) {
-      if (p.startsWith(fullPairs[i][0]))
-        return fullPairs[i][1] + p.slice(fullPairs[i][0].length);
-    }
-    var slug = p.replace('/teaching/', '').split('/')[0];
-    return '/fr/teaching/' + slug + '/';
-  }
-
-  function enCounterpart(p) {
-    for (var i = 0; i < fullPairs.length; i++) {
-      if (p.startsWith(fullPairs[i][1]))
-        return fullPairs[i][0] + p.slice(fullPairs[i][1].length);
-    }
-    var slug = p.replace('/fr/teaching/', '').split('/')[0];
-    return '/teaching/' + slug + '/';
-  }
-
-  var enHref = isEnTeaching ? path : enCounterpart(path);
-  var frHref = isFrTeaching ? path : frCounterpart(path);
-
-  var tool = translateTool();
-  if (!tool) return;
-
-  tool.querySelectorAll('a.dropdown-item').forEach(function (a) {
-    var txt = a.textContent.trim();
-    if (txt.includes('English')) a.href = enHref;
-    else if (txt.includes('Français') || txt.includes('francais')) a.href = frHref;
-  });
-});
-</script>
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -191,19 +153,21 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="1️⃣ What is statistics? – Guillaume Gilles">
+<meta property="og:title" content="1️⃣ What are statistics? – Guillaume Gilles">
 <meta property="og:description" content="**By the end of this module, you will be able to:**
 
 - Distinguish descriptive statistics (summarising what happened) from inferential statistics (drawing conclusions about a larger population).">
-<meta property="og:image" content="https://ggilles.dev/teaching/data-description/assets/og-image.jpg">
+<meta property="og:image" content="https://ggilles.dev/assets/og-image.jpg">
 <meta property="og:site_name" content="Guillaume Gilles">
-<meta name="twitter:title" content="1️⃣ What is statistics? – Guillaume Gilles">
+<meta property="og:image:height" content="1440">
+<meta property="og:image:width" content="1920">
+<meta name="twitter:title" content="1️⃣ What are statistics? – Guillaume Gilles">
 <meta name="twitter:description" content="**By the end of this module, you will be able to:**
 
 - Distinguish descriptive statistics (summarising what happened) from inferential statistics (drawing conclusions about a larger population).">
-<meta name="twitter:image" content="https://ggilles.dev/teaching/data-description/assets/og-image.jpg">
+<meta name="twitter:image" content="https://ggilles.dev/assets/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="citation_title" content="1️⃣ What is statistics?">
+<meta name="citation_title" content="1️⃣ What are statistics?">
 <meta name="citation_abstract" content="**By the end of this module, you will be able to:**
 
 - Distinguish descriptive statistics (summarising what happened) from inferential statistics (drawing conclusions about a larger population).
@@ -216,14 +180,13 @@ window.Quarto = {
 <meta name="citation_author" content="Guillaume Gilles">
 <meta name="citation_fulltext_html_url" content="https://ggilles.dev/teaching/data-description/statistics.html">
 <meta name="citation_language" content="en">
-<meta name="citation_reference" content="citation_title=Statistics for people in a hurry;,citation_abstract=All of statistics in under 10 minutes. If you prefer an 🎧audio🎧 version, there’s one here too.;,citation_author=Cassie Kozyrkov;,citation_publication_date=2025-04;,citation_cover_date=2025-04;,citation_year=2025;,citation_fulltext_html_url=https://kozyrkov.medium.com/statistics-for-people-in-a-hurry-7c3910b4ca9a;,citation_journal_title=Medium;">
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-light">
+<body class="nav-sidebar floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
@@ -231,8 +194,7 @@ window.Quarto = {
     <img src="../../assets/mark.png" alt="" class="navbar-logo dark-content">
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -246,37 +208,27 @@ window.Quarto = {
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../teaching.html"> 
 <span class="menu-text">Teaching</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-    <div class="dropdown">
-      <a href="" title="Langue / Language" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Langue / Language"><i class="bi bi-translate"></i></a>
-      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
-            <a class="dropdown-item quarto-navbar-tools-item" href="../../teaching.html">
-            🇬🇧 English
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item quarto-navbar-tools-item" href="../../fr/teaching.html">
-            🇫🇷 Français
-            </a>
-          </li>
-      </ul>
-    </div>
 </div>
+            <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/data-description/index.html">Data Description</a></li><li class="breadcrumb-item"><a href="../../teaching/data-description/statistics.html">1️⃣ What is statistics?</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/data-description/index.html">Data Description</a></li><li class="breadcrumb-item"><a href="../../teaching/data-description/statistics.html">1️⃣ What are statistics?</a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -284,8 +236,8 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/data-description/index.html">Data Description</a></li><li class="breadcrumb-item"><a href="../../teaching/data-description/statistics.html">1️⃣ What is statistics?</a></li></ol></nav>
-      <h1 class="title">1️⃣ What is statistics?</h1>
+    <div class="quarto-title column-body"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../teaching/data-description/index.html">Data Description</a></li><li class="breadcrumb-item"><a href="../../teaching/data-description/statistics.html">1️⃣ What are statistics?</a></li></ol></nav>
+      <h1 class="title">1️⃣ What are statistics?</h1>
                       </div>
   </div>
     
@@ -326,22 +278,22 @@ window.Quarto = {
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../teaching/data-description/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Description</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Data Description</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section: Data Description">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../teaching/data-description/statistics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">1️⃣ What is statistics?</span></a>
+ <span class="menu-text">1️⃣ What are statistics?</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -422,6 +374,326 @@ window.Quarto = {
  <span class="menu-text">Glossary</span></a>
   </div>
 </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/data-description/financial-analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Analyse Financière et Stratégique de l'Entreprise</span></a>
+            <button type="button" class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section: Analyse Financière et Stratégique de l'Entreprise">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/05-structure-fi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Structure financière</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/analyse-performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyse des performances</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Évaluation : XP, niveaux et note finale</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/financial-stability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stabilité Financère</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/glossaire.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossaire</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/guide-reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide la cotation Banque de France</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/indicateur-dirigreant.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Indicateur Dirigeant</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/monetary-strategy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Monetary Strategy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/planning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Planning des 3 journées (18 h)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/society-services.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Economy and Society Services</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Annexes</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/annexes/inventaire-sources.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inventaire des sources : ce qui n’est pas dans les 18 h</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Enseignant</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/enseignant/corrige-aubepine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Corrigé — Groupe AUBÉPINE (page enseignant)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/enseignant/jour-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide enseignant — Jour 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/enseignant/jour-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide enseignant — Jour 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/enseignant/jour-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Guide enseignant — Jour 3</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Exercices</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/exercices/examen-1h.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Examen — Diagnostic Financier Retraité</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/exercices/examen-final.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Examen Final — Analyse Financière et Stratégique</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../teaching/data-description/financial-analysis/donnees/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Fil rouge — Groupe AUBÉPINE (données fictives)</span></a>
+            <button type="button" class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section: Fil rouge — Groupe AUBÉPINE (données fictives)">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/donnees/annexe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Annexe des comptes consolidés — Groupe AUBÉPINE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/donnees/bilan-consolide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bilan consolidé — Groupe AUBÉPINE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/donnees/compte-de-resultat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compte de résultat consolidé — Groupe AUBÉPINE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/donnees/flux-tresorerie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tableau des flux de trésorerie — Groupe AUBÉPINE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/donnees/telechargements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Téléchargements — Groupe AUBÉPINE</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-controls="quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-7-label">Modules</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-7" aria-labelledby="quarto-sidebar-section-7-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/01-temple-bilans.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Le Temple des Bilans</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/01-temple-bilans-enseignant.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Le Temple des Bilans — Fiche Enseignant</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/02-archives-consolidees.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Archives Consolidées</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/03-detective-diagnostic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Le Détective du Diagnostic</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/04-arenes-rentabilite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Arènes de la Rentabilité</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/05-cartographes-modele-eco.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Cartographes du Modèle Économique</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/06-conseil-sages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Le Conseil des Sages</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/07-veilleurs-marche.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Veilleurs du Marché</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/08-architectes-strategie.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Architectes de la Stratégie</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/09-gardiens-extra-financier.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les Gardiens de l’Extra-Financier</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/banque-france.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Banque de France</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/banque-france-cotation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprendre la cotation Banque de France</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/etats-financiers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Les trois états financiers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/formules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Formulaire de référence</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/liquidite.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyse de la liquidité</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/performances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyse des performances</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/modules/structure-fi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Structure financière</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-controls="quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-8-label">Slides</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-8" aria-labelledby="quarto-sidebar-section-8-label" class="collapse list-unstyled sidebar-section depth3 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/slides/jour-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jour 1 — Les fondamentaux de l’analyse financière</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/slides/jour-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jour 2 — Banque de France, cotation et analyse des groupes (étapes 1 à 3)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../teaching/data-description/financial-analysis/slides/jour-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jour 3 — Structure financière, liquidité, décision de cotation et enjeux actuels</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
       </ul>
   </li>
     </ul>
@@ -430,12 +702,11 @@ window.Quarto = {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#what-is-statistics" id="toc-what-is-statistics" class="nav-link active" data-scroll-target="#what-is-statistics"><span class="header-section-number">1</span> What is statistics?</a></li>
-  <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory"><span class="header-section-number">2</span> Theory</a></li>
+  <li><a href="#what-is-statistics" id="toc-what-is-statistics" class="nav-link active" data-scroll-target="#what-is-statistics"><span class="header-section-number">2</span> What is Statistics?</a></li>
   <li><a href="#worked-example" id="toc-worked-example" class="nav-link" data-scroll-target="#worked-example"><span class="header-section-number">3</span> Worked example</a></li>
   <li><a href="#proof-derivation" id="toc-proof-derivation" class="nav-link" data-scroll-target="#proof-derivation"><span class="header-section-number">4</span> Proof / derivation</a></li>
   <li><a href="#visual-intuition" id="toc-visual-intuition" class="nav-link" data-scroll-target="#visual-intuition"><span class="header-section-number">5</span> Visual intuition</a></li>
@@ -449,23 +720,20 @@ window.Quarto = {
 <div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="dataset.html"><i class="bi bi-file-spreadsheet"></i>The Wandering Fork Dataset</a></li><li><a href="glossary.html"><i class="bi bi-book"></i>Glossary</a></li><li><a href="excel-functions.html"><i class="bi bi-file-code"></i>Excel Functions</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content" tabindex="-1">
 
 
 
 
 
-<section id="what-is-statistics" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="what-is-statistics"><span class="header-section-number">1</span> What is statistics?</h2>
+<p>You are probably asking yourself the question, “When and where will I use statistics?”. If you read any newspaper, watch television, or use the Internet, you will see statistical information. There are statistics about crime, sports, education, politics, and real estate. Typically, when you read a newspaper article or watch a television news program, you are given sample information. With this information, you may make a decision about the correctness of a statement, claim, or “fact.” Statistical methods can help you make the “best educated guess.”</p>
+<p>Since you will undoubtedly be given statistical information at some point in your life, you need to know some techniques for analyzing the information thoughtfully. Think about buying a house or managing a budget. Think about your chosen profession. The fields of economics, business, psychology, education, biology, law, computer science, police science, and early childhood development require at least one course in statistics.</p>
 <blockquote class="blockquote">
-<p>Statistics is the science of changing your mind. <span class="citation" data-cites="kozyrkov_statistics_2025">(<a href="#ref-kozyrkov_statistics_2025" role="doc-biblioref">Kozyrkov 2025</a>)</span></p>
+<h2 id="the-business-question" data-number="1" class="anchored"><span class="header-section-number">1</span> The business question</h2>
+<p>A food-truck owner opens a spreadsheet with 120 rows of daily data: <code>weather</code>, <code>temperature</code>, <code>customers</code>, <code>items sold</code>, <code>revenue</code>, etc. Before computing any number or drawing any chart, what <em>kind</em> of information is in each column? Does “weather” behave like “revenue”? Can you average “satisfaction rating”? This module teaches you to look at a dataset and answer those questions, the first step in every statistical analysis. We start with five days small enough to read at a glance, and only then name the concepts.</p>
 </blockquote>
-<p><strong>The business question.</strong> A food-truck owner opens a spreadsheet with 120 rows of daily data: weather, temperature, customers, items sold, revenue, and more. Before computing any number or drawing any chart, what <em>kind</em> of information is in each column? Does “weather” behave like “revenue”? Can you average “satisfaction rating”? This module teaches you to look at a dataset and answer those questions — the first step in every statistical analysis. We start with five days small enough to read at a glance, and only then name the concepts.</p>
-</section>
-<section id="theory" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="theory"><span class="header-section-number">2</span> Theory</h2>
-<section id="numbers-that-are-not-numbers" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="numbers-that-are-not-numbers"><span class="header-section-number">2.1</span> Numbers that are not numbers</h3>
+<section id="numbers-that-are-not-numbers" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="numbers-that-are-not-numbers"><span class="header-section-number">1.1</span> Numbers that are not numbers</h3>
 <p>Here are five days from the Wandering Fork dataset. The numbers are a simplified extract chosen so that you can read everything at a glance.</p>
 <table class="caption-top table">
 <colgroup>
@@ -531,213 +799,271 @@ window.Quarto = {
 </table>
 <p>Four of the five columns contain numbers, and the spreadsheet will happily average any of them. Would you trust the average of the satisfaction column as much as the average of the revenue column? What could you even compute for the weather column?</p>
 </section>
-<section id="descriptive-vs-inferential-statistics" class="level3" data-number="2.2">
-<h3 data-number="2.2" class="anchored" data-anchor-id="descriptive-vs-inferential-statistics"><span class="header-section-number">2.2</span> Descriptive vs inferential statistics</h3>
-<p><strong>Try it.</strong> Decide for each statement whether it only summarises the five days you hold (descriptive) or goes beyond them (inferential), and compute the number in the first one.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Statement</th>
-<th>Descriptive or inferential?</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>“Over these five days, the average revenue was €?.”</td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td>“Over all 120 days, the Harbour truck’s average revenue is about the same.”</td>
-<td>?</td>
-</tr>
-<tr class="odd">
-<td>“Day 3 was the best of these five days.”</td>
-<td>?</td>
-</tr>
-</tbody>
-</table>
+<section id="what-is-statistics" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="what-is-statistics"><span class="header-section-number">2</span> What is Statistics?</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Definition - Statistics
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The science of statistics deals with the collection, analysis, interpretation, and presentation of data. The goal of statistics is not to perform numerous calculations using the formulas, but to gain an understanding of your data. The calculations can be done using a calculator or a computer. The understanding must come from you. If you can thoroughly grasp the basics of statistics, <strong>you can be more confident in the decisions you make in life</strong>.</p>
+</div>
+</div>
+<section id="descriptive-vs-inferential-statistics" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="descriptive-vs-inferential-statistics"><span class="header-section-number">2.1</span> Descriptive vs Inferential Statistics</h3>
+<p><strong>Descriptive statistics</strong> are about organizing and summarizing data that you already have at hand and make no claim about any larger group. There are two ways to summarize data: 1. Graph representation 2. Numbers, for example, finding an average</p>
+<p>On the other hand <strong>Inferential statistics</strong> uses probability to determine how confident we can be that our conclusions are correct. After you have studied probability and probability distributions, you will use formal methods for drawing conclusions from “good” data. The formal methods are called inferential statistics.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Try it
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Decide for each statement whether it only summarises the five days you hold (descriptive) or goes beyond them (inferential), and compute the number in the first one.</p>
+<ol type="1">
+<li>“Over these five days, the average revenue was €?”</li>
+<li>“Over all 120 days, the average revenue is about the same.”</li>
+<li>“Day 3 was the best of these five days.”</li>
+</ol>
 <details class="answer">
 <summary>
 Check your answer
 </summary>
-<ul>
-<li>Average revenue: <span class="math inline">\((400 + 440 + 480 + 440 + 440)/5 = 2{,}200/5 = 440\)</span>, so €440 — <strong>descriptive</strong>: it only summarises the five days.</li>
-<li>The claim about all 120 days is <strong>inferential</strong>: five days are used to say something about days we did not look at.</li>
-<li>“Day 3 was the best of these five” is <strong>descriptive</strong>.</li>
-</ul>
+<ol type="1">
+<li>Average revenue: <span class="math inline">\((400 + 440 + 480 + 440 + 440)/5 = 2{,}200/5 = 440\)</span>. So €440 only summarises the five days; it is a <strong>descriptive</strong> statistics.</li>
+<li>The claim about all 120 days is <strong>inferential statistics</strong> because the five days are used to say something about days we did not look at.</li>
+<li>“Day 3 was the best of these five” is <strong>descriptive statistics</strong>.</li>
+</ol>
+<p>In plain words if you have the revenue of all 120 trading days and you compute the average, that is descriptive statistics. But if you have <em>onlly</em> 30 days and you estimate the average of <strong>all possible</strong> trading days, that is inferential statistics.</p>
 </details>
-<p><strong>See it.</strong> The same five days, seen from two positions:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>What you hold</th>
-<th>What you claim about</th>
-<th>Kind</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>5 days observed</td>
-<td>those same 5 days</td>
-<td>descriptive</td>
-</tr>
-<tr class="even">
-<td>5 days observed</td>
-<td>all 120 trading days</td>
-<td>inferential</td>
-</tr>
-</tbody>
-</table>
-<p>In plain words: if you have the revenue of all 120 trading days and you compute the average, that is descriptive. If you have 30 days and you estimate the average of <em>all possible</em> trading days, that is inferential.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition — descriptive statistics
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Descriptive statistics</strong> summarise and organise data that you already have: frequency tables, charts, means, standard deviations, correlations. They describe the sample at hand and make no claim about any larger group.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition — inferential statistics
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Inferential statistics</strong> use a sample to draw conclusions about a population that you did not fully observe: confidence intervals, hypothesis tests, regression with p-values. This course stops at descriptive statistics; the next course (Inferential Statistics, MS04) continues from here.</p>
 </div>
 </div>
 </section>
-<section id="population-individual-variable" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="population-individual-variable"><span class="header-section-number">2.3</span> Population, individual, variable</h3>
-<p><strong>Try it.</strong> Look at the table of the five days above and fill in the blanks. The <code>Day</code> column only labels the rows; it is not a variable we analyse.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Question</th>
-<th>Answer</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>What is one row (one statistical individual)?</td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td>How many individuals are there?</td>
-<td>?</td>
-</tr>
-<tr class="odd">
-<td>How many variables are recorded on each individual?</td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td>If these five days are <em>all</em> we care about, how many members does the population have, and is it finite?</td>
-<td>?</td>
-</tr>
-</tbody>
-</table>
+<section id="population-individual-and-sample" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="population-individual-and-sample"><span class="header-section-number">2.2</span> Population, Individual, and Sample</h3>
+<p>In statistics, we generally want to study a <strong>population</strong>. You can think of a population as a collection of persons, things, or objects under study, in other words, a set of elements being studied. A statistical <strong>individual</strong> is one element of the population.</p>
+<p>To study the population, we select a <strong>sample</strong>. The idea of sampling is to select a portion, or a subset, of the larger population and study that portion, <strong>the sample</strong>, to gain information about the population. Data are the result of sampling from a population.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Try it
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Look at the table of the five days above and fill in the blanks. Be Careful, the <code>Day</code> column only labels the rows; it is not a variable we analyse.</p>
+<ol type="1">
+<li>What is one row?</li>
+<li>How many individuals are there?</li>
+<li>If these five days are <em>all</em> we care about, how many members does the population have?</li>
+</ol>
 <details class="answer">
 <summary>
 Check your answer
 </summary>
 <ul>
-<li>One row is one <strong>franchise-day</strong>: one truck on one trading day.</li>
+<li>A row is one <strong>statistical individual</strong>. Reading across one row describes one individual.</li>
 <li>There are <strong>5</strong> individuals.</li>
-<li>There are <strong>5</strong> variables: <code>weather</code>, temperature, satisfaction, customers and revenue.</li>
-<li>The population has <strong>5</strong> members: it is <strong>finite</strong>. In the real dataset, the Harbour truck’s population is 120 days.</li>
+<li>The population has <strong>5</strong> individuals. In the real dataset, the Harbour truck’s population is 120 days.</li>
 </ul>
 </details>
-<p><strong>See it.</strong> Rows are individuals, columns are variables:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 18%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><code>weather</code></th>
-<th style="text-align: right;"><code>temperature_c</code></th>
-<th style="text-align: right;"><code>satisfaction_rating</code></th>
-<th style="text-align: right;"><code>customer_count</code></th>
-<th style="text-align: right;"><code>daily_revenue_eur</code></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>individual 1 (day 1)</td>
-<td>Sunny</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">38</td>
-<td style="text-align: right;">400</td>
-</tr>
-<tr class="even">
-<td>individual 2 (day 2)</td>
-<td>Cloudy</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">44</td>
-<td style="text-align: right;">440</td>
-</tr>
-<tr class="odd">
-<td>…</td>
-<td>…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-<td style="text-align: right;">…</td>
-</tr>
-<tr class="even">
-<td>individual 5 (day 5)</td>
-<td>Sunny</td>
-<td style="text-align: right;">24</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">440</td>
-</tr>
-</tbody>
-</table>
-<p>Reading across one row describes one individual; reading down one column shows one variable over all individuals.</p>
-<p>In plain words: the population is everything you want to talk about, an individual is one item of it, and a variable is one question you ask of every individual.</p>
-<div class="callout callout-style-default callout-note callout-titled">
+</div>
+</div>
+<p>In plain words the population is everything you want to talk about and an individual is one item of it.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition — population, individual, variable
+<span class="screen-reader-only">Caution</span>Mathematical Notation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A <strong>population</strong> is the set of elements being studied. It is <strong>finite</strong> if you can count its members exactly (e.g., the 120 trading days of the Harbour truck), and <strong>infinite</strong> otherwise (e.g., all possible future trading days). A <strong>statistical individual</strong> is one element of the population (one franchise-day). A <strong>variable</strong> is a characteristic observed on each individual (e.g., <code>weather</code>, <code>daily_revenue_eur</code>).</p>
+<p>In statistics, a&nbsp;population is usually written as an uppercase&nbsp;<span class="math inline">\(N\)</span>&nbsp;for the population&nbsp;<strong>size</strong>&nbsp;(number of individuals) : e.g., <span class="math inline">\(N = 250{,}000\)</span>. And for contrast, a&nbsp;sample&nbsp;uses lowercase&nbsp;<span class="math inline">\(n\)</span>&nbsp;for size, for example <span class="math inline">\(n = 5\)</span> for the example above.</p>
+<p>In case we would like to talk about the third individual of the dataset we would write, <span class="math inline">\(N_3\)</span> for population and <span class="math inline">\(n_3\)</span> for sample.</p>
 </div>
 </div>
-<p>A word on notation. We write <span class="math inline">\(n\)</span> for the number of individuals (<span class="math inline">\(n=5\)</span> in the extract) and <span class="math inline">\(x_i\)</span> for the value of a variable on the <span class="math inline">\(i\)</span>-th individual: for revenue, <span class="math inline">\(x_1 = 400\)</span> and <span class="math inline">\(x_3 = 480\)</span>.</p>
+<p>Because it takes a lot of time and money to examine an entire population, sampling is a very practical technique. If you wished to compute the overall grade point average at your school, it would make sense to select a sample of students who attend the school.</p>
+<p>The data collected from the sample would be the students’ grade point averages. In presidential elections, opinion poll samples of 1,000–2,000 people are taken. The opinion poll is supposed to represent the views of the people in the entire country. Manufacturers of canned soda drinks take samples to determine if a 33 cl can contains really 33 cl of soda drink.</p>
 </section>
-<section id="variable-types" class="level3" data-number="2.4">
-<h3 data-number="2.4" class="anchored" data-anchor-id="variable-types"><span class="header-section-number">2.4</span> Variable types</h3>
+<section id="what-is-a-statistic" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="what-is-a-statistic"><span class="header-section-number">2.3</span> What is a Statistic</h3>
+<p>A <strong>statistic</strong> (be careful singular) is a number that represents a property of the Sample. For example, if we consider one math class to be a sample of the population of all math classes, then the average number of points earned by students in that one math class at the end of the term is an example of a statistic.</p>
+<p>The statistic is an estimate of a population <strong>parameter</strong>, in this case the mean. A parameter is a numerical characteristic of the whole population that can be estimated by a statistic. Since we considered all math classes to be the population, then the average number of points earned per student over all the math classes is an example of a parameter.</p>
+<p>One of the main concerns in the field of statistics is how accurately a statistic estimates a parameter. <strong>The accuracy of statistics depends on how well the sample represents the population</strong>.</p>
+<p>The sample must contain the characteristics of the population in order to be a representative sample. We are interested in both the sample statistic and the population parameter in inferential statistics.</p>
+</section>
+<section id="variables" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="variables"><span class="header-section-number">2.4</span> Variables</h3>
+<p>A variable is a characteristic or measurement that can be determined for each member of a population. Variables may be <strong>numerical</strong> or <strong>categorical</strong>.</p>
+<section id="numerical" class="level4">
+<h4 class="anchored" data-anchor-id="numerical">Numerical</h4>
+<p>Numerical variables take on values with equal units such as weight in kg and time in hours. If we let <span class="math inline">\(X\)</span> equal the number of points earned by one math student at the end of a term, then <span class="math inline">\(X\)</span> is a numerical variable.</p>
+<p>We could do some math with values of <span class="math inline">\(X\)</span> like calculate the average number of points earned, for example.</p>
+</section>
+<section id="categorial" class="level4">
+<h4 class="anchored" data-anchor-id="categorial">Categorial</h4>
+<p>Categorical variables place the person or thing into a category. If we let <span class="math inline">\(Y\)</span> be a person’s party affiliation, then some examples of <span class="math inline">\(Y\)</span> include Republican, Democrat, and Independent. <span class="math inline">\(Y\)</span> is a categorical variable.</p>
+<p>It makes no sense to do math with values of <span class="math inline">\(Y\)</span>, calculating an average party affiliation makes no sense.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Mathematical Notation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Lowercase&nbsp;<span class="math inline">\(x\)</span>&nbsp;for the variable measured, with subscripts for individuals (or&nbsp;<span class="math inline">\(Y\)</span>,&nbsp;<span class="math inline">\(X\)</span> when we talk about the [[Random Variable]]). A <strong>variable</strong> is a characteristic observed on each individual (e.g., <code>weather</code>, <code>daily_revenue_eur</code>).</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Try it
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Determine what the key terms refer to in the following study.</p>
+<blockquote class="blockquote">
+<p>We want to know the average (mean) amount of money first year college students spend at ABC College on school supplies that do not include books. We randomly surveyed 100 first year students at the college. Three of those students spent 150€, 200€, and 225€, respectively.</p>
+</blockquote>
+<details class="answer">
+<summary>
+Check your answer
+</summary>
+<ul>
+<li>The <strong>population</strong> is all first year students attending ABC College this term.</li>
+<li>The <strong>sample</strong> could be all students enrolled in one section of a beginning statistics course at ABC College (although this sample may not represent the entire population).</li>
+<li>The <strong>parameter</strong> is the average (mean) amount of money spent (excluding books) by first year college students at ABC College this term: the population mean.</li>
+<li>The <strong>statistic</strong> is the average (mean) amount of money spent (excluding books) by first year college students in the sample.</li>
+<li>The <strong>variable</strong> could be the amount of money spent (excluding books) by one first year student. Let <span class="math inline">\(X\)</span> = the amount of money spent (excluding books) by one first year student attending ABC College.</li>
+</ul>
+</details>
+</div>
+</div>
+</section>
+</section>
+<section id="data" class="level3" data-number="2.5">
+<h3 data-number="2.5" class="anchored" data-anchor-id="data"><span class="header-section-number">2.5</span> Data</h3>
+<p><strong>Data</strong> are the actual values of the variable. They may be numbers or they may be words. <strong>Datum</strong> is a single value. Data may come from a population or from a sample and most data can be put into two categories, <strong>qualitative</strong> or <strong>quantitative</strong>.</p>
+<section id="qualitative-data" class="level4">
+<h4 class="anchored" data-anchor-id="qualitative-data">Qualitative Data</h4>
+<p>Qualitative data are the result of categorizing or describing attributes of a population. Qualitative data are also often called <em>categorical data</em>.</p>
+<p>Hair color, blood type, ethnic group, the car a person drives, and the street a person lives on are examples of qualitative (categorical) data. Qualitative (categorical) data are generally described by words or letters. For instance, hair color might be black, dark brown, light brown, blonde, gray, or red. Blood type might be AB+, O-, or B+.</p>
+</section>
+<section id="quantitative-data" class="level4">
+<h4 class="anchored" data-anchor-id="quantitative-data">Quantitative Data</h4>
+<p>Quantitative data are always numbers. Quantitative data are the result of <strong>counting</strong> or <strong>measuring</strong> attributes of a population. Amount of money, pulse rate, weight, number of people living in your town, and number of students who take statistics are examples of quantitative data. Quantitative data may be either <strong>discrete</strong> or <strong>continuous</strong>.</p>
+<section id="quantitative-discrete-data" class="level5">
+<h5 class="anchored" data-anchor-id="quantitative-discrete-data">Quantitative Discrete Data</h5>
+<p>All data that are the result of counting are called <strong>quantitative discrete data</strong>. These data take on only certain numerical values. If you count the number of phone calls you receive for each day of the week, you might get values such as zero, one, two, or three.</p>
+</section>
+<section id="quantitative-continuous-data" class="level5">
+<h5 class="anchored" data-anchor-id="quantitative-continuous-data">Quantitative Continuous Data</h5>
+<p>Data that are not only made up of counting numbers, but that may include fractions, decimals, or irrational numbers, are called <strong>quantitative continuous data</strong>. Continuous data are often the results of measurements like lengths, weights, or times. A list of the lengths in minutes for all the phone calls that you make in a week, with numbers like <span class="math inline">\(2.4\)</span>, <span class="math inline">\(7.5\)</span>, or <span class="math inline">\(11.0\)</span>, would be quantitative continuous data.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Mathematical Notation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Lowercase&nbsp;<span class="math inline">\(x\)</span>&nbsp;are used to represent data values, with subscripts for individuals. Therefore <span class="math inline">\(x_i\)</span> is the value of a variable for the <span class="math inline">\(i\)</span>-th individual. For example, the revenue for the first and third individuals are <span class="math inline">\(x_1 = 400€\)</span> and <span class="math inline">\(x_3 = 480€\)</span>.</p>
+</div>
+</div>
+<p>Researchers often prefer to use <strong>quantitative data</strong> over qualitative (categorical) data because it lends itself more easily to mathematical analysis. For example, it does not make sense to find an average hair color or blood type.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Try it
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>You go to the supermarket and purchase three cans of soup (500 gs tomato bisque, 450 g lentil, and 550 g Italian wedding), two packages of nuts (walnuts and peanuts), four different kinds of vegetable (broccoli, cauliflower, spinach, and carrots), and two desserts (300 g pistachio ice cream and 600 g ounces chocolate chip cookies).</p>
+</blockquote>
+<p>Name <strong>data sets</strong> that are quantitative discrete, quantitative continuous, and qualitative (categorical).</p>
+<details class="answer">
+<summary>
+Check your answer
+</summary>
+<p>One Possible Solution: - The three cans of soup, two packages of nuts, four kinds of vegetables and two desserts are <strong>quantitative discrete data</strong> because you count them. - The weights of the soups (500 g, 450 g, and 550 g) are <strong>quantitative continuous data</strong> because you measure weights as precisely as possible. - Types of soups, nuts, vegetables and desserts are <strong>qualitative (categorical) data</strong> because they are categorical.</p>
+</details>
+</div>
+</div>
+<p>A statistics professor collects information about the classification of her students as first-year students, sophomores, juniors, or seniors. The data she collects are summarized in the pie chart Figure 1.2. What type of data does this graph show?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="221" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 220;"><span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">category</span><span class="op">:</span> <span class="st">"A"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">30</span> }<span class="op">,</span></span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">category</span><span class="op">:</span> <span class="st">"B"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">25</span> }<span class="op">,</span></span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">category</span><span class="op">:</span> <span class="st">"C"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">20</span> }<span class="op">,</span></span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">category</span><span class="op">:</span> <span class="st">"D"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">15</span> }<span class="op">,</span></span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>  { <span class="dt">category</span><span class="op">:</span> <span class="st">"E"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="dv">10</span> }</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">300</span><span class="op">,</span></span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">arc</span>(data<span class="op">,</span> Plot<span class="op">.</span><span class="fu">groupZ</span>({</span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"sum"</span></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span> {</span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"value"</span><span class="op">,</span></span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"category"</span><span class="op">,</span></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"white"</span><span class="op">,</span></span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>      <span class="dt">theta</span><span class="op">:</span> d <span class="kw">=&gt;</span> (d<span class="op">.</span><span class="at">value</span> <span class="op">/</span> d3<span class="op">.</span><span class="fu">sum</span>(data<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">value</span>)) <span class="op">*</span> <span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">,</span></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>      <span class="dt">innerRadius</span><span class="op">:</span> <span class="dv">0</span></span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>    }))<span class="op">,</span></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(data<span class="op">,</span> Plot<span class="op">.</span><span class="fu">groupZ</span>({</span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"mean"</span></span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span> {</span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"value"</span><span class="op">,</span></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>      <span class="dt">theta</span><span class="op">:</span> d <span class="kw">=&gt;</span> (d<span class="op">.</span><span class="at">value</span> <span class="op">/</span> d3<span class="op">.</span><span class="fu">sum</span>(data<span class="op">,</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">value</span>)) <span class="op">*</span> <span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span><span class="op">,</span></span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>      <span class="dt">text</span><span class="op">:</span> <span class="st">"category"</span><span class="op">,</span></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fontSize</span><span class="op">:</span> <span class="dv">12</span></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>    }))</span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">,</span></span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> { <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span> }</span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
 <p><strong>Try it.</strong> Classify each column of the five-day extract. For a qualitative variable, say nominal or ordinal; for a quantitative one, say discrete or continuous.</p>
 <table class="caption-top table">
 <colgroup>
@@ -827,7 +1153,6 @@ Check your answer
 </table>
 <p><code>satisfaction_rating</code> is written with numbers but behaves like ordered categories.</p>
 </details>
-<p><strong>See it.</strong> Two questions sort every variable:</p>
 <ul>
 <li>Categories or numbers?
 <ul>
@@ -843,20 +1168,6 @@ Check your answer
 </ul></li>
 </ul></li>
 </ul>
-<p>In plain words: ask first whether the values are categories or numbers, then whether the categories are ordered, or whether the numbers are counted or measured.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Definition — qualitative vs quantitative
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>A <strong>qualitative</strong> variable takes categories as values (e.g., <code>weather</code>: Sunny, Cloudy, Rainy). A <strong>quantitative</strong> variable takes numbers as values (e.g., <code>daily_revenue_eur</code>: 460.48, 500.02, …).</p>
-</div>
-</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -884,8 +1195,10 @@ Check your answer
 </div>
 </div>
 </section>
-<section id="levels-of-measurement" class="level3" data-number="2.5">
-<h3 data-number="2.5" class="anchored" data-anchor-id="levels-of-measurement"><span class="header-section-number">2.5</span> Levels of measurement</h3>
+</section>
+</section>
+<section id="levels-of-measurement" class="level3" data-number="2.6">
+<h3 data-number="2.6" class="anchored" data-anchor-id="levels-of-measurement"><span class="header-section-number">2.6</span> Levels of measurement</h3>
 <p><strong>Try it.</strong> For each question about the five-day extract, say whether it makes sense and, if it does, give the result.</p>
 <table class="caption-top table">
 <colgroup>
@@ -1173,7 +1486,7 @@ Check your answer
 <section id="proof-derivation" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="proof-derivation"><span class="header-section-number">4</span> Proof / derivation</h2>
 <div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1182,7 +1495,7 @@ Check your answer
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Let a qualitative variable have <span class="math inline">\(k\)</span> categories with absolute frequencies <span class="math inline">\(n_1, \dots, n_k\)</span> and total <span class="math inline">\(n = \sum_{i=1}^{k} n_i\)</span>. The relative frequency of category <span class="math inline">\(i\)</span> is <span class="math inline">\(f_i = n_i / n\)</span>. Summing over all categories: <span class="math display">\[
 \sum_{i=1}^{k} f_i
@@ -1472,7 +1785,7 @@ Solution
 <summary>
 Solution
 </summary>
-<p><code>=MOYENNE(N2:N121)</code> (function name) and the argument separator becomes a semicolon if the range is written with cell references: <code>=MOYENNE(N2;N121)</code> — but structured references like <code>tblFork[daily_revenue_eur]</code> work the same in both locales. See the Excel functions page for the full list.</p>
+<p><code>=MOYENNE(N2:N121)</code> (function name) and the argument separator becomes a semicolon if the range is written with cell references: <code>=MOYENNE(N2;N121)</code> — but structured references like <code>tblFork[daily_revenue_eur]</code> work the same in both locales. See the QExcel functions page for the full list.</p>
 </details>
 </section>
 </section>
@@ -1522,16 +1835,11 @@ Solution
 <p>OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, <em>Introductory Business Statistics 2e</em>, OpenStax, Rice University, <a href="https://openstax.org/details/books/introductory-business-statistics-2e" class="uri">https://openstax.org/details/books/introductory-business-statistics-2e</a>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.</p>
 
 
-
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-kozyrkov_statistics_2025" class="csl-entry" role="listitem">
-Kozyrkov, Cassie. 2025. <span>“Statistics for People in a Hurry.”</span> In <em>Medium</em>. <a href="https://kozyrkov.medium.com/statistics-for-people-in-a-hurry-7c3910b4ca9a">https://kozyrkov.medium.com/statistics-for-people-in-a-hurry-7c3910b4ca9a</a>.
-</div>
-</div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{gilles,
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{gilles,
   author = {Gilles, Guillaume},
-  title = {1️⃣ {What} Is Statistics?},
+  title = {1️⃣ {What} Are Statistics?},
   url = {https://ggilles.dev/teaching/data-description/statistics.html},
   langid = {en},
   abstract = {**By the end of this module, you will be able to:** -
@@ -1549,9 +1857,20 @@ Kozyrkov, Cassie. 2025. <span>“Statistics for People in a Hurry.”</span> In 
     cell references, sorting, filtering, and the functions `SUM`,
     `COUNT`, `COUNTA`, `AVERAGE`, `IF` (homework).}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-gilles" class="csl-entry quarto-appendix-citeas" role="listitem">
-Gilles, Guillaume. n.d. <span>“1️⃣ What Is Statistics?”</span> <a href="https://ggilles.dev/teaching/data-description/statistics.html">https://ggilles.dev/teaching/data-description/statistics.html</a>.
+</code></pre><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-gilles" class="csl-entry quarto-appendix-citeas" role="listitem">
+Gilles, Guillaume. n.d. <span>“1️⃣ What Are Statistics?”</span> <a href="https://ggilles.dev/teaching/data-description/statistics.html">https://ggilles.dev/teaching/data-description/statistics.html</a>.
 </div></div></section></div></main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImRhdGEgPSBbXG4gIHsgY2F0ZWdvcnk6IFwiQVwiLCB2YWx1ZTogMzAgfSxcbiAgeyBjYXRlZ29yeTogXCJCXCIsIHZhbHVlOiAyNSB9LFxuICB7IGNhdGVnb3J5OiBcIkNcIiwgdmFsdWU6IDIwIH0sXG4gIHsgY2F0ZWdvcnk6IFwiRFwiLCB2YWx1ZTogMTUgfSxcbiAgeyBjYXRlZ29yeTogXCJFXCIsIHZhbHVlOiAxMCB9XG5dXG5cblBsb3QucGxvdCh7XG4gIGhlaWdodDogMzAwLFxuICBtYXJrczogW1xuICAgIFBsb3QuYXJjKGRhdGEsIFBsb3QuZ3JvdXBaKHtcbiAgICAgIHk6IFwic3VtXCJcbiAgICB9LCB7XG4gICAgICB4OiAxLFxuICAgICAgeTogXCJ2YWx1ZVwiLFxuICAgICAgZmlsbDogXCJjYXRlZ29yeVwiLFxuICAgICAgc3Ryb2tlOiBcIndoaXRlXCIsXG4gICAgICB0aGV0YTogZCA9PiAoZC52YWx1ZSAvIGQzLnN1bShkYXRhLCBkID0+IGQudmFsdWUpKSAqIDIgKiBNYXRoLlBJLFxuICAgICAgaW5uZXJSYWRpdXM6IDBcbiAgICB9KSksXG4gICAgUGxvdC50ZXh0KGRhdGEsIFBsb3QuZ3JvdXBaKHtcbiAgICAgIHg6IFwibWVhblwiXG4gICAgfSwge1xuICAgICAgeDogMSxcbiAgICAgIHk6IFwidmFsdWVcIixcbiAgICAgIHRoZXRhOiBkID0+IChkLnZhbHVlIC8gZDMuc3VtKGRhdGEsIGQgPT4gZC52YWx1ZSkpICogMiAqIE1hdGguUEksXG4gICAgICB0ZXh0OiBcImNhdGVnb3J5XCIsXG4gICAgICBmb250U2l6ZTogMTJcbiAgICB9KSlcbiAgXSxcbiAgY29sb3I6IHsgbGVnZW5kOiB0cnVlIH1cbn0pXG4ifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../teaching/data-description";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -1630,7 +1949,8 @@ Gilles, Guillaume. n.d. <span>“1️⃣ What Is Statistics?”</span> <a href="
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -1639,8 +1959,69 @@ Gilles, Guillaume. n.d. <span>“1️⃣ What Is Statistics?”</span> <a href="
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -1654,6 +2035,7 @@ Gilles, Guillaume. n.d. <span>“1️⃣ What Is Statistics?”</span> <a href="
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -1816,44 +2198,54 @@ Gilles, Guillaume. n.d. <span>“1️⃣ What Is Statistics?”</span> <a href="
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1952,7 +2344,10 @@ Gilles, Guillaume. n.d. <span>“1️⃣ What Is Statistics?”</span> <a href="
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
       <a href="../../teaching/data-description/index.html" class="pagination-link" aria-label="Data Description">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Data Description</span>

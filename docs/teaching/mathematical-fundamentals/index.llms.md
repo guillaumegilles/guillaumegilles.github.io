@@ -90,9 +90,9 @@ This course in *Mathematical Fundamentals* aims to give students the mathematica
 
 Some questions will ask for a numerical answer, for example solving for an equilibrium price.
 
-- If the answer is rational, enter an exact answer. For example: \\3/4\\, \\0.125\\ or \\519\\.
-- If the answer is rational, but has a repeating decimal, you may alternatively enter any approximation within \\0.1%\\ of the correct answer. For example: \\1/9\\ or \\8.66667\\.
-- Otherwise, enter any approximation within \\0.1%\\ of the correct answer. For example: \\1.414\\ to represent \\\sqrt{2}\\.
+- If the answer is rational, enter an exact answer. For example: $3/4$, $0.125$ or $519$.
+- If the answer is rational, but has a repeating decimal, you may alternatively enter any approximation within $0.1%$ of the correct answer. For example: $1/9$ or $8.66667$.
+- Otherwise, enter any approximation within $0.1%$ of the correct answer. For example: $1.414$ to represent $\sqrt{2}$.
 
 When in doubt, enter more decimal places than you think you need. It never hurts to put more decimal places.
 

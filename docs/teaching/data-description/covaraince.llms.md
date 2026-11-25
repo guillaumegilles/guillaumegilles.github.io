@@ -6,14 +6,14 @@
 
 One Wandering Fork truck noted the afternoon temperature and the number of items sold on five days. The numbers are a simplified extract chosen so that you can compute everything by hand.
 
-| Day      | Temperature \\x\\ (°C) | Items sold \\y\\ |
-|----------|-----------------------:|-----------------:|
-| 1        |                     23 |               96 |
-| 2        |                     17 |               54 |
-| 3        |                     25 |               80 |
-| 4        |                     21 |               82 |
-| 5        |                     24 |               88 |
-| **Mean** |                 **22** |           **80** |
+| Day      | Temperature $x$ (°C) | Items sold $y$ |
+|----------|---------------------:|---------------:|
+| 1        |                   23 |             96 |
+| 2        |                   17 |             54 |
+| 3        |                   25 |             80 |
+| 4        |                   21 |             82 |
+| 5        |                   24 |             88 |
+| **Mean** |               **22** |         **80** |
 
 The warmest day (25 °C) is not the best day — it even sold fewer items than the 21 °C day. So: **do hotter days really mean busier days?** How strong is the link — and how many items would you prepare for a 20 °C day? Look at the figure before computing anything (start with step 1).
 
@@ -162,9 +162,9 @@ viewof miniStep = {
 
 The scatter plot suggests a tilt. To measure it with **every** day, compare each day with the two means — exactly as you did with one variable in [Module 6](module-06.qmd), but now twice.
 
-**Try it.** Complete the deviation-product table (\\n = 5\\, \\\bar{x} = 22\\, \\\bar{y} = 80\\), working column by column.
+**Try it.** Complete the deviation-product table ($n = 5$, $\bar{x} = 22$, $\bar{y} = 80$), working column by column.
 
-| Day \\i\\ | \\x_i\\ (°C) | \\y_i\\ (items) | \\x_i-\bar{x}\\ | \\y_i-\bar{y}\\ | \\(x_i-\bar{x})(y_i-\bar{y})\\ |
+| Day $i$ | $x_i$ (°C) | $y_i$ (items) | $x_i-\bar{x}$ | $y_i-\bar{y}$ | $(x_i-\bar{x})(y_i-\bar{y})$ |
 |----|---:|---:|---:|---:|---:|
 | 1 | 23 | 96 | ? | ? | ? |
 | 2 | 17 | 54 | ? | ? | ? |
@@ -175,11 +175,11 @@ The scatter plot suggests a tilt. To measure it with **every** day, compare each
 
 1.  Fill both deviation columns and add each one up. What do you notice?
 2.  Multiply the two deviations of each day. Which products are positive, which negative, which zero?
-3.  Add up the products, then divide the total by \\n-1 = 4\\.
+3.  Add up the products, then divide the total by $n-1 = 4$.
 
 > **CAUTION:**
 >
-> | Day \\i\\ | \\x_i\\ | \\y_i\\ | \\x_i-\bar{x}\\ | \\y_i-\bar{y}\\ | \\(x_i-\bar{x})(y_i-\bar{y})\\ |
+> | Day $i$ | $x_i$ | $y_i$ | $x_i-\bar{x}$ | $y_i-\bar{y}$ | $(x_i-\bar{x})(y_i-\bar{y})$ |
 > |----|---:|---:|---:|---:|---:|
 > | 1 | 23 | 96 | 1 | 16 | 16 |
 > | 2 | 17 | 54 | −5 | −26 | 130 |
@@ -188,217 +188,217 @@ The scatter plot suggests a tilt. To measure it with **every** day, compare each
 > | 5 | 24 | 88 | 2 | 8 | 16 |
 > | **Total** | **110** | **400** | **0** | **0** | **160** |
 >
-> Both deviation columns sum to 0, as in Module 6. Three products are positive, one is negative (day 4), one is zero (day 3). The total is 160, and \\160 / 4 = 40\\ °C·items.
+> Both deviation columns sum to 0, as in Module 6. Three products are positive, one is negative (day 4), one is zero (day 3). The total is 160, and $160 / 4 = 40$ °C·items.
 
 **Why multiply?** A product is positive when the day is on the **same side** of both means (warmer *and* busier, like day 1, or cooler *and* quieter, like day 2), and negative when it is on opposite sides (day 4: cooler but busier). Adding the products is a vote: here the positive days win clearly, so temperature and sales tend to move together. Day 2 — far below both means — casts the biggest vote (130).
 
-**See it.** Step 2 of the figure draws the two mean lines: they cut the plot into four quadrants, green where the product is positive and red where it is negative. Step 3 draws each product as a rectangle from the point to the centre \\(\bar{x},\bar{y})\\: the covariance is “green area minus red area”, divided by \\n-1\\.
+**See it.** Step 2 of the figure draws the two mean lines: they cut the plot into four quadrants, green where the product is positive and red where it is negative. Step 3 draws each product as a rectangle from the point to the centre $(\bar{x},\bar{y})$: the covariance is “green area minus red area”, divided by $n-1$.
 
-In plain words: for each day, multiply the temperature deviation from its mean by the sales deviation from its mean; average those products (with \\n-1\\). Positive = they go together; negative = they go opposite.
+In plain words: for each day, multiply the temperature deviation from its mean by the sales deviation from its mean; average those products (with $n-1$). Positive = they go together; negative = they go opposite.
 
 > **TIP:**
 >
-> For two quantitative variables \\X,Y\\ observed on the same \\n\\ individuals, with means \\\bar{x},\bar{y}\\, the **sample covariance** is \\ \text{Cov}(X,Y) = \frac{1}{n-1}\sum\_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y}). \\ A positive covariance means \\X\\ and \\Y\\ tend to move in the same direction; negative means opposite directions. Its unit (here, °C·€) makes it hard to judge the *strength* of the relationship directly — that is what \\r\\ is for.
+> For two quantitative variables $X,Y$ observed on the same $n$ individuals, with means $\bar{x},\bar{y}$, the **sample covariance** is $$\text{Cov}(X,Y) = \frac{1}{n-1}\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y}).$$ A positive covariance means $X$ and $Y$ tend to move in the same direction; negative means opposite directions. Its unit (here, °C·€) makes it hard to judge the *strength* of the relationship directly — that is what $r$ is for.
 
 > **NOTE:**
 >
 > | Symbol | Read aloud | In our example |
 > |----|----|----|
-> | \\X\\, \\Y\\ | “X”, “Y” | temperature (°C) and items sold |
-> | \\n\\ | “n” | 5 days |
-> | \\x_i\\, \\y_i\\ | “x sub i”, “y sub i” | day \\i\\’s values, e.g. \\x_1 = 23\\, \\y_1 = 96\\ |
-> | \\\bar{x}\\, \\\bar{y}\\ | “x-bar”, “y-bar” | the means, 22 °C and 80 items |
-> | \\x_i-\bar{x}\\, \\y_i-\bar{y}\\ | “x sub i minus x-bar”, … | the two deviation columns: 1, −5, 3, −1, 2 and 16, −26, 0, 2, 8 |
-> | \\(x_i-\bar{x})(y_i-\bar{y})\\ | “the product of the two deviations” | the product column: 16, 130, 0, −2, 16 |
-> | \\\sum\_{i=1}^{n}\\ | “add up, for i from 1 to n” | the Total row: 160 |
-> | \\\frac{1}{n-1}\\ | “divided by n minus 1” | ÷ 4 |
-> | \\\text{Cov}(X,Y)\\ | “the covariance of X and Y” | 40 °C·items |
+> | $X$, $Y$ | “X”, “Y” | temperature (°C) and items sold |
+> | $n$ | “n” | 5 days |
+> | $x_i$, $y_i$ | “x sub i”, “y sub i” | day $i$’s values, e.g. $x_1 = 23$, $y_1 = 96$ |
+> | $\bar{x}$, $\bar{y}$ | “x-bar”, “y-bar” | the means, 22 °C and 80 items |
+> | $x_i-\bar{x}$, $y_i-\bar{y}$ | “x sub i minus x-bar”, … | the two deviation columns: 1, −5, 3, −1, 2 and 16, −26, 0, 2, 8 |
+> | $(x_i-\bar{x})(y_i-\bar{y})$ | “the product of the two deviations” | the product column: 16, 130, 0, −2, 16 |
+> | $\sum_{i=1}^{n}$ | “add up, for i from 1 to n” | the Total row: 160 |
+> | $\frac{1}{n-1}$ | “divided by n minus 1” | ÷ 4 |
+> | $\text{Cov}(X,Y)$ | “the covariance of X and Y” | 40 °C·items |
 >
-> **Whole formula as a sentence:** “the covariance of \\X\\ and \\Y\\ is the sum, over all \\n\\ days, of the product of each day’s two deviations from the means, divided by \\n-1\\.”
+> **Whole formula as a sentence:** “the covariance of $X$ and $Y$ is the sum, over all $n$ days, of the product of each day’s two deviations from the means, divided by $n-1$.”
 
 ### 1.3 Correlation coefficient
 
 **Try it.** Is a covariance of 40 a lot? Its unit, °C·items, gives no clue. Rescale it with the two standard deviations from Module 6.
 
-| Day \\i\\ | \\x_i-\bar{x}\\ | \\(x_i-\bar{x})^2\\ | \\y_i-\bar{y}\\ | \\(y_i-\bar{y})^2\\ |
-|----|---:|---:|---:|---:|
-| 1 | 1 | ? | 16 | ? |
-| 2 | −5 | ? | −26 | ? |
-| 3 | 3 | ? | 0 | ? |
-| 4 | −1 | ? | 2 | ? |
-| 5 | 2 | ? | 8 | ? |
-| **Total** | **0** | **?** | **0** | **?** |
+| Day $i$   | $x_i-\bar{x}$ | $(x_i-\bar{x})^2$ | $y_i-\bar{y}$ | $(y_i-\bar{y})^2$ |
+|-----------|--------------:|------------------:|--------------:|------------------:|
+| 1         |             1 |                 ? |            16 |                 ? |
+| 2         |            −5 |                 ? |           −26 |                 ? |
+| 3         |             3 |                 ? |             0 |                 ? |
+| 4         |            −1 |                 ? |             2 |                 ? |
+| 5         |             2 |                 ? |             8 |                 ? |
+| **Total** |         **0** |             **?** |         **0** |             **?** |
 
 1.  Fill both squares columns and add them up.
-2.  Divide each total by \\n-1 = 4\\ to get \\s_X^2\\ and \\s_Y^2\\.
-3.  Compute \\s_X\\s_Y = \sqrt{s_X^2 \times s_Y^2}\\ (one square root only).
-4.  Divide the covariance, 40, by \\s_X\\s_Y\\.
-5.  Your turn: count items in packs of 2 instead (halve every \\y_i\\). What happens to the covariance? To the result of step 4?
+2.  Divide each total by $n-1 = 4$ to get $s_X^2$ and $s_Y^2$.
+3.  Compute $s_X\,s_Y = \sqrt{s_X^2 \times s_Y^2}$ (one square root only).
+4.  Divide the covariance, 40, by $s_X\,s_Y$.
+5.  Your turn: count items in packs of 2 instead (halve every $y_i$). What happens to the covariance? To the result of step 4?
 
 > **CAUTION:**
 >
-> 1.  Squares of \\x_i-\bar{x}\\: 1, 25, 9, 1, 4 → total **40**. Squares of \\y_i-\bar{y}\\: 256, 676, 0, 4, 64 → total **1,000**.
-> 2.  \\s_X^2 = 40/4 = 10\\ °C², \\s_Y^2 = 1{,}000/4 = 250\\ items².
-> 3.  \\s_X\\s_Y = \sqrt{10 \times 250} = \sqrt{2{,}500} = 50\\ °C·items.
-> 4.  \\40 / 50 = 0.8\\ — a pure number: the units cancel.
-> 5.  In packs, every \\y_i-\bar{y}\\ is halved, so the covariance halves to 20 and \\s_Y\\ halves too — but the ratio stays \\0.8\\. The relationship has not changed, and neither has this number.
+> 1.  Squares of $x_i-\bar{x}$: 1, 25, 9, 1, 4 → total **40**. Squares of $y_i-\bar{y}$: 256, 676, 0, 4, 64 → total **1,000**.
+> 2.  $s_X^2 = 40/4 = 10$ °C², $s_Y^2 = 1{,}000/4 = 250$ items².
+> 3.  $s_X\,s_Y = \sqrt{10 \times 250} = \sqrt{2{,}500} = 50$ °C·items.
+> 4.  $40 / 50 = 0.8$ — a pure number: the units cancel.
+> 5.  In packs, every $y_i-\bar{y}$ is halved, so the covariance halves to 20 and $s_Y$ halves too — but the ratio stays $0.8$. The relationship has not changed, and neither has this number.
 
-**See it.** In step 2 of the figure, three of the five days sit in green quadrants and only day 4 sits in a red one, close to the centre: a clear positive tilt. But the points do not lie on a single straight line, so the link is strong without being perfect — \\0.8\\, not \\1\\.
+**See it.** In step 2 of the figure, three of the five days sit in green quadrants and only day 4 sits in a red one, close to the centre: a clear positive tilt. But the points do not lie on a single straight line, so the link is strong without being perfect — $0.8$, not $1$.
 
 In plain words: divide the covariance by the product of the two standard deviations. The result is a pure number between -1 and 1 that measures the strength and direction of the *linear* link.
 
 > **TIP:**
 >
-> \\ r = \frac{\text{Cov}(X,Y)}{s_X\\ s_Y}, \qquad -1 \le r \le 1. \\ \\r\\ is covariance rescaled to be unit-free: \\r\\ near \\+1\\ means a strong positive linear relationship, near \\-1\\ a strong negative linear relationship, and near \\0\\ means little to no *linear* relationship (though a strong non-linear one could still exist). \\r^2\\, the **coefficient of determination**, is the share of \\Y\\’s variability that a linear relationship with \\X\\ “explains”.
+> $$r = \frac{\text{Cov}(X,Y)}{s_X\, s_Y}, \qquad -1 \le r \le 1.$$ $r$ is covariance rescaled to be unit-free: $r$ near $+1$ means a strong positive linear relationship, near $-1$ a strong negative linear relationship, and near $0$ means little to no *linear* relationship (though a strong non-linear one could still exist). $r^2$, the **coefficient of determination**, is the share of $Y$’s variability that a linear relationship with $X$ “explains”.
 
 > **NOTE:**
 >
 > | Symbol | Read aloud | In our example |
 > |----|----|----|
-> | \\\text{Cov}(X,Y)\\ | “the covariance of X and Y” | 40 °C·items |
-> | \\s_X\\, \\s_Y\\ | “s sub X”, “s sub Y” | standard deviations: \\\sqrt{10}\\ °C and \\\sqrt{250}\\ items |
-> | \\s_X\\ s_Y\\ | “s X times s Y” | \\\sqrt{2{,}500} = 50\\ °C·items |
-> | \\r\\ | “r” | \\40/50 = 0.8\\, no unit |
-> | \\-1 \le r \le 1\\ | “r lies between minus 1 and 1” | \\0.8\\ is inside, close to 1 |
-> | \\r^2\\ | “r squared” | \\0.8^2 = 0.64\\ (next subsection) |
+> | $\text{Cov}(X,Y)$ | “the covariance of X and Y” | 40 °C·items |
+> | $s_X$, $s_Y$ | “s sub X”, “s sub Y” | standard deviations: $\sqrt{10}$ °C and $\sqrt{250}$ items |
+> | $s_X\, s_Y$ | “s X times s Y” | $\sqrt{2{,}500} = 50$ °C·items |
+> | $r$ | “r” | $40/50 = 0.8$, no unit |
+> | $-1 \le r \le 1$ | “r lies between minus 1 and 1” | $0.8$ is inside, close to 1 |
+> | $r^2$ | “r squared” | $0.8^2 = 0.64$ (next subsection) |
 >
-> **Whole formula as a sentence:** “the correlation coefficient is the covariance of \\X\\ and \\Y\\ divided by the product of their standard deviations; it always lies between \\-1\\ and \\1\\.”
+> **Whole formula as a sentence:** “the correlation coefficient is the covariance of $X$ and $Y$ divided by the product of their standard deviations; it always lies between $-1$ and $1$.”
 
-### 1.4 Coefficient of determination \\r^2\\
+### 1.4 Coefficient of determination $r^2$
 
 **Try it.** Square the correlation coefficient.
 
-| Situation | \\r\\ | \\r^2\\ | Which is larger, \\\lvert r \rvert\\ or \\r^2\\? |
-|----|---:|---:|----|
-| Our five days | 0.8 | ? | ? |
-| Another truck | −0.8 | ? | ? |
-| A weak link | 0.5 | ? | ? |
+| Situation     |  $r$ | $r^2$ | Which is larger, $\lvert r \rvert$ or $r^2$? |
+|---------------|-----:|------:|----------------------------------------------|
+| Our five days |  0.8 |     ? | ?                                            |
+| Another truck | −0.8 |     ? | ?                                            |
+| A weak link   |  0.5 |     ? | ?                                            |
 
 > **CAUTION:**
 >
-> | Situation     | \\r\\ | \\r^2\\ | Which is larger?    |
-> |---------------|------:|--------:|---------------------|
-> | Our five days |   0.8 |    0.64 | \\\lvert r \rvert\\ |
-> | Another truck |  −0.8 |    0.64 | \\\lvert r \rvert\\ |
-> | A weak link   |   0.5 |    0.25 | \\\lvert r \rvert\\ |
+> | Situation     |  $r$ | $r^2$ | Which is larger?  |
+> |---------------|-----:|------:|-------------------|
+> | Our five days |  0.8 |  0.64 | $\lvert r \rvert$ |
+> | Another truck | −0.8 |  0.64 | $\lvert r \rvert$ |
+> | A weak link   |  0.5 |  0.25 | $\lvert r \rvert$ |
 >
-> \\r^2\\ is never negative, so it loses the direction of the link; and for any \\r\\ strictly between \\-1\\ and \\1\\ (and not 0), \\r^2\\ is smaller than \\\lvert r \rvert\\. A “0.5 correlation” explains only a quarter of the variability.
+> $r^2$ is never negative, so it loses the direction of the link; and for any $r$ strictly between $-1$ and $1$ (and not 0), $r^2$ is smaller than $\lvert r \rvert$. A “0.5 correlation” explains only a quarter of the variability.
 
-**See it.** On a number line from 0 to 1, \\r = 0.8\\ sits near the top, but \\r^2 = 0.64\\ is only about two thirds of the way: “64% of the day-to-day variability in items sold goes with temperature, 36% does not”. You will *see* those 64% in the regression subsection below, where the line’s gaps are measured.
+**See it.** On a number line from 0 to 1, $r = 0.8$ sits near the top, but $r^2 = 0.64$ is only about two thirds of the way: “64% of the day-to-day variability in items sold goes with temperature, 36% does not”. You will *see* those 64% in the regression subsection below, where the line’s gaps are measured.
 
-In plain words: \\r^2\\ is the share of \\Y\\’s variability that the straight-line link with \\X\\ accounts for — here 64% — and it is the last sentence of the correlation formula box above (no new formula).
+In plain words: $r^2$ is the share of $Y$’s variability that the straight-line link with $X$ accounts for — here 64% — and it is the last sentence of the correlation formula box above (no new formula).
 
 ### 1.5 Least-squares regression line
 
 **Try it.** Now draw the best straight line through the five points and use it to predict.
 
-1.  Slope: \\b = \text{Cov}(X,Y) / s_X^2 = 40 / 10 = ?\\
-2.  Intercept: \\a = \bar{y} - b\\\bar{x} = 80 - b \times 22 = ?\\
-3.  Fill the table with \\\hat{y}\_i = a + b\\x_i\\ and the gap \\y_i-\hat{y}\_i\\; add up the last two columns.
+1.  Slope: $b = \text{Cov}(X,Y) / s_X^2 = 40 / 10 = ?$
+2.  Intercept: $a = \bar{y} - b\,\bar{x} = 80 - b \times 22 = ?$
+3.  Fill the table with $\hat{y}_i = a + b\,x_i$ and the gap $y_i-\hat{y}_i$; add up the last two columns.
 4.  How many items should the truck prepare for a 20 °C day?
 
-| Day \\i\\ | \\x_i\\ | \\y_i\\ | \\\hat{y}\_i\\ | \\y_i-\hat{y}\_i\\ | \\(y_i-\hat{y}\_i)^2\\ |
-|----|---:|---:|---:|---:|---:|
-| 1 | 23 | 96 | ? | ? | ? |
-| 2 | 17 | 54 | ? | ? | ? |
-| 3 | 25 | 80 | ? | ? | ? |
-| 4 | 21 | 82 | ? | ? | ? |
-| 5 | 24 | 88 | ? | ? | ? |
-| **Total** |  | **400** | **?** | **?** | **?** |
+| Day $i$   | $x_i$ |   $y_i$ | $\hat{y}_i$ | $y_i-\hat{y}_i$ | $(y_i-\hat{y}_i)^2$ |
+|-----------|------:|--------:|------------:|----------------:|--------------------:|
+| 1         |    23 |      96 |           ? |               ? |                   ? |
+| 2         |    17 |      54 |           ? |               ? |                   ? |
+| 3         |    25 |      80 |           ? |               ? |                   ? |
+| 4         |    21 |      82 |           ? |               ? |                   ? |
+| 5         |    24 |      88 |           ? |               ? |                   ? |
+| **Total** |       | **400** |       **?** |           **?** |               **?** |
 
 > **CAUTION:**
 >
-> 1.  \\b = 40/10 = 4\\ items per °C.
-> 2.  \\a = 80 - 4 \times 22 = 80 - 88 = -8\\, so \\\hat{y} = -8 + 4x\\.
+> 1.  $b = 40/10 = 4$ items per °C.
+> 2.  $a = 80 - 4 \times 22 = 80 - 88 = -8$, so $\hat{y} = -8 + 4x$.
 > 3.  Table:
 >
-> | Day \\i\\ | \\x_i\\ | \\y_i\\ | \\\hat{y}\_i\\ | \\y_i-\hat{y}\_i\\ | \\(y_i-\hat{y}\_i)^2\\ |
-> |----|---:|---:|---:|---:|---:|
-> | 1 | 23 | 96 | 84 | 12 | 144 |
-> | 2 | 17 | 54 | 60 | −6 | 36 |
-> | 3 | 25 | 80 | 92 | −12 | 144 |
-> | 4 | 21 | 82 | 76 | 6 | 36 |
-> | 5 | 24 | 88 | 88 | 0 | 0 |
-> | **Total** |  | **400** | **400** | **0** | **360** |
+> | Day $i$   | $x_i$ |   $y_i$ | $\hat{y}_i$ | $y_i-\hat{y}_i$ | $(y_i-\hat{y}_i)^2$ |
+> |-----------|------:|--------:|------------:|----------------:|--------------------:|
+> | 1         |    23 |      96 |          84 |              12 |                 144 |
+> | 2         |    17 |      54 |          60 |              −6 |                  36 |
+> | 3         |    25 |      80 |          92 |             −12 |                 144 |
+> | 4         |    21 |      82 |          76 |               6 |                  36 |
+> | 5         |    24 |      88 |          88 |               0 |                   0 |
+> | **Total** |       | **400** |     **400** |           **0** |             **360** |
 >
-> 4.  \\\hat{y} = -8 + 4 \times 20 = 72\\ items.
+> 4.  $\hat{y} = -8 + 4 \times 20 = 72$ items.
 
-**Why “least squares”?** Try another line through the same centre, with slope 5: \\\hat{y} = -30 + 5x\\. Its gaps are 11, −1, −15, 7, −2, and their squares add up to \\400 \> 360\\. No straight line does better than 360: that is what “least squares” means.
+**Why “least squares”?** Try another line through the same centre, with slope 5: $\hat{y} = -30 + 5x$. Its gaps are 11, −1, −15, 7, −2, and their squares add up to $400 > 360$. No straight line does better than 360: that is what “least squares” means.
 
-**Back to \\r^2\\.** Around the flat line \\y = \bar{y}\\ the squared gaps add up to \\\sum(y_i-\bar{y})^2 = 1{,}000\\ (correlation Try it). Around the regression line only 360 are left. The line accounts for \\(1{,}000 - 360)/1{,}000 = 0.64 = r^2\\. ✓
+**Back to** $r^2$. Around the flat line $y = \bar{y}$ the squared gaps add up to $\sum(y_i-\bar{y})^2 = 1{,}000$ (correlation Try it). Around the regression line only 360 are left. The line accounts for $(1{,}000 - 360)/1{,}000 = 0.64 = r^2$. ✓
 
-**See it.** Step 4 of the figure draws the line \\\hat{y} = -8 + 4x\\, each gap \\y_i-\hat{y}\_i\\ as a dashed segment, and circles the centre \\(\bar{x},\bar{y}) = (22, 80)\\, which the line crosses.
+**See it.** Step 4 of the figure draws the line $\hat{y} = -8 + 4x$, each gap $y_i-\hat{y}_i$ as a dashed segment, and circles the centre $(\bar{x},\bar{y}) = (22, 80)$, which the line crosses.
 
-In plain words: the slope is the covariance divided by the variance of \\X\\; the intercept anchors the line so it passes through the center of mass \\(\bar{x},\bar{y})\\.
+In plain words: the slope is the covariance divided by the variance of $X$; the intercept anchors the line so it passes through the center of mass $(\bar{x},\bar{y})$.
 
 > **TIP:**
 >
-> The line \\\hat{y} = a + bx\\ that minimises \\\sum_i (y_i-\hat{y}\_i)^2\\ has \\ b = \frac{\text{Cov}(X,Y)}{s_X^2}, \qquad a = \bar{y} - b\\\bar{x}. \\ \\b\\ (the slope) estimates how much \\Y\\ changes, on average, for a one-unit increase in \\X\\; \\a\\ (the intercept) is the predicted \\Y\\ when \\X=0\\.
+> The line $\hat{y} = a + bx$ that minimises $\sum_i (y_i-\hat{y}_i)^2$ has $$b = \frac{\text{Cov}(X,Y)}{s_X^2}, \qquad a = \bar{y} - b\,\bar{x}.$$ $b$ (the slope) estimates how much $Y$ changes, on average, for a one-unit increase in $X$; $a$ (the intercept) is the predicted $Y$ when $X=0$.
 
 > **NOTE:**
 >
 > | Symbol | Read aloud | In our example |
 > |----|----|----|
-> | \\x\\ | “x” | any temperature, e.g. 20 °C |
-> | \\\hat{y}\\, \\\hat{y}\_i\\ | “y-hat”, “y-hat sub i” | the predicted items sold: 72 at 20 °C; 84 on day 1 |
-> | \\y_i-\hat{y}\_i\\ | “y sub i minus y-hat sub i” | the gap column: 12, −6, −12, 6, 0 |
-> | \\\sum_i (y_i-\hat{y}\_i)^2\\ | “sum of the squared gaps” | 360, the smallest possible |
-> | \\b\\ | “b”, the slope | \\40/10 = 4\\ items per °C |
-> | \\\text{Cov}(X,Y)\\ | “the covariance of X and Y” | 40 °C·items |
-> | \\s_X^2\\ | “s sub X squared”, variance of \\X\\ | 10 °C² |
-> | \\a\\ | “a”, the intercept | \\80 - 4 \times 22 = -8\\ items |
-> | \\\bar{x}\\, \\\bar{y}\\ | “x-bar”, “y-bar” | 22 °C, 80 items |
-> | \\X\\, \\Y\\ | “X”, “Y” | temperature, items sold |
+> | $x$ | “x” | any temperature, e.g. 20 °C |
+> | $\hat{y}$, $\hat{y}_i$ | “y-hat”, “y-hat sub i” | the predicted items sold: 72 at 20 °C; 84 on day 1 |
+> | $y_i-\hat{y}_i$ | “y sub i minus y-hat sub i” | the gap column: 12, −6, −12, 6, 0 |
+> | $\sum_i (y_i-\hat{y}_i)^2$ | “sum of the squared gaps” | 360, the smallest possible |
+> | $b$ | “b”, the slope | $40/10 = 4$ items per °C |
+> | $\text{Cov}(X,Y)$ | “the covariance of X and Y” | 40 °C·items |
+> | $s_X^2$ | “s sub X squared”, variance of $X$ | 10 °C² |
+> | $a$ | “a”, the intercept | $80 - 4 \times 22 = -8$ items |
+> | $\bar{x}$, $\bar{y}$ | “x-bar”, “y-bar” | 22 °C, 80 items |
+> | $X$, $Y$ | “X”, “Y” | temperature, items sold |
 >
-> **Whole formula as a sentence:** “the least-squares line predicts \\y\\ as \\a\\ plus \\b\\ times \\x\\, where the slope \\b\\ is the covariance divided by the variance of \\X\\, and the intercept \\a\\ is the mean of \\Y\\ minus \\b\\ times the mean of \\X\\.”
+> **Whole formula as a sentence:** “the least-squares line predicts $y$ as $a$ plus $b$ times $x$, where the slope $b$ is the covariance divided by the variance of $X$, and the intercept $a$ is the mean of $Y$ minus $b$ times the mean of $X$.”
 
-### 1.6 Bounds on \\r\\
+### 1.6 Bounds on $r$
 
-**Try it.** Write \\u_i = x_i-\bar{x}\\ and \\v_i = y_i-\bar{y}\\ (the two deviation columns). Using the totals you already have (\\\sum u_i v_i = 160\\, \\\sum u_i^2 = 40\\, \\\sum v_i^2 = 1{,}000\\):
+**Try it.** Write $u_i = x_i-\bar{x}$ and $v_i = y_i-\bar{y}$ (the two deviation columns). Using the totals you already have ($\sum u_i v_i = 160$, $\sum u_i^2 = 40$, $\sum v_i^2 = 1{,}000$):
 
-1.  Compute \\\left(\sum u_i v_i\right)^2 = ?\\
-2.  Compute \\\left(\sum u_i^2\right)\left(\sum v_i^2\right) = ?\\
+1.  Compute $\left(\sum u_i v_i\right)^2 = ?$
+2.  Compute $\left(\sum u_i^2\right)\left(\sum v_i^2\right) = ?$
 3.  Which is larger? Divide the first by the second.
 
 > **CAUTION:**
 >
-> 1.  \\160^2 = 25{,}600\\.
-> 2.  \\40 \times 1{,}000 = 40{,}000\\.
-> 3.  \\25{,}600 \le 40{,}000\\, and \\25{,}600 / 40{,}000 = 0.64 = r^2\\. The left side can never exceed the right side, so \\r^2 \le 1\\ and \\-1 \le r \le 1\\.
+> 1.  $160^2 = 25{,}600$.
+> 2.  $40 \times 1{,}000 = 40{,}000$.
+> 3.  $25{,}600 \le 40{,}000$, and $25{,}600 / 40{,}000 = 0.64 = r^2$. The left side can never exceed the right side, so $r^2 \le 1$ and $-1 \le r \le 1$.
 
-**See it.** In step 4 of the figure, the five points are not all on the line (four gaps are non-zero), so the two sides are not equal and \\\lvert r \rvert = 0.8 \< 1\\. If every gap were 0, both sides would be equal and \\r\\ would be exactly 1.
+**See it.** In step 4 of the figure, the five points are not all on the line (four gaps are non-zero), so the two sides are not equal and $\lvert r \rvert = 0.8 < 1$. If every gap were 0, both sides would be equal and $r$ would be exactly 1.
 
-In plain words: \\\lvert r \rvert\\ can never exceed 1; it reaches 1 only when every point lies exactly on a straight line.
+In plain words: $\lvert r \rvert$ can never exceed 1; it reaches 1 only when every point lies exactly on a straight line.
 
 > **TIP:**
 >
-> This follows from the **Cauchy–Schwarz inequality**. Writing \\u_i = x_i-\bar{x}\\ and \\v_i=y_i-\bar{y}\\, \\ \left(\sum\_{i=1}^n u_i v_i\right)^2 \\\le\\ \left(\sum\_{i=1}^n u_i^2\right)\left(\sum\_{i=1}^n v_i^2\right). \\ Dividing both sides by \\\left(\sum u_i^2\right)\left(\sum v_i^2\right)\\ and taking square roots gives exactly \\ \left\|\frac{\sum_i u_i v_i}{\sqrt{\sum_i u_i^2}\sqrt{\sum_i v_i^2}}\right\| \le 1, \\ and the left-hand side is precisely \\\|r\|\\ once numerator and denominator are both divided by \\n-1\\. Equality (\\\|r\|=1\\) holds only when every point lies exactly on a line.
+> This follows from the **Cauchy–Schwarz inequality**. Writing $u_i = x_i-\bar{x}$ and $v_i=y_i-\bar{y}$, $$\left(\sum_{i=1}^n u_i v_i\right)^2 \;\le\; \left(\sum_{i=1}^n u_i^2\right)\left(\sum_{i=1}^n v_i^2\right).$$ Dividing both sides by $\left(\sum u_i^2\right)\left(\sum v_i^2\right)$ and taking square roots gives exactly $$\left|\frac{\sum_i u_i v_i}{\sqrt{\sum_i u_i^2}\sqrt{\sum_i v_i^2}}\right| \le 1,$$ and the left-hand side is precisely $|r|$ once numerator and denominator are both divided by $n-1$. Equality ($|r|=1$) holds only when every point lies exactly on a line.
 
 > **NOTE:**
 >
 > | Symbol | Read aloud | In our example |
 > |----|----|----|
-> | \\u_i\\, \\v_i\\ | “u sub i”, “v sub i” | the deviations \\x_i-\bar{x}\\ and \\y_i-\bar{y}\\ |
-> | \\\sum\_{i=1}^n u_i v_i\\ | “sum of u v” | 160 |
-> | \\\sum\_{i=1}^n u_i^2\\, \\\sum\_{i=1}^n v_i^2\\ | “sum of u squared”, “sum of v squared” | 40 and 1,000 |
-> | \\\le\\ | “is at most” | \\25{,}600 \le 40{,}000\\ |
-> | \\\sqrt{\sum_i u_i^2}\sqrt{\sum_i v_i^2}\\ | “root of sum u squared times root of sum v squared” | \\\sqrt{40}\sqrt{1{,}000} = 200\\ |
-> | \\\lvert r \rvert\\ | “the absolute value of r” | \\160/200 = 0.8\\ |
-> | \\n-1\\ | “n minus 1” | 4, cancels top and bottom |
+> | $u_i$, $v_i$ | “u sub i”, “v sub i” | the deviations $x_i-\bar{x}$ and $y_i-\bar{y}$ |
+> | $\sum_{i=1}^n u_i v_i$ | “sum of u v” | 160 |
+> | $\sum_{i=1}^n u_i^2$, $\sum_{i=1}^n v_i^2$ | “sum of u squared”, “sum of v squared” | 40 and 1,000 |
+> | $\le$ | “is at most” | $25{,}600 \le 40{,}000$ |
+> | $\sqrt{\sum_i u_i^2}\sqrt{\sum_i v_i^2}$ | “root of sum u squared times root of sum v squared” | $\sqrt{40}\sqrt{1{,}000} = 200$ |
+> | $\lvert r \rvert$ | “the absolute value of r” | $160/200 = 0.8$ |
+> | $n-1$ | “n minus 1” | 4, cancels top and bottom |
 >
-> **Whole formula as a sentence:** “the square of the sum of the deviation products is at most the product of the two sums of squared deviations; so the size of \\r\\ is at most 1.”
+> **Whole formula as a sentence:** “the square of the sum of the deviation products is at most the product of the two sums of squared deviations; so the size of $r$ is at most 1.”
 
-### 1.7 Regression through \\(\bar{x},\bar{y})\\
+### 1.7 Regression through $(\bar{x},\bar{y})$
 
-**Try it.** Use the line \\\hat{y} = -8 + 4x\\.
+**Try it.** Use the line $\hat{y} = -8 + 4x$.
 
-1.  Predict \\\hat{y}\\ at \\x = \bar{x} = 22\\. Compare with \\\bar{y}\\.
-2.  Do the same with the slope-5 line \\\hat{y} = -30 + 5x\\, whose intercept was also built as \\a = \bar{y} - b\\\bar{x}\\.
+1.  Predict $\hat{y}$ at $x = \bar{x} = 22$. Compare with $\bar{y}$.
+2.  Do the same with the slope-5 line $\hat{y} = -30 + 5x$, whose intercept was also built as $a = \bar{y} - b\,\bar{x}$.
 
 > **CAUTION:**
 >
-> 1.  \\-8 + 4 \times 22 = 80 = \bar{y}\\.
-> 2.  \\-30 + 5 \times 22 = 80 = \bar{y}\\ again. Any line whose intercept is \\\bar{y} - b\\\bar{x}\\ passes through \\(\bar{x},\bar{y})\\, whatever its slope.
+> 1.  $-8 + 4 \times 22 = 80 = \bar{y}$.
+> 2.  $-30 + 5 \times 22 = 80 = \bar{y}$ again. Any line whose intercept is $\bar{y} - b\,\bar{x}$ passes through $(\bar{x},\bar{y})$, whatever its slope.
 
 **See it.** In step 4 of the figure, the orange line goes through the circled point where the two dashed mean lines of step 2 cross.
 
@@ -406,54 +406,54 @@ In plain words: at the average temperature, the line predicts the average number
 
 > **TIP:**
 >
-> The least-squares intercept is defined as \\a = \bar{y}-b\bar{x}\\. Substituting \\x=\bar{x}\\ into the regression line \\\hat{y}=a+bx\\: \\ \hat{y}\big\|\_{x=\bar{x}} = a + b\bar{x} = (\bar{y}-b\bar{x}) + b\bar{x} = \bar{y}. \\ So the point \\(\bar{x},\bar{y})\\ always lies exactly on the regression line, regardless of the data or the value of \\b\\.
+> The least-squares intercept is defined as $a = \bar{y}-b\bar{x}$. Substituting $x=\bar{x}$ into the regression line $\hat{y}=a+bx$: $$\hat{y}\big|_{x=\bar{x}} = a + b\bar{x} = (\bar{y}-b\bar{x}) + b\bar{x} = \bar{y}.$$ So the point $(\bar{x},\bar{y})$ always lies exactly on the regression line, regardless of the data or the value of $b$.
 
 > **NOTE:**
 >
 > | Symbol | Read aloud | In our example |
 > |----|----|----|
-> | \\a = \bar{y}-b\bar{x}\\ | “a equals y-bar minus b x-bar” | \\80 - 4 \times 22 = -8\\ |
-> | \\\hat{y}=a+bx\\ | “y-hat equals a plus b x” | \\\hat{y} = -8 + 4x\\ |
-> | \\\hat{y}\big\vert\_{x=\bar{x}}\\ | “y-hat evaluated at x equals x-bar” | \\\hat{y}\\ at 22 °C \\= 80\\ |
-> | \\(\bar{x},\bar{y})\\ | “the point x-bar, y-bar” | \\(22, 80)\\, the centre of the cloud |
-> | \\b\\ | “b” | 4 (or 5 for the other line) |
+> | $a = \bar{y}-b\bar{x}$ | “a equals y-bar minus b x-bar” | $80 - 4 \times 22 = -8$ |
+> | $\hat{y}=a+bx$ | “y-hat equals a plus b x” | $\hat{y} = -8 + 4x$ |
+> | $\hat{y}\big\vert_{x=\bar{x}}$ | “y-hat evaluated at x equals x-bar” | $\hat{y}$ at 22 °C $= 80$ |
+> | $(\bar{x},\bar{y})$ | “the point x-bar, y-bar” | $(22, 80)$, the centre of the cloud |
+> | $b$ | “b” | 4 (or 5 for the other line) |
 >
-> **Whole formula as a sentence:** “plugging the mean of \\X\\ into the regression line gives back the mean of \\Y\\, because the intercept was built as the mean of \\Y\\ minus \\b\\ times the mean of \\X\\.”
+> **Whole formula as a sentence:** “plugging the mean of $X$ into the regression line gives back the mean of $Y$, because the intercept was built as the mean of $Y$ minus $b$ times the mean of $X$.”
 
 ## 2 Worked example
 
-Using “The Wandering Fork”’s `temperature_c` (\\X\\) and `daily_revenue_eur` (\\Y\\), \\n=30\\, verified in `data-model.md`:
+Using “The Wandering Fork”’s `temperature_c` ($X$) and `daily_revenue_eur` ($Y$), $n=30$, verified in `data-model.md`:
 
 | Statistic | Value |
 |----|---:|
 | Covariance | 252.81 |
-| Correlation \\r\\ | 0.621 |
-| \\r^2\\ | 0.386 |
-| Regression line | \\\widehat{\text{revenue}} = -22.01 + 28.71\times\text{temperature\\c}\\ |
+| Correlation $r$ | 0.621 |
+| $r^2$ | 0.386 |
+| Regression line | $\widehat{\text{revenue}} = -22.01 + 28.71\times\text{temperature\_c}$ |
 
-**Step 1 — covariance.** \\\text{Cov}=252.81 \> 0\\: warmer days and higher revenue days do tend to coincide, confirming Module 8’s scatter-plot impression numerically.
+**Step 1 — covariance.** $\text{Cov}=252.81 > 0$: warmer days and higher revenue days do tend to coincide, confirming Module 8’s scatter-plot impression numerically.
 
-**Step 2 — correlation.** \\r=0.621\\: a **moderate** positive linear relationship — clearly present, but far from perfect (a value near \\r=1\\ would mean the points fall almost exactly on a line). \\r^2=0.386\\: temperature alone “explains” about \\38.6\\\\ of the day-to-day variability in revenue; the remaining \\61.4\\\\ comes from other factors (weather details, day of week, customer traffic, …).
+**Step 2 — correlation.** $r=0.621$: a **moderate** positive linear relationship — clearly present, but far from perfect (a value near $r=1$ would mean the points fall almost exactly on a line). $r^2=0.386$: temperature alone “explains” about $38.6\%$ of the day-to-day variability in revenue; the remaining $61.4\%$ comes from other factors (weather details, day of week, customer traffic, …).
 
-**Step 3 — regression line.** \\b=28.71\\: each extra \\1°C\\ is associated with about €28.71 more revenue, on average. \\a=-22.01\\ is the line’s value at \\\text{temperature\\c}=0\\ — not a realistic trading day, so it should be read as a mathematical anchor for the line, not a real prediction. Predicting revenue on a \\25°C\\ day: \\\widehat{\text{revenue}} = -22.01+28.71\times25 = 695.74\\ €.
+**Step 3 — regression line.** $b=28.71$: each extra $1°C$ is associated with about €28.71 more revenue, on average. $a=-22.01$ is the line’s value at $\text{temperature\_c}=0$ — not a realistic trading day, so it should be read as a mathematical anchor for the line, not a real prediction. Predicting revenue on a $25°C$ day: $\widehat{\text{revenue}} = -22.01+28.71\times25 = 695.74$ €.
 
-**Step 4 — check \\(\bar{x},\bar{y})\\.** \\\bar{x}\_{\text{temp}}=22.65\\, \\\bar{y}\_{\text{revenue}}=628.34\\. Predicted at \\\bar{x}\\: \\-22.01+28.71\times22.65 \approx 628.27\\, which is \\\bar{y}\\ up to the rounding of \\a\\ and \\b\\; with the unrounded values (\\a=-22.0086\\, \\b=28.7130\\) the line gives exactly \\628.34 = \bar{y}\\. ✓
+**Step 4 — check** $(\bar{x},\bar{y})$. $\bar{x}_{\text{temp}}=22.65$, $\bar{y}_{\text{revenue}}=628.34$. Predicted at $\bar{x}$: $-22.01+28.71\times22.65 \approx 628.27$, which is $\bar{y}$ up to the rounding of $a$ and $b$; with the unrounded values ($a=-22.0086$, $b=28.7130$) the line gives exactly $628.34 = \bar{y}$. ✓
 
 ### 2.1 Campus franchise and the full 120 days
 
-For Campus 120-day: covariance = −148.68, \\r = -0.122\\, \\r^2 = 0.015\\, regression: \\\widehat{\text{revenue}} = 672.07 - 9.47\times\text{temperature\\c}\\. Over the full 120 days, Harbour gives \\r = 0.065\\ as well: across the whole period, temperature has almost no *linear* link with revenue at either truck. The moderate \\r=0.621\\ above is specific to Harbour’s first 30 days — a correlation always describes one particular set of observations. A much stronger predictor is `customer_count`: \\r = 0.898\\ for Harbour and \\r = 0.970\\ for Campus (\\r^2 = 0.940\\, \\\widehat{\text{revenue}} = -22.75 + 12.30\times\text{customer\\count}\\).
+For Campus 120-day: covariance = −148.68, $r = -0.122$, $r^2 = 0.015$, regression: $\widehat{\text{revenue}} = 672.07 - 9.47\times\text{temperature\_c}$. Over the full 120 days, Harbour gives $r = 0.065$ as well: across the whole period, temperature has almost no *linear* link with revenue at either truck. The moderate $r=0.621$ above is specific to Harbour’s first 30 days — a correlation always describes one particular set of observations. A much stronger predictor is `customer_count`: $r = 0.898$ for Harbour and $r = 0.970$ for Campus ($r^2 = 0.940$, $\widehat{\text{revenue}} = -22.75 + 12.30\times\text{customer\_count}$).
 
 ## 3 Proof / derivation
 
 > **CAUTION:**
 >
-> This follows from the **Cauchy–Schwarz inequality**. Writing \\u_i = x_i-\bar{x}\\ and \\v_i=y_i-\bar{y}\\, \\ \left(\sum\_{i=1}^n u_i v_i\right)^2 \\\le\\ \left(\sum\_{i=1}^n u_i^2\right)\left(\sum\_{i=1}^n v_i^2\right). \\ Dividing both sides by \\\left(\sum u_i^2\right)\left(\sum v_i^2\right)\\ and taking square roots gives exactly \\ \left\|\frac{\sum_i u_i v_i}{\sqrt{\sum_i u_i^2}\sqrt{\sum_i v_i^2}}\right\| \le 1, \\ and the left-hand side is precisely \\\|r\|\\ once numerator and denominator are both divided by \\n-1\\. Equality (\\\|r\|=1\\) holds only when every point lies exactly on a line — the more scattered the points, the further \\\|r\|\\ falls below 1, which is exactly what “The Wandering Fork”’s \\r=0.621\\ (a real but imperfect trend) reflects.
+> This follows from the **Cauchy–Schwarz inequality**. Writing $u_i = x_i-\bar{x}$ and $v_i=y_i-\bar{y}$, $$\left(\sum_{i=1}^n u_i v_i\right)^2 \;\le\; \left(\sum_{i=1}^n u_i^2\right)\left(\sum_{i=1}^n v_i^2\right).$$ Dividing both sides by $\left(\sum u_i^2\right)\left(\sum v_i^2\right)$ and taking square roots gives exactly $$\left|\frac{\sum_i u_i v_i}{\sqrt{\sum_i u_i^2}\sqrt{\sum_i v_i^2}}\right| \le 1,$$ and the left-hand side is precisely $|r|$ once numerator and denominator are both divided by $n-1$. Equality ($|r|=1$) holds only when every point lies exactly on a line — the more scattered the points, the further $|r|$ falls below 1, which is exactly what “The Wandering Fork”’s $r=0.621$ (a real but imperfect trend) reflects.
 
 ## 4 Visual intuition
 
-\\r\\ measures how tightly the scatter-plot points cluster around a straight line: \\\|r\|\\ close to 1 means a thin, cigar-shaped cloud of points hugging the regression line; \\\|r\|\\ close to 0 means a round, shapeless cloud with no visible tilt. “The Wandering Fork”’s \\r=0.621\\ sits in between — a clearly tilted, but noticeably fat, cloud of points.
+$r$ measures how tightly the scatter-plot points cluster around a straight line: $|r|$ close to 1 means a thin, cigar-shaped cloud of points hugging the regression line; $|r|$ close to 0 means a round, shapeless cloud with no visible tilt. “The Wandering Fork”’s $r=0.621$ sits in between — a clearly tilted, but noticeably fat, cloud of points.
 
-Step 4 of the five-day figure shows the same idea at a small scale: with \\r = 0.8\\ the points sit close to, but not on, the orange line, and the dashed gaps are what keeps \\\lvert r \rvert\\ below 1.
+Step 4 of the five-day figure shows the same idea at a small scale: with $r = 0.8$ the points sit close to, but not on, the orange line, and the dashed gaps are what keeps $\lvert r \rvert$ below 1.
 
 ## 5 Interactive demo — scatter plot & correlation
 
@@ -554,31 +554,32 @@ Pick a day, move its temperature or revenue slider, and watch the correlation co
 
 > **CAUTION:**
 >
-> If a different pair of variables had \\r=0.9\\, what would \\r^2\\ be, and how would you interpret it in one sentence?
+> If a different pair of variables had $r=0.9$, what would $r^2$ be, and how would you interpret it in one sentence?
 >
-> **Solution.** \\r^2 = 0.9^2 = 0.81\\: about \\81\\\\ of one variable’s variability is explained by its linear relationship with the other — a much tighter fit than “The Wandering Fork”’s \\38.6\\\\.
+> **Solution.** $r^2 = 0.9^2 = 0.81$: about $81\%$ of one variable’s variability is explained by its linear relationship with the other — a much tighter fit than “The Wandering Fork”’s $38.6\%$.
 
 > **CAUTION:**
 >
-> Using \\\widehat{\text{revenue}} = -22.01+28.71\times\text{temperature\\c}\\, predict revenue for a \\30°C\\ day, and state one reason the true value might differ.
+> Using $\widehat{\text{revenue}} = -22.01+28.71\times\text{temperature\_c}$, predict revenue for a $30°C$ day, and state one reason the true value might differ.
 >
-> **Solution.** \\\widehat{\text{revenue}} = -22.01+28.71\times30 = 839.29\\ €. The true value could differ because temperature explains only \\38.6\\\\ of revenue’s variability — weather category, day of the week, or random daily fluctuation could all push the actual result above or below this prediction. Also, \\30°C\\ lies outside the observed 30-day range (\\16.4\\–\\27.1°C\\), so this is an extrapolation.
+> **Solution.** $\widehat{\text{revenue}} = -22.01+28.71\times30 =
+> 839.29$ €. The true value could differ because temperature explains only $38.6\%$ of revenue’s variability — weather category, day of the week, or random daily fluctuation could all push the actual result above or below this prediction. Also, $30°C$ lies outside the observed 30-day range ($16.4$–$27.1°C$), so this is an extrapolation.
 
 > **CAUTION:**
 >
-> Explain, using the formulas above, why the regression slope \\b\\ and the correlation \\r\\ always have the same sign.
+> Explain, using the formulas above, why the regression slope $b$ and the correlation $r$ always have the same sign.
 >
-> **Solution.** Both \\b=\text{Cov}(X,Y)/s_X^2\\ and \\r=\text{Cov}(X,Y)/(s_X s_Y)\\ have \\\text{Cov}(X,Y)\\ in the numerator, and \\s_X^2\\, \\s_X\\, \\s_Y\\ are all non-negative — so the sign of both \\b\\ and \\r\\ is entirely determined by the sign of the covariance.
+> **Solution.** Both $b=\text{Cov}(X,Y)/s_X^2$ and $r=\text{Cov}(X,Y)/(s_X s_Y)$ have $\text{Cov}(X,Y)$ in the numerator, and $s_X^2$, $s_X$, $s_Y$ are all non-negative — so the sign of both $b$ and $r$ is entirely determined by the sign of the covariance.
 
 > **CAUTION:**
 >
-> 1.  Read \\\frac{1}{n-1}\sum\_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})\\ aloud as one sentence. Which indicator is it?
+> 1.  Read $\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})$ aloud as one sentence. Which indicator is it?
 >
-> 2.  Read \\b = \dfrac{\text{Cov}(X,Y)}{s_X^2}\\ and \\a = \bar{y} - b\\\bar{x}\\ aloud.
+> 2.  Read $b = \dfrac{\text{Cov}(X,Y)}{s_X^2}$ and $a = \bar{y} - b\,\bar{x}$ aloud.
 >
-> 3.  For \\x = 1, 2, 3\\ and \\y = 2, 6, 4\\, compute \\\sum\_{i=1}^{3}(x_i-\bar{x})(y_i-\bar{y})\\.
+> 3.  For $x = 1, 2, 3$ and $y = 2, 6, 4$, compute $\sum_{i=1}^{3}(x_i-\bar{x})(y_i-\bar{y})$.
 >
-> **Solution.** (a) “For each observation, multiply its distance from the mean of \\X\\ by its distance from the mean of \\Y\\, add up the \\n\\ products, and divide by \\n-1\\.” It is the sample covariance \\\text{Cov}(X,Y)\\. (b) “The slope is the covariance of \\X\\ and \\Y\\ divided by the variance of \\X\\; the intercept is the mean of \\Y\\ minus the slope times the mean of \\X\\.” (c) \\\bar{x} = 2\\, \\\bar{y} = 4\\; deviations \\-1, 0, 1\\ and \\-2, 2, 0\\; products \\2, 0, 0\\; sum \\= 2\\ (so the covariance is \\2/2 = 1\\).
+> **Solution.** (a) “For each observation, multiply its distance from the mean of $X$ by its distance from the mean of $Y$, add up the $n$ products, and divide by $n-1$.” It is the sample covariance $\text{Cov}(X,Y)$. (b) “The slope is the covariance of $X$ and $Y$ divided by the variance of $X$; the intercept is the mean of $Y$ minus the slope times the mean of $X$.” (c) $\bar{x} = 2$, $\bar{y} = 4$; deviations $-1, 0, 1$ and $-2, 2, 0$; products $2, 0, 0$; sum $= 2$ (so the covariance is $2/2 = 1$).
 
 > **CAUTION:**
 >
@@ -586,38 +587,38 @@ Pick a day, move its temperature or revenue slider, and watch the correlation co
 >
 > 1.  “the product of day 3’s temperature deviation and its sales deviation”;
 > 2.  “the covariance divided by the product of the two standard deviations”;
-> 3.  “the predicted sales on a 20 °C day, with intercept \\a\\ and slope \\b\\”;
-> 4.  “the share of \\Y\\’s variability explained by a straight-line link with \\X\\”.
+> 3.  “the predicted sales on a 20 °C day, with intercept $a$ and slope $b$”;
+> 4.  “the share of $Y$’s variability explained by a straight-line link with $X$”.
 >
-> **Solution.** (a) \\(x_3-\bar{x})(y_3-\bar{y})\\. (b) \\r = \dfrac{\text{Cov}(X,Y)}{s_X\\s_Y}\\. (c) \\\hat{y} = a + b \times 20\\. (d) \\r^2\\, the coefficient of determination.
+> **Solution.** (a) $(x_3-\bar{x})(y_3-\bar{y})$. (b) $r = \dfrac{\text{Cov}(X,Y)}{s_X\,s_Y}$. (c) $\hat{y} = a + b \times 20$. (d) $r^2$, the coefficient of determination.
 
 ## 7 Common mistakes
 
 > **WARNING:**
 >
-> - **Confusing \\r\\ with \\r^2\\.** \\r\\ is the correlation (direction + strength); \\r^2\\ is the explained share (always positive, 0 to 1). “The correlation is 0.386” is wrong — that’s \\r^2\\.
-> - **Predicting outside the data range (extrapolation).** The regression line is only reliable within the range of observed \\X\\ values. Predicting revenue at \\35°C\\ when the 30-day data only go up to \\27.1°C\\ is unjustified.
-> - **Reading the intercept as a real prediction.** The intercept is the line’s value at \\X=0\\; if \\X=0\\ is not meaningful (e.g., temperature in °C), the intercept is just a mathematical anchor.
-> - **Assuming correlation implies causation.** \\r=0.62\\ means temperature and revenue move together; it does not mean raising the temperature *causes* higher revenue (confounding: sunny days are warmer AND bring more customers).
-> - **Using the wrong order in `SLOPE`/`INTERCEPT`.** Excel’s `SLOPE(known_y's, known_x's)` takes Y first, then X — the reverse of the usual mathematical notation \\y = a + bx\\.
+> - **Confusing** $r$ with $r^2$. $r$ is the correlation (direction + strength); $r^2$ is the explained share (always positive, 0 to 1). “The correlation is 0.386” is wrong — that’s $r^2$.
+> - **Predicting outside the data range (extrapolation).** The regression line is only reliable within the range of observed $X$ values. Predicting revenue at $35°C$ when the 30-day data only go up to $27.1°C$ is unjustified.
+> - **Reading the intercept as a real prediction.** The intercept is the line’s value at $X=0$; if $X=0$ is not meaningful (e.g., temperature in °C), the intercept is just a mathematical anchor.
+> - **Assuming correlation implies causation.** $r=0.62$ means temperature and revenue move together; it does not mean raising the temperature *causes* higher revenue (confounding: sunny days are warmer AND bring more customers).
+> - **Using the wrong order in `SLOPE`/`INTERCEPT`.** Excel’s `SLOPE(known_y's, known_x's)` takes Y first, then X — the reverse of the usual mathematical notation $y = a + bx$.
 
 ## 8 Exit check
 
 Five minutes, no calculator needed except for question 4.
 
 1.  In one sentence, what does the sign of the covariance tell you?
-2.  Why do we divide the covariance by \\s_X\\s_Y\\ to get \\r\\?
-3.  Read \\b = \text{Cov}(X,Y)/s_X^2\\ aloud as a sentence.
-4.  For \\x = 1, 2, 3\\ and \\y = 2, 6, 4\\, compute \\\text{Cov}(X,Y)\\, the slope \\b\\ and the intercept \\a\\.
-5.  A study reports \\r = -0.8\\. What is \\r^2\\, and what does each of the two numbers tell you?
+2.  Why do we divide the covariance by $s_X\,s_Y$ to get $r$?
+3.  Read $b = \text{Cov}(X,Y)/s_X^2$ aloud as a sentence.
+4.  For $x = 1, 2, 3$ and $y = 2, 6, 4$, compute $\text{Cov}(X,Y)$, the slope $b$ and the intercept $a$.
+5.  A study reports $r = -0.8$. What is $r^2$, and what does each of the two numbers tell you?
 
 > **CAUTION:**
 >
 > 1.  Whether the two variables tend to move in the same direction (positive: most points are both above or both below their means) or in opposite directions (negative).
-> 2.  To remove the units (°C·items) and get a pure number between \\-1\\ and \\1\\ that can be compared across datasets; it does not change when you change units.
-> 3.  “The slope is the covariance of \\X\\ and \\Y\\ divided by the variance of \\X\\.”
-> 4.  \\\bar{x} = 2\\, \\\bar{y} = 4\\; products \\2, 0, 0\\, so \\\text{Cov} = 2/2 = 1\\; \\s_X^2 = (1+0+1)/2 = 1\\; \\b = 1/1 = 1\\; \\a = 4 - 1 \times 2 = 2\\, so \\\hat{y} = 2 + x\\.
-> 5.  \\r^2 = 0.64\\. \\r = -0.8\\: a strong *negative* linear link (when one goes up, the other tends to go down). \\r^2 = 0.64\\: the line accounts for 64% of \\Y\\’s variability; the sign is lost.
+> 2.  To remove the units (°C·items) and get a pure number between $-1$ and $1$ that can be compared across datasets; it does not change when you change units.
+> 3.  “The slope is the covariance of $X$ and $Y$ divided by the variance of $X$.”
+> 4.  $\bar{x} = 2$, $\bar{y} = 4$; products $2, 0, 0$, so $\text{Cov} = 2/2 = 1$; $s_X^2 = (1+0+1)/2 = 1$; $b = 1/1 = 1$; $a = 4 - 1 \times 2 = 2$, so $\hat{y} = 2 + x$.
+> 5.  $r^2 = 0.64$. $r = -0.8$: a strong *negative* linear link (when one goes up, the other tends to go down). $r^2 = 0.64$: the line accounts for 64% of $Y$’s variability; the sign is lost.
 
 ## 9 Homework — Excel lab
 
@@ -638,7 +639,7 @@ The complete list of function names, with their French equivalents, is on the [E
 | Correlation coefficient | `=CORREL(range_x, range_y)` |
 | Regression slope | `=SLOPE(range_y, range_x)` |
 | Regression intercept | `=INTERCEPT(range_y, range_x)` |
-| \\r^2\\ | `=RSQ(range_y, range_x)` (or \\r^2\\, squaring `CORREL`) |
+| $r^2$ | `=RSQ(range_y, range_x)` (or $r^2$, squaring `CORREL`) |
 | Trend line on a scatter plot | Select a point on the chart → right-click → **Add Trendline** → **Linear**, tick “Display Equation” |
 | Full regression output | **Data → Data Analysis → Regression** (requires Analysis ToolPak add-in) |
 
@@ -653,37 +654,37 @@ For the **full table** (120 days per franchise) use the Excel Table `tblFork` an
 
 > **CAUTION:**
 >
-> | Indicator                      | Expected |
-> |--------------------------------|---------:|
-> | Means \\\bar{x}\\, \\\bar{y}\\ |   22, 80 |
-> | `VAR.S` of \\x\\, of \\y\\     |  10, 250 |
-> | `COVARIANCE.S`                 |       40 |
-> | `CORREL`                       |      0.8 |
-> | `RSQ`                          |     0.64 |
-> | `SLOPE`                        |        4 |
-> | `INTERCEPT`                    |       −8 |
+> | Indicator                  | Expected |
+> |----------------------------|---------:|
+> | Means $\bar{x}$, $\bar{y}$ |   22, 80 |
+> | `VAR.S` of $x$, of $y$     |  10, 250 |
+> | `COVARIANCE.S`             |       40 |
+> | `CORREL`                   |      0.8 |
+> | `RSQ`                      |     0.64 |
+> | `SLOPE`                    |        4 |
+> | `INTERCEPT`                |       −8 |
 >
-> If you get 32 for the covariance, you used `COVARIANCE.P` (it divides by \\n = 5\\ instead of \\n-1 = 4\\). If `SLOPE` gives 0.16, you entered the X range first.
+> If you get 32 for the covariance, you used `COVARIANCE.P` (it divides by $n = 5$ instead of $n-1 = 4$). If `SLOPE` gives 0.16, you entered the X range first.
 
 > **CAUTION:**
 >
-> In `wandering-fork.xlsx`, filter `franchise` to “Campus” and compute `=CORREL`, `=SLOPE`, `=INTERCEPT`, `=RSQ` for `temperature_c` vs `daily_revenue_eur` (120 days). How does \\r\\ compare to Harbour’s?
+> In `wandering-fork.xlsx`, filter `franchise` to “Campus” and compute `=CORREL`, `=SLOPE`, `=INTERCEPT`, `=RSQ` for `temperature_c` vs `daily_revenue_eur` (120 days). How does $r$ compare to Harbour’s?
 >
 > **How to.** Wrap each column in `FILTER(…, tblFork[franchise]="Campus")` as in the `tblFork` tip above (Y range first in `SLOPE`, `INTERCEPT`, `RSQ`), then repeat with “Harbour” for the comparison.
 >
-> **Solution.** Campus 120-day: \\r = -0.122\\, \\r^2 = 0.015\\, slope = −9.47, intercept = 672.07. For a fair comparison use Harbour’s 120 days too: \\r = 0.065\\, \\r^2 = 0.004\\. At **both** trucks temperature explains under 2% of revenue variability over the full period, and the two signs even differ. Harbour’s \\r = 0.62\\ (worked example) holds only for its first 30 days: correlations depend on the period observed.
+> **Solution.** Campus 120-day: $r = -0.122$, $r^2 = 0.015$, slope = −9.47, intercept = 672.07. For a fair comparison use Harbour’s 120 days too: $r = 0.065$, $r^2 = 0.004$. At **both** trucks temperature explains under 2% of revenue variability over the full period, and the two signs even differ. Harbour’s $r = 0.62$ (worked example) holds only for its first 30 days: correlations depend on the period observed.
 
 > **CAUTION:**
 >
-> Using Harbour 30-day data, compute the regression line with `=SLOPE`/`=INTERCEPT`, predict revenue at \\22°C\\, and verify that the line passes through \\(\bar{x},\bar{y})\\.
+> Using Harbour 30-day data, compute the regression line with `=SLOPE`/`=INTERCEPT`, predict revenue at $22°C$, and verify that the line passes through $(\bar{x},\bar{y})$.
 >
 > **How to.** Put `=SLOPE(y,x)` and `=INTERCEPT(y,x)` in two cells, then compute `=intercept+slope*22` and `=intercept+slope*AVERAGE(x)` with cell references, and compare the latter with `=AVERAGE(y)`.
 >
-> **Solution.** Slope = 28.71, intercept = -22.01. Prediction at 22°C: \\-22.01+28.71\times22 = 609.61\\ €. \\\bar{x}=22.65\\, \\\bar{y}=628.34\\: \\-22.01+28.71\times22.65 \approx 628.27\\, i.e. \\\bar{y}\\ up to the rounding of the coefficients (use the unrounded `SLOPE` and `INTERCEPT` cells to get exactly 628.34). ✓ The line passes through the center of mass.
+> **Solution.** Slope = 28.71, intercept = -22.01. Prediction at 22°C: $-22.01+28.71\times22 = 609.61$ €. $\bar{x}=22.65$, $\bar{y}=628.34$: $-22.01+28.71\times22.65 \approx 628.27$, i.e. $\bar{y}$ up to the rounding of the coefficients (use the unrounded `SLOPE` and `INTERCEPT` cells to get exactly 628.34). ✓ The line passes through the center of mass.
 
 > **CAUTION:**
 >
-> Enable the Analysis ToolPak (File → Options → Add-ins → Analysis ToolPak). Run **Data → Data Analysis → Regression** on Harbour 30-day `temperature_c` (X) and `daily_revenue_eur` (Y). Identify the slope, intercept, \\r\\, \\r^2\\, and standard error in the output table.
+> Enable the Analysis ToolPak (File → Options → Add-ins → Analysis ToolPak). Run **Data → Data Analysis → Regression** on Harbour 30-day `temperature_c` (X) and `daily_revenue_eur` (Y). Identify the slope, intercept, $r$, $r^2$, and standard error in the output table.
 >
 > **How to.** In the Regression dialog set **Input Y Range** to the revenue cells and **Input X Range** to the temperature cells, tick **Labels** if you selected the headers, and choose a new worksheet.
 >
@@ -698,7 +699,7 @@ For the **full table** (120 days per franchise) use the Excel Table `tblFork` an
 | OpenStax IBS 2e | §13.4 *The Regression Equation* (book pages 542–556) | Least-squares regression, prediction | ~14 pages | checked against the PDF contents (T046) |
 | OpenStax IBS 2e | §13.6 *Predicting with a Regression Equation* (book pages 559–561) | Prediction intervals, extrapolation warning | ~2 pages | checked against the PDF contents (T046) |
 | OpenStax IBS 2e | §13.7 *How to Use Microsoft Excel for Regression Analysis* (book pages 561–570) | Analysis ToolPak regression walkthrough | ~9 pages | checked against the PDF contents (T046) |
-| Khan Academy | Unit *Exploring bivariate numerical data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on correlation, regression, and \\r^2\\ | Short videos and practice on correlation and regression | ~30–45 min (estimate) | link check pending (T048) |
+| Khan Academy | Unit *Exploring bivariate numerical data* in the [Statistics and probability course](https://www.khanacademy.org/math/statistics-probability); look for lessons on correlation, regression, and $r^2$ | Short videos and practice on correlation and regression | ~30–45 min (estimate) | link check pending (T048) |
 
 OpenStax IBS 2e: Alexander Holmes, Barbara Illowsky and Susan Dean, *Introductory Business Statistics 2e*, OpenStax, Rice University, <https://openstax.org/details/books/introductory-business-statistics-2e>, licensed under CC BY-NC-SA 4.0. Sections are cited, not reproduced.
 

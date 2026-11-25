@@ -25,9 +25,9 @@ Ce cours introduit les **probabilités et les statistiques** comme outils de mod
 | 1 | [Statistiques univariées](../../teaching/probability/univariate.llms.md) | Histogramme, fonction de répartition, résumés |
 | 2 | [Probabilités discrètes](../../teaching/probability/probability.llms.md) | Lois de Bernoulli, binomiale, Poisson |
 | 3 | [Lois à densité](../../teaching/probability/density-function.llms.md) | Loi uniforme, exponentielle, espérance, variance |
-| 4 | [Loi normale](../../teaching/probability/normal-distribution.llms.md) | \\\mathcal{N}(0,1)\\, standardisation, \\\chi^2\\ |
-| 5 | [Statistiques bivariées](../../teaching/probability/bivariate.llms.md) | Contingence, indépendance, test du \\\chi^2\\ |
-| 6 | [Intégrales sur \\\mathbb{R}^2\\](../../teaching/probability/double-integrals-over-r2.llms.md) | Tonelli-Fubini, domaines d’intégration |
+| 4 | [Loi normale](../../teaching/probability/normal-distribution.llms.md) | $\mathcal{N}(0,1)$, standardisation, $\chi^2$ |
+| 5 | [Statistiques bivariées](../../teaching/probability/bivariate.llms.md) | Contingence, indépendance, test du $\chi^2$ |
+| 6 | [Intégrales sur](../../teaching/probability/double-integrals-over-r2.llms.md) $\mathbb{R}^2$ | Tonelli-Fubini, domaines d’intégration |
 | 7 | [Lois conjointes](../../teaching/probability/joint-continuous-random-variables.llms.md) | Densités conjointes, covariance, convolution |
 | 8 | [Convergence](../../teaching/probability/convergence-random-variables.llms.md) | LGN, théorème central limite |
 | 9 | [Échantillonnage](../../teaching/probability/sampling-distribution.llms.md) | Moyenne et variance empiriques, lois exactes |
@@ -215,20 +215,20 @@ Le cours se déroule en **cinq phases** — cliquez sur un chapitre pour y accé
 
 ### 4.1 Fondations
 
-[Notations mathématiques](notation.llms.md) — Guide de lecture · Symboles probabilistes (\\P\\, \\\mathbb{E}\\, \\\sigma\\) vs statistiques (\\\bar{x}\\, \\s\\) · Conventions du cours
+[Notations mathématiques](notation.llms.md) — Guide de lecture · Symboles probabilistes ($P$, $\mathbb{E}$, $\sigma$) vs statistiques ($\bar{x}$, $s$) · Conventions du cours
 
 ### 4.2 Une variable
 
 1.  [Statistiques univariées](univariate.llms.md) — Série discrète et continue · Histogramme (densité) · Fonction de répartition empirique · Médiane, quartiles, écart interquartile · Moyenne, variance, König-Huygens · Transformations affines
 2.  [Probabilités discrètes](probability.llms.md) — Variables aléatoires discrètes · Loi de probabilité · Espérance et variance · Lois de Bernoulli, binomiale, géométrique, Poisson · Approximation de la loi binomiale
-3.  [Lois à densité](density-function.llms.md) — Intégrales généralisées · Densité et fonction de répartition · Loi uniforme \\\mathcal{U}(\[a,b\])\\ · Loi exponentielle \\\mathcal{E}(\lambda)\\ · Espérance, variance, écart-type
-4.  [Loi normale](normal-distribution.llms.md) — Loi \\\mathcal{N}(0,1)\\ et table \\\Phi\\ · Standardisation · Loi \\\mathcal{N}(m,\sigma^2)\\ · Stabilité par somme · Loi log-normale · Loi du khi-deux \\\chi^2_n\\
+3.  [Lois à densité](density-function.llms.md) — Intégrales généralisées · Densité et fonction de répartition · Loi uniforme $\mathcal{U}([a,b])$ · Loi exponentielle $\mathcal{E}(\lambda)$ · Espérance, variance, écart-type
+4.  [Loi normale](normal-distribution.llms.md) — Loi $\mathcal{N}(0,1)$ et table $\Phi$ · Standardisation · Loi $\mathcal{N}(m,\sigma^2)$ · Stabilité par somme · Loi log-normale · Loi du khi-deux $\chi^2_n$
 
 ### 4.3 Deux variables
 
-5.  [Statistiques bivariées](bivariate.llms.md) — Tableau de contingence · Distributions marginales et conditionnelles · Indépendance statistique · Test du \\\chi^2\\ d’indépendance · Résidus standardisés
-6.  [Intégrales sur \\\mathbb{R}^2\\](double-integrals-over-r2.llms.md) — Tonelli-Fubini · Domaine d’intégration · Changement d’ordre · Calculs sur triangles, rectangles et supports non rectangulaires
-7.  [Loi conjointe d’un couple de variables aléatoires continues](pair-continuous-rv-joint-distribution.llms.md) — Densité sur \\\mathbb{R}^2\\ · Support · Probabilités sur une région · Lecture géométrique
+5.  [Statistiques bivariées](bivariate.llms.md) — Tableau de contingence · Distributions marginales et conditionnelles · Indépendance statistique · Test du $\chi^2$ d’indépendance · Résidus standardisés
+6.  [Intégrales sur](double-integrals-over-r2.llms.md) $\mathbb{R}^2$ — Tonelli-Fubini · Domaine d’intégration · Changement d’ordre · Calculs sur triangles, rectangles et supports non rectangulaires
+7.  [Loi conjointe d’un couple de variables aléatoires continues](pair-continuous-rv-joint-distribution.llms.md) — Densité sur $\mathbb{R}^2$ · Support · Probabilités sur une région · Lecture géométrique
 8.  [Lois marginales](pair-continuous-rv-marginal-distribution.llms.md) — Marginalisation · Densités conditionnelles · Indépendance par factorisation · Interprétation géométrique
 9.  [Couples de variables à densité](joint-continuous-random-variables.llms.md) — Vue d’ensemble · Indépendance · Covariance et corrélation · Espérance de fonctions · Convolution
 
@@ -241,12 +241,12 @@ Le cours se déroule en **cinq phases** — cliquez sur un chapitre pour y accé
 
 ### 4.5 Inférence
 
-11. [Distribution d’échantillonnage](sampling-distribution.llms.md) — Échantillon i.i.d. · Statistique · Moyenne empirique (espérance, variance, loi) · Variance empirique corrigée et biais · Lois exactes en cas gaussien (\\\mathcal{N}\\, \\\chi^2\\)
+11. [Distribution d’échantillonnage](sampling-distribution.llms.md) — Échantillon i.i.d. · Statistique · Moyenne empirique (espérance, variance, loi) · Variance empirique corrigée et biais · Lois exactes en cas gaussien ($\mathcal{N}$, $\chi^2$)
 12. [Estimation](point-estimation.llms.md) — Estimateur, biais, erreur quadratique · Méthode des moments · Maximum de vraisemblance · Intervalles de confiance pour une proportion, une moyenne, une variance
 
 ### 4.6 Annexes
 
-[Tables statistiques](tables.llms.md) — Table de la loi de Poisson · Quantiles du \\\chi^2\\ · Quantiles de la loi de Student
+[Tables statistiques](tables.llms.md) — Table de la loi de Poisson · Quantiles du $\chi^2$ · Quantiles de la loi de Student
 
 ### 4.7 Projet intégrateur
 
@@ -283,7 +283,7 @@ Le site du cours est votre **référence principale** tout au long du semestre. 
 - **Consultiez les chapitres** avant chaque séance pour vous familiariser avec les notions abordées.
 - **Téléchargiez et complètiez** la feuille d’exercices associée à chaque chapitre, puis déposiez votre travail avant le délai fixé.
 - **Vérifiez vos solutions** en déroulant les corrigés détaillés disponibles sur chaque feuille d’exercices.
-- **Utilisiez les tables statistiques** (loi de Poisson, \\\chi^2\\, Student) en ligne lors de vos révisions et à l’examen.
+- **Utilisiez les tables statistiques** (loi de Poisson, $\chi^2$, Student) en ligne lors de vos révisions et à l’examen.
 
 ## 7 Bibliographie recommandée
 

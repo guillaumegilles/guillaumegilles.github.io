@@ -20,15 +20,15 @@ In business applications, a random variable can represent:
 
 > **NOTE:**
 >
-> A random variable \\X\\ is **discrete** if it takes a countable number of values \\x_1, x_2, \dots, x_k\\.
+> A random variable $X$ is **discrete** if it takes a countable number of values $x_1, x_2, \dots, x_k$.
 
-Its **probability distribution** associates each value \\x_i\\ with a probability
+Its **probability distribution** associates each value $x_i$ with a probability
 
-\\ p_i = P(X = x_i) \\
+$$p_i = P(X = x_i)$$
 
 with the properties:
 
-\\ p_i \geq 0 \quad \text{for all } i, \qquad \sum_i p_i = 1 \\
+$$p_i \geq 0 \quad \text{for all } i, \qquad \sum_i p_i = 1$$
 
 ### 2.2 Expected value, variance, and standard deviation
 
@@ -36,11 +36,11 @@ with the properties:
 >
 > The main numerical characteristics of a discrete random variable are:
 >
-> \\ E(X) = \mu = \sum_i x_i p_i \\
+> $$E(X) = \mu = \sum_i x_i p_i$$
 >
-> \\ \operatorname{Var}(X) = \sigma^2 = \sum_i (x_i - \mu)^2 p_i = E(X^2) - \[E(X)\]^2 \\
+> $$\operatorname{Var}(X) = \sigma^2 = \sum_i (x_i - \mu)^2 p_i = E(X^2) - [E(X)]^2$$
 >
-> \\ \sigma = \sqrt{\operatorname{Var}(X)} \\
+> $$\sigma = \sqrt{\operatorname{Var}(X)}$$
 
 ### 2.3 Bernoulli distribution
 
@@ -48,26 +48,26 @@ with the properties:
 >
 > A **Bernoulli distribution** models one trial with only two outcomes: success or failure.
 
-If \\X \sim B(p)\\:
+If $X \sim B(p)$:
 
-- \\P(X=1) = p\\
-- \\P(X=0) = 1-p\\
-- \\E(X) = p\\
-- \\\operatorname{Var}(X) = p(1-p)\\
+- $P(X=1) = p$
+- $P(X=0) = 1-p$
+- $E(X) = p$
+- $\operatorname{Var}(X) = p(1-p)$
 
 ### 2.4 Binomial distribution
 
 > **NOTE:**
 >
-> A **binomial distribution** models the number of successes in \\n\\ independent Bernoulli trials with the same success probability \\p\\.
+> A **binomial distribution** models the number of successes in $n$ independent Bernoulli trials with the same success probability $p$.
 
-If \\X \sim B(n,p)\\, then for \\k = 0,1,\dots,n\\:
+If $X \sim B(n,p)$, then for $k = 0,1,\dots,n$:
 
 > **TIP:**
 >
-> \\ P(X = k) = \binom{n}{k} p^k (1-p)^{n-k} \\
+> $$P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}$$
 >
-> \\ E(X) = np, \qquad \operatorname{Var}(X) = np(1-p) \\
+> $$E(X) = np, \qquad \operatorname{Var}(X) = np(1-p)$$
 
 ### 2.5 Poisson distribution
 
@@ -75,61 +75,61 @@ If \\X \sim B(n,p)\\, then for \\k = 0,1,\dots,n\\:
 >
 > A **Poisson distribution** models the number of rare events occurring in a fixed interval of time, space, or volume.
 
-If \\X \sim \mathcal{P}(\lambda)\\, then for \\k = 0,1,2,\dots\\:
+If $X \sim \mathcal{P}(\lambda)$, then for $k = 0,1,2,\dots$:
 
 > **TIP:**
 >
-> \\ P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!} \\
+> $$P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}$$
 >
-> \\ E(X) = \lambda, \qquad \operatorname{Var}(X) = \lambda \\
+> $$E(X) = \lambda, \qquad \operatorname{Var}(X) = \lambda$$
 
 ### 2.6 Binomial–Poisson approximation
 
 > **TIP:**
 >
-> When \\n \geq 30\\ and \\p \leq 0.1\\ (or \\np \leq 5\\), the binomial distribution can be approximated by a Poisson distribution:
+> When $n \geq 30$ and $p \leq 0.1$ (or $np \leq 5$), the binomial distribution can be approximated by a Poisson distribution:
 >
-> \\ B(n,p) \approx \mathcal{P}(np) \\
+> $$B(n,p) \approx \mathcal{P}(np)$$
 
 > **WARNING:**
 >
 > Choose the distribution by reading the situation carefully:
 >
 > - **Bernoulli**: one trial,
-> - **Binomial**: a fixed number \\n\\ of repeated independent trials,
+> - **Binomial**: a fixed number $n$ of repeated independent trials,
 > - **Poisson**: counting events in a time or space interval.
 
 > **IMPORTANT:**
 >
 > Before calculating, always identify:
 >
-> 1.  what the random variable \\X\\ counts,
-> 2.  the possible values of \\X\\,
+> 1.  what the random variable $X$ counts,
+> 2.  the possible values of $X$,
 > 3.  the distribution that matches the wording of the problem.
 
 ## 3 Detailed example
 
-A salesperson contacts 4 prospects. Each prospect independently accepts a meeting with probability \\0.3\\.
+A salesperson contacts 4 prospects. Each prospect independently accepts a meeting with probability $0.3$.
 
-Let \\X\\ be the number of accepted meetings. Then:
+Let $X$ be the number of accepted meetings. Then:
 
-\\ X \sim B(4,0.3) \\
+$$X \sim B(4,0.3)$$
 
 ### 3.1 Probability of exactly 2 accepted meetings
 
 Using the binomial formula:
 
-\\ P(X=2) = \binom{4}{2}(0.3)^2(0.7)^2 \\
+$$P(X=2) = \binom{4}{2}(0.3)^2(0.7)^2$$
 
-\\ P(X=2) = 6 \times 0.09 \times 0.49 = 0.2646 \\
+$$P(X=2) = 6 \times 0.09 \times 0.49 = 0.2646$$
 
 So the probability of getting exactly 2 accepted meetings is **0.2646**.
 
 ### 3.2 Mean and variance
 
-\\ E(X) = np = 4 \times 0.3 = 1.2 \\
+$$E(X) = np = 4 \times 0.3 = 1.2$$
 
-\\ \operatorname{Var}(X) = np(1-p) = 4 \times 0.3 \times 0.7 = 0.84 \\
+$$\operatorname{Var}(X) = np(1-p) = 4 \times 0.3 \times 0.7 = 0.84$$
 
 The expected number of accepted meetings is **1.2**.
 
@@ -144,21 +144,21 @@ The expected number of accepted meetings is **1.2**.
 
 > > **CAUTION:**
 > >
-> > Let \\X\\ be the number of calls received in one minute. Then:
+> > Let $X$ be the number of calls received in one minute. Then:
 > >
-> > \\ X \sim \mathcal{P}(3) \\
+> > $$X \sim \mathcal{P}(3)$$
 > >
 > > **1. Probability of exactly 2 calls**
 > >
-> > \\ P(X=2) = \frac{e^{-3} \cdot 3^2}{2!} = \frac{e^{-3} \cdot 9}{2} \approx 0.2240 \\
+> > $$P(X=2) = \frac{e^{-3} \cdot 3^2}{2!} = \frac{e^{-3} \cdot 9}{2} \approx 0.2240$$
 > >
 > > **2. Probability of at most 2 calls**
 > >
-> > \\ P(X \leq 2) = P(X=0) + P(X=1) + P(X=2) \\
+> > $$P(X \leq 2) = P(X=0) + P(X=1) + P(X=2)$$
 > >
-> > \\ P(X \leq 2) = e^{-3}\left(1 + 3 + \frac{3^2}{2}\right) = e^{-3}(1 + 3 + 4.5) \\
+> > $$P(X \leq 2) = e^{-3}\left(1 + 3 + \frac{3^2}{2}\right) = e^{-3}(1 + 3 + 4.5)$$
 > >
-> > \\ P(X \leq 2) = e^{-3} \cdot 8.5 \approx 0.4232 \\
+> > $$P(X \leq 2) = e^{-3} \cdot 8.5 \approx 0.4232$$
 
 ## Citation
 

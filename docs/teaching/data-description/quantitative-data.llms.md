@@ -52,33 +52,33 @@ In plain words: a class table trades precision for readability. You lose the exa
 
 > **NOTE:**
 >
-> When almost every value of a continuous variable is different, a plain frequency table lists each value once and says nothing useful. The fix is to cut the range of values into \\k\\ consecutive **classes** (intervals) of width \\h\\ and count how many observations fall into each one. Classes are written **half-open**, \\\[L_i, L_i + h\[\\: the lower bound belongs to the class, the upper bound belongs to the next class. So every value lands in exactly one class.
+> When almost every value of a continuous variable is different, a plain frequency table lists each value once and says nothing useful. The fix is to cut the range of values into $k$ consecutive **classes** (intervals) of width $h$ and count how many observations fall into each one. Classes are written **half-open**, $[L_i, L_i + h[$: the lower bound belongs to the class, the upper bound belongs to the next class. So every value lands in exactly one class.
 
 ### 1.3 How many classes, how wide?
 
-**Try it.** For our five days (\\n = 5\\, minimum 430, maximum 730), find the number of classes and the width that Sturges’ rule suggests. Use \\\log\_{10}(5) \approx 0.699\\.
+**Try it.** For our five days ($n = 5$, minimum 430, maximum 730), find the number of classes and the width that Sturges’ rule suggests. Use $\log_{10}(5) \approx 0.699$.
 
-| Step                                 | Value |
-|--------------------------------------|------:|
-| \\k \approx 1 + 3.3 \times 0.699\\   |     ? |
-| Range \\= \text{max} - \text{min}\\  |     ? |
-| \\h \approx \text{range} / k\\       |     ? |
-| \\h\\ rounded to a convenient number |     ? |
+| Step                               | Value |
+|------------------------------------|------:|
+| $k \approx 1 + 3.3 \times 0.699$   |     ? |
+| Range $= \text{max} - \text{min}$  |     ? |
+| $h \approx \text{range} / k$       |     ? |
+| $h$ rounded to a convenient number |     ? |
 
 Check your answer
 
-| Step                                 |    Value |
-|--------------------------------------|---------:|
-| \\k \approx 1 + 3.3 \times 0.699\\   |      3.3 |
-| Range \\= \text{max} - \text{min}\\  |      300 |
-| \\h \approx \text{range} / k\\       | about 91 |
-| \\h\\ rounded to a convenient number |      100 |
+| Step                               |    Value |
+|------------------------------------|---------:|
+| $k \approx 1 + 3.3 \times 0.699$   |      3.3 |
+| Range $= \text{max} - \text{min}$  |      300 |
+| $h \approx \text{range} / k$       | about 91 |
+| $h$ rounded to a convenient number |      100 |
 
 Starting at a round number at or below 430, that is 400, classes of width 100 give the four classes you used above.
 
 **See it.** The same range of 300 euros cut in three ways:
 
-| Width \\h\\ | Classes | What the table shows |
+| Width $h$ | Classes | What the table shows |
 |---:|---:|----|
 | 300 | 1 | everything in one class: the shape is hidden |
 | 100 | 4 | counts 2, 1, 1, 1: a readable summary |
@@ -88,52 +88,54 @@ In plain words: more data can support more classes, but slowly. Thirty days give
 
 > **TIP:**
 >
-> For \\n\\ observations, a good number of classes is about \\ k \approx 1 + 3.3 \log\_{10}(n), \qquad h \approx \frac{\text{max} - \text{min}}{k}, \\ then round \\h\\ to a convenient number (10, 50, 100 …) and start the first class at a round number at or below the minimum.
+> For $n$ observations, a good number of classes is about $$k \approx 1 + 3.3 \log_{10}(n),
+> \qquad
+> h \approx \frac{\text{max} - \text{min}}{k},$$ then round $h$ to a convenient number (10, 50, 100 …) and start the first class at a round number at or below the minimum.
 
 #### Notation decoder: Sturges’ rule
 
 | Symbol | Read aloud | In our example (five days) |
 |----|----|----|
-| \\n\\ | “n” | 5 days |
-| \\k\\ | “k” | the number of classes, about 3.3 |
-| \\\log\_{10}(n)\\ | “log base ten of n” | \\\log\_{10}(5) \approx 0.699\\ |
-| \\\text{max}\\, \\\text{min}\\ | “the maximum, the minimum” | 730 and 430 |
-| \\h\\ | “h” | the class width, about 91, rounded to 100 |
-| \\\approx\\ | “is about” | the rule gives a guide, not an exact answer |
+| $n$ | “n” | 5 days |
+| $k$ | “k” | the number of classes, about 3.3 |
+| $\log_{10}(n)$ | “log base ten of n” | $\log_{10}(5) \approx 0.699$ |
+| $\text{max}$, $\text{min}$ | “the maximum, the minimum” | 730 and 430 |
+| $h$ | “h” | the class width, about 91, rounded to 100 |
+| $\approx$ | “is about” | the rule gives a guide, not an exact answer |
 
 **Whole formula as a sentence:** “the number of classes is about one plus 3.3 times the base-ten logarithm of the number of observations; the class width is about the range divided by that number of classes.”
 
-For the first 30 Harbour days, revenue runs from €407.59 to €886.56, a range of €478.97. Sturges gives \\k \approx 5.9\\ and \\h \approx 82\\, which we round to **\\h = 100\\** with the first class starting at 400. That gives five classes.
+For the first 30 Harbour days, revenue runs from €407.59 to €886.56, a range of €478.97. Sturges gives $k \approx 5.9$ and $h \approx 82$, which we round to $h = 100$ with the first class starting at 400. That gives five classes.
 
 ### 1.4 Frequencies in a class table
 
-**Try it.** Complete the class table of the five days (\\n = 5\\). Fill each column from left to right.
+**Try it.** Complete the class table of the five days ($n = 5$). Fill each column from left to right.
 
-| Class (€)    | \\n_i\\ | \\N_i^{+}\\ | \\f_i\\ (%) | \\F_i^{+}\\ (%) |
-|--------------|--------:|------------:|------------:|----------------:|
-| \[400, 500\[ |       2 |           ? |           ? |               ? |
-| \[500, 600\[ |       1 |           ? |           ? |               ? |
-| \[600, 700\[ |       1 |           ? |           ? |               ? |
-| \[700, 800\[ |       1 |           ? |           ? |               ? |
+| Class (€)    | $n_i$ | $N_i^{+}$ | $f_i$ (%) | $F_i^{+}$ (%) |
+|--------------|------:|----------:|----------:|--------------:|
+| \[400, 500\[ |     2 |         ? |         ? |             ? |
+| \[500, 600\[ |     1 |         ? |         ? |             ? |
+| \[600, 700\[ |     1 |         ? |         ? |             ? |
+| \[700, 800\[ |     1 |         ? |         ? |             ? |
 
-1.  \\N_i^{+}\\: the running total of the counts.
-2.  \\f_i\\: each count divided by \\n = 5\\, as a percentage.
-3.  \\F_i^{+}\\: the running total divided by \\n = 5\\.
+1.  $N_i^{+}$: the running total of the counts.
+2.  $f_i$: each count divided by $n = 5$, as a percentage.
+3.  $F_i^{+}$: the running total divided by $n = 5$.
 
 How many days earned less than €700?
 
 Check your answer
 
-| Class (€)    | \\n_i\\ | \\N_i^{+}\\ | \\f_i\\ (%) | \\F_i^{+}\\ (%) |
-|--------------|--------:|------------:|------------:|----------------:|
-| \[400, 500\[ |       2 |           2 |          40 |              40 |
-| \[500, 600\[ |       1 |           3 |          20 |              60 |
-| \[600, 700\[ |       1 |           4 |          20 |              80 |
-| \[700, 800\[ |       1 |           5 |          20 |             100 |
+| Class (€)    | $n_i$ | $N_i^{+}$ | $f_i$ (%) | $F_i^{+}$ (%) |
+|--------------|------:|----------:|----------:|--------------:|
+| \[400, 500\[ |     2 |         2 |        40 |            40 |
+| \[500, 600\[ |     1 |         3 |        20 |            60 |
+| \[600, 700\[ |     1 |         4 |        20 |            80 |
+| \[700, 800\[ |     1 |         5 |        20 |           100 |
 
-Less than €700 means the first three classes: \\N_3^{+} = 4\\ days, that is \\F_3^{+} = 80\\\\. The last row always ends at \\n = 5\\ and 100%.
+Less than €700 means the first three classes: $N_3^{+} = 4$ days, that is $F_3^{+} = 80\%$. The last row always ends at $n = 5$ and 100%.
 
-**See it.** The running totals grow like a staircase that stops at \\n\\:
+**See it.** The running totals grow like a staircase that stops at $n$:
 
 ``` text
 less than 500   ##        2 days   40%
@@ -142,24 +144,28 @@ less than 700   ####      4 days   80%
 less than 800   #####     5 days  100%
 ```
 
-In plain words: \\n_i\\ is a count; \\f_i\\ is its share of the total (often written as a percentage); \\N_i^{+}\\ and \\F_i^{+}\\ are the running totals of counts and shares up to and including class \\i\\. The last one answers “how many days earned **less than the upper bound** of this class?”.
+In plain words: $n_i$ is a count; $f_i$ is its share of the total (often written as a percentage); $N_i^{+}$ and $F_i^{+}$ are the running totals of counts and shares up to and including class $i$. The last one answers “how many days earned **less than the upper bound** of this class?”.
 
 > **TIP:**
 >
-> For class \\i\\, with \\n_i\\ the number of observations in it and \\n\\ the total number of observations: \\ f_i = \frac{n_i}{n}, \qquad N_i^{+} = \sum\_{j=1}^{i} n_j, \qquad F_i^{+} = \frac{N_i^{+}}{n}. \\
+> For class $i$, with $n_i$ the number of observations in it and $n$ the total number of observations: $$f_i = \frac{n_i}{n},
+> \qquad
+> N_i^{+} = \sum_{j=1}^{i} n_j,
+> \qquad
+> F_i^{+} = \frac{N_i^{+}}{n}.$$
 
 #### Notation decoder: counts, shares and running totals
 
 | Symbol | Read aloud | In our example (five days) |
 |----|----|----|
-| \\i\\ | “i” | the class number, 1 to 4 |
-| \\n_i\\ | “n sub i” | the count of class \\i\\, e.g. \\n_1 = 2\\ |
-| \\n\\ | “n” | the total, 5 days |
-| \\f_i\\ | “f sub i” | the share of class \\i\\, e.g. \\f_1 = 2/5 = 40\\\\ |
-| \\\sum\_{j=1}^{i}\\ | “add up, for j from 1 to i” | for \\i = 3\\: \\2 + 1 + 1\\ |
-| \\n_j\\ | “n sub j” | the count of class \\j\\ |
-| \\N_i^{+}\\ | “capital N sub i plus” | the days below the upper bound of class \\i\\, e.g. \\N_3^{+} = 4\\ |
-| \\F_i^{+}\\ | “capital F sub i plus” | the share of days below that bound, e.g. \\F_3^{+} = 4/5 = 80\\\\ |
+| $i$ | “i” | the class number, 1 to 4 |
+| $n_i$ | “n sub i” | the count of class $i$, e.g. $n_1 = 2$ |
+| $n$ | “n” | the total, 5 days |
+| $f_i$ | “f sub i” | the share of class $i$, e.g. $f_1 = 2/5 = 40\%$ |
+| $\sum_{j=1}^{i}$ | “add up, for j from 1 to i” | for $i = 3$: $2 + 1 + 1$ |
+| $n_j$ | “n sub j” | the count of class $j$ |
+| $N_i^{+}$ | “capital N sub i plus” | the days below the upper bound of class $i$, e.g. $N_3^{+} = 4$ |
+| $F_i^{+}$ | “capital F sub i plus” | the share of days below that bound, e.g. $F_3^{+} = 4/5 = 80\%$ |
 
 **Whole formula as a sentence:** “the share of a class is its count divided by the total; the cumulative count of a class is the sum of the counts of all classes up to and including it; the cumulative share is that cumulative count divided by the total.”
 
@@ -167,21 +173,21 @@ In plain words: \\n_i\\ is a count; \\f_i\\ is its share of the total (often wri
 
 **Try it.** The last two classes of the five-day table are merged into one class \[600, 800\[. Complete the table, then decide which bar is the tallest if you draw **heights** and which if you want **areas** proportional to the counts.
 
-| Class (€)    | Width \\h_i\\ | \\n_i\\ | Raw count | \\n_i / h_i\\ (days per €) |
-|--------------|--------------:|--------:|----------:|---------------------------:|
-| \[400, 500\[ |           100 |       2 |         2 |                          ? |
-| \[500, 600\[ |           100 |       1 |         1 |                          ? |
-| \[600, 800\[ |           200 |       ? |         ? |                          ? |
+| Class (€)    | Width $h_i$ | $n_i$ | Raw count | $n_i / h_i$ (days per €) |
+|--------------|------------:|------:|----------:|-------------------------:|
+| \[400, 500\[ |         100 |     2 |         2 |                        ? |
+| \[500, 600\[ |         100 |     1 |         1 |                        ? |
+| \[600, 800\[ |         200 |     ? |         ? |                        ? |
 
 Check your answer
 
-| Class (€)    | Width \\h_i\\ | \\n_i\\ | Raw count | \\n_i / h_i\\ (days per €) |
-|--------------|--------------:|--------:|----------:|---------------------------:|
-| \[400, 500\[ |           100 |       2 |         2 |                       0.02 |
-| \[500, 600\[ |           100 |       1 |         1 |                       0.01 |
-| \[600, 800\[ |           200 |       2 |         2 |                       0.01 |
+| Class (€)    | Width $h_i$ | $n_i$ | Raw count | $n_i / h_i$ (days per €) |
+|--------------|------------:|------:|----------:|-------------------------:|
+| \[400, 500\[ |         100 |     2 |         2 |                     0.02 |
+| \[500, 600\[ |         100 |     1 |         1 |                     0.01 |
+| \[600, 800\[ |         200 |     2 |         2 |                     0.01 |
 
-With raw counts, \[600, 800\[ would look as tall as \[400, 500\[ although it is twice as wide, so its area would be doubled. With the density it is drawn at 0.01, half the height of the first bar: the areas \\100 \times 0.02 = 2\\ and \\200 \times 0.01 = 2\\ are equal, as the counts are.
+With raw counts, \[600, 800\[ would look as tall as \[400, 500\[ although it is twice as wide, so its area would be doubled. With the density it is drawn at 0.01, half the height of the first bar: the areas $100 \times 0.02 = 2$ and $200 \times 0.01 = 2$ are equal, as the counts are.
 
 **See it.** In the figure below, choose **1 · Histogram**: the bars touch, and the height of each bar is the count of the class. The next section uses the other two views of the same figure.
 
@@ -286,62 +292,65 @@ In plain words: your eye reads *area*, not height. A wide class holds more days 
 
 > **NOTE:**
 >
-> A **histogram** draws one rectangle per class, with the rectangles touching each other (the variable is continuous, so there are no gaps). The **area** of a rectangle is proportional to the number of observations in the class. When all classes have the same width \\h\\, area is proportional to height, so the height is simply \\n_i\\. When the widths differ, the height must be the **density** \\ \text{height}\_i = \frac{n_i}{h_i}. \\
+> A **histogram** draws one rectangle per class, with the rectangles touching each other (the variable is continuous, so there are no gaps). The **area** of a rectangle is proportional to the number of observations in the class. When all classes have the same width $h$, area is proportional to height, so the height is simply $n_i$. When the widths differ, the height must be the **density** $$\text{height}_i = \frac{n_i}{h_i}.$$
 
 ### 1.6 Frequency polygon and cumulative curve
 
-**Try it.** From the five-day table, write the point that the frequency polygon plots for the class \[500, 600\[, and the point that the cumulative curve plots at the end of that class. Then read the curve at \\p = 50\\\\: it crosses 50% between 500 (40%) and 600 (60%), so by how much has it climbed from 500 when it reaches 50%?
+**Try it.** From the five-day table, write the point that the frequency polygon plots for the class \[500, 600\[, and the point that the cumulative curve plots at the end of that class. Then read the curve at $p = 50\%$: it crosses 50% between 500 (40%) and 600 (60%), so by how much has it climbed from 500 when it reaches 50%?
 
 Check your answer
 
-- Polygon: the midpoint is \\(500 + 600)/2 = 550\\ and \\n_2 = 1\\, so the point is **(550, 1)**.
+- Polygon: the midpoint is $(500 + 600)/2 = 550$ and $n_2 = 1$, so the point is **(550, 1)**.
 - Cumulative curve: the **upper bound** against the running share, **(600, 60%)**.
-- Between (500, 40%) and (600, 60%), 50% is halfway up the segment (\\10\\ out of \\20\\ points), so the reading is \\500 + 100 \times \frac{10}{20} = 550\\. Half of the five days earned less than about €550.
+- Between (500, 40%) and (600, 60%), 50% is halfway up the segment ($10$ out of $20$ points), so the reading is $500 + 100 \times
+  \frac{10}{20} = 550$. Half of the five days earned less than about €550.
 
 **See it.** In the figure above, choose **2 · Polygon** to see the midpoints joined by lines, then **3 · Cumulative curve** to see the upper bounds against the running share, with the 50% reading dashed.
 
-- The **frequency polygon** joins the points (class midpoint, \\n_i\\) with straight lines. It carries the same information as the histogram but is easier to superimpose for two distributions.
-- The **cumulative frequency curve** (also called the *ogive*) joins the points (class **upper bound**, \\F_i^{+}\\) and starts at \\0\\\\ on the lower bound of the first class. It never goes down and ends at \\100\\\\.
+- The **frequency polygon** joins the points (class midpoint, $n_i$) with straight lines. It carries the same information as the histogram but is easier to superimpose for two distributions.
+- The **cumulative frequency curve** (also called the *ogive*) joins the points (class **upper bound**, $F_i^{+}$) and starts at $0\%$ on the lower bound of the first class. It never goes down and ends at $100\%$.
 
-In plain words: inside a class we assume the observations are spread evenly, so the curve is a straight line there. Find the class where the curve crosses \\p\\, then move along that straight segment.
+In plain words: inside a class we assume the observations are spread evenly, so the curve is a straight line there. Find the class where the curve crosses $p$, then move along that straight segment.
 
 > **TIP:**
 >
-> If the share \\p\\ you are looking for lies between \\F\_{i-1}^{+}\\ and \\F_i^{+}\\ in class \\\[L_i, L_i + h\[\\, linear interpolation gives \\ x_p \approx L_i + h \times \frac{p - F\_{i-1}^{+}}{F_i^{+} - F\_{i-1}^{+}}. \\
+> If the share $p$ you are looking for lies between $F_{i-1}^{+}$ and $F_i^{+}$ in class $[L_i, L_i + h[$, linear interpolation gives $$x_p \approx L_i + h \times
+> \frac{p - F_{i-1}^{+}}{F_i^{+} - F_{i-1}^{+}}.$$
 
 #### Notation decoder: reading a percentile on the cumulative curve
 
-| Symbol | Read aloud | In our example (five days, \\p = 50\\\\) |
+| Symbol | Read aloud | In our example (five days, $p = 50\%$) |
 |----|----|----|
-| \\p\\ | “p” | the share we look for, 50% |
-| \\i\\ | “i” | the class where the curve crosses \\p\\: class 2, \[500, 600\[ |
-| \\L_i\\ | “L sub i” | the lower bound of that class, 500 |
-| \\h\\ | “h” | the class width, 100 |
-| \\F\_{i-1}^{+}\\ | “capital F sub i minus one, plus” | the share before the class, 40% |
-| \\F_i^{+}\\ | “capital F sub i plus” | the share at its upper bound, 60% |
-| \\x_p\\ | “x sub p” | the revenue below which a share \\p\\ of days lie, about 550 |
+| $p$ | “p” | the share we look for, 50% |
+| $i$ | “i” | the class where the curve crosses $p$: class 2, \[500, 600\[ |
+| $L_i$ | “L sub i” | the lower bound of that class, 500 |
+| $h$ | “h” | the class width, 100 |
+| $F_{i-1}^{+}$ | “capital F sub i minus one, plus” | the share before the class, 40% |
+| $F_i^{+}$ | “capital F sub i plus” | the share at its upper bound, 60% |
+| $x_p$ | “x sub p” | the revenue below which a share $p$ of days lie, about 550 |
 
-**Whole formula as a sentence:** “start at the lower bound of the class where the curve crosses \\p\\, and add the class width multiplied by the fraction of the way that \\p\\ lies between the shares at the two ends of the class.”
+**Whole formula as a sentence:** “start at the lower bound of the class where the curve crosses $p$, and add the class width multiplied by the fraction of the way that $p$ lies between the shares at the two ends of the class.”
 
 ## 2 Worked example
 
-We use the **first 30 trading days of Harbour** (sheet `harbour_30d`). The class table for `daily_revenue_eur` with \\h = 100\\ and \\n = 30\\ is:
+We use the **first 30 trading days of Harbour** (sheet `harbour_30d`). The class table for `daily_revenue_eur` with $h = 100$ and $n = 30$ is:
 
-| Class (€)    | \\n_i\\ | \\N_i^{+}\\ | \\f_i\\ (%) | \\F_i^{+}\\ (%) |
-|--------------|--------:|------------:|------------:|----------------:|
-| \[400, 500\[ |       6 |           6 |        20.0 |            20.0 |
-| \[500, 600\[ |       6 |          12 |        20.0 |            40.0 |
-| \[600, 700\[ |       8 |          20 |        26.7 |            66.7 |
-| \[700, 800\[ |       7 |          27 |        23.3 |            90.0 |
-| \[800, 900\[ |       3 |          30 |        10.0 |           100.0 |
+| Class (€)    | $n_i$ | $N_i^{+}$ | $f_i$ (%) | $F_i^{+}$ (%) |
+|--------------|------:|----------:|----------:|--------------:|
+| \[400, 500\[ |     6 |         6 |      20.0 |          20.0 |
+| \[500, 600\[ |     6 |        12 |      20.0 |          40.0 |
+| \[600, 700\[ |     8 |        20 |      26.7 |          66.7 |
+| \[700, 800\[ |     7 |        27 |      23.3 |          90.0 |
+| \[800, 900\[ |     3 |        30 |      10.0 |         100.0 |
 
 **Step 1 — the histogram.** All five classes have width 100, so the bar heights are the counts 6, 6, 8, 7, 3. The tallest bar is \[600, 700\[: that is where the largest group of trading days sits.
 
 **Step 2 — the frequency polygon.** The class midpoints are 450, 550, 650, 750 and 850. Plot (450, 6), (550, 6), (650, 8), (750, 7), (850, 3) and join them with straight lines.
 
-**Step 3 — the cumulative curve.** Plot the upper bounds against \\F_i^{+}\\: (500, 20%), (600, 40%), (700, 66.7%), (800, 90%), (900, 100%), starting from (400, 0%). Reading at 600 tells us that **40%** of the days earned less than €600.
+**Step 3 — the cumulative curve.** Plot the upper bounds against $F_i^{+}$: (500, 20%), (600, 40%), (700, 66.7%), (800, 90%), (900, 100%), starting from (400, 0%). Reading at 600 tells us that **40%** of the days earned less than €600.
 
-**Step 4 — reading the curve.** Where does the curve cross 50%? Between 600 (40%) and 700 (66.7%), so \\ x\_{50} \approx 600 + 100 \times \frac{50 - 40}{66.7 - 40} \approx 637.5. \\ The exact median of the 30 values is €643.63, so the curve reading is within €6. For the third quartile, \\p = 75\\\\ lies between 700 (66.7%) and 800 (90%): \\x\_{75} \approx 700 + 100 \times \frac{75 - 66.7}{90 - 66.7} \approx 735.7\\ (the exact value, computed in Module 5, is €729.99).
+**Step 4 — reading the curve.** Where does the curve cross 50%? Between 600 (40%) and 700 (66.7%), so $$x_{50} \approx 600 + 100 \times \frac{50 - 40}{66.7 - 40} \approx 637.5.$$ The exact median of the 30 values is €643.63, so the curve reading is within €6. For the third quartile, $p = 75\%$ lies between 700 (66.7%) and 800 (90%): $x_{75} \approx 700 + 100 \times
+\frac{75 - 66.7}{90 - 66.7} \approx 735.7$ (the exact value, computed in Module 5, is €729.99).
 
 **Exam tip.** A cumulative curve is read at **upper bounds**. A polygon is read at **midpoints**. Mixing them up is the most common error on this topic.
 
@@ -349,13 +358,15 @@ We use the **first 30 trading days of Harbour** (sheet `harbour_30d`). The class
 
 > **CAUTION:**
 >
-> By definition \\N_k^{+} = \sum\_{j=1}^{k} n_j\\, summed over **all** \\k\\ classes. The classes are consecutive and half-open, so every observation falls in exactly one class and the class counts add up to the total: \\ N_k^{+} = \sum\_{j=1}^{k} n_j = n \quad\Longrightarrow\quad F_k^{+} = \frac{N_k^{+}}{n} = \frac{n}{n} = 100\\. \\ For the first 30 Harbour days, \\N_5^{+} = 6+6+8+7+3 = 30 = n\\, so \\F_5^{+} = 100\\\\. Whatever class bounds you choose, the cumulative curve always finishes in the top-right corner. If it does not, a class is missing or an observation fell outside your classes — a quick way to check your own table.
+> By definition $N_k^{+} = \sum_{j=1}^{k} n_j$, summed over **all** $k$ classes. The classes are consecutive and half-open, so every observation falls in exactly one class and the class counts add up to the total: $$N_k^{+} = \sum_{j=1}^{k} n_j = n
+> \quad\Longrightarrow\quad
+> F_k^{+} = \frac{N_k^{+}}{n} = \frac{n}{n} = 100\%.$$ For the first 30 Harbour days, $N_5^{+} = 6+6+8+7+3 = 30 = n$, so $F_5^{+} = 100\%$. Whatever class bounds you choose, the cumulative curve always finishes in the top-right corner. If it does not, a class is missing or an observation fell outside your classes — a quick way to check your own table.
 
 ## 4 Visual intuition
 
-Think of the histogram as a **pile of sand** poured on the revenue axis. The area of each bar is the amount of sand in that class, and the total area is the whole sample (the 30 days). If every class has the same width, a taller bar means more sand. If a class is twice as wide and you keep the same height, you have silently doubled its sand: the picture lies. Dividing the count by the width (\\n_i/h_i\\) keeps the amount of sand honest.
+Think of the histogram as a **pile of sand** poured on the revenue axis. The area of each bar is the amount of sand in that class, and the total area is the whole sample (the 30 days). If every class has the same width, a taller bar means more sand. If a class is twice as wide and you keep the same height, you have silently doubled its sand: the picture lies. Dividing the count by the width ($n_i/h_i$) keeps the amount of sand honest.
 
-The cumulative curve is the same pile seen from another angle: at any revenue \\x\\, its height is the share of sand lying to the **left** of \\x\\. Where the histogram has a tall bar, the curve climbs steeply; where the histogram is nearly empty, the curve is nearly flat.
+The cumulative curve is the same pile seen from another angle: at any revenue $x$, its height is the share of sand lying to the **left** of $x$. Where the histogram has a tall bar, the curve climbs steeply; where the histogram is nearly empty, the curve is nearly flat.
 
 ## 5 Interactive demo — build your own histogram
 
@@ -485,54 +496,55 @@ All exercises below are done by hand; the Excel ones are in the [homework](#home
 
 Solution
 
-The curve gives \\F^{+}(700) = 66.7\\\\ of days **below** €700, so at least €700 means \\100\\ - 66.7\\ = 33.3\\\\. Check with the counts directly: \\(7 + 3)/30 = 33.3\\\\.
+The curve gives $F^{+}(700) = 66.7\%$ of days **below** €700, so at least €700 means $100\% - 66.7\% = 33.3\%$. Check with the counts directly: $(7 + 3)/30 = 33.3\%$.
 
-**Exercise 2 (Unequal class widths)** Suppose the last two classes are merged into one class \[700, 900\[ of width 200, which holds \\7 + 3 = 10\\ days. The first class \[400, 500\[ has width 100 and holds 6 days. What heights should the two bars have so that their **areas** are comparable? Which bar looks taller?
+**Exercise 2 (Unequal class widths)** Suppose the last two classes are merged into one class \[700, 900\[ of width 200, which holds $7 + 3 = 10$ days. The first class \[400, 500\[ has width 100 and holds 6 days. What heights should the two bars have so that their **areas** are comparable? Which bar looks taller?
 
 Solution
 
-Use the density \\n_i/h_i\\.
+Use the density $n_i/h_i$.
 
-- \[400, 500\[: \\6/100 = 0.06\\ days per euro.
-- \[700, 900\[: \\10/200 = 0.05\\ days per euro.
+- \[400, 500\[: $6/100 = 0.06$ days per euro.
+- \[700, 900\[: $10/200 = 0.05$ days per euro.
 
-The merged bar is drawn at height \\0.05\\ — about 83% of the height of the first bar, even though it holds more days (10 versus 6), because it is twice as wide. Had we plotted the raw count 10, the merged class would look almost twice as tall as it should.
+The merged bar is drawn at height $0.05$ — about 83% of the height of the first bar, even though it holds more days (10 versus 6), because it is twice as wide. Had we plotted the raw count 10, the merged class would look almost twice as tall as it should.
 
 **Exercise 3 (Polygon points)** What is the midpoint of the class \[600, 700\[, and which point does the frequency polygon plot for it? What is the point for the cumulative curve at the end of that class?
 
 Solution
 
-The midpoint is \\(600 + 700)/2 = 650\\ and \\n\_{\[600,700\[} = 8\\, so the polygon plots **(650, 8)**. The cumulative curve plots the **upper bound** against the running share: **(700, 66.7%)**.
+The midpoint is $(600 + 700)/2 = 650$ and $n_{[600,700[} = 8$, so the polygon plots **(650, 8)**. The cumulative curve plots the **upper bound** against the running share: **(700, 66.7%)**.
 
 **Exercise 4 (Formula to words)**  
 
-1.  Read \\F_i^{+} = \dfrac{N_i^{+}}{n}\\ aloud as one sentence. Which indicator is it?
+1.  Read $F_i^{+} = \dfrac{N_i^{+}}{n}$ aloud as one sentence. Which indicator is it?
 
-2.  Read \\N_i^{+} = \sum\_{j=1}^{i} n_j\\ aloud as one sentence. For the five-day table of the Theory section, what is \\N_3^{+}\\?
-
-Solution
-
-1.  “The cumulative share of class \\i\\ is the cumulative count of class \\i\\ divided by the total number of observations.” It is the share of days below the upper bound of class \\i\\.
-
-2.  “The cumulative count of class \\i\\ is the sum, for \\j\\ from 1 to \\i\\, of the counts of the classes.” For the five days, \\N_3^{+} = 2 + 1 + 1 = 4\\.
-
-**Exercise 5 (Words to formula)** Write in symbols: (a) “the share of the observations that fall in class \\i\\”; (b) “the height of the bar of class \\i\\ when the class widths differ”; (c) “the revenue below which a share \\p\\ of the days lie, read on the cumulative curve inside the class \\\[L_i, L_i + h\[\\”.
+2.  Read $N_i^{+} = \sum_{j=1}^{i} n_j$ aloud as one sentence. For the five-day table of the Theory section, what is $N_3^{+}$?
 
 Solution
 
-1.  \\f_i = \dfrac{n_i}{n}\\.
+1.  “The cumulative share of class $i$ is the cumulative count of class $i$ divided by the total number of observations.” It is the share of days below the upper bound of class $i$.
 
-2.  \\\text{height}\_i = \dfrac{n_i}{h_i}\\.
+2.  “The cumulative count of class $i$ is the sum, for $j$ from 1 to $i$, of the counts of the classes.” For the five days, $N_3^{+} = 2 + 1 + 1 = 4$.
 
-3.  \\x_p \approx L_i + h \times \dfrac{p - F\_{i-1}^{+}}{F_i^{+} - F\_{i-1}^{+}}\\.
+**Exercise 5 (Words to formula)** Write in symbols: (a) “the share of the observations that fall in class $i$”; (b) “the height of the bar of class $i$ when the class widths differ”; (c) “the revenue below which a share $p$ of the days lie, read on the cumulative curve inside the class $[L_i, L_i + h[$”.
+
+Solution
+
+1.  $f_i = \dfrac{n_i}{n}$.
+
+2.  $\text{height}_i = \dfrac{n_i}{h_i}$.
+
+3.  $x_p \approx L_i + h \times
+    \dfrac{p - F_{i-1}^{+}}{F_i^{+} - F_{i-1}^{+}}$.
 
 ## 7 Common mistakes
 
 > **WARNING:**
 >
-> - **Plotting the raw count for unequal widths.** Use the density \\n_i/h_i\\, otherwise wide classes look too large.
+> - **Plotting the raw count for unequal widths.** Use the density $n_i/h_i$, otherwise wide classes look too large.
 > - **Mixing up the plotting positions.** Polygon points use the class **midpoint**; the cumulative curve uses the class **upper bound**.
-> - **Overlapping or gappy classes.** Write them half-open, \\\[L, L+h\[\\, so each value belongs to exactly one class.
+> - **Overlapping or gappy classes.** Write them half-open, $[L, L+h[$, so each value belongs to exactly one class.
 > - **Too few or too many classes.** Two classes hide the shape; 40 classes on 30 observations draw noise. Start from Sturges’ rule and adjust.
 > - **Leaving gaps between histogram bars.** The variable is continuous: bars touch. Gaps belong to bar charts of *categories* (Module 2).
 
@@ -541,17 +553,17 @@ Solution
 Five minutes, no calculator needed except for question 4.
 
 1.  In one sentence, why must a continuous variable be grouped into classes before building a frequency table?
-2.  Why are the bounds of a class written \\\[L_i, L_i + h\[\\, with the upper bound left out?
-3.  Read \\F_i^{+} = N_i^{+}/n\\ aloud as a sentence.
-4.  A class table of \\n = 10\\ days has counts 3, 5 and 2 in the classes \[0, 200\[, \[200, 400\[ and \[400, 600\[. What are \\f_2\\ and the cumulative share \\F_2^{+}\\?
+2.  Why are the bounds of a class written $[L_i, L_i + h[$, with the upper bound left out?
+3.  Read $F_i^{+} = N_i^{+}/n$ aloud as a sentence.
+4.  A class table of $n = 10$ days has counts 3, 5 and 2 in the classes \[0, 200\[, \[200, 400\[ and \[400, 600\[. What are $f_2$ and the cumulative share $F_2^{+}$?
 5.  Which points does a frequency polygon use, and which does a cumulative curve use? Why are they different?
 
 Answers
 
 1.  Almost every value is different, so a table by value would be as long as the data; classes trade a little precision for a readable summary.
 2.  So that every value lands in exactly one class: the lower bound belongs to the class, the upper bound belongs to the next one.
-3.  “The cumulative share of class \\i\\ is the cumulative count of class \\i\\ divided by the total number of observations.”
-4.  \\f_2 = 5/10 = 50\\\\ and \\F_2^{+} = (3 + 5)/10 = 80\\\\.
+3.  “The cumulative share of class $i$ is the cumulative count of class $i$ divided by the total number of observations.”
+4.  $f_2 = 5/10 = 50\%$ and $F_2^{+} = (3 + 5)/10 = 80\%$.
 5.  The polygon uses (class midpoint, count): it describes the class as a whole. The cumulative curve uses (class upper bound, cumulative share): the share of days below a bound is only known once the whole class has been counted.
 
 ## 9 Homework — Excel lab
@@ -569,15 +581,15 @@ The sheet `harbour_30d` of `wandering-fork.xlsx` has the same 16 columns as the 
 | Concept | Excel function or steps |
 |----|----|
 | Class bounds | Type the lower bounds 400, 500, … in column R and the upper bounds in column S (each upper bound is the next lower bound) |
-| Count \\n_i\\ (column T) | `=COUNTIFS($N$2:$N$31,">="&R2,$N$2:$N$31,"<"&S2)`, then copy down |
-| Relative frequency \\f_i\\ (column U) | `=T2/COUNT($N$2:$N$31)`, formatted as a percentage |
-| Cumulative count \\N_i^{+}\\ (column V) | In the first row `=T2`; below, `=V2+T3` (running sum), then copy down |
-| Cumulative share \\F_i^{+}\\ (column W) | `=V2/COUNT($N$2:$N$31)`, formatted as a percentage |
-| Same count in one step | `=COUNTIFS($N$2:$N$31,"<"&S2)` gives \\N_i^{+}\\ directly |
+| Count $n_i$ (column T) | `=COUNTIFS($N$2:$N$31,">="&R2,$N$2:$N$31,"<"&S2)`, then copy down |
+| Relative frequency $f_i$ (column U) | `=T2/COUNT($N$2:$N$31)`, formatted as a percentage |
+| Cumulative count $N_i^{+}$ (column V) | In the first row `=T2`; below, `=V2+T3` (running sum), then copy down |
+| Cumulative share $F_i^{+}$ (column W) | `=V2/COUNT($N$2:$N$31)`, formatted as a percentage |
+| Same count in one step | `=COUNTIFS($N$2:$N$31,"<"&S2)` gives $N_i^{+}$ directly |
 | Histogram | Select the revenue column → **Insert → Chart → Histogram**, then **Format Axis → Bin width** = 100 |
 | PivotTable grouping | Insert a PivotTable, put `daily_revenue_eur` in **Rows** and `day` in **Values** (Count), then right-click a row → **Group** with *Starting at* 400, *Ending at* 900, *By* 100 |
 | Frequency polygon | **Insert → Chart → Line** (or Scatter with straight lines) using the midpoints and counts |
-| Cumulative curve | **Insert → Chart → Scatter with Straight Lines** using the upper bounds and \\F_i^{+}\\ |
+| Cumulative curve | **Insert → Chart → Scatter with Straight Lines** using the upper bounds and $F_i^{+}$ |
 
 For the **full table** (120 days per franchise) use the Excel Table `tblFork` and add the franchise as one more condition, for example:
 
@@ -591,7 +603,7 @@ For the **full table** (120 days per franchise) use the Excel Table `tblFork` an
 
 > **WARNING:**
 >
-> In many Excel versions the built-in Histogram chart labels its bins as \\(400, 500\]\\: the **upper** bound belongs to the class. Our convention is \\\[400, 500\[\\. With revenue to the cent a value of exactly 500.00 is rare, but a number such as 500 or 600 *can* occur in other data. When in doubt, trust your `COUNTIFS` table, not the chart labels. The PivotTable grouping follows our convention (a value of exactly 500 goes into the class starting at 500).
+> In many Excel versions the built-in Histogram chart labels its bins as $(400, 500]$: the **upper** bound belongs to the class. Our convention is $[400, 500[$. With revenue to the cent a value of exactly 500.00 is rare, but a number such as 500 or 600 *can* occur in other data. When in doubt, trust your `COUNTIFS` table, not the chart labels. The PivotTable grouping follows our convention (a value of exactly 500 goes into the class starting at 500).
 
 ### 9.2 Step 0 — check your class results
 
@@ -602,12 +614,12 @@ For the **full table** (120 days per franchise) use the Excel Table `tblFork` an
 
 Expected results
 
-| Class (€)    | \\n_i\\ | \\N_i^{+}\\ | \\F_i^{+}\\ (%) |
-|--------------|--------:|------------:|----------------:|
-| \[400, 500\[ |       2 |           2 |              40 |
-| \[500, 600\[ |       1 |           3 |              60 |
-| \[600, 700\[ |       1 |           4 |              80 |
-| \[700, 800\[ |       1 |           5 |             100 |
+| Class (€)    | $n_i$ | $N_i^{+}$ | $F_i^{+}$ (%) |
+|--------------|------:|----------:|--------------:|
+| \[400, 500\[ |     2 |         2 |            40 |
+| \[500, 600\[ |     1 |         3 |            60 |
+| \[600, 700\[ |     1 |         4 |            80 |
+| \[700, 800\[ |     1 |         5 |           100 |
 
 Day 1 (exactly 600) is counted in \[600, 700\[, as expected from the `>=` and `<` conditions.
 
@@ -629,16 +641,16 @@ The formula for the class in row 2 is:
 
 You should obtain:
 
-| Class (€)      | \\n_i\\ | \\N_i^{+}\\ | \\f_i\\ (%) | \\F_i^{+}\\ (%) |
-|----------------|--------:|------------:|------------:|----------------:|
-| \[0, 200\[     |      25 |          25 |        20.8 |            20.8 |
-| \[200, 400\[   |      37 |          62 |        30.8 |            51.7 |
-| \[400, 600\[   |      30 |          92 |        25.0 |            76.7 |
-| \[600, 800\[   |      11 |         103 |         9.2 |            85.8 |
-| \[800, 1000\[  |       9 |         112 |         7.5 |            93.3 |
-| \[1000, 1200\[ |       5 |         117 |         4.2 |            97.5 |
-| \[1200, 1400\[ |       2 |         119 |         1.7 |            99.2 |
-| \[1400, 1600\[ |       1 |         120 |         0.8 |           100.0 |
+| Class (€)      | $n_i$ | $N_i^{+}$ | $f_i$ (%) | $F_i^{+}$ (%) |
+|----------------|------:|----------:|----------:|--------------:|
+| \[0, 200\[     |    25 |        25 |      20.8 |          20.8 |
+| \[200, 400\[   |    37 |        62 |      30.8 |          51.7 |
+| \[400, 600\[   |    30 |        92 |      25.0 |          76.7 |
+| \[600, 800\[   |    11 |       103 |       9.2 |          85.8 |
+| \[800, 1000\[  |     9 |       112 |       7.5 |          93.3 |
+| \[1000, 1200\[ |     5 |       117 |       4.2 |          97.5 |
+| \[1200, 1400\[ |     2 |       119 |       1.7 |          99.2 |
+| \[1400, 1600\[ |     1 |       120 |       0.8 |         100.0 |
 
 **76.7%** of Campus days earned less than €600. The tallest class is \[200, 400\[ (37 days), and more than three days in four sit below €600, but eight days (6.7%) earned €1,000 or more, up to €1,407.59. The histogram has a tall peak on the left and a **long tail to the right**. Harbour’s revenue is more compact, with only a mild tail. We will give this shape a name in Module 7.
 
@@ -660,7 +672,7 @@ Filter `franchise` = Harbour, put `daily_revenue_eur` in **Rows** and `day` in *
 |-----------|--------:|--------:|--------:|--------:|----------:|
 | Days      |      16 |       7 |       3 |       0 |         2 |
 
-They add up to 120 (the PivotTable does not show the empty 900–999 group). Days between €500 and €700 are the classes 500–599 and 600–699: \\(10 + 16)/120 = 21.7\\\\.
+They add up to 120 (the PivotTable does not show the empty 900–999 group). Days between €500 and €700 are the classes 500–599 and 600–699: $(10 + 16)/120 = 21.7\%$.
 
 ## 10 Further reading
 

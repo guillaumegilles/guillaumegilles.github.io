@@ -24,11 +24,11 @@ La **recherche opérationnelle** regroupe des méthodes mathématiques permettan
 
 ## 2.2 Exemple sans contraintes
 
-Une entreprise fabrique deux produits \\A\\ et \\B\\ :
+Une entreprise fabrique deux produits $A$ et $B$ :
 
-- bénéfice unitaire : 40 EUR pour \\A\\, 30 EUR pour \\B\\ ;
-- variables : \\x\\ (unités de \\A\\), \\y\\ (unités de \\B\\) ;
-- objectif : \\\max Z(x,y)=40x+30y\\.
+- bénéfice unitaire : 40 EUR pour $A$, 30 EUR pour $B$ ;
+- variables : $x$ (unités de $A$), $y$ (unités de $B$) ;
+- objectif : $\max Z(x,y)=40x+30y$.
 
 Sans contraintes, il n’existe pas de solution optimale finie.
 
@@ -36,31 +36,40 @@ Sans contraintes, il n’existe pas de solution optimale finie.
 
 Contraintes de production :
 
-\\ \begin{cases} 2x+y \leq 100 \\ x+y \leq 80 \\ x \geq 0,\\ y \geq 0 \end{cases} \\
+$$\begin{cases}
+2x+y \leq 100 \\
+x+y \leq 80 \\
+x \geq 0,\; y \geq 0
+\end{cases}$$
 
 Objectif :
 
-\\ \max Z(x,y)=40x+30y \\
+$$\max Z(x,y)=40x+30y$$
 
 ### 2.3.1 Méthode graphique
 
 1.  Tracer les droites des contraintes.
 2.  Déterminer la zone admissible.
 3.  Identifier les sommets.
-4.  Évaluer \\Z\\ sur les sommets.
+4.  Évaluer $Z$ sur les sommets.
 5.  Choisir le meilleur sommet.
 
 Sommets :
 
-\\ (0,0),\\ (0,80),\\ (20,60),\\ (50,0) \\
+$$(0,0),\; (0,80),\; (20,60),\; (50,0)$$
 
 Évaluation :
 
-\\ \begin{aligned} Z(0,0)&=0 \\ Z(0,80)&=2400 \\ Z(20,60)&=2600 \\ Z(50,0)&=2000 \end{aligned} \\
+$$\begin{aligned}
+Z(0,0)&=0 \\
+Z(0,80)&=2400 \\
+Z(20,60)&=2600 \\
+Z(50,0)&=2000
+\end{aligned}$$
 
-Le maximum est atteint en \\(20,60)\\.
+Le maximum est atteint en $(20,60)$.
 
-Interprétation : produire 20 unités de \\A\\ et 60 unités de \\B\\ donne un bénéfice maximal de **2600 EUR**.
+Interprétation : produire 20 unités de $A$ et 60 unités de $B$ donne un bénéfice maximal de **2600 EUR**.
 
 ## 2.4 Exercices d’entraînement
 
@@ -68,21 +77,30 @@ Interprétation : produire 20 unités de \\A\\ et 60 unités de \\B\\ donne un b
 
 Objectif :
 
-\\ \max Z(x,y)=700x+320y \\
+$$\max Z(x,y)=700x+320y$$
 
 Contraintes :
 
-\\ \begin{cases} 1000x+500y \leq 10000 \\ x \leq 8 \\ x \geq 0,\\ y \geq 0 \end{cases} \\
+$$\begin{cases}
+1000x+500y \leq 10000 \\
+x \leq 8 \\
+x \geq 0,\; y \geq 0
+\end{cases}$$
 
 ### 2.4.2 Exercice 2 - Politique municipale
 
 Objectif :
 
-\\ \max Z(x,y)=40x+18y \\
+$$\max Z(x,y)=40x+18y$$
 
 Contraintes :
 
-\\ \begin{cases} 1000x+500y \leq 8000 \\ x \leq 4 \\ y \geq 6 \\ x \geq 0,\\ y \geq 0 \end{cases} \\
+$$\begin{cases}
+1000x+500y \leq 8000 \\
+x \leq 4 \\
+y \geq 6 \\
+x \geq 0,\; y \geq 0
+\end{cases}$$
 
 # 3 Partie 2 - Exercices d’application (complements du support)
 
@@ -90,46 +108,61 @@ Contraintes :
 
 Variables :
 
-- \\I\\ : nombre de projets d’innovation
-- \\C\\ : nombre de projets commerciaux
+- $I$ : nombre de projets d’innovation
+- $C$ : nombre de projets commerciaux
 
 Objectif :
 
-\\ \max Z(I,C)=120I+90C \\
+$$\max Z(I,C)=120I+90C$$
 
 Contraintes :
 
-\\ \begin{cases} 100I+60C \leq 600 \\ 5I+3C \leq 30 \\ I \leq 5 \\ I \geq 0,\\ C \geq 0 \end{cases} \\
+$$\begin{cases}
+100I+60C \leq 600 \\
+5I+3C \leq 30 \\
+I \leq 5 \\
+I \geq 0,\; C \geq 0
+\end{cases}$$
 
 ### 3.0.2 Exercice 4 - Planification commerciale avec synergie
 
 Variables :
 
-- \\x\\ : visites clients existants
-- \\y\\ : visites prospects
+- $x$ : visites clients existants
+- $y$ : visites prospects
 
 Objectif (avec synergie) :
 
-\\ \max Z(x,y)=9x+12y+0.5xy \\
+$$\max Z(x,y)=9x+12y+0.5xy$$
 
 Contraintes :
 
-\\ \begin{cases} 1.5x+2y \leq 63 \\ 30x+50y \leq 1260 \\ x \geq 0.4(x+y) \\ x \leq 30,\\ y \leq 25 \\ x \geq 0,\\ y \geq 0 \end{cases} \\
+$$\begin{cases}
+1.5x+2y \leq 63 \\
+30x+50y \leq 1260 \\
+x \geq 0.4(x+y) \\
+x \leq 30,\; y \leq 25 \\
+x \geq 0,\; y \geq 0
+\end{cases}$$
 
 ### 3.0.3 Exercice 5 - Transport de deux produits
 
 Variables :
 
-- \\x\\ : tonnes de produit \\A\\
-- \\y\\ : tonnes de produit \\B\\
+- $x$ : tonnes de produit $A$
+- $y$ : tonnes de produit $B$
 
 Objectif :
 
-\\ \min C(x,y)=40x+60y \\
+$$\min C(x,y)=40x+60y$$
 
 Contraintes :
 
-\\ \begin{cases} 2x+4y=80 \\ x+y \leq 30 \\ x \geq 0,\\ y \geq 0 \end{cases} \\
+$$\begin{cases}
+2x+4y=80 \\
+x+y \leq 30 \\
+x \geq 0,\; y \geq 0
+\end{cases}$$
 
 # 4 Conclusion
 

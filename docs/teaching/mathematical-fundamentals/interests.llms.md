@@ -8,9 +8,9 @@ Answer the following questions from memory before reading further.
 
 > **NOTE:**
 >
-> 1.  \\1{,}000 \times 0.05 \times 2 = €100.\\
-> 2.  Geometric — each period multiplies the capital by a constant factor \\(1+i).\\
-> 3.  \\0.5\\ \times 12 = 6\\\\ per year.
+> 1.  $1{,}000 \times 0.05 \times 2 = €100.$
+> 2.  Geometric — each period multiplies the capital by a constant factor $(1+i).$
+> 3.  $0.5\% \times 12 = 6\%$ per year.
 
 Use your results to identify topics needing attention.
 
@@ -32,9 +32,11 @@ Simple interest and compound interest are two different ways of computing, for e
 >
 > With **simple interest**, interest is computed only on the **initial** capital, without reinvestment. The interest is the same for each period, so the acquired capital follows an **arithmetic** sequence.
 
-Let \\C_0\\ be the initial capital, \\i\\ the interest rate per period, and \\n\\ the number of periods. The interest of one period is \\C_0\\i\\ (constant), so:
+Let $C_0$ be the initial capital, $i$ the interest rate per period, and $n$ the number of periods. The interest of one period is $C_0\,i$ (constant), so:
 
-\\ \text{Interest over } n \text{ periods} = C_0\\i\\n, \qquad C_n = C_0\\(1 + i\\n). \\
+$$\text{Interest over } n \text{ periods} = C_0\,i\,n,
+\qquad
+C_n = C_0\,(1 + i\,n).$$
 
 > **TIP:**
 >
@@ -44,9 +46,10 @@ Let \\C_0\\ be the initial capital, \\i\\ the interest rate per period, and \\n\
 
 #### Worked example
 
-We invest \\100{,}000\\ € at a simple annual rate of \\4\\\\ for \\4\\ years. The yearly interest is constant: \\100{,}000 \times 0.04 = 4{,}000\\ € per year. After \\4\\ years the acquired capital is
+We invest $100{,}000$ € at a simple annual rate of $4\%$ for $4$ years. The yearly interest is constant: $100{,}000 \times 0.04 = 4{,}000$ € per year. After $4$ years the acquired capital is
 
-\\ C_4 = 100{,}000\\(1 + 0.04 \times 4) = 100{,}000 \times 1.16 = 116{,}000 \text{ €}. \\
+$$C_4 = 100{,}000\,(1 + 0.04 \times 4) = 100{,}000 \times 1.16
+    = 116{,}000 \text{ €}.$$
 
 ### 3.2 Converting Interest Rates
 
@@ -54,13 +57,13 @@ Sometimes the rate and the period are not expressed in the same unit of time. Un
 
 > **TIP:**
 >
-> An annual rate \\i\_{\text{year}}\\ corresponds to a monthly rate \\i\_{\text{month}} = \dfrac{i\_{\text{year}}}{12}\\, and conversely \\i\_{\text{year}} = 12\\i\_{\text{month}}\\.
+> An annual rate $i_{\text{year}}$ corresponds to a monthly rate $i_{\text{month}} = \dfrac{i_{\text{year}}}{12}$, and conversely $i_{\text{year}} = 12\,i_{\text{month}}$.
 
 > **CAUTION:**
 >
-> 1.  Convert an annual rate of \\6\\\\ to a monthly rate: \\\dfrac{6\\}{12} = 0.5\\\\ per month.
-> 2.  Convert a monthly rate of \\1\\\\ to an annual rate: \\12 \times 1\\ = 12\\\\ per year.
-> 3.  A capital of \\5{,}000\\ € invested for \\4\\ months earns \\50\\ € of interest. Find the annual rate. The \\4\\-month rate is \\\dfrac{50}{5000} = 1\\\\, so the monthly rate is \\0.25\\\\ and the annual rate is \\12 \times 0.25\\ = 3\\\\.
+> 1.  Convert an annual rate of $6\%$ to a monthly rate: $\dfrac{6\%}{12} = 0.5\%$ per month.
+> 2.  Convert a monthly rate of $1\%$ to an annual rate: $12 \times 1\% = 12\%$ per year.
+> 3.  A capital of $5{,}000$ € invested for $4$ months earns $50$ € of interest. Find the annual rate. The $4$-month rate is $\dfrac{50}{5000} = 1\%$, so the monthly rate is $0.25\%$ and the annual rate is $12 \times 0.25\% = 3\%$.
 
 ### 3.3 Compound Interest
 
@@ -70,23 +73,23 @@ Sometimes the rate and the period are not expressed in the same unit of time. Un
 
 > **CAUTION:**
 >
-> At the end of one period the capital is multiplied by \\(1 + i)\\: the capital \\C_0\\ becomes \\C_1 = C_0 + C_0 i = C_0(1 + i)\\. Repeating, \\C_2 = C_1(1 + i) = C_0(1 + i)^2\\, and by induction
+> At the end of one period the capital is multiplied by $(1 + i)$: the capital $C_0$ becomes $C_1 = C_0 + C_0 i = C_0(1 + i)$. Repeating, $C_2 = C_1(1 + i) = C_0(1 + i)^2$, and by induction
 >
-> \\ C_n = C_0\\(1 + i)^{\\n}. \\
+> $$C_n = C_0\,(1 + i)^{\,n}.$$
 >
-> This is exactly a geometric sequence with first term \\C_0\\ and common ratio \\q = 1 + i\\. The interest earned over \\n\\ periods is \\C_n - C_0 = C_0\big\[(1 + i)^n - 1\big\]\\.
+> This is exactly a geometric sequence with first term $C_0$ and common ratio $q = 1 + i$. The interest earned over $n$ periods is $C_n - C_0 = C_0\big[(1 + i)^n - 1\big]$.
 
 #### Worked example
 
-We invest \\100{,}000\\ € at a compound annual rate of \\5\\\\ for \\10\\ years:
+We invest $100{,}000$ € at a compound annual rate of $5\%$ for $10$ years:
 
-\\ C\_{10} = 100{,}000 \times 1.05^{10} \approx 162{,}889 \text{ €}. \\
+$$C_{10} = 100{,}000 \times 1.05^{10} \approx 162{,}889 \text{ €}.$$
 
-For comparison, the **same** capital at a **simple** rate of \\6\\\\ for \\10\\ years gives \\100{,}000(1 + 0.06 \times 10) = 160{,}000\\ €: over a long horizon the compounding effect can outweigh a higher simple rate — but not always, as the final-exam case in Module 8 shows.
+For comparison, the **same** capital at a **simple** rate of $6\%$ for $10$ years gives $100{,}000(1 + 0.06 \times 10) = 160{,}000$ €: over a long horizon the compounding effect can outweigh a higher simple rate — but not always, as the final-exam case in Module 8 shows.
 
 > **IMPORTANT:**
 >
-> Converting a compound rate between periods is **not** proportional. A monthly compound rate \\i_m\\ corresponds to the annual rate \\i\_{\text{year}} = (1 + i_m)^{12} - 1\\. For \\i_m = 0.5\\\\ this gives \\(1.005)^{12} - 1 \approx 6.17\\\\, not \\6\\\\.
+> Converting a compound rate between periods is **not** proportional. A monthly compound rate $i_m$ corresponds to the annual rate $i_{\text{year}} = (1 + i_m)^{12} - 1$. For $i_m = 0.5\%$ this gives $(1.005)^{12} - 1 \approx 6.17\%$, not $6\%$.
 
 ### 3.4 Average Placement Rate
 
@@ -94,9 +97,9 @@ The **average placement rate** is the single rate that would produce the same fi
 
 > **TIP:**
 >
-> \\P = \frac{V_c}{(1 + i)^n}\\
+> $$P = \frac{V_c}{(1 + i)^n}$$
 >
-> The present value \\P\\ is the initial capital that would produce a future value \\V_c\\ at rate \\i\\ after \\n\\ periods — it lets us compare cash flows at different points in time.
+> The present value $P$ is the initial capital that would produce a future value $V_c$ at rate $i$ after $n$ periods — it lets us compare cash flows at different points in time.
 
 ## 4 Worked Example
 
@@ -104,17 +107,21 @@ The **average placement rate** is the single rate that would produce the same fi
 
 We now solve the problem posed in §2 step by step.
 
-**Bank A** — annual compounding (\\k = 1\\):
+**Bank A** — annual compounding ($k = 1$):
 
-\\ V_A = 5{,}000 \times (1 + 0.04)^{10} = 5{,}000 \times 1.04^{10} \approx 7{,}401.22 \text{ €}. \\
+$$V_A = 5{,}000 \times (1 + 0.04)^{10}
+    = 5{,}000 \times 1.04^{10}
+    \approx 7{,}401.22 \text{ €}.$$
 
-**Bank B** — monthly compounding (\\k = 12\\):
+**Bank B** — monthly compounding ($k = 12$):
 
-\\ V_B = 5{,}000 \times \\\left(1 + \frac{0.04}{12}\right)^{10 \times 12} = 5{,}000 \times (1.003\overline{3})^{120} \approx 7{,}453.71 \text{ €}. \\
+$$V_B = 5{,}000 \times \!\left(1 + \frac{0.04}{12}\right)^{10 \times 12}
+    = 5{,}000 \times (1.003\overline{3})^{120}
+    \approx 7{,}453.71 \text{ €}.$$
 
 **Difference**:
 
-\\ 7{,}453.71 - 7{,}401.22 = 52.49 \text{ €}. \\
+$$7{,}453.71 - 7{,}401.22 = 52.49 \text{ €}.$$
 
 Monthly compounding yields €52.49 more — a modest but real gain from the compounding frequency.
 
@@ -122,25 +129,28 @@ Monthly compounding yields €52.49 more — a modest but real gain from the com
 
 An employee places €3,000 in a savings account offering a compound annual rate of 3.5%, compounded quarterly.
 
-1.  Write the formula for the acquired capital after \\n\\ years.
+1.  Write the formula for the acquired capital after $n$ years.
 2.  Calculate the acquired capital after 4 years.
 3.  How many years does it take to double the initial capital?
 
 > **TIP:**
 >
-> With quarterly compounding, \\k = 4\\. Use \\V_c = P\\\left(1 + \dfrac{i}{k}\right)^{nk}\\ with \\P = 3{,}000\\, \\i = 0.035\\, \\k = 4\\. For doubling, solve \\\left(1 + \dfrac{0.035}{4}\right)^{4n} = 2\\.
+> With quarterly compounding, $k = 4$. Use $V_c = P\!\left(1 + \dfrac{i}{k}\right)^{nk}$ with $P = 3{,}000$, $i = 0.035$, $k = 4$. For doubling, solve $\left(1 + \dfrac{0.035}{4}\right)^{4n} = 2$.
 
 > **CAUTION:**
 >
 > **1. Formula:**
 >
-> \\ V_c = 3{,}000 \times \\\left(1 + \frac{0.035}{4}\right)^{4n} = 3{,}000 \times 1.00875^{4n}. \\
+> $$V_c = 3{,}000 \times \!\left(1 + \frac{0.035}{4}\right)^{4n}
+>     = 3{,}000 \times 1.00875^{4n}.$$
 >
-> **2. After 4 years** (\\n = 4\\, so the exponent is \\4 \times 4 = 16\\):
+> **2. After 4 years** ($n = 4$, so the exponent is $4 \times 4 = 16$):
 >
-> \\ V_c = 3{,}000 \times 1.00875^{16} \approx 3{,}000 \times 1.1490 \approx 3{,}447 \text{ €}. \\
+> $$V_c = 3{,}000 \times 1.00875^{16}
+>     \approx 3{,}000 \times 1.1490
+>     \approx 3{,}447 \text{ €}.$$
 >
-> **3. Doubling:** solve \\(1.00875)^{4n} = 2\\. Testing \\n = 20\\: \\(1.00875)^{80} \approx 2.002 \approx 2\\. About **20 years**.
+> **3. Doubling:** solve $(1.00875)^{4n} = 2$. Testing $n = 20$: $(1.00875)^{80} \approx 2.002 \approx 2$. About **20 years**.
 
 ## 6 Interactive Exploration
 
@@ -224,10 +234,10 @@ html`
 
 ### 6.1 Investigation
 
-1.  Set \\k = 1\\ (annual). Now set \\k = 12\\ (monthly), keeping all other parameters fixed. How much extra does monthly compounding earn after 10 years?
-2.  Keep \\k = 1\\ and increase \\n\\ from 5 to 30. Does the gap between compound and simple interest grow slowly or quickly?
+1.  Set $k = 1$ (annual). Now set $k = 12$ (monthly), keeping all other parameters fixed. How much extra does monthly compounding earn after 10 years?
+2.  Keep $k = 1$ and increase $n$ from 5 to 30. Does the gap between compound and simple interest grow slowly or quickly?
 3.  Which has more impact on the final compound value: doubling the rate or doubling the number of years? Test with the sliders.
-4.  Set \\i = 0\\ (zero rate). What do both formulas give? Why?
+4.  Set $i = 0$ (zero rate). What do both formulas give? Why?
 
 ## 7 Applied Problem
 
@@ -242,27 +252,29 @@ A firm needs to repay a loan of €200,000 in 8 years. Two banks compete for the
 
 > **WARNING:**
 >
-> A student converts a monthly compound rate of 0.5% to an annual rate as \\0.5\\ \times 12 = 6\\\\.
+> A student converts a monthly compound rate of 0.5% to an annual rate as $0.5\% \times 12 = 6\%$.
 >
 > This is only valid for **simple** (proportional) rates. For **compound** rates, the correct conversion is:
 >
-> \\ i\_{\text{year}} = (1 + i\_{\text{month}})^{12} - 1 = (1.005)^{12} - 1 \approx 6.17\\. \\
+> $$i_{\text{year}} = (1 + i_{\text{month}})^{12} - 1
+>                = (1.005)^{12} - 1
+>                \approx 6.17\%.$$
 >
 > Always use the compound-rate conversion formula when interest is reinvested each period.
 
 ## 9 Check Your Understanding
 
 1.  €8,000 invested at 3% simple interest for 5 years. What is the acquired capital?
-2.  What does it mean economically when the capitalisation frequency \\k\\ increases while the annual rate stays fixed?
+2.  What does it mean economically when the capitalisation frequency $k$ increases while the annual rate stays fixed?
 3.  €10,000 invested at 4% compound (annual) for 8 years. Calculate the acquired capital.
-4.  A student computes the annual compound rate equivalent to a monthly rate of 1% as \\1\\ \times 12 = 12\\\\. What is the correct answer?
+4.  A student computes the annual compound rate equivalent to a monthly rate of 1% as $1\% \times 12 = 12\%$. What is the correct answer?
 5.  Which repayment is smaller: €100,000 at 6% simple for 10 years, or €100,000 at 5% compound for 10 years?
 
 ## 10 Summary
 
-1.  Simple interest applies the rate to the original capital only (\\V_s = P(1+in)\\); compound interest applies it to the growing capital (\\V_c = P(1+i/k)^{nk}\\) — the difference grows with time and rate.
-2.  Simple interest rates convert proportionally across periods; compound rates do not — converting \\i_m\\ to an annual rate requires \\(1+i_m)^{12} - 1\\, which always gives a higher annual rate.
-3.  The capitalisation frequency \\k\\ matters: more frequent compounding (quarterly, monthly, daily) produces a higher final value for the same nominal annual rate, because interest starts earning interest sooner.
+1.  Simple interest applies the rate to the original capital only ($V_s = P(1+in)$); compound interest applies it to the growing capital ($V_c = P(1+i/k)^{nk}$) — the difference grows with time and rate.
+2.  Simple interest rates convert proportionally across periods; compound rates do not — converting $i_m$ to an annual rate requires $(1+i_m)^{12} - 1$, which always gives a higher annual rate.
+3.  The capitalisation frequency $k$ matters: more frequent compounding (quarterly, monthly, daily) produces a higher final value for the same nominal annual rate, because interest starts earning interest sooner.
 
 ## 11 Independent Work
 
@@ -280,25 +292,25 @@ A firm needs to repay a loan of €200,000 in 8 years. Two banks compete for the
 
   **Simple interest — future value**
 
-  \\ V_s = P\\(1 + i\\n) \\
+  $$V_s = P\,(1 + i\,n)$$
 
-  \\P\\ = principal, \\i\\ = interest rate per period, \\n\\ = number of periods. Interest is computed only on the original principal each period.
+  $P$ = principal, $i$ = interest rate per period, $n$ = number of periods. Interest is computed only on the original principal each period.
 
   ------------------------------------------------------------------------
 
   **Compound interest — future value**
 
-  \\ V_c = P\\\left(1 + \frac{i}{k}\right)^{nk} \\
+  $$V_c = P\!\left(1 + \frac{i}{k}\right)^{nk}$$
 
-  \\k\\ = capitalisation frequency (e.g., \\k=12\\ for monthly). Interest earns interest; the gap over simple interest grows with time.
+  $k$ = capitalisation frequency (e.g., $k=12$ for monthly). Interest earns interest; the gap over simple interest grows with time.
 
   ------------------------------------------------------------------------
 
   **Present value (annual compounding)**
 
-  \\ P = \frac{V_c}{(1 + i)^n} \\
+  $$P = \frac{V_c}{(1 + i)^n}$$
 
-  The initial capital that produces a future value \\V_c\\ at rate \\i\\ after \\n\\ years. Used to compare cash flows at different points in time.
+  The initial capital that produces a future value $V_c$ at rate $i$ after $n$ years. Used to compare cash flows at different points in time.
 
 ## Citation
 

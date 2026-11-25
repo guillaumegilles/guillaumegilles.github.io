@@ -137,9 +137,9 @@ viewof miniStep = {
 
 Check your answer
 
-1.  Sorted: 300, 380, 420, 460, 500, 540. With \\n = 6\\ the middle lies between positions 3 and 4, that is at position \\(6+1)/2 = 3.5\\.
-2.  The average of the 3rd and 4th values: \\(420+460)/2 = 440\\.
-3.  Sorted: 300, 380, 420, 500, 540. With \\n = 5\\ the middle is position \\(5+1)/2 = 3\\, so the median is 420.
+1.  Sorted: 300, 380, 420, 460, 500, 540. With $n = 6$ the middle lies between positions 3 and 4, that is at position $(6+1)/2 = 3.5$.
+2.  The average of the 3rd and 4th values: $(420+460)/2 = 440$.
+3.  Sorted: 300, 380, 420, 500, 540. With $n = 5$ the middle is position $(5+1)/2 = 3$, so the median is 420.
 
 Truck B’s median is also 440: its extra-large day 2 is simply the largest value and does not move the middle.
 
@@ -149,19 +149,19 @@ In plain words: sort the days, then take the one in the middle (or the average o
 
 > **NOTE:**
 >
-> The **median** \\Me\\ is the value that splits an ordered series into two equal halves: at least 50% of observations are \\\leq Me\\ and at least 50% are \\\geq Me\\. For \\n\\ ordered values, if \\n\\ is odd the median is the value at position \\(n+1)/2\\; if \\n\\ is even, it is the average of the two values at positions \\n/2\\ and \\n/2+1\\.
+> The **median** $Me$ is the value that splits an ordered series into two equal halves: at least 50% of observations are $\leq Me$ and at least 50% are $\geq Me$. For $n$ ordered values, if $n$ is odd the median is the value at position $(n+1)/2$; if $n$ is even, it is the average of the two values at positions $n/2$ and $n/2+1$.
 
 ### 1.3 Quartiles (exclusive method)
 
 The median cuts the days in two halves. Quartiles cut them in four quarters.
 
-**Try it.** Use Truck A’s sorted days (300, 380, 420, 460, 500, 540, \\n = 6\\). For each quartile, compute its rank \\p\\(n+1)\\, say between which two sorted values it falls, and interpolate.
+**Try it.** Use Truck A’s sorted days (300, 380, 420, 460, 500, 540, $n = 6$). For each quartile, compute its rank $p\,(n+1)$, say between which two sorted values it falls, and interpolate.
 
-| Quartile     | \\p\\ | Rank \\p\\(n+1)\\ | Between values | Value (€) |
-|--------------|------:|------------------:|----------------|----------:|
-| \\Q_1\\      |  0.25 |                 ? | ?              |         ? |
-| \\Q_2 = Me\\ |   0.5 |                 ? | ?              |         ? |
-| \\Q_3\\      |  0.75 |                 ? | ?              |         ? |
+| Quartile   |  $p$ | Rank $p\,(n+1)$ | Between values | Value (€) |
+|------------|-----:|----------------:|----------------|----------:|
+| $Q_1$      | 0.25 |               ? | ?              |         ? |
+| $Q_2 = Me$ |  0.5 |               ? | ?              |         ? |
+| $Q_3$      | 0.75 |               ? | ?              |         ? |
 
 Your turn: compute the three quartiles of Truck B. What do you notice?
 
@@ -169,57 +169,57 @@ Check your answer
 
 **Truck A**
 
-| Quartile | \\p\\ | Rank \\p\\(n+1)\\ | Between values | Value (€) |
+| Quartile | $p$ | Rank $p\,(n+1)$ | Between values | Value (€) |
 |----|---:|---:|----|---:|
-| \\Q_1\\ | 0.25 | 1.75 | 1st (300) and 2nd (380) | \\300 + 0.75\times 80 = 360\\ |
-| \\Q_2 = Me\\ | 0.5 | 3.5 | 3rd (420) and 4th (460) | \\420 + 0.5\times 40 = 440\\ |
-| \\Q_3\\ | 0.75 | 5.25 | 5th (500) and 6th (540) | \\500 + 0.25\times 40 = 510\\ |
+| $Q_1$ | 0.25 | 1.75 | 1st (300) and 2nd (380) | $300 + 0.75\times 80 = 360$ |
+| $Q_2 = Me$ | 0.5 | 3.5 | 3rd (420) and 4th (460) | $420 + 0.5\times 40 = 440$ |
+| $Q_3$ | 0.75 | 5.25 | 5th (500) and 6th (540) | $500 + 0.25\times 40 = 510$ |
 
-**Truck B** (sorted: 300, 380, 420, 460, 500, 1,100): the ranks are the same, so \\Q_1 = 360\\ and \\Me = 440\\ exactly as for Truck A, and \\Q_3 = 500 + 0.25\times(1100-500) = 650\\.
+**Truck B** (sorted: 300, 380, 420, 460, 500, 1,100): the ranks are the same, so $Q_1 = 360$ and $Me = 440$ exactly as for Truck A, and $Q_3 = 500 + 0.25\times(1100-500) = 650$.
 
-The €560 jump of day 2 (540 → 1,100) moved the maximum a lot, but \\Q_1\\ and the median did not move at all, and \\Q_3\\ moved by 140.
+The €560 jump of day 2 (540 → 1,100) moved the maximum a lot, but $Q_1$ and the median did not move at all, and $Q_3$ moved by 140.
 
 **See it.** Step 2 of the figure marks the three quartiles on each truck’s sorted days; the rank tells you where to read them.
 
-In plain words: to find \\Q_1\\, compute \\0.25 \times (n+1)\\; if the result is 7.75, take the value 75% of the way between the 7th and 8th smallest observations. This is exactly the position formula from OpenStax §2.2, and it matches Excel’s `QUARTILE.EXC`.
+In plain words: to find $Q_1$, compute $0.25 \times (n+1)$; if the result is 7.75, take the value 75% of the way between the 7th and 8th smallest observations. This is exactly the position formula from OpenStax §2.2, and it matches Excel’s `QUARTILE.EXC`.
 
 > **TIP:**
 >
-> The three **quartiles** \\Q_1, Q_2 (=Me), Q_3\\ split an ordered series into four equal quarters. Following the exclusive convention used throughout this course (Excel’s `QUARTILE.EXC`), the position of \\Q_p\\ (\\p=0.25, 0.5, 0.75\\) in the ordered data is \\ \text{rank}(Q_p) = p\\(n+1), \\ interpolating linearly between the two surrounding observations when the rank is not a whole number.
+> The three **quartiles** $Q_1, Q_2 (=Me), Q_3$ split an ordered series into four equal quarters. Following the exclusive convention used throughout this course (Excel’s `QUARTILE.EXC`), the position of $Q_p$ ($p=0.25, 0.5, 0.75$) in the ordered data is $$\text{rank}(Q_p) = p\,(n+1),$$ interpolating linearly between the two surrounding observations when the rank is not a whole number.
 
 #### Notation decoder: quartiles (exclusive method)
 
-| Symbol               | Read aloud                   | In our example (Truck A) |
-|----------------------|------------------------------|--------------------------|
-| \\n\\                | “n”                          | 6 days                   |
-| \\p\\                | “p”                          | 0.25, 0.5 or 0.75        |
-| \\\text{rank}(Q_p)\\ | “the rank of Q sub p”        | 1.75, 3.5, 5.25          |
-| \\p\\(n+1)\\         | “p times n plus 1”           | \\0.25 \times 7 = 1.75\\ |
-| \\Q_1, Q_2, Q_3\\    | “Q one, Q two, Q three”      | 360, 440, 510 €          |
-| \\Q_2 (=Me)\\        | “Q two, which is the median” | 440 €                    |
+| Symbol             | Read aloud                   | In our example (Truck A) |
+|--------------------|------------------------------|--------------------------|
+| $n$                | “n”                          | 6 days                   |
+| $p$                | “p”                          | 0.25, 0.5 or 0.75        |
+| $\text{rank}(Q_p)$ | “the rank of Q sub p”        | 1.75, 3.5, 5.25          |
+| $p\,(n+1)$         | “p times n plus 1”           | $0.25 \times 7 = 1.75$   |
+| $Q_1, Q_2, Q_3$    | “Q one, Q two, Q three”      | 360, 440, 510 €          |
+| $Q_2 (=Me)$        | “Q two, which is the median” | 440 €                    |
 
-**Whole formula as a sentence:** “the quartile at fraction \\p\\ sits at rank \\p\\ times \\n+1\\ in the sorted data; when the rank is not a whole number, take the value that fraction of the way between the two neighbouring observations.”
+**Whole formula as a sentence:** “the quartile at fraction $p$ sits at rank $p$ times $n+1$ in the sorted data; when the rank is not a whole number, take the value that fraction of the way between the two neighbouring observations.”
 
 ### 1.4 Interquartile range and outlier fences
 
 **Try it.** For each truck, use the quartiles you just found.
 
-|  | \\Q_1\\ | \\Q_3\\ | \\Q_3 - Q_1\\ | \\Q_1 - 1.5\\(Q_3-Q_1)\\ | \\Q_3 + 1.5\\(Q_3-Q_1)\\ |
-|----|---:|---:|---:|---:|---:|
-| Truck A | 360 | 510 | ? | ? | ? |
-| Truck B | 360 | 650 | ? | ? | ? |
+|         | $Q_1$ | $Q_3$ | $Q_3 - Q_1$ | $Q_1 - 1.5\,(Q_3-Q_1)$ | $Q_3 + 1.5\,(Q_3-Q_1)$ |
+|---------|------:|------:|------------:|-----------------------:|-----------------------:|
+| Truck A |   360 |   510 |           ? |                      ? |                      ? |
+| Truck B |   360 |   650 |           ? |                      ? |                      ? |
 
 Is any day of either truck outside its interval of fences?
 
 Check your answer
 
-|  | \\Q_1\\ | \\Q_3\\ | \\Q_3 - Q_1\\ | Lower fence | Upper fence |
-|----|---:|---:|---:|---:|---:|
-| Truck A | 360 | 510 | 150 | \\360 - 225 = 135\\ | \\510 + 225 = 735\\ |
-| Truck B | 360 | 650 | 290 | \\360 - 435 = -75\\ | \\650 + 435 = 1{,}085\\ |
+|         | $Q_1$ | $Q_3$ | $Q_3 - Q_1$ |       Lower fence |           Upper fence |
+|---------|------:|------:|------------:|------------------:|----------------------:|
+| Truck A |   360 |   510 |         150 | $360 - 225 = 135$ |     $510 + 225 = 735$ |
+| Truck B |   360 |   650 |         290 | $360 - 435 = -75$ | $650 + 435 = 1{,}085$ |
 
-- Truck A: all days lie between 300 and 540, inside \\\[135, 735\]\\: no outlier.
-- Truck B: day 2 (1,100) is above 1,085: **a high outlier**. The other five days are inside \\\[-75, 1085\]\\.
+- Truck A: all days lie between 300 and 540, inside $[135, 735]$: no outlier.
+- Truck B: day 2 (1,100) is above 1,085: **a high outlier**. The other five days are inside $[-75, 1085]$.
 
 Note that the outlier itself pushed the upper fence up (735 → 1,085); even so, it still sticks out.
 
@@ -229,90 +229,92 @@ In plain words: the IQR measures the spread of the central 50% of the data. The 
 
 > **TIP:**
 >
-> \\ IQR = Q_3 - Q_1, \qquad \text{lower fence} = Q_1 - 1.5\\IQR, \qquad \text{upper fence} = Q_3 + 1.5\\IQR. \\ Any observation outside \\\[\text{lower fence}, \text{upper fence}\]\\ is flagged as a statistical **outlier** on the boxplot.
+> $$IQR = Q_3 - Q_1, \qquad
+> \text{lower fence} = Q_1 - 1.5\,IQR, \qquad
+> \text{upper fence} = Q_3 + 1.5\,IQR.$$ Any observation outside $[\text{lower fence}, \text{upper fence}]$ is flagged as a statistical **outlier** on the boxplot.
 
 #### Notation decoder: interquartile range and outlier fences
 
 | Symbol | Read aloud | In our example |
 |----|----|----|
-| \\IQR\\ | “inter-quartile range” | 150 € (A), 290 € (B) |
-| \\Q_3 - Q_1\\ | “Q three minus Q one” | \\510-360\\ (A), \\650-360\\ (B) |
-| \\1.5\\IQR\\ | “one and a half IQRs” | 225 € (A), 435 € (B) |
+| $IQR$ | “inter-quartile range” | 150 € (A), 290 € (B) |
+| $Q_3 - Q_1$ | “Q three minus Q one” | $510-360$ (A), $650-360$ (B) |
+| $1.5\,IQR$ | “one and a half IQRs” | 225 € (A), 435 € (B) |
 | lower fence | “the lower fence” | 135 € (A), −75 € (B) |
 | upper fence | “the upper fence” | 735 € (A), 1,085 € (B) |
-| \\\[\text{lower fence}, \text{upper fence}\]\\ | “the interval from lower fence to upper fence” | \\\[135, 735\]\\ (A), \\\[-75, 1085\]\\ (B) |
+| $[\text{lower fence}, \text{upper fence}]$ | “the interval from lower fence to upper fence” | $[135, 735]$ (A), $[-75, 1085]$ (B) |
 
-**Whole formula as a sentence:** “the IQR is the distance from the first to the third quartile; the fences lie one and a half IQRs below \\Q_1\\ and above \\Q_3\\, and any value outside them is an outlier.”
+**Whole formula as a sentence:** “the IQR is the distance from the first to the third quartile; the fences lie one and a half IQRs below $Q_1$ and above $Q_3$, and any value outside them is an outlier.”
 
 ### 1.5 Boxplot
 
 **Try it.** Complete the five-number summary of each truck, then decide which days are plotted as separate dots.
 
-|         | \\\min\\ | \\Q_1\\ | \\Me\\ | \\Q_3\\ | \\\max\\ | Outliers |
-|---------|---------:|--------:|-------:|--------:|---------:|----------|
-| Truck A |        ? |       ? |      ? |       ? |        ? | ?        |
-| Truck B |        ? |       ? |      ? |       ? |        ? | ?        |
+|         | $\min$ | $Q_1$ | $Me$ | $Q_3$ | $\max$ | Outliers |
+|---------|-------:|------:|-----:|------:|-------:|----------|
+| Truck A |      ? |     ? |    ? |     ? |      ? | ?        |
+| Truck B |      ? |     ? |    ? |     ? |      ? | ?        |
 
 Check your answer
 
-|         | \\\min\\ | \\Q_1\\ | \\Me\\ | \\Q_3\\ | \\\max\\ | Outliers |
-|---------|---------:|--------:|-------:|--------:|---------:|----------|
-| Truck A |      300 |     360 |    440 |     510 |      540 | none     |
-| Truck B |      300 |     360 |    440 |     650 |    1,100 | 1,100    |
+|         | $\min$ | $Q_1$ | $Me$ | $Q_3$ | $\max$ | Outliers |
+|---------|-------:|------:|-----:|------:|-------:|----------|
+| Truck A |    300 |   360 |  440 |   510 |    540 | none     |
+| Truck B |    300 |   360 |  440 |   650 |  1,100 | 1,100    |
 
 Truck A’s whiskers reach its minimum (300) and maximum (540). Truck B’s box runs from 360 to 650 and its €1,100 day is drawn as an individual dot. With only six days, the largest day inside the fences (500) is already inside the box, so Truck B has no visible upper whisker; with more days a whisker normally extends beyond the box.
 
-**See it.** Step 3 of the figure is exactly this picture: a box from \\Q_1\\ to \\Q_3\\, an orange line at the median, whiskers, and any outlier as an open dot.
+**See it.** Step 3 of the figure is exactly this picture: a box from $Q_1$ to $Q_3$, an orange line at the median, whiskers, and any outlier as an open dot.
 
 In plain words: a boxplot is the five-number summary drawn on a number line — the box holds the central half of the days, and dots flag the days that are too far away to belong to the pack.
 
 > **NOTE:**
 >
-> A **boxplot** draws the five-number summary (\\\min, Q_1, Me, Q_3, \max\\, or the fences if there are outliers) as a box (from \\Q_1\\ to \\Q_3\\, split by a line at \\Me\\) with whiskers extending to the most extreme non-outlier values; outliers are marked individually.
+> A **boxplot** draws the five-number summary ($\min, Q_1, Me, Q_3, \max$, or the fences if there are outliers) as a box (from $Q_1$ to $Q_3$, split by a line at $Me$) with whiskers extending to the most extreme non-outlier values; outliers are marked individually.
 
 ### 1.6 Percentiles
 
-Quartiles are three special cut points. A **percentile** is the same idea for any fraction \\p\\ of the days.
+Quartiles are three special cut points. A **percentile** is the same idea for any fraction $p$ of the days.
 
-**Try it.** Truck C recorded four Saturdays: 320, 400, 480, 640 € (\\n = 4\\, so the rank is \\p \times 5\\).
+**Try it.** Truck C recorded four Saturdays: 320, 400, 480, 640 € ($n = 4$, so the rank is $p \times 5$).
 
-1.  Find the ranks of \\P\_{20}\\, \\P\_{40}\\, \\P\_{60}\\ and \\P\_{80}\\, and read their values.
-2.  Find \\P\_{30}\\ and \\P\_{70}\\ by interpolation.
-3.  What rank would \\P\_{90}\\ have? What does it mean?
+1.  Find the ranks of $P_{20}$, $P_{40}$, $P_{60}$ and $P_{80}$, and read their values.
+2.  Find $P_{30}$ and $P_{70}$ by interpolation.
+3.  What rank would $P_{90}$ have? What does it mean?
 
 Check your answer
 
-1.  Ranks 1, 2, 3, 4, so \\P\_{20}=320\\, \\P\_{40}=400\\, \\P\_{60}=480\\, \\P\_{80}=640\\.
-2.  \\P\_{30}\\ has rank 1.5: \\320 + 0.5\times 80 = 360\\. \\P\_{70}\\ has rank 3.5: \\480 + 0.5\times 160 = 560\\.
-3.  Rank \\0.9 \times 5 = 4.5\\ — beyond the 4th (last) value. With four observations the exclusive method cannot place \\P\_{90}\\ (Excel’s `PERCENTILE.EXC` returns an error); the largest percentile it can give is \\P\_{80}\\.
+1.  Ranks 1, 2, 3, 4, so $P_{20}=320$, $P_{40}=400$, $P_{60}=480$, $P_{80}=640$.
+2.  $P_{30}$ has rank 1.5: $320 + 0.5\times 80 = 360$. $P_{70}$ has rank 3.5: $480 + 0.5\times 160 = 560$.
+3.  Rank $0.9 \times 5 = 4.5$ — beyond the 4th (last) value. With four observations the exclusive method cannot place $P_{90}$ (Excel’s `PERCENTILE.EXC` returns an error); the largest percentile it can give is $P_{80}$.
 
-**See it.** Each percentile is a position on the sorted line; \\P\_{30}\\ and \\P\_{70}\\ fall between two values.
+**See it.** Each percentile is a position on the sorted line; $P_{30}$ and $P_{70}$ fall between two values.
 
-| Sorted value (€)        |         320 |         400 |         480 |         640 |
-|-------------------------|------------:|------------:|------------:|------------:|
-| Rank                    |           1 |           2 |           3 |           4 |
-| Percentile at this rank | \\P\_{20}\\ | \\P\_{40}\\ | \\P\_{60}\\ | \\P\_{80}\\ |
+| Sorted value (€)        |      320 |      400 |      480 |      640 |
+|-------------------------|---------:|---------:|---------:|---------:|
+| Rank                    |        1 |        2 |        3 |        4 |
+| Percentile at this rank | $P_{20}$ | $P_{40}$ | $P_{60}$ | $P_{80}$ |
 
-Between ranks 1 and 2 lies \\P\_{30}\\ (360); between ranks 3 and 4 lies \\P\_{70}\\ (560).
+Between ranks 1 and 2 lies $P_{30}$ (360); between ranks 3 and 4 lies $P_{70}$ (560).
 
-In plain words: the \\p\\-th percentile is the value below which a fraction \\p\\ of the days lie; to find it, go to rank \\p\\(n+1)\\ in the sorted data, interpolating if the rank is not whole.
+In plain words: the $p$-th percentile is the value below which a fraction $p$ of the days lie; to find it, go to rank $p\,(n+1)$ in the sorted data, interpolating if the rank is not whole.
 
 > **TIP:**
 >
-> For any percentile \\P_p\\ (\\0 \< p \< 1\\), the position in the ordered data is \\\text{rank}(P_p) = p\\(n+1)\\, interpolating when the rank is not an integer. In Excel: `=PERCENTILE.EXC(range, p)`.
+> For any percentile $P_p$ ($0 < p < 1$), the position in the ordered data is $\text{rank}(P_p) = p\,(n+1)$, interpolating when the rank is not an integer. In Excel: `=PERCENTILE.EXC(range, p)`.
 
 #### Notation decoder: percentiles (exclusive method)
 
 | Symbol | Read aloud | In our example (Truck C) |
 |----|----|----|
-| \\P_p\\ | “the p-th percentile” | \\P\_{30} = 360\\ € |
-| \\p\\ | “p” | 0.3 for \\P\_{30}\\ |
-| \\0 \< p \< 1\\ | “p strictly between 0 and 1” | 0.9 is allowed, but its rank is out of range for \\n=4\\ |
-| \\\text{rank}(P_p)\\ | “the rank of P sub p” | 1.5 for \\P\_{30}\\ |
-| \\p\\(n+1)\\ | “p times n plus 1” | \\0.3 \times 5 = 1.5\\ |
-| \\n\\ | “n” | 4 Saturdays |
+| $P_p$ | “the p-th percentile” | $P_{30} = 360$ € |
+| $p$ | “p” | 0.3 for $P_{30}$ |
+| $0 < p < 1$ | “p strictly between 0 and 1” | 0.9 is allowed, but its rank is out of range for $n=4$ |
+| $\text{rank}(P_p)$ | “the rank of P sub p” | 1.5 for $P_{30}$ |
+| $p\,(n+1)$ | “p times n plus 1” | $0.3 \times 5 = 1.5$ |
+| $n$ | “n” | 4 Saturdays |
 
-**Whole formula as a sentence:** “the percentile at fraction \\p\\ sits at rank \\p\\ times \\n+1\\ in the sorted data, interpolating when that rank is not a whole number.”
+**Whole formula as a sentence:** “the percentile at fraction $p$ sits at rank $p$ times $n+1$ in the sorted data, interpolating when that rank is not a whole number.”
 
 ### 1.7 Grouped-data interpolation
 
@@ -324,21 +326,21 @@ Sometimes you only have a class table, not the raw days. Truck A’s six days, g
 | \[400, 500\[ |     2 |                4 |
 | \[500, 600\[ |     2 |                6 |
 
-**Try it.** For each of \\Q_1\\, \\Me\\ and \\Q_3\\, compute the target cumulative position \\p\cdot n\\, find the class that contains it, and interpolate linearly inside that class.
+**Try it.** For each of $Q_1$, $Me$ and $Q_3$, compute the target cumulative position $p\cdot n$, find the class that contains it, and interpolate linearly inside that class.
 
-|  | Target \\p\cdot n\\ | Class | \\N\_{\text{before}}\\ | \\n\_{\text{class}}\\ | Estimate (€) |
+|  | Target $p\cdot n$ | Class | $N_{\text{before}}$ | $n_{\text{class}}$ | Estimate (€) |
 |----|---:|----|---:|---:|---:|
-| \\Q_1\\ | ? | ? | ? | ? | ? |
-| \\Me\\ | ? | ? | ? | ? | ? |
-| \\Q_3\\ | ? | ? | ? | ? | ? |
+| $Q_1$ | ? | ? | ? | ? | ? |
+| $Me$ | ? | ? | ? | ? | ? |
+| $Q_3$ | ? | ? | ? | ? | ? |
 
 Check your answer
 
-|  | Target \\p\cdot n\\ | Class | \\N\_{\text{before}}\\ | \\n\_{\text{class}}\\ | Estimate (€) |
+|  | Target $p\cdot n$ | Class | $N_{\text{before}}$ | $n_{\text{class}}$ | Estimate (€) |
 |----|---:|----|---:|---:|---:|
-| \\Q_1\\ | 1.5 | \[300, 400\[ | 0 | 2 | \\300 + \frac{1.5-0}{2}\times100 = 375\\ |
-| \\Me\\ | 3 | \[400, 500\[ | 2 | 2 | \\400 + \frac{3-2}{2}\times100 = 450\\ |
-| \\Q_3\\ | 4.5 | \[500, 600\[ | 4 | 2 | \\500 + \frac{4.5-4}{2}\times100 = 525\\ |
+| $Q_1$ | 1.5 | \[300, 400\[ | 0 | 2 | $300 + \frac{1.5-0}{2}\times100 = 375$ |
+| $Me$ | 3 | \[400, 500\[ | 2 | 2 | $400 + \frac{3-2}{2}\times100 = 450$ |
+| $Q_3$ | 4.5 | \[500, 600\[ | 4 | 2 | $500 + \frac{4.5-4}{2}\times100 = 525$ |
 
 Compare with the raw-data values 360, 440 and 510: close, but not identical. The class table has forgotten where the days sit inside each class.
 
@@ -348,58 +350,59 @@ In plain words: find which class contains the target position, then interpolate 
 
 > **TIP:**
 >
-> For a continuous variable grouped into classes, we cannot read \\Q_p\\ directly from a list of raw values — we interpolate *within* the class that contains the target cumulative frequency. If class \\\[L, L+h\[\\ has lower cumulative count \\N\_{\text{before}}\\ (from all earlier classes) and count \\n\_{\text{class}}\\ of its own, and we seek the value at cumulative position \\p\cdot n\\, linear interpolation across the class width \\h\\ gives \\ Q_p = L + \frac{p\\n - N\_{\text{before}}}{n\_{\text{class}}}\\ h. \\
+> For a continuous variable grouped into classes, we cannot read $Q_p$ directly from a list of raw values — we interpolate *within* the class that contains the target cumulative frequency. If class $[L, L+h[$ has lower cumulative count $N_{\text{before}}$ (from all earlier classes) and count $n_{\text{class}}$ of its own, and we seek the value at cumulative position $p\cdot n$, linear interpolation across the class width $h$ gives $$Q_p = L + \frac{p\,n - N_{\text{before}}}{n_{\text{class}}}\; h.$$
 
 #### Notation decoder: quantile in grouped continuous data
 
 | Symbol | Read aloud | In our example (median of Truck A) |
 |----|----|----|
-| \\Q_p\\ | “Q sub p” | \\Me\\, so \\p = 0.5\\: estimate 450 € |
-| \\\[L, L+h\[\\ | “the class from L up to, not including, L plus h” | \[400, 500\[ |
-| \\L\\ | “L” | 400 € (lower bound of the class) |
-| \\h\\ | “h” | 100 € (class width) |
-| \\p\cdot n\\ | “p times n” | \\0.5 \times 6 = 3\\ |
-| \\N\_{\text{before}}\\ | “N before” | 2 days in earlier classes |
-| \\n\_{\text{class}}\\ | “n of the class” | 2 days in the class |
+| $Q_p$ | “Q sub p” | $Me$, so $p = 0.5$: estimate 450 € |
+| $[L, L+h[$ | “the class from L up to, not including, L plus h” | \[400, 500\[ |
+| $L$ | “L” | 400 € (lower bound of the class) |
+| $h$ | “h” | 100 € (class width) |
+| $p\cdot n$ | “p times n” | $0.5 \times 6 = 3$ |
+| $N_{\text{before}}$ | “N before” | 2 days in earlier classes |
+| $n_{\text{class}}$ | “n of the class” | 2 days in the class |
 
 **Whole formula as a sentence:** “start at the lower bound of the class that contains the target position, and move across the class by the fraction of its days still needed to reach the target, times the class width.”
 
 ## 2 Worked example
 
-Using “The Wandering Fork”’s `daily_revenue_eur` (\\n=30\\), verified in `data-model.md`:
+Using “The Wandering Fork”’s `daily_revenue_eur` ($n=30$), verified in `data-model.md`:
 
-| Statistic           |   Value |
-|---------------------|--------:|
-| Minimum             |  407.59 |
-| \\Q_1\\ (exclusive) |  506.61 |
-| \\Q_2 = Me\\        |  643.63 |
-| \\Q_3\\ (exclusive) |  729.99 |
-| Maximum             |  886.56 |
-| \\IQR = Q_3-Q_1\\   |  223.39 |
-| Lower fence         |  171.52 |
-| Upper fence         | 1065.07 |
+| Statistic         |   Value |
+|-------------------|--------:|
+| Minimum           |  407.59 |
+| $Q_1$ (exclusive) |  506.61 |
+| $Q_2 = Me$        |  643.63 |
+| $Q_3$ (exclusive) |  729.99 |
+| Maximum           |  886.56 |
+| $IQR = Q_3-Q_1$   |  223.39 |
+| Lower fence       |  171.52 |
+| Upper fence       | 1065.07 |
 
-**Step 1 — locate \\Q_1\\.** With \\n=30\\, rank\\(Q_1) = 0.25\times 31 = 7.75\\: interpolate 75% of the way between the 7th and 8th smallest values of the ordered `daily_revenue_eur` series: \\500.02 + 0.75\times(508.80-500.02) = 506.605 \approx 506.61\\.
+**Step 1 — locate** $Q_1$. With $n=30$, rank$(Q_1) = 0.25\times 31 =
+7.75$: interpolate 75% of the way between the 7th and 8th smallest values of the ordered `daily_revenue_eur` series: $500.02 + 0.75\times(508.80-500.02) = 506.605 \approx 506.61$.
 
-**Step 2 — locate \\Q_3\\.** rank\\(Q_3) = 0.75\times 31 = 23.25\\: interpolate between the 23rd and 24th smallest values: \\725.66 + 0.25\times(742.99-725.66) = 729.9925 \approx 729.99\\.
+**Step 2 — locate** $Q_3$. rank$(Q_3) = 0.75\times 31 = 23.25$: interpolate between the 23rd and 24th smallest values: $725.66 + 0.25\times(742.99-725.66) = 729.9925 \approx 729.99$.
 
-**Step 3 — fences and outliers.** Keeping the unrounded quartiles, \\IQR = 729.9925-506.605 = 223.3875 \approx 223.39\\; lower fence \\= 506.605 - 1.5(223.3875) \approx 171.52\\; upper fence \\= 729.9925+1.5(223.3875) \approx 1065.07\\. The observed minimum (407.59) and maximum (886.56) both lie **inside** the fences — “The Wandering Fork” has **zero outliers** in its daily revenue, itself a useful finding: 30 days of trading, however variable, never produced a wildly atypical day.
+**Step 3 — fences and outliers.** Keeping the unrounded quartiles, $IQR = 729.9925-506.605 = 223.3875 \approx 223.39$; lower fence $= 506.605 - 1.5(223.3875) \approx 171.52$; upper fence $= 729.9925+1.5(223.3875) \approx 1065.07$. The observed minimum (407.59) and maximum (886.56) both lie **inside** the fences — “The Wandering Fork” has **zero outliers** in its daily revenue, itself a useful finding: 30 days of trading, however variable, never produced a wildly atypical day.
 
 **Step 4 — draw the boxplot.** Box from 506.61 to 729.99, median line at 643.63, whiskers extending to the true min (407.59) and max (886.56) since neither is an outlier.
 
-**Step 5 — grouped-data check.** Using the class table from Module 3 to estimate \\Q_1\\ (target cumulative position \\0.25\times30=7.5\\): cumulative count reaches 6 after \[400,500\[ and 12 after \[500,600\[, so \\Q_1\\ lies in \[500,600\[ with \\N\_{\text{before}}=6\\, \\n\_{\text{class}}=6\\, \\h=100\\: \\ Q_1 \approx 500 + \frac{7.5-6}{6}\times100 = 525. \\ This is close to, but not identical to, the raw-data value of 506.61 — the difference is the same class-grouping approximation error discussed in Module 4.
+**Step 5 — grouped-data check.** Using the class table from Module 3 to estimate $Q_1$ (target cumulative position $0.25\times30=7.5$): cumulative count reaches 6 after \[400,500\[ and 12 after \[500,600\[, so $Q_1$ lies in \[500,600\[ with $N_{\text{before}}=6$, $n_{\text{class}}=6$, $h=100$: $$Q_1 \approx 500 + \frac{7.5-6}{6}\times100 = 525.$$ This is close to, but not identical to, the raw-data value of 506.61 — the difference is the same class-grouping approximation error discussed in Module 4.
 
 ## 3 Proof / derivation
 
 > **CAUTION:**
 >
-> For a continuous variable grouped into classes, we cannot read \\Q_p\\ directly from a list of raw values — we interpolate *within* the class that contains the target cumulative frequency. If class \\\[L, L+h\[\\ has lower cumulative count \\N\_{\text{before}}\\ (from all earlier classes) and count \\n\_{\text{class}}\\ of its own, and we seek the value at cumulative position \\p\cdot n\\, linear interpolation across the class width \\h\\ gives \\ Q_p = L + \frac{p\\n - N\_{\text{before}}}{n\_{\text{class}}}\\ h. \\
+> For a continuous variable grouped into classes, we cannot read $Q_p$ directly from a list of raw values — we interpolate *within* the class that contains the target cumulative frequency. If class $[L, L+h[$ has lower cumulative count $N_{\text{before}}$ (from all earlier classes) and count $n_{\text{class}}$ of its own, and we seek the value at cumulative position $p\cdot n$, linear interpolation across the class width $h$ gives $$Q_p = L + \frac{p\,n - N_{\text{before}}}{n_{\text{class}}}\; h.$$
 >
-> **Sanity check with our class table** (Module 3): to locate the median (\\p=0.5\\, target position \\0.5\times30=15\\) in `daily_revenue_eur`’s classes, the cumulative count reaches 12 after \[500,600\[ and 20 after \[600,700\[, so the median lies in \[600,700\[ with \\N\_{\text{before}}=12\\, \\n\_{\text{class}}=8\\, \\h=100\\: \\ Me \approx 600 + \frac{15-12}{8}\times 100 = 637.5, \\ close to (though not identical to, because this formula uses grouped midpoint approximations while the true value uses the raw 30 observations) the raw-data median of \\643.63\\ computed above — the small gap is exactly the information lost when data is grouped into classes.
+> **Sanity check with our class table** (Module 3): to locate the median ($p=0.5$, target position $0.5\times30=15$) in `daily_revenue_eur`’s classes, the cumulative count reaches 12 after \[500,600\[ and 20 after \[600,700\[, so the median lies in \[600,700\[ with $N_{\text{before}}=12$, $n_{\text{class}}=8$, $h=100$: $$Me \approx 600 + \frac{15-12}{8}\times 100 = 637.5,$$ close to (though not identical to, because this formula uses grouped midpoint approximations while the true value uses the raw 30 observations) the raw-data median of $643.63$ computed above — the small gap is exactly the information lost when data is grouped into classes.
 
 ## 4 Visual intuition
 
-The boxplot **is** the five-number summary drawn as a picture: the box’s *width* is the IQR (how spread out the central 50% of days are), the line’s *position inside the box* shows whether the median sits closer to \\Q_1\\ or to \\Q_3\\ (a first hint of asymmetry, formalised in Module 7), and the *whisker lengths* show how far the more extreme (but non-outlier) days stretch beyond the box.
+The boxplot **is** the five-number summary drawn as a picture: the box’s *width* is the IQR (how spread out the central 50% of days are), the line’s *position inside the box* shows whether the median sits closer to $Q_1$ or to $Q_3$ (a first hint of asymmetry, formalised in Module 7), and the *whisker lengths* show how far the more extreme (but non-outlier) days stretch beyond the box.
 
 Step 3 of the two-truck figure shows it on six days: Truck A’s box is 150 € wide, Truck B’s is 290 € wide, and the festival day is an open dot far to the right of everything else.
 
@@ -477,58 +480,59 @@ Drag each slider to set the five-number summary and watch the boxplot redraw. St
 
 All exercises below are done by hand; the Excel ones are in the [homework](#homework-excel-lab).
 
-**Exercise 1 (Median position)** For an ordered series of \\n=24\\ values, at which position(s) do you read the median?
+**Exercise 1 (Median position)** For an ordered series of $n=24$ values, at which position(s) do you read the median?
 
 Solution
 
-\\n=24\\ is even, so the median is the average of the values at positions \\n/2=12\\ and \\n/2+1=13\\.
+$n=24$ is even, so the median is the average of the values at positions $n/2=12$ and $n/2+1=13$.
 
-**Exercise 2 (Outlier check)** A single unusually bad day of \\\text{daily\\revenue\\eur} = 100\\ is added to “The Wandering Fork”’s data. Using the fences computed above (171.52 / 1065.07, before recomputing the quartiles for the new \\n=31\\ sample), would this new day be flagged as an outlier?
-
-Solution
-
-Yes: \\100 \< 171.52\\ (the lower fence), so it would be flagged as a low outlier — a day that badly underperformed relative to the rest of the trading period.
-
-**Exercise 3 (Grouped-data interpolation)** Using the class table from Module 3, estimate \\Q_1\\ for `daily_revenue_eur` (target cumulative position \\0.25\times30=7.5\\).
+**Exercise 2 (Outlier check)** A single unusually bad day of $\text{daily\_revenue\_eur} = 100$ is added to “The Wandering Fork”’s data. Using the fences computed above (171.52 / 1065.07, before recomputing the quartiles for the new $n=31$ sample), would this new day be flagged as an outlier?
 
 Solution
 
-Cumulative count reaches 6 after \[400,500\[ and 12 after \[500,600\[, so \\Q_1\\ lies in \[500,600\[ with \\N\_{\text{before}}=6\\, \\n\_{\text{class}}=6\\, \\h=100\\: \\ Q_1 \approx 500 + \frac{7.5-6}{6}\times100 = 525. \\ This is close to, but not identical to, the raw-data value of 506.61 — the difference is the same class-grouping approximation error discussed in this module’s proof.
+Yes: $100 < 171.52$ (the lower fence), so it would be flagged as a low outlier — a day that badly underperformed relative to the rest of the trading period.
+
+**Exercise 3 (Grouped-data interpolation)** Using the class table from Module 3, estimate $Q_1$ for `daily_revenue_eur` (target cumulative position $0.25\times30=7.5$).
+
+Solution
+
+Cumulative count reaches 6 after \[400,500\[ and 12 after \[500,600\[, so $Q_1$ lies in \[500,600\[ with $N_{\text{before}}=6$, $n_{\text{class}}=6$, $h=100$: $$Q_1 \approx 500 + \frac{7.5-6}{6}\times100 = 525.$$ This is close to, but not identical to, the raw-data value of 506.61 — the difference is the same class-grouping approximation error discussed in this module’s proof.
 
 **Exercise 4 (Formula to words)**  
 
-1.  Read \\\text{rank}(Q_p) = p\\(n+1)\\ aloud as one sentence. For \\n=9\\ and \\p=0.75\\, which rank do you get?
+1.  Read $\text{rank}(Q_p) = p\,(n+1)$ aloud as one sentence. For $n=9$ and $p=0.75$, which rank do you get?
 
-2.  Read \\Q_3 + 1.5\\IQR\\ aloud. Which indicator is it? Compute it for the values 10, 20, 30, 40, 50 (\\n=5\\: \\Q_1 = 15\\, \\Q_3 = 45\\).
+2.  Read $Q_3 + 1.5\,IQR$ aloud. Which indicator is it? Compute it for the values 10, 20, 30, 40, 50 ($n=5$: $Q_1 = 15$, $Q_3 = 45$).
 
 Solution
 
-1.  “The position of the quartile (or percentile) at fraction \\p\\ is \\p\\ times \\n+1\\.” For \\n=9\\: \\0.75\times10 = 7.5\\, halfway between the 7th and 8th values.
+1.  “The position of the quartile (or percentile) at fraction $p$ is $p$ times $n+1$.” For $n=9$: $0.75\times10 = 7.5$, halfway between the 7th and 8th values.
 
-2.  “Go one and a half IQRs above the third quartile.” It is the upper fence. \\IQR = 45-15 = 30\\, so the upper fence is \\45 + 1.5\times 30 = 90\\.
+2.  “Go one and a half IQRs above the third quartile.” It is the upper fence. $IQR = 45-15 = 30$, so the upper fence is $45 + 1.5\times 30 =
+    90$.
 
 **Exercise 5 (Words to formula)** Write in symbols:
 
 1.  “the gap between the third and the first quartile”;
-2.  “the rank of the 30th percentile among \\n\\ values”;
-3.  “a value \\x\\ is a high outlier”;
-4.  “the median of \\n\\ values when \\n\\ is odd”.
+2.  “the rank of the 30th percentile among $n$ values”;
+3.  “a value $x$ is a high outlier”;
+4.  “the median of $n$ values when $n$ is odd”.
 
 Solution
 
-1.  \\IQR = Q_3 - Q_1\\.
-2.  \\\text{rank}(P\_{0.3}) = 0.3\\(n+1)\\.
-3.  \\x \> Q_3 + 1.5\\IQR\\.
-4.  The value at position \\(n+1)/2\\.
+1.  $IQR = Q_3 - Q_1$.
+2.  $\text{rank}(P_{0.3}) = 0.3\,(n+1)$.
+3.  $x > Q_3 + 1.5\,IQR$.
+4.  The value at position $(n+1)/2$.
 
 ## 7 Common mistakes
 
 > **WARNING:**
 >
-> - **Using `QUARTILE.INC` instead of `QUARTILE.EXC`.** The course standard is the exclusive method (position \\(n+1)p\\); mixing them gives inconsistent quartiles, especially on small samples.
-> - **Forgetting that percentiles need \\0 \< p \< 1\\ for `PERCENTILE.EXC`.** `p=0` or `p=1` will error — use `MIN`/`MAX` for the extremes.
+> - **Using `QUARTILE.INC` instead of `QUARTILE.EXC`.** The course standard is the exclusive method (position $(n+1)p$); mixing them gives inconsistent quartiles, especially on small samples.
+> - **Forgetting that percentiles need** $0 < p < 1$ for `PERCENTILE.EXC`. `p=0` or `p=1` will error — use `MIN`/`MAX` for the extremes.
 > - **Confusing the fence rule with standard deviations.** The 1.5×IQR rule is for boxplots; the “2 standard deviations” rule is for normal distributions — they are different tools.
-> - **Reading the median position as \\n/2\\ instead of \\(n+1)/2\\.** For odd \\n\\, \\(n+1)/2\\ gives the exact middle position; \\n/2\\ would be off by 0.5.
+> - **Reading the median position as** $n/2$ instead of $(n+1)/2$. For odd $n$, $(n+1)/2$ gives the exact middle position; $n/2$ would be off by 0.5.
 > - **Using grouped-data interpolation when raw data is available.** The grouped formula is an approximation; prefer the raw-data quantile when you have the full dataset.
 
 ## 8 Exit check
@@ -536,18 +540,19 @@ Solution
 Five minutes, no calculator needed except for question 4.
 
 1.  In one sentence, what does the IQR measure?
-2.  Why does one extreme day change the range a lot, but hardly move \\Q_1\\ and the median?
-3.  Read \\\text{rank}(Q_p) = p\\(n+1)\\ aloud as a sentence.
-4.  Compute \\Q_1\\, \\Q_3\\ and the \\IQR\\ (exclusive method) for the five values 10, 14, 18, 22, 50. Is 50 an outlier?
-5.  For \\n=19\\ ordered values, at which rank do you read \\Q_1\\?
+2.  Why does one extreme day change the range a lot, but hardly move $Q_1$ and the median?
+3.  Read $\text{rank}(Q_p) = p\,(n+1)$ aloud as a sentence.
+4.  Compute $Q_1$, $Q_3$ and the $IQR$ (exclusive method) for the five values 10, 14, 18, 22, 50. Is 50 an outlier?
+5.  For $n=19$ ordered values, at which rank do you read $Q_1$?
 
 Answers
 
 1.  The spread of the central 50% of the days: the distance between the first and the third quartile.
 2.  The range uses only the two most extreme values, so it follows an extreme day completely. The quartiles and the median depend on ranks in the middle of the sorted list, so a single day at the end barely changes them.
-3.  “The position of the quartile at fraction \\p\\ is \\p\\ times \\n+1\\ in the sorted data.”
-4.  \\n=5\\: rank\\(Q_1) = 1.5\\, so \\Q_1 = (10+14)/2 = 12\\; rank\\(Q_3) = 4.5\\, so \\Q_3 = (22+50)/2 = 36\\; \\IQR = 24\\. Upper fence \\= 36 + 36 = 72\\, so 50 is **not** an outlier.
-5.  \\0.25\times(19+1) = 5\\: exactly the 5th smallest value, no interpolation.
+3.  “The position of the quartile at fraction $p$ is $p$ times $n+1$ in the sorted data.”
+4.  $n=5$: rank$(Q_1) = 1.5$, so $Q_1 = (10+14)/2 = 12$; rank$(Q_3) =
+    4.5$, so $Q_3 = (22+50)/2 = 36$; $IQR = 24$. Upper fence $= 36 + 36 = 72$, so 50 is **not** an outlier.
+5.  $0.25\times(19+1) = 5$: exactly the 5th smallest value, no interpolation.
 
 ## 9 Homework — Excel lab
 
@@ -565,11 +570,11 @@ The sheet `harbour_30d` of `wandering-fork.xlsx` has the data. The complete list
 |----|----|
 | Median | `=MEDIAN(range)` |
 | Quartiles (exclusive) | `=QUARTILE.EXC(range, 1)` / `(range, 2)` / `(range, 3)` |
-| Arbitrary percentile | `=PERCENTILE.EXC(range, p)`, e.g. `p=0.9` for \\P\_{90}\\ |
+| Arbitrary percentile | `=PERCENTILE.EXC(range, p)`, e.g. `p=0.9` for $P_{90}$ |
 | IQR | `=QUARTILE.EXC(range,3)-QUARTILE.EXC(range,1)` |
 | Boxplot | Select the data → **Insert → Statistical Chart → Box and Whisker** |
 
-> **Why `QUARTILE.EXC`?** The course follows the \\(n+1)\times p\\ position formula (OpenStax §2.2), which matches Excel’s exclusive method. `QUARTILE.INC` (inclusive) gives different values on small samples — do not mix them.
+> **Why `QUARTILE.EXC`?** The course follows the $(n+1)\times p$ position formula (OpenStax §2.2), which matches Excel’s exclusive method. `QUARTILE.INC` (inclusive) gives different values on small samples — do not mix them.
 
 For the **full table** (120 days per franchise) use the Excel Table `tblFork` and add the franchise as one more condition, for example `=QUARTILE.EXC(IF(tblFork[franchise]="Harbour",tblFork[daily_revenue_eur]),1)` (entered as an array formula in older Excel, or use `FILTER` in newer versions).
 
@@ -591,11 +596,11 @@ Expected results
 | Lower fence         |     135 |     −75 |
 | Upper fence         |     735 |   1,085 |
 
-| Truck C          | \\P\_{30}\\ | \\P\_{70}\\ | \\P\_{90}\\ |
-|------------------|------------:|------------:|-------------|
-| `PERCENTILE.EXC` |         360 |         560 | `#NUM!`     |
+| Truck C          | $P_{30}$ | $P_{70}$ | $P_{90}$ |
+|------------------|---------:|---------:|----------|
+| `PERCENTILE.EXC` |      360 |      560 | `#NUM!`  |
 
-`#NUM!` is expected for \\P\_{90}\\: with \\n=4\\ its rank (4.5) is out of range.
+`#NUM!` is expected for $P_{90}$: with $n=4$ its rank (4.5) is out of range.
 
 ### 9.3 Homework 1 (Excel) — Build the boxplot for Campus
 
@@ -607,9 +612,9 @@ Solution
 
 Campus 120-day: min = 23.85, Q1 = 236.07, median = 390.39, Q3 = 598.60, max = 1407.59. IQR = 362.54. Lower fence = -307.74, upper fence = 1142.40. Three days exceed the upper fence (1335.48, 1362.93 and 1407.59), so there are **three high outliers** and no low one — consistent with Campus’s right-skewed revenue (skewness = 1.00).
 
-### 9.4 Homework 2 (Excel) — Percentile \\P\_{90}\\ for Harbour revenue
+### 9.4 Homework 2 (Excel) — Percentile $P_{90}$ for Harbour revenue
 
-Compute \\P\_{90}\\ for Harbour’s 120-day `daily_revenue_eur` using `PERCENTILE.EXC`. What does this value mean?
+Compute $P_{90}$ for Harbour’s 120-day `daily_revenue_eur` using `PERCENTILE.EXC`. What does this value mean?
 
 **How to.** Wrap the revenue column in `FILTER` for “Harbour” inside `PERCENTILE.EXC`, with `p=0.9`.
 

@@ -55,10 +55,9 @@ Verify the following before proceeding:
   (note = definition, tip = formula, caution = proof, warning = common
   mistakes, important = `TODO:`); exercises use `::: {#exr-…}`, answers
   `<details class="answer">`, decoders and remarks are plain markup.
-- [ ] **VI. Bilingual parity** — Every new page has both an EN and FR `.qmd`
-  counterpart. Untranslated pages render a stub with a "translation in progress"
-  notice — not a 404 or a missing nav entry. Language is set by the directory
-  `_metadata.yml`; no page repeats the inherited `lang:`.
+- [ ] **VI. English-only site** — No `fr/` paths, language switchers, or
+  translated duplicate pages introduced. Language stays `lang: en` as set by
+  the directory `_metadata.yml`; no page overrides the inherited `lang:`.
 
 *For teaching pages only:*
 - [ ] **T-I. Content Fidelity** — Canonical theory, examples, and exercises preserved.
@@ -69,7 +68,6 @@ Verify the following before proceeding:
 - [ ] **T-VI. Proof** — Each session includes at least one formal proof in a `.callout-caution` (collapse optional; "click to expand" in the title only when collapsed).
 - [ ] **T-VII. Visual intuition** — Geometric interpretation surfaced where applicable.
 - [ ] **T-VIII. Course syllabus** *(if creating/modifying a course index)* — `index.qmd` exists at course root, is first sidebar entry, contains Recommended Literature section with author/title/edition/publisher for each reference.
-  No inline div-toggle bilingual patterns used.
 
 ## Project Structure
 

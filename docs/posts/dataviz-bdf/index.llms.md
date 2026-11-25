@@ -1210,7 +1210,7 @@ Figure 9: Cartes choroplèthes des principales variables explicatives (année d
 
 Le **score de fragilité financière territoriale** est un indicateur composite qui synthétise quatre dimensions de vulnérabilité en un seul chiffre par département. Il est calculé comme une combinaison pondérée de z-scores :
 
-\\\text{Score} = 0{,}3 \times z\_{\text{chômage}} + 0{,}3 \times z\_{\text{pauvreté}} + 0{,}2 \times z\_{\text{RSA}} + 0{,}2 \times z\_{\text{locataires}}\\
+$$\text{Score} = 0{,}3 \times z_{\text{chômage}} + 0{,}3 \times z_{\text{pauvreté}} + 0{,}2 \times z_{\text{RSA}} + 0{,}2 \times z_{\text{locataires}}$$
 
 Les **z-scores** permettent de comparer des variables d’unités différentes en les ramenant à une échelle commune (moyenne 0, écart-type 1). Les pondérations reflètent la hiérarchie des corrélations observées avec le surendettement.
 

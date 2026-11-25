@@ -1,0 +1,16 @@
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{gilles,
+  author = {Gilles, Guillaume},
+  title = {Economy and {Society} {Services}},
+  url = {https://ggilles.dev/teaching/data-description/financial-analysis/society-services.html},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Gilles, Guillaume. n.d. “Economy and Society Services.” <https://ggilles.dev/teaching/data-description/financial-analysis/society-services.html>.

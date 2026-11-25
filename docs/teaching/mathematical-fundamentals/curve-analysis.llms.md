@@ -2,19 +2,19 @@
 
 Answer these three questions before reading the module. The goal is to surface what you already know and highlight where to pay extra attention.
 
-**1.** Read the \\y\\-intercept of the line \\y = 2x + 3\\.
+**1.** Read the $y$-intercept of the line $y = 2x + 3$.
 
-**2.** Compute the slope of the line passing through \\(0, 1)\\ and \\(2, 5)\\.
+**2.** Compute the slope of the line passing through $(0, 1)$ and $(2, 5)$.
 
-**3.** Is the line \\y = -x + 4\\ increasing or decreasing?
+**3.** Is the line $y = -x + 4$ increasing or decreasing?
 
 > **NOTE:**
 >
-> 1.  The \\y\\-intercept is \\\mathbf{3}\\ — the constant term in \\y = 2x + 3\\.
+> 1.  The $y$-intercept is $\mathbf{3}$ — the constant term in $y = 2x + 3$.
 >
-> 2.  \\m = \dfrac{5 - 1}{2 - 0} = 2\\.
+> 2.  $m = \dfrac{5 - 1}{2 - 0} = 2$.
 >
-> 3.  **Decreasing**, because the slope \\m = -1 \< 0\\.
+> 3.  **Decreasing**, because the slope $m = -1 < 0$.
 
 Use your results to identify topics needing attention.
 
@@ -30,9 +30,9 @@ Write down your estimate before continuing.
 
 ### 3.1 The Cartesian Plane
 
-A plane is a flat, two-dimensional, unlimited surface. In a plane we can represent, among other things, points and lines. The plane is equipped with an **orthonormal coordinate system** made of two axes: the horizontal axis of abscissas (\\x\\-axis) and the vertical axis of ordinates (\\y\\-axis). The two axes are perpendicular and the graduations on each axis are equally spaced.
+A plane is a flat, two-dimensional, unlimited surface. In a plane we can represent, among other things, points and lines. The plane is equipped with an **orthonormal coordinate system** made of two axes: the horizontal axis of abscissas ($x$-axis) and the vertical axis of ordinates ($y$-axis). The two axes are perpendicular and the graduations on each axis are equally spaced.
 
-A point is located by a pair of coordinates \\(x, y)\\: its abscissa \\x\\ read on the horizontal axis and its ordinate \\y\\ read on the vertical axis.
+A point is located by a pair of coordinates $(x, y)$: its abscissa $x$ read on the horizontal axis and its ordinate $y$ read on the vertical axis.
 
 **Pedagogical uses:**
 
@@ -44,17 +44,17 @@ A point is located by a pair of coordinates \\(x, y)\\: its abscissa \\x\\ read 
 
 A (non-vertical) line has an equation of the form
 
-\\ y = m x + p, \\
+$$y = m x + p,$$
 
-where \\m\\ is the **slope** (rate of change of \\y\\ with respect to \\x\\) and \\p\\ is the **\\y\\-intercept** (the ordinate where the line crosses the \\y\\-axis, i.e. the value of \\y\\ when \\x = 0\\).
+where $m$ is the **slope** (rate of change of $y$ with respect to $x$) and $p$ is the $y$-intercept (the ordinate where the line crosses the $y$-axis, i.e. the value of $y$ when $x = 0$).
 
 > **TIP:**
 >
-> Given two points \\A(x_A, y_A)\\ and \\B(x_B, y_B)\\ on the line, \\ m = \frac{y_B - y_A}{x_B - x_A}, \qquad p = y_A - m\\x_A. \\ A positive slope means the line rises; a negative slope means it falls; a zero slope is a horizontal line.
+> Given two points $A(x_A, y_A)$ and $B(x_B, y_B)$ on the line, $$m = \frac{y_B - y_A}{x_B - x_A}, \qquad p = y_A - m\,x_A.$$ A positive slope means the line rises; a negative slope means it falls; a zero slope is a horizontal line.
 
 #### Worked example — equation of a line
 
-A line passes through \\A(0, 3)\\ and \\B(2, 7)\\. Then \\m = \dfrac{7 - 3}{2 - 0} = 2\\ and, since \\A\\ has abscissa \\0\\, \\p = 3\\. The equation is \\y = 2x + 3\\.
+A line passes through $A(0, 3)$ and $B(2, 7)$. Then $m = \dfrac{7 - 3}{2 - 0} = 2$ and, since $A$ has abscissa $0$, $p = 3$. The equation is $y = 2x + 3$.
 
 ### 3.3 Systems of First-Degree Equations
 
@@ -77,23 +77,26 @@ A system of two first-degree equations can be solved in two equivalent ways: **g
 
 > **CAUTION:**
 >
-> Consider two secant lines \\y = m_1 x + p_1\\ and \\y = m_2 x + p_2\\ with \\m_1 \neq m_2\\. At the intersection the two ordinates are equal, so
+> Consider two secant lines $y = m_1 x + p_1$ and $y = m_2 x + p_2$ with $m_1 \neq m_2$. At the intersection the two ordinates are equal, so
 >
-> \\ m_1 x + p_1 = m_2 x + p_2 \\\Longrightarrow\\ (m_1 - m_2)\\x = p_2 - p_1 \\\Longrightarrow\\ x = \frac{p_2 - p_1}{m_1 - m_2}. \\
+> $$m_1 x + p_1 = m_2 x + p_2
+> \;\Longrightarrow\; (m_1 - m_2)\,x = p_2 - p_1
+> \;\Longrightarrow\; x = \frac{p_2 - p_1}{m_1 - m_2}.$$
 >
-> Because \\m_1 \neq m_2\\ the denominator is non-zero, confirming a unique solution. The ordinate is then obtained by substituting this \\x\\ back into either line: \\y = m_1 x + p_1\\. If \\m_1 = m_2\\ the lines are parallel: no solution (if \\p_1 \neq p_2\\) or infinitely many (if \\p_1 = p_2\\).
+> Because $m_1 \neq m_2$ the denominator is non-zero, confirming a unique solution. The ordinate is then obtained by substituting this $x$ back into either line: $y = m_1 x + p_1$. If $m_1 = m_2$ the lines are parallel: no solution (if $p_1 \neq p_2$) or infinitely many (if $p_1 = p_2$).
 
 #### Worked example — algebraic method
 
-Solve \\\begin{cases} 3x + 2y = 12 \\ x - y = 1 \end{cases}\\.
+Solve $\begin{cases} 3x + 2y = 12 \\ x - y = 1 \end{cases}$.
 
-From the second equation, \\x = y + 1\\. Substituting into the first: \\3(y + 1) + 2y = 12 \Rightarrow 5y + 3 = 12 \Rightarrow y = \dfrac{9}{5}\\. Then \\x = y + 1 = \dfrac{14}{5}\\. The solution is \\\left(\dfrac{14}{5}, \dfrac{9}{5}\right)\\.
+From the second equation, $x = y + 1$. Substituting into the first: $3(y + 1) + 2y = 12 \Rightarrow 5y + 3 = 12 \Rightarrow y =
+\dfrac{9}{5}$. Then $x = y + 1 = \dfrac{14}{5}$. The solution is $\left(\dfrac{14}{5}, \dfrac{9}{5}\right)$.
 
 > **TIP:**
 >
-> The intersection of \\y = m_1 x + p_1\\ and \\y = m_2 x + p_2\\ (with \\m_1 \neq m_2\\) gives the point where both relations are simultaneously satisfied:
+> The intersection of $y = m_1 x + p_1$ and $y = m_2 x + p_2$ (with $m_1 \neq m_2$) gives the point where both relations are simultaneously satisfied:
 >
-> \\ x^\* = \frac{p_2 - p_1}{m_1 - m_2}, \quad y^\* = m_1 x^\* + p_1. \\
+> $$x^* = \frac{p_2 - p_1}{m_1 - m_2}, \quad y^* = m_1 x^* + p_1.$$
 
 ### 3.4 First-Degree Inequalities
 
@@ -113,52 +116,57 @@ Graphically, the solution of an inequality corresponds to a **region** of the pl
 
 #### Worked example — solving an inequality
 
-Solve \\-2x + 6 \geq 0\\. Subtract \\6\\: \\-2x \geq -6\\. Divide by \\-2\\ and **reverse** the sign: \\x \leq 3\\. The solution is the half-line \\\]-\infty, 3\]\\.
+Solve $-2x + 6 \geq 0$. Subtract $6$: $-2x \geq -6$. Divide by $-2$ and **reverse** the sign: $x \leq 3$. The solution is the half-line $]-\infty, 3]$.
 
 #### Synthesis exercise — logistics planning
 
 A company offers two types of delivery:
 
-- express delivery (unit cost: \\40\\ €);
-- standard delivery (unit cost: \\20\\ €).
+- express delivery (unit cost: $40$ €);
+- standard delivery (unit cost: $20$ €).
 
-Each week the logistics manager plans for: a maximum budget of \\1{,}200\\ €; no more than \\25\\ express deliveries; and at least twice as many standard deliveries as express deliveries. Let \\x\\ be the number of express deliveries and \\y\\ the number of standard deliveries.
+Each week the logistics manager plans for: a maximum budget of $1{,}200$ €; no more than $25$ express deliveries; and at least twice as many standard deliveries as express deliveries. Let $x$ be the number of express deliveries and $y$ the number of standard deliveries.
 
 > **CAUTION:**
 >
-> **1. Constraints.** \\ 40x + 20y \leq 1200, \qquad x \leq 25, \qquad y \geq 2x, \qquad x \geq 0, \\ y \geq 0. \\ The budget constraint simplifies to \\2x + y \leq 60\\.
+> **1. Constraints.** $$40x + 20y \leq 1200, \qquad x \leq 25, \qquad y \geq 2x,
+> \qquad x \geq 0, \; y \geq 0.$$ The budget constraint simplifies to $2x + y \leq 60$.
 >
 > **2. Set of solutions.** The admissible set is the intersection of these half-planes in the plane — the region satisfying all constraints simultaneously.
 >
-> **3. Is \\(20, 45)\\ admissible?** Budget: \\40(20) + 20(45) = 800 + 900 = 1700 \> 1200\\. The budget constraint is violated, so the combination is **not** admissible.
+> **3. Is** $(20, 45)$ admissible? Budget: $40(20) + 20(45) = 800 + 900
+> = 1700 > 1200$. The budget constraint is violated, so the combination is **not** admissible.
 >
-> **4. If \\x = 10\\**, then \\y \geq 2(10) = 20\\ and \\2(10) + y \leq 60 \Rightarrow y \leq 40\\. So the number of standard deliveries lies between \\\mathbf{20}\\ and \\\mathbf{40}\\.
+> **4. If** $x = 10$, then $y \geq 2(10) = 20$ and $2(10) + y \leq 60
+> \Rightarrow y \leq 40$. So the number of standard deliveries lies between $\mathbf{20}$ and $\mathbf{40}$.
 
 #### Practice exercises
 
 > **CAUTION:**
 >
-> 1.  Draw \\y = 2x + 3\\ and \\y = -x + 5\\ and find their intersection. Setting \\2x + 3 = -x + 5\\ gives \\3x = 2\\, \\x = \tfrac{2}{3}\\, \\y = \tfrac{13}{3}\\.
-> 2.  Solve \\\begin{cases} 3x + 2y = 12 \\ x - y = 1 \end{cases}\\ → \\\left(\tfrac{14}{5}, \tfrac{9}{5}\right)\\.
-> 3.  Sketch \\x \geq 0\\, \\y \geq 0\\, \\2x + y \leq 10\\ and identify the feasible region (a triangle with vertices \\(0,0)\\, \\(5,0)\\, \\(0,10)\\).
+> 1.  Draw $y = 2x + 3$ and $y = -x + 5$ and find their intersection. Setting $2x + 3 = -x + 5$ gives $3x = 2$, $x = \tfrac{2}{3}$, $y = \tfrac{13}{3}$.
+> 2.  Solve $\begin{cases} 3x + 2y = 12 \\ x - y = 1 \end{cases}$ → $\left(\tfrac{14}{5}, \tfrac{9}{5}\right)$.
+> 3.  Sketch $x \geq 0$, $y \geq 0$, $2x + y \leq 10$ and identify the feasible region (a triangle with vertices $(0,0)$, $(5,0)$, $(0,10)$).
 
 ## 4 Worked Example
 
 ### 4.1 Worked example — comparing two phone plans
 
-We model the monthly cost of each plan as a function of \\x\\, the number of minutes of calls per month.
+We model the monthly cost of each plan as a function of $x$, the number of minutes of calls per month.
 
-\\ C_A(x) = 10 + 0.05x, \qquad C_B(x) = 25. \\
+$$C_A(x) = 10 + 0.05x, \qquad C_B(x) = 25.$$
 
-**Finding the break-even point.** Set \\C_A(x) = C_B(x)\\:
+**Finding the break-even point.** Set $C_A(x) = C_B(x)$:
 
-\\ 10 + 0.05x = 25 \\\Longrightarrow\\ 0.05x = 15 \\\Longrightarrow\\ x = 300 \text{ minutes.} \\
+$$10 + 0.05x = 25
+\;\Longrightarrow\; 0.05x = 15
+\;\Longrightarrow\; x = 300 \text{ minutes.}$$
 
 **Interpretation.**
 
-- At \\x = 300\\ both plans cost **€25**.
-- For \\x \< 300\\ minutes, \\C_A(x) \< C_B(x)\\: **Plan A is cheaper**.
-- For \\x \> 300\\ minutes, \\C_A(x) \> C_B(x)\\: **Plan B is cheaper**.
+- At $x = 300$ both plans cost **€25**.
+- For $x < 300$ minutes, $C_A(x) < C_B(x)$: **Plan A is cheaper**.
+- For $x > 300$ minutes, $C_A(x) > C_B(x)$: **Plan B is cheaper**.
 
 A user who makes fewer than 300 minutes of calls per month should choose Plan A; a heavy user should choose Plan B.
 
@@ -172,14 +180,15 @@ A company is deciding between two suppliers for a raw material. Supplier A charg
 
 > **TIP:**
 >
-> Write \\C_A(q) = 500 + 8q\\ and \\C_B(q) = 12q\\. Set them equal to find the crossover quantity.
+> Write $C_A(q) = 500 + 8q$ and $C_B(q) = 12q$. Set them equal to find the crossover quantity.
 
 > **CAUTION:**
 >
-> - \\C_A(q) = 500 + 8q\\, \\\quad C_B(q) = 12q\\.
-> - Equal when \\500 + 8q = 12q \Rightarrow 500 = 4q \Rightarrow q = 125\\ units.
-> - For \\q = 100\\: \\C_A = 500 + 800 = 1300\\, \\C_B = 1200\\ → **Supplier B** is cheaper.
-> - For \\q = 200\\: \\C_A = 500 + 1600 = 2100\\, \\C_B = 2400\\ → **Supplier A** is cheaper.
+> - $C_A(q) = 500 + 8q$, $\quad C_B(q) = 12q$.
+> - Equal when $500 + 8q = 12q \Rightarrow 500 = 4q \Rightarrow
+>   q = 125$ units.
+> - For $q = 100$: $C_A = 500 + 800 = 1300$, $C_B = 1200$ → **Supplier B** is cheaper.
+> - For $q = 200$: $C_A = 500 + 1600 = 2100$, $C_B = 2400$ → **Supplier A** is cheaper.
 
 ## 6 Interactive Exploration
 
@@ -252,8 +261,8 @@ html`
 
 ### 6.1 Investigation
 
-1.  Set \\m_1 = m_2\\ (same slope). What happens to the intersection? What does this mean geometrically?
-2.  Model Plan A (\\m_1 = 0.05\\, \\p_1 = 10\\) and Plan B (\\m_2 = 0\\, \\p_2 = 25\\). Does the intersection match the worked example result?
+1.  Set $m_1 = m_2$ (same slope). What happens to the intersection? What does this mean geometrically?
+2.  Model Plan A ($m_1 = 0.05$, $p_1 = 10$) and Plan B ($m_2 = 0$, $p_2 = 25$). Does the intersection match the worked example result?
 3.  Move both intercepts until the two lines coincide. What does this represent in a business context?
 
 ## 7 Applied Problem
@@ -269,23 +278,23 @@ A logistics manager must choose between two delivery contracts for the coming ye
 
 > **WARNING:**
 >
-> A student reads the line \\y = 3x - 2\\ and states that the slope is \\-2\\ and the \\y\\-intercept is \\3\\.
+> A student reads the line $y = 3x - 2$ and states that the slope is $-2$ and the $y$-intercept is $3$.
 >
-> The correct reading is: slope \\m = 3\\ (coefficient of \\x\\) and \\y\\-intercept \\p = -2\\ (constant term).
+> The correct reading is: slope $m = 3$ (coefficient of $x$) and $y$-intercept $p = -2$ (constant term).
 >
-> In \\y = mx + p\\, the slope is always the coefficient of \\x\\, not the standalone constant.
+> In $y = mx + p$, the slope is always the coefficient of $x$, not the standalone constant.
 
 ## 9 Check Your Understanding
 
-1.  Find the equation of the line through \\(1, 4)\\ and \\(3, 10)\\.
-2.  Two lines have the same slope but different \\y\\-intercepts. How many solutions does their system have?
+1.  Find the equation of the line through $(1, 4)$ and $(3, 10)$.
+2.  Two lines have the same slope but different $y$-intercepts. How many solutions does their system have?
 3.  A taxi costs €3.00 flagfall plus €1.80 per km. At what distance does it cost the same as a fixed-price ride of €21.00?
-4.  A student solves \\3x + 2y = 12\\ and \\x - y = 1\\ and gets \\x = 2\\, \\y = 1\\. Is this correct? Verify.
-5.  Solve \\-3x + 9 \geq 0\\ and express the solution as an interval.
+4.  A student solves $3x + 2y = 12$ and $x - y = 1$ and gets $x = 2$, $y = 1$. Is this correct? Verify.
+5.  Solve $-3x + 9 \geq 0$ and express the solution as an interval.
 
 ## 10 Summary
 
-1.  A line \\y = mx + p\\ is fully described by its slope (rate of change) and its \\y\\-intercept (value when \\x = 0\\); the intersection of two lines is the point satisfying both equations simultaneously.
+1.  A line $y = mx + p$ is fully described by its slope (rate of change) and its $y$-intercept (value when $x = 0$); the intersection of two lines is the point satisfying both equations simultaneously.
 2.  The intersection of two affine functions models equilibrium or crossover points in economics — the break-even quantity, the indifference point between two tariffs, or the market equilibrium price.
 3.  Inequalities model constraints (budgets, capacities, thresholds); the solution of a system of inequalities is a feasible region, which is the graphical tool for linear optimisation problems.
 
@@ -305,7 +314,7 @@ A logistics manager must choose between two delivery contracts for the coming ye
 
   **Slope of a line through two points**
 
-  \\ m = \frac{y_2 - y_1}{x_2 - x_1} \\
+  $$m = \frac{y_2 - y_1}{x_2 - x_1}$$
 
   A positive slope indicates an increasing line; negative indicates decreasing; zero indicates horizontal.
 
@@ -313,17 +322,18 @@ A logistics manager must choose between two delivery contracts for the coming ye
 
   **Affine function (slope-intercept form)**
 
-  \\ y = mx + p \\
+  $$y = mx + p$$
 
-  \\m\\ is the slope (rate of change); \\p\\ is the \\y\\-intercept (value when \\x = 0\\).
+  $m$ is the slope (rate of change); $p$ is the $y$-intercept (value when $x = 0$).
 
   ------------------------------------------------------------------------
 
   **Intersection of two affine functions**
 
-  \\ x^\* = \frac{p_2 - p_1}{m_1 - m_2}, \qquad y^\* = m_1\\x^\* + p_1 \\
+  $$x^* = \frac{p_2 - p_1}{m_1 - m_2}, \qquad
+  y^* = m_1\,x^* + p_1$$
 
-  Valid when \\m_1 \neq m_2\\ (non-parallel lines). Models the equilibrium or crossover point between two linear relationships.
+  Valid when $m_1 \neq m_2$ (non-parallel lines). Models the equilibrium or crossover point between two linear relationships.
 
 ## Citation
 

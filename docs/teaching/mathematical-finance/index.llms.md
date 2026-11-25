@@ -1,26 +1,89 @@
+## 1 Description du cours
+
+**Fil directeur** : Comment comparer, valoriser et arbitrer des flux financiers qui interviennent à des dates différentes ?
+
+Le cours suit une progression en trois temps :
+
+1.  Calculer et comparer des flux financiers ;
+2.  Valoriser des instruments de financement ;
+3.  Évaluer une décision d’investissement dans un environnement incertain.
+
 > **NOTE:**
 >
-> The complete course materials — including interactive exercises, OJS demonstrations, and a full glossary — are available in French:
->
-> → [**Mathématiques financières (version française)**](../../fr/teaching/mathematics-finance/index.qmd)
+> |  |  |
+> |----|----|
+> | **Public** | Étudiants de Master 1 en école de commerce |
+> | **Volume horaire** | 18 heures — 3 journées de 6 heures |
+> | **Niveau requis** | Mathématiques de niveau Licence ; maîtrise élémentaire d’Excel |
+> | **Format** | 35 % apports conceptuels · 30 % exercices · 25 % cas · 10 % évaluation |
 
-## 1 Course Overview
+## 2 Compétences visées
 
-This financial mathematics course is designed for Master 1 students at a business school. Over 18 hours spread across three intensive days, students develop the analytical tools needed to compare cash flows across time, value financing instruments, and evaluate investment decisions under uncertainty.
+### 2.1 Compétences techniques
 
-The course follows a three-step progression:
+À l’issue des trois journées, les étudiants devront être capables de :
 
-1.  **Calculating and comparing cash flows** — time value of money, compounding, discounting, rate conversion, annuities.
-2.  **Valuing financing instruments** — loan amortization, actuarial cost of credit, bond valuation and interest-rate sensitivity.
-3.  **Evaluating investment decisions** — NPV, IRR, payback period, sensitivity analysis, and scenario modelling.
+- représenter une opération financière sur une ligne du temps ;
+- distinguer intérêts simples, intérêts composés, taux proportionnels et taux équivalents ;
+- calculer une valeur acquise et une valeur actuelle ;
+- convertir correctement des taux exprimés sur des périodicités différentes ;
+- valoriser une suite d’annuités constantes ou variables ;
+- construire et interpréter un tableau d’amortissement ;
+- calculer le coût réel d’un crédit ;
+- valoriser une obligation à taux fixe ;
+- comprendre la relation entre taux d’intérêt et prix d’une obligation ;
+- calculer une VAN et un TRI ;
+- comparer des projets de durées ou de profils différents ;
+- mener une analyse de sensibilité et raisonner en scénarios ;
+- utiliser Excel pour modéliser une décision financière.
 
-## 2 Full English Course — Coming Soon
+### 2.2 Compétences managériales
 
-A fully structured English version of this course (interactive exercises, OJS demonstrations, formal proofs, glossary) is in preparation.
+- traduire une situation économique en modèle financier ;
+- identifier les hypothèses cachées derrière un calcul ;
+- choisir un indicateur pertinent ;
+- interpréter un résultat et formuler une recommandation ;
+- expliquer une décision financière à un non-spécialiste ;
+- repérer les limites d’un modèle quantitatif.
 
-In the meantime, the complete course materials are available in French:
+## 3 Architecture du cours
 
-→ [Mathématiques financières (version française)](../../fr/teaching/mathematics-finance/index.qmd)
+| Journée | Problématique centrale | Principaux thèmes | Production attendue |
+|----|----|----|----|
+| [**Journée 1**](module-01.qmd) | Comment comparer des capitaux disponibles à des dates différentes ? | Intérêts, capitalisation, actualisation, taux, annuités | Modèle d’épargne ou de financement |
+| [**Journée 2**](module-02.qmd) | Comment valoriser et comparer des modes de financement ? | Emprunts, tableaux d’amortissement, coût du crédit, obligations | Analyse comparative de financements |
+| [**Journée 3**](module-03.qmd) | Comment sélectionner un investissement rentable et robuste ? | VAN, TRI, flux de trésorerie, sensibilité, scénarios | Note de recommandation d’investissement |
+
+## 4 Ressources
+
+- [Glossaire](../../teaching/mathematical-finance/glossaire.llms.md) — tous les symboles et termes du cours
+- [Formulaire de référence](../../teaching/mathematical-finance/formulaire.llms.md) — les 10 formules essentielles
+
+## 5 Bibliographie recommandée
+
+### 5.1 Ouvrage de référence — mathématiques financières
+
+**Devolder, P., Fox, M. & Vaguener, F.** *Mathématiques financières*, 3^(e) édition. Pearson France, 2018.
+
+> Manuel de référence technique couvrant l’intégralité du programme : intérêts simples et composés, annuités, tableaux d’amortissement, valorisation des obligations, duration de Macaulay. Exercices corrigés par chapitre. Niveau L2–L3–M1.
+
+### 5.2 Ouvrages complémentaires
+
+**Quiry, P. & Le Fur, Y.** *Finance d’entreprise* (dit « le Vernimmen »), édition annuelle. Dalloz, 2025.
+
+> La référence francophone incontournable (\> 200 000 exemplaires, née à HEC Paris). Couvre les mécanismes fondamentaux, la valeur, la NPV, le TRI et l’analyse du risque. Site compagnon : [vernimmen.net](https://www.vernimmen.net).
+
+**Berk, J. & DeMarzo, P.** *(adapté par Capelle-Blancard, G. & Couderc, N.)* *Finance d’entreprise*, 6^(e) édition. Pearson France, 2024.
+
+> L’adaptation française du manuel international de référence. Couvre toutes les thématiques du cours : valeur temps de l’argent, annuités, obligations, duration, NPV/TRI. Environ 1 000 exercices.
+
+**Parienté, S.** *Finance actuarielle — Méthodologie et applications*, 1^(re) édition. Pearson France, 2016.
+
+> Ouvrage ciblé M1/M2. Couvre en profondeur : amortissement des emprunts, valorisation des obligations, sélection des investissements, coût du capital. Labellisé FNEGE 2017.
+
+**Brealey, R. A., Myers, S. C. & Allen, F.** *Principles of Corporate Finance*, 14^(e) édition. McGraw-Hill Education, 2023. *(En anglais)*
+
+> La référence internationale, prescrite dans les cursus bilingues et les programmes MSc. Couvre l’intégralité du programme.
 
 ## Citation
 
@@ -29,16 +92,16 @@ BibTeX citation:
 ``` quarto-appendix-bibtex
 @online{gilles,
   author = {Gilles, Guillaume},
-  title = {Financial {Mathematics}},
+  title = {Mathématiques Financières},
   url = {https://ggilles.dev/teaching/mathematical-finance/},
   langid = {en},
-  abstract = {How do we compare, value, and arbitrate financial flows
-    that occur at different points in time? This course equips Master 1
-    business-school students with the tools to answer that question
-    rigorously.}
+  abstract = {Comment comparer, valoriser et arbitrer des flux
+    financiers qui interviennent à des dates différentes\,? Ce cours de
+    18 heures donne aux étudiants de Master 1 les outils pour répondre à
+    cette question de façon rigoureuse et managériale.}
 }
 ```
 
 For attribution, please cite this work as:
 
-Gilles, Guillaume. n.d. “Financial Mathematics.” <https://ggilles.dev/teaching/mathematical-finance/>.
+Gilles, Guillaume. n.d. “Mathématiques Financières.” <https://ggilles.dev/teaching/mathematical-finance/>.

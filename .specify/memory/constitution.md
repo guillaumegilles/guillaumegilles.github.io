@@ -1,26 +1,32 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version change: 2.0.0 → 3.0.0 (MAJOR — T-IV no longer permits Shinylive;
-  styling entry point renamed from `assets/dark.scss` to
-  `assets/custom.scss`)
+Version change: 4.0.0 → 5.0.0 (MAJOR — Principle V callout roles redefined
+  for course pages: mathematical notation = caution, try-it = tip,
+  exercises = note, definitions = important; warning keeps common mistakes
+  and now also carries TODO markers)
 Modified principles:
-  - V. Minimal & Contained Styling — the single styling file is now
-    `assets/custom.scss` (neutral light theme). Documented exception:
-    `assets/giscus-neutral-light.css`, a plain-CSS copy of the palette
-    loaded by Giscus by absolute URL, kept in sync by hand.
-  - T-IV. Interactive Demonstrations — OJS (`{ojs}`) is the only
-    permitted technology; Shinylive was removed from the site and its
-    demos ported to OJS.
-  - Technology Stack table — "Interactive widgets" row is Observable JS;
-    "Theme" row is `assets/custom.scss`.
+  - V. Minimal & Contained Styling — callout role table redefined on course
+    pages (all courses under `teaching/`, mathematical courses included):
+    `.callout-caution` = mathematical notation (formulas, derivations,
+    proofs); `.callout-tip` = try-it prompts; `.callout-note` = exercises;
+    `.callout-important` = definitions; `.callout-warning` = common
+    mistakes (at most one block per page) and `TODO:` markers. Exercises no
+    longer use `::: {#exr-…}` blocks.
+  - T-IV. Interactive Demonstrations — missing-demo TODO marker moved from
+    `.callout-important` to `.callout-warning`.
 Added sections: none
 Removed sections: none
-Templates requiring updates:
-  - .specify/templates/plan-template.md ✅ (gates V and T-IV reworded)
-  - .specify/templates/spec-template.md ✅ (no changes needed)
-  - .specify/templates/tasks-template.md ✅ (no changes needed)
-Follow-up TODOs: none
+Templates requiring updates (deferred — this command writes only
+  `.specify/memory/constitution.md`):
+  - .specify/templates/plan-template.md — the Principle V gate still lists
+    the old mapping (note = definition, tip = formula, caution = proof,
+    important = TODO)
+Follow-up TODOs:
+  - Migrate existing course pages from the old callout roles and
+    `#exr-` exercise blocks to the new roles (separate content task).
+  - `assets/custom.scss` still contains `.theorem.exercise` styling, now
+    unused by the rules above.
 -->
 
 # ggilles.dev Constitution
@@ -83,79 +89,58 @@ Cloudflare Worker (`worker/`) is a separate deployment artifact and MUST
 NOT be entangled with Quarto build steps. Math MUST use standard LaTeX
 syntax (`$...$` / `$$...$$`).
 
-Callout blocks MUST use Quarto's native `.callout-*` divs and are
-reserved for a small set of content roles, so that a box always signals
-one of them:
+Callout blocks MUST use Quarto's native `.callout-*` divs. On course
+pages (every course under `teaching/`, mathematical courses included)
+they are reserved for a small set of content roles, so that a box always
+signals one of them:
 
 | Type | Use for |
 |---|---|
-| `.callout-note` | Definitions |
-| `.callout-tip` | Formulas |
-| `.callout-caution` | Proofs and derivations |
-| `.callout-warning` | Common mistakes (at most one block per page) |
-| `.callout-important` | `TODO:` markers for missing content (T-IV) |
+| `.callout-caution` | Mathematical notation — formulas, derivations, proofs |
+| `.callout-tip` | Try-it prompts ("try it yourself" checks) |
+| `.callout-note` | Exercises |
+| `.callout-important` | Definitions |
+| `.callout-warning` | Common mistakes (at most one block per page) and `TODO:` markers for missing content (T-IV) |
 
 Everything else MUST NOT be a callout:
 
-- **Exercises** use Quarto's exercise block (`::: {#exr-<slug>
-  name="…"}`), with the statement visible.
+- **Exercises** are `.callout-note` blocks, with the statement visible.
 - **Answers and solutions** (Try-it answers, exercise and homework
   solutions, exit-check answers) are folded in
   `<details class="answer">` with a `<summary>` line.
 - **Explanations, notation decoders, remarks and background** are plain
   prose, headings and tables.
 
-The styling of `.theorem.exercise` and `details.answer` lives in
-`assets/custom.scss` like every other rule.
+The styling of `details.answer` lives in `assets/custom.scss` like every
+other rule.
 
 **Rationale**: When most blocks on a page are boxed, no box stands out.
-Limiting callouts to definitions, formulas and proofs (plus mistakes and
-TODOs) keeps them meaningful, and a single styling entry point prevents
-conflicting overrides across blog posts and teaching pages.
+Limiting callouts to mathematical notation, try-it prompts, exercises and
+definitions (plus mistakes and TODOs) keeps them meaningful, and a single
+styling entry point prevents conflicting overrides across blog posts and
+teaching pages.
 
-### VI. Bilingual Content Strategy (EN + FR Parity)
+### VI. English-Only Site
 
-The site is fully bilingual — every published page MUST exist in both
-English and French. Content language MUST be declared once per directory
-in a `_metadata.yml` file (`lang: en` in `teaching/_metadata.yml` and
-`posts/_metadata.yml`, `lang: fr` in `fr/teaching/_metadata.yml`, and
-likewise for any new top-level directory). A `.qmd` file MUST NOT repeat
-the inherited `lang:`; it MAY set `lang:` only to override its
-directory's language, and pages outside any such directory MUST declare
-it in their own front matter.
+The site is published in English only. There MUST be no `fr/` directory
+tree, no language switcher in the navbar or page headers, no CSS/JS
+language toggles, and no parallel translated copies of any page. Content
+language is declared once per directory as `lang: en` in a
+`_metadata.yml` file (`posts/_metadata.yml`, `teaching/_metadata.yml`);
+pages outside any such directory rely on Quarto's default `lang: en`. A
+`.qmd` file MUST NOT set `lang:` to any other value.
 
-**Structure**: The folder-per-language pattern is the only accepted
-implementation. English lives at the site root; French lives under `fr/`,
-mirroring the root structure exactly:
+All course materials live under `teaching/` as the single, authoritative
+version of each course. Their language of instruction is whatever the
+course uses — this principle governs the site's interface, navigation and
+indexing, not the language a course is taught in. `-fr`-suffixed duplicate
+directories and "translation in progress" stub pages MUST NOT be created;
+introducing a second site language requires a constitutional amendment.
 
-```
-index.qmd              → /          (English)
-fr/index.qmd           → /fr/       (French)
-posts/my-post/index.qmd       → /posts/my-post/
-fr/posts/my-post/index.qmd    → /fr/posts/my-post/
-teaching/ece-proba/...        → /teaching/ece-proba/
-fr/teaching/ece-proba/...     → /fr/teaching/ece-proba/
-```
-
-**Parity rules**:
-- Every page at path `/X` MUST have a counterpart at `/fr/X` and vice versa.
-- A page that has not yet been translated MUST NOT be silently absent.
-  It MUST instead render a stub page in the target language with a
-  "translation in progress" notice and a link to the available-language version.
-- Teaching materials retain their language of instruction as the primary
-  version but MUST still have a stub or full translation in the other language.
-- A language switcher MUST appear in the navbar, linking between the
-  current page's EN and FR counterparts.
-- **Content MUST NOT be partially translated within a single `.qmd` file**
-  using CSS/JS div toggles. Full-page bilingual variants (separate `.qmd`
-  files) are the only accepted pattern.
-
-**Rationale**: Quarto has no native i18n engine. The folder-per-language
-pattern is the only approach officially supported and predictable across
-renders. Declaring `lang:` per directory still gives every page the
-correct HTML `lang` attribute, accessible typography, and proper
-hyphenation, with one place to change instead of hundreds. Stubs prevent
-broken navigation and signal outstanding translation work clearly.
+**Rationale**: Quarto has no native i18n engine, and the
+folder-per-language mirror doubled every page and every sidebar entry for
+little benefit. A single English site keeps one source of truth, one
+render target, and a search index free of duplicate URLs.
 
 ## Teaching Materials Standards
 
@@ -194,7 +179,7 @@ implemented as a `{ojs}` block (Observable JS, native to Quarto; no
 Python runtime in the browser). Simulations MUST be computable in
 JavaScript (arithmetic, algebra, elementary statistics, numerical
 root-finding); Observable Plot, `Inputs` and `d3` are available by
-default. Where a demo has not yet been built, a `.callout-important`
+default. Where a demo has not yet been built, a `.callout-warning`
 block with a `TODO:` label MUST mark the gap so missing demos are
 trackable.
 
@@ -266,8 +251,8 @@ and MUST NOT introduce server-side state into the static hosting layer.
 ## Development Workflow
 
 - **Render gate**: `quarto render` MUST exit 0 before any commit that
-  touches `.qmd` sources, `_quarto.yml`, or `assets/`. Both EN and FR
-  render targets MUST pass. `docs/` and `_freeze/` MUST be committed in
+  touches `.qmd` sources, `_quarto.yml`, or `assets/`. The single English
+  render target MUST pass. `docs/` and `_freeze/` MUST be committed in
   the same commit as the source changes that produced them.
 - **Post-render hook**: `scripts/update-profile-readme.sh` runs
   automatically after `quarto render`; do not suppress or skip it.
@@ -300,4 +285,4 @@ The site owner (Guillaume Gilles) holds sole amendment authority.
 All Copilot-assisted changes MUST be validated against these principles
 before merging.
 
-**Version**: 3.0.0 | **Ratified**: 2026-05-31 | **Last Amended**: 2026-10-25
+**Version**: 5.0.0 | **Ratified**: 2026-05-31 | **Last Amended**: 2026-11-25

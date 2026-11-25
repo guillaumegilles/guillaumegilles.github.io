@@ -42,19 +42,19 @@ A researcher wants to know whether the environment has an influence on plant siz
 >
 > To go further:
 >
-> - use `VLOOKUP` to determine the critical value \\f\\,
+> - use `VLOOKUP` to determine the critical value $f$,
 > - use `IF` to automate the conclusion,
-> - or use **Data** \\\rightarrow\\ **Data Analysis** \\\rightarrow\\ **Anova: Single Factor**.
+> - or use **Data** $\rightarrow$ **Data Analysis** $\rightarrow$ **Anova: Single Factor**.
 
 > **CAUTION:**
 >
 > Use the following workflow:
 >
-> 1.  compute the group sizes \\n_j\\, group means \\\bar{x}\_j\\, and the overall mean \\\bar{x}\\,
-> 2.  compute \\SSD\_{inter}\\ and \\SSD\_{intra}\\,
+> 1.  compute the group sizes $n_j$, group means $\bar{x}_j$, and the overall mean $\bar{x}$,
+> 2.  compute $SSD_{inter}$ and $SSD_{intra}$,
 > 3.  compute
 >
-> \\ U\_{obs}=\frac{AS\_{inter}}{AS\_{intra}} \\
+> $$U_{obs}=\frac{AS_{inter}}{AS_{intra}}$$
 >
 > 4.  read the Fisher critical value with the appropriate degrees of freedom,
 > 5.  conclude with an Excel formula such as `IF(Uobs>f,"Reject H0","Do not reject H0")`.
@@ -73,7 +73,7 @@ In the early 1970s, the association *Prévention Routière* wanted to encourage 
 
 > **CAUTION:**
 >
-> Can we say, with a \\5\\\\ risk, that there is a link between seat belt use and the nature of the injury? In other words, is the seat belt effective?
+> Can we say, with a $5\%$ risk, that there is a link between seat belt use and the nature of the injury? In other words, is the seat belt effective?
 >
 > **Mission 2.1** — From the `0 - Data` tab of `PW - Session 14 - Exercise2.xlsx`, create a pivot table to recreate the contingency table.
 >
@@ -85,7 +85,7 @@ In the early 1970s, the association *Prévention Routière* wanted to encourage 
 >
 > To go further:
 >
-> - use `VLOOKUP` to determine the critical value \\k\\,
+> - use `VLOOKUP` to determine the critical value $k$,
 > - use `IF` to automate the decision,
 > - or use `CHISQ.TEST` and `CHISQ.INV` directly.
 
@@ -97,9 +97,9 @@ In the early 1970s, the association *Prévention Routière* wanted to encourage 
 > 2.  compute row totals, column totals, and the grand total,
 > 3.  compute the expected counts with
 >
-> \\ E\_{i,j}=\frac{n\_{i,.}\times n\_{.,j}}{n} \\
+> $$E_{i,j}=\frac{n_{i,.}\times n_{.,j}}{n}$$
 >
-> 4.  verify that all expected counts are at least \\5\\,
+> 4.  verify that all expected counts are at least $5$,
 > 5.  compute the Chi-square statistic,
 > 6.  compare it with the critical value or use the p-value returned by `CHISQ.TEST`.
 
@@ -107,11 +107,11 @@ In the early 1970s, the association *Prévention Routière* wanted to encourage 
 
 ### 4.1 Context
 
-Let \\X\\ be the net salary of women and \\Y\\ the net salary of men in the same household. It is assumed that \\(X,Y)\\ follows a bivariate Normal distribution. The two variables are studied on \\15\\ households.
+Let $X$ be the net salary of women and $Y$ the net salary of men in the same household. It is assumed that $(X,Y)$ follows a bivariate Normal distribution. The two variables are studied on $15$ households.
 
 > **CAUTION:**
 >
-> At the \\5\\\\ risk level, can we say that there is a link between salaries and gender?
+> At the $5\%$ risk level, can we say that there is a link between salaries and gender?
 >
 > **Mission** — After reading Session 13 and Appendix 1, complete Tables 2, 3, and 4 of `PW - Session 14 - Exercise3.xlsx`.
 >
@@ -120,20 +120,20 @@ Let \\X\\ be the net salary of women and \\Y\\ the net salary of men in the same
 > To go further:
 >
 > - use `IF` to automate the conclusion,
-> - use `TINV(\alpha, n-2)` to determine \\t\\,
-> - here \\\alpha=5\\\\ and \\n-2=13\\.
+> - use `TINV(\alpha, n-2)` to determine $t$,
+> - here $\alpha=5\%$ and $n-2=13$.
 
 > **CAUTION:**
 >
 > Suggested method:
 >
-> 1.  compute \\\bar{x}\\, \\\bar{y}\\, \\s_x\\, \\s_y\\, and the covariance,
-> 2.  compute the empirical correlation coefficient \\r\\,
+> 1.  compute $\bar{x}$, $\bar{y}$, $s_x$, $s_y$, and the covariance,
+> 2.  compute the empirical correlation coefficient $r$,
 > 3.  calculate
 >
-> \\ U\_{obs}=r\sqrt{\frac{n-2}{1-r^2}} \\
+> $$U_{obs}=r\sqrt{\frac{n-2}{1-r^2}}$$
 >
-> 4.  compare \\\|U\_{obs}\|\\ with the Student critical value,
+> 4.  compare $|U_{obs}|$ with the Student critical value,
 > 5.  conclude with a sentence about the existence, sign, and strength of the linear relationship.
 
 ## 5 Appendix 1 — Standard Excel functions
@@ -165,7 +165,7 @@ Used to search for a value in the first column of a table and return a value fro
 
 Access it through:
 
-**Insert** \\\rightarrow\\ **Tables** \\\rightarrow\\ **PivotTable**
+**Insert** $\rightarrow$ **Tables** $\rightarrow$ **PivotTable**
 
 > **IMPORTANT:**
 >

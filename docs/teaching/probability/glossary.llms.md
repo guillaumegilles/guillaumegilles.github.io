@@ -4,62 +4,62 @@
 Fonction qui associe à chaque issue d’une expérience aléatoire une valeur numérique.
 
 **Densité de probabilité** (*probability density function*)  
-Fonction \\f\\ positive d’intégrale 1 décrivant la répartition de probabilité d’une variable aléatoire continue.
+Fonction $f$ positive d’intégrale 1 décrivant la répartition de probabilité d’une variable aléatoire continue.
 
 **Fonction de répartition** (*cumulative distribution function*)  
-Fonction \\F(x) = P(X \leq x)\\ donnant la probabilité qu’une variable aléatoire soit inférieure ou égale à \\x\\.
+Fonction $F(x) = P(X \leq x)$ donnant la probabilité qu’une variable aléatoire soit inférieure ou égale à $x$.
 
 **Espérance** (*expectation / expected value*)  
-Valeur moyenne théorique d’une variable aléatoire, notée \\E(X)\\.
+Valeur moyenne théorique d’une variable aléatoire, notée $E(X)$.
 
 **Variance** (*variance*)  
-Mesure de la dispersion d’une variable aléatoire autour de son espérance, notée \\V(X) = E\bigl\[(X - E(X))^2\bigr\]\\.
+Mesure de la dispersion d’une variable aléatoire autour de son espérance, notée $V(X) = E\bigl[(X - E(X))^2\bigr]$.
 
 **Écart-type** (*standard deviation*)  
-Racine carrée de la variance, notée \\\sigma(X) = \sqrt{V(X)}\\.
+Racine carrée de la variance, notée $\sigma(X) = \sqrt{V(X)}$.
 
 **Loi de probabilité** (*probability distribution*)  
 Description complète du comportement aléatoire d’une variable, spécifiant les probabilités de chaque événement.
 
 **Fonction indicatrice** (*indicator function*)  
-Fonction valant 1 si la condition est vérifiée et 0 sinon, notée \\\mathbf{1}\_A\\.
+Fonction valant 1 si la condition est vérifiée et 0 sinon, notée $\mathbf{1}_A$.
 
 ## 2 Lois classiques
 
 **Loi uniforme** (*uniform distribution*)  
-Loi \\\mathcal{U}(\[a,b\])\\ où toutes les valeurs d’un intervalle sont équiprobables.
+Loi $\mathcal{U}([a,b])$ où toutes les valeurs d’un intervalle sont équiprobables.
 
 **Loi exponentielle** (*exponential distribution*)  
-Loi \\\mathcal{E}(\lambda)\\ modélisant des durées d’attente, caractérisée par la propriété d’absence de mémoire.
+Loi $\mathcal{E}(\lambda)$ modélisant des durées d’attente, caractérisée par la propriété d’absence de mémoire.
 
 **Loi normale / loi de Gauss** (*normal / Gaussian distribution*)  
-Loi \\\mathcal{N}(m, \sigma^2)\\ à densité en cloche, centrale en probabilités grâce au théorème central limite.
+Loi $\mathcal{N}(m, \sigma^2)$ à densité en cloche, centrale en probabilités grâce au théorème central limite.
 
 **Loi du khi-deux** (*chi-squared distribution*)  
-Loi \\\chi^2_n\\ obtenue comme somme de \\n\\ carrés de variables normales centrées réduites indépendantes.
+Loi $\chi^2_n$ obtenue comme somme de $n$ carrés de variables normales centrées réduites indépendantes.
 
 **Loi de Student** (*Student’s t-distribution*)  
 Loi utilisée en inférence lorsque la variance est estimée, définie comme le quotient d’une normale par la racine d’un khi-deux.
 
 **Loi de Poisson** (*Poisson distribution*)  
-Loi discrète \\\mathcal{P}(\lambda)\\ modélisant le nombre d’événements rares sur un intervalle donné.
+Loi discrète $\mathcal{P}(\lambda)$ modélisant le nombre d’événements rares sur un intervalle donné.
 
 **Loi binomiale** (*binomial distribution*)  
-Loi \\\mathcal{B}(n, p)\\ comptant le nombre de succès dans \\n\\ épreuves de Bernoulli indépendantes.
+Loi $\mathcal{B}(n, p)$ comptant le nombre de succès dans $n$ épreuves de Bernoulli indépendantes.
 
 **Loi de Bernoulli** (*Bernoulli distribution*)  
-Loi \\\mathcal{B}(p)\\ d’une variable valant 1 (succès) avec probabilité \\p\\ et 0 (échec) avec probabilité \\1-p\\.
+Loi $\mathcal{B}(p)$ d’une variable valant 1 (succès) avec probabilité $p$ et 0 (échec) avec probabilité $1-p$.
 
 **Loi géométrique** (*geometric distribution*)  
 Loi discrète modélisant le rang du premier succès dans une suite d’épreuves de Bernoulli indépendantes.
 
 **Loi log-normale** (*log-normal distribution*)  
-Loi d’une variable \\X\\ telle que \\\ln X\\ suit une loi normale.
+Loi d’une variable $X$ telle que $\ln X$ suit une loi normale.
 
 ## 3 Variables aléatoires conjointes
 
 **Distribution conjointe** (*joint distribution*)  
-Loi du couple \\(X, Y)\\ décrivant le comportement simultané de deux variables aléatoires.
+Loi du couple $(X, Y)$ décrivant le comportement simultané de deux variables aléatoires.
 
 **Distribution marginale** (*marginal distribution*)  
 Loi de chaque variable prise individuellement, obtenue par intégration (ou sommation) de la loi conjointe.
@@ -68,10 +68,10 @@ Loi de chaque variable prise individuellement, obtenue par intégration (ou somm
 Loi d’une variable sachant la valeur prise par une autre.
 
 **Covariance** (*covariance*)  
-Mesure de la dépendance linéaire entre deux variables, \\\text{Cov}(X,Y) = E\bigl\[(X-E(X))(Y-E(Y))\bigr\]\\.
+Mesure de la dépendance linéaire entre deux variables, $\text{Cov}(X,Y) = E\bigl[(X-E(X))(Y-E(Y))\bigr]$.
 
 **Corrélation** (*correlation*)  
-Covariance normalisée par les écarts-types, \\\rho(X,Y) = \text{Cov}(X,Y) / (\sigma_X \sigma_Y)\\, comprise entre \\-1\\ et \\1\\.
+Covariance normalisée par les écarts-types, $\rho(X,Y) = \text{Cov}(X,Y) / (\sigma_X \sigma_Y)$, comprise entre $-1$ et $1$.
 
 **Indépendance** (*independence*)  
 Deux variables sont indépendantes si leur loi conjointe est le produit de leurs lois marginales.
@@ -82,22 +82,22 @@ Opération donnant la densité de la somme de deux variables indépendantes par 
 ## 4 Convergence
 
 **Convergence en probabilité** (*convergence in probability*)  
-\\X_n \xrightarrow{P} X\\ si pour tout \\\varepsilon \> 0\\, \\P(\|X_n - X\| \> \varepsilon) \to 0\\.
+$X_n \xrightarrow{P} X$ si pour tout $\varepsilon > 0$, $P(|X_n - X| > \varepsilon) \to 0$.
 
 **Convergence en loi** (*convergence in distribution / in law*)  
-\\X_n \xrightarrow{\mathcal{L}} X\\ si les fonctions de répartition convergent en tout point de continuité de la limite.
+$X_n \xrightarrow{\mathcal{L}} X$ si les fonctions de répartition convergent en tout point de continuité de la limite.
 
 **Convergence en moyenne quadratique** (*L² convergence / mean square convergence*)  
-\\X_n \xrightarrow{L^2} X\\ si \\E\bigl\[(X_n - X)^2\bigr\] \to 0\\.
+$X_n \xrightarrow{L^2} X$ si $E\bigl[(X_n - X)^2\bigr] \to 0$.
 
 **Convergence presque sûre** (*almost sure convergence*)  
-\\X_n \xrightarrow{p.s.} X\\ si \\P\bigl(\lim\_{n\to\infty} X_n = X\bigr) = 1\\.
+$X_n \xrightarrow{p.s.} X$ si $P\bigl(\lim_{n\to\infty} X_n = X\bigr) = 1$.
 
 **Loi des grands nombres** (*law of large numbers*)  
 Théorème affirmant que la moyenne empirique converge vers l’espérance lorsque la taille de l’échantillon tend vers l’infini.
 
 **Théorème central limite / TCL** (*central limit theorem / CLT*)  
-Théorème affirmant que la moyenne empirique centrée et réduite converge en loi vers une loi normale \\\mathcal{N}(0,1)\\.
+Théorème affirmant que la moyenne empirique centrée et réduite converge en loi vers une loi normale $\mathcal{N}(0,1)$.
 
 ## 5 Statistiques
 
@@ -105,7 +105,7 @@ Théorème affirmant que la moyenne empirique centrée et réduite converge en l
 Fonction mesurable de l’échantillon, ne dépendant d’aucun paramètre inconnu.
 
 **Échantillon** (*sample*)  
-Suite \\(X_1, \ldots, X_n)\\ de variables aléatoires i.i.d. représentant les observations.
+Suite $(X_1, \ldots, X_n)$ de variables aléatoires i.i.d. représentant les observations.
 
 **Loi parente** (*parent distribution*)  
 Loi commune des variables de l’échantillon, dont on cherche à estimer les paramètres.
@@ -114,19 +114,19 @@ Loi commune des variables de l’échantillon, dont on cherche à estimer les pa
 Statistique utilisée pour approcher un paramètre inconnu de la loi parente.
 
 **Biais** (*bias*)  
-Différence entre l’espérance d’un estimateur et la vraie valeur du paramètre : \\B(\hat\theta) = E(\hat\theta) - \theta\\.
+Différence entre l’espérance d’un estimateur et la vraie valeur du paramètre : $B(\hat\theta) = E(\hat\theta) - \theta$.
 
 **Sans biais** (*unbiased*)  
 Un estimateur est sans biais si son espérance est égale au paramètre estimé.
 
 **Convergent** (*consistent*)  
-Un estimateur est convergent s’il converge en probabilité vers le paramètre estimé quand \\n \to \infty\\.
+Un estimateur est convergent s’il converge en probabilité vers le paramètre estimé quand $n \to \infty$.
 
 **Efficace** (*efficient*)  
 Un estimateur sans biais est efficace s’il atteint la borne inférieure de Cramér-Rao.
 
 **Vraisemblance** (*likelihood*)  
-Fonction \\L(\theta) = \prod\_{i=1}^n f(x_i; \theta)\\ mesurant la plausibilité des observations pour une valeur du paramètre.
+Fonction $L(\theta) = \prod_{i=1}^n f(x_i; \theta)$ mesurant la plausibilité des observations pour une valeur du paramètre.
 
 **Maximum de vraisemblance / EMV** (*maximum likelihood estimator / MLE*)  
 Estimateur obtenu en maximisant la fonction de vraisemblance par rapport au paramètre.
@@ -138,7 +138,7 @@ Estimateur obtenu en égalant les moments théoriques aux moments empiriques.
 Intervalle aléatoire contenant le paramètre inconnu avec une probabilité fixée (le niveau de confiance).
 
 **Niveau de confiance** (*confidence level*)  
-Probabilité \\1 - \alpha\\ que l’intervalle de confiance contienne la vraie valeur du paramètre.
+Probabilité $1 - \alpha$ que l’intervalle de confiance contienne la vraie valeur du paramètre.
 
 **Effectif** (*frequency count*)  
 Nombre d’individus possédant une même modalité dans un échantillon.

@@ -35,10 +35,16 @@
 ```bash
 git clone https://github.com/guillaumegilles/guillaumegilles.github.io.git
 cd guillaumegilles.github.io
+quarto add qmd-lab/closeread   # installs _extensions/ (git-ignored, needed by scrollytelling posts)
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+> **Note:** the `_extensions/` directory is git-ignored, so a fresh clone does
+> not contain it. Without `quarto add qmd-lab/closeread`, `quarto preview` /
+> `quarto render` fail on any page using the Closeread filter with
+> `ERROR ... cannot open ../../_extensions/qmd-lab/closeread/closeread.lua: No such file or directory`.
 
 ### Running locally
 

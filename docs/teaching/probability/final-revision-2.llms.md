@@ -4,7 +4,7 @@
 
 ## 1 Exercice 1 — Statistiques bivariées (30 points)
 
-### 1.1 Partie A — Tableau de contingence et test du \\\chi^2\\ (14 points)
+### 1.1 Partie A — Tableau de contingence et test du $\chi^2$ (14 points)
 
 Un essai clinique compare deux traitements auprès de **200 patients**. On croise deux variables :
 
@@ -21,58 +21,60 @@ Un essai clinique compare deux traitements auprès de **200 patients**. On crois
 
 **2.** *(3 pts)* Calculer les probabilités suivantes :
 
-- \\P(\text{Partielle} \mid \text{Traitement Y})\\,
-- \\P(\text{Complète})\\,
-- \\P(\text{Traitement X} \mid \text{Insuffisante})\\.
+- $P(\text{Partielle} \mid \text{Traitement Y})$,
+- $P(\text{Complète})$,
+- $P(\text{Traitement X} \mid \text{Insuffisante})$.
 
-**3.** *(4 pts)* Calculer les **effectifs théoriques** \\e\_{ij}\\ sous l’hypothèse d’indépendance. Vérifier qu’ils sont tous supérieurs à 5.
+**3.** *(4 pts)* Calculer les **effectifs théoriques** $e_{ij}$ sous l’hypothèse d’indépendance. Vérifier qu’ils sont tous supérieurs à 5.
 
-**4.** *(4 pts)* Calculer la **statistique du test** \\T = \sum\_{i,j} \frac{(o\_{ij} - e\_{ij})^2}{e\_{ij}}.\\ Conclure au seuil \\\alpha = 5\\\\\\ en comparant \\T\\ à \\\chi^2\_{2\\;\\0{,}05} = 5{,}991\\. Interpréter le résultat en termes de lien entre le traitement et la réponse.
+**4.** *(4 pts)* Calculer la **statistique du test** $$T = \sum_{i,j} \frac{(o_{ij} - e_{ij})^2}{e_{ij}}.$$ Conclure au seuil $\alpha = 5\,\%$ en comparant $T$ à $\chi^2_{2\,;\,0{,}05} = 5{,}991$. Interpréter le résultat en termes de lien entre le traitement et la réponse.
 
 ------------------------------------------------------------------------
 
 ### 1.2 Partie B — Droite de régression (16 points)
 
-Un recruteur souhaite prédire la performance de candidats à partir d’un test psychométrique. Il dispose des données de 5 candidats : le score \\x_i\\ au test (sur 10) et l’indice de performance \\y_i\\ mesuré 6 mois après l’embauche (sur 20).
+Un recruteur souhaite prédire la performance de candidats à partir d’un test psychométrique. Il dispose des données de 5 candidats : le score $x_i$ au test (sur 10) et l’indice de performance $y_i$ mesuré 6 mois après l’embauche (sur 20).
 
-|      Candidat       |  1  |  2  |  3  |  4  |  5  |
-|:-------------------:|:---:|:---:|:---:|:---:|:---:|
-|    Score \\x_i\\    |  1  |  2  |  3  |  4  |  5  |
-| Performance \\y_i\\ |  5  |  7  |  9  | 13  | 16  |
+|     Candidat      |  1  |  2  |  3  |  4  |  5  |
+|:-----------------:|:---:|:---:|:---:|:---:|:---:|
+|    Score $x_i$    |  1  |  2  |  3  |  4  |  5  |
+| Performance $y_i$ |  5  |  7  |  9  | 13  | 16  |
 
-*On donne :* \\\displaystyle\sum\_{i=1}^5 x_i^2 = 55\\, \\\displaystyle\sum\_{i=1}^5 x_iy_i = 178\\, \\\displaystyle\sum\_{i=1}^5 y_i^2 = 580\\.
+*On donne :* $\displaystyle\sum_{i=1}^5 x_i^2 = 55$, $\displaystyle\sum_{i=1}^5 x_iy_i = 178$, $\displaystyle\sum_{i=1}^5 y_i^2 = 580$.
 
-**5.** *(4 pts)* Calculer \\\bar{x}\\, \\\bar{y}\\, puis \\S\_{xx} = \sum x_i^2 - n\bar{x}^2, \quad S\_{xy} = \sum x_iy_i - n\bar{x}\bar{y}, \quad S\_{yy} = \sum y_i^2 - n\bar{y}^2.\\
+**5.** *(4 pts)* Calculer $\bar{x}$, $\bar{y}$, puis $$S_{xx} = \sum x_i^2 - n\bar{x}^2, \quad
+  S_{xy} = \sum x_iy_i - n\bar{x}\bar{y}, \quad
+  S_{yy} = \sum y_i^2 - n\bar{y}^2.$$
 
-**6.** *(4 pts)* Déterminer les coefficients \\\hat{b} = S\_{xy}/S\_{xx}\\ et \\\hat{a} = \bar{y} - \hat{b}\\\bar{x}\\ et écrire l’équation de la droite de régression \\\hat{y} = \hat{a} + \hat{b}\\x\\.
+**6.** *(4 pts)* Déterminer les coefficients $\hat{b} = S_{xy}/S_{xx}$ et $\hat{a} = \bar{y} - \hat{b}\,\bar{x}$ et écrire l’équation de la droite de régression $\hat{y} = \hat{a} + \hat{b}\,x$.
 
-**7.** *(4 pts)* Calculer le **coefficient de corrélation de Pearson** \\r = S\_{xy}/\sqrt{S\_{xx}\\S\_{yy}}\\ et le coefficient de détermination \\r^2\\. Commenter la qualité de l’ajustement.
+**7.** *(4 pts)* Calculer le **coefficient de corrélation de Pearson** $r = S_{xy}/\sqrt{S_{xx}\,S_{yy}}$ et le coefficient de détermination $r^2$. Commenter la qualité de l’ajustement.
 
-**8.** *(4 pts)* Un sixième candidat obtient un score \\x = 6\\. Donner la prédiction de sa performance. Cette prédiction est-elle fiable ? Justifier.
+**8.** *(4 pts)* Un sixième candidat obtient un score $x = 6$. Donner la prédiction de sa performance. Cette prédiction est-elle fiable ? Justifier.
 
 ------------------------------------------------------------------------
 
 ## 2 Exercice 2 — Couple de variables aléatoires continues (40 points)
 
-Soit \\(X,Y)\\ un couple de variables aléatoires dont la **densité conjointe** est \\f(x,y) = \begin{cases} 2 & \text{si } x \geq 0,\\ y \geq 0,\\ x + y \leq 1, \\ 0 & \text{sinon.} \end{cases}\\
+Soit $(X,Y)$ un couple de variables aléatoires dont la **densité conjointe** est $$f(x,y) = \begin{cases} 2 & \text{si } x \geq 0,\ y \geq 0,\ x + y \leq 1, \\ 0 & \text{sinon.} \end{cases}$$
 
-**1.** *(2 pts)* Vérifier que \\\displaystyle\iint\_{\mathbb{R}^2} f(x,y)\\dx\\dy = 1\\. *(Préciser le domaine d’intégration, choisir un ordre d’intégration et justifier.)*
+**1.** *(2 pts)* Vérifier que $\displaystyle\iint_{\mathbb{R}^2} f(x,y)\,dx\,dy = 1$. *(Préciser le domaine d’intégration, choisir un ordre d’intégration et justifier.)*
 
-**2.** *(8 pts)* Calculer les **densités marginales** \\f_X(x)\\ et \\f_Y(y)\\ sur leur support respectif. Vérifier dans chaque cas que la densité intègre à 1. Puis montrer, en comparant \\f(x,y)\\ au produit \\f_X(x)\\f_Y(y)\\, que \\X\\ et \\Y\\ ne sont **pas indépendantes**.
+**2.** *(8 pts)* Calculer les **densités marginales** $f_X(x)$ et $f_Y(y)$ sur leur support respectif. Vérifier dans chaque cas que la densité intègre à 1. Puis montrer, en comparant $f(x,y)$ au produit $f_X(x)\,f_Y(y)$, que $X$ et $Y$ ne sont **pas indépendantes**.
 
-**3.** *(8 pts)* Calculer \\\mathbb{E}\[X\]\\, \\\mathbb{E}\[X^2\]\\ et \\\mathrm{Var}(X)\\. Sans nouveau calcul, donner \\\mathbb{E}\[Y\]\\ et \\\mathrm{Var}(Y)\\ en justifiant par un argument de symétrie.
+**3.** *(8 pts)* Calculer $\mathbb{E}[X]$, $\mathbb{E}[X^2]$ et $\mathrm{Var}(X)$. Sans nouveau calcul, donner $\mathbb{E}[Y]$ et $\mathrm{Var}(Y)$ en justifiant par un argument de symétrie.
 
-**4.** *(7 pts)* Calculer \\\mathbb{E}\[XY\]\\, puis la **covariance** \\\mathrm{Cov}(X,Y)\\ et le **coefficient de corrélation** \\\rho(X,Y) = \mathrm{Cov}(X,Y)/\sqrt{\mathrm{Var}(X)\\\mathrm{Var}(Y)}\\. Interpréter le signe de \\\rho\\.
+**4.** *(7 pts)* Calculer $\mathbb{E}[XY]$, puis la **covariance** $\mathrm{Cov}(X,Y)$ et le **coefficient de corrélation** $\rho(X,Y) = \mathrm{Cov}(X,Y)/\sqrt{\mathrm{Var}(X)\,\mathrm{Var}(Y)}$. Interpréter le signe de $\rho$.
 
-**5.** *(6 pts)* Déterminer la **densité conditionnelle** \\f\_{Y\mid X=x}(y)\\ de \\Y\\ sachant \\X = x\\ (pour \\x \in (0,1)\\). Reconnaître la loi de \\Y \mid X = x\\ et vérifier la normalisation.
+**5.** *(6 pts)* Déterminer la **densité conditionnelle** $f_{Y\mid X=x}(y)$ de $Y$ sachant $X = x$ (pour $x \in (0,1)$). Reconnaître la loi de $Y \mid X = x$ et vérifier la normalisation.
 
 **6.** *(9 pts)* En utilisant la densité conditionnelle de la question 5 :
 
-- *(5 pts)* Calculer \\P\\\left(X + Y \< \dfrac{1}{2}\right)\\. *(On conditionnera par \\X\\ et on utilisera la loi totale des probabilités.)*
+- *(5 pts)* Calculer $P\!\left(X + Y < \dfrac{1}{2}\right)$. *(On conditionnera par* $X$ et on utilisera la loi totale des probabilités.)
 
-- *(2 pts)* Calculer \\P\\\left(X \> \dfrac{1}{2}\right)\\ à partir de \\f_X\\.
+- *(2 pts)* Calculer $P\!\left(X > \dfrac{1}{2}\right)$ à partir de $f_X$.
 
-- *(2 pts)* Calculer \\P\\\left(Y \< \dfrac{1}{4} \\\middle\|\\ X = \dfrac{1}{2}\right)\\.
+- *(2 pts)* Calculer $P\!\left(Y < \dfrac{1}{4} \;\middle|\; X = \dfrac{1}{2}\right)$.
 
 ------------------------------------------------------------------------
 
@@ -80,27 +82,27 @@ Soit \\(X,Y)\\ un couple de variables aléatoires dont la **densité conjointe**
 
 ### 3.1 Partie A — Inégalités de concentration (10 points)
 
-Soit \\X\\ une variable aléatoire **positive**, d’espérance \\\mathbb{E}\[X\] = 4\\ et de variance \\\mathrm{Var}(X) = 4\\.
+Soit $X$ une variable aléatoire **positive**, d’espérance $\mathbb{E}[X] = 4$ et de variance $\mathrm{Var}(X) = 4$.
 
-**1.** *(2 pts)* En appliquant l’**inégalité de Markov**, majorer \\P(X \geq 12)\\.
+**1.** *(2 pts)* En appliquant l’**inégalité de Markov**, majorer $P(X \geq 12)$.
 
-**2.** *(4 pts)* En appliquant l’**inégalité de Bienaymé-Tchebychev**, majorer \\P(\|X - 4\| \geq 4)\\. En déduire une borne inférieure de \\P(0 \< X \< 8)\\.
+**2.** *(4 pts)* En appliquant l’**inégalité de Bienaymé-Tchebychev**, majorer $P(|X - 4| \geq 4)$. En déduire une borne inférieure de $P(0 < X < 8)$.
 
-**3.** *(4 pts)* On suppose maintenant \\X \sim \mathcal{N}(4,\\4)\\. Calculer \\P(0 \< X \< 8)\\ **exactement** à l’aide de la table \\\Phi\\, et comparer avec la borne de la question 2. Commenter.
+**3.** *(4 pts)* On suppose maintenant $X \sim \mathcal{N}(4,\,4)$. Calculer $P(0 < X < 8)$ **exactement** à l’aide de la table $\Phi$, et comparer avec la borne de la question 2. Commenter.
 
 ------------------------------------------------------------------------
 
 ### 3.2 Partie B — Intervalle de confiance pour une moyenne (20 points)
 
-On mesure le temps de réponse (en ms) d’un service web sur \\n = 100\\ requêtes indépendantes. On obtient \\\bar{x} = 72\\ ms et une **variance empirique corrigée** \\s^2 = 225\\ ms².
+On mesure le temps de réponse (en ms) d’un service web sur $n = 100$ requêtes indépendantes. On obtient $\bar{x} = 72$ ms et une **variance empirique corrigée** $s^2 = 225$ ms².
 
-**4.** *(4 pts)* Justifier pourquoi on peut utiliser la loi normale pour construire un intervalle de confiance pour \\\mu\\. Donner la loi approchée de \\\bar{X}\_{100}\\ et préciser ses paramètres.
+**4.** *(4 pts)* Justifier pourquoi on peut utiliser la loi normale pour construire un intervalle de confiance pour $\mu$. Donner la loi approchée de $\bar{X}_{100}$ et préciser ses paramètres.
 
-**5.** *(5 pts)* Construire un **intervalle de confiance à 95 %** pour \\\mu\\.
+**5.** *(5 pts)* Construire un **intervalle de confiance à 95 %** pour $\mu$.
 
-**6.** *(5 pts)* Construire un **intervalle de confiance à 99 %** pour \\\mu\\.
+**6.** *(5 pts)* Construire un **intervalle de confiance à 99 %** pour $\mu$.
 
-**7.** *(6 pts)* En conservant \\s = 15\\ ms comme estimation de \\\sigma\\, quel effectif minimal \\n\\ faut-il pour que la demi-largeur de l’IC à 95 % soit inférieure ou égale à **2 ms** ?
+**7.** *(6 pts)* En conservant $s = 15$ ms comme estimation de $\sigma$, quel effectif minimal $n$ faut-il pour que la demi-largeur de l’IC à 95 % soit inférieure ou égale à **2 ms** ?
 
 ## Citation
 

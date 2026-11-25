@@ -28,12 +28,12 @@ if [ ! -f "$TMPDIR/about.md" ]; then
 fi
 mv "$TMPDIR/about.md" "$TMPDIR/README.md"
 
-# Clean up Quarto artifacts:
+# Clean up Quarto artifacts (portable: no GNU-only `sed -i`; works on BSD/macOS sed)
 # 1. Remove the auto-generated "# About" title (first 2 lines)
-sed -i '1{/^# About$/d}' "$TMPDIR/README.md"
-sed -i '1{/^$/d}' "$TMPDIR/README.md"
+sed -e '1{/^# About$/d;}' "$TMPDIR/README.md" > "$TMPDIR/README.md.tmp" && mv "$TMPDIR/README.md.tmp" "$TMPDIR/README.md"
+sed -e '1{/^$/d;}' "$TMPDIR/README.md" > "$TMPDIR/README.md.tmp" && mv "$TMPDIR/README.md.tmp" "$TMPDIR/README.md"
 # 2. Fix shields.io badge URLs where Quarto appended .png
-sed -i 's/logoColor=fff\.png/logoColor=fff/g' "$TMPDIR/README.md"
+sed -e 's/logoColor=fff\.png/logoColor=fff/g' "$TMPDIR/README.md" > "$TMPDIR/README.md.tmp" && mv "$TMPDIR/README.md.tmp" "$TMPDIR/README.md"
 
 echo "📦 Cloning $REPO …"
 if ! git clone --depth 1 "git@github.com:${REPO}.git" "$TMPDIR/profile-repo" 2>/dev/null; then

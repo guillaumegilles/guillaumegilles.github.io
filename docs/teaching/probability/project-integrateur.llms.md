@@ -118,7 +118,7 @@ Vous pouvez aussi :
 
 1.  Definir une quantite d’interet ecrite comme une esperance ou une integrale.
 2.  L’estimer par Monte-Carlo avec plusieurs tailles d’echantillon.
-3.  Montrer numeriquement le comportement en ordre \\1/\sqrt{n}\\ de l’erreur (ou de l’ecart-type empirique).
+3.  Montrer numeriquement le comportement en ordre $1/\sqrt{n}$ de l’erreur (ou de l’ecart-type empirique).
 
 ### 6.8 Partie H — Continuite et Slutsky
 
