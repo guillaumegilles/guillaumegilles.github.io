@@ -795,6 +795,14 @@ L’explorateur ci-dessous remplace les quatre cartes statiques précédentes : 
 }
 ```
 
+### Carte statique de repli (sans JavaScript)
+
+La carte ci-dessous est le **repli statique** de la section : elle reste visible même lorsque JavaScript est désactivé dans le navigateur. Avec JavaScript activé, utilisez plutôt l’**explorateur interactif ci-dessus** pour faire varier l’année, l’indicateur et le mode d’affichage. L’encodage est identique à celui de l’explorateur : taux de dépôts pour 10 000 habitants (jamais le nombre brut de dossiers), six classes quantiles, palette YlOrRd, style neutre « données manquantes », thème clair de la page (FR-003–FR-006, FR-016, FR-019).
+
+![Carte choroplèthe statique de France métropolitaine : chaque département est coloré selon son taux de dépôts de dossiers de surendettement pour 10 000 habitants la dernière année disponible, en six classes quantiles allant du jaune clair au rouge foncé. Les départements du Nord et de la Seine-Saint-Denis apparaissent en rouge foncé.](index_files/figure-html/fig-carto-hero-output-1.png)
+
+Figure 7: Carte statique de repli (sans JavaScript) — taux de dépôts de dossiers de surendettement pour 10 000 habitants, dernière année disponible. Six classes quantiles, palette YlOrRd. Source : Banque de France. 96 départements métropolitains — DOM-TOM exclus.
+
 ### Graphiques bivariés : surendettement vs. prédicteurs
 
 Ces **nuages de points** examinent la relation entre le surendettement et chaque variable explicative prise **séparément** (sans contrôle des autres variables). Chaque point représente un département ; la droite rouge est la droite de régression linéaire simple. Le coefficient r et sa p-value indiquent l’intensité et la significativité de l’association.
@@ -811,7 +819,7 @@ Ces graphiques bivariés complètent la matrice de corrélation en rendant visib
 
 ![Quatre nuages de points : surendettement (axe Y) en fonction du chômage, de la pauvreté, du RSA et de la part de locataires (axe X). Chaque graphique inclut une droite de régression rouge.](index_files/figure-html/fig-scatter-bivariate-output-1.png)
 
-Figure 7: Nuages de points bivariés : taux de surendettement vs. chaque prédicteur principal (année de référence). La droite de régression linéaire est représentée en rouge. Source : BdF, INSEE, DREES.
+Figure 8: Nuages de points bivariés : taux de surendettement vs. chaque prédicteur principal (année de référence). La droite de régression linéaire est représentée en rouge. Source : BdF, INSEE, DREES.
 
 ------------------------------------------------------------------------
 

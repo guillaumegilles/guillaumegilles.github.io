@@ -1870,6 +1870,212 @@ valeurs annuelles ; recliquez pour désépingler.
 }
 ```
 
+### Carte statique de repli (sans JavaScript) {#sec-carto-statique}
+
+La carte ci-dessous est le **repli statique** de la section : elle reste
+visible même lorsque JavaScript est désactivé dans le navigateur. Avec
+JavaScript activé, utilisez plutôt l'**explorateur interactif ci-dessus**
+pour faire varier l'année, l'indicateur et le mode d'affichage.
+L'encodage est identique à celui de l'explorateur : taux de dépôts pour
+10 000 habitants (jamais le nombre brut de dossiers), six classes
+quantiles, palette YlOrRd, style neutre « données manquantes », thème
+clair de la page (FR-003–FR-006, FR-016, FR-019).
+
+```{python}
+#| label: carto-static-setup
+#| include: false
+
+# Préparation de la carte statique de repli (FR-016) et de l'image
+# d'aperçu du billet : géométrie + données de l'année cible, et calcul
+# dynamique de l'année du creux national des dépôts (FR-002).
+import geopandas as gpd
+import matplotlib.colors as mcolors
+import matplotlib.patches as mpatches
+
+CARTO_STATIC_AVAILABLE = False
+gdf_static = None
+TROUGH_YEAR = None
+LATEST_YEAR = YEAR_TARGET
+PREVIEW_PATH = Path("../../assets/posts/overindebtedness.jpg")
+
+# Palette du thème clair du site (assets/custom.scss, FR-019) — surcharge
+# locale du thème sombre global défini dans la cellule `setup`.
+LIGHT_RC = {
+    "figure.facecolor": "none", "savefig.facecolor": "none",
+    "savefig.transparent": True,
+    "axes.facecolor": "none", "axes.edgecolor": "#CBC7B9",
+    "axes.labelcolor": "#2B2B30", "axes.titlecolor": "#121214",
+    "text.color": "#2B2B30",
+    "xtick.color": "#6B6B74", "ytick.color": "#6B6B74",
+    "legend.facecolor": "#F2F0E9", "legend.edgecolor": "#E0DDD2",
+    "legend.labelcolor": "#2B2B30",
+}
+
+try:
+    if not DATA_AVAILABLE or len(df) == 0:
+        raise FileNotFoundError("analytical_dataset.csv indisponible")
+    gdf_static = gpd.read_file(GEO_DIR / "departements.geojson")
+    if "code" in gdf_static.columns:
+        gdf_static = gdf_static.rename(columns={"code": "dep_code"})
+    gdf_static["dep_code"] = gdf_static["dep_code"].astype(str).str.zfill(2)
+    gdf_static = gdf_static.to_crs(epsg=2154)  # Lambert-93, France métro
+
+    df_map = df[df["annee"] == LATEST_YEAR].copy()
+    df_map["dep_code"] = df_map["dep_code"].astype(str).str.zfill(2)
+    gdf_static = gdf_static.merge(df_map, on="dep_code", how="left")
+    CARTO_STATIC_AVAILABLE = len(gdf_static) >= 90
+
+    # Creux national dynamique (FR-002) : année du minimum de dépôts
+    nat = (
+        df.dropna(subset=["suren_depot_nb"])
+        .groupby("annee")["suren_depot_nb"].sum()
+    )
+    TROUGH_YEAR = int(nat.idxmin()) if len(nat) else None
+    print(f"✓ carte statique : {len(gdf_static)} polygones, année "
+          f"{LATEST_YEAR}, creux national {TROUGH_YEAR}")
+except Exception as e:
+    print(f"⚠️ Carte statique indisponible : {e}")
+```
+
+```{python}
+#| label: fig-carto-hero
+#| fig-cap: "Carte statique de repli (sans JavaScript) — taux de dépôts de dossiers de surendettement pour 10 000 habitants, dernière année disponible. Six classes quantiles, palette YlOrRd. Source : Banque de France. 96 départements métropolitains — DOM-TOM exclus."
+#| fig-alt: "Carte choroplèthe statique de France métropolitaine : chaque département est coloré selon son taux de dépôts de dossiers de surendettement pour 10 000 habitants la dernière année disponible, en six classes quantiles allant du jaune clair au rouge foncé. Les départements du Nord et de la Seine-Saint-Denis apparaissent en rouge foncé."
+#| fig-width: 10
+#| fig-height: 8
+#| column: page
+
+if CARTO_STATIC_AVAILABLE and gdf_static is not None:
+    # FR-003 : on cartographie toujours le taux, jamais le nombre brut
+    vals = pd.to_numeric(gdf_static["suren_depot_taux"], errors="coerce")
+    # FR-004 : six classes quantiles, mêmes seuils que l'explorateur
+    th = vals.quantile([i / 6 for i in range(1, 6)]).tolist()
+    cls = vals.apply(
+        lambda v: np.nan if pd.isna(v) else sum(v >= t for t in th)
+    )
+    cmap = plt.get_cmap("YlOrRd")  # FR-006 : sûre pour les daltoniens
+    row_colors = [
+        "#d9d9d9" if pd.isna(c) else mcolors.to_hex(cmap(c / 5))
+        for c in cls
+    ]
+
+    with plt.rc_context(LIGHT_RC):
+        fig, ax = plt.subplots(figsize=(10, 8))
+        gdf_static.plot(
+            ax=ax, color=row_colors, edgecolor="#FAF9F5", linewidth=0.4
+        )
+        ax.set_axis_off()
+        ax.set_title(
+            f"Taux de dépôts de dossiers de surendettement — {LATEST_YEAR}",
+            fontsize=13, pad=10,
+        )
+
+        # Légende : classes quantiles avec unités + cas manquant (FR-004/006)
+        handles = []
+        for i in range(6):
+            lo = None if i == 0 else th[i - 1]
+            hi = None if i == 5 else th[i]
+            lab = (f"< {hi:.1f}" if lo is None
+                   else f"≥ {lo:.1f}" if hi is None
+                   else f"{lo:.1f} – {hi:.1f}")
+            handles.append(
+                mpatches.Patch(color=cmap(i / 5), label=lab)
+            )
+        handles.append(
+            mpatches.Patch(facecolor="#d9d9d9", edgecolor="#CBC7B9",
+                           label="données manquantes")
+        )
+        leg = ax.legend(
+            handles=handles, title="dépôts / 10 000 hab.",
+            loc="lower left", framealpha=0.95, fontsize=9,
+        )
+        fig.text(
+            0.01, 0.01,
+            "Source : Banque de France — 96 départements métropolitains, "
+            "DOM-TOM exclus.",
+            fontsize=8, color="#6B6B74",
+        )
+        fig.tight_layout()
+else:
+    print("⚠️ Carte statique indisponible : données ou géométrie "
+          "manquantes (exécuter les scripts 01–04).")
+```
+
+```{python}
+#| label: carto-preview
+#| include: false
+
+# Image d'aperçu du billet (FR-016) : variation du taux de dépôts entre
+# l'année du creux et la dernière année complète, en %, sur une échelle
+# divergente centrée sur 0 (FR-005). Le creux est calculé depuis les
+# données, jamais codé en dur (FR-002). Le fichier écrasé est référencé
+# par le champ `image:` de l'en-tête du billet.
+if CARTO_STATIC_AVAILABLE and gdf_static is not None and TROUGH_YEAR:
+    base = (
+        df[df["annee"] == TROUGH_YEAR][["dep_code", "suren_depot_taux"]]
+        .rename(columns={"suren_depot_taux": "taux_creux"})
+    )
+    last = (
+        df[df["annee"] == LATEST_YEAR][["dep_code", "suren_depot_taux"]]
+        .rename(columns={"suren_depot_taux": "taux_last"})
+    )
+    g_prev = (
+        gdf_static[["dep_code", "geometry"]]
+        .merge(base, on="dep_code", how="left")
+        .merge(last, on="dep_code", how="left")
+    )
+    g_prev["var_pct"] = np.where(
+        g_prev["taux_creux"] > 0,
+        (g_prev["taux_last"] - g_prev["taux_creux"]) / g_prev["taux_creux"] * 100,
+        np.nan,
+    )
+    ext = float(np.nanmax(np.abs(g_prev["var_pct"]))) or 1.0
+    norm = mcolors.TwoSlopeNorm(vmin=-ext, vcenter=0, vmax=ext)
+    cmap = plt.get_cmap("RdBu_r")  # rouge = hausse, bleu = baisse (R5)
+
+    with plt.rc_context(LIGHT_RC):
+        fig, ax = plt.subplots(figsize=(10, 8), dpi=150)
+        g_prev.plot(
+            ax=ax, column="var_pct", cmap=cmap, norm=norm,
+            edgecolor="#FAF9F5", linewidth=0.4,
+            missing_kwds={"color": "#d9d9d9", "hatch": "///",
+                          "edgecolor": "#CBC7B9"},
+        )
+        ax.set_axis_off()
+        ax.set_title(
+            f"Surendettement : variation du taux de dépôts "
+            f"{TROUGH_YEAR} → {LATEST_YEAR} (%)",
+            fontsize=13, pad=10,
+        )
+        sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+        cbar = fig.colorbar(sm, ax=ax, fraction=0.035, pad=0.01, shrink=0.6)
+        cbar.set_label("variation (%)", fontsize=9)
+        cbar.ax.tick_params(labelsize=8)
+        fig.text(
+            0.01, 0.01,
+            "Source : Banque de France — dépôts / 10 000 hab. — "
+            "96 départements métropolitains, DOM-TOM exclus.",
+            fontsize=8, color="#6B6B74",
+        )
+        fig.tight_layout()
+        PREVIEW_PATH.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(PREVIEW_PATH, dpi=150, bbox_inches="tight",
+                    facecolor="#FAF9F5")
+        plt.close(fig)
+
+    nat = (
+        df.dropna(subset=["suren_depot_nb"])
+        .groupby("annee")["suren_depot_nb"].sum()
+    )
+    reb = (nat[LATEST_YEAR] - nat[TROUGH_YEAR]) / nat[TROUGH_YEAR] * 100
+    print(f"✓ image d'aperçu écrite : {PREVIEW_PATH.name} "
+          f"(creux {TROUGH_YEAR} = {int(nat[TROUGH_YEAR])} dossiers → "
+          f"{LATEST_YEAR} = {int(nat[LATEST_YEAR])}, {reb:+.1f} %)")
+else:
+    print("⚠️ Image d'aperçu non générée : données cartographiques "
+          "indisponibles.")
+```
+
 
 ### Graphiques bivariés : surendettement vs. prédicteurs {#sec-carto-scatter}
 
